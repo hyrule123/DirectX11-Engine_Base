@@ -4,6 +4,7 @@
 #include "SH_CommonStruct.hlsli"
 
 //t 버퍼
+SBUFFER(g_InitSetting, tInitSetting, t, 127);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);

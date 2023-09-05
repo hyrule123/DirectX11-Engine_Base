@@ -31,6 +31,25 @@ namespace mh
 		: public GPUBuffer
 	{
     public:
+        struct Desc
+        {
+            eStructBufferType eSBufferType;
+
+            define::eShaderStageFlag_ TargetStageSRV;
+
+            int REGISLOT_t_SRV;
+            int REGISLOT_u_UAV;
+
+            Desc()
+                : eSBufferType()
+                , TargetStageSRV(define::eShaderStageFlag::ALL)
+                , REGISLOT_t_SRV(-1)
+                , REGISLOT_u_UAV(-1)
+            {}
+        };
+
+
+    public:
         //아무 인자 없이 생성할 경우 반드시 SetDesc를 해 줄것.
         StructBuffer();
         StructBuffer(const tSBufferDesc& _tDesc);

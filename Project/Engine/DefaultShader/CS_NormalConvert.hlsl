@@ -1,6 +1,4 @@
-
-
-RWTexture2D<float4> tex : register(u0);
+#include "SH_NormalConvert.hlsli"
 
 //  SV_GroupID  : 스레드에 속한 그룹의 좌표
 //  SV_GroupThreadID : 그룹 내에서, 스레드의 좌표

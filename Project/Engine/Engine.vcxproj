@@ -269,6 +269,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="Com_Renderer_Mesh.h" />
     <ClInclude Include="Com_Renderer_UIBase.h" />
     <ClInclude Include="DefaultComInitializer.h" />
+    <ClInclude Include="define_Global.h" />
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
@@ -291,6 +292,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="guiMaterialEditor.h" />
     <ClInclude Include="guiMesh.h" />
     <ClInclude Include="guiMgr.h" />
+    <ClInclude Include="guiNormalConverter.h" />
     <ClInclude Include="guiResource.h" />
     <ClInclude Include="guiResources.h" />
     <ClInclude Include="guiTexture.h" />
@@ -314,6 +316,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Com_Camera.h" />
+    <ClInclude Include="GPUInitSetting.h" />
     <ClInclude Include="ITransform.h" />
     <ClInclude Include="json-cpp\jsonSaveLoad.h" />
     <ClInclude Include="MultiRenderTarget.h" />
@@ -355,7 +358,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="PaintShader.h" />
+    <ClInclude Include="NormalMapEditor.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Player.h" />
@@ -400,6 +403,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Com_Renderer_UIBase.cpp" />
     <ClCompile Include="DefaultComInitializer.cpp" />
+    <ClCompile Include="define_Global.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
@@ -422,6 +426,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="guiMaterialEditor.cpp" />
     <ClCompile Include="guiMesh.cpp" />
     <ClCompile Include="guiMgr.cpp" />
+    <ClCompile Include="guiNormalConverter.cpp" />
     <ClCompile Include="guiResource.cpp" />
     <ClCompile Include="guiResources.cpp" />
     <ClCompile Include="guiTexture.cpp" />
@@ -486,6 +491,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Com_Camera.cpp" />
+    <ClCompile Include="GPUInitSetting.cpp" />
     <ClCompile Include="ITransform.cpp" />
     <ClCompile Include="MultiRenderTarget.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
@@ -523,7 +529,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="PaintShader.cpp" />
+    <ClCompile Include="NormalMapEditor.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -561,6 +567,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <None Include="DefaultShader\SH_LightDir.hlsli" />
     <None Include="DefaultShader\SH_LightPoint.hlsli" />
     <None Include="DefaultShader\SH_Merge.hlsli" />
+    <None Include="DefaultShader\SH_NormalConvert.hlsli" />
     <None Include="DefaultShader\SH_Particle.hlsli" />
     <None Include="DefaultShader\SH_PostProcess.hlsli" />
     <None Include="DefaultShader\SH_Resource.hlsli" />
@@ -579,7 +586,17 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_Paint.hlsl">
+    <FxCompile Include="DefaultShader\CS_GPUInitSetting.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="DefaultShader\CS_NormalConvert.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>

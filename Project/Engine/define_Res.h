@@ -120,7 +120,7 @@ namespace mh::define
 					STRKEY_DECLARE(UIShader);
 					STRKEY_DECLARE(GridShader);
 					STRKEY_DECLARE(DebugShader);
-					STRKEY_DECLARE(PaintShader);
+					STRKEY_DECLARE(NormalMapEditor);
 					STRKEY_DECLARE(ParticleShader);
 					STRKEY_DECLARE(PostProcessShader);
 					STRKEY_DECLARE(Basic3DShader);

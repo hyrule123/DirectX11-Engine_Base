@@ -175,6 +175,12 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{62546181-5d07-413f-a9e5-329a0986165d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_DefaultShader\NormalConvert">
+      <UniqueIdentifier>{3ca4eedf-2a84-429b-a6fb-dd67a6ae9e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_DefaultShader\GPUInitSetting">
+      <UniqueIdentifier>{43e6081c-49be-44d5-8172-4be7e00efc00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -234,7 +240,7 @@
     <ClCompile Include="Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="PaintShader.cpp">
+    <ClCompile Include="NormalMapEditor.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
     <ClCompile Include="ComputeShader.cpp">
@@ -489,6 +495,13 @@
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="GridScript.cpp" />
+    <ClCompile Include="guiNormalConverter.cpp" />
+    <ClCompile Include="GPUInitSetting.cpp">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="define_Global.cpp">
+      <Filter>Common\define</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -554,7 +567,7 @@
     <ClInclude Include="Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="PaintShader.h">
+    <ClInclude Include="NormalMapEditor.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
     <ClInclude Include="ComputeShader.h">
@@ -857,6 +870,13 @@
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="GridScript.h" />
+    <ClInclude Include="guiNormalConverter.h" />
+    <ClInclude Include="GPUInitSetting.h">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="define_Global.h">
+      <Filter>Common\define</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -928,11 +948,11 @@
     <None Include="DefaultShader\SH_UserInterFace.hlsli">
       <Filter>_DefaultShader\UI</Filter>
     </None>
+    <None Include="DefaultShader\SH_NormalConvert.hlsli">
+      <Filter>_DefaultShader\NormalConvert</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DefaultShader\CS_Paint.hlsl">
-      <Filter>_DefaultShader</Filter>
-    </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Basic3D.hlsl">
       <Filter>_DefaultShader\Basic3D</Filter>
     </FxCompile>
@@ -1013,6 +1033,12 @@
     </FxCompile>
     <FxCompile Include="DefaultShader\CS_Animation3D.hlsl">
       <Filter>_DefaultShader\Animation\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultShader\CS_NormalConvert.hlsl">
+      <Filter>_DefaultShader\NormalConvert</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultShader\CS_GPUInitSetting.hlsl">
+      <Filter>_DefaultShader\GPUInitSetting</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

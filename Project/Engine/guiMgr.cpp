@@ -33,6 +33,7 @@
 #include "guiDebugObject.h"
 #include "guiEditorObject.h"
 #include "guiMaterialEditor.h"
+#include "guiNormalConverter.h"
 
 #include "json-cpp/json.h"
 
@@ -291,6 +292,8 @@ namespace gui
 		AddGuiWindow<guiFBXConverter>();
 
 		AddGuiWindow<guiMaterialEditor>();
+
+		AddGuiWindow<guiNormalConverter>();
 	}
 
 	void guiMgr::ImGuiInitialize()
