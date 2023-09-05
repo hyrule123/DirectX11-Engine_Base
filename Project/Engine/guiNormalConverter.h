@@ -22,11 +22,78 @@ namespace gui
 
     private:
         void SrcTextureUpdate();
+        void DestTextureUpdate();
+        void CopyTextureUpdate();
 
+        enum class eXYZSign
+        {
+            X,
+            Y,
+            Z,
+            MinusX,
+            MinusY,
+            MinusZ,
+            XYZSignEnd
+        };
+        struct AxisAndSign
+        {
+            int Axis;
+            int Sign;
+        };
+        inline AxisAndSign ConvertXYZSignToHLSLFormat(eXYZSign _sign);
     private:
-        std::shared_ptr<mh::Texture> mTextureSrc;
-        std::shared_ptr<mh::Texture> mTextureDest;
+        std::shared_ptr<mh::Texture>        mTextureSrc;
+        guiComboBox mComboSrcR;
+        guiComboBox mComboSrcG;
+        guiComboBox mComboSrcB;
+
+        std::filesystem::path               mTextureDestPath;
+
+        tCB_UniformData mCB;
     };
+
+    inline guiNormalConverter::AxisAndSign guiNormalConverter::ConvertXYZSignToHLSLFormat(eXYZSign _sign)
+    {
+        AxisAndSign ans{};
+        switch (_sign)
+        {
+        case gui::guiNormalConverter::eXYZSign::X:
+            ans.Axis = (int)eXYZSign::X;
+            ans.Sign = 1;
+            break;
+
+        case gui::guiNormalConverter::eXYZSign::Y:
+            ans.Axis = (int)eXYZSign::Y;
+            ans.Sign = 1;
+            break;
+
+        case gui::guiNormalConverter::eXYZSign::Z:
+            ans.Axis = (int)eXYZSign::Z;
+            ans.Sign = 1;
+            break;
+
+        case gui::guiNormalConverter::eXYZSign::MinusX:
+            ans.Axis = (int)eXYZSign::X;
+            ans.Sign = -1;
+            break;
+
+        case gui::guiNormalConverter::eXYZSign::MinusY:
+            ans.Axis = (int)eXYZSign::Y;
+            ans.Sign = -1;
+            break;
+
+        case gui::guiNormalConverter::eXYZSign::MinusZ:
+            ans.Axis = (int)eXYZSign::Z;
+            ans.Sign = -1;
+            break;
+
+        default:
+            ans.Axis = -1;
+            ans.Sign = -1;
+            break;
+        }
+    }
+
 }
 
 

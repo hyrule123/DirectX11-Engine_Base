@@ -35,7 +35,7 @@ namespace gui
 
 		//새로 들어온 벡터값으로 값을 교체
 		void SetItems(const std::vector<std::string>& _strItems);
-		void SetItems(std::vector<tComboItem>& _vecItem) { Reset(); std::swap(mItems, _vecItem); }
+		void SetItems(const std::vector<tComboItem>& _vecItem) { Reset(); mItems = _vecItem; }
 
 		void Reset() { mItems.clear(); mCurrentSelected = -1; mComboFlags = 0; }
 

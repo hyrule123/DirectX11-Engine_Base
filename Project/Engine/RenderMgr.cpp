@@ -8,7 +8,7 @@
 #include "ResMgr.h"
 
 #include "ConstBuffer.h"
-#include "NormalMapEditor.h"
+#include "NormalConverter.h"
 #include "ParticleShader.h"
 #include "Animation3DShader.h"
 
@@ -915,10 +915,10 @@ namespace mh
 #pragma endregion
 #pragma region PAINT SHADER
 		{
-			std::shared_ptr<NormalMapEditor> paintShader = std::make_shared<NormalMapEditor>();
+			std::shared_ptr<NormalConverter> paintShader = std::make_shared<NormalConverter>();
 			paintShader->SetEngineDefaultRes(true);
 			paintShader->CreateByHeader(CS_Paint, sizeof(CS_Paint));
-			ResMgr::Insert(strKey::Default::shader::graphics::NormalMapEditor, paintShader);
+			ResMgr::Insert(strKey::Default::shader::graphics::NormalConverter, paintShader);
 		}
 
 #pragma endregion

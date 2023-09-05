@@ -18,9 +18,7 @@
 
 namespace mh
 {
-	using namespace mh::define;
-
-	std::vector<std::function<void()>> Application::mEndFrameFuncs;
+	std::vector<std::function<void()>> Application::mEndFrameFuncs{};
 
 
 	HWND			Application::mHwnd{};
@@ -46,7 +44,6 @@ namespace mh
 			ERROR_MESSAGE_W(L"Graphics Device 초기화 실패");
 			return FALSE;
 		}
-
 
 		PathMgr::Init();
 

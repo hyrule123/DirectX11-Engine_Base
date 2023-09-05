@@ -61,7 +61,7 @@ namespace mh::define
 		size_t size;
 
 		template <typename T>
-		void SetDataPtr(const T _pData) { pData = (void*)_pData; size = sizeof(T); }
+		void SetDataPtr(const T& _pData) { pData = (void*)_pData; size = sizeof(T); }
 	};
 
 

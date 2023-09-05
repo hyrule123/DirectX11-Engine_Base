@@ -14,8 +14,6 @@
 
 namespace mh
 {
-	
-
 	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
 		: IShader(define::eResourceType::ComputeShader)
 		, mCSBlob(nullptr)
@@ -24,7 +22,6 @@ namespace mh
 	{
 		//스레드가 하나라도 0이 들어있으면 안됨
 		MH_ASSERT(_threadsPerGroup.x && _threadsPerGroup.y && _threadsPerGroup.z);
-
 	}
 
 	ComputeShader::~ComputeShader()

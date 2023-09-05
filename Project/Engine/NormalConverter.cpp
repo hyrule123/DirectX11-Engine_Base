@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "NormalMapEditor.h"
+#include "NormalConverter.h"
 
 #include "DefaultShader/SH_NormalConvert.hlsli"
 
@@ -13,7 +13,7 @@
 
 namespace mh
 {
-	NormalMapEditor::NormalMapEditor()
+	NormalConverter::NormalConverter()
 		: ComputeShader(uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
@@ -21,18 +21,18 @@ namespace mh
 		SetEngineDefaultRes(true);
 	}
 
-	NormalMapEditor::~NormalMapEditor()
+	NormalConverter::~NormalConverter()
 	{
 	}
 
-	eResult NormalMapEditor::Load(const std::fs::path& _filePath)
+	eResult NormalConverter::Load(const std::fs::path& _filePath)
 	{
 		IRes::Load(_filePath);
 
 		return ComputeShader::CreateByHeader(CS_NormalConvert, sizeof(CS_NormalConvert));
 	}
 
-	std::shared_ptr<Texture> NormalMapEditor::GetModifiedNormalMap(std::shared_ptr<Texture> _srcTex)
+	std::shared_ptr<Texture> NormalConverter::GetModifiedNormalMap(std::shared_ptr<Texture> _srcTex)
 	{
 		if (nullptr == _srcTex)
 			return nullptr;
@@ -44,7 +44,7 @@ namespace mh
 		return mDestTex;
 	}
 
-	bool NormalMapEditor::BindData()
+	bool NormalConverter::BindData()
 	{
 		mDestTex = std::make_shared<Texture>();
 
@@ -63,7 +63,7 @@ namespace mh
 		return true;
 	}
 
-	void NormalMapEditor::UnBindData()
+	void NormalConverter::UnBindData()
 	{
 		mSrcTex->UnBindData();
 		mSrcTex = nullptr;

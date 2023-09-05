@@ -107,19 +107,19 @@ namespace mh
 		}
 
 
-		//{
-		//	GameObject* baseUI = EventMgr::SpawnGameObject(eLayerType::UI);
-		//	baseUI->SetName("BaseUI");
-		//	Com_Transform* tr = baseUI->AddComponent<Com_Transform>();
-		//	tr->SetSize(float3(100.f, 100.f, 1.f));
+		{
+			GameObject* baseUI = EventMgr::SpawnGameObject(eLayerType::UI);
+			baseUI->SetName("BaseUI");
+			Com_Transform* tr = baseUI->AddComponent<Com_Transform>();
+			tr->SetSize(float3(100.f, 100.f, 1.f));
 
-		//	//UI 스크립트 추가
-		//	//Base를 추가하게 되면 단순 이미지 한 장을 출력하는 UI가 생성됨
-		//	Script_UIBase* ui = baseUI->AddComponent<Script_UIBase>();
+			//UI 스크립트 추가
+			//Base를 추가하게 되면 단순 이미지 한 장을 출력하는 UI가 생성됨
+			Script_UIBase* ui = baseUI->AddComponent<Script_UIBase>();
 
-		//	std::shared_ptr<Texture> smileTex = ResMgr::Load<Texture>("Smile.png");
-		//	ui->SetTexture(define::eTextureSlot::Tex_0, smileTex);
-		//}
+			std::shared_ptr<Texture> smileTex = ResMgr::Load<Texture>("Smile.png");
+			ui->SetTexture(define::eTextureSlot::Tex_0, smileTex);
+		}
 
 
 		//{

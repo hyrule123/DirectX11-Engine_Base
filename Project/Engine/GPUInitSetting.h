@@ -15,7 +15,6 @@ namespace mh
 		virtual eResult Load(const std::filesystem::path& _filePath) override;
 
 	protected:
-		
 		virtual bool BindData() override;
 		virtual void UnBindData() override;
 

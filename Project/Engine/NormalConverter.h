@@ -6,11 +6,11 @@
 
 namespace mh
 {
-	class NormalMapEditor : public ComputeShader
+	class NormalConverter : public ComputeShader
 	{
 	public:
-		NormalMapEditor();
-		virtual ~NormalMapEditor();
+		NormalConverter();
+		virtual ~NormalConverter();
 
 		virtual eResult Load(const std::fs::path& _filePath) override;
 

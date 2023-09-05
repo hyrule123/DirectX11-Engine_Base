@@ -228,16 +228,16 @@ struct alignas(16) tGPUInitSetting
 	uint GPUEndianessTestVar;
 	uint Padding_InitSetting;
 
-#ifndef __cplusplus//HLSL
+//#ifndef __cplusplus//HLSL
     //HLSL은 int 배열이 16 byte 단위
-	uint u8BitPartInU32Pack[4];
-	uint u8BitShiftInU32Pack[4];
+	uint4 u8BitPartInU32Pack;
+	uint4 u8BitShiftInU32Pack;
 	
-#else//C++
+//#else//C++
 	//4바이트가 16바이트 단위로 묶여있으므로
-	uint4 u8BitPartInU32Pack[4];
-	uint4 u8BitShiftInU32Pack[4];
-#endif
+//	uint4 u8BitPartInU32Pack[4];
+//	uint4 u8BitShiftInU32Pack[4];
+//#endif
 };
 
 #endif//SH_COMMON_STRUCT
