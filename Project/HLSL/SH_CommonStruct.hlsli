@@ -111,8 +111,6 @@ struct alignas(16)  tCB_ParticleSystem
 };
 
 
-
-
 struct alignas(16)  tCB_Noise
 {
 	float4 NoiseSize;
@@ -212,7 +210,7 @@ struct alignas(16)  tSkinningInfo
 	float3 Normal;
 };
 
-struct tOutputBoneInfo
+struct alignas(16) tOutputBoneInfo
 {
 	MATRIX matBone;
 	float3 Pos;
@@ -222,5 +220,24 @@ struct tOutputBoneInfo
 	float4 RotQuat;
 };
 
+
+struct alignas(16) tGPUInitSetting
+{
+	BOOL bCPULittleEndian;
+	BOOL bGPULittleEndian;
+	uint GPUEndianessTestVar;
+	uint Padding_InitSetting;
+
+#ifndef __cplusplus//HLSL
+    //HLSL은 int 배열이 16 byte 단위
+	uint u8BitPartInU32Pack[4];
+	uint u8BitShiftInU32Pack[4];
+	
+#else//C++
+	//4바이트가 16바이트 단위로 묶여있으므로
+	uint4 u8BitPartInU32Pack[4];
+	uint4 u8BitShiftInU32Pack[4];
+#endif
+};
 
 #endif//SH_COMMON_STRUCT

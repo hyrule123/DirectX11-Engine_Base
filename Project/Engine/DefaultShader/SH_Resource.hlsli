@@ -4,7 +4,10 @@
 #include "SH_CommonStruct.hlsli"
 
 //t 버퍼
-SBUFFER(g_InitSetting, tInitSetting, t, 127);
+
+//GPU Initalize Setting: 처음 1회만 사용.
+SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
+SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 0);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);

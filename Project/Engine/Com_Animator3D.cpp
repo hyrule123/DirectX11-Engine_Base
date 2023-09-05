@@ -35,7 +35,6 @@ namespace mh
 		, mCurrentAnim()
 		, m_fClipUpdateTime()
 	{
-		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>();
 	}
 
 	Com_Animator3D::Com_Animator3D(const Com_Animator3D& _other)
@@ -68,13 +67,12 @@ namespace mh
 
 	void Com_Animator3D::Init()
 	{
-		tSBufferDesc desc{};
+		StructBuffer::Desc desc{};
 		desc.REGISLOT_t_SRV = Register_t_g_FinalBoneMatrixArray;
 		desc.TargetStageSRV = eShaderStageFlag::VS;
 		desc.REGISLOT_u_UAV = Register_u_g_FinalBoneMatrixArrayRW;
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
-
-		m_pBoneFinalMatBuffer->SetDesc(desc);
+		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>(desc);
 	}
 
 

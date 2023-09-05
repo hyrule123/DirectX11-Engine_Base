@@ -177,7 +177,7 @@ namespace mh
 			particles[i].speed = 100.0f;
 		}
 
-		tSBufferDesc sDesc{};
+		StructBuffer::Desc sDesc{};
 		sDesc.eSBufferType = eStructBufferType::READ_WRITE;
 
 		mBuffer = new StructBuffer(sDesc);

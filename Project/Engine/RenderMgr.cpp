@@ -25,6 +25,8 @@
 //컴파일된 쉐이더 헤더 모아놓은 헤더
 #include "DefaultShaders.h"
 
+#include "GPUInitSetting.h"
+
 extern mh::Application gApplication;
 
 namespace mh
@@ -52,13 +54,6 @@ namespace mh
 	{
 		AtExit::AddFunc(Release);
 
-		//GPUMgr에서 담당
-		//if (false == CreateMultiRenderTargets())
-		//{
-		//	ERROR_MESSAGE_W(L"멀티 렌더타겟 생성 실패.");
-		//	std::abort();
-		//}
-
 		LoadDefaultMesh();
 		LoadDefaultShader();
 		
@@ -70,6 +65,9 @@ namespace mh
 		CreateBuffer();
 		LoadDefaultTexture();
 		LoadDefaultMaterial();
+
+		std::shared_ptr<GPUInitSetting> initSetting = ResMgr::Load<GPUInitSetting>("GPUInitSetting");
+		initSetting->OnExcute();
 	}
 
 	void RenderMgr::Release()
@@ -1159,7 +1157,7 @@ namespace mh
 
 #pragma endregion
 #pragma region STRUCTED BUFFER
-		tSBufferDesc SDesc{};
+		StructBuffer::Desc SDesc{};
 		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
 		mLightsBuffer = std::make_unique<StructBuffer>(SDesc);
 		mLightsBuffer->Create<tLightAttribute>(128u, nullptr, 0);

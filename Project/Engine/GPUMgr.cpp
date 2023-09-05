@@ -10,6 +10,8 @@
 #include "ResMgr.h"
 #include "Texture.h"
 
+#include "GPUInitSetting.h"
+
 
 namespace mh
 {
@@ -27,8 +29,8 @@ namespace mh
 	std::shared_ptr<mh::Texture>	GPUMgr::mRenderTargetTexture{};
 	std::shared_ptr<mh::Texture>	GPUMgr::mDepthStencilBufferTexture{};
 
+	D3D11_VIEWPORT GPUMgr::mViewPort{};
 
-	D3D11_VIEWPORT GPUMgr::mViewPort;
 
 	bool GPUMgr::Init(const tDesc_GPUMgr& _Desc)
 	{
@@ -52,6 +54,8 @@ namespace mh
 		}
 
 		CreateMainViewPort();
+
+
 
 		return true;
 	}

@@ -11,7 +11,7 @@ namespace mh
 		NormalMapEditor();
 		~NormalMapEditor();
 
-		std::shared_ptr<Texture> GetModifiedNormalMap(std::shared_ptr<Texture> _texture, const tCB);
+		std::shared_ptr<Texture> GetModifiedNormalMap(std::shared_ptr<Texture> _texture);
 
 		void SetTarget(std::shared_ptr<Texture> _texture) { mTarget = _texture; }
 

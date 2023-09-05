@@ -307,12 +307,11 @@ namespace mh
     {
         MH_ASSERT(false == _vecAnimFrameTranslations.empty());
 
-        m_SBufferKeyFrame = std::make_unique<StructBuffer>();
-        tSBufferDesc desc{};
+        StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.REGISLOT_t_SRV = Register_t_g_FrameTransArray;
         desc.TargetStageSRV = define::eShaderStageFlag::CS;
-        m_SBufferKeyFrame->SetDesc(desc);
+        m_SBufferKeyFrame = std::make_unique<StructBuffer>(desc);
 
         if (FAILED(m_SBufferKeyFrame->Create<tAnimKeyframeTranslation>
             (_vecAnimFrameTranslations.size(), _vecAnimFrameTranslations.data(), _vecAnimFrameTranslations.size())))

@@ -4,6 +4,6 @@
 
 namespace mh
 {
-	extern tGPUInitSetting gInitSetting;
+	extern tGPUInitSetting gGPUInitSetting;
 }
 

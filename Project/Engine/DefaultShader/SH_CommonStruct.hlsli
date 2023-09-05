@@ -225,7 +225,8 @@ struct alignas(16) tGPUInitSetting
 {
 	BOOL bCPULittleEndian;
 	BOOL bGPULittleEndian;
-	float2 Padding_InitSetting;
+	uint GPUEndianessTestVar;
+	uint Padding_InitSetting;
 
 #ifndef __cplusplus//HLSL
     //HLSL은 int 배열이 16 byte 단위

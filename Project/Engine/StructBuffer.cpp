@@ -9,25 +9,24 @@ namespace mh
 {
 	using namespace mh::define;
 
-	StructBuffer::StructBuffer()
-		: GPUBuffer(eBufferType::Struct)
-		, mSBufferDesc()
-		, mbSBufferDescSet()
-		, mElementStride()
-		, mElementCount()
-		, mElementCapacity()
-		, mSRV()
-		, mUAV()
-		, mStagingBuffer()
-		, mCurBoundRegister(-1)
-		, mCurBoundView()
-	{
-	}
+	//StructBuffer::StructBuffer()
+	//	: GPUBuffer(eBufferType::Struct)
+	//	, mSBufferDesc()
+	//	, mbSBufferDescSet()
+	//	, mElementStride()
+	//	, mElementCount()
+	//	, mElementCapacity()
+	//	, mSRV()
+	//	, mUAV()
+	//	, mStagingBuffer()
+	//	, mCurBoundRegister(-1)
+	//	, mCurBoundView()
+	//{
+	//}
 
-	StructBuffer::StructBuffer(const tSBufferDesc& _tDesc)
+	StructBuffer::StructBuffer(const Desc& _tDesc)
 		: GPUBuffer(eBufferType::Struct)
 		, mSBufferDesc()
-		, mbSBufferDescSet()
 		, mElementStride()
 		, mElementCount()
 		, mElementCapacity()
@@ -44,7 +43,6 @@ namespace mh
 	StructBuffer::StructBuffer(const StructBuffer& _other)
 		: GPUBuffer(_other)
 		, mSBufferDesc()
-		, mbSBufferDescSet()
 		, mElementStride()
 		, mElementCount()
 		, mElementCapacity()
@@ -55,10 +53,7 @@ namespace mh
 		, mCurBoundRegister(-1)
 	{
 		SetDesc(_other.mSBufferDesc);
-		if (mbSBufferDescSet)
-		{
-			Create(_other.mElementStride, _other.mElementCapacity, nullptr, 0u);
-		}
+		Create(_other.mElementStride, _other.mElementCapacity, nullptr, 0u);
 	}
 
 	StructBuffer::~StructBuffer()
@@ -71,14 +66,9 @@ namespace mh
 
 	HRESULT StructBuffer::Create(size_t _uElemStride, size_t _uElemCapacity, const void* _pInitialData, size_t _uElemCount)
 	{
-		if (false == mbSBufferDescSet)
-		{
-			ERROR_MESSAGE_A("Must Set SBuffer Description!");
-			return E_FAIL;
-		}
 
 		//상수버퍼와 마찬가지로 16바이트 단위로 정렬되어 있어야 함.s
-		else if (0 != _uElemStride % 16)
+		if (0 != _uElemStride % 16)
 		{
 			ERROR_MESSAGE_A("The byte size of the structured buffer must be a multiple of 16.");
 			return E_FAIL;
@@ -147,7 +137,6 @@ namespace mh
 				Data.SysMemPitch = mElementStride * (uint)_uElemCount;
 				Data.SysMemSlicePitch = mBufferDesc.StructureByteStride;
 				pData = &Data;
-				mCurBoundView = eBufferViewType::UAV;
 			}
 
 			//구조화버퍼 생성
@@ -312,10 +301,6 @@ namespace mh
 			_stageFlag = mSBufferDesc.TargetStageSRV;
 		}
 
-		
-
-		//상수버퍼 바인딩
-		BindConstBuffer(_stageFlag);
 
 		auto pContext = GPUMgr::Context();
 		if (eShaderStageFlag::VS & _stageFlag)
@@ -364,9 +349,6 @@ namespace mh
 		}
 		mCurBoundRegister = _UAVSlot;
 
-		//mSBufferDesc.TargetStageSRV |= eShaderStageFlag::CS;
-		BindConstBuffer(eShaderStageFlag::CS);
-
 		uint Offset = -1;
 		GPUMgr::Context()->CSSetUnorderedAccessViews(_UAVSlot, 1, mUAV.GetAddressOf(), &Offset);
 	}
@@ -411,18 +393,6 @@ namespace mh
 
 	}
 
-	void StructBuffer::BindConstBuffer(eShaderStageFlag_ _stageFlag)
-	{
-		//구조체 정보를 담은 상수버퍼에 바인딩한 구조체 갯수를 넣어서 전달
-		//상수버퍼의 주소는 한번 실행되면 변하지 않으므로 static, const 형태로 선언.
-		static ConstBuffer* pStructCBuffer = RenderMgr::GetConstBuffer(eCBType::SBufferCount);
-
-		tCB_SBufferCount cb = {};
-		cb.SBufferDataCount = mElementCount;
-
-		pStructCBuffer->SetData(&cb);
-		pStructCBuffer->BindData(_stageFlag);
-	}
 
 
 

@@ -285,11 +285,11 @@ namespace mh
 		}
 
 		//Create
-		m_pBoneOffset = std::make_unique<StructBuffer>();
-		tSBufferDesc Desc{};
-		Desc.eSBufferType = eStructBufferType::READ_ONLY;
-		Desc.REGISLOT_t_SRV = Register_t_g_BoneOffsetArray;
-		m_pBoneOffset->SetDesc(Desc);
+		
+		StructBuffer::Desc desc{};
+		desc.eSBufferType = eStructBufferType::READ_ONLY;
+		desc.REGISLOT_t_SRV = Register_t_g_BoneOffsetArray;
+		m_pBoneOffset = std::make_unique<StructBuffer>(desc);
 		m_pBoneOffset->Create<MATRIX>(vecOffset.size(), vecOffset.data(), vecOffset.size());
 	}
 
