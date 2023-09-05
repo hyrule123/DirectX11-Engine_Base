@@ -9,6 +9,7 @@ namespace mh
 	GPUInitSetting::GPUInitSetting()
 		: ComputeShader(uint3(1u, 1u, 1u))
 	{
+		SetEngineDefaultRes(true);
 	}
 	GPUInitSetting::~GPUInitSetting()
 	{

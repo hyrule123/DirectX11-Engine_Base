@@ -24,6 +24,7 @@ namespace mh
 		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
+		virtual eResult Save(const std::filesystem::path& _filePath) override;
 		virtual eResult Load(const std::filesystem::path& _filePath) override;
 		void InitializeResource();
 
@@ -35,6 +36,7 @@ namespace mh
 
 		void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { mTexture = _texture; }
 
+		const D3D11_TEXTURE2D_DESC& GetDesc() const { return mDesc; }
 		uint GetHeight() const { return mDesc.Height; }
 		uint GetWidth() const { return mDesc.Width; }
 		uint2 GetSizeUint() const { return uint2{ mDesc.Width, mDesc.Height }; }
@@ -48,6 +50,7 @@ namespace mh
 
 	private:
 		eResult LoadFile(const std::filesystem::path& _fullPath);
+		eResult SaveFile(const std::filesystem::path& _fullPath);
 		bool CreateView();
 
 	private:

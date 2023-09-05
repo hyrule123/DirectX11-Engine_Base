@@ -160,6 +160,17 @@ namespace mh
 		return Result;
 	}
 
+	eResult Texture::Save(const std::filesystem::path& _filePath)
+	{
+		std::fs::path checkPath = _filePath.parent_path();
+		if (false == std::fs::exists(checkPath))
+		{
+			std::fs::create_directories(checkPath);
+		}
+
+		return SaveFile(_filePath);
+	}
+
 	eResult Texture::Load(const std::filesystem::path& _filePath)
 	{
 		IRes::Load(_filePath);
@@ -194,13 +205,49 @@ namespace mh
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), nullptr, mImage)))
+			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), TGA_FLAGS::TGA_FLAGS_NONE, nullptr, mImage)))
 				return eResult::Fail_OpenFile;
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
 			if (FAILED(LoadFromWICFile(_fullPath.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, nullptr, mImage)))
 				return eResult::Fail_OpenFile;
+		}
+
+		return eResult::Success;
+	}
+
+	eResult Texture::SaveFile(const std::filesystem::path& _fullPath)
+	{
+		std::wstring Extension = _fullPath.extension().wstring();
+		
+		if (FAILED(DirectX::CaptureTexture(GPUMgr::Device().Get(), GPUMgr::Context().Get(), mTexture.Get(), mImage)))
+		{
+			ERROR_MESSAGE_W(L"Texture를 Scratch Image로 가져오는 데 실패했습니다.");
+			return eResult::Fail_Create;
+		}
+
+		StringConv::UpperCase(Extension);
+		if (Extension == L".DDS")
+		{
+			if (FAILED(DirectX::SaveToDDSFile(mImage.GetImages(), mImage.GetImageCount(), mImage.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
+			{
+				return eResult::Fail_Create;
+			}
+		}
+		else if (Extension == L".TGA")
+		{
+			if (FAILED(DirectX::SaveToTGAFile(*(mImage.GetImage(0, 0, 0)), TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &mImage.GetMetadata())))
+			{
+				return eResult::Fail_Create;
+			}
+		}
+		else // WIC (png, jpg, jpeg, bmp )
+		{
+			if (FAILED(DirectX::SaveToWICFile(mImage.GetImages(), mImage.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WICCodecs::WIC_CODEC_PNG), _fullPath.wstring().c_str())))
+			{
+				return eResult::Fail_Create;
+			}
 		}
 
 		return eResult::Success;

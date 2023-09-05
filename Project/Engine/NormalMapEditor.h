@@ -3,25 +3,25 @@
 #include "Texture.h"
 
 
+
 namespace mh
 {
 	class NormalMapEditor : public ComputeShader
 	{
 	public:
 		NormalMapEditor();
-		~NormalMapEditor();
+		virtual ~NormalMapEditor();
 
-		std::shared_ptr<Texture> GetModifiedNormalMap(std::shared_ptr<Texture> _texture);
+		virtual eResult Load(const std::fs::path& _filePath) override;
 
-		void SetTarget(std::shared_ptr<Texture> _texture) { mTarget = _texture; }
+		std::shared_ptr<Texture> GetModifiedNormalMap(std::shared_ptr<Texture> _srcTex);
 
 	protected:
 		virtual bool BindData() override;
 		virtual void UnBindData() override;
-		
-		
 
 	private:
-		std::shared_ptr<Texture> mTarget;
+		std::shared_ptr<Texture> mSrcTex;
+		std::shared_ptr<Texture> mDestTex;
 	};
 }

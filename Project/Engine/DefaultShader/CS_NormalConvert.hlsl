@@ -8,10 +8,7 @@
 [numthreads(32, 32, 1)] // 그룹당 쓰레드 개수 ( 최대 1024개까지 지정가능 )
 void main( uint3 DTid : SV_DispatchThreadID )
 {
-    if (1024 <= DTid.x || 1024 <= DTid.y)
-    {
-        return;
-    }
+
     
     //tex[DTid.xy] = float4(0.0f, 0.0f, 1.0f, 1.0f);
 }

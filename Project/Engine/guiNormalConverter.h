@@ -3,6 +3,11 @@
 #include "guiComboBox.h"
 #include "DefaultShader/SH_CommonStruct.hlsli"
 
+namespace mh
+{
+    class Texture;
+}
+
 namespace gui
 {
     class guiNormalConverter :
@@ -16,10 +21,11 @@ namespace gui
         virtual void UpdateUI() override;
 
     private:
-        void LoadTexture();
+        void SrcTextureUpdate();
 
     private:
-        
+        std::shared_ptr<mh::Texture> mTextureSrc;
+        std::shared_ptr<mh::Texture> mTextureDest;
     };
 }
 

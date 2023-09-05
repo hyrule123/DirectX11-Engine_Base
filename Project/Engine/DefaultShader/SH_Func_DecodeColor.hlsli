@@ -1,5 +1,6 @@
 #ifndef SH_FUNC_DECODE_COLOR
 #define SH_FUNC_DECODE_COLOR
+#include "SH_Resource.hlsli"
 
 float4 DecodeColor(float _value)
 {
@@ -13,4 +14,22 @@ float4 DecodeColor(float _value)
 	return float4(r, g, b, a);
 }
 
+uint4 DecodeColorUint(uint _u32Src)
+{
+	uint4 result = (uint4) 0u;
+	
+	result.r = (_u32Src & gInitSetting[0].u8BitPartInU32Pack[0])
+	>> gInitSetting[0].u8BitShiftInU32Pack[0];
+	
+	result.g = (_u32Src & gInitSetting[0].u8BitPartInU32Pack[1])
+	>> gInitSetting[0].u8BitShiftInU32Pack[1];
+	
+	result.b = (_u32Src & gInitSetting[0].u8BitPartInU32Pack[2])
+	>> gInitSetting[0].u8BitShiftInU32Pack[2];
+	
+	result.a = (_u32Src & gInitSetting[0].u8BitPartInU32Pack[3])
+	>> gInitSetting[0].u8BitShiftInU32Pack[3];
+	
+	return result;
+}
 #endif
