@@ -29,6 +29,7 @@ namespace mh
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton);
 		std::shared_ptr<const Skeleton> GetSkeleton() const { return mSkeleton; }
 		bool Play(const std::string& _strAnimName);
+		bool IsPlaying() const { return nullptr != mCurrentAnim; }
 
 		void PlayNext();
 
@@ -36,6 +37,7 @@ namespace mh
 
 		StructBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer.get(); }
 		//UINT GetBoneCount() { return (UINT)m_pVecBones->size(); }
+
 
 		virtual void BindData() override;
 		virtual void UnBindData() override;

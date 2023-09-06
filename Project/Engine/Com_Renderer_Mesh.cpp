@@ -19,7 +19,8 @@ namespace mh
 		UINT iSubsetCount = GetMesh()->GetSubsetCount();
 		for (UINT i = 0; i < iSubsetCount; ++i)
 		{
-			if (nullptr != GetCurrentMaterial(i))
+			Material* mtrl = GetCurrentMaterial(i);
+			if (mtrl)
 			{
 				//메쉬 바인딩
 				GetMesh()->BindBuffer(i);

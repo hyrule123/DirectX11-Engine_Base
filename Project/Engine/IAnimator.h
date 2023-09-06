@@ -15,7 +15,6 @@ namespace mh
 		virtual void UnBindData() = 0;
 
 
-
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
 	private:

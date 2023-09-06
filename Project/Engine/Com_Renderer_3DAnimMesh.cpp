@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 #include "Skeleton.h"
-
+#include "Com_Animator3D.h"
 
 namespace mh
 {
@@ -17,22 +17,22 @@ namespace mh
 
 	void Com_Renderer_3DAnimMesh::Render()
 	{
-		if (false == IsRenderReady())
+		//애니메이터가 없거나 재생 중이 아닐 경우 일반 Mesh 타입으로 렌더링
+		Com_Animator3D* animator = GetOwner()->GetComponent<Com_Animator3D>();
+		if (nullptr == animator || false == animator->IsPlaying())
+		{
+			Com_Renderer_Mesh::Render();
 			return;
+		}
 
-		IAnimator* animator = 
-			static_cast<IAnimator*>(GetOwner()->GetComponent(eComponentType::Animator));
-		if (nullptr == animator || animator->GetDimensionType() != eDimensionType::_3D)
+		if (false == IsRenderReady())
 			return;
 
 		ITransform* tr = 
 			static_cast<ITransform*>(GetOwner()->GetComponent(eComponentType::Transform));
 		tr->BindData();
 
-		
-		
 		animator->BindData();
-
 		//Render
 		UINT iSubsetCount = GetMesh()->GetSubsetCount();
 		for (UINT i = 0; i < iSubsetCount; ++i)
@@ -52,6 +52,8 @@ namespace mh
 				GetMesh()->Render(i);
 
 				mtrl->UnBindData();
+				mtrl->SetBoneCount(0);
+				mtrl->SetAnim3D(false);
 			}
 		}
 
