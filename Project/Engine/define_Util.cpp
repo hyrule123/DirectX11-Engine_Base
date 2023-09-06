@@ -66,7 +66,13 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 
 	//프로그램 주소를 넣어놓는다.
 	stringPath = _baseDirectory.wstring();
-	stringPath += TEXT("\\file");
+
+	//파일명이 안붙어있을 경우 가상의 파일명을 생성
+	if (false == _baseDirectory.has_extension())
+	{
+		stringPath += L"\\file";
+	}
+	
 	stringPath.resize(MAX_PATH);
 
 	//파일 열기 창에 전달할 설정 구조체를 설정해준다.
@@ -128,5 +134,5 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 		retPath.replace_extension(_extensions[(UINT)OpenFile.nFilterIndex - 1u]);
 	}
 
-	return stringPath;
+	return retPath;
 }

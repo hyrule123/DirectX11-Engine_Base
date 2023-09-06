@@ -117,7 +117,7 @@ namespace mh
 			//Base를 추가하게 되면 단순 이미지 한 장을 출력하는 UI가 생성됨
 			Script_UIBase* ui = baseUI->AddComponent<Script_UIBase>();
 
-			std::shared_ptr<Texture> smileTex = ResMgr::Load<Texture>("Smile.png");
+			std::shared_ptr<Texture> smileTex = ResMgr::Load<Texture>(strKey::Default::texture::Brick_N);
 			ui->SetTexture(define::eTextureSlot::Tex_0, smileTex);
 		}
 

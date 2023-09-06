@@ -141,7 +141,13 @@ namespace gui
 				vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
 			}
 
-			mTextureDestPath = mh::WinAPI::FileDialog(mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture), vecExt);
+			std::fs::path texFile = mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture);
+
+			if (mTextureSrc)
+			{
+				texFile /= mTextureSrc->GetKey();
+				mTextureDestPath = mh::WinAPI::FileDialog(texFile, vecExt);
+			}
 
 			if (false == mTextureDestPath.has_extension())
 			{

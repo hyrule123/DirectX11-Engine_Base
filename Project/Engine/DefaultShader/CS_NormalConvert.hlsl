@@ -20,48 +20,24 @@ void main( uint3 _dtID : SV_DispatchThreadID )
 {
 	if (CB_ComputeShader.TexWidth < _dtID.x || CB_ComputeShader.TexHeight < _dtID.y)
 		return;
-	
+
 	float4 normal = (float4) 0;
 	
-	//color.r = ConvertColor(_dtID.xy, CB_UniformData.DestXYZSign.r, CB_UniformData.DestXYZOrder.r);
-	//color.g = ConvertColor(_dtID.xy, CB_UniformData.DestXYZSign.g, CB_UniformData.DestXYZOrder.g);
-	//color.b = ConvertColor(_dtID.xy, CB_UniformData.DestXYZSign.b, CB_UniformData.DestXYZOrder.b);
+	//X Normal
+	normal.x = SrcNormalTex[_dtID.xy].r * 2.f - 1.f;
 	
-	//color.rgb = SrcNormalTex[_dtID.xy].rgb;
+	//Y Normal
+	normal.y = SrcNormalTex[_dtID.xy].g * 2.f - 1.f;
+	normal.y = -normal.y;
 	
-	//노말을 구해줌(-1.f ~ 1.f)
-	normal.r = SrcNormalTex[_dtID.xy].r * 2.f - 1.f;
+	//Z Normal
+	normal.z = saturate(1.f - normal.x * normal.x - normal.y * normal.y);
+	normal.z = sqrt(normal.z);
 	
-	//몬헌 노말은 -y Normal임
-	normal.b = SrcNormalTex[_dtID.xy].g * 2.f - 1.f;
-	normal.b = -normal.b;
-	
-	normal.g = 1.f - (pow(normal.r, 2.f) + pow(normal.b, 2.f));
-	normal.g = sqrt(normal.g);
-	
-	//다시 Color 값으로 변환(0 ~ 1)
-	normal.xyz += 1.f;
 	normal.xyz *= 0.5f;
-	normal.xyz = normalize(normal).xyz;
+	normal.xyz += 0.5f;
 	
 	normal.a = SrcNormalTex[_dtID.xy].a;
 
 	DestNormalTex[_dtID.xy] = normal;
-	
-	
-	//color.g = cross(color.r, color.b);
-	
-	//uint destX = (uint)round(CB_UniformData.DestXYZOrder.x);
-	//if (CB_UniformData.DestXYZSign.x mad 0)
-	//color.r= CB_UniformData.DestXYZSign.x * SrcNormalTex[DTid.xy][destX];
-	
-	//uint destY = (uint)round(CB_UniformData.DestXYZOrder.y);
-	//color.g = CB_UniformData.DestXYZSign.y * SrcNormalTex[DTid.xy][destY];
-	
-	//uint destZ = (uint)round(CB_UniformData.DestXYZOrder.z);
-	//color.b = CB_UniformData.DestXYZSign.z * SrcNormalTex[DTid.xy][destZ];
-	
-	//color.a = SrcNormalTex[_dtID.xy].a;
-    
-	//DestNormalTex[_dtID.xy] = color;
 }

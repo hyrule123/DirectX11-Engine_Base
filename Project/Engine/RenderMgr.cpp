@@ -1194,9 +1194,11 @@ namespace mh
 		assert(nullptr != pTex);
 
 		pTex = ResMgr::Load<Texture>(texture::Brick);
+		
 		assert(nullptr != pTex);
 
 		pTex = ResMgr::Load<Texture>(texture::Brick_N);
+		pTex->BindDataSRV(127u, eShaderStageFlag::ALL);
 		assert(nullptr != pTex);
 
 #pragma endregion
