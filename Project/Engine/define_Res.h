@@ -120,7 +120,7 @@ namespace mh::define
 					STRKEY_DECLARE(UIShader);
 					STRKEY_DECLARE(GridShader);
 					STRKEY_DECLARE(DebugShader);
-					STRKEY_DECLARE(NormalConverter);
+					STRKEY_DECLARE(NormalConvertShader);
 					STRKEY_DECLARE(ParticleShader);
 					STRKEY_DECLARE(PostProcessShader);
 					STRKEY_DECLARE(Basic3DShader);
@@ -136,6 +136,7 @@ namespace mh::define
 					STRKEY_DECLARE(PostProcessShader);
 					STRKEY_DECLARE(BasicShader);
 					STRKEY_DECLARE(Animation3D);
+					STRKEY_DECLARE(NormalConvert);
 				}
 			}
 		}

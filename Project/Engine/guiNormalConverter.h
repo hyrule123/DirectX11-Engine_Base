@@ -25,6 +25,8 @@ namespace gui
         void DestTextureUpdate();
         void CopyTextureUpdate();
 
+        void Reset();
+
         enum class eXYZSign
         {
             X,
@@ -40,7 +42,10 @@ namespace gui
             int Axis;
             int Sign;
         };
-        inline AxisAndSign ConvertXYZSignToHLSLFormat(eXYZSign _sign);
+
+        inline AxisAndSign GetXYZSignToHLSLFormat(eXYZSign _sign);
+
+        
     private:
         std::shared_ptr<mh::Texture>        mTextureSrc;
         guiComboBox mComboSrcR;
@@ -52,7 +57,7 @@ namespace gui
         tCB_UniformData mCB;
     };
 
-    inline guiNormalConverter::AxisAndSign guiNormalConverter::ConvertXYZSignToHLSLFormat(eXYZSign _sign)
+    inline guiNormalConverter::AxisAndSign guiNormalConverter::GetXYZSignToHLSLFormat(eXYZSign _sign)
     {
         AxisAndSign ans{};
         switch (_sign)
@@ -92,6 +97,8 @@ namespace gui
             ans.Sign = -1;
             break;
         }
+
+        return ans;
     }
 
 }

@@ -4,7 +4,8 @@
 #include "PathMgr.h"
 #include "ResMgr.h"
 #include "define_Util.h"
-#include "NormalConverter.h"
+
+#include "NormalConvertShader.h"
 #include "DefaultShader/SH_NormalConvert.hlsli"
 
 namespace gui
@@ -58,6 +59,12 @@ namespace gui
 		ImGui::Separator();
 		
 		CopyTextureUpdate();
+
+		ImGui::Dummy(ImVec2(0.f, 50.f));
+		if (ImGui::Button("Reset All", ImVec2(0.f, 35.f)))
+		{
+			Reset();
+		}
 	}
 
 	void guiNormalConverter::SrcTextureUpdate()
@@ -157,21 +164,48 @@ namespace gui
 			}
 			else if (mTextureDestPath.empty())
 			{
-				NOTIFICATION_W(L"텍스처 타깃 경로가 등록되지 않았습니다.");
+				NOTIFICATION_W(L"텍스처파일 출력 경로가 등록되지 않았습니다.");
 			}
 
+			std::shared_ptr<mh::NormalConvertShader> converter =  mh::ResMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
 
+			mh::NormalConvertShader::Desc desc{};
+			
+			guiNormalConverter::AxisAndSign srcR = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcR.GetCurrentIndex());
+			desc.SrcAxis.x = (float)srcR.Axis;
+			desc.SrcSign.x = (float)srcR.Sign;
 
+			guiNormalConverter::AxisAndSign srcG = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcG.GetCurrentIndex());
+			desc.SrcAxis.y = (float)srcG.Axis;
+			desc.SrcSign.y = (float)srcG.Sign;
 
+			guiNormalConverter::AxisAndSign srcB = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcB.GetCurrentIndex());
+			desc.SrcAxis.z = (float)srcB.Axis;
+			desc.SrcSign.z = (float)srcB.Sign;
+			
+			desc.SrcTex = mTextureSrc;
 
+			std::shared_ptr<mh::Texture> convertedTex = converter->Convert(desc);
+
+			if (convertedTex)
+			{
+				convertedTex->Save(mTextureDestPath);
+			}
+			else
+			{
+				NOTIFICATION_W(L"변환 실패");
+			}
 		}
 	}
 
+	void guiNormalConverter::Reset()
+	{
+		mTextureSrc = nullptr;
+		mTextureDestPath.clear();
+		mCB = {};
 
-
-
-
-
-
-
+		mComboSrcR.SetCurrentIndex((int)eXYZSign::X);
+		mComboSrcR.SetCurrentIndex((int)eXYZSign::MinusZ);
+		mComboSrcR.SetCurrentIndex((int)eXYZSign::Y);
+	}
 }

@@ -61,8 +61,6 @@ SBUFFER_RW(g_BoneSocketMatrixArray, tOutputBoneInfo, u, 1);
 SBUFFER_RW(g_InstancingBoneMatrixArray, Matrix, u, 2);
 
 
-
-
 // Light
 SBUFFER(lightAttributes, tLightAttribute, t, 14);
 

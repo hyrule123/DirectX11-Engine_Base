@@ -499,7 +499,7 @@
     <ClCompile Include="define_Global.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
-    <ClCompile Include="NormalConverter.cpp" />
+    <ClCompile Include="NormalConvertShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -872,7 +872,7 @@
     <ClInclude Include="define_Global.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="NormalConverter.h" />
+    <ClInclude Include="NormalConvertShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

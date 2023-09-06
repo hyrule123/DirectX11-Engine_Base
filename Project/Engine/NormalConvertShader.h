@@ -6,22 +6,30 @@
 
 namespace mh
 {
-	class NormalConverter : public ComputeShader
+	class NormalConvertShader : public ComputeShader
 	{
 	public:
-		NormalConverter();
-		virtual ~NormalConverter();
+		NormalConvertShader();
+		virtual ~NormalConvertShader();
 
 		virtual eResult Load(const std::fs::path& _filePath) override;
 
-		std::shared_ptr<Texture> GetModifiedNormalMap(std::shared_ptr<Texture> _srcTex);
+		struct Desc
+		{
+			std::shared_ptr<Texture> SrcTex;
+			float4 SrcAxis{};
+			float4 SrcSign{};
+		};
+		std::shared_ptr<Texture> Convert(const Desc& _desc);
+
+
 
 	protected:
 		virtual bool BindData() override;
 		virtual void UnBindData() override;
 
 	private:
-		std::shared_ptr<Texture> mSrcTex;
+		Desc mSrcDesc;
 		std::shared_ptr<Texture> mDestTex;
 	};
 }

@@ -358,7 +358,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="NormalConverter.h" />
+    <ClInclude Include="NormalConvertShader.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Player.h" />
@@ -529,7 +529,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="NormalConverter.cpp" />
+    <ClCompile Include="NormalConvertShader.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />

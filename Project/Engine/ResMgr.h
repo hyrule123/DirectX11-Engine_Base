@@ -1,11 +1,7 @@
 #pragma once
-
-#include "Singleton.h"
-
 #include "define_Res.h"
 #include "define_Struct.h"
 #include "IRes.h"
-
 
 #include "Mesh.h"
 #include "MeshData.h"
@@ -24,10 +20,6 @@
 
 namespace mh
 {
-	using namespace mh::define;
-	using namespace mh;
-	
-
 	class ResMgr
 	{
 		friend class Application;
@@ -117,7 +109,7 @@ namespace mh
 
 		// 이미 해당 키로 리소스가 있다면, 캐스팅 해서 반환
 		if (FindRes)
-			return std::static_pointer_cast<T>(FindRes);
+			return std::dynamic_pointer_cast<T>(FindRes);
 
 		std::shared_ptr<T> NewRes = std::make_shared<T>();
 
@@ -125,7 +117,8 @@ namespace mh
 		if (FAILED(NewRes->Load(_filePath)))
 			return nullptr;
 
-		Insert(strKey, NewRes);
+
+		Insert(NewRes->GetKey(), NewRes);
 
 		return NewRes;
 	}
@@ -177,6 +170,7 @@ namespace mh
 		assert(nullptr == Find(ResType, _strKey));
 
 		_Res->SetKey(_strKey);
+
 		mArrRes[(int)ResType].insert(std::make_pair(std::string(_strKey), _Res));
 	}
 

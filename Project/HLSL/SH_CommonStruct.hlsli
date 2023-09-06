@@ -120,7 +120,7 @@ struct alignas(16)  tCB_Noise
 };
 
 
-struct alignas(16) tCB_SBufferCount
+struct alignas(16)  tCB_SBufferCount
 {
 	uint SBufferDataCount;
 	uint3 SBufferPad;
