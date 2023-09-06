@@ -7,7 +7,7 @@
 //StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
 
 //2D
-void CalculateLight(in out tLightColor pLightColor, float3 position, int idx)
+void CalculateLight2D(in out tLightColor pLightColor, float3 position, int idx)
 {
 	if (0 == lightAttributes[idx].lightType)
 	{

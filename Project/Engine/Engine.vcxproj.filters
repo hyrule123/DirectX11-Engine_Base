@@ -73,14 +73,8 @@
     <Filter Include="_DefaultShader">
       <UniqueIdentifier>{f9fb54b7-eaf0-450c-b3c7-b6781de3a310}</UniqueIdentifier>
     </Filter>
-    <Filter Include="_DefaultShader\Basic3D">
-      <UniqueIdentifier>{b8f94d4d-f815-445b-81b2-e0c013c5c816}</UniqueIdentifier>
-    </Filter>
     <Filter Include="_DefaultShader\Debug">
       <UniqueIdentifier>{5d00f9ad-c0c8-4d56-9161-2c02c78f56f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="_DefaultShader\Deffered">
-      <UniqueIdentifier>{89e98b6a-3b1a-4de3-b82d-f33c541db6d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="_DefaultShader\Grid">
       <UniqueIdentifier>{1ccdad10-4b75-4ca7-a6bc-598d2b7b3f79}</UniqueIdentifier>
@@ -181,6 +175,12 @@
     <Filter Include="_DefaultShader\GPUInitSetting">
       <UniqueIdentifier>{43e6081c-49be-44d5-8172-4be7e00efc00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_DefaultShader\3D">
+      <UniqueIdentifier>{b8f94d4d-f815-445b-81b2-e0c013c5c816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_DefaultShader\3D\Deffered">
+      <UniqueIdentifier>{89e98b6a-3b1a-4de3-b82d-f33c541db6d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -252,7 +252,6 @@
     <ClCompile Include="StructBuffer.cpp">
       <Filter>GPU\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Com_AudioListener.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
@@ -337,7 +336,6 @@
     <ClCompile Include="MeshData.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="SceneMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -434,7 +432,6 @@
     <ClCompile Include="Animation3DShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="ITransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
@@ -471,7 +468,6 @@
     <ClCompile Include="guiConsole.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="guiFBXConverter.cpp" />
     <ClCompile Include="Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
@@ -492,14 +488,30 @@
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="GridScript.cpp" />
-    <ClCompile Include="guiNormalConverter.cpp" />
     <ClCompile Include="GPUInitSetting.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
     <ClCompile Include="define_Global.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
-    <ClCompile Include="NormalConvertShader.cpp" />
+    <ClCompile Include="NormalConvertShader.cpp">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClCompile>
+    <ClCompile Include="guiNormalConverter.cpp">
+      <Filter>GuiEditor\Instances</Filter>
+    </ClCompile>
+    <ClCompile Include="guiFBXConverter.cpp">
+      <Filter>GuiEditor\Instances</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Resource\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleShader.cpp">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -577,7 +589,6 @@
     <ClInclude Include="StructBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_AudioListener.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
@@ -698,7 +709,6 @@
     <ClInclude Include="MeshData.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="SceneMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -804,7 +814,6 @@
     <ClInclude Include="Animation3DShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="ITransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
@@ -841,7 +850,6 @@
     <ClInclude Include="guiConsole.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="guiFBXConverter.h" />
     <ClInclude Include="Shader_Common.h">
       <Filter>Common\define</Filter>
     </ClInclude>
@@ -865,14 +873,30 @@
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="GridScript.h" />
-    <ClInclude Include="guiNormalConverter.h" />
     <ClInclude Include="GPUInitSetting.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
     <ClInclude Include="define_Global.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="NormalConvertShader.h" />
+    <ClInclude Include="NormalConvertShader.h">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="guiNormalConverter.h">
+      <Filter>GuiEditor\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="guiFBXConverter.h">
+      <Filter>GuiEditor\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Resource\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleShader.h">
+      <Filter>Resource\Shaders\Compute</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -899,17 +923,8 @@
     <None Include="DefaultShader\SH_Sampler.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Deffered.hlsli">
-      <Filter>_DefaultShader\Deffered</Filter>
-    </None>
     <None Include="DefaultShader\SH_Grid.hlsli">
       <Filter>_DefaultShader\Grid</Filter>
-    </None>
-    <None Include="DefaultShader\SH_LightDir.hlsli">
-      <Filter>_DefaultShader\Light</Filter>
-    </None>
-    <None Include="DefaultShader\SH_LightPoint.hlsli">
-      <Filter>_DefaultShader\Light</Filter>
     </None>
     <None Include="DefaultShader\SH_Func_Light.hlsli">
       <Filter>_DefaultShader\Light</Filter>
@@ -919,9 +934,6 @@
     </None>
     <None Include="DefaultShader\SH_Particle.hlsli">
       <Filter>_DefaultShader\Particle</Filter>
-    </None>
-    <None Include="DefaultShader\SH_Merge.hlsli">
-      <Filter>_DefaultShader\Deffered</Filter>
     </None>
     <None Include="SimpleMath.inl">
       <Filter>Common\Math</Filter>
@@ -938,25 +950,28 @@
     <None Include="DefaultShader\SH_Animation2D.hlsli">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </None>
-    <None Include="DefaultShader\SH_Basic3D.hlsli">
-      <Filter>_DefaultShader\Basic3D</Filter>
-    </None>
     <None Include="DefaultShader\SH_UserInterFace.hlsli">
       <Filter>_DefaultShader\UI</Filter>
     </None>
     <None Include="DefaultShader\SH_NormalConvertMH.hlsli">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </None>
+    <None Include="DefaultShader\SH_Light.hlsli">
+      <Filter>_DefaultShader\Light</Filter>
+    </None>
+    <None Include="DefaultShader\SH_3D.hlsli">
+      <Filter>_DefaultShader\3D</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultShader\_0VS_Basic3D.hlsl">
-      <Filter>_DefaultShader\Basic3D</Filter>
+      <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Deffered.hlsl">
-      <Filter>_DefaultShader\Deffered</Filter>
+      <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
@@ -968,7 +983,7 @@
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Merge.hlsl">
-      <Filter>_DefaultShader\Deffered</Filter>
+      <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
@@ -986,13 +1001,13 @@
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Basic3D.hlsl">
-      <Filter>_DefaultShader\Basic3D</Filter>
+      <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Deffered.hlsl">
-      <Filter>_DefaultShader\Deffered</Filter>
+      <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
@@ -1004,7 +1019,7 @@
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Merge.hlsl">
-      <Filter>_DefaultShader\Deffered</Filter>
+      <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>

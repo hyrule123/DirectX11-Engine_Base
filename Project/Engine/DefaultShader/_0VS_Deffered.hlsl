@@ -1,4 +1,4 @@
-#include "SH_Deffered.hlsli"
+#include "SH_3D.hlsli"
 
 VSOut main(VSIn _in)
 {

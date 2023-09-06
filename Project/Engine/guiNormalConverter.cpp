@@ -169,7 +169,14 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				convertedTex->Save(savePath);
+				if (eResultFail(convertedTex->Save(savePath)))
+				{
+					NOTIFICATION_W(L"변환에 실패했습니다.");
+				}
+				else
+				{
+					NOTIFICATION_W(L"변환 성공.");
+				}
 			}
 			else
 			{

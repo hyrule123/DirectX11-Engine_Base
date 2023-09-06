@@ -551,22 +551,19 @@ call Copy_HLSL.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="DefaultShader\SH_3D.hlsli" />
     <None Include="DefaultShader\SH_Animation2D.hlsli" />
-    <None Include="DefaultShader\SH_Basic3D.hlsli" />
     <None Include="DefaultShader\SH_Functions.hlsli" />
     <None Include="DefaultShader\SH_Func_Animation3D.hlsli" />
     <None Include="DefaultShader\SH_Func_Blur.hlsli" />
     <None Include="DefaultShader\SH_Common.hlsli" />
     <None Include="DefaultShader\SH_CommonStruct.hlsli" />
     <None Include="DefaultShader\SH_ConstBuffer.hlsli" />
-    <None Include="DefaultShader\SH_Deffered.hlsli" />
     <None Include="DefaultShader\SH_Func_DecodeColor.hlsli" />
     <None Include="DefaultShader\SH_Globals.hlsli" />
     <None Include="DefaultShader\SH_Grid.hlsli" />
     <None Include="DefaultShader\SH_Func_Light.hlsli" />
-    <None Include="DefaultShader\SH_LightDir.hlsli" />
-    <None Include="DefaultShader\SH_LightPoint.hlsli" />
-    <None Include="DefaultShader\SH_Merge.hlsli" />
+    <None Include="DefaultShader\SH_Light.hlsli" />
     <None Include="DefaultShader\SH_NormalConvertMH.hlsli" />
     <None Include="DefaultShader\SH_Particle.hlsli" />
     <None Include="DefaultShader\SH_PostProcess.hlsli" />

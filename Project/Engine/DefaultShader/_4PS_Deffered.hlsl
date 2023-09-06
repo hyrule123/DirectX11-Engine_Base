@@ -1,7 +1,6 @@
-#include "SH_Deffered.hlsli"
+#include "SH_3D.hlsli"
 
-
-PSOut main(VSOut _in)
+PSOut_Deffered main(VSOut _in)
 {
 	float4 vObjectColor = float4(0.4f, 0.4f, 0.4f, 1.f);
 	float4 vOutColor = float4(1.f, 1.f, 1.f, 1.f);
@@ -39,7 +38,7 @@ PSOut main(VSOut _in)
 	}
     
 	
-	PSOut OutColor = (PSOut) 0;
+	PSOut_Deffered OutColor = (PSOut_Deffered) 0;
 	
 	OutColor.Albedo = vObjectColor;
 	OutColor.Normal = float4(vViewNormal.xyz, 1.f);

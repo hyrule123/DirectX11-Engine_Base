@@ -1,5 +1,4 @@
-#include "SH_LightPoint.hlsli"
-#include "SH_Func_DecodeColor.hlsli"
+#include "SH_Light.hlsli"
 
 		//albedo = Resources::Find<Texture>(L"PositionTarget");
 		//lightMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);
@@ -8,7 +7,7 @@
 		//albedo = Resources::Find<Texture>(L"SpecularTarget");
 		//lightMaterial->SetTexture(eTextureSlot::SpecularTarget, albedo);
 
-PS_OUT main(VSOut _in)
+PS_OUT main(VSOut_LightPoint _in)
 {
 	PS_OUT output = (PS_OUT) 0.f;
     
@@ -18,16 +17,18 @@ PS_OUT main(VSOut _in)
 	if (0.f == vViewPos.a)
 		discard;
       
-    // 광원 영역에 잡힌 position target의 위차값을 로컬영역으로 바꿔야한다.
-    // 로컬 영역에서 광원메쉬 (spherer)의 내부에 있다면 실제로 point light 안에 들어가있다는 뜻
+    // 광원 영역에 잡힌 position target의 위치값을 로컬영역으로 바꿔야한다.
+    // 로컬 영역에서 광원메쉬 (sphere)의 내부에 있다면 실제로 point light 안에 들어가있다는 뜻
 	float4 vLocalPos = mul(mul(vViewPos, CB_Transform.inverseView), CB_Transform.inverseWorld);
+	
+	//로컬 공간의 구체는 반지름이 0.5f이다.(이 거리 바깥에 있는 픽셀의 경우 빛의 거리 바깥에 있는것
 	if (length(vLocalPos.xyz) > 0.5f)
 	{
 		discard;
 	}
     
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
-        
+	
 	tLightColor lightcolor = (tLightColor) 0.f;
 	CalculateLight3D(vViewPos.xyz, vViewNormal.xyz, CB_NumberOfLight.indexOfLight, lightcolor);
     
@@ -36,7 +37,8 @@ PS_OUT main(VSOut _in)
 
 	output.vDiffuse = lightcolor.diffuse + lightcolor.ambient;
 	output.vSpecular.xyz = lightcolor.specular.xyz; // * SpecularColor.xyz;
-       
+
+	
 	output.vDiffuse.a = 1.f;
 	output.vSpecular.a = 1.f;
     

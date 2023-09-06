@@ -1,9 +1,4 @@
-#include "SH_Basic3D.hlsli"
-
-//static float3 globalLightPos = float3(0.0f, 0.0f, 0.0f);
-//static float3 globalLightDir = float3(1.0f, -1.0f, 1.0f);
-//static float3 globalLightColor = float3(1.0f, 1.0f, 1.0f);
-//static float3 globalLightAmb = float3(0.15f, 0.15f, 0.15f);
+#include "SH_3D.hlsli"
 
 VSOut main(VSIn _in)
 {

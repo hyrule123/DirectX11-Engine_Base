@@ -9,9 +9,9 @@
 #include "ConstBuffer.h"
 
 #ifdef _DEBUG
-#include "CompiledShaderHeader/CS_NormalConvert_Debug.h"
+#include "CompiledShaderHeader/CS_NormalConvertMH_Debug.h"
 #else
-#include "CompiledShaderHeader/CS_NormalConvert_Release.h"
+#include "CompiledShaderHeader/CS_NormalConvertMH_Release.h"
 #endif
 
 namespace mh
@@ -33,7 +33,7 @@ namespace mh
 	{
 		IRes::Load(_filePath);
 
-		return ComputeShader::CreateByHeader(CS_NormalConvert, sizeof(CS_NormalConvert));
+		return ComputeShader::CreateByHeader(CS_NormalConvertMH, sizeof(CS_NormalConvertMH));
 	}
 
 	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)

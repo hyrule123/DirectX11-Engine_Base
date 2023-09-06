@@ -29,8 +29,6 @@
 #include "CompiledShaderHeader/_0VS_UserInterface_Debug.h"
 #include "CompiledShaderHeader/_4PS_UserInterface_Debug.h"
 
-#include "CompiledShaderHeader/CS_Paint_Debug.h"
-
 #include "CompiledShaderHeader/_0VS_Deffered_Debug.h"
 #include "CompiledShaderHeader/_4PS_Deffered_Debug.h"
 

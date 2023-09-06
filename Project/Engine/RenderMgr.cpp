@@ -284,6 +284,7 @@ namespace mh
 				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 			}
+			
 
 			dsTex = GPUMgr::GetDepthStencilBufferTex();
 
@@ -890,15 +891,8 @@ namespace mh
 		}
 
 #pragma endregion
-#pragma region PAINT SHADER
-		{
-			std::shared_ptr<NormalConvertShader> paintShader = std::make_shared<NormalConvertShader>();
-			paintShader->SetEngineDefaultRes(true);
-			paintShader->CreateByHeader(CS_Paint, sizeof(CS_Paint));
-			ResMgr::Insert(strKey::Default::shader::graphics::NormalConvertShader, paintShader);
-		}
 
-#pragma endregion
+
 #pragma region PARTICLE SHADER
 		{
 			std::shared_ptr<GraphicsShader> particleShader = std::make_shared<GraphicsShader>();

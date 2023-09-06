@@ -1,7 +1,6 @@
-#include "SH_LightDir.hlsli"
-#include "SH_Func_DecodeColor.hlsli"
+#include "SH_Light.hlsli"
 
-PS_OUT main(VSOut _in)
+PS_OUT main(VSOut_LightDir _in)
 {
 	PS_OUT output = (PS_OUT) 0.f;
     
@@ -13,7 +12,6 @@ PS_OUT main(VSOut _in)
 		discard;
       
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
-	
         
 	tLightColor lightcolor = (tLightColor) 0.f;
 	CalculateLight3D(vViewPos.xyz, vViewNormal.xyz, CB_NumberOfLight.indexOfLight, lightcolor);

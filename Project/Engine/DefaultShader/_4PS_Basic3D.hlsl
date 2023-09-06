@@ -1,5 +1,4 @@
-#include "SH_Basic3D.hlsli"
-
+#include "SH_3D.hlsli"
 
 float4 main(VSOut In) : SV_Target
 {
@@ -35,7 +34,6 @@ float4 main(VSOut In) : SV_Target
 	tLightColor lightColor = (tLightColor)0.0f;
 	for (uint i = 0; i < CB_NumberOfLight.numberOfLight; i++)
 	{
-		
 		CalculateLight3D(In.ViewPos, vNormal, i, lightColor);
 	}
 

@@ -1,16 +1,12 @@
-#include "SH_LightPoint.hlsli"
+#include "SH_Light.hlsli"
 
 
-VSOut main(VSIn In)
+VSOut_LightPoint main(VSIn_LightPoint In)
 {
-	VSOut Out = (VSOut) 0.0f;
+	VSOut_LightPoint Out = (VSOut_LightPoint) 0.0f;
     
-	float4 pos = mul(float4(In.Position), CB_Transform.world);
-	float4 viewPos = mul(float4(pos), CB_Transform.view);
-	float4 projPos = mul(float4(viewPos), CB_Transform.projection);
-	projPos.w = 1.0f;
-    
-	Out.Position = projPos;
+	Out.Position = mul(float4(In.Position), CB_Transform.WVP);
+	Out.Position.w = 1.f;
     
 	return Out;
 }
