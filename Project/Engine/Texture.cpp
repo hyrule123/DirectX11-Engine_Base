@@ -297,6 +297,10 @@ namespace mh
 		{
 			pContext->PSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
+		if (eShaderStageFlag::CS & _stageFlag)
+		{
+			pContext->CSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+		}
 	}
 
 	void Texture::BindDataUAV(uint _startSlot)

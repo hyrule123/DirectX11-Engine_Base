@@ -11,8 +11,11 @@ void main( uint3 DTid : SV_DispatchThreadID )
 	if (CB_ComputeShader.TexWidth < DTid.x || CB_ComputeShader.TexHeight < DTid.y)
 		return;
 	
-	DestNormalTex[DTid.xy].rgba = float4(1.f, 1.f, 1.f, 1.f);
-	//SrcNormalTex[DTid.xy].rgba;
+	
+	
+	DestNormalTex[DTid.xy].rgba = SrcNormalTex[DTid.xy].rgba;
+	
+	
     
     //tex[DTid.xy] = float4(0.0f, 0.0f, 1.0f, 1.0f);
 }
