@@ -17,8 +17,8 @@ namespace mh
 		struct Desc
 		{
 			std::shared_ptr<Texture> SrcTex;
-			float4 SrcAxis{};
-			float4 SrcSign{};
+			float4 DestAxis{};
+			float4 DestSign{};
 		};
 		std::shared_ptr<Texture> Convert(const Desc& _desc);
 

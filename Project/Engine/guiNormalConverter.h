@@ -48,9 +48,9 @@ namespace gui
         
     private:
         std::shared_ptr<mh::Texture>        mTextureSrc;
-        guiComboBox mComboSrcR;
-        guiComboBox mComboSrcG;
-        guiComboBox mComboSrcB;
+        guiComboBox mComboDestR;
+        guiComboBox mComboDestG;
+        guiComboBox mComboDestB;
 
         std::filesystem::path               mTextureDestPath;
 

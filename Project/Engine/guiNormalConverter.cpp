@@ -32,18 +32,21 @@ namespace gui
 		XYZ[(int)eXYZSign::MinusY] = "-Y";
 		XYZ[(int)eXYZSign::MinusZ] = "-Z";
 		
-		mComboSrcR	.SetKey("SrcX");
-		mComboSrcG	.SetKey("SrcY");
-		mComboSrcB	.SetKey("SrcZ");
+		mComboDestR	.SetKey("SrcX");
+		mComboDestG	.SetKey("SrcY");
+		mComboDestB	.SetKey("SrcZ");
 
-		mComboSrcR.SetItems(XYZ);
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::X);
 
-		mComboSrcG.SetItems(XYZ);
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::MinusZ);
+		//몬헌 Normal이 Y = -Normal이고
+		//프로젝트에서는 Z = Normal 이므로
+		mComboDestR.SetItems(XYZ);
+		mComboDestR.SetCurrentIndex((int)eXYZSign::X);
 
-		mComboSrcB.SetItems(XYZ);
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::Y);
+		mComboDestG.SetItems(XYZ);
+		mComboDestG.SetCurrentIndex((int)eXYZSign::MinusZ);
+
+		mComboDestB.SetItems(XYZ);
+		mComboDestB.SetCurrentIndex((int)eXYZSign::Y);
 	}
 
 	void guiNormalConverter::UpdateUI()
@@ -61,6 +64,7 @@ namespace gui
 		CopyTextureUpdate();
 
 		ImGui::Dummy(ImVec2(0.f, 50.f));
+		ImGui::Separator();
 		if (ImGui::Button("Reset All", ImVec2(0.f, 35.f)))
 		{
 			Reset();
@@ -152,6 +156,10 @@ namespace gui
 		{
 			mTextureDestPath.clear();
 		}
+
+		mComboDestR.FixedUpdate();
+		mComboDestG.FixedUpdate();
+		mComboDestB.FixedUpdate();
 	}
 
 	void guiNormalConverter::CopyTextureUpdate()
@@ -161,27 +169,29 @@ namespace gui
 			if (nullptr == mTextureSrc)
 			{
 				NOTIFICATION_W(L"원본 텍스처가 등록되지 않았습니다.");
+				return;
 			}
 			else if (mTextureDestPath.empty())
 			{
 				NOTIFICATION_W(L"텍스처파일 출력 경로가 등록되지 않았습니다.");
+				return;
 			}
 
 			std::shared_ptr<mh::NormalConvertShader> converter =  mh::ResMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
 
 			mh::NormalConvertShader::Desc desc{};
 			
-			guiNormalConverter::AxisAndSign srcR = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcR.GetCurrentIndex());
-			desc.SrcAxis.x = (float)srcR.Axis;
-			desc.SrcSign.x = (float)srcR.Sign;
+			guiNormalConverter::AxisAndSign srcR = GetXYZSignToHLSLFormat((eXYZSign)mComboDestR.GetCurrentIndex());
+			desc.DestAxis.x = (float)srcR.Axis;
+			desc.DestSign.x = (float)srcR.Sign;
 
-			guiNormalConverter::AxisAndSign srcG = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcG.GetCurrentIndex());
-			desc.SrcAxis.y = (float)srcG.Axis;
-			desc.SrcSign.y = (float)srcG.Sign;
+			guiNormalConverter::AxisAndSign srcG = GetXYZSignToHLSLFormat((eXYZSign)mComboDestG.GetCurrentIndex());
+			desc.DestAxis.y = (float)srcG.Axis;
+			desc.DestSign.y = (float)srcG.Sign;
 
-			guiNormalConverter::AxisAndSign srcB = GetXYZSignToHLSLFormat((eXYZSign)mComboSrcB.GetCurrentIndex());
-			desc.SrcAxis.z = (float)srcB.Axis;
-			desc.SrcSign.z = (float)srcB.Sign;
+			guiNormalConverter::AxisAndSign srcB = GetXYZSignToHLSLFormat((eXYZSign)mComboDestB.GetCurrentIndex());
+			desc.DestAxis.z = (float)srcB.Axis;
+			desc.DestSign.z = (float)srcB.Sign;
 			
 			desc.SrcTex = mTextureSrc;
 
@@ -204,8 +214,8 @@ namespace gui
 		mTextureDestPath.clear();
 		mCB = {};
 
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::X);
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::MinusZ);
-		mComboSrcR.SetCurrentIndex((int)eXYZSign::Y);
+		mComboDestR.SetCurrentIndex((int)eXYZSign::X);
+		mComboDestR.SetCurrentIndex((int)eXYZSign::MinusZ);
+		mComboDestR.SetCurrentIndex((int)eXYZSign::Y);
 	}
 }

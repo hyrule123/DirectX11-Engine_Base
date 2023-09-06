@@ -75,11 +75,11 @@ namespace mh
 		//상수 버퍼에 추가 데이터 입력
 		tCB_UniformData data{};
 		
-//#define SrcXYZOrder float4_0
-		data.SrcXYZOrder = mSrcDesc.SrcAxis;
+//#define DestXYZOrder float4_0
+		data.DestXYZOrder = mSrcDesc.DestAxis;
 
-//#define SrcXYZSign float4_1
-		data.SrcXYZSign = mSrcDesc.SrcSign;
+//#define DestXYZSign float4_1
+		data.DestXYZSign = mSrcDesc.DestSign;
 
 		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::UniformData);
 		cb->SetData(&data);
