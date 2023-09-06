@@ -77,7 +77,7 @@ namespace mh
 
 			Com_Light3D* light3d = dirLight->AddComponent<Com_Light3D>();
 			light3d->SetLightType(eLightType::Point);
-			light3d->SetRadius(10000.f);
+			light3d->SetRadius(1000.f);
 			light3d->SetDiffuse(float4(0.3f, 0.3f, 0.3f, 1.f));
 			light3d->SetAmbient(float4(0.3f, 0.3f, 0.3f, 1.f));
 		}
@@ -100,6 +100,8 @@ namespace mh
 			std::shared_ptr<MeshData> meshdata = ResMgr::Load<MeshData>("Player_Default");
 
 			GameObject* modeling = meshdata->Instantiate();
+			modeling->GetComponent<Com_Transform>()->SetRelativePosZ(250.f);
+
 			modeling->AddComponent<Script_Player>();
 
 			modeling->GetComponent<Com_Animator3D>()->Play("Idle");

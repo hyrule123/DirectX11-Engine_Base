@@ -67,7 +67,7 @@ namespace mh
 		static bool SetResolution(UINT _ResolutionX, UINT _ResolutionY);
 
 		static bool CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY);
-
+		static void SetTexturesToDefferedMaterials();
 
 		static void LoadDefaultMesh();
 		static void LoadDefaultMaterial();
@@ -94,17 +94,17 @@ namespace mh
 		static ComPtr<ID3D11DepthStencilState>	mDepthStencilStates[(uint)define::eDSType::END];
 		static ComPtr<ID3D11BlendState>			mBlendStates[(uint)define::eBSType::END];
 		
-		static std::vector<Com_Camera*>			mCameras;
+		static std::vector<Com_Camera*>					mCameras;
 		static std::vector<define::tDebugMesh>			mDebugMeshes;
 
 		static std::unique_ptr<MultiRenderTarget> mMultiRenderTargets[(uint)define::eMRTType::END];
 
 		static std::vector<Com_Light3D*>			mLights;
-		static std::vector<tLightAttribute>		mLightAttributes;
-		static std::unique_ptr<StructBuffer>	mLightsBuffer;
+		static std::vector<tLightAttribute>			mLightAttributes;
+		static std::unique_ptr<StructBuffer>		mLightsBuffer;
 
-		static std::shared_ptr<Texture>			mPostProcessTexture;
-		static std::shared_ptr<Texture>			mNoiseTex;
+		static std::shared_ptr<Texture>				mPostProcessTexture;
+		static std::shared_ptr<Texture>				mNoiseTex;
 	};
 
 

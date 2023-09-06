@@ -137,6 +137,7 @@ namespace mh::define
 					STRKEY_DECLARE(BasicShader);
 					STRKEY_DECLARE(Animation3D);
 					STRKEY_DECLARE(NormalConvert);
+					STRKEY_DECLARE(GPUInitSetting);
 				}
 			}
 		}

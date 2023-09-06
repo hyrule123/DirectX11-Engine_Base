@@ -38,6 +38,9 @@ namespace mh
 		SetWindowPos(_AppDesc.LeftWindowPos, _AppDesc.TopWindowPos);
 		SetWindowSize(_AppDesc.Width, _AppDesc.Height);
 
+		PathMgr::Init();
+
+		//RenderMgr은 GPUMgr에서
 		if (false == GPUMgr::Init(_AppDesc.GPUDesc))
 		{
 			mHdc = GetDC(_AppDesc.Hwnd);
@@ -45,14 +48,10 @@ namespace mh
 			return FALSE;
 		}
 
-		PathMgr::Init();
-
+		ResMgr::Init();
 		AudioMgr::Init();
 		FontWrapper::Init();
 
-		ResMgr::Init();
-
-		RenderMgr::Init();
 
 		DefaultComInitializer::Init();
 		

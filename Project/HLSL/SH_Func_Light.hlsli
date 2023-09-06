@@ -31,14 +31,9 @@ void CalculateLight2D(in out tLightColor pLightColor, float3 position, int idx)
 }
 
 //3D
-static float3 globalLightPos = float3(0.0f, 0.0f, 0.0f);
-static float3 globalLightDir = float3(1.0f, -1.0f, 1.0f);
-static float3 globalLightColor = float3(1.0f, 1.0f, 1.0f);
-static float3 globalLightAmb = float3(0.15f, 0.15f, 0.15f);
 
 void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLightColor lightColor)
 {
-   
 	tLightAttribute lightInfo = lightAttributes[lightIdx];
     
     //view space 상에서 빛의 세기를 구함

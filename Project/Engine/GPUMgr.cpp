@@ -47,7 +47,12 @@ namespace mh
 			return false;
 		}
 
-		if (false == SetResoulution(_Desc.ResolutionX, _Desc.ResolutionY))
+		mResolutionX = _Desc.ResolutionX;
+		mResolutionY = _Desc.ResolutionY;
+
+		RenderMgr::Init();
+
+		if (false == SetResoulution(mResolutionX, mResolutionY))
 		{
 			ERROR_MESSAGE_W(L"GPU 초기화 작업 실패");
 			return false;
@@ -103,8 +108,6 @@ namespace mh
 
 	bool GPUMgr::SetResoulution(UINT _ResolutionX, UINT _ResolutionY)
 	{
-
-
 		bool bResult = false;
 		//1. 스왑체인 및 최종 렌더타겟 생성
 		std::shared_ptr<Texture> RenderTex = CreateSwapChain(_ResolutionX, _ResolutionY, mRefreshRate);

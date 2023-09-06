@@ -257,7 +257,7 @@ namespace mh::define
 		END = 8,
 	};
 
-	enum class eMRT_Defferd
+	enum class eMRT_Deffered
 	{
 		AlbedoTarget,
 		NormalTarget,
@@ -267,6 +267,18 @@ namespace mh::define
 		PositionTarget,
 		END
 	};
+	namespace strKey
+	{
+		STRKEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
+		{
+			"AlbedoTarget",
+			"NormalTarget",
+			"SpecularTarget",
+			"EmissiveTarget",
+			"RoughnessAndMetalicTarget",
+			"PositionTarget",
+		};
+	}
 
 	enum class eMRT_Light
 	{
@@ -274,6 +286,14 @@ namespace mh::define
 		SpecularLightTarget,
 		END
 	};
+	namespace strKey
+	{
+		STRKEY eMRT_Light_String[(int)eMRT_Light::END]
+		{
+			"DiffuseLightTarget",
+			"SpecularLightTarget",
+		};
+	}
 
 	enum class eBufferViewType
 	{

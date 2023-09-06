@@ -66,7 +66,7 @@ namespace mh
 		LoadDefaultTexture();
 		LoadDefaultMaterial();
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResMgr::Load<GPUInitSetting>("GPUInitSetting");
+		std::shared_ptr<GPUInitSetting> initSetting = ResMgr::Load<GPUInitSetting>(strKey::Default::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
 	}
 
@@ -249,7 +249,6 @@ namespace mh
 			}
 		}
 
-
 		return true;
 	}
 
@@ -277,12 +276,13 @@ namespace mh
 			std::shared_ptr<Texture> arrRTTex[MRT_MAX] = {};
 			std::shared_ptr<Texture> dsTex = nullptr;
 			
-			for (int i = 0; i < (int)eMRT_Defferd::END; ++i)
+			for (int i = 0; i < (int)eMRT_Deffered::END; ++i)
 			{
 				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+				arrRTTex[i]->SetKey(strKey::eMRT_Deffered_String[i]);
 			}
 			
 
@@ -307,15 +307,106 @@ namespace mh
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
+				arrRTTex[i]->SetKey(strKey::eMRT_Light_String[i]);
 			}
 
 			mMultiRenderTargets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
 			mMultiRenderTargets[(int)eMRTType::Light]->Create(arrRTTex, nullptr);
 		}
 
-
+		SetTexturesToDefferedMaterials();
+		
 		return true;
 	}
+
+	void RenderMgr::SetTexturesToDefferedMaterials()
+	{
+		//Light
+		{
+			std::shared_ptr<Material> lightDirMtrl = ResMgr::Find<Material>(strKey::Default::material::LightDirMaterial);
+
+			std::shared_ptr<Material> lightPointMtrl = ResMgr::Find<Material>(strKey::Default::material::LightPointMaterial);
+
+			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
+
+			{
+				//Position Target
+				std::shared_ptr<Texture> positionTarget = 
+					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
+				lightDirMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
+				lightPointMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
+			}
+
+			{
+				//Normal Target
+				std::shared_ptr<Texture> normalTarget =
+					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
+					
+				lightDirMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
+				lightPointMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
+			}
+
+			{
+				//Specular Target
+				std::shared_ptr<Texture> specularTarget =
+					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
+
+				lightDirMtrl->SetTexture(eTextureSlot::NormalTarget, specularTarget);
+				lightPointMtrl->SetTexture(eTextureSlot::NormalTarget, specularTarget);
+			}
+		}
+
+		//Merge
+		{
+			std::shared_ptr<Material> mergeMaterial = ResMgr::Find<Material>(strKey::Default::material::MergeMaterial);
+
+			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
+			{
+				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::AlbedoTarget);
+				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRT);
+			}
+
+			{
+				std::shared_ptr<Texture> NormalRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
+				mergeMaterial->SetTexture(eTextureSlot::NormalTarget, NormalRT);
+			}
+
+			{
+				std::shared_ptr<Texture> SpecularRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
+				mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularRT);
+			}
+
+			{
+				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::EmissiveTarget);
+				mergeMaterial->SetTexture(eTextureSlot::EmissiveTarget, EmissiveRT);
+			}
+
+			{
+				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::RoughnessAndMetalicTarget);
+				mergeMaterial->SetTexture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
+			}
+
+
+			{
+				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
+				mergeMaterial->SetTexture(eTextureSlot::PositionTarget, PosRenderTarget);
+			}
+
+
+			MultiRenderTarget* LightMRT = mMultiRenderTargets[(uint)eMRTType::Light].get();
+			{
+				std::shared_ptr<Texture> DiffuseLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::DiffuseLightTarget);
+				mergeMaterial->SetTexture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
+			}
+			{
+				std::shared_ptr<Texture> SpecularLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::SpecularLightTarget);
+				mergeMaterial->SetTexture(eTextureSlot::SpecularLightTarget, SpecularLightTarget);
+			}
+		}
+
+
+	}
+
 
 	void RenderMgr::LoadDefaultMesh()
 	{
@@ -1044,8 +1135,6 @@ namespace mh
 		}
 #pragma endregion
 
-
-
 #pragma region MERGE
 		{
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
@@ -1070,7 +1159,6 @@ namespace mh
 
 			ResMgr::Insert(strKey::Default::shader::graphics::MergeShader, MergeShader);
 		}
-
 #pragma endregion
 
 
@@ -1350,6 +1438,7 @@ namespace mh
 		RectMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::RectMaterial, RectMaterial);
 #pragma endregion
+
 #pragma region SPRITE
 		std::shared_ptr <Texture> spriteTexture = ResMgr::Find<Texture>(texture::DefaultSprite);
 		std::shared_ptr<GraphicsShader> spriteShader = ResMgr::Find<GraphicsShader>(shader::graphics::SpriteShader);
@@ -1360,6 +1449,7 @@ namespace mh
 		spriteMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::SpriteMaterial, spriteMaterial);
 #pragma endregion
+
 #pragma region UI
 		std::shared_ptr<GraphicsShader> uiShader = ResMgr::Find<GraphicsShader>(shader::graphics::UIShader);
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
@@ -1368,6 +1458,7 @@ namespace mh
 		uiMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::UIMaterial, uiMaterial);
 #pragma endregion
+
 #pragma region GRID
 		std::shared_ptr<GraphicsShader> gridShader = ResMgr::Find<GraphicsShader>(shader::graphics::GridShader);
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
@@ -1375,6 +1466,7 @@ namespace mh
 		gridMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::GridMaterial, gridMaterial);
 #pragma endregion
+
 #pragma region DEBUG
 		std::shared_ptr<GraphicsShader> debugShader = ResMgr::Find<GraphicsShader>(shader::graphics::DebugShader);
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
@@ -1383,6 +1475,7 @@ namespace mh
 		debugMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::DebugMaterial, debugMaterial);
 #pragma endregion
+
 #pragma region PARTICLE
 		std::shared_ptr<GraphicsShader> particleShader = ResMgr::Find<GraphicsShader>(shader::graphics::ParticleShader);
 		std::shared_ptr<Material> particleMaterial = std::make_shared<Material>();
@@ -1391,6 +1484,7 @@ namespace mh
 		particleMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::ParticleMaterial, particleMaterial);
 #pragma endregion
+
 #pragma region POSTPROCESS
 		std::shared_ptr<GraphicsShader> postProcessShader = ResMgr::Find<GraphicsShader>(shader::graphics::PostProcessShader);
 		std::shared_ptr<Material> postProcessMaterial = std::make_shared<Material>();
@@ -1406,17 +1500,13 @@ namespace mh
 		basic3DMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		basic3DMaterial->SetShader(basic3DShader);
 
-		std::shared_ptr <Texture> albedo = ResMgr::Find<Texture>(texture::Brick);
-		basic3DMaterial->SetTexture(eTextureSlot::Albedo, albedo);
-		albedo = ResMgr::Find<Texture>(texture::Brick_N);
-		basic3DMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		basic3DMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::Basic3DMaterial, basic3DMaterial);
 #pragma endregion
 
+
 #pragma region DEFFERD
 		std::shared_ptr<GraphicsShader> defferdShader = ResMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
-		
 
 		std::shared_ptr<Material> defferdMaterial = std::make_shared<Material>();
 		defferdMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
@@ -1434,22 +1524,6 @@ namespace mh
 			lightMaterial->SetRenderingMode(eRenderingMode::None);
 			lightMaterial->SetShader(lightShader);
 			lightMaterial->SetEngineDefaultRes(true);
-
-			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
-			{
-				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::PositionTarget);
-				lightMaterial->SetTexture(eTextureSlot::PositionTarget, PosRenderTarget);
-			}
-
-			{
-				std::shared_ptr<Texture> NormalRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::NormalTarget);
-				lightMaterial->SetTexture(eTextureSlot::NormalTarget, NormalRenderTarget);
-			}
-
-			{
-				std::shared_ptr<Texture> SpecularTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::SpecularTarget);
-				lightMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularTarget);
-			}
 			ResMgr::Insert(strKey::Default::material::LightDirMaterial, lightMaterial);
 		}
 
@@ -1460,26 +1534,9 @@ namespace mh
 			lightMaterial->SetShader(LightPointShader);
 			lightMaterial->SetEngineDefaultRes(true);
 
-			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
-			{
-				std::shared_ptr<Texture> PositionTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::PositionTarget);
-				lightMaterial->SetTexture(eTextureSlot::PositionTarget, PositionTarget);
-			}
-			
-			{
-				std::shared_ptr<Texture> NormalTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::NormalTarget);
-				lightMaterial->SetTexture(eTextureSlot::NormalTarget, NormalTarget);
-			}
-
-			{
-				std::shared_ptr<Texture> SpecularTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::SpecularTarget);
-				lightMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularTarget);
-			}
-
 			ResMgr::Insert(strKey::Default::material::LightPointMaterial, lightMaterial);
 		}
 
-#pragma endregion
 #pragma endregion
 
 #pragma region MERGE
@@ -1488,62 +1545,8 @@ namespace mh
 		mergeMaterial->SetRenderingMode(eRenderingMode::None);
 		mergeMaterial->SetShader(mergeShader);
 		mergeMaterial->SetEngineDefaultRes(true);
-
-		{
-			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
-
-			{
-				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::AlbedoTarget);
-				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRT);
-			}
-
-			{
-				std::shared_ptr<Texture> NormalRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::NormalTarget);
-				mergeMaterial->SetTexture(eTextureSlot::NormalTarget, NormalRT);
-			}
-
-			{
-				std::shared_ptr<Texture> SpecularRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::SpecularTarget);
-				mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularRT);
-			}
-
-			{
-				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::EmissiveTarget);
-				mergeMaterial->SetTexture(eTextureSlot::EmissiveTarget, EmissiveRT);
-			}
-
-			{
-				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::RoughnessAndMetalicTarget);
-				mergeMaterial->SetTexture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
-			}
-
-			
-			{
-				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::PositionTarget);
-				mergeMaterial->SetTexture(eTextureSlot::PositionTarget, PosRenderTarget);
-			}
-
-		}
-
-		{
-			MultiRenderTarget* LightMRT = mMultiRenderTargets[(uint)eMRTType::Light].get();
-			{
-				std::shared_ptr<Texture> DiffuseLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::DiffuseLightTarget);
-				mergeMaterial->SetTexture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
-			}
-			{
-				std::shared_ptr<Texture> SpecularLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::SpecularLightTarget);
-				mergeMaterial->SetTexture(eTextureSlot::SpecularLightTarget, SpecularLightTarget);
-			}
-		}
-
-
 		ResMgr::Insert(strKey::Default::material::MergeMaterial, mergeMaterial);
 #pragma endregion
-
 	}
-
-
-
 }
 
