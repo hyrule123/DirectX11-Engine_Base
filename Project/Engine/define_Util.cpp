@@ -62,56 +62,44 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::vector<std::filesystem::path>& _extensions)
 {
 	//풀경로를 받아올 주소 변수를 만들어주고
-	std::basic_string<TCHAR> stringPath;
+	std::wstring stringPath;
 
 	//프로그램 주소를 넣어놓는다.
-	stringPath = _baseDirectory.string<TCHAR>();
+	stringPath = _baseDirectory.wstring();
 	stringPath += TEXT("\\file");
 	stringPath.resize(MAX_PATH);
 
 	//파일 열기 창에 전달할 설정 구조체를 설정해준다.
-	OPENFILENAME OpenFile = {};
+	OPENFILENAMEW OpenFile = {};
 
 	OpenFile.lStructSize = sizeof(OPENFILENAME);	//구조체 크기
 	OpenFile.hwndOwner = mh::Application::GetHwnd();	//관리 핸들
 
-	auto addStrEnd = [](std::vector<TCHAR>& tStr)->void
-		{
-#ifdef UNICODE
-			tStr.push_back(L'\0');
-#else
-			tStr.push_back('\0');
-#endif
-		};
-
-	std::vector<TCHAR> extensionFilters;
-	size_t cursorPos{};
+	std::vector<wchar_t> extensionFilters;
 	for (size_t i = 0; i < _extensions.size(); ++i)
 	{
 		//해당 확장자의 이름 설정
-		const std::basic_string<TCHAR>& ext = _extensions[i].string<TCHAR>();
+		const std::wstring& ext = _extensions[i].wstring();
 		std::copy(ext.begin(), ext.end(), std::back_inserter(extensionFilters));
-		std::basic_string<TCHAR> fileName = TEXT(" File");
+		std::wstring fileName = TEXT(" File");
 		std::copy(fileName.begin(), fileName.end(), std::back_inserter(extensionFilters));
 
 		//확장자 포맷 설정
-		addStrEnd(extensionFilters);
-#ifdef UNICODE
+		extensionFilters.push_back(L'\0');
+
 		extensionFilters.push_back(L'*');
-#else
-		extensionFilters.push_back('*');
-#endif
 		
 		std::copy(ext.begin(), ext.end(), std::back_inserter(extensionFilters));
-		addStrEnd(extensionFilters);
+		extensionFilters.push_back(L'\0');
 	}
-	std::basic_string<TCHAR> allFiles = TEXT("All Files");
+	std::wstring allFiles = L"All Files";
 	std::copy(allFiles.begin(), allFiles.end(), std::back_inserter(extensionFilters));
-	addStrEnd(extensionFilters);
-	allFiles = TEXT("*.*");
+	extensionFilters.push_back(L'\0');
+	allFiles = L"*.*";
 	std::copy(allFiles.begin(), allFiles.end(), std::back_inserter(extensionFilters));
-	addStrEnd(extensionFilters);
-	addStrEnd(extensionFilters);
+
+	extensionFilters.push_back(L'\0');
+	extensionFilters.push_back(L'\0');
 
 	OpenFile.lpstrFilter = extensionFilters.data();
 	OpenFile.lpstrFile = stringPath.data();	//경로가 저장될 변수 주소
@@ -121,19 +109,23 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 	OpenFile.Flags = OFN_NOCHANGEDIR;
 
 	//만들어진 풀 경로를 FullPath에 보낸다.
-	if (FALSE == GetOpenFileName(&OpenFile))
+	if (FALSE == GetOpenFileNameW(&OpenFile))
 	{
 		stringPath.clear();
 	}
 
-#ifdef UNICODE
+
 	size_t pos = stringPath.find(L'\0');
-#else
-	size_t pos = stringPath.find('\0');
-#endif
-	if (pos != std::basic_string<TCHAR>::npos)
+	if (pos != std::wstring::npos)
 	{
 		stringPath.resize(pos);
+	}
+
+	std::filesystem::path retPath = stringPath;
+	//필터가 설정되어 있을 경우 확장자를 입력해준다
+	if ((UINT)(OpenFile.nFilterIndex) - 1u  < (UINT)_extensions.size())
+	{
+		retPath.replace_extension(_extensions[(UINT)OpenFile.nFilterIndex - 1u]);
 	}
 
 	return stringPath;
