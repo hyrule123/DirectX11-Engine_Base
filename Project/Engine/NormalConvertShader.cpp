@@ -2,7 +2,7 @@
 #include "NormalConvertShader.h"
 
 #include "DefaultShader/SH_Resource.hlsli"
-#include "DefaultShader/SH_NormalConvert.hlsli"
+#include "DefaultShader/SH_NormalConvertMH.hlsli"
 
 #include "Texture.h"
 #include "RenderMgr.h"
@@ -18,7 +18,7 @@ namespace mh
 {
 	NormalConvertShader::NormalConvertShader()
 		: ComputeShader(uint3{32, 32, 1})
-		, mSrcDesc()
+		, mSrcTex()
 		, mDestTex()
 		
 	{
@@ -36,14 +36,13 @@ namespace mh
 		return ComputeShader::CreateByHeader(CS_NormalConvert, sizeof(CS_NormalConvert));
 	}
 
-	std::shared_ptr<Texture> NormalConvertShader::Convert(const Desc& _desc)
+	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)
 	{
-		if (nullptr == _desc.SrcTex)
+		if (nullptr == _srcTex)
 			return nullptr;
 
-		mSrcDesc = _desc;
+		mSrcTex = _srcTex;
 		
-
 		OnExcute();
 
 		std::shared_ptr<Texture> retTex = mDestTex;
@@ -57,14 +56,19 @@ namespace mh
 		mDestTex = std::make_shared<Texture>();
 
 		//UAV 속성 추가해서 생성
-		D3D11_TEXTURE2D_DESC texDesc = mSrcDesc.SrcTex->GetDesc();
+		D3D11_TEXTURE2D_DESC texDesc = mSrcTex->GetDesc();
 		texDesc.BindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
 
 		if (false == (mDestTex->Create(texDesc)))
+		{
+			mDestTex = nullptr;
 			return false;
+		}
+		
+		mDestTex->SetKey(mSrcTex->GetKey());
 
 		//원본
-		mSrcDesc.SrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::CS);
+		mSrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::CS);
 
 		//복사 대상
 		mDestTex->BindDataUAV(Register_u_DestNormalTex);
@@ -72,26 +76,13 @@ namespace mh
 		//데이터 수 계산
 		ComputeShader::CalculateGroupCount(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
 
-		//상수 버퍼에 추가 데이터 입력
-		tCB_UniformData data{};
-		
-//#define DestXYZOrder float4_0
-		data.DestXYZOrder = mSrcDesc.DestAxis;
-
-//#define DestXYZSign float4_1
-		data.DestXYZSign = mSrcDesc.DestSign;
-
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::UniformData);
-		cb->SetData(&data);
-		cb->BindData(eShaderStageFlag::CS);
-
 		return true;
 	}
 
 	void NormalConvertShader::UnBindData()
 	{
-		mSrcDesc.SrcTex->UnBindData();
-		mSrcDesc = {};
+		mSrcTex->UnBindData();
+		mSrcTex = nullptr;
 		
 		mDestTex->UnBindData();
 	}

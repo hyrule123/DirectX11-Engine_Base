@@ -37,7 +37,8 @@ struct PSOut
 	float4 Normal : SV_Target1;
 	float4 Specular : SV_Target2;
 	float4 Emissive : SV_Target3;
-	float4 Position : SV_Target4;
+	float4 RoughnessAndMetalic : SV_Target4;
+	float4 Position : SV_Target5;
 	//float4 Data : SV_Target5;
 };
 #endif//__cplusplus

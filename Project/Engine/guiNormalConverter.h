@@ -27,79 +27,11 @@ namespace gui
 
         void Reset();
 
-        enum class eXYZSign
-        {
-            X,
-            Y,
-            Z,
-            MinusX,
-            MinusY,
-            MinusZ,
-            XYZSignEnd
-        };
-        struct AxisAndSign
-        {
-            int Axis;
-            int Sign;
-        };
-
-        inline AxisAndSign GetXYZSignToHLSLFormat(eXYZSign _sign);
-
         
     private:
         std::shared_ptr<mh::Texture>        mTextureSrc;
-        guiComboBox mComboDestR;
-        guiComboBox mComboDestG;
-        guiComboBox mComboDestB;
-
-        std::filesystem::path               mTextureDestPath;
-
-        tCB_UniformData mCB;
+        std::filesystem::path               mTextureDestDir;
     };
-
-    inline guiNormalConverter::AxisAndSign guiNormalConverter::GetXYZSignToHLSLFormat(eXYZSign _sign)
-    {
-        AxisAndSign ans{};
-        switch (_sign)
-        {
-        case gui::guiNormalConverter::eXYZSign::X:
-            ans.Axis = (int)eXYZSign::X;
-            ans.Sign = 1;
-            break;
-
-        case gui::guiNormalConverter::eXYZSign::Y:
-            ans.Axis = (int)eXYZSign::Y;
-            ans.Sign = 1;
-            break;
-
-        case gui::guiNormalConverter::eXYZSign::Z:
-            ans.Axis = (int)eXYZSign::Z;
-            ans.Sign = 1;
-            break;
-
-        case gui::guiNormalConverter::eXYZSign::MinusX:
-            ans.Axis = (int)eXYZSign::X;
-            ans.Sign = -1;
-            break;
-
-        case gui::guiNormalConverter::eXYZSign::MinusY:
-            ans.Axis = (int)eXYZSign::Y;
-            ans.Sign = -1;
-            break;
-
-        case gui::guiNormalConverter::eXYZSign::MinusZ:
-            ans.Axis = (int)eXYZSign::Z;
-            ans.Sign = -1;
-            break;
-
-        default:
-            ans.Axis = -1;
-            ans.Sign = -1;
-            break;
-        }
-
-        return ans;
-    }
 
 }
 

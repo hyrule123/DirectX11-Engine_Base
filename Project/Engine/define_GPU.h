@@ -263,6 +263,7 @@ namespace mh::define
 		NormalTarget,
 		SpecularTarget,
 		EmissiveTarget,
+		RoughnessAndMetalicTarget,
 		PositionTarget,
 		END
 	};

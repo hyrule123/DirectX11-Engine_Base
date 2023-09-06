@@ -125,7 +125,7 @@ inline std::wstring StringConv::UpperCaseReturn(const std::wstring_view _wstr)
 {
 	std::wstring converted(_wstr);
 
-	size_t size = sizeof(converted);
+	size_t size = converted.size();
 	for (size_t i = 0; i < size; ++i)
 	{
 		converted[i] = (wchar_t)std::toupper((wchar_t)converted[i]);

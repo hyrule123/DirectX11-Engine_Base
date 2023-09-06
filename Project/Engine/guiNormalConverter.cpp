@@ -6,15 +6,14 @@
 #include "define_Util.h"
 
 #include "NormalConvertShader.h"
-#include "DefaultShader/SH_NormalConvert.hlsli"
+#include "DefaultShader/SH_NormalConvertMH.hlsli"
 
 namespace gui
 {
 	guiNormalConverter::guiNormalConverter()
 		: guiWindow("Normal Converter")
 		, mTextureSrc{}
-		, mTextureDestPath{}
-		, mCB{}
+		, mTextureDestDir{}
 	{
 	}
 	guiNormalConverter::~guiNormalConverter()
@@ -23,30 +22,6 @@ namespace gui
 
 	void guiNormalConverter::Init()
 	{
-		std::vector<std::string> XYZ((int)eXYZSign::XYZSignEnd);
-		XYZ[(int)eXYZSign::X] = "X";
-		XYZ[(int)eXYZSign::Y] = "Y";
-		XYZ[(int)eXYZSign::Z] = "Z";
-
-		XYZ[(int)eXYZSign::MinusX] = "-X";
-		XYZ[(int)eXYZSign::MinusY] = "-Y";
-		XYZ[(int)eXYZSign::MinusZ] = "-Z";
-		
-		mComboDestR	.SetKey("SrcX");
-		mComboDestG	.SetKey("SrcY");
-		mComboDestB	.SetKey("SrcZ");
-
-
-		//몬헌 Normal이 Y = -Normal이고
-		//프로젝트에서는 Z = Normal 이므로
-		mComboDestR.SetItems(XYZ);
-		mComboDestR.SetCurrentIndex((int)eXYZSign::X);
-
-		mComboDestG.SetItems(XYZ);
-		mComboDestG.SetCurrentIndex((int)eXYZSign::MinusZ);
-
-		mComboDestB.SetItems(XYZ);
-		mComboDestB.SetCurrentIndex((int)eXYZSign::Y);
 	}
 
 	void guiNormalConverter::UpdateUI()
@@ -89,43 +64,43 @@ namespace gui
 			ImGui::Text(curText.c_str());
 		}
 
-		if (ImGui::Button("Load##Source Texture"))
-		{
-			std::vector<std::fs::path> vecExt{};
-			for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
-			{
-				vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
-			}
-			
-			std::fs::path texPath = mh::WinAPI::FileDialog(mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture), vecExt);
-			
-			texPath = mh::PathMgr::MakePathStrKey(texPath);
-			
-			mTextureSrc = mh::ResMgr::Load<mh::Texture>(texPath);
-		}
+if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
+{
+	std::vector<std::fs::path> vecExt{};
+	for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
+	{
+		vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
+	}
 
-		ImGui::SameLine();
+	std::fs::path texPath = mh::WinAPI::FileDialog(mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture), vecExt);
 
-		if (ImGui::Button("Clear##Source Texture"))
-		{
-			mTextureSrc = nullptr;
-		}
+	texPath = mh::PathMgr::MakePathStrKey(texPath);
+
+	mTextureSrc = mh::ResMgr::Load<mh::Texture>(texPath);
+}
+
+ImGui::SameLine();
+
+if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
+{
+	mTextureSrc = nullptr;
+}
 
 	}
 
 	void guiNormalConverter::DestTextureUpdate()
 	{
-		HilightText("Dest Texture Save Path");
+		HilightText("Dest Texture Save Directory");
 		{
 			std::string curText = "* Current: ";
 
-			if (mTextureDestPath.empty())
+			if (mTextureDestDir.empty())
 			{
 				curText += "None";
 			}
 			else
 			{
-				curText += mTextureDestPath.string();
+				curText += mTextureDestDir.string();
 			}
 
 
@@ -133,7 +108,7 @@ namespace gui
 		}
 
 
-		if (ImGui::Button("Load##Dest Texture"))
+		if (ImGui::Button("Set Directory##Dest Texture", ImVec2(0.f, 25.f)))
 		{
 			std::vector<std::fs::path> vecExt{};
 			for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
@@ -146,26 +121,18 @@ namespace gui
 			if (mTextureSrc)
 			{
 				texFile /= mTextureSrc->GetKey();
-				mTextureDestPath = mh::WinAPI::FileDialog(texFile, vecExt);
 			}
 
-			if (false == mTextureDestPath.has_extension())
-			{
-				NOTIFICATION_W(L"확장자를 입력 해주세요.");
-				mTextureDestPath.clear();
-			}
+			mTextureDestDir = mh::WinAPI::FileDialog(texFile, vecExt);
+			mTextureDestDir = mTextureDestDir.parent_path();
 		}
 
 		ImGui::SameLine();
 
-		if (ImGui::Button("Clear##Dest Texture"))
+		if (ImGui::Button("Clear##Dest Texture", ImVec2(0.f, 25.f)))
 		{
-			mTextureDestPath.clear();
+			mTextureDestDir.clear();
 		}
-
-		mComboDestR.FixedUpdate();
-		mComboDestG.FixedUpdate();
-		mComboDestB.FixedUpdate();
 	}
 
 	void guiNormalConverter::CopyTextureUpdate()
@@ -177,35 +144,32 @@ namespace gui
 				NOTIFICATION_W(L"원본 텍스처가 등록되지 않았습니다.");
 				return;
 			}
-			else if (mTextureDestPath.empty())
+			else if (mTextureDestDir.empty())
 			{
 				NOTIFICATION_W(L"텍스처파일 출력 경로가 등록되지 않았습니다.");
 				return;
 			}
 
-			std::shared_ptr<mh::NormalConvertShader> converter =  mh::ResMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
+			std::shared_ptr<mh::NormalConvertShader> converter = mh::ResMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
 
-			mh::NormalConvertShader::Desc desc{};
-			
-			guiNormalConverter::AxisAndSign srcR = GetXYZSignToHLSLFormat((eXYZSign)mComboDestR.GetCurrentIndex());
-			desc.DestAxis.x = (float)srcR.Axis;
-			desc.DestSign.x = (float)srcR.Sign;
-
-			guiNormalConverter::AxisAndSign srcG = GetXYZSignToHLSLFormat((eXYZSign)mComboDestG.GetCurrentIndex());
-			desc.DestAxis.y = (float)srcG.Axis;
-			desc.DestSign.y = (float)srcG.Sign;
-
-			guiNormalConverter::AxisAndSign srcB = GetXYZSignToHLSLFormat((eXYZSign)mComboDestB.GetCurrentIndex());
-			desc.DestAxis.z = (float)srcB.Axis;
-			desc.DestSign.z = (float)srcB.Sign;
-			
-			desc.SrcTex = mTextureSrc;
-
-			std::shared_ptr<mh::Texture> convertedTex = converter->Convert(desc);
+			std::shared_ptr<mh::Texture> convertedTex = converter->Convert(mTextureSrc);
 
 			if (convertedTex)
 			{
-				convertedTex->Save(mTextureDestPath);
+				std::fs::path savePath = mTextureDestDir;
+				std::fs::path texKey = convertedTex->GetKey();
+				savePath /= texKey.filename();
+
+				if (std::fs::exists(savePath))
+				{
+					if (IDNO == MessageBoxW(nullptr, L"이미 파일이 있습니다. 덮어 쓰시겠습니까?", L"알림", MB_YESNO))
+					{
+						NOTIFICATION_W(L"저장을 취소했습니다.");
+						return;
+					}
+				}
+
+				convertedTex->Save(savePath);
 			}
 			else
 			{
@@ -217,11 +181,6 @@ namespace gui
 	void guiNormalConverter::Reset()
 	{
 		mTextureSrc = nullptr;
-		mTextureDestPath.clear();
-		mCB = {};
-
-		mComboDestR.SetCurrentIndex((int)eXYZSign::X);
-		mComboDestR.SetCurrentIndex((int)eXYZSign::MinusZ);
-		mComboDestR.SetCurrentIndex((int)eXYZSign::Y);
+		mTextureDestDir.clear();
 	}
 }

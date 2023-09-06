@@ -26,9 +26,7 @@ float4 main(VSOut In) : SV_Target
 	if (0.0f == viewPos.a)
 		discard;
     
-    
 	OutColor = AlbedoTarget.Sample(anisotropicSampler, UV);
-    
     
 	float4 vDiffuse = DiffuseLightTarget.Sample(anisotropicSampler, UV);
 	float4 vSpecular = SpecularLightTarget.Sample(anisotropicSampler, UV);

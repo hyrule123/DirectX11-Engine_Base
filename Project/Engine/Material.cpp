@@ -171,7 +171,7 @@ namespace mh
         {
             if (mTextures[slotIndex])
             {
-                mTextures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::ALL);
+                mTextures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::PS);
             }
             else
             {

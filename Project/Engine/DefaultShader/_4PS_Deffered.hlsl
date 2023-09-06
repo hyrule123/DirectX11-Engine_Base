@@ -7,12 +7,12 @@ PSOut main(VSOut _in)
 	float4 vOutColor = float4(1.f, 1.f, 1.f, 1.f);
 	float3 vViewNormal = _in.ViewNormal;
     
-	if (CB_MaterialData.IsAlbedoTex == 1)
+	if (TRUE == CB_MaterialData.IsAlbedoTex)
 	{
 		vObjectColor = AlbedoTexture.Sample(anisotropicSampler, _in.UV);
 	}
     
-	if (CB_MaterialData.IsNormalTex == 1)
+	if (TRUE == CB_MaterialData.IsNormalTex)
 	{
 		float3x3 matRot =
 		{
@@ -31,15 +31,21 @@ PSOut main(VSOut _in)
 		//Normal 회전 행렬과 곱해서 실제 노말값을 구한다.
 		vViewNormal = mul(vNormal, matRot);
 	}
+	
+	float4 SpecularCoeff = CB_MaterialData.Spec;
+	if (TRUE == CB_MaterialData.IsSpecularTex)
+	{
+		SpecularCoeff = SpecularTexture.Sample(anisotropicSampler, _in.UV);
+	}
     
 	
 	PSOut OutColor = (PSOut) 0;
 	
 	OutColor.Albedo = vObjectColor;
 	OutColor.Normal = float4(vViewNormal.xyz, 1.f);
-	OutColor.Position = float4(_in.ViewPos.xyz, 1.f);
-	//OutColor.Specular = float4
+	OutColor.Specular = SpecularCoeff;
 	OutColor.Emissive = float4(1.0f, 1.0f, 1.0f, 1.0f);
-    
+	OutColor.Position = float4(_in.ViewPos.xyz, 1.f);
+	
 	return OutColor;
 }

@@ -276,18 +276,6 @@ namespace mh
 		{
 			std::shared_ptr<Texture> arrRTTex[MRT_MAX] = {};
 			std::shared_ptr<Texture> dsTex = nullptr;
-
-			
-			//std::shared_ptr<Texture> normal = std::make_shared<Texture>();
-			//std::shared_ptr<Texture> albedo = std::make_shared<Texture>();
-			//std::shared_ptr<Texture> specular = std::make_shared<Texture>();
-			//std::shared_ptr<Texture> emissive = std::make_shared<Texture>();
-
-			//arrRTTex[(int)eMRT_Defferd::AlbedoTarget] = albedo;
-			//arrRTTex[(int)eMRT_Defferd::NormalTarget] = normal;
-			//arrRTTex[(int)eMRT_Defferd::SpecularTarget] = specular;
-			//arrRTTex[(int)eMRT_Defferd::EmissiveTarget] = emissive;
-			//arrRTTex[(int)eMRT_Defferd::PositionTarget] = pos;
 			
 			for (int i = 0; i < (int)eMRT_Defferd::END; ++i)
 			{
@@ -319,17 +307,6 @@ namespace mh
 				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 			}
-
-			//std::shared_ptr<Texture> diffuse = std::make_shared<Texture>();
-			//std::shared_ptr<Texture> specular = std::make_shared<Texture>();
-
-			//arrRTTex[(int)eMRT_Light::DiffuseLightTarget] = diffuse;
-			//arrRTTex[(int)eMRT_Light::SpecularLightTarget] = specular;
-
-			//arrRTTex[0]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
-			//	, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-			//arrRTTex[1]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
-			//	, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 
 			mMultiRenderTargets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
 			mMultiRenderTargets[(int)eMRTType::Light]->Create(arrRTTex, nullptr);
@@ -1376,6 +1353,7 @@ namespace mh
 		std::shared_ptr<Material> RectMaterial = std::make_shared<Material>();
 		RectMaterial->SetShader(shader);
 		RectMaterial->SetTexture(eTextureSlot::Albedo, texture);
+		RectMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::RectMaterial, RectMaterial);
 #pragma endregion
 #pragma region SPRITE
@@ -1385,6 +1363,7 @@ namespace mh
 		spriteMaterial->SetRenderingMode(eRenderingMode::Opaque);
 		spriteMaterial->SetShader(spriteShader);
 		spriteMaterial->SetTexture(eTextureSlot::Albedo, spriteTexture);
+		spriteMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::SpriteMaterial, spriteMaterial);
 #pragma endregion
 #pragma region UI
@@ -1392,12 +1371,14 @@ namespace mh
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
 		uiMaterial->SetRenderingMode(eRenderingMode::Opaque);
 		uiMaterial->SetShader(uiShader);
+		uiMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::UIMaterial, uiMaterial);
 #pragma endregion
 #pragma region GRID
 		std::shared_ptr<GraphicsShader> gridShader = ResMgr::Find<GraphicsShader>(shader::graphics::GridShader);
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
 		gridMaterial->SetShader(gridShader);
+		gridMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::GridMaterial, gridMaterial);
 #pragma endregion
 #pragma region DEBUG
@@ -1405,6 +1386,7 @@ namespace mh
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
 		debugMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		debugMaterial->SetShader(debugShader);
+		debugMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::DebugMaterial, debugMaterial);
 #pragma endregion
 #pragma region PARTICLE
@@ -1412,6 +1394,7 @@ namespace mh
 		std::shared_ptr<Material> particleMaterial = std::make_shared<Material>();
 		particleMaterial->SetRenderingMode(eRenderingMode::Transparent);
 		particleMaterial->SetShader(particleShader);
+		particleMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::ParticleMaterial, particleMaterial);
 #pragma endregion
 #pragma region POSTPROCESS
@@ -1419,6 +1402,7 @@ namespace mh
 		std::shared_ptr<Material> postProcessMaterial = std::make_shared<Material>();
 		postProcessMaterial->SetRenderingMode(eRenderingMode::PostProcess);
 		postProcessMaterial->SetShader(postProcessShader);
+		postProcessMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::PostProcessMaterial, postProcessMaterial);
 #pragma endregion
 
@@ -1432,21 +1416,20 @@ namespace mh
 		basic3DMaterial->SetTexture(eTextureSlot::Albedo, albedo);
 		albedo = ResMgr::Find<Texture>(texture::Brick_N);
 		basic3DMaterial->SetTexture(eTextureSlot::Normal, albedo);
+		basic3DMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::Basic3DMaterial, basic3DMaterial);
 #pragma endregion
 
 #pragma region DEFFERD
 		std::shared_ptr<GraphicsShader> defferdShader = ResMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
+		
 
 		std::shared_ptr<Material> defferdMaterial = std::make_shared<Material>();
 		defferdMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
 		defferdMaterial->SetShader(defferdShader);
+		defferdMaterial->SetEngineDefaultRes(true);
 
 		// specular map 추가 사용가능
-		albedo = ResMgr::Find<Texture>(strKey::Default::texture::Brick);
-		defferdMaterial->SetTexture(eTextureSlot::Albedo, albedo);
-		albedo = ResMgr::Find<Texture>(strKey::Default::texture::Brick_N);
-		defferdMaterial->SetTexture(eTextureSlot::Normal, albedo);
 		ResMgr::Insert(strKey::Default::material::DefferedMaterial, defferdMaterial);
 #pragma endregion
 
@@ -1456,6 +1439,7 @@ namespace mh
 			std::shared_ptr<Material> lightMaterial = std::make_shared<Material>();
 			lightMaterial->SetRenderingMode(eRenderingMode::None);
 			lightMaterial->SetShader(lightShader);
+			lightMaterial->SetEngineDefaultRes(true);
 
 			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
 			{
@@ -1480,6 +1464,7 @@ namespace mh
 			std::shared_ptr<Material> lightMaterial = std::make_shared<Material>();
 			lightMaterial->SetRenderingMode(eRenderingMode::None);
 			lightMaterial->SetShader(LightPointShader);
+			lightMaterial->SetEngineDefaultRes(true);
 
 			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
 			{
@@ -1508,18 +1493,42 @@ namespace mh
 		std::shared_ptr<Material> mergeMaterial = std::make_shared<Material>();
 		mergeMaterial->SetRenderingMode(eRenderingMode::None);
 		mergeMaterial->SetShader(mergeShader);
+		mergeMaterial->SetEngineDefaultRes(true);
 
 		{
 			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
+
+			{
+				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::AlbedoTarget);
+				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRT);
+			}
+
+			{
+				std::shared_ptr<Texture> NormalRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::NormalTarget);
+				mergeMaterial->SetTexture(eTextureSlot::NormalTarget, NormalRT);
+			}
+
+			{
+				std::shared_ptr<Texture> SpecularRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::SpecularTarget);
+				mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularRT);
+			}
+
+			{
+				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::EmissiveTarget);
+				mergeMaterial->SetTexture(eTextureSlot::EmissiveTarget, EmissiveRT);
+			}
+
+			{
+				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::RoughnessAndMetalicTarget);
+				mergeMaterial->SetTexture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
+			}
+
+			
 			{
 				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::PositionTarget);
 				mergeMaterial->SetTexture(eTextureSlot::PositionTarget, PosRenderTarget);
 			}
 
-			{
-				std::shared_ptr<Texture> AlbedoRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Defferd::AlbedoTarget);
-				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRenderTarget);
-			}
 		}
 
 		{

@@ -944,7 +944,7 @@
     <None Include="DefaultShader\SH_UserInterFace.hlsli">
       <Filter>_DefaultShader\UI</Filter>
     </None>
-    <None Include="DefaultShader\SH_NormalConvert.hlsli">
+    <None Include="DefaultShader\SH_NormalConvertMH.hlsli">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </None>
   </ItemGroup>
@@ -1030,7 +1030,7 @@
     <FxCompile Include="DefaultShader\CS_Animation3D.hlsl">
       <Filter>_DefaultShader\Animation\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_NormalConvert.hlsl">
+    <FxCompile Include="DefaultShader\CS_NormalConvertMH.hlsl">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\CS_GPUInitSetting.hlsl">

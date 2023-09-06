@@ -66,11 +66,17 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 
 	//프로그램 주소를 넣어놓는다.
 	stringPath = _baseDirectory.wstring();
+	std::wstring extension{};
 
 	//파일명이 안붙어있을 경우 가상의 파일명을 생성
 	if (false == _baseDirectory.has_extension())
 	{
 		stringPath += L"\\file";
+	}
+	else
+	{
+		extension = _baseDirectory.extension().wstring();
+		StringConv::UpperCase(extension);
 	}
 	
 	stringPath.resize(MAX_PATH);
@@ -97,6 +103,13 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 		
 		std::copy(ext.begin(), ext.end(), std::back_inserter(extensionFilters));
 		extensionFilters.push_back(L'\0');
+
+		//기본 확장자가 들어왔을 경우 해당 확장자와 일치하는 필터를 기본 표시되도록 설정
+		if (false == extension.empty() && extension == StringConv::UpperCaseReturn(_extensions[i].wstring()))
+		{
+			//인덱스번호는 1을 더해줘야함(1부터 시작함)
+			OpenFile.nFilterIndex = (DWORD)i + (DWORD)1u;
+		}
 	}
 	std::wstring allFiles = L"All Files";
 	std::copy(allFiles.begin(), allFiles.end(), std::back_inserter(extensionFilters));
@@ -113,6 +126,11 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 
 	//이 플래그를 넣어주지 않으면 std::current_path가 불러온 주소로 바껴버림
 	OpenFile.Flags = OFN_NOCHANGEDIR;
+
+	if ((DWORD)0 == OpenFile.nFilterIndex)
+	{
+		OpenFile.nFilterIndex = (DWORD)_extensions.size() + (DWORD)1;
+	}
 
 	//만들어진 풀 경로를 FullPath에 보낸다.
 	if (FALSE == GetOpenFileNameW(&OpenFile))
