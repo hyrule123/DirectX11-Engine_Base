@@ -22,7 +22,6 @@ namespace mh
 
     public:
         //virtual void Init() override;
-        //virtual void Update() override;
         virtual void FixedUpdate() override;
         virtual void BindData() override; 
 

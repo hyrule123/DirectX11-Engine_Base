@@ -44,8 +44,10 @@ namespace mh
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 
 		virtual void Init() override;
-		virtual void Update() override;
+		virtual void Update() override; 
 		virtual void FixedUpdate() override;
+
+		virtual bool IsPlaying() const override { MH_ASSERT(false); return false; }
 
 		bool Create(const std::string_view _name
 			, std::shared_ptr<Texture> _atlas

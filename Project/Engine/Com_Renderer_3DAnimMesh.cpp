@@ -17,9 +17,16 @@ namespace mh
 
 	void Com_Renderer_3DAnimMesh::Render()
 	{
-		//애니메이터가 없거나 재생 중이 아닐 경우 일반 Mesh 타입으로 렌더링
-		Com_Animator3D* animator = GetOwner()->GetComponent<Com_Animator3D>();
-		if (nullptr == animator || false == animator->IsPlaying())
+		//애니메이터가 없거나
+		//3D 애니메이터가 아니거나
+		//재생 중이 아니거나
+		//->일반 Mesh 타입으로 렌더링
+		IAnimator* animator = GetOwner()->Animator();
+		if (
+			nullptr == animator 
+			|| eDimensionType::_3D != animator->GetDimensionType()
+			|| false == animator->IsPlaying()
+			)
 		{
 			Com_Renderer_Mesh::Render();
 			return;

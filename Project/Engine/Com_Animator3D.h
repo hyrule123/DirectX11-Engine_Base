@@ -26,10 +26,11 @@ namespace mh
 		virtual void Update() {};
 		virtual void FixedUpdate() override;
 
+		virtual bool IsPlaying() const { return (nullptr != mCurrentAnim); }
+
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton);
 		std::shared_ptr<const Skeleton> GetSkeleton() const { return mSkeleton; }
 		bool Play(const std::string& _strAnimName);
-		bool IsPlaying() const { return nullptr != mCurrentAnim; }
 
 		void PlayNext();
 

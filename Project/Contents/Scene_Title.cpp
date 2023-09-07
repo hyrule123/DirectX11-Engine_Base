@@ -102,11 +102,12 @@ namespace mh
 			std::shared_ptr<MeshData> meshdata = ResMgr::Load<MeshData>("Player_Default");
 
 			GameObject* modeling = meshdata->Instantiate();
+			modeling->SetName("modeling");
 			modeling->GetComponent<Com_Transform>()->SetRelativePosZ(250.f);
 
 			modeling->AddComponent<Script_Player>();
 
-			modeling->GetComponent<Com_Animator3D>()->Play("Idle");
+			modeling->GetComponent<Com_Animator3D>()->Play("Evade");
 			
 			EventMgr::SpawnGameObject(define::eLayerType::Player, modeling);
 		}

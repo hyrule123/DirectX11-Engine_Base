@@ -37,5 +37,12 @@ namespace mh
 		if (mParentAnimator)
 			mParentAnimator->UnBindData();
 	}
+	bool Com_DummyAnimator::IsPlaying() const
+	{
+		bool bPlaying = false;
+		if (mParentAnimator)
+			bPlaying = mParentAnimator->IsPlaying();
+		return bPlaying;
+	}
 }
 

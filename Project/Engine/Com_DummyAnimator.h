@@ -17,6 +17,8 @@ namespace mh
 		virtual void BindData() override;
 		virtual void UnBindData() override;
 
+		virtual bool IsPlaying() const override;
+
 	private:
 		Com_Animator3D* mParentAnimator;
 	};

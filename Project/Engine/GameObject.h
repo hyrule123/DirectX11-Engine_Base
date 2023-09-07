@@ -88,8 +88,10 @@ namespace mh
 
 		//편의성을 위한 컴포넌트 받아오기 함수
 		ITransform* Transform() { return static_cast<ITransform*>(mComponents[(int)eComponentType::Transform]); }
-		ICollider* Collider() { return static_cast<ICollider*>(mComponents[(int)eComponentType::Transform]); }
+		ICollider* Collider() { return static_cast<ICollider*>(mComponents[(int)eComponentType::Collider]); }
+		IAnimator* Animator() { return static_cast<IAnimator*>(mComponents[(int)eComponentType::Animator]); }
 		ILight* Light() { return static_cast<ILight*>(mComponents[(int)eComponentType::Light]); }
+		
 		Com_Camera* Camera() { return static_cast<Com_Camera*>(mComponents[(int)eComponentType::Camera]); }
 		IRenderer* Renderer() { return static_cast<IRenderer*>(mComponents[(int)eComponentType::Renderer]); }
 		Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(mComponents[(int)eComponentType::AudioSource]); }

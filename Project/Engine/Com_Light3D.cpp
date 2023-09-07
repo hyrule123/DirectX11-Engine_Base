@@ -88,6 +88,33 @@ namespace mh
 		return eResult::Success;
 	}
 
+
+	void Com_Light3D::Update()
+	{
+		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
+		if (nullptr == tr)
+			return;
+
+		float3 position = tr->GetRelativePos();
+		mAttribute.position = float4(position.x, position.y, position.z, 1.0f);
+			
+		//Transform 조작은 Update()까지만 가능.
+		switch ((eLightType)mAttribute.lightType)
+		{
+		case mh::define::eLightType::Directional:
+			break;
+		case mh::define::eLightType::Point:
+			tr->SetRelativeScale(float3(mAttribute.radius));
+			break;
+		case mh::define::eLightType::Spot:
+			break;
+		case mh::define::eLightType::END:
+			break;
+		default:
+			break;
+		}
+	}
+
 	void Com_Light3D::FixedUpdate()
 	{
 		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
@@ -102,7 +129,7 @@ namespace mh
 			mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 			break;
 		case mh::define::eLightType::Point:
-			tr->SetRelativeScale(float3(mAttribute.radius * 5.f));
+			//Update에서 수행했음.
 			break;
 		case mh::define::eLightType::Spot:
 			break;
