@@ -33,11 +33,11 @@ namespace mh
 		virtual eResult SaveJson(Json::Value* _pJson) override;
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 		
-		virtual void Init();
-		virtual void Start();
-		virtual void Update();
-		virtual void FixedUpdate();
-		virtual void Render();
+		void Init();
+		void Start();
+		void Update();
+		void FixedUpdate();
+		void Render();
 
 	public:
 

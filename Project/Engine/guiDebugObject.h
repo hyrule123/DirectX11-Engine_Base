@@ -11,7 +11,7 @@ namespace gui
 		DebugObject();
 		virtual ~DebugObject();
 
-		virtual void FixedUpdate() override;
+		void FixedUpdate();
 	
 
 	private:

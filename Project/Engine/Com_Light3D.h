@@ -20,8 +20,6 @@ namespace mh
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
-		//virtual void Init() override;
-		//virtual void Update() override;
 		virtual void FixedUpdate() override;
 
 		//Camera가 호출

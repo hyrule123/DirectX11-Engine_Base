@@ -10,10 +10,10 @@ namespace gui
 		EditorObject();
 		virtual ~EditorObject();
 
-		virtual void Init() override;
-		virtual void Update() override;
-		virtual void FixedUpdate() override;
-		virtual void Render() override;
+		void Init();
+		void Update();
+		void FixedUpdate();
+		void Render();
 
 	private:
 		
