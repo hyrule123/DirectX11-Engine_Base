@@ -47,8 +47,6 @@ namespace mh
 		IComponent* AddComponent(IComponent* _pCom);
 		inline IComponent* AddComponent(const std::string_view _strKey);
 
-		//Com_Transform& GetTransform() { return mTransform; }
-
 		template <typename T>
 		inline T* GetComponent();
 
@@ -63,12 +61,10 @@ namespace mh
 		void SetName(const std::string_view _Name) { mName = _Name; }
 		const std::string& GetName() const { return mName; }
 
-
 		eState GetState() { return mState; }
 		
 		void Pause() { mState = eState::Paused; }
 		void Destroy();
-		
 				
 		bool IsDontDestroy() { return mbDontDestroy; }
 		void DontDestroy(bool _enable) { mbDontDestroy = _enable; }
@@ -89,6 +85,16 @@ namespace mh
 
 		bool IsInitialized() const { return mbInitalized; }
 		bool IsStarted() const { return mbStarted; }
+
+		//편의성을 위한 컴포넌트 받아오기 함수
+		ITransform* Transform() { return static_cast<ITransform*>(mComponents[(int)eComponentType::Transform]); }
+		ICollider* Collider() { return static_cast<ICollider*>(mComponents[(int)eComponentType::Transform]); }
+		ILight* Light() { return static_cast<ILight*>(mComponents[(int)eComponentType::Light]); }
+		Com_Camera* Camera() { return static_cast<Com_Camera*>(mComponents[(int)eComponentType::Camera]); }
+		IRenderer* Renderer() { return static_cast<IRenderer*>(mComponents[(int)eComponentType::Renderer]); }
+		Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(mComponents[(int)eComponentType::AudioSource]); }
+		Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(mComponents[(int)eComponentType::AudioListener]); }
+		Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(mComponents[(int)eComponentType::BehaviorTree]); }
 
 	protected:
 		void DestroyRecursive();
@@ -219,11 +225,6 @@ namespace mh
 				{
 					pCom = static_cast<T*>(mComponents[(int)ComType]);
 				}
-				//최후의 수단으로 dynamic_cast 해본다
-				else
-				{
-					pCom = dynamic_cast<T*>(mComponents[(int)ComType]);
-				}
 			}
 		}
 
@@ -246,7 +247,7 @@ namespace mh
 		{
 			return eComponentType::Animator;
 		}
-		else if constexpr (std::is_base_of_v<Com_Light3D, T>)
+		else if constexpr (std::is_base_of_v<ILight, T>)
 		{
 			return eComponentType::Light;
 		}
