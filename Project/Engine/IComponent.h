@@ -9,6 +9,7 @@ namespace mh
 	class GameObject;
 	class IComponent : public Entity
 	{
+		friend class ComMgr;
 	public:
 		IComponent(define::eComponentType _type);
 
@@ -26,13 +27,13 @@ namespace mh
 		virtual void Update() {};
 		virtual void FixedUpdate() = 0;
 
+		GameObject* GetOwner() const { return mOwner; }
+		void SetOwner(GameObject* _owner) { mOwner = _owner; }
+
 		define::eComponentType GetComType() const { return mType; };
 
 		void SetComTypeID(UINT32 _comTypeID) { mComTypeID = _comTypeID; }
 		UINT32 GetComTypeID() const { return mComTypeID; };
-
-		GameObject* GetOwner() const { return mOwner; }
-		void SetOwner(GameObject* _owner) { mOwner = _owner; }
 
 	private:
 		const define::eComponentType mType;

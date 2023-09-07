@@ -7,8 +7,8 @@
 
 namespace mh
 {
-	std::unordered_map<std::string_view, std::function<IComponent* ()>> ComMgr::mUmapComConstructor;
-	std::unordered_map<std::type_index, const std::string_view>         ComMgr::mUmapComName;
+	std::unordered_map<std::string_view, std::function<IComponent* ()>> ComMgr::mUmapComConstructor{};
+	std::vector<std::string_view> ComMgr::mComNamesByID{};
 
 	IComponent* ComMgr::GetNewCom(const std::string_view _strKey)
 	{
@@ -22,13 +22,6 @@ namespace mh
 		return com;
 	}
 
-	const std::string_view ComMgr::GetComName(const std::type_info& _typeid_T_)
-	{
-		const auto& iter = mUmapComName.find(std::type_index(_typeid_T_));
-		if (iter == mUmapComName.end())
-			return "";
-		return iter->second;
-	}
 
 	void ComMgr::Init()
 	{
@@ -37,7 +30,7 @@ namespace mh
 	void ComMgr::Release()
 	{
 		mUmapComConstructor.clear();
-		mUmapComName.clear();
+		mComNamesByID.clear();
 	}
 
 }
