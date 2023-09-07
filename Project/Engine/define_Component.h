@@ -1,5 +1,4 @@
 #pragma once
-
 #include "define_Macro.h"
 #include "define_Enum.h"
 
@@ -13,7 +12,7 @@ namespace mh::define
 		Transform,
 		Collider,
 		Animator,
-		Light,	
+		Light,
 		Camera,
 		Renderer,
 
@@ -28,7 +27,7 @@ namespace mh::define
 
 	namespace strKey
 	{
-		STRKEY ArrComName[(int)eComponentType::END] =
+		STRKEY eComponentType_String[(int)eComponentType::END] =
 		{
 			"Transform",
 			"Collider",

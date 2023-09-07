@@ -91,15 +91,29 @@ namespace mh
 	void Com_Light3D::FixedUpdate()
 	{
 		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
-
-		if (eLightType::Point == (eLightType)mAttribute.lightType)
+		if (nullptr == tr)
 		{
+			return;
+		}
+
+		switch ((eLightType)mAttribute.lightType)
+		{
+		case mh::define::eLightType::Directional:
+			mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
+			break;
+		case mh::define::eLightType::Point:
 			tr->SetRelativeScale(float3(mAttribute.radius * 5.f));
+			break;
+		case mh::define::eLightType::Spot:
+			break;
+		case mh::define::eLightType::END:
+			break;
+		default:
+			break;
 		}
 
 		float3 position = tr->GetRelativePos();
 		mAttribute.position = float4(position.x, position.y, position.z, 1.0f);
-		mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 
 		RenderMgr::PushLightAttribute(mAttribute);
 	}
@@ -112,8 +126,14 @@ namespace mh
 			return;
 		}
 
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::numberOfLight);
+		//Transform
+		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentType::Transform));
+		if (nullptr == tr)
+			return;
+		tr->BindData();
 
+		//Light
+		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::numberOfLight);
 		tCB_NumberOfLight data = {};
 		data.numberOfLight = (uint)RenderMgr::GetLights().size();
 		data.indexOfLight = mIndex;
@@ -124,6 +144,7 @@ namespace mh
 		mVolumeMesh->BindBuffer();
 		mLightMaterial->BindData();
 		mVolumeMesh->Render();
+		mLightMaterial->UnBindData();
 	}
 
 

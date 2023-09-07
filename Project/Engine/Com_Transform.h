@@ -68,10 +68,8 @@ namespace mh
         //어떤 도형이던 간에 안에 들어오는 형태의 정사각형 또는 정육면체를 만들 수 있다.(간이 충돌체로 적합)
         //사이즈 또는 스케일값이 변했을 경우 간이 충돌체 정보를 새로 생성.
         //현재 컬링 및 간이 충돌체 계산에 사용 중.
-
         bool IsUpdated() const { return mbNeedMyUpdate; }
         bool GetSizeUpdated() const { return mbSizeUpdated; }
-        bool GetDefaultScale() const { return mIsScaleDefault; }
 
         //inline Getter
         const float3& GetSize() const { return mSize; }
@@ -80,10 +78,10 @@ namespace mh
         float3 GetWorldSize() const;
 
         const float3& GetRelativePos() const { return mPosRelative; }
-        float3 GetWorldPos() const { return float3(mMatWorldWithoutSize.m[3]); }
-        float GetWorldPosX() const { return mMatWorldWithoutSize.m[3][0]; }
-        float GetWorldPosY() const { return mMatWorldWithoutSize.m[3][1]; }
-        float GetWorldPosZ() const { return mMatWorldWithoutSize.m[3][2]; }
+        float3 GetWorldPos() const { return float3(mMatRelative.m[3]); }
+        float GetWorldPosX() const { return mCB_Transform.World.m[3][0]; }
+        float GetWorldPosY() const { return mCB_Transform.World.m[3][1]; }
+        float GetWorldPosZ() const { return mCB_Transform.World.m[3][2]; }
         const float3& GetRelativeScale() const { return mScaleRelative; }
         float3 GetWorldScale() const;
 
@@ -100,9 +98,8 @@ namespace mh
         const float3& Forward() const { return mDirRelative[(int)define::eDirectionType::FRONT]; }
         const float3& Up() const { return mDirRelative[(int)define::eDirectionType::UP]; }
         const float3& Right() const { return mDirRelative[(int)define::eDirectionType::RIGHT]; }
-        float3 GetWorldDir(define::eDirectionType _eDir) const { return float3((float*)mMatWorldWithoutSize.m[(UINT)_eDir]).Normalize(); }
-        const MATRIX& GetWorldMatWithoutSize() const { return mMatWorldWithoutSize; }
-        const MATRIX& GetWorldMat() const { return mMatWorldFinal; }
+        float3 GetWorldDir(define::eDirectionType _eDir) const { return float3((float*)mMatRelative.m[(UINT)_eDir]).Normalize(); }
+        const MATRIX& GetWorldMat() const { return mCB_Transform.World; }
 
 
         //호출 시점: GameObject에서 FinalTick() 순회 끝난 이후
@@ -122,10 +119,6 @@ namespace mh
         float3    mSize;
         float3    mScaleRelative;
 
-        //Scale 정보가 1, 1, 1(기본값)이 아닐 경우 true
-        //Scale 정보가 단위행렬인데 계산할 필요는 없으므로 
-        bool    mIsScaleDefault;
-
         float3    mPosRelative;
         float3    mRotRelative;
 
@@ -136,18 +129,14 @@ namespace mh
         //월드 방향(모든 회전정보 누적)
         float3    mDirWorld[(int)define::eDirectionType::END];
 
-        //부모로부터 상속받지 않은 자신의 상대적 행렬
+        //상속받지 않은 고유 트랜스폼. Scale은 적용, Size는 미적용
         MATRIX  mMatRelative;
 
         //부모로부터 누적된 트랜스폼 정보
         MATRIX  mMatParent;
 
-        //자신의 사이즈 정보가 반영되지 않은 행렬
-        //자식 Com_Transform에 값을 넘겨줄 떄 이 행렬로 넘겨줘야 해서 별도로 분리함.
-        MATRIX  mMatWorldWithoutSize;
-
-        //부모로부터 상속받아 최종적으로 만들어진 월드행렬
-        MATRIX  mMatWorldFinal;
+        //최종 행렬은 여기에 저장됨
+        tCB_Transform mCB_Transform;
 
         bool    mbInheritScale;
         bool    mbInheritRot;
@@ -161,8 +150,6 @@ namespace mh
 
         //Size는 자신에게만 적용되는 고유값이므로 재귀형으로 전달할 필요 없음.
         bool    mbSizeUpdated;
-
-        tCB_Transform mCB_Transform;
     };
 
 
@@ -183,7 +170,6 @@ namespace mh
         mScaleRelative = _vScale;
         SetMyUpdate();
         mbSizeUpdated = true;
-        mIsScaleDefault = false;
     }
 
     inline void Com_Transform::SetRelativeScale(float _x, float _y, float _z)
@@ -191,28 +177,27 @@ namespace mh
         mScaleRelative = float3(_x, _y, _z);
         SetMyUpdate();
         mbSizeUpdated = true;
-        mIsScaleDefault = false;
     }
 
 
     inline float3 Com_Transform::GetWorldSize() const
     {
-        return float3(mMatWorldFinal.Right().Length(), mMatWorldFinal.Up().Length(), mMatWorldFinal.Forward().Length());
+        return float3(mCB_Transform.World.Right().Length(), mCB_Transform.World.Up().Length(), mCB_Transform.World.Forward().Length());
     }
 
     inline float3 Com_Transform::GetWorldScale() const
     {
-        return float3(mMatWorldWithoutSize.Right().Length(), mMatWorldWithoutSize.Up().Length(), mMatWorldWithoutSize.Forward().Length());
+        return float3(mCB_Transform.World.Right().Length(), mCB_Transform.World.Right().Length(), mCB_Transform.World.Right().Length());
     }
 
     inline MATRIX Com_Transform::GetWorldRotMat() const
     {
-        return MATRIX(mMatWorldWithoutSize.Right().Normalize(), mMatWorldWithoutSize.Up().Normalize(), mMatWorldWithoutSize.Forward().Normalize());
+        return MATRIX(mCB_Transform.World.Right().Normalize(), mCB_Transform.World.Up().Normalize(), mCB_Transform.World.Forward().Normalize());
     }
 
     inline float3 Com_Transform::GetWorldRot(define::eAxis3D _eAxis) const
     {
-        return mMatWorldWithoutSize.Axis((define::eAxis4D)_eAxis).Normalize();
+        return mCB_Transform.World.Axis((define::eAxis4D)_eAxis).Normalize();
     }
 
     inline void Com_Transform::ClearUpdateState()

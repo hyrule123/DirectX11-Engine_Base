@@ -16,13 +16,18 @@ namespace mh
 	Com_Transform::Com_Transform()
 		: mSize(1.f, 1.f, 1.f)
 		, mScaleRelative(1.f, 1.f, 1.f)
-		, mIsScaleDefault(true)
+		, mPosRelative{}
+		, mRotRelative{}
+		, mDirRelative{ float3::UnitX, float3::UnitY, float3::UnitZ }
+		, mDirWorld{ float3::UnitX, float3::UnitY, float3::UnitZ }
+		, mMatRelative{ MATRIX::Identity }
+		, mMatParent{ MATRIX::Identity }
+		, mCB_Transform{}
 		, mbInheritScale(true)
 		, mbInheritRot(true)
+		, mbLockRotation(false)
 		, mbSizeUpdated(true)
-		, mbLockRotation()
 		, mbNeedMyUpdate(true)
-		, mCB_Transform()
 	{
 	}
 
@@ -46,26 +51,26 @@ namespace mh
 		if (parent)
 		{
 			Com_Transform* tf = parent->GetComponent<Com_Transform>();
-			if(tf && tf->IsUpdated())
+			if (tf && tf->IsUpdated())
+			{
 				UpdateParentMatrix(tf);
+				mbNeedMyUpdate = true;
+			}
 		}
 		
 
 		//둘중에 하나라도 업데이트 되었을 경우 월드행렬을 새로 계산한다.
 		if (mbNeedMyUpdate || mbSizeUpdated)
 		{
-			//부모 행렬이 있을 경우 부모행렬을 곱해줌.
-			if (GetOwner()->GetParent())
-				mMatWorldWithoutSize = mMatRelative * mMatParent;
-			else
-				mMatWorldWithoutSize = mMatRelative;
+			//부모 트랜스폼이 없을 경우 mMatparent에는 단위행렬이 들어있음
+			mCB_Transform.World = mMatParent;
 
-			//자신의 사이즈가 반영된 최종 월드행렬을 계산
-			mMatWorldFinal = MATRIX::CreateScale(mSize) * mMatWorldWithoutSize;
+			//여기에 자신의 사이즈를 곱해줌
+			mCB_Transform.World *= MATRIX::CreateScale(mSize);
 
-
-			mCB_Transform.world = mMatWorldFinal;
-			mCB_Transform.inverseWorld = mMatWorldFinal.Invert();
+			//마지막으로 Relative Matrix를 곱해주면 끝
+			mCB_Transform.World *= mMatRelative;
+			mCB_Transform.InverseWorld = mCB_Transform.World.Invert();
 		}
 
 		Application::AddEndFrameFunc(std::bind(&Com_Transform::ClearUpdateState, this));
@@ -223,14 +228,8 @@ namespace mh
 
 	void Com_Transform::UpdateMyTransform()
 	{
-		mMatRelative = MATRIX::Identity;
-
 		//1. 크기행렬
-		if (false == mIsScaleDefault)
-		{
-			//크기행렬(CreateScale을 해주면 자동으로 동차좌표를 추가해서 행렬에 삽입해 준다.
-			mMatRelative *= MATRIX::CreateScale(mScaleRelative);
-		}
+		mMatRelative = MATRIX::CreateScale(mScaleRelative);
 
 		//2. 회전행렬
 		MATRIX matRot = MATRIX::CreateFromQuaternion(math::Quaternion::CreateFromYawPitchRoll(mRotRelative.y, mRotRelative.x, mRotRelative.z));
@@ -255,7 +254,7 @@ namespace mh
 
 		if (_parentTransform)
 		{
-			mMatParent = _parentTransform->GetWorldMatWithoutSize();
+			mMatParent = _parentTransform->GetWorldMat();
 
 			//부모 오브젝트가 있을 경우 부모의 월드행렬을 받아온다. 
 			//성공 시 true가 반환되므로 이 때는 상속 과정을 시작하면 됨
@@ -303,11 +302,11 @@ namespace mh
 
 	void Com_Transform::BindData()
 	{
-		mCB_Transform.view = Com_Camera::GetGpuViewMatrix();
-		mCB_Transform.inverseView = Com_Camera::GetGpuViewInvMatrix();
-		mCB_Transform.projection = Com_Camera::GetGpuProjectionMatrix();
-		mCB_Transform.WorldView = mCB_Transform.world * mCB_Transform.view;
-		mCB_Transform.WVP = mCB_Transform.WorldView * mCB_Transform.projection;
+		mCB_Transform.View = Com_Camera::GetGpuViewMatrix();
+		mCB_Transform.InverseView = Com_Camera::GetGpuViewInvMatrix();
+		mCB_Transform.Projection = Com_Camera::GetGpuProjectionMatrix();
+		mCB_Transform.WorldView = mCB_Transform.World * mCB_Transform.View;
+		mCB_Transform.WVP = mCB_Transform.WorldView * mCB_Transform.Projection;
 
 		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::Transform);
 		cb->SetData(&mCB_Transform);

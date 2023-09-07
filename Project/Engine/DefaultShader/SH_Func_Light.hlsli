@@ -48,13 +48,13 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLi
 	if (0 == lightInfo.lightType)
 	{
         // Light 의 ViewSpace 에서의 '방향'(w값 0)
-		LightDir = mul(float4(lightInfo.position.xyz, 0.f), CB_Transform.view).xyz;
+		LightDir = mul(float4(lightInfo.position.xyz, 0.f), CB_Transform.View).xyz;
 	}
     // point
 	else if (1 == lightInfo.lightType)
 	{
 		// Light 의 ViewSpace 에서의 '위치'(w값 1)
-		float4 LightViewPos = mul(float4(lightInfo.position.xyz, 1.f), CB_Transform.view);
+		float4 LightViewPos = mul(float4(lightInfo.position.xyz, 1.f), CB_Transform.View);
        
         // 표면위치 - 광원 위치 하면 방향 벡터를 구할 수 있음. 이걸 정규화
 		LightDir = normalize(viewPos - LightViewPos.xyz);

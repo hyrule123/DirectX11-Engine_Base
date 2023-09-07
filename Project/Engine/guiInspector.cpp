@@ -95,7 +95,7 @@ namespace gui
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(mh::define::strKey::ArrComName[(UINT)i]);
+			IndicatorButton(mh::define::strKey::eComponentType_String[(UINT)i]);
 
 			if (mTargetGameObject && mGuiComponents[i])
 				mGuiComponents[i]->FixedUpdate();

@@ -74,6 +74,7 @@ namespace mh
 		{
 			GameObject* dirLight = EventMgr::SpawnGameObject(eLayerType::Player);
 			dirLight->AddComponent<Com_Transform>();
+			dirLight->SetName("Point1000");
 
 			Com_Light3D* light3d = dirLight->AddComponent<Com_Light3D>();
 			light3d->SetLightType(eLightType::Point);
@@ -85,10 +86,11 @@ namespace mh
 		{
 			GameObject* dirLight = EventMgr::SpawnGameObject(eLayerType::Player);
 			dirLight->AddComponent<Com_Transform>();
+			dirLight->SetName("Point500");
 
 			Com_Light3D* light3d = dirLight->AddComponent<Com_Light3D>();
 			light3d->SetLightType(eLightType::Point);
-			light3d->SetRadius(10000.f);
+			light3d->SetRadius(500.f);
 
 			light3d->SetDiffuse(float4(0.7f, 0.7f, 0.7f, 1.f));
 			

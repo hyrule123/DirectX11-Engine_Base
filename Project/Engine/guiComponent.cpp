@@ -9,7 +9,7 @@
 namespace gui
 {
 	guiComponent::guiComponent(mh::define::eComponentType _type)
-		: guiChild(mh::define::strKey::ArrComName[(int)_type])
+		: guiChild(mh::define::strKey::eComponentType_String[(int)_type])
 		, mType(_type)
 		, mTarget(nullptr)
 	{

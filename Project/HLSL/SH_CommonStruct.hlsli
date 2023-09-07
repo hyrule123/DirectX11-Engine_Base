@@ -14,11 +14,11 @@ struct alignas(16)  tCB_Global
 
 struct alignas(16) tCB_Transform
 {
-	MATRIX world;
-	MATRIX inverseWorld;
-	MATRIX view;
-	MATRIX inverseView;
-	MATRIX projection;
+	MATRIX World;
+	MATRIX InverseWorld;
+	MATRIX View;
+	MATRIX InverseView;
+	MATRIX Projection;
 	
 	MATRIX WorldView;
 	MATRIX WVP;
