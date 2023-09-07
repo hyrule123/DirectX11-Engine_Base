@@ -70,7 +70,7 @@ namespace gui
 	{
 		mh::IRes* resource = static_cast<mh::IRes*>(_data.pData);
 
-		guiInspector* inspector = guiMgr::FindGuiWindow<guiInspector>(strKey::Inspector);
+		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);
 		//inspector->InitializeTargetResource();
 	}

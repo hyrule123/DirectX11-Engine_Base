@@ -21,13 +21,6 @@ namespace gui
 		static inline bool GetEnable() { return mbEnable; }
 		static inline void ToggleEnable() { SetEnable(!mbEnable); }
 
-		template<typename T>
-		static T* FindGuiWindow(const std::string_view _strKey);
-
-		//타입만으로도 검색 가능, 느림
-		template <typename T>
-		static T* FindGuiWindow();
-
 		static guiBase* FindGuiWindow(const std::string_view _strKey);
 
 		template <typename T>
@@ -90,20 +83,6 @@ namespace gui
 			guiMgr::Init();
 			mbInitialized = true;
 		}
-	}
-
-	template <typename T>
-	inline T* guiMgr::FindGuiWindow(const std::string_view _name)
-	{
-		return dynamic_cast<T*>(FindGuiWindow(_name));
-	}
-
-	template<typename T>
-	inline T* guiMgr::FindGuiWindow()
-	{
-		T t{};
-		const std::string& guiName = t.GetName();
-		return FindGuiWindow<T>(guiName);
 	}
 
 

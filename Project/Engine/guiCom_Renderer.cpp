@@ -45,7 +45,7 @@ namespace gui
 
 
 			mMaterial = meshRenderer->GetCurrentMaterial(0);
-			mMesh = meshRenderer->GetMesh();
+			mMesh = meshRenderer->GetMesh().get();
 		}
 	}
 
@@ -65,7 +65,7 @@ namespace gui
 		ImGui::SameLine();
 		if (ImGui::Button("##MeshBtn", ImVec2(15.0f, 15.0f)))
 		{
-			guiList* listUI = guiMgr::FindGuiWindow<guiList>("ListWidget");
+			guiList* listUI = static_cast<guiList*>(guiMgr::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			
 
@@ -92,7 +92,7 @@ namespace gui
 		ImGui::SameLine();
 		if (ImGui::Button("##MaterialBtn", ImVec2(15.0f, 15.0f)))
 		{
-			guiList* listUI = guiMgr::FindGuiWindow<guiList>("ListWidget");
+			guiList* listUI = static_cast<guiList*>(guiMgr::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
@@ -115,7 +115,7 @@ namespace gui
 	{
 		std::shared_ptr<mh::Mesh> mesh = mh::ResMgr::Find<mh::Mesh>(_strKey);
 
-		guiInspector* inspector = guiMgr::FindGuiWindow<guiInspector>("guiInspector");
+		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMesh(mesh);
 	}
 
@@ -123,7 +123,7 @@ namespace gui
 	{
 		std::shared_ptr<mh::Material> material = mh::ResMgr::Find<mh::Material>(_strKey);
 
-		guiInspector* inspector = guiMgr::FindGuiWindow<guiInspector>("guiInspector");
+		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMaterial(material, 0);
 	}
 }

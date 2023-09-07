@@ -18,11 +18,10 @@ namespace gui
 
 	void guiTexture::UpdateUI()
 	{
-		mh::Texture* targetTex 
-			= dynamic_cast<mh::Texture*>(GetTarget());
-
-		if (targetTex == nullptr)
+		if (false == IsValid())
 			return;
+
+		mh::Texture* targetTex = static_cast<mh::Texture*>(GetTarget());
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 

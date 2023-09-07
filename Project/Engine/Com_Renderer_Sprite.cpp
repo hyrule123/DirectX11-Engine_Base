@@ -43,15 +43,7 @@ namespace mh
 
 	void Com_Renderer_Sprite::FixedUpdate()
 	{
-		IAnimator* animator = static_cast<IAnimator*>(GetOwner()->GetComponent(eComponentType::Animator));
-		if (nullptr == animator)
-		{
-			mAnimator = nullptr;
-		}
-		else if (nullptr == mAnimator && animator)
-		{
-			mAnimator = dynamic_cast<Com_Animator2D*>(animator);
-		}
+		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
 	}
 
 	void Com_Renderer_Sprite::Render()

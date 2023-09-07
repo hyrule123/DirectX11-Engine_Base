@@ -48,7 +48,7 @@ namespace gui
 	void guiTree_GameObject::GameobjectSelectCallback(mh::define::tDataPtr _data)
 	{
 		mh::RenderMgr::SetInspectorGameObject(static_cast<mh::GameObject*>(_data.pData));
-		guiInspector* inspector = guiMgr::FindGuiWindow<guiInspector>(strKey::Inspector);
+		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetGameObject(mh::RenderMgr::GetInspectorGameObject());
 	}
 
