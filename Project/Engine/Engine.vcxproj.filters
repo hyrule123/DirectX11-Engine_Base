@@ -512,6 +512,9 @@
     <ClCompile Include="ParticleShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
+    <ClCompile Include="guiUVCalculator.cpp">
+      <Filter>GuiEditor\Instances</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -896,6 +899,9 @@
     </ClInclude>
     <ClInclude Include="ParticleShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
+    </ClInclude>
+    <ClInclude Include="guiUVCalculator.h">
+      <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

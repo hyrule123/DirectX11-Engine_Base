@@ -25,11 +25,11 @@ namespace gui
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		std::string key = targetTex->GetKey();
+		const std::string& key = targetTex->GetKey();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"
-			, (char*)key.data(), key.size(), ImGuiInputTextFlags_ReadOnly);
+			, (char*)key.c_str(), key.size(), ImGuiInputTextFlags_ReadOnly);
 
 		//ImGui::Text("Path	"); ImGui::SameLine();
 		//ImGui::InputText("##TexPath"

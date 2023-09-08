@@ -7,7 +7,6 @@ namespace gui
 	guiWindow::guiWindow(const std::string_view _strName)
 		: guiBase(_strName)
 		, mWindowFlag()
-		//, mSize()
 	{
 		SetSaveEnable(true);
 	}

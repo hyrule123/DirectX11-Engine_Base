@@ -34,6 +34,7 @@
 #include "guiEditorObject.h"
 #include "guiMaterialEditor.h"
 #include "guiNormalConverter.h"
+#include "guiUVCalculator.h"
 
 #include "json-cpp/json.h"
 
@@ -294,6 +295,8 @@ namespace gui
 		AddGuiWindow<guiMaterialEditor>();
 
 		AddGuiWindow<guiNormalConverter>();
+
+		AddGuiWindow<guiUVCalculator>();
 	}
 
 	void guiMgr::ImGuiInitialize()
