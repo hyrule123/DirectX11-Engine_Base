@@ -39,7 +39,7 @@ namespace mh
 		//Player/Player.json 형태로 저장한다.
 		std::fs::path fileName = _filePath;
 		fileName.replace_extension();
-		fileName /= fileName;		
+		fileName = fileName / fileName;		
 		fileName.replace_extension(strKey::Ext_MeshData);
 
 		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
@@ -350,7 +350,7 @@ namespace mh
 		std::fs::path filePath = _dirAndFileName;
 		filePath.replace_extension();
 		//Res/MeshData/Player/Player
-		filePath /= filePath;
+		filePath = filePath / filePath;
 
 		//Bone 정보 로드
 		mSkeleton = std::make_shared<Skeleton>();

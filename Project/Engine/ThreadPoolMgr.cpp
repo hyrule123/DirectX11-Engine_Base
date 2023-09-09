@@ -46,6 +46,13 @@ namespace mh
         mStopAll = true;
         mCVJobqueue.notify_all();
 
+        //큐를 비워준다
+        {
+            std::unique_lock<std::mutex> lock(mMtxJobQueue);
+            std::queue<std::function<void()>> emptyQueue;
+            mJobs.swap(emptyQueue);
+        }
+
         for (auto& t : mWorkerThreads)
         {
             t.join();
@@ -57,7 +64,7 @@ namespace mh
         while (true) 
         {
             std::unique_lock<std::mutex> lock(mMtxJobQueue);
-            mCVJobqueue.wait(lock, []() { return !mJobs.empty() || mStopAll; });
+            mCVJobqueue.wait(lock, []() { return false == mJobs.empty() || mStopAll; });
             if (mStopAll && mJobs.empty()) 
             {
                 return;

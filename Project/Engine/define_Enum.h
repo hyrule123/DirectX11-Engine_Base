@@ -6,10 +6,14 @@ namespace mh
 {
 	enum class eResult
 	{
+		//음수 = 성공
+		//이 아래로 성공 관련 변수를 저장
+		Success = -1,
+
 		Fail_NotImplemented = 0,
 
-		//음수 ~ 0 = 실패
-		Fail = INT_MIN,
+		//양수 = 실패
+		Fail,
 
 		Fail_OpenFile,
 
@@ -26,13 +30,9 @@ namespace mh
 		Fail_PathNotExist,
 
 		Fail_Empty,
-
-		//양수 = 성공
-		//이 아래로 성공 관련 변수를 저장
-		Success = 1
 	};
-	inline bool eResultSuccess(eResult _result) { return ((int)_result >= (int)eResult::Success); }
-	inline bool eResultFail(eResult _result) { return ((int)_result < (int)eResult::Success); }
+	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
+	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
 
 	namespace define
 	{

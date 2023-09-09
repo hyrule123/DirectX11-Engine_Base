@@ -14,7 +14,6 @@ namespace gui
 		, mFBXPath()
 		, mOutputDirName()
 		, mbStatic(true)
-		, mThreadWorking()
 	{
 	}
 
@@ -30,35 +29,15 @@ namespace gui
 
 	void guiFBXConverter::UpdateUI()
 	{
-		if (mMeshData.valid())
-		{
-			std::future_status status = mMeshData.wait_for(std::chrono::milliseconds(10));
-			if (status == std::future_status::ready)
-			{
-				try
-				{
-					std::shared_ptr<mh::MeshData> meshData = mMeshData.get();
-					if (meshData)
-					{
-						meshData->Save("Test");
-					}
-
-					mMeshData = {};
-				}
-				catch (const std::system_error& _err)
-				{
-					std::string err = _err.what();
-					int a = 3;
-				}
-				
-
-			}
-		}
-
-
 
 		if (CheckThread())
 			return;
+
+
+
+
+		//if (CheckThread())
+			//return;
 
 
 		HilightText("FBX Source File Path");
@@ -99,14 +78,10 @@ namespace gui
 	}
 	bool guiFBXConverter::CheckThread()
 	{
-		if (mThreadWorking)
+		bool working = false;
+		if (mFutureConvertResult.valid())
 		{
-			std::condition_variable cv{};
-			std::mutex mtx{};
-			std::unique_lock<std::mutex> lock(mtx);
-
-			std::future_status status = mFutureData.wait_for(std::chrono::milliseconds(10));
-
+			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
 			waitDot += mh::TimeMgr::DeltaTime();
@@ -119,29 +94,34 @@ namespace gui
 					waitDotCount = 0;
 				}
 			}
-			if (std::future_status::timeout == status)
+
+			std::future_status status = mFutureConvertResult.wait_for(std::chrono::milliseconds(10));
+			if (status == std::future_status::ready)
+			{
+				mh::eResult result = mFutureConvertResult.get();
+				if (mh::eResultSuccess(result))
+				{
+					NOTIFICATION_W(L"저장 성공");
+				}
+				else
+				{
+					NOTIFICATION_W(L"저장 실패");
+				}
+
+				//future 초기화해서 invalid로 만들어줌
+				mFutureConvertResult = {};
+			}
+			else if (std::future_status::timeout == status)
 			{
 				std::string loading = "Loading";
 				for (int i = 0; i < waitDotCount; ++i)
 				{
 					loading += ".";
 				}
-				ImGui::Button(loading.c_str());
-			}
-			else if (std::future_status::ready == status)
-			{
-				if (mh::eResultSuccess(mFutureData.get()))
-				{
-					NOTIFICATION_W(L"FBX 변환 성공.");
-				}
-				else
-				{
-					NOTIFICATION_W(L"FBX 변환 실패.");
-				}
+				HilightText(loading.c_str());
 			}
 		}
-
-		return mThreadWorking;
+		return working;
 	}
 	void guiFBXConverter::ChooseFBXButton()
 	{
@@ -172,27 +152,19 @@ namespace gui
 				return;
 			}
 			
-			mMeshData = mh::ThreadPoolMgr::EnqueueJob(
-				[this]()->std::shared_ptr<mh::MeshData>
+			mFutureConvertResult = mh::ThreadPoolMgr::EnqueueJob(
+				[this]()->mh::eResult
 				{
-					std::shared_ptr<mh::MeshData> meshData = std::make_shared<mh::MeshData>();
+					std::shared_ptr<mh::MeshData> meshData = std::make_unique<mh::MeshData>();
 					mh::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
-					if (mh::eResultFail(result))
+					if (mh::eResultSuccess(result))
 					{
-						meshData = nullptr;
+						result = meshData->Save(mOutputDirName);
 					}
 
-					return meshData;
+					return result;
 				}
 			);
-
-
-
-			//promise 초기화
-			//mPromise = {};
-			//mFutureData = mPromise.get_future();
-			//mLoaderThread = std::jthread(&guiFBXConverter::MultiThreadedFBXLoad, this);
-			//mThreadWorking = true;
 		}
 	}
 
@@ -224,24 +196,6 @@ namespace gui
 				mh::MeshData::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
 			}
 		}
-	}
-
-	void guiFBXConverter::MultiThreadedFBXLoad()
-	{
-		std::mutex mtx{};
-		std::unique_lock<std::mutex> lock(mtx);
-
-		std::shared_ptr<mh::MeshData> meshData = std::make_shared<mh::MeshData>();
-		mh::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
-
-		if (mh::eResultFail(result))
-		{
-			MessageBoxW(nullptr, L"FBX 로드 실패.", nullptr, MB_OK);
-		}
-
-		mPromise.set_value(result);
-
-		mThreadWorking = false;
 	}
 
 	void guiFBXConverter::LoadProjMeshDataCombo()

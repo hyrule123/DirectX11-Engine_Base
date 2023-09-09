@@ -1250,19 +1250,8 @@ namespace mh
 		assert(nullptr != pTex);
 
 		pTex = ResMgr::Load<Texture>(texture::Brick);
-		
 		assert(nullptr != pTex);
 
-		pTex = ResMgr::Load<Texture>(texture::Brick_N);
-		pTex->BindDataSRV(127u, eShaderStageFlag::ALL);
-		assert(nullptr != pTex);
-
-#pragma endregion
-#pragma region DYNAMIC TEXTURE
-		std::shared_ptr<Texture> uavTexture = std::make_shared<Texture>();
-		uavTexture->Create(1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE
-			| D3D11_BIND_UNORDERED_ACCESS);
-		ResMgr::Insert(texture::PaintTexture, uavTexture);
 #pragma endregion
 
 		//noise
@@ -1426,12 +1415,9 @@ namespace mh
 	{
 		using namespace strKey::Default;
 #pragma region DEFAULT
-		std::shared_ptr <Texture> texture = ResMgr::Find<Texture>(texture::PaintTexture);
-		texture->SetEngineDefaultRes(true);
 		std::shared_ptr<GraphicsShader> shader = ResMgr::Find<GraphicsShader>(shader::graphics::RectShader);
 		std::shared_ptr<Material> RectMaterial = std::make_shared<Material>();
 		RectMaterial->SetShader(shader);
-		RectMaterial->SetTexture(eTextureSlot::Albedo, texture);
 		RectMaterial->SetEngineDefaultRes(true);
 		ResMgr::Insert(material::RectMaterial, RectMaterial);
 #pragma endregion

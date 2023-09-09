@@ -114,7 +114,7 @@ namespace mh
 		std::shared_ptr<T> NewRes = std::make_shared<T>();
 
 		//Load 실패 시 nullptr 반환
-		if (FAILED(NewRes->Load(_filePath)))
+		if (eResultFail(NewRes->Load(_filePath)))
 			return nullptr;
 
 

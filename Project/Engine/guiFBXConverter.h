@@ -30,9 +30,6 @@ namespace gui
 		void ConvertFBXButton();
 		void AddAnimationFromSameModeling();
 
-		void MultiThreadedFBXLoad();
-
-
 		void LoadProjMeshDataCombo();
 
 	private:
@@ -40,11 +37,7 @@ namespace gui
 		std::string		mOutputDirName;
 		bool			mbStatic;
 
-		std::jthread	mLoaderThread;
-		std::promise<mh::eResult>	mPromise;
-		std::future<mh::eResult>	mFutureData;
-		std::future<std::shared_ptr<mh::MeshData>> mMeshData;
-		bool			mThreadWorking;
+		std::future<mh::eResult> mFutureConvertResult;
 
 		guiComboBox		mProjMeshDataCombo;
 	};
