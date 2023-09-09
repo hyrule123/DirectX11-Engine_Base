@@ -15,6 +15,9 @@
 #include "PathMgr.h"
 #include "EventMgr.h"
 #include "guiMgr.h"
+#include "ThreadPoolMgr.h"
+
+#include "define_Global.h"
 
 namespace mh
 {
@@ -37,6 +40,11 @@ namespace mh
 
 		SetWindowPos(_AppDesc.LeftWindowPos, _AppDesc.TopWindowPos);
 		SetWindowSize(_AppDesc.Width, _AppDesc.Height);
+
+
+		ThreadPoolMgr::Init((size_t)std::thread::hardware_concurrency());
+
+
 
 		PathMgr::Init();
 

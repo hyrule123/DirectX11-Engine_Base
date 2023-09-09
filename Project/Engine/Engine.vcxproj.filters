@@ -515,6 +515,9 @@
     <ClCompile Include="guiUVCalculator.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadPoolMgr.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -902,6 +905,9 @@
     </ClInclude>
     <ClInclude Include="guiUVCalculator.h">
       <Filter>GuiEditor\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPoolMgr.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

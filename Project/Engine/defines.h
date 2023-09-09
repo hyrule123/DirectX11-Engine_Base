@@ -6,3 +6,4 @@
 
 #include "define_Component.h"
 #include "define_Res.h"
+#include "define_Global.h"

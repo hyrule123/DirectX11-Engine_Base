@@ -287,6 +287,7 @@ namespace mh
 			{
 				subsetIndex = material->GetIndexArray().GetAt(i);
 			}
+
 			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[0]);
 			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[2]);
 			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[1]);

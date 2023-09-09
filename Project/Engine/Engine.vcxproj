@@ -375,6 +375,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="strKey_gui.h" />
     <ClInclude Include="StructBuffer.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="ThreadPoolMgr.h" />
     <ClInclude Include="TimeMgr.h" />
     <ClInclude Include="Com_Transform.h" />
     <ClInclude Include="define_Util.h" />
@@ -547,6 +548,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="StructBuffer.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="ThreadPoolMgr.cpp" />
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="Com_Transform.cpp" />
     <ClCompile Include="define_Util.cpp" />

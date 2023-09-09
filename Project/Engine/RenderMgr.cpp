@@ -26,8 +26,7 @@
 #include "DefaultShaders.h"
 
 #include "GPUInitSetting.h"
-
-extern mh::Application gApplication;
+#include "define_Global.h"
 
 namespace mh
 {
@@ -222,14 +221,12 @@ namespace mh
 
 	void RenderMgr::UpdateGlobalCBuffer()
 	{
-		tCB_Global cb{};
-		cb.uResolution.x = GPUMgr::GetResolutionX();
-		cb.uResolution.y = GPUMgr::GetResolutionY();
-		cb.fResolution.x = (float)cb.uResolution.x;
-		cb.fResolution.y = (float)cb.uResolution.y;
-		cb.DeltaTime = TimeMgr::DeltaTime();
+		gGlobal.DeltaTime = TimeMgr::DeltaTime();
+		gGlobal.AccFramePrev = gGlobal.AccFrame;
+		gGlobal.AccFrame += 1u;
+		
 		ConstBuffer* global = GetConstBuffer(eCBType::Global);
-		global->SetData(&cb);
+		global->SetData(&gGlobal);
 		global->BindData();
 	}
 

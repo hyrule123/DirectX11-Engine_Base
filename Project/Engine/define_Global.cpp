@@ -4,4 +4,5 @@
 namespace mh
 {
 	tGPUInitSetting gGPUInitSetting{};
+	tCB_Global		gGlobal{};
 }

@@ -43,6 +43,7 @@ namespace gui
 		std::jthread	mLoaderThread;
 		std::promise<mh::eResult>	mPromise;
 		std::future<mh::eResult>	mFutureData;
+		std::future<std::shared_ptr<mh::MeshData>> mMeshData;
 		bool			mThreadWorking;
 
 		guiComboBox		mProjMeshDataCombo;

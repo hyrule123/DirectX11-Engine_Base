@@ -56,6 +56,7 @@ namespace mh
         std::ofstream ofs(fullPath, std::ios::binary);
         if (false == ofs.is_open())
         {
+            std::fs::path npt = std::fs::absolute(fullPath);
             ERROR_MESSAGE_W(L"파일 오픈 실패");
             return eResult::Fail_OpenFile;
         }

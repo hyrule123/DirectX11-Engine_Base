@@ -5,6 +5,7 @@
 #include "define_Util.h"
 #include "MeshData.h"
 #include "TimeMgr.h"
+#include "ThreadPoolMgr.h"
 
 namespace gui
 {
@@ -29,6 +30,33 @@ namespace gui
 
 	void guiFBXConverter::UpdateUI()
 	{
+		if (mMeshData.valid())
+		{
+			std::future_status status = mMeshData.wait_for(std::chrono::milliseconds(10));
+			if (status == std::future_status::ready)
+			{
+				try
+				{
+					std::shared_ptr<mh::MeshData> meshData = mMeshData.get();
+					if (meshData)
+					{
+						meshData->Save("Test");
+					}
+
+					mMeshData = {};
+				}
+				catch (const std::system_error& _err)
+				{
+					std::string err = _err.what();
+					int a = 3;
+				}
+				
+
+			}
+		}
+
+
+
 		if (CheckThread())
 			return;
 
@@ -144,11 +172,27 @@ namespace gui
 				return;
 			}
 			
+			mMeshData = mh::ThreadPoolMgr::EnqueueJob(
+				[this]()->std::shared_ptr<mh::MeshData>
+				{
+					std::shared_ptr<mh::MeshData> meshData = std::make_shared<mh::MeshData>();
+					mh::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
+					if (mh::eResultFail(result))
+					{
+						meshData = nullptr;
+					}
+
+					return meshData;
+				}
+			);
+
+
+
 			//promise 초기화
-			mPromise = {};
-			mFutureData = mPromise.get_future();
-			mLoaderThread = std::jthread(&guiFBXConverter::MultiThreadedFBXLoad, this);
-			mThreadWorking = true;
+			//mPromise = {};
+			//mFutureData = mPromise.get_future();
+			//mLoaderThread = std::jthread(&guiFBXConverter::MultiThreadedFBXLoad, this);
+			//mThreadWorking = true;
 		}
 	}
 

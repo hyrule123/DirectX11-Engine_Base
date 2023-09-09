@@ -8,8 +8,11 @@ struct alignas(16)  tCB_Global
 {
 	uint2 uResolution;
 	float2 fResolution;
+	
 	float DeltaTime;
-	int3 PadGlobal;
+	uint AccFramePrev;
+	uint AccFrame;	//여태까지 누적된 프레임 갯수
+	int PadGlobal;
 };
 
 struct alignas(16) tCB_Transform

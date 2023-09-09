@@ -11,7 +11,7 @@
 #include "Texture.h"
 
 #include "GPUInitSetting.h"
-
+#include "define_Global.h"
 
 namespace mh
 {
@@ -132,6 +132,9 @@ namespace mh
 		{
 			return false;
 		}
+
+		gGlobal.uResolution = uint2(_ResolutionX, _ResolutionY);
+		gGlobal.fResolution = float2(_ResolutionX, _ResolutionY);
 
 		return true;
 	}
