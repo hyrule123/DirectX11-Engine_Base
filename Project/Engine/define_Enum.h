@@ -1,7 +1,5 @@
 #pragma once
 
-#include <limits.h>
-
 namespace mh
 {
 	enum class eResult

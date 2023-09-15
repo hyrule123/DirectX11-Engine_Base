@@ -139,7 +139,7 @@ HRESULT DirTreeNode::GetAllFiles(__out std::vector<stdfs::path>& _vecFile, bool 
 }
 
 
-HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension)
+HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<std::string, ePrevFileStatus>& _prevFiles)
 {
 	if (false == IsRoot())
 	{
@@ -186,11 +186,28 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 				strCode += "/";
 			}
 
+			{
+				std::string fileName{};
+				if (_bEraseExtension)
+					fileName += m_vecFileName[i].replace_extension("").string();
+				else
+					fileName += m_vecFileName[i].string();
 
-			if (_bEraseExtension)
-				strCode += m_vecFileName[i].replace_extension("").string();
-			else
-				strCode += m_vecFileName[i].string();
+				strCode += fileName;
+
+				//이전에 작성했던 파일명이면 찾았다는 의미의 true로 변경
+				//그렇지 않을 경우 false로 새로 등록
+				auto iter = _prevFiles.find(fileName);
+				if (iter == _prevFiles.end())
+				{
+					_prevFiles.insert(std::make_pair(fileName, ePrevFileStatus::New));
+				}
+				else
+				{
+					iter->second = ePrevFileStatus::Found;
+				}
+			}
+
 
 
 			strCode += "\";";
@@ -203,7 +220,7 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 		size_t size = m_vecChild.size();
 		for (size_t i = 0; i < size; ++i)
 		{
-			HRESULT hr = m_vecChild[i]->WriteStrKeyTree(_CodeWriter, _bEraseExtension);
+			HRESULT hr = m_vecChild[i]->WriteStrKeyTree(_CodeWriter, _bEraseExtension, _prevFiles);
 			if (FAILED(hr))
 			{
 				return E_FAIL;

@@ -8,12 +8,10 @@ namespace mh
 	{
 	public:
 		Com_BehaviorTree();
+
 		CLONE_DISABLE(Com_BehaviorTree);
 
 		virtual ~Com_BehaviorTree();
-
-		//virtual eResult SaveJson(Json::Value* _pJVal) override;
-		//virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
 	public:
 		virtual void Init() override;

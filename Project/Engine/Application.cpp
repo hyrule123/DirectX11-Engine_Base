@@ -3,7 +3,7 @@
 
 #include "AtExit.h"
 
-#include "DefaultComInitializer.h"
+#include "ComponentInitializer.h"
 #include "RenderMgr.h"
 #include "TimeMgr.h"
 #include "InputMgr.h"
@@ -61,7 +61,7 @@ namespace mh
 		FontWrapper::Init();
 
 
-		DefaultComInitializer::Init();
+		ComponentInitializer::Init();
 		
 		TimeMgr::Init();
 		InputMgr::Init();

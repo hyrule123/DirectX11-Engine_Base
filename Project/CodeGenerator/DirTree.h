@@ -7,10 +7,10 @@
 
 struct tAddBaseClassDesc
 {
-	stdfs::path _FilePath;
+	stdfs::path FilePath;
+	std::string ClassName;
 	std::string BaseType;
 	std::string IncludePCH;
-	std::string IncludeMasterHeader;
 	std::string IncludeManagerHeader;
 	std::string IncludeStrKeyHeaderName;
 	std::string IncludeBaseTypeHeader;
@@ -37,12 +37,20 @@ public:
 
 	HRESULT CreateShaderStrKey(stdfs::path const& _FilePath);
 
-
+private:
+	std::unordered_map<std::string, ePrevFileStatus> ReadPrevFilesList(const stdfs::path& _filePath);
+	bool CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<std::string, ePrevFileStatus>& _prevFilesList);
+	inline void ClearPrevFilesList(const stdfs::path& _filePath);
 
 private:
 	DirTreeNode m_RootDir;
 };
 
+inline void DirTree::ClearPrevFilesList(const stdfs::path& _filePath)
+{
+	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"), std::ios::trunc);
+	ofs.close();
+}
 
 
 

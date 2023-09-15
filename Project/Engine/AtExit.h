@@ -11,6 +11,7 @@ public:
 	static void AddFunc(std::function<void()> _Func) { mAtExitFuncs.push(_Func); }
 	static void CallAtExit();
 
+
 private:
 	AtExit() = delete;
 	~AtExit() = delete;

@@ -1,6 +1,7 @@
 #pragma once
 #include "define_Macro.h"
 #include "define_Enum.h"
+#include "strKey_Component.h"
 
 namespace mh::define
 {
@@ -42,30 +43,5 @@ namespace mh::define
 			"BehaviorTree",
 			"Scripts"
 		};
-
-		namespace Default
-		{
-			namespace com
-			{
-				STRKEY_DECLARE(Com_DummyTransform);
-				STRKEY_DECLARE(Com_Transform);
-
-				STRKEY_DECLARE(Com_Animator2D);
-				STRKEY_DECLARE(Com_Animator3D);
-				STRKEY_DECLARE(Com_DummyAnimator);
-
-				STRKEY_DECLARE(Com_AudioListener);
-				STRKEY_DECLARE(Com_AudioSource);
-				STRKEY_DECLARE(Com_Camera);
-				STRKEY_DECLARE(Com_Light3D);
-				STRKEY_DECLARE(Com_Renderer_Mesh);
-				STRKEY_DECLARE(Com_Renderer_3DAnimMesh);
-				STRKEY_DECLARE(Com_Renderer_ParticleSystem);
-				STRKEY_DECLARE(Com_Renderer_Sprite);
-
-				STRKEY_DECLARE(Com_BehaviorTree);				
-				STRKEY_DECLARE(Com_Renderer_UIBase);
-			}
-		}
 	}
 }

@@ -44,12 +44,31 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 	strCode += _RootNamespace.string();
 	Writer.WriteCode(0, strCode);
 
-	HRESULT hr = m_RootDir.WriteStrKeyTree(Writer, _bEraseExtension);
+	//이전에 작성했던 파일 리스트가 있는지 확인 및 리스트 로드
+	std::unordered_map<std::string, ePrevFileStatus> prevFiles = ReadPrevFilesList(_FilePath);
 
+	HRESULT hr = m_RootDir.WriteStrKeyTree(Writer, _bEraseExtension, prevFiles);
 	if (FAILED(hr))
 		return hr;
 
-	return Writer.SaveAll<char>(_FilePath);
+	////////////////////////////////////////////////////////
+	//찾은 파일 리스트 저장 및 새로운 파일 발견여부 확인
+	bool bNewFileFound = CheckAndcreatePrevFilesList(_FilePath, prevFiles);
+	////////////////////////////////////////////////////
+
+
+	//새 파일 발견되었을 경우 저장
+	hr = S_OK;
+	if (bNewFileFound)
+	{
+		hr = Writer.SaveAll<char>(_FilePath);
+		if (FAILED(hr))
+		{
+			//저장 실패 시 txt 파일 내용도 제거
+			ClearPrevFilesList(_FilePath);
+		}
+	}
+	return hr;
 }
 
 
@@ -65,7 +84,12 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 	{
 		Writer.WriteCode(0, _Desc.IncludePCH);
 		Writer.WriteCode(0);
-		Writer.WriteCode(0, _Desc.IncludeMasterHeader);
+		
+		std::string includeHeader = "#include \"";
+		includeHeader += _Desc.ClassName;
+		includeHeader += R"(.h")";
+		Writer.WriteCode(0, includeHeader);
+
 		Writer.WriteCode(0, _Desc.IncludeManagerHeader);
 	}
 	{
@@ -96,7 +120,9 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 			Writer.WriteCode(1, _Desc.UsingNamespace);
 		}
 
-		std::string strCode = "void ContentsClassInitializer::";
+		std::string strCode = "void ";
+		strCode += _Desc.ClassName;
+		strCode += "::";
 		strCode += _Desc.UserClassMgr_InitFuncName;
 
 		Writer.WriteCode(1, strCode);
@@ -136,11 +162,12 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 		}
 	}
 
-
 	Writer.CloseBracket(1, false);
 	Writer.CloseBracket(1, false);
 
-	HRESULT hr = Writer.SaveAll<char>(_Desc._FilePath);
+	
+
+	HRESULT hr = Writer.SaveAll<char>(_Desc.FilePath);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK;
@@ -271,6 +298,73 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 
 	return Writer.SaveAll<char>(_FilePath);
 }
+
+std::unordered_map<std::string, ePrevFileStatus> DirTree::ReadPrevFilesList(const stdfs::path& _filePath)
+{
+	std::unordered_map<std::string, ePrevFileStatus> prevFiles{};
+
+	std::ifstream ifs(stdfs::path(_filePath).replace_extension(".txt"));
+	if (ifs.is_open())
+	{
+		std::string fileName;
+		while (std::getline(ifs, fileName))
+		{
+			prevFiles.insert(std::make_pair(fileName, ePrevFileStatus::NotFound));
+		}
+
+		ifs.close();
+	}
+
+
+	return prevFiles;
+}
+
+bool DirTree::CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<std::string, ePrevFileStatus>& _prevFilesList)
+{
+	bool bNewFilesFound = false;
+	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
+	if (ofs.is_open())
+	{
+		for (auto iter = _prevFilesList.begin(); iter != _prevFilesList.end();)
+		{
+			switch (iter->second)
+			{
+				//이전에 있었는데 없었을 경우 지워버린다
+			case ePrevFileStatus::NotFound:
+			{
+				iter = _prevFilesList.erase(iter);
+			}
+			break;
+
+			case ePrevFileStatus::Found:
+			{
+				ofs << iter->first << std::endl;
+				++iter;
+			}
+			break;
+
+			case ePrevFileStatus::New:
+			{
+				//새 파일을 발견했는지 확인(하나라도 New == 새 파일 발견)
+				bNewFilesFound = true;
+
+				ofs << iter->first << std::endl;
+				++iter;
+			}
+			break;
+
+			default:
+				assert(false);
+				break;
+			}
+		}
+		ofs.close();
+	}
+
+	return bNewFilesFound;
+}
+
+
 
 
 namespace mh

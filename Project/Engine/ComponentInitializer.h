@@ -1,8 +1,8 @@
-#pragma once
+	#pragma once
 
 namespace mh
 {
-	class DefaultComInitializer
+	class ComponentInitializer
 	{
 	public:
 		static void Init();

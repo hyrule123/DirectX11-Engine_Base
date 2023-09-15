@@ -297,9 +297,6 @@
     <ClCompile Include="ComMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="DefaultComInitializer.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Com_Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
@@ -518,6 +515,9 @@
     <ClCompile Include="ThreadPoolMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentInitializer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -666,9 +666,6 @@
     </ClInclude>
     <ClInclude Include="ComMgr.h">
       <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultComInitializer.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Com_Transform.h">
       <Filter>Component\Transform</Filter>
@@ -908,6 +905,12 @@
     </ClInclude>
     <ClInclude Include="ThreadPoolMgr.h">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentInitializer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="strKey_Component.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

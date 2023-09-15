@@ -190,8 +190,8 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Configuration).exe Component</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
@@ -231,8 +231,8 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Configuration).exe Component</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
@@ -268,7 +268,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="Com_DummyAnimator.h" />
     <ClInclude Include="Com_Renderer_Mesh.h" />
     <ClInclude Include="Com_Renderer_UIBase.h" />
-    <ClInclude Include="DefaultComInitializer.h" />
+    <ClInclude Include="ComponentInitializer.h" />
     <ClInclude Include="define_Global.h" />
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="FBXLoader.h" />
@@ -372,6 +372,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="GraphicsShader.h" />
     <ClInclude Include="Com_Renderer_Sprite.h" />
     <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="strKey_Component.h" />
     <ClInclude Include="strKey_gui.h" />
     <ClInclude Include="StructBuffer.h" />
     <ClInclude Include="Texture.h" />
@@ -404,7 +405,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="Com_DummyAnimator.cpp" />
     <ClCompile Include="Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Com_Renderer_UIBase.cpp" />
-    <ClCompile Include="DefaultComInitializer.cpp" />
+    <ClCompile Include="ComponentInitializer.cpp" />
     <ClCompile Include="define_Global.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />

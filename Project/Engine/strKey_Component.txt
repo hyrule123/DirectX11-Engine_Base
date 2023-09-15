@@ -1,0 +1,15 @@
+Com_Animator3D
+Com_Animator2D
+Com_AudioListener
+Com_Renderer_3DAnimMesh
+Com_AudioSource
+Com_Transform
+Com_BehaviorTree
+Com_DummyAnimator
+Com_Camera
+Com_DummyTransform
+Com_Light3D
+Com_Renderer_Mesh
+Com_Renderer_ParticleSystem
+Com_Renderer_Sprite
+Com_Renderer_UIBase
