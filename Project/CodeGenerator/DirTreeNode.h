@@ -30,11 +30,11 @@ private:
 public:
 	HRESULT SearchRecursive(stdfs::path const& _rootPath, stdfs::path const& _path, std::regex const& _regex);
 
-	HRESULT GetAllFiles(__out std::vector<stdfs::path>& _vecFile, bool _bAddRelativeDir);
+	HRESULT GetAllFiles(__out std::unordered_map<stdfs::path, ePrevFileStatus>& _filesList, bool _bAddRelativeDir);
 
 
 	//_prevFiles : 파일명/이전에 작성했었던 파일인지 여부
-	HRESULT WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<std::string, ePrevFileStatus>& _prevFiles);
+	HRESULT WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFiles);
 
 private:
 	DirTreeNode* m_pParent;

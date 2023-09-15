@@ -38,8 +38,8 @@ public:
 	HRESULT CreateShaderStrKey(stdfs::path const& _FilePath);
 
 private:
-	std::unordered_map<std::string, ePrevFileStatus> ReadPrevFilesList(const stdfs::path& _filePath);
-	bool CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<std::string, ePrevFileStatus>& _prevFilesList);
+	std::unordered_map<stdfs::path, ePrevFileStatus> ReadPrevFilesList(const stdfs::path& _filePath);
+	bool CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList);
 	inline void ClearPrevFilesList(const stdfs::path& _filePath);
 
 private:

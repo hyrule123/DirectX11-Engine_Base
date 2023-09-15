@@ -109,25 +109,35 @@ HRESULT DirTreeNode::SearchRecursive(stdfs::path const& _rootPath, stdfs::path c
 
 
 
-HRESULT DirTreeNode::GetAllFiles(__out std::vector<stdfs::path>& _vecFile, bool _bAddRelativeDir)
+HRESULT DirTreeNode::GetAllFiles(__out std::unordered_map<stdfs::path, ePrevFileStatus>& _filesList, bool _bAddRelativeDir)
 {
-	_vecFile.clear();
-
 	for (size_t i = 0; i < m_vecFileName.size(); ++i)
 	{
+		stdfs::path fileName{};
 		if (IsRoot() || _bAddRelativeDir)
 		{
-			_vecFile.push_back(m_vecFileName[i]);
+			fileName = m_vecFileName[i];
 		}
 		else
 		{
-			_vecFile.push_back(m_DirName / m_vecFileName[i]);
+			fileName = m_DirName / m_vecFileName[i];
+		}
+
+		//이전에 작성했던 파일명이면 찾음 상태로 변경
+		auto iter = _filesList.find(fileName);
+		if (iter == _filesList.end())
+		{
+			_filesList.insert(std::make_pair(fileName, ePrevFileStatus::New));
+		}
+		else
+		{
+			iter->second = ePrevFileStatus::Found;
 		}
 	}
 
 	for (size_t i = 0; i < m_vecChild.size(); ++i)
 	{
-		HRESULT hr = m_vecChild[i]->GetAllFiles(_vecFile, _bAddRelativeDir);
+		HRESULT hr = m_vecChild[i]->GetAllFiles(_filesList, _bAddRelativeDir);
 		if (FAILED(hr))
 		{
 			DEBUG_BREAK;
@@ -139,7 +149,7 @@ HRESULT DirTreeNode::GetAllFiles(__out std::vector<stdfs::path>& _vecFile, bool 
 }
 
 
-HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<std::string, ePrevFileStatus>& _prevFiles)
+HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFiles)
 {
 	if (false == IsRoot())
 	{
@@ -187,16 +197,15 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 			}
 
 			{
-				std::string fileName{};
+				stdfs::path fileName{};
 				if (_bEraseExtension)
-					fileName += m_vecFileName[i].replace_extension("").string();
+					fileName += m_vecFileName[i].replace_extension("");
 				else
-					fileName += m_vecFileName[i].string();
+					fileName += m_vecFileName[i];
 
-				strCode += fileName;
+				strCode += fileName.string();
 
-				//이전에 작성했던 파일명이면 찾았다는 의미의 true로 변경
-				//그렇지 않을 경우 false로 새로 등록
+				//이전에 작성했던 파일명이면 찾음 상태로 변경
 				auto iter = _prevFiles.find(fileName);
 				if (iter == _prevFiles.end())
 				{

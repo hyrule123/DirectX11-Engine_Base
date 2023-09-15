@@ -15,6 +15,8 @@
 
 namespace mh
 {
+
+
 	Scene_Play::Scene_Play()
 		: IScene()
 	{
@@ -37,6 +39,7 @@ namespace mh
 
 	void Scene_Play::Update()
 	{
+
 		if (InputMgr::GetKeyDown(eKeyCode::N))
 		{
 			//SceneMgr::LoadScene(eSceneType::Tilte);

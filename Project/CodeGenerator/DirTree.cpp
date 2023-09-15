@@ -45,7 +45,7 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 	Writer.WriteCode(0, strCode);
 
 	//이전에 작성했던 파일 리스트가 있는지 확인 및 리스트 로드
-	std::unordered_map<std::string, ePrevFileStatus> prevFiles = ReadPrevFilesList(_FilePath);
+	std::unordered_map<stdfs::path, ePrevFileStatus> prevFiles = ReadPrevFilesList(_FilePath);
 
 	HRESULT hr = m_RootDir.WriteStrKeyTree(Writer, _bEraseExtension, prevFiles);
 	if (FAILED(hr))
@@ -53,7 +53,7 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 
 	////////////////////////////////////////////////////////
 	//찾은 파일 리스트 저장 및 새로운 파일 발견여부 확인
-	bool bNewFileFound = CheckAndcreatePrevFilesList(_FilePath, prevFiles);
+	bool bNewFileFound = CheckNewAndcreatePrevFilesList(_FilePath, prevFiles);
 	////////////////////////////////////////////////////
 
 
@@ -130,18 +130,24 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 		//Writer.WriteCode("cUserClassMgr* pMgr = cUserClassMgr::GetInst();", 1);
 	}
 
-	std::vector<stdfs::path> vecCSFilePath;
+	auto prevFiles = ReadPrevFilesList(_Desc.FilePath);
 	//노드를 순회돌면서 이름을 정리시킨다.
-	m_RootDir.GetAllFiles(vecCSFilePath, false);
+	m_RootDir.GetAllFiles(prevFiles, false);
 
+	//새 파일 발견했는지 여부 확인. 없을 경우 return
+	bool bNewFileDetected = CheckNewAndcreatePrevFilesList(_Desc.FilePath, prevFiles);
+	if (false == bNewFileDetected)
+		return S_OK;
+	
+	
 	//순회를 돌면서 각 버퍼에 코드 작성
 	//0번 버퍼: include
 	//1번 버퍼: 클래스 생성
-	for (size_t i = 0; i < vecCSFilePath.size(); ++i)
+	for (const auto& iter : prevFiles)
 	{
 		//0번 버퍼에 include 작성
 		{
-			const std::string& FileName = vecCSFilePath[i].filename().string();
+			const std::string& FileName = iter.first.filename().string();
 
 			std::string strCode;
 			strCode += define_Preset::Keyword::IncludeBegin::A;
@@ -152,7 +158,7 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 
 		//1번 버퍼에 클래스 생성 코드 작성
 		{
-			const std::string& ClassName = vecCSFilePath[i].filename().replace_extension("").string();
+			const std::string& ClassName = iter.first.filename().replace_extension("").string();
 
 			std::string strCode;
 			strCode += define_Preset::Keyword::Constructor_T::A;
@@ -165,16 +171,19 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 	Writer.CloseBracket(1, false);
 	Writer.CloseBracket(1, false);
 
-	
 
 	HRESULT hr = Writer.SaveAll<char>(_Desc.FilePath);
 	if (FAILED(hr))
 	{
+		ClearPrevFilesList(_Desc.FilePath);
 		DEBUG_BREAK;
 		return hr;
 	}
 
-	return S_OK;
+
+
+
+	return hr;
 }
 
 
@@ -185,23 +194,32 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 {
 	CodeWriter Writer;
 
-	std::vector<stdfs::path> vecShaderFileName;
-	HRESULT hr = m_RootDir.GetAllFiles(vecShaderFileName, false);
+	auto prevFiles = ReadPrevFilesList(_FilePath);
+	
+	HRESULT hr = m_RootDir.GetAllFiles(prevFiles, false);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK;
 		return hr;
 	}
 
+	//갱신된 파일이 없을 경우 return
+	if (false == CheckNewAndcreatePrevFilesList(_FilePath, prevFiles))
+	{
+		return S_OK;
+	}
+
 	std::unordered_map<stdfs::path, tShaderGroup> umapGSGroup;
 	std::vector<stdfs::path> vecCS;
 
 	std::regex CSRegex(define_Preset::Regex::CShaderRegex::A);
+
+
 	//파일 순회돌면서 그래픽 쉐이더 파일 정리
-	for (size_t i = 0; i < vecShaderFileName.size(); ++i)
+	for(const auto& iter: prevFiles)
 	{
 		//std::string으로 변경
-		std::string strFileName = vecShaderFileName[i].string();
+		std::string strFileName = iter.first.string();
 
 		bool bIsGS = false;
 		for (int j = 0; j < (int)mh::define::eGSStage::END; ++j)
@@ -217,7 +235,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 				ShaderGroupName.replace_extension(mh::define::strKey::Ext_ShaderSetting);
 
 				//쉐이더 그룹명에 각 쉐이더 파이프라인의 데이터를 담은 파일의 이름을 추가한다.
-				umapGSGroup[ShaderGroupName].FileName[j] = vecShaderFileName[i];
+				umapGSGroup[ShaderGroupName].FileName[j] = iter.first;
 
 				bIsGS = true;
 
@@ -231,7 +249,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 			//컴퓨트쉐이더일 경우 컴퓨트쉐이더 벡터에 값을 추가
 			if(std::regex_search(strFileName, CSRegex))
 			{
-				vecCS.push_back(vecShaderFileName[i].replace_extension());
+				vecCS.push_back(stdfs::path(iter.first).replace_extension());
 			}
 		}
 	}
@@ -299,9 +317,9 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	return Writer.SaveAll<char>(_FilePath);
 }
 
-std::unordered_map<std::string, ePrevFileStatus> DirTree::ReadPrevFilesList(const stdfs::path& _filePath)
+std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(const stdfs::path& _filePath)
 {
-	std::unordered_map<std::string, ePrevFileStatus> prevFiles{};
+	std::unordered_map<stdfs::path, ePrevFileStatus> prevFiles{};
 
 	std::ifstream ifs(stdfs::path(_filePath).replace_extension(".txt"));
 	if (ifs.is_open())
@@ -309,7 +327,7 @@ std::unordered_map<std::string, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 		std::string fileName;
 		while (std::getline(ifs, fileName))
 		{
-			prevFiles.insert(std::make_pair(fileName, ePrevFileStatus::NotFound));
+			prevFiles.insert(std::make_pair(stdfs::path(fileName), ePrevFileStatus::NotFound));
 		}
 
 		ifs.close();
@@ -319,7 +337,7 @@ std::unordered_map<std::string, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 	return prevFiles;
 }
 
-bool DirTree::CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<std::string, ePrevFileStatus>& _prevFilesList)
+bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
 {
 	bool bNewFilesFound = false;
 	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
@@ -338,7 +356,7 @@ bool DirTree::CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::uno
 
 			case ePrevFileStatus::Found:
 			{
-				ofs << iter->first << std::endl;
+				ofs << iter->first.string() << std::endl;
 				++iter;
 			}
 			break;
@@ -348,7 +366,7 @@ bool DirTree::CheckAndcreatePrevFilesList(const stdfs::path& _filePath, std::uno
 				//새 파일을 발견했는지 확인(하나라도 New == 새 파일 발견)
 				bNewFilesFound = true;
 
-				ofs << iter->first << std::endl;
+				ofs << iter->first.string() << std::endl;
 				++iter;
 			}
 			break;

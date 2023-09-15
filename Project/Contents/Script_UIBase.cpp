@@ -42,13 +42,13 @@ namespace mh
 		{
 		case eUIType::Basic:
 			mUIComponent = 
-				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::Default::com::Com_Renderer_UIBase));
+				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::com::Com_Renderer_UIBase));
 			break;
 
 		case eUIType::Gauge:
 		{
 			mUIComponent =
-				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::Default::com::Com_Renderer_UIBase));
+				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::com::Com_Renderer_UIBase));
 
 			//에디터를 통해 만든 Gauge 머티리얼로 설정
 			SetCustomMaterial(ResMgr::Load<Material>("UI/UIGauge.json"));
@@ -57,7 +57,7 @@ namespace mh
 
 		case eUIType::Button:
 			mUIComponent =
-				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::Default::com::Com_Renderer_UIBase));
+				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::com::Com_Renderer_UIBase));
 
 			break;
 
