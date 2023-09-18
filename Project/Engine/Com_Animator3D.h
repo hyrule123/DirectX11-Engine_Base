@@ -30,8 +30,9 @@ namespace mh
 
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton);
 		std::shared_ptr<const Skeleton> GetSkeleton() const { return mSkeleton; }
-		bool Play(const std::string& _strAnimName);
+		bool Play(const std::string& _strAnimName, float _blendTime = 0.f);
 
+		//디버그용
 		void PlayNext();
 
 		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
@@ -45,7 +46,7 @@ namespace mh
 	
 
 	private:
-		bool Play(std::shared_ptr<Animation3D> _anim, bool _bBlend);
+		bool Play(std::shared_ptr<Animation3D> _anim, float _blendTime);
 
 		bool CheckMesh();
 

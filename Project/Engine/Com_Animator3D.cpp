@@ -160,12 +160,12 @@ namespace mh
 		}
 	}
 
-	bool Com_Animator3D::Play(const std::string& _strAnimName)
+	bool Com_Animator3D::Play(const std::string& _strAnimName, float _blendTime)
 	{
 		if (mSkeleton)
 		{
 			std::shared_ptr<Animation3D> anim = mSkeleton->FindAnimation(_strAnimName);
-			return Play(anim, true);
+			return Play(anim, _blendTime);
 		}
 
 		return false;
@@ -194,11 +194,11 @@ namespace mh
 						++iter;
 						if (iter == anims.end())
 						{
-							Play(anims.begin()->second, true);
+							Play(anims.begin()->second, 1.f);
 						}
 						else
 						{
-							Play(iter->second, true);
+							Play(iter->second, 1.f);
 						}
 						break;
 					}
@@ -259,12 +259,15 @@ namespace mh
 
 
 
-	bool Com_Animator3D::Play(std::shared_ptr<Animation3D> _anim, bool _bBlend)
+	bool Com_Animator3D::Play(std::shared_ptr<Animation3D> _anim, float _blendTime)
 	{
+		if (nullptr == _anim)
+			return false;
+
 		bool bPlayed = false;
 
 		//기존의 애니메이션이 있고 Blend 켰을 경우 Animation Blend 모드 On
-		if (_bBlend && mCurrentAnim)
+		if (mCurrentAnim && (0.f < _blendTime))
 		{
 			mNextAnim = _anim;
 			if (mNextAnim)
@@ -283,10 +286,10 @@ namespace mh
 			}
 		}
 
+		//재생중이 아닐경우, 또는 Blend를 활성화하지 않았을 경우
 		else
 		{
 			mCurrentAnim = _anim;
-			
 			if (mCurrentAnim)
 			{
 				m_fClipUpdateTime = 0.f;
