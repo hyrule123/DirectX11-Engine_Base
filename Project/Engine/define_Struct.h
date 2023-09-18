@@ -29,7 +29,7 @@ namespace mh::define
 		WNDCLASSEX WinClassDesc;
 	};
 
-	struct tUmap_LightHashFunc32
+	struct tHashFuncFast_UINT32
 	{
 		UINT64 operator()(const UINT32& _ukey) const
 		{
@@ -37,7 +37,7 @@ namespace mh::define
 		}
 	};
 
-	struct tUmap_LightHashFunc64
+	struct tHashFuncFast_UINT64
 	{
 		UINT64 operator()(const UINT64& _ukey) const
 		{

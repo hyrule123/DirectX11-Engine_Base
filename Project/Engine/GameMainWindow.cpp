@@ -13,7 +13,7 @@ HINSTANCE GameMainWindow::mInstance{};
 HWND GameMainWindow::mHwnd{};
 HACCEL GameMainWindow::mHAccelTable{};
 
-std::unordered_map<UINT, std::vector<MsgHandleFunc>, tUmap_LightHashFunc32> GameMainWindow::mMsgHandleFuncs{};
+std::unordered_map<UINT, std::vector<MsgHandleFunc>, tHashFuncFast_UINT32> GameMainWindow::mMsgHandleFuncs{};
 std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> GameMainWindow::mImGuiWndProc{};
 
 BOOL GameMainWindow::Run(const tDesc_GameMainWindow& _Desc)

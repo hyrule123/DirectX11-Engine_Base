@@ -22,7 +22,7 @@ struct tDesc_GameMainWindow
 	mh::define::tDesc_GPUMgr GPUDesc;
 };
 
-struct tUmap_LightHashFunc32
+struct tHashFuncFast_UINT32
 {
 	UINT64 operator()(const UINT32& _ukey) const
 	{
@@ -59,7 +59,7 @@ private:
 	static HACCEL mHAccelTable;
 
 
-	static std::unordered_map<UINT, std::vector<MsgHandleFunc>, tUmap_LightHashFunc32> mMsgHandleFuncs;
+	static std::unordered_map<UINT, std::vector<MsgHandleFunc>, tHashFuncFast_UINT32> mMsgHandleFuncs;
 	static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> mImGuiWndProc;
 
 private:

@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "define_Struct.h"
 
 
 namespace mh
@@ -8,6 +9,12 @@ namespace mh
 		public IComponent
 	{
 	public:
+		struct tEvent
+		{
+			std::function<void()> CallbackFunc;
+			bool bCalled;
+		};
+
 		IAnimator(define::eDimensionType _type);
 		virtual ~IAnimator() {};
 
@@ -18,8 +25,12 @@ namespace mh
 
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
+		void AddNotify(uint _frameIdx, const std::function<void()>& _func);
+
 	private:
 		define::eDimensionType mDimensionType;
+
+		std::unordered_map<uint, std::function<void()>, tHashFuncFast_UINT32, std::equal_to<>> mMapNotify;
 	};
 }
 
