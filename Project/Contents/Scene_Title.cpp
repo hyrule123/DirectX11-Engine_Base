@@ -103,7 +103,8 @@ namespace mh
 
 			GameObject* modeling = meshdata->Instantiate();
 			modeling->SetName("modeling");
-			modeling->GetComponent<Com_Transform>()->SetRelativePosZ(250.f);
+			modeling->GetComponent<Com_Transform>()->SetRelativePosY(-100.f);
+			modeling->GetComponent<Com_Transform>()->SetRelativePosZ(750.f);
 
 			modeling->AddComponent<Script_Player>();
 

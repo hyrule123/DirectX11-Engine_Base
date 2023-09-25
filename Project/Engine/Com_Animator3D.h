@@ -61,7 +61,7 @@ namespace mh
 
 		//현재 프레임
         int								m_iFramePerSecond;
-        double							m_dCurTime;
+
 		float							m_fClipUpdateTime;
 		
 

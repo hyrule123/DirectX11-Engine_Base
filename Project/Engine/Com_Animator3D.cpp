@@ -19,10 +19,7 @@ namespace mh
 
 	Com_Animator3D::Com_Animator3D()
 		: IAnimator(define::eDimensionType::_3D)
-		//, m_pVecBones(nullptr)
-		//, m_pVecClip(nullptr)
 		, mSkeleton()
-		, m_dCurTime(0.)
 		, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
@@ -39,10 +36,7 @@ namespace mh
 
 	Com_Animator3D::Com_Animator3D(const Com_Animator3D& _other)
 		: IAnimator(_other)
-		//, m_pVecBones(_other.m_pVecBones)
-		//, m_pVecClip(_other.m_pVecClip)
 		, mSkeleton()
-		, m_dCurTime(_other.m_dCurTime)
 		, m_iFramePerSecond(_other.m_iFramePerSecond)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
@@ -97,7 +91,7 @@ namespace mh
 		}
 		else
 		{
-			m_dCurTime = 0.f;
+			double curTime = 0.f;
 			// 현재 재생중인 Clip 의 시간을 진행한다.
 			m_fClipUpdateTime += TimeMgr::DeltaTime();
 
@@ -110,11 +104,11 @@ namespace mh
 			}
 
 			//애니메이션의 Start Time에 애니메이션 재생 시작 후 지나간 시간을 더해줌
-			m_dCurTime = mCurrentAnim->GetStartTime() + (double)m_fClipUpdateTime;
+			curTime = mCurrentAnim->GetStartTime() + (double)m_fClipUpdateTime;
 
 			// 현재 프레임 인덱스 구하기
 			// 현재 애니메이션 시간 * 초당 프레임 수
-			double dFrameIdx = m_dCurTime * (double)m_iFramePerSecond;
+			double dFrameIdx = curTime * (double)m_iFramePerSecond;
 
 			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
 
@@ -293,7 +287,6 @@ namespace mh
 			if (mCurrentAnim)
 			{
 				m_fClipUpdateTime = 0.f;
-				m_dCurTime = 0.0;
 				m_iFramePerSecond = mCurrentAnim->GetFPS();
 
 				m_Anim3DCBuffer.CurrentFrame = 0;

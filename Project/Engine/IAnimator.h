@@ -9,12 +9,6 @@ namespace mh
 		public IComponent
 	{
 	public:
-		struct tEvent
-		{
-			std::function<void()> CallbackFunc;
-			bool bCalled;
-		};
-
 		IAnimator(define::eDimensionType _type);
 		virtual ~IAnimator() {};
 
@@ -25,13 +19,28 @@ namespace mh
 
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
-		void AddNotify(uint _frameIdx, const std::function<void()>& _func);
+		void AddEvent(uint _frameIdx, const std::function<void()>& _func);
+
+	protected:
+		inline void CallEvent(uint _frameIdx);
 
 	private:
 		define::eDimensionType mDimensionType;
 
-		std::unordered_map<uint, std::function<void()>, tHashFuncFast_UINT32, std::equal_to<>> mMapNotify;
+		std::unordered_map<uint, std::vector<std::function<void()>>, tHashFuncFast_UINT32, std::equal_to<>> mMapNotify;
 	};
+
+	inline void IAnimator::CallEvent(uint _frameIdx)
+	{
+		const auto& iter = mMapNotify.find(_frameIdx);
+		if (iter != mMapNotify.end())
+		{
+			for (size_t i = 0; i < iter->second.size(); ++i)
+			{
+				iter->second[i]();
+			}
+		}
+	}
 }
 
 

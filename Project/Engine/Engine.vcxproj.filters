@@ -518,6 +518,9 @@
     <ClCompile Include="ComponentInitializer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="IAnimation.cpp">
+      <Filter>Resource\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -911,6 +914,9 @@
     </ClInclude>
     <ClInclude Include="strKey_Component.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimation.h">
+      <Filter>Resource\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

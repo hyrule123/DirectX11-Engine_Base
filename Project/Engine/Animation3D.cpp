@@ -21,6 +21,7 @@ namespace mh
     Animation3D::~Animation3D()
 	{
 	}
+
     void Animation3D::BindData()
     {
         MH_ASSERT(m_SBufferKeyFrame);
@@ -31,6 +32,7 @@ namespace mh
         m_SBufferKeyFrame->UnBindData();
     }
 
+#pragma region 저장 및 불러오기
     eResult Animation3D::Save(const std::fs::path& _filePath)
     {
         SetKey(_filePath.string());
@@ -139,7 +141,6 @@ namespace mh
        
         return eResult::Success;
     }
-
 
 	eResult Animation3D::LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip)
 	{
@@ -304,6 +305,8 @@ namespace mh
 
 		return eResult::Success;
 	}
+#pragma endregion
+
     bool Animation3D::CreateKeyFrameSBuffer(const std::vector<tAnimKeyframeTranslation>& _vecAnimFrameTranslations)
     {
         MH_ASSERT(false == _vecAnimFrameTranslations.empty());

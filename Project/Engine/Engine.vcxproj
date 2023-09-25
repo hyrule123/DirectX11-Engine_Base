@@ -300,6 +300,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClInclude Include="guiTree_GameObject.h" />
     <ClInclude Include="guiUVCalculator.h" />
     <ClInclude Include="guiWindow.h" />
+    <ClInclude Include="IAnimation.h" />
     <ClInclude Include="IAnimator.h" />
     <ClInclude Include="ICollider3D.h" />
     <ClInclude Include="ICollider2D.h" />
@@ -437,6 +438,7 @@ call Copy_HLSL.bat $(Configuration)</Command>
     <ClCompile Include="guiTree_GameObject.cpp" />
     <ClCompile Include="guiUVCalculator.cpp" />
     <ClCompile Include="guiWindow.cpp" />
+    <ClCompile Include="IAnimation.cpp" />
     <ClCompile Include="IAnimator.cpp" />
     <ClCompile Include="ICollider3D.cpp" />
     <ClCompile Include="ICollider2D.cpp" />
