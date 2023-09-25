@@ -23,7 +23,7 @@ namespace mh
 		, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
-
+		, m_PrevFrame(-1)
 		, m_Anim3DCBuffer()
 
 		, m_fChangeTimeLength()
@@ -40,7 +40,7 @@ namespace mh
 		, m_iFramePerSecond(_other.m_iFramePerSecond)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
-
+		, m_PrevFrame(_other.m_PrevFrame)
 		, m_Anim3DCBuffer(_other.m_Anim3DCBuffer)
 
 		, m_fChangeTimeLength(_other.m_fChangeTimeLength)
@@ -111,6 +111,10 @@ namespace mh
 			double dFrameIdx = curTime * (double)m_iFramePerSecond;
 
 			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
+			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
+			{
+				IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
+			}
 
 			//만약 이미 마지막 프레임에 도달했을 경우 현재 프레임 유지
 			int maxFrameCount = mCurrentAnim->GetFrameLength();
@@ -121,6 +125,9 @@ namespace mh
 
 			// 프레임간의 시간에 따른 비율을 구해준다.
 			m_Anim3DCBuffer.FrameRatio = (float)(dFrameIdx - (double)m_Anim3DCBuffer.CurrentFrame);
+
+			//이전 프레임 번호 업데이트
+			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}
 
 		if (bChangeEnd)
@@ -286,9 +293,11 @@ namespace mh
 			mCurrentAnim = _anim;
 			if (mCurrentAnim)
 			{
+				
 				m_fClipUpdateTime = 0.f;
 				m_iFramePerSecond = mCurrentAnim->GetFPS();
 
+				m_PrevFrame = -1;
 				m_Anim3DCBuffer.CurrentFrame = 0;
 				m_Anim3DCBuffer.NextFrame = 1;
 				m_Anim3DCBuffer.FrameRatio = 0.f;

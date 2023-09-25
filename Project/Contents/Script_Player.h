@@ -10,6 +10,7 @@ namespace mh
         Script_Player() {};
         virtual ~Script_Player() {};
 
+        virtual void RequireComponent() override;
         virtual void Update() override;
     };
 

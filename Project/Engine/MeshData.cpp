@@ -228,7 +228,7 @@ namespace mh
 	}
 
 
-	GameObject* MeshData::Instantiate()
+	std::unique_ptr<GameObject> MeshData::Instantiate()
 	{
 		if (mMeshContainers.empty())
 		{
@@ -295,8 +295,13 @@ namespace mh
 
 
 
-		//다 됐을 경우 unique_ptr 관리 해제하고 주소 반환
-		return uniqObj.release();
+		//다 됐을 경우 unique_ptr 주소 반환
+		return uniqObj;
+	}
+
+	bool MeshData::Instantiate(GameObject* _gameObject)
+	{
+		return false;
 	}
 
 	eResult MeshData::ConvertFBX(

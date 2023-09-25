@@ -38,7 +38,12 @@ namespace mh
 
 		virtual eResult SaveJson(Json::Value* _pJson) override;
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
-		GameObject* Instantiate();
+
+		//아예 새 게임오브젝트를 반환
+		std::unique_ptr<GameObject> Instantiate();
+
+		//
+		bool Instantiate(GameObject* _gameObject);
 
 	private:
 		eResult ConvertFBX(

@@ -57,22 +57,25 @@ namespace mh
 
         std::vector<MATRIX>				m_vecFinalBoneMat;		// 텍스쳐에 전달할 최종 행렬정보
 
+		//이전 프레임(현재 프레임은 아래 구조체에 저장되어 있음)
+		int								m_PrevFrame;
+		
+		//GPU에 보낼 데이터 모음 구조체
 		tCB_Animation3D					m_Anim3DCBuffer;
 
-		//현재 프레임
+		//초당 프레임 수
         int								m_iFramePerSecond;
 
+		//한 프레임별 시간 저장용 변수
 		float							m_fClipUpdateTime;
 		
 
 		//전체 시간 길이
 		float							m_fChangeTimeLength;
 
-		//변경 시간 누적
+		//애니메이션 시작 이후 누적 시간
 		float							m_fChangeTimeAccumulate;
 
-
-		
 
         std::unique_ptr<StructBuffer>	m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
         bool							m_bFinalMatUpdate;		// 최종행렬 연산 수행여부

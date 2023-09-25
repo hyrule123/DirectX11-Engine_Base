@@ -5,7 +5,6 @@
 
 namespace mh
 {
-	//TODO: 순수가상함수 추가해서 인터페이스로 바꾸기
 	class IScript : public IComponent
 	{
 	public:

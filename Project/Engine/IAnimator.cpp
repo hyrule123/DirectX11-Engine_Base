@@ -10,8 +10,10 @@ namespace mh
 	}
 
 
-	void IAnimator::AddEvent(uint _frameIdx, const std::function<void()>& _func)
+	void IAnimator::AddEvent(int _frameIdx, const std::function<void()>& _func)
 	{
+		MH_ASSERT(0 < _frameIdx || _func);
+
 		auto iter = mMapNotify.find(_frameIdx);
 		if (iter == mMapNotify.end())
 		{

@@ -8,6 +8,10 @@
 
 namespace mh
 {
+	void Script_Player::RequireComponent()
+	{
+		GetOwner()->AddComponent<
+	}
 	void Script_Player::Update()
 	{
 		if (InputMgr::GetKeyDown(eKeyCode::P))
@@ -18,6 +22,8 @@ namespace mh
 				animator->PlayNext();
 			}
 		}
+
+		i
 	}
 }
 
