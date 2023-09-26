@@ -129,6 +129,7 @@ namespace mh
 		pCom->SetComTypeID(ComMgr::GetComTypeID<T>());
 		pCom->SetKey(ComMgr::GetComName<T>());
 
+		//IComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
 		return static_cast<T*>(AddComponent(static_cast<IComponent*>(pCom)));
 	}
 

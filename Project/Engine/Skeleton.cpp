@@ -293,7 +293,7 @@ namespace mh
 		m_pBoneOffset->Create<MATRIX>(vecOffset.size(), vecOffset.data(), vecOffset.size());
 	}
 
-	std::shared_ptr<Animation3D> Skeleton::FindAnimation(const std::string& _strAnimName)
+	std::shared_ptr<Animation3D> Skeleton::FindAnimation(const std::string_view _strAnimName)
 	{
 		std::shared_ptr<Animation3D> retPtr = nullptr;
 		const auto& iter = mMapAnimations.find(_strAnimName);

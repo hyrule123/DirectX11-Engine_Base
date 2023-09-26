@@ -21,7 +21,7 @@ namespace gui
 		template <typename T>
 		void AddResources(TreeWidget::tNode* rootNode, const char* name)
 		{
-			const std::unordered_map<std::string, std::shared_ptr<mh::IRes>, mh::define::tUmap_StringViewHasher, std::equal_to<>>& resources
+			const std::unordered_map<std::string, std::shared_ptr<mh::IRes>, mh::define::tHashFunc_StringView, std::equal_to<>>& resources
 				= mh::ResMgr::GetResources<T>();
 
 			TreeWidget::tNode* stemNode

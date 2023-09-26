@@ -111,10 +111,6 @@ namespace mh
 			double dFrameIdx = curTime * (double)m_iFramePerSecond;
 
 			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
-			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
-			{
-				IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
-			}
 
 			//만약 이미 마지막 프레임에 도달했을 경우 현재 프레임 유지
 			int maxFrameCount = mCurrentAnim->GetFrameLength();
@@ -126,7 +122,11 @@ namespace mh
 			// 프레임간의 시간에 따른 비율을 구해준다.
 			m_Anim3DCBuffer.FrameRatio = (float)(dFrameIdx - (double)m_Anim3DCBuffer.CurrentFrame);
 
-			//이전 프레임 번호 업데이트
+			//이전 프레임 번호 업데이트 및 이벤트함수 호출
+			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
+			{
+				IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
+			}
 			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}
 
@@ -161,7 +161,7 @@ namespace mh
 		}
 	}
 
-	bool Com_Animator3D::Play(const std::string& _strAnimName, float _blendTime)
+	bool Com_Animator3D::Play(const std::string_view _strAnimName, float _blendTime)
 	{
 		if (mSkeleton)
 		{

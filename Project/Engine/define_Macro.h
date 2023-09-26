@@ -16,7 +16,7 @@
 
 #define MH_ASSERT(expression) assert(expression)
 
-#define BIT_MASK(_MaskPos) 1<<_MaskPos
+#define BIT_MASK(_MaskPos) 1 << _MaskPos
 
 #define SAFE_DELETE(_Ptr) if(_Ptr) delete _Ptr; _Ptr = nullptr
 

@@ -36,7 +36,7 @@ namespace mh
 		static std::shared_ptr<IRes> Find(eResourceType _ResType, const std::string_view _strKey);
 
 		template <typename T>
-		static const std::unordered_map<std::string, std::shared_ptr<IRes>, tUmap_StringViewHasher, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>>&
 			GetResources();
 
 		static void Insert(const std::string_view _strKey, std::shared_ptr<IRes> _Res);
@@ -47,7 +47,7 @@ namespace mh
 		
 	
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<IRes>, tUmap_StringViewHasher, std::equal_to<>> mArrRes[(int)eResourceType::END];
+		static std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>> mArrRes[(int)eResourceType::END];
 	};
 
 
@@ -140,7 +140,7 @@ namespace mh
 	}
 
 	template<typename T>
-	inline const std::unordered_map<std::string, std::shared_ptr<IRes>, tUmap_StringViewHasher, std::equal_to<>>& ResMgr::GetResources()
+	inline const std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>>& ResMgr::GetResources()
 	{
 		eResourceType Type = GetResType<T>();
 		assert(eResourceType::UNKNOWN != Type);

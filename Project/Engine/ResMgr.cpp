@@ -5,7 +5,7 @@
 
 namespace mh
 {
-	std::unordered_map<std::string, std::shared_ptr<IRes>, tUmap_StringViewHasher, std::equal_to<>> ResMgr::mArrRes[(int)eResourceType::END]{};
+	std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>> ResMgr::mArrRes[(int)eResourceType::END]{};
 
 	void ResMgr::Init()
 	{

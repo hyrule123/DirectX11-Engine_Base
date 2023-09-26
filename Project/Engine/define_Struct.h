@@ -45,7 +45,7 @@ namespace mh::define
 		}
 	};
 
-	struct tUmap_StringViewHasher
+	struct tHashFunc_StringView
 	{
 		using hash_type = std::hash<std::string_view>;
 		using is_transparent = void;

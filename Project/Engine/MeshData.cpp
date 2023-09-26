@@ -2,6 +2,7 @@
 #include "MeshData.h"
 
 #include "define_Util.h"
+#include "EventMgr.h"
 #include "PathMgr.h"
 #include "ResMgr.h"
 #include "FBXLoader.h"
@@ -228,7 +229,7 @@ namespace mh
 	}
 
 
-	std::unique_ptr<GameObject> MeshData::Instantiate()
+	GameObject* MeshData::Instantiate(eLayerType _layerType)
 	{
 		if (mMeshContainers.empty())
 		{
@@ -236,13 +237,43 @@ namespace mh
 		}
 
 		std::unique_ptr<GameObject> uniqObj = std::make_unique<GameObject>();
-		Com_Transform* tr = uniqObj->AddComponent<Com_Transform>();
+
+		if (false == Instantiate(uniqObj.get()))
+		{
+			uniqObj.reset();
+			MH_ASSERT(uniqObj);
+		}
+		
+		//스폰 실패했을 경우 제거
+		GameObject* obj = EventMgr::SpawnGameObject(_layerType, uniqObj.get());
+		if (nullptr == obj)
+		{
+			uniqObj.reset();
+			MH_ASSERT(uniqObj);
+		}
+
+		//다 됐을 경우 unique_ptr 관리 해제 후 반환
+		return uniqObj.release();
+	}
+
+	bool MeshData::Instantiate(GameObject* _gameObj)
+	{
+		Com_Transform* tr = _gameObj->AddComponent<Com_Transform>();
+		if (nullptr == tr)
+		{
+			return false;
+		}
+
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		Com_Animator3D* animator = nullptr;
 		if (mSkeleton)
 		{
-			animator = uniqObj->AddComponent<Com_Animator3D>();
+			animator = _gameObj->AddComponent<Com_Animator3D>();
+			if (nullptr == tr)
+			{
+				return false;
+			}
 			animator->SetSkeleton(mSkeleton);
 		}
 
@@ -254,15 +285,18 @@ namespace mh
 			if (animator)
 			{
 				//수동으로 애니메이터를 설정
-				auto* renderer3D = uniqObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				auto* renderer3D = _gameObj->AddComponent<Com_Renderer_3DAnimMesh>();
 				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
 			}
 			else
 			{
-				renderer = uniqObj->AddComponent<Com_Renderer_Mesh>();
+				renderer = _gameObj->AddComponent<Com_Renderer_Mesh>();
+			}
+			if (nullptr == renderer)
+			{
+				return false;
 			}
 
-			MH_ASSERT(renderer);
 			SetRenderer(renderer, 0);
 		}
 
@@ -271,7 +305,7 @@ namespace mh
 		{
 			for (size_t i = 0; i < mMeshContainers.size(); ++i)
 			{
-				GameObject* child = uniqObj->AddChild(new GameObject);
+				GameObject* child = _gameObj->AddChild(new GameObject);
 				child->AddComponent<Com_DummyTransform>();
 				child->AddComponent<Com_DummyAnimator>();
 
@@ -287,21 +321,13 @@ namespace mh
 				{
 					renderer = child->AddComponent<Com_Renderer_Mesh>();
 				}
-				
+
 				MH_ASSERT(renderer);
 				SetRenderer(renderer, (UINT)i);
 			}
 		}
 
-
-
-		//다 됐을 경우 unique_ptr 주소 반환
-		return uniqObj;
-	}
-
-	bool MeshData::Instantiate(GameObject* _gameObject)
-	{
-		return false;
+		return true;
 	}
 
 	eResult MeshData::ConvertFBX(

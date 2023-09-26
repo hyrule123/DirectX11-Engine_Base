@@ -71,8 +71,8 @@ namespace mh
 		std::function<void()>& GetEvent(const std::string_view _name, uint _index) const;
 
 	private:
-		std::unordered_map<std::string, Animation2D*, define::tUmap_StringViewHasher, std::equal_to<>>	mAnimations;
-		std::unordered_map<std::string, tEvents*, define::tUmap_StringViewHasher, std::equal_to<>>		mEvents;
+		std::unordered_map<std::string, Animation2D*, define::tHashFunc_StringView, std::equal_to<>>	mAnimations;
+		std::unordered_map<std::string, tEvents*, define::tHashFunc_StringView, std::equal_to<>>		mEvents;
 		Animation2D* mActiveAnimation;
 		bool mbLoop;
 	};

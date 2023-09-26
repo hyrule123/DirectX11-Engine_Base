@@ -30,7 +30,7 @@ namespace mh
 
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton);
 		std::shared_ptr<const Skeleton> GetSkeleton() const { return mSkeleton; }
-		bool Play(const std::string& _strAnimName, float _blendTime = 0.f);
+		bool Play(const std::string_view _strAnimName, float _blendTime = 0.f);
 
 		//디버그용
 		void PlayNext();

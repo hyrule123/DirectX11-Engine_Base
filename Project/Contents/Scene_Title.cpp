@@ -99,18 +99,11 @@ namespace mh
 
 
 		{
-			std::shared_ptr<MeshData> meshdata = ResMgr::Load<MeshData>("Player_Default");
+			GameObject* player = EventMgr::SpawnGameObject(eLayerType::Player);
+			player->AddComponent<Script_Player>();
 
-			GameObject* modeling = meshdata->Instantiate();
-			modeling->SetName("modeling");
-			modeling->GetComponent<Com_Transform>()->SetRelativePosY(-100.f);
-			modeling->GetComponent<Com_Transform>()->SetRelativePosZ(750.f);
-
-			modeling->AddComponent<Script_Player>();
-
-			modeling->GetComponent<Com_Animator3D>()->Play("Evade");
 			
-			EventMgr::SpawnGameObject(define::eLayerType::Player, modeling);
+			//GameObject* modeling = meshdata->Instantiate(eLayerType::Player);
 		}
 	}
 	void Scene_Title::Update()

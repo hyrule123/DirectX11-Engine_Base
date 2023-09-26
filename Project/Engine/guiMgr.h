@@ -26,7 +26,7 @@ namespace gui
 		template <typename T>
 		static T* AddGuiWindow();
 
-		static const std::unordered_map<std::string, guiBase*, mh::define::tUmap_StringViewHasher, std::equal_to<>>&
+		static const std::unordered_map<std::string, guiBase*, mh::define::tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
@@ -56,7 +56,7 @@ namespace gui
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, guiBase*, mh::define::tUmap_StringViewHasher, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, guiBase*, mh::define::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
 
 		static std::vector<EditorObject*> mEditorObjects;
 		static std::vector<DebugObject*> mDebugObjects;

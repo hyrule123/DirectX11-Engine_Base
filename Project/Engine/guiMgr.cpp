@@ -47,7 +47,7 @@ namespace gui
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, guiBase*, mh::define::tUmap_StringViewHasher, std::equal_to<>> guiMgr::mGuiWindows{};
+	std::unordered_map<std::string, guiBase*, mh::define::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
 	//std::vector<guiBase*> guiMgr::mGuiWindows{};
 	std::vector<EditorObject*> guiMgr::mEditorObjects{};
 	std::vector<DebugObject*> guiMgr::mDebugObjects{};
