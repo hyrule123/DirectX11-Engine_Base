@@ -8,7 +8,7 @@
 #include "Com_Renderer_Mesh.h"
 
 #include "RenderMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 
 
 #include "Com_Renderer_Sprite.h"

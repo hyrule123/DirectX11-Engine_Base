@@ -4,7 +4,7 @@
 #include "Com_Transform.h"
 #include "GameObject.h"
 #include "RenderMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -180,13 +180,13 @@ namespace mh
 		mAttribute.lightType = (int)type;
 		if (mAttribute.lightType == (int)eLightType::Directional)
 		{
-			mVolumeMesh = ResMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
-			mLightMaterial = ResMgr::Find<Material>(strKey::Default::material::LightDirMaterial);
+			mVolumeMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
+			mLightMaterial = ResourceMgr::Find<Material>(strKey::Default::material::LightDirMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Point)
 		{
-			mVolumeMesh = ResMgr::Find<Mesh>(strKey::Default::mesh::SphereMesh);
-			mLightMaterial = ResMgr::Find<Material>(strKey::Default::material::LightPointMaterial);
+			mVolumeMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::SphereMesh);
+			mLightMaterial = ResourceMgr::Find<Material>(strKey::Default::material::LightPointMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Spot)
 		{

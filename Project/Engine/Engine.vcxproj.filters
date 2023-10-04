@@ -279,7 +279,7 @@
     <ClCompile Include="IComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ResMgr.cpp">
+    <ClCompile Include="ResourceMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="TimeMgr.cpp">
@@ -291,7 +291,7 @@
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="IRes.cpp">
+    <ClCompile Include="IResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="ComMgr.cpp">
@@ -652,7 +652,7 @@
     <ClInclude Include="Components.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ResMgr.h">
+    <ClInclude Include="ResourceMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="TimeMgr.h">
@@ -664,7 +664,7 @@
     <ClInclude Include="Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="IRes.h">
+    <ClInclude Include="IResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="ComMgr.h">

@@ -4,7 +4,7 @@
 #include "define_Util.h"
 #include "EventMgr.h"
 #include "PathMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "FBXLoader.h"
 #include "GameObject.h"
 #include "Com_DummyTransform.h"
@@ -23,7 +23,7 @@
 namespace mh
 {
 	MeshData::MeshData()
-		: IRes(define::eResourceType::MeshData)
+		: IResource(define::eResourceType::MeshData)
 	{
 	}
 
@@ -44,7 +44,7 @@ namespace mh
 		fileName.replace_extension(strKey::Ext_MeshData);
 
 		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
-		IRes::Save(fileName);
+		IResource::Save(fileName);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
 
@@ -76,7 +76,7 @@ namespace mh
 		fileName.replace_extension(strKey::Ext_MeshData);
 
 		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
-		IRes::Load(fileName);
+		IResource::Load(fileName);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
 
@@ -102,7 +102,7 @@ namespace mh
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
-		eResult result = IRes::SaveJson(_pJson);
+		eResult result = IResource::SaveJson(_pJson);
 		if (eResultFail(result))
 			return result;
 
@@ -173,7 +173,7 @@ namespace mh
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
-		eResult result = IRes::LoadJson(_pJson);
+		eResult result = IResource::LoadJson(_pJson);
 		if (eResultFail(result))
 			return result;
 		
@@ -189,7 +189,7 @@ namespace mh
 
 			//Mesh
 			std::string meshStrKey = Json::MH::LoadPtrStrKey(&(*iter), JSON_KEY(pMesh), cont.pMesh);
-			cont.pMesh = ResMgr::Load<Mesh>(meshStrKey);
+			cont.pMesh = ResourceMgr::Load<Mesh>(meshStrKey);
 			if (nullptr == cont.pMesh)
 				return eResult::Fail_Empty;
 
@@ -197,7 +197,7 @@ namespace mh
 			const auto& materialsStrKey = Json::MH::LoadPtrStrKeyVector(&(*iter), JSON_KEY(pMaterials), cont.pMaterials);
 			for (size_t i = 0; i < materialsStrKey.size(); ++i)
 			{
-				std::shared_ptr<Material> mtrl = ResMgr::Load<Material>(materialsStrKey[i]);
+				std::shared_ptr<Material> mtrl = ResourceMgr::Load<Material>(materialsStrKey[i]);
 				cont.pMaterials.push_back(mtrl);
 			}
 
@@ -584,7 +584,7 @@ namespace mh
 		mtrl->SetTexture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->SetTexture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
+		std::shared_ptr<GraphicsShader> defferedShader = ResourceMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
 		mtrl->SetShader(defferedShader);
 
 		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);

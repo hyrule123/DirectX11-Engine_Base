@@ -1,7 +1,7 @@
 #pragma once
 #include "define_Enum.h"
 
-#include "IRes.h"
+#include "IResource.h"
 #include "GraphicsShader.h"
 #include "Texture.h"
 #include "RenderMgr.h"
@@ -14,7 +14,7 @@ namespace gui
 
 namespace mh
 {
-	class Material : public IRes
+	class Material : public IResource
 	{
 		friend class gui::guiMaterialEditor;
 	public:

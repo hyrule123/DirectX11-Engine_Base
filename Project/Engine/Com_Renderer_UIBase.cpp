@@ -4,7 +4,7 @@
 #include "RenderMgr.h"
 #include "ConstBuffer.h"
 
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Mesh.h"
 
 namespace mh
@@ -13,10 +13,10 @@ namespace mh
 		: mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
+		std::shared_ptr<Mesh> uiMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
 		SetMesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResMgr::Find<Material>(strKey::Default::material::UIMaterial);
+		std::shared_ptr<Material> uiMaterial = ResourceMgr::Find<Material>(strKey::Default::material::UIMaterial);
 		SetMaterial(uiMaterial, 0u);
 		SetMaterialMode(0u, eMaterialMode::Dynamic);
 	}

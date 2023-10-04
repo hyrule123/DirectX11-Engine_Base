@@ -12,7 +12,7 @@
 namespace mh
 {
 	AudioClip::AudioClip()
-		: IRes(define::eResourceType::AudioClip)
+		: IResource(define::eResourceType::AudioClip)
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)
@@ -31,7 +31,7 @@ namespace mh
 
 	eResult AudioClip::Load(const std::fs::path& _filePath)
 	{
-		IRes::Save(_filePath);
+		IResource::Save(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		if (false == std::fs::exists(fullPath))

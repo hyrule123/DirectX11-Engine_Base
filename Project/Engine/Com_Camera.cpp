@@ -11,7 +11,7 @@
 #include "Material.h"
 #include "IRenderer.h"
 #include "SceneMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Com_Light3D.h"
 
 #include "MultiRenderTarget.h"
@@ -94,8 +94,8 @@ namespace mh
 
 
 		//// defferd + swapchain merge
-		std::shared_ptr<Material> mergeMaterial = ResMgr::Find<Material>(strKey::Default::material::MergeMaterial);
-		std::shared_ptr<Mesh> rectMesh = ResMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
+		std::shared_ptr<Material> mergeMaterial = ResourceMgr::Find<Material>(strKey::Default::material::MergeMaterial);
+		std::shared_ptr<Mesh> rectMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
 		rectMesh->BindBuffer();
 		mergeMaterial->BindData();
 		rectMesh->Render();

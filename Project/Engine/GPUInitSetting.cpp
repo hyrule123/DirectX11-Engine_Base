@@ -21,7 +21,7 @@ namespace mh
 
 	eResult GPUInitSetting::Load(const std::filesystem::path& _filePath)
 	{
-		IRes::Load(_filePath);
+		IResource::Load(_filePath);
 
 		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 		if (eResultFail(result))

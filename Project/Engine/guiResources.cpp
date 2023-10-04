@@ -7,7 +7,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "GraphicsShader.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 
 #include "guiInspector.h"
 #include "guiResource.h"
@@ -68,7 +68,7 @@ namespace gui
 
 	void guiResources::toInspector(mh::define::tDataPtr _data)
 	{
-		mh::IRes* resource = static_cast<mh::IRes*>(_data.pData);
+		mh::IResource* resource = static_cast<mh::IResource*>(_data.pData);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);

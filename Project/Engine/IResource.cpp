@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "IRes.h"
+#include "IResource.h"
 
 #include "PathMgr.h"
 
@@ -7,29 +7,29 @@
 
 namespace mh
 {
-	namespace define::strKey::Json::IRes
+	namespace define::strKey::Json::IResource
 	{
 		STRKEY_DECLARE(mType);
 	}
 
 	
 
-	IRes::IRes(eResourceType _type)
+	IResource::IResource(eResourceType _type)
 		: mType(_type)
 		, mbEngineDefaultRes()
 	{
 	}
-	IRes::~IRes()
+	IResource::~IResource()
 	{
 	}
 
-	eResult IRes::Save(const std::fs::path& _filePath)
+	eResult IResource::Save(const std::fs::path& _filePath)
 	{
 		SetKey(_filePath.string());
 		return eResult::Success;
 	}
 
-	eResult IRes::Load(const std::fs::path& _filePath)
+	eResult IResource::Load(const std::fs::path& _filePath)
 	{
 		SetKey(_filePath.string());
 		return eResult::Success;
@@ -37,7 +37,7 @@ namespace mh
 
 	//	return eResult::Success;
 	//}
-	eResult IRes::SaveJson(Json::Value* _pJVal)
+	eResult IResource::SaveJson(Json::Value* _pJVal)
 	{
 		if (nullptr == _pJVal)
 		{
@@ -54,12 +54,12 @@ namespace mh
 		Json::Value& Jval = *(_pJVal);
 
 		//리소스 타입을 문자열 형태로 가져와서 저장
-		Jval[strKey::Json::IRes::mType] = strKey::ArrResName[(int)mType];
+		Jval[strKey::Json::IResource::mType] = strKey::ArrResName[(int)mType];
 
 
 		return eResult::Success;
 	}
-	eResult IRes::LoadJson(const Json::Value* _pJVal)
+	eResult IResource::LoadJson(const Json::Value* _pJVal)
 	{
 		if (nullptr == _pJVal)
 		{
@@ -75,9 +75,9 @@ namespace mh
 		const Json::Value& Jval = *(_pJVal);
 
 		//저장된 json 파일과 로드할 json 파일의 타입이 일치하는지만 확인.
-		if (Jval.isMember(strKey::Json::IRes::mType))
+		if (Jval.isMember(strKey::Json::IResource::mType))
 		{
-			std::string ResourceName = Jval[strKey::Json::IRes::mType].asString();
+			std::string ResourceName = Jval[strKey::Json::IResource::mType].asString();
 			if (strKey::ArrResName[(int)mType] != ResourceName)
 			{
 				ERROR_MESSAGE_W(L"읽어들인 json 파일이 리소스 타입과 일치하지 않습니다.");

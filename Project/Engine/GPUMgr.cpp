@@ -7,7 +7,7 @@
 #include "ConstBuffer.h"
 #include "Mesh.h"
 #include "RenderMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Texture.h"
 
 #include "GPUInitSetting.h"

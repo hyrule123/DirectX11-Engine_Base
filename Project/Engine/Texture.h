@@ -1,5 +1,5 @@
 #pragma once
-#include "IRes.h"
+#include "IResource.h"
 #include "GPUMgr.h"
 
 #include <DirectXTex/DirectXTex.h>
@@ -9,7 +9,7 @@ namespace mh
 	using namespace mh::define;
 	using Microsoft::WRL::ComPtr;
 
-	class Texture : public IRes
+	class Texture : public IResource
 	{
 	public:
 		Texture();

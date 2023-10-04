@@ -2,7 +2,7 @@
 #include "guiNormalConverter.h"
 
 #include "PathMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "define_Util.h"
 
 #include "NormalConvertShader.h"
@@ -76,7 +76,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	texPath = mh::PathMgr::MakePathStrKey(texPath);
 
-	mTextureSrc = mh::ResMgr::Load<mh::Texture>(texPath);
+	mTextureSrc = mh::ResourceMgr::Load<mh::Texture>(texPath);
 }
 
 ImGui::SameLine();
@@ -150,7 +150,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<mh::NormalConvertShader> converter = mh::ResMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
+			std::shared_ptr<mh::NormalConvertShader> converter = mh::ResourceMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
 
 			std::shared_ptr<mh::Texture> convertedTex = converter->Convert(mTextureSrc);
 

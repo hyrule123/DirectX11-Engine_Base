@@ -1,12 +1,12 @@
 #pragma once
 
-#include "IRes.h"
+#include "IResource.h"
 
 namespace mh
 {
     class GameObject;
 	class Prefab
-		: public IRes
+		: public IResource
 	{
     public:
         Prefab();

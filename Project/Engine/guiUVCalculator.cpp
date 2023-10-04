@@ -3,7 +3,7 @@
 
 #include "guiTexture.h"
 
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 
 #include "define_Util.h"
 #include "PathMgr.h"
@@ -52,7 +52,7 @@ namespace gui
 
 			texPath = mh::PathMgr::MakePathStrKey(texPath);
 
-			mTexture = mh::ResMgr::Load<mh::Texture>(texPath);
+			mTexture = mh::ResourceMgr::Load<mh::Texture>(texPath);
 
 			if (mTexture)
 			{

@@ -4,7 +4,7 @@
 #include <Engine/Com_Transform.h>
 #include <Engine/Com_Renderer_Mesh.h>
 #include <Engine/RenderMgr.h>
-#include <Engine/ResMgr.h>
+#include <Engine/ResourceMgr.h>
 #include <Engine/Texture.h>
 #include <Engine/Com_Camera.h>
 #include <Engine/Com_Renderer_Sprite.h>

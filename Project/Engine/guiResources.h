@@ -2,8 +2,8 @@
 #include "guiChild.h"
 #include "guiTreeWidget.h"
 
-#include "IRes.h"
-#include "ResMgr.h"
+#include "IResource.h"
+#include "ResourceMgr.h"
 
 namespace gui
 {
@@ -21,8 +21,8 @@ namespace gui
 		template <typename T>
 		void AddResources(TreeWidget::tNode* rootNode, const char* name)
 		{
-			const std::unordered_map<std::string, std::shared_ptr<mh::IRes>, mh::define::tHashFunc_StringView, std::equal_to<>>& resources
-				= mh::ResMgr::GetResources<T>();
+			const std::unordered_map<std::string, std::shared_ptr<mh::IResource>, mh::define::tHashFunc_StringView, std::equal_to<>>& resources
+				= mh::ResourceMgr::GetResources<T>();
 
 			TreeWidget::tNode* stemNode
 				= mTreeWidget->AddNode(rootNode, name, mh::define::tDataPtr{}, true);

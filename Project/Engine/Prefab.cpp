@@ -15,7 +15,7 @@ namespace mh
 	
 
 	Prefab::Prefab()
-		: IRes(eResourceType::Prefab)
+		: IResource(eResourceType::Prefab)
 		, mPrefab()
 		, mbDontDelete()
 	{

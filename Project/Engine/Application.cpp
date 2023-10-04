@@ -8,7 +8,7 @@
 #include "TimeMgr.h"
 #include "InputMgr.h"
 #include "SceneMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "CollisionMgr.h"
 #include "AudioMgr.h"
 #include "FontWrapper.h"
@@ -56,7 +56,7 @@ namespace mh
 			return FALSE;
 		}
 
-		ResMgr::Init();
+		ResourceMgr::Init();
 		AudioMgr::Init();
 		FontWrapper::Init();
 

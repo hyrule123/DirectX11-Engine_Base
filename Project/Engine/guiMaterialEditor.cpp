@@ -3,7 +3,7 @@
 
 #include "Material.h"
 #include "PathMgr.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "GraphicsShader.h"
 #include "Application.h"
 #include "define_Util.h"
@@ -63,7 +63,7 @@ namespace gui
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<mh::GraphicsShader> gs = mh::ResMgr::Load<mh::GraphicsShader>(shaderName);
+				std::shared_ptr<mh::GraphicsShader> gs = mh::ResourceMgr::Load<mh::GraphicsShader>(shaderName);
 			}
 		}
 	}
@@ -143,7 +143,7 @@ namespace gui
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<mh::GraphicsShader> GS = mh::ResMgr::Load<mh::GraphicsShader>(shaderKey);
+				std::shared_ptr<mh::GraphicsShader> GS = mh::ResourceMgr::Load<mh::GraphicsShader>(shaderKey);
 				mTargetMaterial->SetShader(GS);
 			}
 		}
@@ -200,7 +200,7 @@ namespace gui
 				{
 					std::fs::path PathstrKey =  mh::PathMgr::MakePathStrKey(receivedPath);
 
-					std::shared_ptr<mh::Texture> tex = mh::ResMgr::Load<mh::Texture>(PathstrKey);
+					std::shared_ptr<mh::Texture> tex = mh::ResourceMgr::Load<mh::Texture>(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->SetTexture((mh::define::eTextureSlot)i, tex);
@@ -272,7 +272,7 @@ namespace gui
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = mh::ResMgr::GetResources<mh::Material>();
+			const auto& materials = mh::ResourceMgr::GetResources<mh::Material>();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->GetKey());
@@ -340,7 +340,7 @@ namespace gui
 					}
 					else
 					{
-						std::shared_ptr<mh::Material> mtrl = mh::ResMgr::Find<mh::Material>(mtrlKey);
+						std::shared_ptr<mh::Material> mtrl = mh::ResourceMgr::Find<mh::Material>(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())

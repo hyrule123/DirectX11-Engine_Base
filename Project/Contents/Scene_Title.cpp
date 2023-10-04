@@ -1,7 +1,7 @@
 #include "PCH_Contents.h"
 #include "Scene_Title.h"
 
-#include <Engine/ResMgr.h>
+#include <Engine/ResourceMgr.h>
 #include <Engine/Com_Transform.h>
 #include <Engine/Com_Renderer_Mesh.h>
 #include <Engine/RenderMgr.h>

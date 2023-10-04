@@ -6,15 +6,15 @@
 
 namespace mh
 {
-	class IRes 
+	class IResource 
 		: public Entity
 	{
 	public:
-		IRes(define::eResourceType _type);
+		IResource(define::eResourceType _type);
 
-		IRes(const IRes& _other) = default;
+		IResource(const IResource& _other) = default;
 
-		virtual ~IRes();
+		virtual ~IResource();
 
 		//BasePath를 저장
 		virtual eResult Save(const std::fs::path& _filePath);

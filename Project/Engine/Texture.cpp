@@ -19,7 +19,7 @@ namespace mh
 	
 
 	Texture::Texture()
-		: IRes(eResourceType::Texture)
+		: IResource(eResourceType::Texture)
 		, mDesc()
 		, mTexture()
 		, mImage()
@@ -173,7 +173,7 @@ namespace mh
 
 	eResult Texture::Load(const std::filesystem::path& _filePath)
 	{
-		IRes::Load(_filePath);
+		IResource::Load(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
 

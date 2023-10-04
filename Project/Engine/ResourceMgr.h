@@ -1,7 +1,7 @@
 #pragma once
 #include "define_Res.h"
 #include "define_Struct.h"
-#include "IRes.h"
+#include "IResource.h"
 
 #include "Mesh.h"
 #include "MeshData.h"
@@ -20,7 +20,7 @@
 
 namespace mh
 {
-	class ResMgr
+	class ResourceMgr
 	{
 		friend class Application;
 	public:
@@ -33,13 +33,13 @@ namespace mh
 		template <typename T>
 		static std::shared_ptr<T> Find(const std::string_view _strKey);
 
-		static std::shared_ptr<IRes> Find(eResourceType _ResType, const std::string_view _strKey);
+		static std::shared_ptr<IResource> Find(eResourceType _ResType, const std::string_view _strKey);
 
 		template <typename T>
-		static const std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<IResource>, tHashFunc_StringView, std::equal_to<>>&
 			GetResources();
 
-		static void Insert(const std::string_view _strKey, std::shared_ptr<IRes> _Res);
+		static void Insert(const std::string_view _strKey, std::shared_ptr<IResource> _Res);
 		
 	private:
 		static void Init();
@@ -47,14 +47,14 @@ namespace mh
 		
 	
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>> mArrRes[(int)eResourceType::END];
+		static std::unordered_map<std::string, std::shared_ptr<IResource>, tHashFunc_StringView, std::equal_to<>> mArrRes[(int)eResourceType::END];
 	};
 
 
 	template<typename T>
-	inline eResourceType ResMgr::GetResType()
+	inline eResourceType ResourceMgr::GetResType()
 	{
-		static_assert(std::is_base_of_v<IRes, T>);
+		static_assert(std::is_base_of_v<IResource, T>);
 
 		if constexpr (std::is_base_of_v<Mesh, T>)
 		{
@@ -93,10 +93,10 @@ namespace mh
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> ResMgr::Load(const std::filesystem::path& _filePath)
+	inline std::shared_ptr<T> ResourceMgr::Load(const std::filesystem::path& _filePath)
 	{
 		//IRes를 상속받는 클래스가 아닐 경우 컴파일 중지
-		static_assert(std::is_base_of<IRes, T>::value);
+		static_assert(std::is_base_of<IResource, T>::value);
 
 		if (_filePath.empty())
 		{
@@ -105,7 +105,7 @@ namespace mh
 
 		std::string strKey = _filePath.string();
 
-		std::shared_ptr<IRes> FindRes = Find(GetResType<T>(), strKey);
+		std::shared_ptr<IResource> FindRes = Find(GetResType<T>(), strKey);
 
 		// 이미 해당 키로 리소스가 있다면, 캐스팅 해서 반환
 		if (FindRes)
@@ -124,7 +124,7 @@ namespace mh
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> ResMgr::Find(const std::string_view _strKey)
+	inline std::shared_ptr<T> ResourceMgr::Find(const std::string_view _strKey)
 	{
 		eResourceType ResType = GetResType<T>();
 
@@ -136,11 +136,11 @@ namespace mh
 		if (iter == mArrRes[(int)ResType].end())
 			return nullptr;
 
-		return std::static_pointer_cast<T, IRes>(iter->second);
+		return std::static_pointer_cast<T, IResource>(iter->second);
 	}
 
 	template<typename T>
-	inline const std::unordered_map<std::string, std::shared_ptr<IRes>, tHashFunc_StringView, std::equal_to<>>& ResMgr::GetResources()
+	inline const std::unordered_map<std::string, std::shared_ptr<IResource>, tHashFunc_StringView, std::equal_to<>>& ResourceMgr::GetResources()
 	{
 		eResourceType Type = GetResType<T>();
 		assert(eResourceType::UNKNOWN != Type);
@@ -150,7 +150,7 @@ namespace mh
 
 
 
-	inline std::shared_ptr<IRes> ResMgr::Find(eResourceType _ResType, const std::string_view _strKey)
+	inline std::shared_ptr<IResource> ResourceMgr::Find(eResourceType _ResType, const std::string_view _strKey)
 	{
 		if (eResourceType::UNKNOWN == _ResType)
 			return nullptr;
@@ -163,7 +163,7 @@ namespace mh
 		return iter->second;
 	}
 
-	inline void ResMgr::Insert(const std::string_view _strKey, std::shared_ptr<IRes> _Res)
+	inline void ResourceMgr::Insert(const std::string_view _strKey, std::shared_ptr<IResource> _Res)
 	{
 		eResourceType ResType = _Res->GetResType();
 

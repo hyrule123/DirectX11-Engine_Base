@@ -5,7 +5,7 @@
 
 #include <Engine/GameObject.h>
 #include <Engine/Com_Renderer_UIBase.h>
-#include <Engine/ResMgr.h>
+#include <Engine/ResourceMgr.h>
 #include <Engine/define_Component.h>
 
 namespace mh
@@ -51,7 +51,7 @@ namespace mh
 				static_cast<Com_Renderer_UIBase*>(ComMgr::GetNewCom(strKey::com::Com_Renderer_UIBase));
 
 			//에디터를 통해 만든 Gauge 머티리얼로 설정
-			SetCustomMaterial(ResMgr::Load<Material>("UI/UIGauge.json"));
+			SetCustomMaterial(ResourceMgr::Load<Material>("UI/UIGauge.json"));
 			break;
 		}
 

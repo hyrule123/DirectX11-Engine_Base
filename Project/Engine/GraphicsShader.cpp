@@ -201,7 +201,7 @@ namespace mh
 
 	eResult GraphicsShader::Save(const std::fs::path& _filePath)
 	{
-		IRes::Save(_filePath);
+		IResource::Save(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(define::strKey::Ext_ShaderSetting);
@@ -231,7 +231,7 @@ namespace mh
 
 	eResult GraphicsShader::Load(const std::fs::path& _filePath)
 	{
-		IRes::Load(_filePath);
+		IResource::Load(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(define::strKey::Ext_ShaderSetting);

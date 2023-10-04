@@ -2,7 +2,7 @@
 #include "IShader.h"
 
 mh::IShader::IShader(define::eResourceType _ResType)
-	: IRes(_ResType)
+	: IResource(_ResType)
 {
 }
 

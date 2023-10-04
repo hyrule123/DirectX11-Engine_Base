@@ -4,7 +4,7 @@
 #include "ConstBuffer.h"
 
 #include "json-cpp/json.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "PathMgr.h"
 
 #include "json-cpp/json.h"
@@ -14,7 +14,7 @@ namespace mh
     using namespace mh;
 
     Material::Material()
-        : IRes(eResourceType::Material)
+        : IResource(eResourceType::Material)
         , mCB{}
         , mMode(eRenderingMode::Opaque)
         , mShader{}
@@ -24,7 +24,7 @@ namespace mh
 
 
     Material::Material(const Material& _other)
-        : IRes(_other)
+        : IResource(_other)
         , mShader(_other.mShader)
         , mTextures(_other.mTextures)
         , mCB(_other.mCB)
@@ -38,7 +38,7 @@ namespace mh
 
     eResult Material::Save(const std::fs::path& _filePath)
     {
-        IRes::Save(_filePath);
+        IResource::Save(_filePath);
         std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
 
@@ -64,7 +64,7 @@ namespace mh
 
     eResult Material::Load(const std::fs::path& _filePath)
     {
-        IRes::Load(_filePath);
+        IResource::Load(_filePath);
         std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
         if (false == std::fs::exists(fullPath))
@@ -100,7 +100,7 @@ namespace mh
         }
 
         //부모 클래스 저장
-        eResult result = IRes::SaveJson(_pJVal);
+        eResult result = IResource::SaveJson(_pJVal);
         if (eResultFail(result))
         {
             return result;
@@ -133,7 +133,7 @@ namespace mh
         }
 
         //부모 클래스 저장
-        eResult result = IRes::LoadJson(_pJVal);
+        eResult result = IResource::LoadJson(_pJVal);
         if (eResultFail(result))
         {
             return result;
@@ -149,7 +149,7 @@ namespace mh
         if (false == shaderStrKey.empty())
         {
             //쉐이더는 Base Path를 사용하지 않는다
-            SetShader(ResMgr::Load<GraphicsShader>(shaderStrKey));
+            SetShader(ResourceMgr::Load<GraphicsShader>(shaderStrKey));
         }
         
         //포인터 배열은 MH::LoadPtrStrKeyVector 함수를 통해서 Key값을 싹 받아올 수 있음.
@@ -158,7 +158,7 @@ namespace mh
         {
             if (false == vecLoad[i].empty())
             {
-                SetTexture((eTextureSlot)i, ResMgr::Load<Texture>(vecLoad[i]));
+                SetTexture((eTextureSlot)i, ResourceMgr::Load<Texture>(vecLoad[i]));
             }
         }
         return eResult::Success;

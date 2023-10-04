@@ -1,6 +1,6 @@
 #pragma once
 #include "guiChild.h"
-#include "IRes.h"
+#include "IResource.h"
 
 namespace gui
 {
@@ -17,11 +17,11 @@ namespace gui
 
 		mh::eResourceType GetResType() { return mResType; }
 
-		void SetTarget(mh::IRes* _target) { mTarget = _target; }
-		mh::IRes* GetTarget() const { return mTarget; }
+		void SetTarget(mh::IResource* _target) { mTarget = _target; }
+		mh::IResource* GetTarget() const { return mTarget; }
 
 	private:
 		mh::eResourceType mResType;
-		mh::IRes* mTarget;
+		mh::IResource* mTarget;
 	};
 }

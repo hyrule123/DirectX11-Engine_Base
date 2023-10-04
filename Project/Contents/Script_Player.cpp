@@ -6,13 +6,13 @@
 #include <Engine/GameObject.h>
 #include <Engine/InputMgr.h>
 #include <Engine/MeshData.h>
-#include <Engine/ResMgr.h>
+#include <Engine/ResourceMgr.h>
 
 namespace mh
 {
 	void Script_Player::RequireComponent()
 	{
-		std::shared_ptr<MeshData> meshdata = ResMgr::Load<MeshData>("Player_Default");
+		std::shared_ptr<MeshData> meshdata = ResourceMgr::Load<MeshData>("Player_Default");
 		if (nullptr == meshdata || false == meshdata->Instantiate(GetOwner()))
 		{
 			ERROR_MESSAGE_W(L"메쉬 데이터 로드 실패");

@@ -1,11 +1,11 @@
 #pragma once
-#include "IRes.h"
+#include "IResource.h"
 
 
 namespace mh
 {
 	class IShader :
-		public IRes
+		public IResource
 	{
 	public:
 		IShader(define::eResourceType _ResType);

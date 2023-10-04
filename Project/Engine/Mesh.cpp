@@ -15,7 +15,7 @@
 namespace mh
 {
 	Mesh::Mesh()
-		: IRes(eResourceType::Mesh)
+		: IResource(eResourceType::Mesh)
 		, mVertexBuffer{}
 		, mVBDesc{}
 		, mVertexByteStride{}
@@ -37,7 +37,7 @@ namespace mh
 
 	eResult Mesh::Save(const std::fs::path& _filePath)
 	{
-		IRes::Save(_filePath);
+		IResource::Save(_filePath);
 
 		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);
@@ -87,7 +87,7 @@ namespace mh
 
 	eResult Mesh::Load(const std::fs::path& _filePath)
 	{
-		IRes::Load(_filePath);
+		IResource::Load(_filePath);
 
 		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);

@@ -9,7 +9,7 @@
 #include "AtExit.h"
 
 #include "Mesh.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Material.h"
 #include "Com_Transform.h"
 #include "Com_Renderer_Mesh.h"
@@ -71,8 +71,8 @@ namespace gui
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		mDebugObjects.resize((UINT)eColliderType::END);
 
-		std::shared_ptr<mh::Mesh> rectMesh = mh::ResMgr::Find<mh::Mesh>(mh::strKey::Default::mesh::DebugRectMesh);
-		std::shared_ptr<mh::Material> material = mh::ResMgr::Find<mh::Material>(mh::strKey::Default::material::DebugMaterial);
+		std::shared_ptr<mh::Mesh> rectMesh = mh::ResourceMgr::Find<mh::Mesh>(mh::strKey::Default::mesh::DebugRectMesh);
+		std::shared_ptr<mh::Material> material = mh::ResourceMgr::Find<mh::Material>(mh::strKey::Default::material::DebugMaterial);
 
 		mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
 		mh::Com_Renderer_Mesh* renderer
@@ -81,7 +81,7 @@ namespace gui
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
-		std::shared_ptr<mh::Mesh> circleMesh = mh::ResMgr::Find<mh::Mesh>("CircleMesh");
+		std::shared_ptr<mh::Mesh> circleMesh = mh::ResourceMgr::Find<mh::Mesh>("CircleMesh");
 
 		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
 		renderer
@@ -95,8 +95,8 @@ namespace gui
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
 		//mh::Com_Renderer_Mesh* gridMr = gridObject->AddComponent<mh::Com_Renderer_Mesh>();
-		//gridMr->SetMesh(mh::ResMgr::Find<mh::Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(mh::ResMgr::Find<Material>(L"GridMaterial"));
+		//gridMr->SetMesh(mh::ResourceMgr::Find<mh::Mesh>(L"RectMesh"));
+		//gridMr->SetMaterial(mh::ResourceMgr::Find<Material>(L"GridMaterial"));
 		//mh::GridScript* gridScript = gridObject->AddComponent<mh::GridScript>();
 		//gridScript->SetCamera(gMainCamera);
 

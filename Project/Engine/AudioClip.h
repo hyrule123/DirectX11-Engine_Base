@@ -1,5 +1,5 @@
 #pragma once
-#include "IRes.h"
+#include "IResource.h"
 #include "AudioMgr.h"
 
 
@@ -8,7 +8,7 @@ namespace mh
 {
 	
 
-	class AudioClip : public IRes
+	class AudioClip : public IResource
 	{
 	public:
 		AudioClip();

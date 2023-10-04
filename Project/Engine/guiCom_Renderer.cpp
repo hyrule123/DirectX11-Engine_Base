@@ -2,9 +2,9 @@
 #include "PCH_Engine.h"
 
 #include "Com_Renderer_Mesh.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "Com_Renderer_Sprite.h"
-#include "IRes.h"
+#include "IResource.h"
 #include "GameObject.h"
 
 #include "guiCom_Renderer.h"
@@ -71,7 +71,7 @@ namespace gui
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= mh::ResMgr::GetResources<mh::Mesh>();
+				= mh::ResourceMgr::GetResources<mh::Mesh>();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -96,7 +96,7 @@ namespace gui
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= mh::ResMgr::GetResources<mh::Material>();
+				= mh::ResourceMgr::GetResources<mh::Material>();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -113,7 +113,7 @@ namespace gui
 
 	void guiCom_Renderer::SetMesh(const std::string& _strKey)
 	{
-		std::shared_ptr<mh::Mesh> mesh = mh::ResMgr::Find<mh::Mesh>(_strKey);
+		std::shared_ptr<mh::Mesh> mesh = mh::ResourceMgr::Find<mh::Mesh>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMesh(mesh);
@@ -121,7 +121,7 @@ namespace gui
 
 	void guiCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
-		std::shared_ptr<mh::Material> material = mh::ResMgr::Find<mh::Material>(_strKey);
+		std::shared_ptr<mh::Material> material = mh::ResourceMgr::Find<mh::Material>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMaterial(material, 0);

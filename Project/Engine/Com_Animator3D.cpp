@@ -4,7 +4,7 @@
 #include "TimeMgr.h"
 #include "Com_Renderer_Mesh.h"
 #include "StructBuffer.h"
-#include "ResMgr.h"
+#include "ResourceMgr.h"
 #include "InputMgr.h"
 
 #include "Animation3DShader.h"
@@ -218,7 +218,7 @@ namespace mh
 		if (false == m_bFinalMatUpdate)
 		{
 			// Animation3D Update Compute Shader
-			static std::shared_ptr<Animation3DShader> pUpdateShader = ResMgr::Load<Animation3DShader>(define::strKey::Default::shader::compute::Animation3D);
+			static std::shared_ptr<Animation3DShader> pUpdateShader = ResourceMgr::Load<Animation3DShader>(define::strKey::Default::shader::compute::Animation3D);
 
 
 			//구조화 버퍼가 정상적으로 생성되었는지 확인한다.

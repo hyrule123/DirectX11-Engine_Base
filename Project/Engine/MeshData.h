@@ -1,5 +1,5 @@
 #pragma once
-#include "IRes.h"
+#include "IResource.h"
 #include "define_Struct.h"
 #include "define_GPU.h"
 
@@ -24,7 +24,7 @@ namespace mh
 	};
 
     class MeshData :
-        public IRes
+        public IResource
     {
 		friend class gui::guiFBXConverter;
 		

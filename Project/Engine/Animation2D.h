@@ -6,7 +6,7 @@ namespace mh
 {
 	using mh::Texture;
 
-	class Animation2D : public IRes
+	class Animation2D : public IResource
 	{
 	public:
 		struct tSprite

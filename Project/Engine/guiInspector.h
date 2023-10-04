@@ -19,8 +19,8 @@ namespace gui
 		void SetTargetGameObject(mh::GameObject* _targetObj) { mTargetGameObject = _targetObj; }
 		mh::GameObject* GetTargetGameObject() const { return mTargetGameObject; }
 
-		void SetTargetResource(mh::IRes* _targetRes) { mTargetResource = _targetRes; }
-		mh::IRes* GetTargetResource() const { return mTargetResource; }
+		void SetTargetResource(mh::IResource* _targetRes) { mTargetResource = _targetRes; }
+		mh::IResource* GetTargetResource() const { return mTargetResource; }
 
 
 	private:
@@ -28,7 +28,7 @@ namespace gui
 
 	private:
 		mh::GameObject* mTargetGameObject;
-		mh::IRes* mTargetResource;
+		mh::IResource* mTargetResource;
 
 		std::vector<gui::guiComponent*> mGuiComponents;
 		std::vector<gui::guiResource*> mGuiResources;

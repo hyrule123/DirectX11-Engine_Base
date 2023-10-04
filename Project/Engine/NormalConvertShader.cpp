@@ -31,7 +31,7 @@ namespace mh
 
 	eResult NormalConvertShader::Load(const std::fs::path& _filePath)
 	{
-		IRes::Load(_filePath);
+		IResource::Load(_filePath);
 
 		return ComputeShader::CreateByHeader(CS_NormalConvertMH, sizeof(CS_NormalConvertMH));
 	}
