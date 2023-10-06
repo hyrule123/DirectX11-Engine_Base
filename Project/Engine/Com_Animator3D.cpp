@@ -20,7 +20,7 @@ namespace mh
 	Com_Animator3D::Com_Animator3D()
 		: IAnimator(define::eDimensionType::_3D)
 		, mSkeleton()
-		, m_iFramePerSecond(30)
+		//, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
 		, m_PrevFrame(-1)
@@ -37,7 +37,7 @@ namespace mh
 	Com_Animator3D::Com_Animator3D(const Com_Animator3D& _other)
 		: IAnimator(_other)
 		, mSkeleton()
-		, m_iFramePerSecond(_other.m_iFramePerSecond)
+		//, m_iFramePerSecond(_other.m_iFramePerSecond)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_bFinalMatUpdate(false)
 		, m_PrevFrame(_other.m_PrevFrame)
@@ -108,7 +108,8 @@ namespace mh
 
 			// 현재 프레임 인덱스 구하기
 			// 현재 애니메이션 시간 * 초당 프레임 수
-			double dFrameIdx = curTime * (double)m_iFramePerSecond;
+			
+			double dFrameIdx = curTime * (double)mCurrentAnim->GetFPS();
 
 			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
 
@@ -125,7 +126,7 @@ namespace mh
 			//이전 프레임 번호 업데이트 및 이벤트함수 호출
 			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
 			{
-				//IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
+				IAnimator::CallEvent(static_cast<IAnimation*>(mCurrentAnim.get()), m_Anim3DCBuffer.CurrentFrame);
 			}
 			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}
@@ -155,7 +156,7 @@ namespace mh
 		if (mSkeleton)
 		{
 			//최종 Bone별 행렬이 저장될 Vector 크기를 재조정
-			m_vecFinalBoneMat.resize(mSkeleton->GetBoneCount());
+			//m_vecFinalBoneMat.resize(mSkeleton->GetBoneCount());
 			m_Anim3DCBuffer.BoneCount = mSkeleton->GetBoneCount();
 		}
 	}
@@ -274,7 +275,7 @@ namespace mh
 			{
 				m_Anim3DCBuffer.bChangingAnim = TRUE;
 
-				double dFrameIdx = mNextAnim->GetStartTime() * (double)m_iFramePerSecond;
+				double dFrameIdx = mNextAnim->GetStartTime() * (double)mNextAnim->GetFPS();
 				m_Anim3DCBuffer.ChangeFrameIdx = (int)dFrameIdx;
 				m_Anim3DCBuffer.ChangeFrameLength = mNextAnim->GetFrameLength();
 				
@@ -294,7 +295,7 @@ namespace mh
 			{
 				
 				m_fClipUpdateTime = 0.f;
-				m_iFramePerSecond = mCurrentAnim->GetFPS();
+				//m_iFramePerSecond = mCurrentAnim->GetFPS();
 
 				m_PrevFrame = -1;
 				m_Anim3DCBuffer.CurrentFrame = 0;

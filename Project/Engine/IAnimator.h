@@ -26,13 +26,19 @@ namespace mh
 
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
+		//아래 함수를 재정의해서 protected된 AddEvent를 호출하는 방식
+		virtual void AddEvent(std::string_view _animName, int _frameIdx, const std::function<void()>& _func) {};
+
+		void CallEvent(IAnimation* _anim, int _frameIdx);
+
+	protected:
 		void AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func);
 
 	private:
 		define::eDimensionType mDimensionType;
 
-		//Key: 애니메이션의 포인터 주소
-		std::unordered_map<UINT64, tEvent, tFastHashFunc<UINT64>> mMapEvent;
+		//애니메이션 포인터 주소
+		std::unordered_map<DWORD_PTR, tEvent, tFastHashFunc<DWORD_PTR>> mMapEvent;
 	};
 }
 

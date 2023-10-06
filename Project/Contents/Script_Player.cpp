@@ -28,6 +28,15 @@ namespace mh
 
 	}
 
+	void Script_Player::Init()
+	{
+		Com_Animator3D* animator = GetOwner()->GetComponent<Com_Animator3D>();
+		if (animator)
+		{
+			//5animator->AddEvent()
+		}
+	}
+
 	void Script_Player::Update()
 	{
 		if (InputMgr::GetKeyDown(eKeyCode::P))
@@ -37,6 +46,10 @@ namespace mh
 			{
 				animator->PlayNext();
 			}
+		}
+
+		if (InputMgr::GetKeyDown(eKeyCode::E))
+		{
 		}
 	}
 }

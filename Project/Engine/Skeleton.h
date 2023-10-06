@@ -28,8 +28,6 @@ namespace mh
 		//반환타입 변수길이가 좀 김
 		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>& 
 			GetAnimations() const { return mMapAnimations; }
-		 
-		bool IsAnimMesh() const { return (false == mMapAnimations.empty()); }
 
 		std::shared_ptr<Animation3D> FindAnimation(const std::string_view _strAnimName);
 

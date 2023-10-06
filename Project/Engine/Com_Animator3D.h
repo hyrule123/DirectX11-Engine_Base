@@ -35,6 +35,8 @@ namespace mh
 		//디버그용
 		void PlayNext();
 
+		//virtual void AddEvent(std::string_view _animName, int _frameIdx, const std::function<void()>& _func) {}
+
 		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
 		StructBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer.get(); }
@@ -55,16 +57,13 @@ namespace mh
 		std::shared_ptr<Animation3D>					mCurrentAnim;
 		std::shared_ptr<Animation3D>					mNextAnim;
 
-        std::vector<MATRIX>				m_vecFinalBoneMat;		// 텍스쳐에 전달할 최종 행렬정보
+        //std::vector<MATRIX>				m_vecFinalBoneMat;		// 텍스쳐에 전달할 최종 행렬정보
 
 		//이전 프레임(현재 프레임은 아래 구조체에 저장되어 있음)
 		int								m_PrevFrame;
 		
 		//GPU에 보낼 데이터 모음 구조체
 		tCB_Animation3D					m_Anim3DCBuffer;
-
-		//초당 프레임 수
-        int								m_iFramePerSecond;
 
 		//한 프레임별 시간 저장용 변수
 		float							m_fClipUpdateTime;
