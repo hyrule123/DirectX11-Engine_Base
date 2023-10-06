@@ -5,9 +5,16 @@
 
 namespace mh
 {
+	class IAnimation;
 	class IAnimator :
 		public IComponent
 	{
+	public:
+		struct tEvent
+		{
+			std::unordered_map<int, std::vector<std::function<void()>>, tFastHashFunc<int>> CallBackFunctions;
+		};
+
 	public:
 		IAnimator(define::eDimensionType _type);
 		virtual ~IAnimator() {};
@@ -19,28 +26,14 @@ namespace mh
 
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
-		void AddEvent(int _frameIdx, const std::function<void()>& _func);
-
-	protected:
-		inline void CallEvent(int _frameIdx);
+		void AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func);
 
 	private:
 		define::eDimensionType mDimensionType;
 
-		std::unordered_map<int, std::vector<std::function<void()>>, tHashFuncFast_UINT32, std::equal_to<>> mMapNotify;
+		//Key: 애니메이션의 포인터 주소
+		std::unordered_map<UINT64, tEvent, tFastHashFunc<UINT64>> mMapEvent;
 	};
-
-	inline void IAnimator::CallEvent(int _frameIdx)
-	{
-		const auto& iter = mMapNotify.find(_frameIdx);
-		if (iter != mMapNotify.end())
-		{
-			for (size_t i = 0; i < iter->second.size(); ++i)
-			{
-				iter->second[i]();
-			}
-		}
-	}
 }
 
 

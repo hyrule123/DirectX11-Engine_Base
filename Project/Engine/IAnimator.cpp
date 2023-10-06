@@ -10,17 +10,28 @@ namespace mh
 	}
 
 
-	void IAnimator::AddEvent(int _frameIdx, const std::function<void()>& _func)
+	void IAnimator::AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func)
 	{
-		MH_ASSERT(0 < _frameIdx || _func);
+		MH_ASSERT(nullptr != _anim || 0 < _frameIdx || _func);
 
-		auto iter = mMapNotify.find(_frameIdx);
-		if (iter == mMapNotify.end())
+		using keyType = decltype(mMapEvent)::key_type;
+		
+		UINT64 key = reinterpret_cast<keyType>(_anim);
+
+		//해당 애니메이션에 대한 이벤트가 만들어져있지 않을 경우 이벤트를 추가
+		auto eventIter = mMapEvent.find(key);
+		if (eventIter == mMapEvent.end())
 		{
-			mMapNotify.insert(std::make_pair(_frameIdx, std::vector<std::function<void()>>()));
-			iter = mMapNotify.find(_frameIdx);
+			mMapEvent.insert(std::make_pair(key, IAnimator::tEvent()));
+			eventIter = mMapEvent.find(key);
 		}
-		iter->second.push_back(_func);
+		
+		//만든 이벤트에 함수 추가
+		auto callbackFuncIter = eventIter->second.CallBackFunctions.find(_frameIdx);
+		if (callbackFuncIter == eventIter->second.CallBackFunctions.end())
+		{
+
+		}
 	}
 
 }

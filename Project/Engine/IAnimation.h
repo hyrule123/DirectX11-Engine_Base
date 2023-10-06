@@ -1,17 +1,14 @@
 #pragma once
-#include "Entity.h"
+#include "IResource.h"
 
 namespace mh
 {
     class IAnimation :
-        public Entity
+        public IResource
     {
-    public:
+    protected:
         IAnimation();
         virtual ~IAnimation();
-
-                
     };
 }
-
 

@@ -1,12 +1,13 @@
 #pragma once
-#include "Entity.h"
+#include "IAnimation.h"
 #include "Texture.h"
 
 namespace mh
 {
 	using mh::Texture;
 
-	class Animation2D : public IResource
+	class Animation2D 
+		: public IAnimation
 	{
 	public:
 		struct tSprite

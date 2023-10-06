@@ -29,19 +29,12 @@ namespace mh::define
 		WNDCLASSEX WinClassDesc;
 	};
 
-	struct tHashFuncFast_UINT32
+	template<typename T>
+	struct tFastHashFunc
 	{
-		UINT64 operator()(const UINT32& _ukey) const
+		UINT64 operator()(const T& _uKey) const
 		{
-			return static_cast<UINT64>(_ukey);
-		}
-	};
-
-	struct tHashFuncFast_UINT64
-	{
-		UINT64 operator()(const UINT64& _ukey) const
-		{
-			return static_cast<UINT64>(_ukey);
+			return static_cast<UINT64>(_uKey);
 		}
 	};
 

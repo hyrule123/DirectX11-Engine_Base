@@ -125,7 +125,7 @@ namespace mh
 			//이전 프레임 번호 업데이트 및 이벤트함수 호출
 			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
 			{
-				IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
+				//IAnimator::CallEvent(m_Anim3DCBuffer.CurrentFrame);
 			}
 			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}
@@ -156,7 +156,6 @@ namespace mh
 		{
 			//최종 Bone별 행렬이 저장될 Vector 크기를 재조정
 			m_vecFinalBoneMat.resize(mSkeleton->GetBoneCount());
-
 			m_Anim3DCBuffer.BoneCount = mSkeleton->GetBoneCount();
 		}
 	}

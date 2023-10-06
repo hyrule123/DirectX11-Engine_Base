@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "IAnimation.h"
 #include "SimpleMath.h"
 #include "Shader_Common.h"
 
@@ -25,7 +25,7 @@ namespace mh
     class StructBuffer;
     class Skeleton;
 	class Animation3D :
-		public Entity
+		public IAnimation
 	{
         friend class Skeleton;
 	public:

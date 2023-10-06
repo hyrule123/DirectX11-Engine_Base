@@ -1,10 +1,16 @@
 #include "PCH_Engine.h"
 #include "IAnimation.h"
 
-mh::IAnimation::IAnimation()
+
+namespace mh
 {
+	IAnimation::IAnimation()
+		:IResource(eResourceType::Animation)
+	{
+	}
+
+	IAnimation::~IAnimation()
+	{
+	}
 }
 
-mh::IAnimation::~IAnimation()
-{
-}

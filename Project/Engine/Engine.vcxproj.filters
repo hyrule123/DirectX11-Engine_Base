@@ -468,9 +468,6 @@
     <ClCompile Include="Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Animation3D.cpp">
-      <Filter>Resource\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Com_Renderer_UIBase.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
@@ -517,6 +514,9 @@
     </ClCompile>
     <ClCompile Include="ComponentInitializer.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation3D.cpp">
+      <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="IAnimation.cpp">
       <Filter>Resource\Animation</Filter>
@@ -862,9 +862,6 @@
     <ClInclude Include="Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Animation3D.h">
-      <Filter>Resource\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Com_Renderer_UIBase.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
@@ -914,6 +911,9 @@
     </ClInclude>
     <ClInclude Include="strKey_Component.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation3D.h">
+      <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="IAnimation.h">
       <Filter>Resource\Animation</Filter>
