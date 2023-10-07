@@ -135,7 +135,7 @@ struct alignas(16)  tCB_Animation3D
 	int			CurrentFrame;	//현재 프레임
 	int			NextFrame;		//다음 프레임
 	float		FrameRatio;		//프레임 진행 비율
-	int			FrameLength;	//프레임 장수
+	int			FrameLength;	//전체 프레임 장수
 	
 	//Instancing 관련
 	int			RowIndex;

@@ -27,7 +27,7 @@ namespace mh
 		define::eDimensionType GetDimensionType() const { return mDimensionType; }
 
 		//아래 함수를 재정의해서 protected된 AddEvent를 호출하는 방식
-		virtual void AddEvent(std::string_view _animName, int _frameIdx, const std::function<void()>& _func) {};
+		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) { return false; };
 
 		void CallEvent(IAnimation* _anim, int _frameIdx);
 

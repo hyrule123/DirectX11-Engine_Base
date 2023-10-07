@@ -43,7 +43,6 @@ namespace mh
         eResult Load(const std::fs::path& _filePath);
 
         eResult LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip);
-        
 
         int GetStartFrame() const { return mValues.iStartFrame; }
         int GetEndFrame() const { return mValues.iEndFrame; }

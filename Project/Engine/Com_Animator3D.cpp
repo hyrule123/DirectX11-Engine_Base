@@ -108,15 +108,15 @@ namespace mh
 
 			// 현재 프레임 인덱스 구하기
 			// 현재 애니메이션 시간 * 초당 프레임 수
-			
 			double dFrameIdx = curTime * (double)mCurrentAnim->GetFPS();
 
 			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
 
 			//만약 이미 마지막 프레임에 도달했을 경우 현재 프레임 유지
-			int maxFrameCount = mCurrentAnim->GetFrameLength();
-			if (m_Anim3DCBuffer.CurrentFrame >= maxFrameCount - 1)
-				m_Anim3DCBuffer.NextFrame = maxFrameCount - 1;	// 끝이면 현재 인덱스를 유지
+			int maxFrameCount = mCurrentAnim->GetStartFrame() + mCurrentAnim->GetFrameLength() - 1;
+
+			if (m_Anim3DCBuffer.CurrentFrame >= maxFrameCount)
+				m_Anim3DCBuffer.NextFrame = maxFrameCount;	// 끝이면 현재 인덱스를 유지
 			else
 				m_Anim3DCBuffer.NextFrame = m_Anim3DCBuffer.CurrentFrame + 1;
 
@@ -148,6 +148,30 @@ namespace mh
 		m_bFinalMatUpdate = false;
 	}
 	
+
+	bool Com_Animator3D::AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func)
+	{
+		if (nullptr == mSkeleton)
+		{
+			return false;
+		}
+
+		std::shared_ptr<Animation3D> anim = mSkeleton->FindAnimation(_animName);
+		if (nullptr == anim)
+		{
+			return false;
+		}
+
+		//혹시나 frame이 최대 프레임 수보다 많을 경우 최대 프레임 수로 제한한다.
+		else if (anim->GetFrameLength() <= _frameIdx)
+		{
+			_frameIdx = anim->GetFrameLength() - 1;
+		}
+
+		IAnimator::AddEvent(static_cast<IAnimation*>(anim.get()), _frameIdx, _func);
+
+		return true;
+	}
 
 	void Com_Animator3D::SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton)
 	{

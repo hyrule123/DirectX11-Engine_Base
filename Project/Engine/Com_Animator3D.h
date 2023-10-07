@@ -28,6 +28,8 @@ namespace mh
 
 		virtual bool IsPlaying() const { return (nullptr != mCurrentAnim); }
 
+		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) override;
+
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton);
 		std::shared_ptr<const Skeleton> GetSkeleton() const { return mSkeleton; }
 		bool Play(const std::string_view _strAnimName, float _blendTime = 0.f);
