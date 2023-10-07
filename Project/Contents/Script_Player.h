@@ -13,6 +13,9 @@ namespace mh
         virtual void RequireComponent() override;
         virtual void Init() override;
         virtual void Update() override;
+
+    private:
+        void TestCallback();
     };
 
 }

@@ -126,7 +126,7 @@ namespace mh
 			//이전 프레임 번호 업데이트 및 이벤트함수 호출
 			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
 			{
-				IAnimator::CallEvent(static_cast<IAnimation*>(mCurrentAnim.get()), m_Anim3DCBuffer.CurrentFrame);
+				IAnimator::CallEvent(static_cast<IAnimation*>(mCurrentAnim.get()), m_Anim3DCBuffer.CurrentFrame - mCurrentAnim->GetStartFrame());
 			}
 			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}

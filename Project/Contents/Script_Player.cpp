@@ -23,9 +23,8 @@ namespace mh
 		GetOwner()->GetComponent<Com_Transform>()->SetRelativePosZ(750.f);
 		auto* animator = GetOwner()->GetComponent<Com_Animator3D>();
 		animator->Play("Evade");
-		//animator->AddEvent()
-
-
+		
+		animator->AddEvent("Evade", 0, std::bind(&Script_Player::TestCallback, this));
 	}
 
 	void Script_Player::Init()
@@ -51,6 +50,10 @@ namespace mh
 		if (InputMgr::GetKeyDown(eKeyCode::E))
 		{
 		}
+	}
+	void Script_Player::TestCallback()
+	{
+		OutputDebugStringA("!!!!Called!!!\n");
 	}
 }
 
