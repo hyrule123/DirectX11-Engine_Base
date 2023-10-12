@@ -5,14 +5,18 @@
 
 namespace mh
 {
-	struct Vertex2D
+	struct VertexBase
 	{
 		float4 Pos;
+	};
+
+	struct Vertex2D : public VertexBase
+	{
 		float2 UV;
 	};
-	struct Vertex3D
+
+	struct Vertex3D : public VertexBase
 	{
-		float4 Pos;
 		float2 UV;
 		float3 Tangent;	//접선 벡터
 		float3 Normal;	//법선 벡터
@@ -89,7 +93,12 @@ namespace mh
 		D3D11_BUFFER_DESC mVBDesc;
 		UINT mVertexByteStride;
 		UINT mVertexCount;
+
+		//다를 수 있는 구조체의 통합 저장을 위해 unsigned char 형태로 저장.
 		std::vector<unsigned char> mVertexSysMem;
+
+		//로컬 스페이스 상에서의 바운딩 sphere의 반지름.
+		float mBoundingSphereRadius;
 		
 		std::vector<tIndexInfo>		mIndexInfos;
 
@@ -101,21 +110,36 @@ namespace mh
 	template<typename Vertex>
 	inline bool Mesh::Create(const std::vector<Vertex>& _vecVtx, const std::vector<uint>& _vecIdx)
 	{
-		if (false == CreateVertexBuffer((void*)_vecVtx.data(), sizeof(Vertex), _vecVtx.size()))
+		bool bSuccess = false;
+		if (CreateVertexBuffer<Vertex>(_vecVtx))
 		{
-			return false;
+			bSuccess = true;
 		}
 
-		if (false == CreateIndexBuffer((UINT*)_vecIdx.data(), _vecIdx.size()))
+		if (CreateIndexBuffer((UINT*)_vecIdx.data(), _vecIdx.size()))
 		{
-			return false;
+			bSuccess = true;
 		}
 		
-		return true;
+		return bSuccess;
 	}
 	template<typename Vertex>
 	inline bool Mesh::CreateVertexBuffer(const std::vector<Vertex>& _vecVtx)
 	{
+		static_assert(std::is_base_of_v<VertexBase, Vertex>);
+
+		for (size_t i = 0; i < _vecVtx.size(); ++i)
+		{
+			const VertexBase* vtx = &_vecVtx[i];
+
+			//메쉬와 제일 먼 정점까지의 거리를 기록한다.
+			//최적화를 위해서 일단 제곱근을 구하지 않고 먼저 계산한다.
+			float lenSq = float3(vtx->Pos.x, vtx->Pos.y, vtx->Pos.z).LengthSquared();
+			mBoundingSphereRadius = std::max<float>(mBoundingSphereRadius, lenSq);
+		}
+		//마지막에 sqrt 한번 해준다.
+		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
+
 		return CreateVertexBuffer(static_cast<const void*>(_vecVtx.data()), sizeof(Vertex), _vecVtx.size());
 	}
 	inline bool Mesh::CreateIndexBuffer(const std::vector<UINT>& _indices)

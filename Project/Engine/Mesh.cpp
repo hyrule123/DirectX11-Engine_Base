@@ -1,7 +1,7 @@
-
 #include "PCH_Engine.h"
-
 #include "Mesh.h"
+
+#include "define_Global.h"
 #include "RenderMgr.h"
 #include "GPUMgr.h"
 #include "FBXLoader.h"
@@ -12,6 +12,10 @@
 #include "PathMgr.h"
 //#include "json-cpp/json.h"
 
+#ifdef max
+#undef max
+#endif
+
 namespace mh
 {
 	Mesh::Mesh()
@@ -20,6 +24,8 @@ namespace mh
 		, mVBDesc{}
 		, mVertexByteStride{}
 		, mVertexCount{}
+		, mVertexSysMem()
+		, mBoundingSphereRadius()
 		//, mVertices{}
 		, mIndexInfos{}
 		, mSkeleton{}
@@ -28,11 +34,6 @@ namespace mh
 
 	Mesh::~Mesh()
 	{
-		for (size_t i = 0; i < mIndexInfos.size(); ++i)
-		{
-			//if (mIndexInfos[i].pIdxSysMem)
-			//	delete mIndexInfos[i].pIdxSysMem;
-		}
 	}
 
 	eResult Mesh::Save(const std::fs::path& _filePath)
@@ -121,6 +122,9 @@ namespace mh
 
 		//std::vector<unsigned char> mVertexSysMem;
 		Binary::LoadValueVector(ifs, mVertexSysMem);
+
+		//Bounding Box 사이즈 계산		
+		
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		//버퍼 생성
@@ -291,16 +295,15 @@ namespace mh
 
 	eResult Mesh::CreateFromContainer(const tFBXContainer* _fbxContainer)
 	{
+		MH_ASSERT(_fbxContainer);
 		if (nullptr == _fbxContainer)
 			return eResult::Fail_Nullptr;
-
-		//const tFBXContainer& container = _fbxContainer->GetContainer(0);
 
 		UINT iVtxCount = (UINT)_fbxContainer->vecPosition.size();
 		std::vector<Vertex3D> vecVtx3d(iVtxCount);
 		for (UINT i = 0; i < iVtxCount; ++i)
 		{
-			vecVtx3d[i].Pos = float4(_fbxContainer->vecPosition[i], 1.f);
+			vecVtx3d[i].Pos = float4(_fbxContainer->vecPosition[i], 1.f);			
 			vecVtx3d[i].UV = _fbxContainer->vecUV[i];
 			vecVtx3d[i].Normal = _fbxContainer->vecNormal[i];
 			vecVtx3d[i].Tangent = _fbxContainer->vecTangent[i];
@@ -312,6 +315,7 @@ namespace mh
 				vecVtx3d[i].Indices = _fbxContainer->vecBlendIndex[i];
 			}
 		}
+
 		//std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
 		CreateVertexBuffer<Vertex3D>(vecVtx3d);
 
