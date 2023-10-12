@@ -71,8 +71,8 @@ namespace mh
 		
 		void RenderInstanced(UINT _subSet, UINT _instanceCount) const;
 
-		//const std::vector<Vertex3D> GetVertices() { return mVertices; }
 		UINT GetSubsetCount() const { return (UINT)mIndexInfos.size(); }
+		float GetBoundingSphereRad() const { return mBoundingSphereRadius; }
 
 		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton) { mSkeleton = _pSkeleton; }
 		std::shared_ptr<Skeleton> GetSkeleton() const { return mSkeleton; }
