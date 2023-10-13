@@ -52,6 +52,8 @@ namespace mh
 		UINT GetMaterialCount() { return (UINT)mMaterials.size(); }
 		bool IsRenderReady() const { return (mMesh && false == mMaterials.empty()); }
 
+		void SetFrustumCull(bool _bFrustumCull) { mbFrustumCullEnable = _bFrustumCull; }
+		bool IsFrustumCullEnabled() const { return mbFrustumCullEnable; }
 
 	private:
 		inline tMaterialSet* GetMaterialSet(UINT _idx);
@@ -59,6 +61,8 @@ namespace mh
 	private:
 		std::shared_ptr<Mesh> mMesh;
 		std::vector<tMaterialSet> mMaterials;
+
+		bool mbFrustumCullEnable;
 	};
 
 	inline void IRenderer::SetMaterial(const std::shared_ptr<Material> _Mtrl, UINT _idx)

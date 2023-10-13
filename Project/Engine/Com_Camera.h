@@ -1,12 +1,13 @@
 #pragma once
 #include "IComponent.h"
-
 #include "define_Enum.h"
 
 namespace  mh
 {
+	
 	class Com_Camera : public IComponent
 	{
+		class CullingAgent;
 	public:
 		Com_Camera();
 		virtual ~Com_Camera();
@@ -35,6 +36,9 @@ namespace  mh
 		void SetProjectionType(define::eProjectionType _type) { mProjType = _type; CreateProjectionMatrix(); }
 		define::eProjectionType GetProjectionType() const { return mProjType; }
 
+		inline void SetCullEnable(bool _bCullingEnable);
+		bool IsCullEnabled() const { return mbCullEnable; }
+
 		void CreateProjectionMatrix();
 		void CreateProjectionMatrix(uint ResolutionX, uint ResolutionY);
 		
@@ -62,6 +66,9 @@ namespace  mh
 		MATRIX mProjection;
 
 		define::eProjectionType mProjType;
+		std::unique_ptr<CullingAgent> mCullingAgent;
+		bool mbCullEnable;
+
 		float mAspectRatio;
 
 		float mNear;
@@ -74,8 +81,34 @@ namespace  mh
 		std::vector<GameObject*> mCutoutGameObjects;
 		std::vector<GameObject*> mTransparentGameObjects;
 		std::vector<GameObject*> mPostProcessGameObjects;
+
+
+
+		class CullingAgent : public Entity
+		{
+		public:
+			CullingAgent() {};
+			virtual ~CullingAgent() {};
+
+			virtual void FixedUpdate() = 0;
+
+		};
+
+		class CullingAgent_Orthographic : public CullingAgent
+		{
+		public:
+			CullingAgent_Orthographic();
+			virtual ~CullingAgent_Orthographic();
+
+			
+		};
+
+		class CullingAgent_Perspective : public CullingAgent
+		{
+		public:
+			CullingAgent_Perspective();
+			virtual ~CullingAgent_Perspective();
+		};
 	};
-
-
 
 }

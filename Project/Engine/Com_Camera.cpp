@@ -32,6 +32,7 @@ namespace mh
 		, mViewInverse()
 		, mProjection()
 		, mProjType(eProjectionType::None)
+		, mbCullEnable(true)
 		, mAspectRatio(1.0f)
 		, mNear(1.0f)
 		, mFar(50000.f)
@@ -179,6 +180,28 @@ namespace mh
 		mViewInverse = mView.Invert();
 	}
 
+	inline void Com_Camera::SetCullEnable(bool _bCullingEnable)
+	{
+		mCullingAgent.reset();
+
+		mbCullEnable = _bCullingEnable;
+		if (mbCullEnable)
+		{
+			switch (mProjType)
+			{
+			case mh::define::eProjectionType::Perspective:
+				mCullingAgent = std::make_unique<CullingAgent_Perspective>();
+				break;
+			case mh::define::eProjectionType::Orthographic:
+				mCullingAgent = std::make_unique<CullingAgent_Orthographic>();
+				break;
+			default:
+				MH_ASSERT(nullptr);
+				break;
+			}
+		}
+	}
+
 	void Com_Camera::CreateProjectionMatrix()
 	{
 		uint2 resolution = GPUMgr::GetResolution();
@@ -187,8 +210,11 @@ namespace mh
 
 	void Com_Camera::CreateProjectionMatrix(uint ResolutionX, uint ResolutionY)
 	{
+		mCullingAgent.reset();
+
 		float width = (float)ResolutionX * mScale;
 		float height = (float)ResolutionY * mScale;
+
 		mAspectRatio = width / height;
 
 		switch (mProjType)
@@ -201,14 +227,21 @@ namespace mh
 				, mNear
 				, mFar
 			);
+			
+
 			break;
 		case eProjectionType::Orthographic:
 			mProjection = MATRIX::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, mNear, mFar);
+
 			break;
+
 		default:
 			MH_ASSERT(false);
 			break;
 		}
+
+		//Projection Mode가 변하면 Culling Agent도 교체 필요 -> 한 번 호출해줘야 한다
+		SetCullEnable(mbCullEnable);
 	}
 
 	void Com_Camera::SetScale(float _scale)
@@ -345,10 +378,16 @@ namespace mh
 		if (nullptr == _gameObj || GameObject::eState::Active != _gameObj->GetState())
 			return;
 
-		IRenderer* renderer = static_cast<IRenderer*>(_gameObj->GetComponent(define::eComponentType::Renderer));
+		IRenderer* renderer = _gameObj->Renderer();
 
 		if (nullptr == renderer)
 			return;
+		
+		else if (renderer->IsFrustumCullEnabled())
+		{
+			//a
+		}
+
 
 		eRenderingMode mode = eRenderingMode::None;
 		Material* mtrl = renderer->GetCurrentMaterial(0u);
@@ -379,5 +418,19 @@ namespace mh
 		default:
 			break;
 		}
+	}
+
+
+	Com_Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
+	{
+	}
+	Com_Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
+	{
+	}
+	Com_Camera::CullingAgent_Perspective::CullingAgent_Perspective()
+	{
+	}
+	Com_Camera::CullingAgent_Perspective::~CullingAgent_Perspective()
+	{
 	}
 }
