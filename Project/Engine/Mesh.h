@@ -97,6 +97,13 @@ namespace mh
 		//다를 수 있는 구조체의 통합 저장을 위해 unsigned char 형태로 저장.
 		std::vector<unsigned char> mVertexSysMem;
 
+		//로컬 스페이스 상에서의 바운딩 box의 최소, 최대값
+		struct BoundingBoxMinMax
+		{
+			float3 Min;
+			float3 Max;
+		} mBoundingBoxMinMax;
+
 		//로컬 스페이스 상에서의 바운딩 sphere의 반지름.
 		float mBoundingSphereRadius;
 		

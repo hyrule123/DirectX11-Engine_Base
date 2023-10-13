@@ -18,7 +18,7 @@ namespace mh
 		: IComponent(define::eComponentType::Renderer)
 		, mMesh(nullptr)
 		, mMaterials(1)
-		, mbFrustumCullEnable(true)
+		, mbCullingEnable(true)
 	{
 	}
 
@@ -30,7 +30,7 @@ namespace mh
 		: IComponent(_other)
 		, mMesh(_other.mMesh)
 		, mMaterials{}
-		, mbFrustumCullEnable(_other.mbFrustumCullEnable)
+		, mbCullingEnable(_other.mbCullingEnable)
 	{
 		mMaterials.resize(_other.mMaterials.size());
 		for (size_t i = 0; i < mMaterials.size(); ++i)

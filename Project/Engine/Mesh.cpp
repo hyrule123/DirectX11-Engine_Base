@@ -25,11 +25,15 @@ namespace mh
 		, mVertexByteStride{}
 		, mVertexCount{}
 		, mVertexSysMem()
+		, mBoundingBoxMinMax{}
 		, mBoundingSphereRadius()
 		//, mVertices{}
 		, mIndexInfos{}
 		, mSkeleton{}
 	{
+		//최대값에는 초기값으로 부동소수점 최소값을, 최소값에는 초기값으로 부동소수점 최대값을 대입
+		mBoundingBoxMinMax.Max = float3(-FLT_MAX);
+		mBoundingBoxMinMax.Min = float3(FLT_MAX);
 	}
 
 	Mesh::~Mesh()
@@ -230,6 +234,9 @@ namespace mh
 			mVertexCount = 0u;
 		}
 
+		float4 BoundingBoxMin = float4(FLT_MAX);
+		float4 BoundingBoxMax = float4(-FLT_MAX);
+
 		//성공시 Bounding Sphere의 반지름을 구해준다.
 		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
 		for (size_t i = 0; i < mVertexSysMem.size(); i += mVertexByteStride)
@@ -239,11 +246,21 @@ namespace mh
 
 			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(mVertexSysMem[i]));
 
+			//Bounding Box 계산
+			BoundingBoxMin = float4::Min(BoundingBoxMin, vtx->Pos);
+			BoundingBoxMax = float4::Max(BoundingBoxMax, vtx->Pos);
+
+
+			//Bounding Sphere 계산
 			//메쉬와 제일 먼 정점까지의 거리를 기록한다.
 			//최적화를 위해서 일단 제곱근을 구하지 않고 먼저 계산한다.
 			float lenSq = float3(vtx->Pos.x, vtx->Pos.y, vtx->Pos.z).LengthSquared();
 			mBoundingSphereRadius = std::max<float>(mBoundingSphereRadius, lenSq);
 		}
+		//Bounding Box 입력
+		mBoundingBoxMinMax.Min = float3(BoundingBoxMin);
+		mBoundingBoxMinMax.Max = float3(BoundingBoxMax);
+
 		//마지막에 sqrt 한번 해준다.
 		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
 

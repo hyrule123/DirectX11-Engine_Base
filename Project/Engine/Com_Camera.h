@@ -100,7 +100,7 @@ namespace  mh
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			
+			virtual void FixedUpdate() { MH_ASSERT(false); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -108,6 +108,8 @@ namespace  mh
 		public:
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
+
+			virtual void FixedUpdate() { MH_ASSERT(false); }
 		};
 	};
 

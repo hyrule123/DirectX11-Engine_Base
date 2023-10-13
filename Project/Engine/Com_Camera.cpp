@@ -383,9 +383,10 @@ namespace mh
 		if (nullptr == renderer)
 			return;
 		
-		else if (renderer->IsFrustumCullEnabled())
+		//카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
+		else if (mCullingAgent && renderer->IsCullingEnabled())
 		{
-			//a
+			
 		}
 
 
