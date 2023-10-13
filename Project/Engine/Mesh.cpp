@@ -230,6 +230,24 @@ namespace mh
 			mVertexCount = 0u;
 		}
 
+		//성공시 Bounding Sphere의 반지름을 구해준다.
+		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
+		for (size_t i = 0; i < mVertexSysMem.size(); i += mVertexByteStride)
+		{
+			//최대 size를 넘어가면 에러 발생시킴
+			MH_ASSERT(mVertexSysMem.size() > i + sizeof(VertexBase));
+
+			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(mVertexSysMem[i]));
+
+			//메쉬와 제일 먼 정점까지의 거리를 기록한다.
+			//최적화를 위해서 일단 제곱근을 구하지 않고 먼저 계산한다.
+			float lenSq = float3(vtx->Pos.x, vtx->Pos.y, vtx->Pos.z).LengthSquared();
+			mBoundingSphereRadius = std::max<float>(mBoundingSphereRadius, lenSq);
+		}
+		//마지막에 sqrt 한번 해준다.
+		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
+
+
 		return Result;
 	}
 

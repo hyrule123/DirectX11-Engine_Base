@@ -127,19 +127,6 @@ namespace mh
 	inline bool Mesh::CreateVertexBuffer(const std::vector<Vertex>& _vecVtx)
 	{
 		static_assert(std::is_base_of_v<VertexBase, Vertex>);
-
-		for (size_t i = 0; i < _vecVtx.size(); ++i)
-		{
-			const VertexBase* vtx = &_vecVtx[i];
-
-			//메쉬와 제일 먼 정점까지의 거리를 기록한다.
-			//최적화를 위해서 일단 제곱근을 구하지 않고 먼저 계산한다.
-			float lenSq = float3(vtx->Pos.x, vtx->Pos.y, vtx->Pos.z).LengthSquared();
-			mBoundingSphereRadius = std::max<float>(mBoundingSphereRadius, lenSq);
-		}
-		//마지막에 sqrt 한번 해준다.
-		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
-
 		return CreateVertexBuffer(static_cast<const void*>(_vecVtx.data()), sizeof(Vertex), _vecVtx.size());
 	}
 	inline bool Mesh::CreateIndexBuffer(const std::vector<UINT>& _indices)
