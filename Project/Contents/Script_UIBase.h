@@ -3,7 +3,7 @@
 #include <Engine/define_GPU.h>
 
 //HLSL 헤더 파일을 그대로 include
-#include <HLSL/UIBasic.hlsli>
+#include <Shader/UIBasic.hlsli>
 
 
 

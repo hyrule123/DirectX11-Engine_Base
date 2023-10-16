@@ -26,7 +26,6 @@
 #include <Contents/Script_Player.h>
 
 #include "strKey_Script.h"
-#include "strKey_Component.h"
 
 
 #include <Engine/EventMgr.h>

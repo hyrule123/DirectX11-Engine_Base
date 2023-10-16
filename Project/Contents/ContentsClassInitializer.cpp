@@ -8,7 +8,6 @@ namespace mh
 {
 	void ContentsClassInitializer::Init()
 	{
-		InitCom();
 		InitScript();
 		InitScene();
 

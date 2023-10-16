@@ -1,4 +1,3 @@
-#pragma once
 
 namespace mh
 {
@@ -8,8 +7,7 @@ namespace mh
 		static void Init();
 
 	private:
-		//이 3개는 자동 생성됨.
-		static void InitCom();
+		//이 2개는 Code Generator에 의해 자동 생성됨.
 		static void InitScript();
 		static void InitScene();
 

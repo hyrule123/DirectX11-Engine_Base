@@ -10,8 +10,8 @@ echo Running %0...
 echo Mode: %Configuration%
 
 set source_dir=.\Project\Engine\DefaultShader
-set destination_dir=.\Project\HLSL
-for /f %%f in (CopyList_HLSL_Header.txt) do (
+set destination_dir=.\Project\Shader
+for /f %%f in (CopyList_Shader_Header.txt) do (
     xcopy %source_dir%\%%f %destination_dir% /d /s /y /i /r
 
     :: 참조용 파일 읽기 전용으로 변경

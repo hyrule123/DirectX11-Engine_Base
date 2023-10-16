@@ -477,7 +477,6 @@
     <ClCompile Include="Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="BTActionExample.cpp" />
     <ClCompile Include="ILight.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
@@ -871,7 +870,6 @@
     <ClInclude Include="Com_BehaviorTree.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="BTActionExample.h" />
     <ClInclude Include="ILight.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
