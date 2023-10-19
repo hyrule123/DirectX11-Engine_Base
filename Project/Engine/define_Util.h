@@ -74,14 +74,21 @@ namespace std
 }
 
 
-class StringConv
+class StrConverter
 {
 public:
+	// UTF8 <-> Unicode
 	static void ConvertUTF8ToUnicode(__in const std::string_view _src, __out std::wstring& _dest);
 	static void ConvertUnicodeToUTF8(__in const std::wstring_view _src, __out std::string& _dest);
-
 	static std::string ConvertUnicodeToUTF8(const std::wstring_view _src);
 	static std::wstring ConvertUTF8ToUnicode(const std::string_view _src);
+
+	// ANSI <-> UniCode
+	static void ConvertUnicodeToANSI(__in const std::wstring_view _src, __out std::string& _dest);
+	static void ConvertANSIToUnicode(__in const std::string_view _src, __out std::wstring& _dest);
+	static std::wstring ConvertANSIToUnicode(const std::string_view _src);
+	static std::string ConvertUnicodeToANSI(const std::wstring_view _src);
+
 
 	//새 string을 만들어서 return 해줌
 	inline static std::string UpperCaseReturn(const std::string_view _str);
@@ -93,18 +100,18 @@ public:
 
 	//T 타입 데이터를 String으로 저장
 	template <typename T>
-	inline static std::string Convert_T_to_String(const T& _srcT);
+	inline static std::string Base64Encode(const T& _srcT);
 
 	template <typename T>
-	inline static T Convert_String_to_T(const std::string& _srcStr);
+	inline static T Base64Decode(const std::string& _srcStr);
 
 
 private:
-	StringConv() = delete;
-	~StringConv() = delete;
+	StrConverter() = delete;
+	~StrConverter() = delete;
 };
 
-inline std::string StringConv::UpperCaseReturn(const std::string_view _str)
+inline std::string StrConverter::UpperCaseReturn(const std::string_view _str)
 {
 	std::string converted(_str);
 
@@ -121,7 +128,7 @@ inline std::string StringConv::UpperCaseReturn(const std::string_view _str)
 	return converted;
 }
 
-inline std::wstring StringConv::UpperCaseReturn(const std::wstring_view _wstr)
+inline std::wstring StrConverter::UpperCaseReturn(const std::wstring_view _wstr)
 {
 	std::wstring converted(_wstr);
 
@@ -134,7 +141,7 @@ inline std::wstring StringConv::UpperCaseReturn(const std::wstring_view _wstr)
 	return converted;
 }
 
-inline std::string& StringConv::UpperCase(std::string& _str)
+inline std::string& StrConverter::UpperCase(std::string& _str)
 {
 	size_t size = _str.size();
 	for (size_t i = 0; i < size; ++i)
@@ -149,7 +156,7 @@ inline std::string& StringConv::UpperCase(std::string& _str)
 	return _str;
 }
 
-inline std::wstring& StringConv::UpperCase(std::wstring& _wstr)
+inline std::wstring& StrConverter::UpperCase(std::wstring& _wstr)
 {
 	size_t size = _wstr.size();
 	for (size_t i = 0; i < size; ++i)
@@ -161,13 +168,13 @@ inline std::wstring& StringConv::UpperCase(std::wstring& _wstr)
 }
 
 template<typename T>
-inline std::string StringConv::Convert_T_to_String(const T& _srcT)
+inline std::string StrConverter::Base64Encode(const T& _srcT)
 {
 	return base64_encode((const unsigned char*)&_srcT, sizeof(T));
 }
 
 template<typename T>
-inline T StringConv::Convert_String_to_T(const std::string& _srcStr)
+inline T StrConverter::Base64Decode(const std::string& _srcStr)
 {
 	T ReturnResult{};
 	std::string decoded = base64_decode(_srcStr);

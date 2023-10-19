@@ -69,7 +69,7 @@ namespace gui
 	{
 		for (const auto& wName : _vecItem)
 		{
-			std::string name = StringConv::ConvertUnicodeToUTF8(wName);
+			std::string name = StrConverter::ConvertUnicodeToUTF8(wName);
 			mResourceList.push_back(name);
 		}
 	}

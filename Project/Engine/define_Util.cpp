@@ -2,7 +2,7 @@
 #include "define_Util.h"
 #include "Application.h"
 
-void StringConv::ConvertUTF8ToUnicode(__in const std::string_view _src, __out std::wstring& _dest)
+void StrConverter::ConvertUTF8ToUnicode(__in const std::string_view _src, __out std::wstring& _dest)
 {
 	_dest.clear();
 
@@ -13,7 +13,7 @@ void StringConv::ConvertUTF8ToUnicode(__in const std::string_view _src, __out st
 	::MultiByteToWideChar(CP_UTF8, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size());
 }
 
-void StringConv::ConvertUnicodeToUTF8(__in const std::wstring_view _src, __out std::string& _dest)
+void StrConverter::ConvertUnicodeToUTF8(__in const std::wstring_view _src, __out std::string& _dest)
 {
 	_dest.clear();
 
@@ -24,7 +24,7 @@ void StringConv::ConvertUnicodeToUTF8(__in const std::wstring_view _src, __out s
 	::WideCharToMultiByte(CP_UTF8, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size(), nullptr, nullptr);
 }
 
-std::wstring StringConv::ConvertUTF8ToUnicode(const std::string_view _src)
+std::wstring StrConverter::ConvertUTF8ToUnicode(const std::string_view _src)
 {
 	std::wstring result;
 
@@ -37,8 +37,7 @@ std::wstring StringConv::ConvertUTF8ToUnicode(const std::string_view _src)
 	return result;
 }
 
-
-std::string StringConv::ConvertUnicodeToUTF8(const std::wstring_view _src)
+std::string StrConverter::ConvertUnicodeToUTF8(const std::wstring_view _src)
 {
 	std::string result;
 
@@ -51,6 +50,57 @@ std::string StringConv::ConvertUnicodeToUTF8(const std::wstring_view _src)
 
 	return result;
 }
+
+void StrConverter::ConvertUnicodeToANSI(__in const std::wstring_view _src, __out std::string& _dest)
+{
+	_dest.clear();
+
+	int srcsize = (int)_src.size();
+	int len = ::WideCharToMultiByte(CP_ACP, 0, _src.data(), srcsize, nullptr, 0, nullptr, nullptr);
+
+	_dest.resize(len);
+	::WideCharToMultiByte(CP_ACP, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size(), nullptr, nullptr);
+}
+
+void StrConverter::ConvertANSIToUnicode(__in const std::string_view _src, __out std::wstring& _dest)
+{
+	_dest.clear();
+
+	int srcsize = (int)_src.size();
+	int len = ::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, nullptr, 0);
+
+	_dest.resize(len);
+	::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size());
+}
+
+std::wstring StrConverter::ConvertANSIToUnicode(const std::string_view _src)
+{
+	std::wstring result;
+
+	int srcsize = (int)_src.size();
+	int len = ::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, nullptr, 0);
+
+	result.resize(len);
+	::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, result.data(), (int)result.size());
+
+	return result;
+}
+
+std::string StrConverter::ConvertUnicodeToANSI(const std::wstring_view _src)
+{
+	std::string result;
+
+	int srcsize = (int)_src.size();
+	int len = ::WideCharToMultiByte(CP_ACP, 0, _src.data(), srcsize, nullptr, 0, nullptr, nullptr);
+
+	result.resize(len);
+
+	::WideCharToMultiByte(CP_ACP, 0, _src.data(), srcsize, result.data(), (int)result.size(), nullptr, nullptr);
+
+	return result;
+}
+
+
 
 
 std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::filesystem::path& _extension)
@@ -76,7 +126,7 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 	else
 	{
 		extension = _baseDirectory.extension().wstring();
-		StringConv::UpperCase(extension);
+		StrConverter::UpperCase(extension);
 	}
 	
 	stringPath.resize(MAX_PATH);
@@ -105,7 +155,7 @@ std::filesystem::path mh::WinAPI::FileDialog(const std::filesystem::path& _baseD
 		extensionFilters.push_back(L'\0');
 
 		//기본 확장자가 들어왔을 경우 해당 확장자와 일치하는 필터를 기본 표시되도록 설정
-		if (false == extension.empty() && extension == StringConv::UpperCaseReturn(_extensions[i].wstring()))
+		if (false == extension.empty() && extension == StrConverter::UpperCaseReturn(_extensions[i].wstring()))
 		{
 			//인덱스번호는 1을 더해줘야함(1부터 시작함)
 			OpenFile.nFilterIndex = (DWORD)i + (DWORD)1u;

@@ -68,7 +68,7 @@ namespace Json
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == std::is_container_v<T>);
-			return StringConv::Convert_T_to_String(_srcT);
+			return StrConverter::Base64Encode(_srcT);
 		}
 
 
@@ -107,7 +107,7 @@ namespace Json
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == std::is_container_v<T>);
-			return StringConv::Convert_String_to_T<T>(_jVal.asString());
+			return StrConverter::Base64Decode<T>(_jVal.asString());
 		}
 
 
@@ -222,7 +222,7 @@ namespace Json
 				}
 				else
 				{
-					_destT = StringConv::Convert_String_to_T<T>(jVal.asString());
+					_destT = StrConverter::Base64Decode<T>(jVal.asString());
 					bResult = true;
 				}
 			}

@@ -196,7 +196,7 @@ namespace mh
 	eResult Texture::LoadFile(const std::filesystem::path& _fullPath)
 	{
 		std::wstring Extension = _fullPath.extension().wstring();
-		StringConv::UpperCase(Extension);
+		StrConverter::UpperCase(Extension);
 
 		if (Extension == L".DDS")
 		{
@@ -227,7 +227,7 @@ namespace mh
 			return eResult::Fail_Create;
 		}
 
-		StringConv::UpperCase(Extension);
+		StrConverter::UpperCase(Extension);
 		if (Extension == L".DDS")
 		{
 			if (FAILED(DirectX::SaveToDDSFile(mImage.GetImages(), mImage.GetImageCount(), mImage.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
