@@ -1,9 +1,9 @@
 #include "PCH_Engine.h"
 #include "FontWrapper.h"
 #ifdef _DEBUG
-#pragma comment(lib, "FW1FontWrapper/Debug/FW1FontWrapperL.lib")
+#pragma comment(lib, "FW1FontWrapper/lib/Debug/FW1FontWrapperL.lib")
 #else
-#pragma comment(lib, "FW1FontWrapper/Release/FW1FontWrapper.lib")
+#pragma comment(lib, "FW1FontWrapper/lib/Release/FW1FontWrapper.lib")
 #endif
 
 #include "GPUMgr.h"

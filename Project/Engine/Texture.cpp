@@ -2,9 +2,9 @@
 #include "Texture.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "DirectXTex/Debug/DirectXTex.lib") 
+#pragma comment(lib, "DirectXTex/lib/Debug/DirectXTex.lib") 
 #else 
-#pragma comment(lib, "DirectXTex/Release/DirectXTex.lib") 
+#pragma comment(lib, "DirectXTex/lib/Release/DirectXTex.lib") 
 #endif
 
 

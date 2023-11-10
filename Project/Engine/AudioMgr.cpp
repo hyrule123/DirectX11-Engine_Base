@@ -1,16 +1,18 @@
 #include "PCH_Engine.h"
 #include "AudioMgr.h"
 
+
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
+
 #ifdef _DEBUG
-#pragma comment(lib, "Fmod/Debug/fmodL_vc.lib")
-#pragma comment(lib, "Fmod/Debug/fmodstudioL_vc.lib")
+#pragma comment(lib, "Fmod/lib/Debug/fmodL_vc.lib")
+#pragma comment(lib, "Fmod/lib/Debug/fmodstudioL_vc.lib")
 #else
-#pragma comment(lib, "Fmod/Release/fmod_vc.lib")
-#pragma comment(lib, "Fmod/Release/fmodstudio_vc.lib")
+#pragma comment(lib, "Fmod/lib/Release/fmod_vc.lib")
+#pragma comment(lib, "Fmod/lib/Release/fmodstudio_vc.lib")
 #endif
 
 #include "AtExit.h"
