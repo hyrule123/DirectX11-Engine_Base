@@ -5,9 +5,9 @@
 #include <Contents/PCH_Contents.h>
 
 #ifdef _DEBUG
-#pragma comment(lib, "Contents/Debug/Contents.lib")
+#pragma comment(lib, "Contents/lib/Debug/Contents.lib")
 #else 
-#pragma comment(lib, "Contents/Release/Contents.lib")
+#pragma comment(lib, "Contents/lib/Release/Contents.lib")
 #endif
 
 #include "targetver.h"
