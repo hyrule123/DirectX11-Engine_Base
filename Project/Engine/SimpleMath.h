@@ -768,6 +768,9 @@ namespace mh::math
         // Computes rotation about y-axis (y), then x-axis (x), then z-axis (z)
         Vector3 ToEuler() const noexcept;
 
+        // Computes rotation about x -> y -> z order
+        Vector3 ToEulerXYZOrder() const noexcept;
+
         // Static functions
         static Quaternion CreateFromAxisAngle(const Vector3& axis, float angle) noexcept;
 
@@ -776,6 +779,10 @@ namespace mh::math
 
         // Rotates about y-axis (angles.y), then x-axis (angles.x), then z-axis (angles.z)
         static Quaternion CreateFromYawPitchRoll(const Vector3& angles) noexcept;
+
+        static Quaternion CreateFromPitchYawRoll(float pitch, float yaw, float roll) noexcept; 
+        static Quaternion CreateFromPitchYawRoll(const Vector3& angles) noexcept;
+
 
         static Quaternion CreateFromRotationMatrix(const Matrix& M) noexcept;
 

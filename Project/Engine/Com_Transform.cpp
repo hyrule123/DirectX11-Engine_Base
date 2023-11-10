@@ -37,6 +37,73 @@ namespace mh
 
 	void Com_Transform::FixedUpdate()
 	{
+		math::Matrix rotation = math::Matrix::Identity;
+
+		float DegreeToRadFactor = XM_PI / 180.f;
+
+		math::Vector3 radian = math::Vector3(-XM_2PI - 6.f, -XM_2PI - 1.f, -XM_2PI - 3.f);
+		rotation = math::Matrix::CreateRotationX(radian.x);
+		rotation *= math::Matrix::CreateRotationY(radian.y);
+		rotation *= math::Matrix::CreateRotationZ(radian.z);
+
+
+
+		float sinP = sinf(radian.x * 0.5f);
+		float cosP = cosf(radian.x * 0.5f);
+
+		float sinY = sinf(radian.y * 0.5f);
+		float cosY = cosf(radian.y * 0.5f);
+
+		float sinR = sinf(radian.z * 0.5f);
+		float cosR = cosf(radian.z * 0.5f);
+
+		math::Quaternion quatX = math::Quaternion::CreateFromYawPitchRoll(0.f, radian.x, 0.f);
+		math::Quaternion quatY = math::Quaternion::CreateFromYawPitchRoll(radian.y, 0.f, 0.f);
+
+		math::Quaternion quatXY = quatX * quatY;
+
+		float4 quatXYmanual = float4(
+			sinP * cosY,
+			cosP * sinY,
+			- sinP * sinY,
+			cosP * cosY
+		);
+
+		float4 quatXYZmanual = float4(
+			sinP * cosY * cosR - cosP * sinY * sinR,
+			sinP * cosY * sinR + cosP * sinY * cosR,
+			cosP * cosY * sinR - sinP * sinY * cosR,
+			cosP * cosY * cosR + sinP * sinY * sinR
+		);
+
+		math::Quaternion quatFromFunc = math::Quaternion::CreateFromPitchYawRoll(radian);
+
+		float pitch = atan2(2 * (quatFromFunc.w * quatFromFunc.x + quatFromFunc.y * quatFromFunc.z), 1 - 2 * (quatFromFunc.x * quatFromFunc.x + quatFromFunc.y * quatFromFunc.y));
+		float yaw = asin(2 * (quatFromFunc.w * quatFromFunc.y - quatFromFunc.z * quatFromFunc.x));
+		float roll = atan2(2 * (quatFromFunc.w * quatFromFunc.z + quatFromFunc.x * quatFromFunc.y), 1 - 2 * (quatFromFunc.y * quatFromFunc.y + quatFromFunc.z * quatFromFunc.z));
+
+
+		float3 reverse1 = quatFromFunc.ToEulerXYZOrder();
+
+		float3 reverse2 = quatFromFunc.ToEuler();
+
+		float f1_1 = sinP * cosY * cosR;
+		float f1_2 = cosP * sinY * sinR;
+
+		float f2_1 = sinP * cosY * sinR;
+		float f2_2 = cosP * sinY * cosR;
+
+		float f3_1 = cosP * cosY * sinR;
+		float f3_2 = sinP * sinY * cosR;
+
+
+		math::Quaternion quatZ = math::Quaternion::CreateFromYawPitchRoll(0.f, 0.f, radian.z);
+		math::Quaternion finalQuat = quatX * quatY * quatZ;
+
+		math::Matrix comp = math::Matrix::CreateFromQuaternion(finalQuat);
+
+		math::Matrix comp2 = math::Matrix::CreateFromYawPitchRoll(math::Vector3(1.571f, 0.175f, 0.349f));
+
 		//bool 값들은 Tick()에서 false로 초기화 된다.
 		//여기선 고유 크기(Size)를 반영하지 않은 월드행렬을 만든다.
 		//게임오브젝트 상속 관계에서 고유 크기까지 상속을 받게 되면 기하급수적으로 크기가 커짐 

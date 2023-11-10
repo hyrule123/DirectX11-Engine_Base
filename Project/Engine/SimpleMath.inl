@@ -3203,6 +3203,40 @@ inline Vector3 mh::math::Quaternion::ToEuler() const noexcept
     }
 }
 
+inline Vector3 mh::math::Quaternion::ToEulerXYZOrder() const noexcept
+{
+    //float x, y, z, w;
+//float pitch = asin(2 * (w * y - x * z));
+
+//float yaw = atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y));
+
+//float roll = atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));   
+    const float xx = x * x;
+    const float yy = y * y;
+    const float zz = z * z;
+
+    const float m31 = 2.f * w * x + 2.f * y * z;
+    const float m32 = 2.f * w * y - 2.f * x * z;
+    const float m33 = 1.f - 2.f * xx - 2.f * yy;
+
+    const float cy = sqrtf(m33 * m33 + m31 * m31);
+    const float cx = atan2f(m32, cy);
+    if (cy > 16.f * FLT_EPSILON)
+    {
+        const float m12 = 2.f * w * z + 2.f * x * y;
+        const float m22 = 1.f - 2.f * yy - 2.f * zz;
+
+        return Vector3(atan2f(m31, m33), cx, atan2f(m12, m22));
+    }
+    else
+    {
+        const float m11 = 1.f - 2.f * xx - 2.f * zz;
+        const float m21 = 2.f * w * z - 2.f * x * y;
+
+        return Vector3(0.f, cx, atan2f(-m21, m11));
+    }
+}
+
 //------------------------------------------------------------------------------
 // Static functions
 //------------------------------------------------------------------------------
@@ -3233,6 +3267,149 @@ inline mh::math::Quaternion mh::math::Quaternion::CreateFromYawPitchRoll(const V
     return R;
 }
 
+inline mh::math::Quaternion mh::math::Quaternion::CreateFromPitchYawRoll(float pitch, float yaw, float roll) noexcept
+{
+    using namespace DirectX;
+    Quaternion R;
+    XMVECTOR Angles = XMVectorSet(pitch, yaw, roll, 0.0f);
+
+
+    //float4 quatXYZmanual = float4(
+    //    sinP * cosY * cosR - cosP * sinY * sinR,
+    //    sinP * cosY * sinR + cosP * sinY * cosR,
+    //    cosP * cosY * sinR - sinP * sinY * cosR,
+    //    cosP * cosY * cosR + sinP * sinY * sinR
+    //);
+
+#if defined(_XM_NO_INTRINSICS_)
+    const float halfpitch = Angles.vector4_f32[0] * 0.5f;
+    float cp = cosf(halfpitch);
+    float sp = sinf(halfpitch);
+
+    const float halfyaw = Angles.vector4_f32[1] * 0.5f;
+    float cy = cosf(halfyaw);
+    float sy = sinf(halfyaw);
+
+    const float halfroll = Angles.vector4_f32[2] * 0.5f;
+    float cr = cosf(halfroll);
+    float sr = sinf(halfroll);
+
+
+    //float4 quatXYZmanual = float4(
+//    sinP * cosY * cosR - cosP * sinY * sinR,
+//    sinP * cosY * sinR + cosP * sinY * cosR,
+//    cosP * cosY * sinR - sinP * sinY * cosR,
+//    cosP * cosY * cosR + sinP * sinY * sinR
+//);
+    R = { { {
+        sp * cy * cr - cp * sy * sr,
+        sp * cy * sr + cp * sy * cr
+        cp * cy * sr - sp * sy * cr
+        cp * cy * cr + sp * sy * sr
+    } } };
+#else
+    static const XMVECTORF32  Sign = { { { -1.0f, 1.0f, -1.0f, 1.0f } } };
+
+    XMVECTOR HalfAngles = XMVectorMultiply(Angles, g_XMOneHalf.v);
+
+    XMVECTOR SinAngles, CosAngles;
+    XMVectorSinCos(&SinAngles, &CosAngles, HalfAngles);
+
+    XMVECTOR P0 = XMVectorPermute<XM_PERMUTE_0X, XM_PERMUTE_0X, XM_PERMUTE_1X, XM_PERMUTE_1X>(SinAngles, CosAngles);
+    XMVECTOR Y0 = XMVectorPermute<XM_PERMUTE_1Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y>(SinAngles, CosAngles);
+    XMVECTOR R0 = XMVectorPermute<XM_PERMUTE_1Z, XM_PERMUTE_0Z, XM_PERMUTE_0Z, XM_PERMUTE_1Z>(SinAngles, CosAngles);
+
+    XMVECTOR P1 = XMVectorPermute<XM_PERMUTE_1X, XM_PERMUTE_1X, XM_PERMUTE_0X, XM_PERMUTE_0X>(SinAngles, CosAngles);
+    XMVECTOR Y1 = XMVectorPermute<XM_PERMUTE_0Y, XM_PERMUTE_0Y, XM_PERMUTE_0Y, XM_PERMUTE_0Y>(SinAngles, CosAngles);
+    XMVECTOR R1 = XMVectorPermute<XM_PERMUTE_0Z, XM_PERMUTE_1Z, XM_PERMUTE_1Z, XM_PERMUTE_0Z>(SinAngles, CosAngles);
+
+    //1항(P Y R)
+    XMVECTOR Q0 = XMVectorMultiply(P0, Y0);
+    Q0 = XMVectorMultiply(Q0, R0);
+
+    //2항(P Y)
+    XMVECTOR Q1 = XMVectorMultiply(P1, Sign.v);
+    Q1 = XMVectorMultiply(Q1, Y1);
+
+    //2항 * R 한다음 두개 더해서 최종 반환
+    XMStoreFloat4(&R, XMVectorMultiplyAdd(Q1, R1, Q0));
+
+#endif
+
+    return R;
+}
+
+inline mh::math::Quaternion mh::math::Quaternion::CreateFromPitchYawRoll(const Vector3& angles) noexcept
+{
+    using namespace DirectX;
+    Quaternion R;
+    XMVECTOR Angles = XMLoadFloat3(&angles);
+
+
+    //float4 quatXYZmanual = float4(
+    //    sinP * cosY * cosR - cosP * sinY * sinR,
+    //    sinP * cosY * sinR + cosP * sinY * cosR,
+    //    cosP * cosY * sinR - sinP * sinY * cosR,
+    //    cosP * cosY * cosR + sinP * sinY * sinR
+    //);
+
+#if defined(_XM_NO_INTRINSICS_)
+    const float halfpitch = Angles.vector4_f32[0] * 0.5f;
+    float cp = cosf(halfpitch);
+    float sp = sinf(halfpitch);
+
+    const float halfyaw = Angles.vector4_f32[1] * 0.5f;
+    float cy = cosf(halfyaw);
+    float sy = sinf(halfyaw);
+
+    const float halfroll = Angles.vector4_f32[2] * 0.5f;
+    float cr = cosf(halfroll);
+    float sr = sinf(halfroll);
+
+
+    //float4 quatXYZmanual = float4(
+//    sinP * cosY * cosR - cosP * sinY * sinR,
+//    sinP * cosY * sinR + cosP * sinY * cosR,
+//    cosP * cosY * sinR - sinP * sinY * cosR,
+//    cosP * cosY * cosR + sinP * sinY * sinR
+//);
+    R = { { {
+        sp * cy * cr - cp * sy * sr,
+        sp * cy * sr + cp * sy * cr
+        cp * cy * sr - sp * sy * cr
+        cp * cy * cr + sp * sy * sr
+    } } };
+#else
+    static const XMVECTORF32  Sign = { { { -1.0f, 1.0f, -1.0f, 1.0f } } };
+
+    XMVECTOR HalfAngles = XMVectorMultiply(Angles, g_XMOneHalf.v);
+
+    XMVECTOR SinAngles, CosAngles;
+    XMVectorSinCos(&SinAngles, &CosAngles, HalfAngles);
+
+    XMVECTOR P0 = XMVectorPermute<XM_PERMUTE_0X, XM_PERMUTE_0X, XM_PERMUTE_1X, XM_PERMUTE_1X>(SinAngles, CosAngles);
+    XMVECTOR Y0 = XMVectorPermute<XM_PERMUTE_1Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y, XM_PERMUTE_1Y>(SinAngles, CosAngles);
+    XMVECTOR R0 = XMVectorPermute<XM_PERMUTE_1Z, XM_PERMUTE_0Z, XM_PERMUTE_0Z, XM_PERMUTE_1Z>(SinAngles, CosAngles);
+
+    XMVECTOR P1 = XMVectorPermute<XM_PERMUTE_1X, XM_PERMUTE_1X, XM_PERMUTE_0X, XM_PERMUTE_0X>(SinAngles, CosAngles);
+    XMVECTOR Y1 = XMVectorPermute<XM_PERMUTE_0Y, XM_PERMUTE_0Y, XM_PERMUTE_0Y, XM_PERMUTE_0Y>(SinAngles, CosAngles);
+    XMVECTOR R1 = XMVectorPermute<XM_PERMUTE_0Z, XM_PERMUTE_1Z, XM_PERMUTE_1Z, XM_PERMUTE_0Z>(SinAngles, CosAngles);
+
+    //1항(P Y R)
+    XMVECTOR Q0 = XMVectorMultiply(P0, Y0);
+    Q0 = XMVectorMultiply(Q0, R0);
+
+    //2항(P Y)
+    XMVECTOR Q1 = XMVectorMultiply(P1, Sign.v);
+    Q1 = XMVectorMultiply(Q1, Y1);
+
+    //2항 * R 한다음 두개 더해서 최종 반환
+    R = XMVectorMultiplyAdd(Q1, R1, Q0);
+
+#endif
+
+    return R;
+}
 inline mh::math::Quaternion mh::math::Quaternion::CreateFromRotationMatrix(const Matrix& M) noexcept
 {
     using namespace DirectX;

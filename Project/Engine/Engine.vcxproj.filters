@@ -981,6 +981,9 @@
     <None Include="DefaultShader\SH_3D.hlsli">
       <Filter>_DefaultShader\3D</Filter>
     </None>
+    <None Include="..\..\Copy_DLL.bat">
+      <Filter>_DefaultShader\Debug</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultShader\_0VS_Basic3D.hlsl">

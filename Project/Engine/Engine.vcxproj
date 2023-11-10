@@ -555,6 +555,7 @@ call Copy_Shader.bat $(Configuration)</Command>
     <ClCompile Include="define_Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Copy_DLL.bat" />
     <None Include="cpp.hint" />
     <None Include="DefaultShader\SH_3D.hlsli" />
     <None Include="DefaultShader\SH_Animation2D.hlsli" />
