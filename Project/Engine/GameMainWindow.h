@@ -19,7 +19,7 @@ struct tDesc_GameMainWindow
 
 	std::vector<std::function<void()>> ExternalInitFuncs;
 
-	mh::define::tDesc_GPUMgr GPUDesc;
+	ehw::define::tDesc_GPUMgr GPUDesc;
 };
 
 struct tHashFuncFast_UINT32

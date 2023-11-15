@@ -8,7 +8,7 @@
 #include "define_Util.h"
 
 
-namespace mh
+namespace ehw
 {
 	constexpr const char* strMixamo = "mixamo.com";
 	

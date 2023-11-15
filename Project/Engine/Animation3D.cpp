@@ -8,7 +8,7 @@
 
 
 
-namespace mh
+namespace ehw
 {
 	Animation3D::Animation3D()
         : mValues{}

@@ -4,7 +4,7 @@
 #include "define_Struct.h"
 #include "Shader_Common.h"
 
-namespace mh
+namespace ehw
 {
 	class Texture;
 	class GPUMgr 
@@ -60,8 +60,8 @@ namespace mh
 	
 		static ComPtr<IDXGISwapChain> mSwapChain;
 		
-		static std::shared_ptr<mh::Texture> mRenderTargetTexture;
-		static std::shared_ptr<mh::Texture> mDepthStencilBufferTexture;
+		static std::shared_ptr<ehw::Texture> mRenderTargetTexture;
+		static std::shared_ptr<ehw::Texture> mDepthStencilBufferTexture;
 
 		
 		static D3D11_VIEWPORT mViewPort;
@@ -73,12 +73,12 @@ namespace mh
 		mSwapChain->Present(VSync, 0u);
 	}
 
-	inline std::shared_ptr<mh::Texture> GPUMgr::GetRenderTargetTex()
+	inline std::shared_ptr<ehw::Texture> GPUMgr::GetRenderTargetTex()
 	{
 		return mRenderTargetTexture;
 	}
 
-	inline std::shared_ptr<mh::Texture> GPUMgr::GetDepthStencilBufferTex()
+	inline std::shared_ptr<ehw::Texture> GPUMgr::GetDepthStencilBufferTex()
 	{
 		return mDepthStencilBufferTexture;
 	}

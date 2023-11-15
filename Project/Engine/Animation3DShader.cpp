@@ -6,8 +6,8 @@
 #include "StructBuffer.h"
 #include "DefaultShader/SH_Resource.hlsli"
 
-using namespace mh::define;
-namespace mh
+using namespace ehw::define;
+namespace ehw
 {
 	Animation3DShader::Animation3DShader()
 		: ComputeShader(uint3(256u, 1u, 1u))

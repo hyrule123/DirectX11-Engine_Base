@@ -17,7 +17,7 @@
 #include "Texture.h"
 
 #include "AtExit.h"
-namespace mh
+namespace ehw
 {
 	std::unique_ptr<IScene> SceneMgr::mActiveScene = nullptr;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/IScript.h>
 
-namespace mh
+namespace ehw
 {
 	class Com_Camera;
 	class Script_CameraMove :

@@ -1,7 +1,7 @@
 #pragma once
 #include "IRenderer.h"
 
-namespace mh
+namespace ehw
 {
     class Com_Renderer_Mesh :
         public IRenderer

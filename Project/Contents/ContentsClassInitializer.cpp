@@ -4,7 +4,7 @@
 #include "strKey_Scene.h"
 #include <Engine/SceneMgr.h>
 
-namespace mh
+namespace ehw
 {
 	void ContentsClassInitializer::Init()
 	{

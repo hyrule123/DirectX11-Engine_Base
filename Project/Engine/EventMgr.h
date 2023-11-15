@@ -1,7 +1,7 @@
 #pragma once
 #include "define_Enum.h"
 
-namespace mh
+namespace ehw
 {
     class Prefab;
     class GameObject;

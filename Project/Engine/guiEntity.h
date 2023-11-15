@@ -14,8 +14,8 @@ namespace gui
 		guiEntity(const std::string_view _strName);
 		virtual ~guiEntity();
 
-		virtual mh::eResult SaveJson(Json::Value* _pJval) { return mh::eResult::Success; }
-		virtual mh::eResult LoadJson(const Json::Value* _pJval) { return mh::eResult::Success; };
+		virtual ehw::eResult SaveJson(Json::Value* _pJval) { return ehw::eResult::Success; }
+		virtual ehw::eResult LoadJson(const Json::Value* _pJval) { return ehw::eResult::Success; };
 
 		UINT32 GetID() const { return mID; }
 

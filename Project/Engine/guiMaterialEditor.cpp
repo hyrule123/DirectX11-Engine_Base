@@ -11,7 +11,7 @@
 
 namespace gui
 {
-	STRKEY eRenderingMode_String[(int)mh::define::eRenderingMode::END] =
+	STRKEY eRenderingMode_String[(int)ehw::define::eRenderingMode::END] =
 	{
 		//Deffered
 		"DefferdOpaque",
@@ -34,7 +34,7 @@ namespace gui
 		, mShaderCombo{}
 		, mbNewMaterial()
 	{
-		mTargetMaterial = std::make_shared<mh::Material>();
+		mTargetMaterial = std::make_shared<ehw::Material>();
 	}
 	guiMaterialEditor::~guiMaterialEditor()
 	{
@@ -49,7 +49,7 @@ namespace gui
 		//렌더링 모드 UI 생성
 		mRenderingModeCombo.SetKey("Rendering Mode");
 		{
-			for (int i = 0; i < (int)mh::define::eRenderingMode::END; ++i)
+			for (int i = 0; i < (int)ehw::define::eRenderingMode::END; ++i)
 			{
 				mRenderingModeCombo.AddItem(eRenderingMode_String[i]);
 			}
@@ -63,7 +63,7 @@ namespace gui
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<mh::GraphicsShader> gs = mh::ResourceMgr::Load<mh::GraphicsShader>(shaderName);
+				std::shared_ptr<ehw::GraphicsShader> gs = ehw::ResourceMgr::Load<ehw::GraphicsShader>(shaderName);
 			}
 		}
 	}
@@ -98,7 +98,7 @@ namespace gui
 	void guiMaterialEditor::RefreshShaderSettingFiles()
 	{
 		const std::fs::path& shaderPath = 
-			mh::PathMgr::GetContentPathRelative(mh::define::eResourceType::GraphicsShader);
+			ehw::PathMgr::GetContentPathRelative(ehw::define::eResourceType::GraphicsShader);
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -119,7 +119,7 @@ namespace gui
 	{
 		std::string strCurShader = "Current Shader: ";
 		{
-			std::shared_ptr<mh::GraphicsShader> curShader = mTargetMaterial->GetShader();
+			std::shared_ptr<ehw::GraphicsShader> curShader = mTargetMaterial->GetShader();
 			if (curShader)
 			{
 				strCurShader += curShader->GetKey();
@@ -143,13 +143,13 @@ namespace gui
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<mh::GraphicsShader> GS = mh::ResourceMgr::Load<mh::GraphicsShader>(shaderKey);
+				std::shared_ptr<ehw::GraphicsShader> GS = ehw::ResourceMgr::Load<ehw::GraphicsShader>(shaderKey);
 				mTargetMaterial->SetShader(GS);
 			}
 		}
 
 		std::string shaderKey = "Shader: ";
-		std::shared_ptr<mh::GraphicsShader> shader = mTargetMaterial->GetShader();
+		std::shared_ptr<ehw::GraphicsShader> shader = mTargetMaterial->GetShader();
 		if (shader)
 		{
 			shaderKey += shader->GetKey();
@@ -162,7 +162,7 @@ namespace gui
 	}
 	void guiMaterialEditor::UpdateTextureList()
 	{
-		for (int i = 0; i < (int)mh::define::eTextureSlot::END; ++i)
+		for (int i = 0; i < (int)ehw::define::eTextureSlot::END; ++i)
 		{
 			constexpr const char* texText = "Texture_";
 			std::string text = texText;
@@ -172,7 +172,7 @@ namespace gui
 
 			ImGui::SameLine();
 
-			auto Tex = mTargetMaterial->GetTexture((mh::define::eTextureSlot)i);
+			auto Tex = mTargetMaterial->GetTexture((ehw::define::eTextureSlot)i);
 			if (Tex)
 			{
 				ImGui::Text(Tex->GetKey().c_str());
@@ -188,22 +188,22 @@ namespace gui
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = mh::PathMgr::GetContentPathAbsolute(mh::define::eResourceType::Texture);
+				const std::fs::path& texPath = ehw::PathMgr::GetContentPathAbsolute(ehw::define::eResourceType::Texture);
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
+				for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
 				{
-					vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
+					vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
 				}
-				std::fs::path receivedPath = mh::WinAPI::FileDialog(texPath, vecExt);
+				std::fs::path receivedPath = ehw::WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey =  mh::PathMgr::MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey =  ehw::PathMgr::MakePathStrKey(receivedPath);
 
-					std::shared_ptr<mh::Texture> tex = mh::ResourceMgr::Load<mh::Texture>(PathstrKey);
+					std::shared_ptr<ehw::Texture> tex = ehw::ResourceMgr::Load<ehw::Texture>(PathstrKey);
 					if (tex)
 					{
-						mTargetMaterial->SetTexture((mh::define::eTextureSlot)i, tex);
+						mTargetMaterial->SetTexture((ehw::define::eTextureSlot)i, tex);
 					}
 					else
 					{
@@ -218,13 +218,13 @@ namespace gui
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				mTargetMaterial->SetTexture((mh::define::eTextureSlot)i, nullptr);
+				mTargetMaterial->SetTexture((ehw::define::eTextureSlot)i, nullptr);
 			}
 		}
 	}
 	void guiMaterialEditor::UpdateRenderingMode()
 	{
-		mh::define::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
+		ehw::define::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
 		mRenderingModeCombo.SetCurrentIndex((int)mode);
 		mRenderingModeCombo.FixedUpdate();
 		if (mRenderingModeCombo.IsSelectionChanged())
@@ -232,7 +232,7 @@ namespace gui
 			int idx = mRenderingModeCombo.GetCurrentIndex();
 			if (0 <= idx)
 			{
-				mode = (mh::define::eRenderingMode)idx;
+				mode = (ehw::define::eRenderingMode)idx;
 				mTargetMaterial->SetRenderingMode(mode);
 			}
 		}
@@ -272,7 +272,7 @@ namespace gui
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = mh::ResourceMgr::GetResources<mh::Material>();
+			const auto& materials = ehw::ResourceMgr::GetResources<ehw::Material>();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->GetKey());
@@ -301,9 +301,9 @@ namespace gui
 	}
 	void guiMaterialEditor::SaveToFile()
 	{
-		std::fs::path outputPath = mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Material);
+		std::fs::path outputPath = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Material);
 		outputPath /= mSaveLoadFileName;
-		outputPath = mh::WinAPI::FileDialog(outputPath, mh::strKey::Ext_Material);
+		outputPath = ehw::WinAPI::FileDialog(outputPath, ehw::strKey::Ext_Material);
 
 		if (outputPath.empty())
 		{
@@ -312,7 +312,7 @@ namespace gui
 
 		//저장할 때는 Key값을 바꿔야 하기 때문에 Clone 해서 저장해야 한다.
 		//기존 리소스를 그대로 Save하게 되면 Key 값이 변경되어 에러가 발생할 수 있음.
-		mTargetMaterial = std::shared_ptr<mh::Material>(mTargetMaterial->Clone());
+		mTargetMaterial = std::shared_ptr<ehw::Material>(mTargetMaterial->Clone());
 
 		std::string strKey = outputPath.filename().string();
 		mTargetMaterial->SetKey(strKey);
@@ -340,12 +340,12 @@ namespace gui
 					}
 					else
 					{
-						std::shared_ptr<mh::Material> mtrl = mh::ResourceMgr::Find<mh::Material>(mtrlKey);
+						std::shared_ptr<ehw::Material> mtrl = ehw::ResourceMgr::Find<ehw::Material>(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
 						{
-							mtrl = std::shared_ptr<mh::Material>(mtrl->Clone());
+							mtrl = std::shared_ptr<ehw::Material>(mtrl->Clone());
 							mtrl->SetEngineDefaultRes(false);
 						}
 
@@ -353,7 +353,7 @@ namespace gui
 						if (nullptr == mTargetMaterial)
 						{
 							NOTIFICATION_W(L"제대로 로드되지 않았습니다.");
-							mTargetMaterial = std::make_shared<mh::Material>();
+							mTargetMaterial = std::make_shared<ehw::Material>();
 						}
 
 
@@ -374,25 +374,25 @@ namespace gui
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = mh::PathMgr::GetContentPathAbsolute(mh::define::eResourceType::Material);
+					const std::fs::path& mtrlDir = ehw::PathMgr::GetContentPathAbsolute(ehw::define::eResourceType::Material);
 
 					//Res 폴더
-					const std::fs::path& resDir = mh::PathMgr::GetResPathAbsolute();
+					const std::fs::path& resDir = ehw::PathMgr::GetResPathAbsolute();
 
-					std::fs::path filePath = mh::WinAPI::FileDialog(mtrlDir, ".json");
+					std::fs::path filePath = ehw::WinAPI::FileDialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
 					{
 						NOTIFICATION_W(L"파일을 찾지 못했습니다.");
 					}
 					else
 					{
-						mTargetMaterial = std::make_shared<mh::Material>();
-						if (mh::eResultFail(mTargetMaterial->Load(filePath.filename())))
+						mTargetMaterial = std::make_shared<ehw::Material>();
+						if (ehw::eResultFail(mTargetMaterial->Load(filePath.filename())))
 						{
 							std::wstring errMsg = filePath.wstring();
 							errMsg += L"\n불러오기에 실패했습니다.";
 							NOTIFICATION_W(errMsg.c_str());
-							mTargetMaterial = std::make_shared<mh::Material>();
+							mTargetMaterial = std::make_shared<ehw::Material>();
 						}
 
 						//불러왔던 불러오지 못했던 모달 빠져나가줌
@@ -406,6 +406,6 @@ namespace gui
 	}
 	void guiMaterialEditor::NewMaterial()
 	{
-		mTargetMaterial = std::make_shared<mh::Material>();
+		mTargetMaterial = std::make_shared<ehw::Material>();
 	}
 }

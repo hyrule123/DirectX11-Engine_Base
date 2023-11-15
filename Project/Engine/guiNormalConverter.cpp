@@ -67,16 +67,16 @@ namespace gui
 if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 {
 	std::vector<std::fs::path> vecExt{};
-	for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
+	for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
 	{
-		vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
+		vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
 	}
 
-	std::fs::path texPath = mh::WinAPI::FileDialog(mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture), vecExt);
+	std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture), vecExt);
 
-	texPath = mh::PathMgr::MakePathStrKey(texPath);
+	texPath = ehw::PathMgr::MakePathStrKey(texPath);
 
-	mTextureSrc = mh::ResourceMgr::Load<mh::Texture>(texPath);
+	mTextureSrc = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
 }
 
 ImGui::SameLine();
@@ -111,19 +111,19 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		if (ImGui::Button("Set Directory##Dest Texture", ImVec2(0.f, 25.f)))
 		{
 			std::vector<std::fs::path> vecExt{};
-			for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
+			for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
 			{
-				vecExt.push_back(mh::define::strKey::Ext_Tex[i]);
+				vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
 			}
 
-			std::fs::path texFile = mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture);
+			std::fs::path texFile = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture);
 
 			if (mTextureSrc)
 			{
 				texFile /= mTextureSrc->GetKey();
 			}
 
-			mTextureDestDir = mh::WinAPI::FileDialog(texFile, vecExt);
+			mTextureDestDir = ehw::WinAPI::FileDialog(texFile, vecExt);
 			mTextureDestDir = mTextureDestDir.parent_path();
 		}
 
@@ -150,9 +150,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<mh::NormalConvertShader> converter = mh::ResourceMgr::Load<mh::NormalConvertShader>(mh::strKey::Default::shader::compute::NormalConvert);
+			std::shared_ptr<ehw::NormalConvertShader> converter = ehw::ResourceMgr::Load<ehw::NormalConvertShader>(ehw::strKey::Default::shader::compute::NormalConvert);
 
-			std::shared_ptr<mh::Texture> convertedTex = converter->Convert(mTextureSrc);
+			std::shared_ptr<ehw::Texture> convertedTex = converter->Convert(mTextureSrc);
 
 			if (convertedTex)
 			{

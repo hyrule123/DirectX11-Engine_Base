@@ -29,7 +29,7 @@ CBUFFER(CB_UniformData, tCB_UniformData, b, 11);
 
 #ifdef __cplusplus
 
-namespace mh::define
+namespace ehw::define
 {
 	enum class eCBType
 	{

@@ -5,7 +5,7 @@
 #include "ComMgr.h"
 #include "Com_Transform.h"
 
-namespace mh
+namespace ehw
 {
 	class Layer;
 	class GameObject : public Entity

@@ -8,7 +8,7 @@
 #include <Engine/MeshData.h>
 #include <Engine/ResourceMgr.h>
 
-namespace mh
+namespace ehw
 {
 	void Script_Player::RequireComponent()
 	{

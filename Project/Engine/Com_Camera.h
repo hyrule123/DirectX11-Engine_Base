@@ -2,7 +2,7 @@
 #include "IComponent.h"
 #include "define_Enum.h"
 
-namespace  mh
+namespace  ehw
 {
 	
 	class Com_Camera : public IComponent

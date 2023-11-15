@@ -3,7 +3,7 @@
 #include "define_GPU.h"
 #include "define_Struct.h"
 
-namespace mh
+namespace ehw
 {
 	struct VertexBase
 	{

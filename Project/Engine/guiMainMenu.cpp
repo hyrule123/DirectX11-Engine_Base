@@ -39,7 +39,7 @@ namespace gui
 			bool p_open = GetEnable();
 			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
 			{
-				mh::Application::ShutDown();
+				ehw::Application::ShutDown();
 			}
 
 			ImGui::EndMenu();

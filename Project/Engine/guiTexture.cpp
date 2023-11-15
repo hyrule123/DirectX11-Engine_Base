@@ -6,7 +6,7 @@
 namespace gui
 {
 	guiTexture::guiTexture()
-		: guiResource(mh::define::eResourceType::Texture)
+		: guiResource(ehw::define::eResourceType::Texture)
 	{
 
 	}
@@ -21,7 +21,7 @@ namespace gui
 		if (false == IsValid())
 			return;
 
-		mh::Texture* targetTex = static_cast<mh::Texture*>(GetTarget());
+		ehw::Texture* targetTex = static_cast<ehw::Texture*>(GetTarget());
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 

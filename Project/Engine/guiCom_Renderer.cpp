@@ -16,7 +16,7 @@
 namespace gui
 {
 	guiCom_Renderer::guiCom_Renderer()
-		: guiComponent(mh::define::eComponentType::Renderer)
+		: guiComponent(ehw::define::eComponentType::Renderer)
 		, mMesh{}
 		, mMaterial{}
 	{
@@ -31,14 +31,14 @@ namespace gui
 	{
 		if (GetTarget())
 		{
-			mh::Com_Renderer_Mesh* meshRenderer
-				= GetTarget()->GetComponent<mh::Com_Renderer_Mesh>();
+			ehw::Com_Renderer_Mesh* meshRenderer
+				= GetTarget()->GetComponent<ehw::Com_Renderer_Mesh>();
 
 			if (meshRenderer == nullptr)
 				return;
 
-			//mh::SpriteRenderer* spriteRenderer
-			//	= GetTarget()->GetComponent<mh::SpriteRenderer>();
+			//ehw::SpriteRenderer* spriteRenderer
+			//	= GetTarget()->GetComponent<ehw::SpriteRenderer>();
 
 			//if (spriteRenderer == nullptr)
 			//	return;
@@ -71,7 +71,7 @@ namespace gui
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= mh::ResourceMgr::GetResources<mh::Mesh>();
+				= ehw::ResourceMgr::GetResources<ehw::Mesh>();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -96,7 +96,7 @@ namespace gui
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= mh::ResourceMgr::GetResources<mh::Material>();
+				= ehw::ResourceMgr::GetResources<ehw::Material>();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -113,17 +113,17 @@ namespace gui
 
 	void guiCom_Renderer::SetMesh(const std::string& _strKey)
 	{
-		std::shared_ptr<mh::Mesh> mesh = mh::ResourceMgr::Find<mh::Mesh>(_strKey);
+		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceMgr::Find<ehw::Mesh>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
-		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMesh(mesh);
+		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
 	}
 
 	void guiCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
-		std::shared_ptr<mh::Material> material = mh::ResourceMgr::Find<mh::Material>(_strKey);
+		std::shared_ptr<ehw::Material> material = ehw::ResourceMgr::Find<ehw::Material>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
-		inspector->GetTargetGameObject()->GetComponent<mh::Com_Renderer_Mesh>()->SetMaterial(material, 0);
+		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);
 	}
 }

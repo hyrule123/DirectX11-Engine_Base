@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "IAnimator.h"
 
-namespace mh
+namespace ehw
 {
 	void Com_Renderer_Mesh::Render()
 	{

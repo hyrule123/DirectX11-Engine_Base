@@ -10,14 +10,14 @@
 
 namespace gui
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	guiInspector::guiInspector()
 		: guiWindow(strKey::Inspector)
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)mh::define::eComponentType::END);
-		mGuiResources.resize((int)mh::define::eResourceType::END);
+		mGuiComponents.resize((int)ehw::define::eComponentType::END);
+		mGuiResources.resize((int)ehw::define::eResourceType::END);
 
 		mGuiComponents[(int)eComponentType::Transform] = new guiCom_Transform;
 		mGuiComponents[(int)eComponentType::Transform]->SetSize(ImVec2(0.f, 100.f));
@@ -60,7 +60,7 @@ namespace gui
 
 	void guiInspector::Update()
 	{
-		mTargetGameObject = mh::RenderMgr::GetInspectorGameObject();
+		mTargetGameObject = ehw::RenderMgr::GetInspectorGameObject();
 
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
@@ -95,7 +95,7 @@ namespace gui
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(mh::define::strKey::eComponentType_String[(UINT)i]);
+			IndicatorButton(ehw::define::strKey::eComponentType_String[(UINT)i]);
 
 			if (mTargetGameObject && mGuiComponents[i])
 				mGuiComponents[i]->FixedUpdate();
@@ -103,7 +103,7 @@ namespace gui
 
 		for (size_t i = 0; i < mGuiResources.size(); ++i)
 		{
-			IndicatorButton(mh::define::strKey::ArrResName[i]);
+			IndicatorButton(ehw::define::strKey::ArrResName[i]);
 
 			if (mTargetResource && mGuiResources[i])
 				mGuiResources[i]->FixedUpdate();

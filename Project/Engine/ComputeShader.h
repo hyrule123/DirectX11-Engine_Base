@@ -9,7 +9,7 @@
 //		매번 새로 계산해줘야 할 경우 BindData()에서 호출해주면 되고, 한번만 해주면 될 경우에는 생성자에서 해주면 됨
 //4. 위의 3개 완료했으면 필요한 시점에 OnExcute() 호출
 
-namespace mh
+namespace ehw
 {
 	class ComputeShader : public IShader
 	{
@@ -27,9 +27,11 @@ namespace mh
 
 		void OnExcute();
 
+
 	protected:
 		virtual bool BindData() = 0;
 		virtual void UnBindData() = 0;
+
 
 		eResult CreateShader(const void* _pByteCode, size_t _ByteCodeSize);
 

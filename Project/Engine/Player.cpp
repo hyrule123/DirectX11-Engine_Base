@@ -3,7 +3,7 @@
 #include "Player.h"
 
 
-namespace mh
+namespace ehw
 {
 	Player::Player()
 	{

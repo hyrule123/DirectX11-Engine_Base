@@ -2,7 +2,7 @@
 #include "ThreadPoolMgr.h"
 #include "AtExit.h"
 
-namespace mh
+namespace ehw
 {
     size_t                                  ThreadPoolMgr::mNumThread{};
     std::vector<std::thread>                ThreadPoolMgr::mWorkerThreads{};

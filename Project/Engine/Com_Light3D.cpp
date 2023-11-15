@@ -12,7 +12,7 @@
 
 #include "json-cpp/json.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Light3D::Com_Light3D()
 		: ILight(eDimensionType::_3D)
@@ -101,14 +101,14 @@ namespace mh
 		//Transform 조작은 Update()까지만 가능.
 		switch ((eLightType)mAttribute.lightType)
 		{
-		case mh::define::eLightType::Directional:
+		case ehw::define::eLightType::Directional:
 			break;
-		case mh::define::eLightType::Point:
+		case ehw::define::eLightType::Point:
 			tr->SetRelativeScale(float3(mAttribute.radius));
 			break;
-		case mh::define::eLightType::Spot:
+		case ehw::define::eLightType::Spot:
 			break;
-		case mh::define::eLightType::END:
+		case ehw::define::eLightType::END:
 			break;
 		default:
 			break;
@@ -125,15 +125,15 @@ namespace mh
 
 		switch ((eLightType)mAttribute.lightType)
 		{
-		case mh::define::eLightType::Directional:
+		case ehw::define::eLightType::Directional:
 			mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 			break;
-		case mh::define::eLightType::Point:
+		case ehw::define::eLightType::Point:
 			//Update에서 수행했음.
 			break;
-		case mh::define::eLightType::Spot:
+		case ehw::define::eLightType::Spot:
 			break;
-		case mh::define::eLightType::END:
+		case ehw::define::eLightType::END:
 			break;
 		default:
 			break;

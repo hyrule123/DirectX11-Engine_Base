@@ -5,7 +5,7 @@
 #include "ConstBuffer.h"
 #include "TimeMgr.h"
 
-namespace mh
+namespace ehw
 {
 	ParticleShader::ParticleShader()
 		: ComputeShader(uint3(128, 1, 1))

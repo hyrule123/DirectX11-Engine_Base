@@ -5,7 +5,7 @@
 #include "SceneMgr.h"
 #include "Com_Transform.h"
 
-namespace mh::object
+namespace ehw::object
 {
 	//inline GameObject* Instantiate(define::eLayerType _type, GameObject* _pObj)
 	//{

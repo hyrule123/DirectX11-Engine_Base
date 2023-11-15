@@ -1,5 +1,5 @@
 
-namespace mh
+namespace ehw
 {
 	class ContentsClassInitializer
 	{

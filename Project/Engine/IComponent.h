@@ -4,7 +4,7 @@
 #include "define_Component.h"
 #include "SimpleMath.h"
 
-namespace mh
+namespace ehw
 {
 	class GameObject;
 	class IComponent : public Entity

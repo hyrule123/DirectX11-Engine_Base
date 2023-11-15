@@ -5,7 +5,7 @@
 #include "json-cpp\json.h"
 #include "GameObject.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
 		: IAnimator(define::eDimensionType::_2D)

@@ -10,7 +10,7 @@
 
 #include "AtExit.h"
 
-namespace mh
+namespace ehw
 {
 	IFW1Factory* FontWrapper::mFW1Factory = nullptr;
 	IFW1FontWrapper* FontWrapper::mFontWrapper = nullptr;

@@ -13,7 +13,7 @@
 
 
 
-namespace mh::define::strKey::Script
+namespace ehw::define::strKey::Script
 {
 	STRKEY Script_CameraMove = "Script_CameraMove";
 	STRKEY Script_Player = "Script_Player";

@@ -14,9 +14,9 @@
 
 #include "json-cpp/json.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh;
+	using namespace ehw;
 
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
 		: mMaxParticles(100)

@@ -42,17 +42,17 @@ namespace gui
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
-			std::vector<std::fs::path> extensions(mh::define::strKey::Ext_Tex_Size);
-			for (size_t i = 0; i < mh::define::strKey::Ext_Tex_Size; ++i)
+			std::vector<std::fs::path> extensions(ehw::define::strKey::Ext_Tex_Size);
+			for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
 			{
-				extensions[i] = mh::define::strKey::Ext_Tex[i];
+				extensions[i] = ehw::define::strKey::Ext_Tex[i];
 			}
-			std::fs::path texPath = mh::WinAPI::FileDialog(mh::PathMgr::GetContentPathAbsolute(mh::eResourceType::Texture), extensions);
+			std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture), extensions);
 
 
-			texPath = mh::PathMgr::MakePathStrKey(texPath);
+			texPath = ehw::PathMgr::MakePathStrKey(texPath);
 
-			mTexture = mh::ResourceMgr::Load<mh::Texture>(texPath);
+			mTexture = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
 
 			if (mTexture)
 			{

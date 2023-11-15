@@ -2,7 +2,7 @@
 #include "ITransform.h"
 #include "DefaultShader/SH_CommonStruct.hlsli"
 
-namespace mh
+namespace ehw
 {
     class GameObject;
     class Com_Transform :

@@ -30,9 +30,9 @@
 
 #define CONSTRUCTOR_T(T) ComMgr::AddComConstructor<T>(strKey::com::##T)
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	void ComponentInitializer::Init()
 	{
 		CONSTRUCTOR_T(Com_Animator3D);

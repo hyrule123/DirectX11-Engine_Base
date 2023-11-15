@@ -18,7 +18,7 @@
 
 namespace gui
 {
-	using namespace mh::math;
+	using namespace ehw::math;
 
 	guiResources::guiResources()
 		: guiWindow(strKey::ResourceViewer)
@@ -46,7 +46,7 @@ namespace gui
 		//mTreeWidget->Close();
 		mTreeWidget->Clear();
 
-		TreeWidget::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", mh::define::tDataPtr{}, true);
+		TreeWidget::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::define::tDataPtr{}, true);
 
 		//enum class eResourceType
 		//{
@@ -60,15 +60,15 @@ namespace gui
 		//	ComputeShader,
 		//	End,
 		//};
-		AddResources<mh::Mesh>(pRootNode, "Mesh");
-		AddResources<mh::Texture>(pRootNode, "Texture");
-		AddResources<mh::Material>(pRootNode, "Materials");
-		AddResources<mh::GraphicsShader>(pRootNode, "Shaders");
+		AddResources<ehw::Mesh>(pRootNode, "Mesh");
+		AddResources<ehw::Texture>(pRootNode, "Texture");
+		AddResources<ehw::Material>(pRootNode, "Materials");
+		AddResources<ehw::GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void guiResources::toInspector(mh::define::tDataPtr _data)
+	void guiResources::toInspector(ehw::define::tDataPtr _data)
 	{
-		mh::IResource* resource = static_cast<mh::IResource*>(_data.pData);
+		ehw::IResource* resource = static_cast<ehw::IResource*>(_data.pData);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);

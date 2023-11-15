@@ -28,7 +28,7 @@
 #include "GPUInitSetting.h"
 #include "define_Global.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Camera*							RenderMgr::mMainCamera{};
 	GameObject*							RenderMgr::mInspectorGameObject{};
@@ -407,7 +407,7 @@ namespace mh
 
 	void RenderMgr::LoadDefaultMesh()
 	{
-		using namespace mh::define;
+		using namespace ehw::define;
 		
 
 #pragma region POINT MESH

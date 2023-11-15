@@ -4,9 +4,9 @@
 #include "AtExit.h"
 #include "Application.h"
 
-extern mh::Application gApplication;
+extern ehw::Application gApplication;
 
-namespace mh
+namespace ehw
 {
     
 

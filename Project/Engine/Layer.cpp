@@ -6,7 +6,7 @@
 #include "Com_Transform.h"
 
 
-namespace mh
+namespace ehw
 {
 
 	Layer::Layer()

@@ -1,7 +1,7 @@
 #pragma once
 #include "Script_UIBase.h"
 
-namespace mh
+namespace ehw
 {
 	class Script_UIGauge :
 		public Script_UIBase

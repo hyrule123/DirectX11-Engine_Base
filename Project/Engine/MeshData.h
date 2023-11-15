@@ -8,7 +8,7 @@ namespace gui
 	class guiFBXConverter;
 }
 
-namespace mh
+namespace ehw
 {
 	class Mesh;
 	class Material;

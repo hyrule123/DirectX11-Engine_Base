@@ -19,7 +19,7 @@
 
 #include "define_Global.h"
 
-namespace mh
+namespace ehw
 {
 	std::vector<std::function<void()>> Application::mEndFrameFuncs{};
 

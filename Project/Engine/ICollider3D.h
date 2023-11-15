@@ -1,7 +1,7 @@
 #pragma once
 #include "ICollider.h"
 
-namespace mh
+namespace ehw
 {
 	class ICollider3D : public ICollider
 	{

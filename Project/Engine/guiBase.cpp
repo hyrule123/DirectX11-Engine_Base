@@ -24,12 +24,12 @@ namespace gui
 				delete mChilds[i];
 		}
 	}
-	mh::eResult guiBase::SaveJson(Json::Value* _pJval)
+	ehw::eResult guiBase::SaveJson(Json::Value* _pJval)
 	{
 		if (nullptr == _pJval)
-			return mh::eResult::Fail_Nullptr;
+			return ehw::eResult::Fail_Nullptr;
 
-		mh::eResult result = guiEntity::SaveJson(_pJval);
+		ehw::eResult result = guiEntity::SaveJson(_pJval);
 		if (eResultFail(result))
 			return result;
 
@@ -41,14 +41,14 @@ namespace gui
 				mChilds[i]->SaveJson(_pJval);
 		}
 
-		return mh::eResult::Success;
+		return ehw::eResult::Success;
 	}
-	mh::eResult guiBase::LoadJson(const Json::Value* _pJval)
+	ehw::eResult guiBase::LoadJson(const Json::Value* _pJval)
 	{
 		if (nullptr == _pJval)
-			return mh::eResult::Fail_Nullptr;
+			return ehw::eResult::Fail_Nullptr;
 
-		mh::eResult result = guiEntity::LoadJson(_pJval);
+		ehw::eResult result = guiEntity::LoadJson(_pJval);
 		if (eResultFail(result))
 			return result;
 
@@ -60,7 +60,7 @@ namespace gui
 				mChilds[i]->LoadJson(_pJval);
 		}
 
-		return mh::eResult::Success;
+		return ehw::eResult::Success;
 	}
 	void guiBase::InitRecursive()
 	{

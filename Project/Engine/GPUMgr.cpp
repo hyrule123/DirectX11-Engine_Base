@@ -13,9 +13,9 @@
 #include "GPUInitSetting.h"
 #include "define_Global.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	UINT GPUMgr::mResolutionX{};
 	UINT GPUMgr::mResolutionY{};
@@ -26,8 +26,8 @@ namespace mh
 
 	ComPtr<IDXGISwapChain>			GPUMgr::mSwapChain{};
 
-	std::shared_ptr<mh::Texture>	GPUMgr::mRenderTargetTexture{};
-	std::shared_ptr<mh::Texture>	GPUMgr::mDepthStencilBufferTexture{};
+	std::shared_ptr<ehw::Texture>	GPUMgr::mRenderTargetTexture{};
+	std::shared_ptr<ehw::Texture>	GPUMgr::mDepthStencilBufferTexture{};
 
 	D3D11_VIEWPORT GPUMgr::mViewPort{};
 
@@ -212,7 +212,7 @@ namespace mh
 
 	std::shared_ptr<Texture> GPUMgr::CreateDepthStencil(UINT _Width, UINT _Height)
 	{
-		std::shared_ptr<Texture> DSTex = std::make_shared<mh::Texture>();
+		std::shared_ptr<Texture> DSTex = std::make_shared<ehw::Texture>();
 		
 		if (false == DSTex->Create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
 		{

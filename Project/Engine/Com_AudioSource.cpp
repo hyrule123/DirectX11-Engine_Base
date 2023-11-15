@@ -13,7 +13,7 @@
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
 
-namespace mh
+namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
 		: IComponent(define::eComponentType::AudioSource)

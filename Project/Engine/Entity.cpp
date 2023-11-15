@@ -6,9 +6,9 @@
 #include "json-cpp/json.h"
 
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	UINT32 Entity::gIDNext{};
 

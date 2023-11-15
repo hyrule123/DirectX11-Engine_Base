@@ -3,7 +3,7 @@
 
 #include "DefaultShader/SH_ConstBuffer.hlsli"
 
-namespace mh
+namespace ehw
 {
 	class ConstBuffer 
 		: public GPUBuffer

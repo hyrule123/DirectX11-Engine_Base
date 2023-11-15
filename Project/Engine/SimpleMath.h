@@ -12,7 +12,7 @@
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
-namespace mh::define
+namespace ehw::define
 {
     enum class eAxis2D
     {
@@ -49,7 +49,7 @@ namespace mh::define
     };
 }
 
-namespace mh::math
+namespace ehw::math
 {
     struct Vector2;
     struct Vector3;

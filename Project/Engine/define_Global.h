@@ -2,7 +2,7 @@
 
 #include "DefaultShader/SH_CommonStruct.hlsli"
 
-namespace mh
+namespace ehw
 {
 	extern tGPUInitSetting		gGPUInitSetting;
 	extern tCB_Global			gGlobal;

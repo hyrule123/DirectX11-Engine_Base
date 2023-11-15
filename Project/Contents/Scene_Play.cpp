@@ -13,7 +13,7 @@
 #include <Engine/InputMgr.h>
 #include <Engine/EventMgr.h>
 
-namespace mh
+namespace ehw
 {
 
 

@@ -3,7 +3,7 @@
 #include "IComponent.h"
 
 
-namespace mh
+namespace ehw
 {
 	class ICollider
 		: public IComponent

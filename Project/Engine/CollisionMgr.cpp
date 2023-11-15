@@ -6,7 +6,7 @@
 
 #include "AtExit.h"
 
-namespace mh
+namespace ehw
 {
 	std::bitset<(uint)define::eLayerType::END> CollisionMgr::mLayerCollisionMatrix[(uint)define::eLayerType::END] = {};
 	std::map<UINT64, bool> CollisionMgr::mCollisionMap;

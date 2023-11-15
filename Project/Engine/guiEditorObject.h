@@ -4,7 +4,7 @@
 
 namespace gui
 {
-	class EditorObject : public mh::GameObject
+	class EditorObject : public ehw::GameObject
 	{
 	public:
 		EditorObject();

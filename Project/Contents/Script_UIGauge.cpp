@@ -3,7 +3,7 @@
 
 #include <Engine/Com_Renderer_UIBase.h>
 
-namespace mh
+namespace ehw
 {
 	Script_UIGauge::Script_UIGauge()
 		: Script_UIBase(eUIType::Gauge)

@@ -13,7 +13,7 @@
 
 
 
-namespace mh::define::strKey::com
+namespace ehw::define::strKey::com
 {
 	STRKEY Com_Animator2D = "Com_Animator2D";
 	STRKEY Com_Animator3D = "Com_Animator3D";

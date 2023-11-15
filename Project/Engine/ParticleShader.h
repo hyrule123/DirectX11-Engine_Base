@@ -2,7 +2,7 @@
 #include "ComputeShader.h"
 #include "StructBuffer.h"
 
-namespace mh
+namespace ehw
 {
 	class ParticleShader : public ComputeShader
 	{

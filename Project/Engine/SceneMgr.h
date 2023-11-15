@@ -1,7 +1,7 @@
 #pragma once
 #include "IScene.h"
 
-namespace mh
+namespace ehw
 {
 	class SceneMgr
 	{

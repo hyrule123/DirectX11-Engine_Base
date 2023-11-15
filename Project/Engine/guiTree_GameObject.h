@@ -3,7 +3,7 @@
 
 #include "guiTreeWidget.h"
 
-namespace mh
+namespace ehw
 {
 	class GameObject;
 }
@@ -18,9 +18,9 @@ namespace gui
 
 		virtual void Update() override;
 
-		void GameobjectSelectCallback(mh::define::tDataPtr _data);
+		void GameobjectSelectCallback(ehw::define::tDataPtr _data);
 		void InitializeScene();
-		void AddGameObject(TreeWidget::tNode* parent, mh::GameObject* gameObject);
+		void AddGameObject(TreeWidget::tNode* parent, ehw::GameObject* gameObject);
 
 	private:
 		TreeWidget* mTreeWidget;

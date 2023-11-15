@@ -4,7 +4,7 @@
 #include "Animation3D.h"
 
 //MeshData에 종속된 클래스
-namespace mh
+namespace ehw
 {
 	class FBXLoader;
 	class StructBuffer;

@@ -14,7 +14,7 @@ namespace FMOD
 	class Channel;
 }
 
-namespace mh
+namespace ehw
 {
 	class AudioMgr
 	{

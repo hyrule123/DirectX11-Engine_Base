@@ -12,9 +12,9 @@
 #include "Skeleton.h"
 #include "Animation3D.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 
 	Com_Animator3D::Com_Animator3D()

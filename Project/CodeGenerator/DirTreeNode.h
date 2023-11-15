@@ -7,7 +7,7 @@
 
 struct tShaderGroup
 {
-	stdfs::path FileName[(int)mh::define::eGSStage::END];
+	stdfs::path FileName[(int)ehw::define::eGSStage::END];
 };
 
 enum class ePrevFileStatus

@@ -1,7 +1,7 @@
 #include "PCH_Contents.h"
 #include "Script_UIButton.h"
 
-namespace mh
+namespace ehw
 {
 	Script_UIButton::Script_UIButton()
 		: Script_UIBase(eUIType::Button)

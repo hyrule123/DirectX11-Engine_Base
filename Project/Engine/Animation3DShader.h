@@ -2,7 +2,7 @@
 #include "ComputeShader.h"
 #include "DefaultShader/SH_CommonStruct.hlsli"
 
-namespace mh
+namespace ehw
 {
 	class StructBuffer;
     class Animation3DShader :

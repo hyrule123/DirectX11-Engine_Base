@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "ITransform.h"
 
-namespace mh
+namespace ehw
 {
 	ITransform::ITransform()
 		: IComponent(define::eComponentType::Transform)

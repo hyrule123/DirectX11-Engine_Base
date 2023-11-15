@@ -9,9 +9,9 @@
 
 #include "json-cpp/json.h"
 
-namespace mh
+namespace ehw
 {
-    using namespace mh;
+    using namespace ehw;
 
     Material::Material()
         : IResource(eResourceType::Material)

@@ -2,7 +2,7 @@
 #include "PathMgr.h"
 #include "AtExit.h"
 
-namespace mh
+namespace ehw
 {
 	std::filesystem::path PathMgr::mAbsoluteResPath{};
 	std::filesystem::path PathMgr::mRelativeResPath{};
@@ -22,14 +22,14 @@ namespace mh
 		}
 
 		mRelativeResPath = "../";
-		mRelativeResPath /= mh::define::strKey::DirName_Resource;
+		mRelativeResPath /= ehw::define::strKey::DirName_Resource;
 		if (false == std::fs::exists(mRelativeResPath))
 		{
 			std::fs::create_directories(mRelativeResPath);
 		}
 
 		mRelativePath_ShaderCSO = ".";
-		mRelativePath_ShaderCSO /= mh::define::strKey::DirName_CompiledShader;
+		mRelativePath_ShaderCSO /= ehw::define::strKey::DirName_CompiledShader;
 		if (false == std::fs::exists(mRelativePath_ShaderCSO))
 		{
 			std::fs::create_directories(mRelativePath_ShaderCSO);
@@ -38,7 +38,7 @@ namespace mh
 		for (int i = 0; i < (int)eResourceType::END; ++i)
 		{
 			mRelativePathContent[i] = mRelativeResPath;
-			mRelativePathContent[i] /= mh::define::strKey::ArrResName[i];
+			mRelativePathContent[i] /= ehw::define::strKey::ArrResName[i];
 
 			if (false == std::fs::exists(mRelativePathContent[i]))
 			{

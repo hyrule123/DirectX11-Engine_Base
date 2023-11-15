@@ -1,7 +1,7 @@
 #pragma once
 #include "IResource.h"
 
-namespace mh
+namespace ehw
 {
     class IAnimation :
         public IResource

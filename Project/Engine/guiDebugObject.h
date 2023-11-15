@@ -5,7 +5,7 @@
 
 namespace gui
 {
-	class DebugObject : public mh::GameObject
+	class DebugObject : public ehw::GameObject
 	{
 	public:
 		DebugObject();

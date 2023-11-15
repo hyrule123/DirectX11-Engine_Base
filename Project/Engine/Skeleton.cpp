@@ -9,9 +9,9 @@
 #include "Animation3D.h"
 #include <cctype>
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	Skeleton::Skeleton()
 		: m_vecBones{}
 		, m_pBoneOffset{}

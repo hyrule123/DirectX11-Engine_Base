@@ -2,9 +2,9 @@
 
 #include "ICollider.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	ICollider::ICollider(eColliderType _Type)
 		: IComponent(eComponentType::Collider)
 		, mType(_Type)

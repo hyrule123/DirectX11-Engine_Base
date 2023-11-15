@@ -102,7 +102,7 @@ namespace gui
 		}
 	}
 
-	TreeWidget::tNode* TreeWidget::AddNode(tNode* parent, const std::string& name, mh::define::tDataPtr data, bool isFrame)
+	TreeWidget::tNode* TreeWidget::AddNode(tNode* parent, const std::string& name, ehw::define::tDataPtr data, bool isFrame)
 	{
 		tNode* node = new tNode;
 		node->SetKey(name);

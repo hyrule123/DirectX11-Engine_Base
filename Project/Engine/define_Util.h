@@ -184,7 +184,7 @@ inline T StrConverter::Base64Decode(const std::string& _srcStr)
 }
 
 
-namespace mh
+namespace ehw
 {
 	class Binary
 	{

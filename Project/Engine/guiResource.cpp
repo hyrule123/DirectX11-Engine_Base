@@ -4,8 +4,8 @@
 
 namespace gui
 {
-	guiResource::guiResource(mh::define::eResourceType _resType)
-		: guiChild(mh::define::strKey::ArrResName[(int)_resType])
+	guiResource::guiResource(ehw::define::eResourceType _resType)
+		: guiChild(ehw::define::strKey::ArrResName[(int)_resType])
 		, mResType(_resType)
 		, mTarget()
 	{
@@ -27,7 +27,7 @@ namespace gui
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 
-		ImGui::Button(mh::define::strKey::ArrResName[(UINT)mTarget->GetResType()]);
+		ImGui::Button(ehw::define::strKey::ArrResName[(UINT)mTarget->GetResType()]);
 		ImGui::PopStyleColor(3);
 		ImGui::PopID();
 	}

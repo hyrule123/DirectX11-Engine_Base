@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "ILight.h"
 
-namespace mh
+namespace ehw
 {
 	ILight::ILight(define::eDimensionType _dimensionType)
 		: IComponent(define::eComponentType::Light)

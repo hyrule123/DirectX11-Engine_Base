@@ -19,7 +19,7 @@ namespace gui
 		: guiWindow(strKey::GameObjects)
 		, mTreeWidget(nullptr)
 	{
-		int2 winSize = mh::Application::GetWindowSize();
+		int2 winSize = ehw::Application::GetWindowSize();
 		//SetSize(ImVec2((float)(winSize.x / 2), (float)(winSize.y / 2)));
 
 		mTreeWidget = AddChild<TreeWidget>();
@@ -45,29 +45,29 @@ namespace gui
 
 
 
-	void guiTree_GameObject::GameobjectSelectCallback(mh::define::tDataPtr _data)
+	void guiTree_GameObject::GameobjectSelectCallback(ehw::define::tDataPtr _data)
 	{
-		mh::RenderMgr::SetInspectorGameObject(static_cast<mh::GameObject*>(_data.pData));
+		ehw::RenderMgr::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
-		inspector->SetTargetGameObject(mh::RenderMgr::GetInspectorGameObject());
+		inspector->SetTargetGameObject(ehw::RenderMgr::GetInspectorGameObject());
 	}
 
 	void guiTree_GameObject::InitializeScene()
 	{
 		mTreeWidget->Clear();
 
-		mh::IScene* scene = mh::SceneMgr::GetActiveScene();
+		ehw::IScene* scene = ehw::SceneMgr::GetActiveScene();
 		std::string sceneName = scene->GetKey();
 
-		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, mh::define::tDataPtr{}, true);
+		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::define::tDataPtr{}, true);
 
-		for (size_t i = 0; i < (UINT)mh::define::eLayerType::END; i++)
+		for (size_t i = 0; i < (UINT)ehw::define::eLayerType::END; i++)
 		{
-			mh::Layer& layer = scene->GetLayer((mh::define::eLayerType)i);
-			const std::vector<mh::GameObject*>& gameObjs
+			ehw::Layer& layer = scene->GetLayer((ehw::define::eLayerType)i);
+			const std::vector<ehw::GameObject*>& gameObjs
 				= layer.GetGameObjects();
 
-			for (mh::GameObject* obj : gameObjs)
+			for (ehw::GameObject* obj : gameObjs)
 			{
 				AddGameObject(root, obj);
 			}
@@ -76,7 +76,7 @@ namespace gui
 		mTreeWidget->SetEnable(true);
 	}
 
-	void guiTree_GameObject::AddGameObject(TreeWidget::tNode* parent, mh::GameObject* gameObject)
+	void guiTree_GameObject::AddGameObject(TreeWidget::tNode* parent, ehw::GameObject* gameObject)
 	{
 		std::string name(gameObject->GetName());
 		if (name.empty())
@@ -84,7 +84,7 @@ namespace gui
 			name = "NoNameObj";
 		}
 
-		mh::define::tDataPtr data{};
+		ehw::define::tDataPtr data{};
 		data.SetDataPtr(gameObject);
 
 		TreeWidget::tNode* node = mTreeWidget->AddNode(parent, name, data);

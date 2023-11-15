@@ -16,19 +16,19 @@ namespace gui
 		virtual void Update() override;
 		virtual void UpdateUI() override;
 
-		void SetTargetGameObject(mh::GameObject* _targetObj) { mTargetGameObject = _targetObj; }
-		mh::GameObject* GetTargetGameObject() const { return mTargetGameObject; }
+		void SetTargetGameObject(ehw::GameObject* _targetObj) { mTargetGameObject = _targetObj; }
+		ehw::GameObject* GetTargetGameObject() const { return mTargetGameObject; }
 
-		void SetTargetResource(mh::IResource* _targetRes) { mTargetResource = _targetRes; }
-		mh::IResource* GetTargetResource() const { return mTargetResource; }
+		void SetTargetResource(ehw::IResource* _targetRes) { mTargetResource = _targetRes; }
+		ehw::IResource* GetTargetResource() const { return mTargetResource; }
 
 
 	private:
 		void IndicatorButton(const char* _strButtonName);
 
 	private:
-		mh::GameObject* mTargetGameObject;
-		mh::IResource* mTargetResource;
+		ehw::GameObject* mTargetGameObject;
+		ehw::IResource* mTargetResource;
 
 		std::vector<gui::guiComponent*> mGuiComponents;
 		std::vector<gui::guiResource*> mGuiResources;

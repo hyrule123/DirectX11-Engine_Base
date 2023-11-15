@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/IScene.h>
 
-namespace mh
+namespace ehw
 {
 	class Scene_Play 
 		: public IScene

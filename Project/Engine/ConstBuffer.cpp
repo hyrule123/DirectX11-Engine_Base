@@ -3,9 +3,9 @@
 #include "ConstBuffer.h"
 #include "GPUMgr.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	ConstBuffer::ConstBuffer(eCBType _type)
 		: GPUBuffer(eBufferType::Const)

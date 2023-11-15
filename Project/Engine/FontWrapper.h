@@ -7,7 +7,7 @@
 struct IFW1Factory;
 struct IFW1FontWrapper;
 
-namespace mh
+namespace ehw
 {
 
 	class FontWrapper

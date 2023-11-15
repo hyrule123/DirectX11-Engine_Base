@@ -16,11 +16,11 @@
 
 #include "MultiRenderTarget.h"
 
-extern mh::Application gApplication;
+extern ehw::Application gApplication;
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	MATRIX Com_Camera::gView = MATRIX::Identity;
 	MATRIX Com_Camera::gViewInverse = MATRIX::Identity;
@@ -189,10 +189,10 @@ namespace mh
 		{
 			switch (mProjType)
 			{
-			case mh::define::eProjectionType::Perspective:
+			case ehw::define::eProjectionType::Perspective:
 				mCullingAgent = std::make_unique<CullingAgent_Perspective>();
 				break;
-			case mh::define::eProjectionType::Orthographic:
+			case ehw::define::eProjectionType::Orthographic:
 				mCullingAgent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:

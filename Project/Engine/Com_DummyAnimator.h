@@ -1,7 +1,7 @@
 #pragma once
 #include "IAnimator.h"
 
-namespace mh
+namespace ehw
 {
 	class Com_Animator3D;
 	class Com_DummyAnimator :

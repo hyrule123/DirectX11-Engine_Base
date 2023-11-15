@@ -5,7 +5,7 @@
 #include <functional>
 #include "define_Struct.h"
 
-namespace mh
+namespace ehw
 {
     class IComponent;
     class ComMgr

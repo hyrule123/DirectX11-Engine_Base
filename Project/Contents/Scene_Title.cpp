@@ -30,7 +30,7 @@
 
 #include <Engine/EventMgr.h>
 
-namespace mh
+namespace ehw
 {
 	Scene_Title::Scene_Title()
 	{

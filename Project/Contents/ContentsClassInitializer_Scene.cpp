@@ -17,9 +17,9 @@
 
 #define CONSTRUCTOR_T(T) SceneMgr::AddSceneConstructor<T>(strKey::Scene::##T)
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	void ContentsClassInitializer::InitScene()
 	{
 		CONSTRUCTOR_T(Scene_Play);

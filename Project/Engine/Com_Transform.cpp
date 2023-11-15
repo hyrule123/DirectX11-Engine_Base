@@ -11,7 +11,7 @@
 #include "json-cpp/json.h"
 
 
-namespace mh
+namespace ehw
 {
 	Com_Transform::Com_Transform()
 		: mSize(1.f, 1.f, 1.f)

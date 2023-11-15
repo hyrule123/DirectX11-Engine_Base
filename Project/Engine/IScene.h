@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Layer.h"
 
-namespace mh
+namespace ehw
 {
 	class GameObject;
 	class IScene 

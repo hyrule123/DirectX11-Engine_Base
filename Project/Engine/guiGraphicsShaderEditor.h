@@ -4,7 +4,7 @@
 #include "define_GPU.h"
 #include "guiComboBox.h"
 
-namespace mh
+namespace ehw
 {
 	class GraphicsShader;
 }
@@ -30,7 +30,7 @@ namespace gui
 
 		void InputElementEditModal();
 
-		void CreateSTDInputLayout(const mh::define::eDimensionType _dimType);
+		void CreateSTDInputLayout(const ehw::define::eDimensionType _dimType);
 
 		void SaveModal();
 		void LoadModal();
@@ -51,13 +51,13 @@ namespace gui
 
 		guiComboBox mTopologyCombo;
 
-		std::array<std::string, (int)mh::define::eGSStage::END> mStageNames;
+		std::array<std::string, (int)ehw::define::eGSStage::END> mStageNames;
 
 		guiComboBox mRSTypeCombo;
 		guiComboBox mDSTypeCombo;
 		guiComboBox mBSTypeCombo;
 
-		//std::unique_ptr<mh::GraphicsShader> mEditTarget;
+		//std::unique_ptr<ehw::GraphicsShader> mEditTarget;
 
 		bool mbSaveModal;
 		guiComboBox mStageTypeCombo;

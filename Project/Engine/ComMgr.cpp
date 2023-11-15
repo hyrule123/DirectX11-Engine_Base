@@ -5,7 +5,7 @@
 
 #include "IComponent.h"
 
-namespace mh
+namespace ehw
 {
 	std::unordered_map<std::string_view, std::function<IComponent* ()>> ComMgr::mUmapComConstructor{};
 	std::vector<std::string_view> ComMgr::mComNamesByID{};

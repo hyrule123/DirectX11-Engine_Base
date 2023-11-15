@@ -4,9 +4,9 @@
 
 #include <DirectXTex/DirectXTex.h>
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	using Microsoft::WRL::ComPtr;
 
 	class Texture : public IResource
