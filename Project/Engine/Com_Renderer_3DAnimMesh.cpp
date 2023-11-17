@@ -5,7 +5,7 @@
 #include "Skeleton.h"
 #include "Com_Animator3D.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
 	{

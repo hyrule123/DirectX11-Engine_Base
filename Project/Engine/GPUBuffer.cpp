@@ -3,7 +3,7 @@
 #include "GPUBuffer.h"
 #include "GPUMgr.h"
 
-namespace mh
+namespace ehw
 {
 	GPUBuffer::GPUBuffer(eBufferType _Type)
 		: mBuffer()

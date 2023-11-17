@@ -2,7 +2,7 @@
 #include "ICollider.h"
 
 
-namespace mh
+namespace ehw
 {
 	class Com_Transform;
 	class ICollider2D : public ICollider

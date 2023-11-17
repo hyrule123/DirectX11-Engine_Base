@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/IScript.h>
 
-namespace mh
+namespace ehw
 {
     class Script_Player :
         public IScript

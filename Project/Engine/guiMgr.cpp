@@ -47,7 +47,7 @@ namespace gui
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, guiBase*, mh::define::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
+	std::unordered_map<std::string, guiBase*, ehw::define::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
 	//std::vector<guiBase*> guiMgr::mGuiWindows{};
 	std::vector<EditorObject*> guiMgr::mEditorObjects{};
 	std::vector<DebugObject*> guiMgr::mDebugObjects{};
@@ -59,8 +59,8 @@ namespace gui
 
 	ImGuizmo::OPERATION guiMgr::mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 
-	using namespace mh::define;
-	using namespace mh::math;
+	using namespace ehw::define;
+	using namespace ehw::math;
 	
 	void guiMgr::Init()
 	{
@@ -71,21 +71,21 @@ namespace gui
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		mDebugObjects.resize((UINT)eColliderType::END);
 
-		std::shared_ptr<mh::Mesh> rectMesh = mh::ResourceMgr::Find<mh::Mesh>(mh::strKey::Default::mesh::DebugRectMesh);
-		std::shared_ptr<mh::Material> material = mh::ResourceMgr::Find<mh::Material>(mh::strKey::Default::material::DebugMaterial);
+		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceMgr::Find<ehw::Mesh>(ehw::strKey::Default::mesh::DebugRectMesh);
+		std::shared_ptr<ehw::Material> material = ehw::ResourceMgr::Find<ehw::Material>(ehw::strKey::Default::material::DebugMaterial);
 
 		mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
-		mh::Com_Renderer_Mesh* renderer
-			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<mh::Com_Renderer_Mesh>();
+		ehw::Com_Renderer_Mesh* renderer
+			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ehw::Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
-		std::shared_ptr<mh::Mesh> circleMesh = mh::ResourceMgr::Find<mh::Mesh>("CircleMesh");
+		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceMgr::Find<ehw::Mesh>("CircleMesh");
 
 		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
 		renderer
-			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<mh::Com_Renderer_Mesh>();
+			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ehw::Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(circleMesh);
@@ -94,10 +94,10 @@ namespace gui
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
-		//mh::Com_Renderer_Mesh* gridMr = gridObject->AddComponent<mh::Com_Renderer_Mesh>();
-		//gridMr->SetMesh(mh::ResourceMgr::Find<mh::Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(mh::ResourceMgr::Find<Material>(L"GridMaterial"));
-		//mh::GridScript* gridScript = gridObject->AddComponent<mh::GridScript>();
+		//ehw::Com_Renderer_Mesh* gridMr = gridObject->AddComponent<ehw::Com_Renderer_Mesh>();
+		//gridMr->SetMesh(ehw::ResourceMgr::Find<ehw::Mesh>(L"RectMesh"));
+		//gridMr->SetMaterial(ehw::ResourceMgr::Find<Material>(L"GridMaterial"));
+		//ehw::GridScript* gridScript = gridObject->AddComponent<ehw::GridScript>();
 		//gridScript->SetCamera(gMainCamera);
 
 		//mEditorObjects.push_back(gridObject);
@@ -116,22 +116,22 @@ namespace gui
 	void guiMgr::Run()
 	{
 		if (
-			mh::InputMgr::GetKey(mh::eKeyCode::LCTRL)
+			ehw::InputMgr::GetKey(ehw::eKeyCode::LCTRL)
 			&&
-			mh::InputMgr::GetKey(mh::eKeyCode::LSHIFT)
+			ehw::InputMgr::GetKey(ehw::eKeyCode::LSHIFT)
 			&&
-			mh::InputMgr::GetKeyDown(mh::eKeyCode::E)
+			ehw::InputMgr::GetKeyDown(ehw::eKeyCode::E)
 			)
 		{
 			gui::guiMgr::ToggleEnable();
 		}
 
 
-		if (mh::InputMgr::GetKey(mh::eKeyCode::Z))
+		if (ehw::InputMgr::GetKey(ehw::eKeyCode::Z))
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (mh::InputMgr::GetKey(mh::eKeyCode::X))
+		if (ehw::InputMgr::GetKey(ehw::eKeyCode::X))
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
@@ -176,8 +176,8 @@ namespace gui
 			obj->Render();
 		}
 
-		auto& DebugMeshes = mh::RenderMgr::GetDebugMeshes();
-		for ( mh::tDebugMesh& mesh : DebugMeshes)
+		auto& DebugMeshes = ehw::RenderMgr::GetDebugMeshes();
+		for ( ehw::tDebugMesh& mesh : DebugMeshes)
 		{
 			DebugRender(mesh);
 		}
@@ -192,7 +192,7 @@ namespace gui
 			return;
 
 		//IMGUI 내부 세팅 저장
-		const std::fs::path& saveDir = mh::PathMgr::GetResPathRelative();
+		const std::fs::path& saveDir = ehw::PathMgr::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		ImGui::SaveIniSettingsToDisk(savePath.string().c_str());
 
@@ -239,11 +239,11 @@ namespace gui
 		ImGuiRelease();
 	}
 
-	void guiMgr::DebugRender(mh::tDebugMesh& mesh)
+	void guiMgr::DebugRender(ehw::tDebugMesh& mesh)
 	{
 		DebugObject* debugObj = mDebugObjects[(UINT)mesh.type];
 		
-		mh::Com_Transform* tr = debugObj->GetComponent<mh::Com_Transform>();
+		ehw::Com_Transform* tr = debugObj->GetComponent<ehw::Com_Transform>();
 		tr->SetRelativePos(mesh.position);
 		tr->SetRelativeRotXYZ(mesh.rotatation);
 		
@@ -254,14 +254,14 @@ namespace gui
 			tr->SetRelativeScale(Vector3(mesh.radius));
 
 
-		mh::IRenderer* renderer = debugObj->GetComponent<mh::IRenderer>();
-		mh::Com_Camera* mainCam = mh::RenderMgr::GetMainCam();
+		ehw::IRenderer* renderer = debugObj->GetComponent<ehw::IRenderer>();
+		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
 
 		tr->FixedUpdate();
 
-		mh::Com_Camera::SetGpuViewMatrix(
+		ehw::Com_Camera::SetGpuViewMatrix(
 			mainCam->GetViewMatrix());
-		mh::Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
+		ehw::Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
 
 		debugObj->Render();
 	}
@@ -330,7 +330,7 @@ namespace gui
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = mh::PathMgr::GetResPathRelative();
+		const std::fs::path& saveDir = ehw::PathMgr::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{
@@ -351,15 +351,15 @@ namespace gui
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(mh::Application::GetHwnd());
-		ImGui_ImplDX11_Init(mh::GPUMgr::Device().Get()
-			, mh::GPUMgr::Context().Get());
+		ImGui_ImplWin32_Init(ehw::Application::GetHwnd());
+		ImGui_ImplDX11_Init(ehw::GPUMgr::Device().Get()
+			, ehw::GPUMgr::Context().Get());
 
 
 
 		//설정 파일들 로드
 		//TODO: 여기
-		//std::filesystem::path origDir = mh::PathMgr::GetInst()->GetPathRel_Content();
+		//std::filesystem::path origDir = ehw::PathMgr::GetInst()->GetPathRel_Content();
 
 		//origDir /= DIRECTORY_NAME::SAVED_SETTING;
 		//std::filesystem::path fullPath = origDir / "imgui.ini";
@@ -452,14 +452,14 @@ namespace gui
 
 	void guiMgr::RenderGuizmo()
 	{
-		mh::GameObject* targetgameobject = mh::RenderMgr::GetInspectorGameObject();
+		ehw::GameObject* targetgameobject = ehw::RenderMgr::GetInspectorGameObject();
 
 		if (!targetgameobject)
 		{
 			return;
 		}
 
-		mh::Com_Camera* mainCam = mh::RenderMgr::GetMainCam();
+		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
 
 		if (!mainCam)
 		{
@@ -469,7 +469,7 @@ namespace gui
 		//ImGuizmo::SetOrthographic(false);
 		//ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
 
-		mh::Com_Transform* tr = targetgameobject->GetComponent<mh::Com_Transform>();
+		ehw::Com_Transform* tr = targetgameobject->GetComponent<ehw::Com_Transform>();
 		if (nullptr == tr)
 		{
 			return;

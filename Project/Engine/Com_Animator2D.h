@@ -4,7 +4,7 @@
 
 #include "define_Struct.h"
 
-namespace mh
+namespace ehw
 {
 	class Com_Animator2D : public IAnimator
 	{

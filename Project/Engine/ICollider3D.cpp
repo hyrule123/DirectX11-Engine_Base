@@ -4,9 +4,9 @@
 
 #include "json-cpp/json.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	ICollider3D::ICollider3D()
 		: ICollider(define::eColliderType::None)

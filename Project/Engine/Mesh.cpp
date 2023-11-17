@@ -16,7 +16,7 @@
 #undef max
 #endif
 
-namespace mh
+namespace ehw
 {
 	Mesh::Mesh()
 		: IResource(eResourceType::Mesh)

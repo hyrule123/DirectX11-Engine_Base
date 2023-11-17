@@ -1,6 +1,6 @@
 	#pragma once
 
-namespace mh
+namespace ehw
 {
 	class ComponentInitializer
 	{

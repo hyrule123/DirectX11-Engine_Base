@@ -8,7 +8,7 @@
 #include <Engine/TimeMgr.h>
 
 
-namespace mh
+namespace ehw
 {
 	Script_CameraMove::Script_CameraMove()
 		: mCamera()
@@ -37,13 +37,13 @@ namespace mh
 
 		switch (projType)
 		{
-		case mh::define::eProjectionType::None:
+		case ehw::define::eProjectionType::None:
 			MH_ASSERT(false);
 			break;
-		case mh::define::eProjectionType::Perspective:
+		case ehw::define::eProjectionType::Perspective:
 			Camera3DMove();
 			break;
-		case mh::define::eProjectionType::Orthographic:
+		case ehw::define::eProjectionType::Orthographic:
 			Camera2DMove();
 			break;
 		default:

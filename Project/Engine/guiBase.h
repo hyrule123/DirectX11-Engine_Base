@@ -11,8 +11,8 @@ namespace gui
 		guiBase(const std::string_view _strName);
 		virtual ~guiBase();
 
-		virtual mh::eResult SaveJson(Json::Value* _pJval) override;
-		virtual mh::eResult LoadJson(const Json::Value* _pJval) override;
+		virtual ehw::eResult SaveJson(Json::Value* _pJval) override;
+		virtual ehw::eResult LoadJson(const Json::Value* _pJval) override;
 
 		void InitRecursive();
 		void FixedUpdate();

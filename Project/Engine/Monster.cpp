@@ -2,7 +2,7 @@
 
 #include "Monster.h"
 
-namespace mh
+namespace ehw
 {
 	Monster::Monster()
 	{

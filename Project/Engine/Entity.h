@@ -10,7 +10,7 @@ namespace std
 }
 
 
-namespace mh
+namespace ehw
 {
 	using namespace define;
 	namespace define::strKey::Json::Entity

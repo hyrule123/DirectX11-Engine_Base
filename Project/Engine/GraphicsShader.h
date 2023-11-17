@@ -8,7 +8,7 @@ namespace gui
 	class guiGraphicsShaderEditor;
 }
 
-namespace mh
+namespace ehw
 {
 	struct tShaderCode
 	{

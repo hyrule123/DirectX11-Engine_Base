@@ -8,9 +8,9 @@
 #include "RenderMgr.h"
 #include "SceneMgr.h"
 
-extern mh::Application gApplication;
+extern ehw::Application gApplication;
 
-namespace mh
+namespace ehw
 {
 	
 

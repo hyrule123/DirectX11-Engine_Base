@@ -7,7 +7,7 @@
 
 
 
-namespace mh
+namespace ehw
 {
 	enum class eUIType
 	{

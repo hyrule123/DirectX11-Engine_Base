@@ -3,7 +3,7 @@
 #include "guiComboBox.h"
 
 //Material 전방선언
-namespace mh
+namespace ehw
 {
 	class Material;
 }
@@ -43,7 +43,7 @@ namespace gui
 		
 
 	private:
-		std::shared_ptr<mh::Material>	mTargetMaterial;
+		std::shared_ptr<ehw::Material>	mTargetMaterial;
 
 		//기존의 재질을 수정중인지 신규 재질을 수정 중인지
 		bool							mbNewMaterial;

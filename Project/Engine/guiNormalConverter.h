@@ -3,7 +3,7 @@
 #include "guiComboBox.h"
 #include "DefaultShader/SH_CommonStruct.hlsli"
 
-namespace mh
+namespace ehw
 {
     class Texture;
 }
@@ -29,7 +29,7 @@ namespace gui
 
         
     private:
-        std::shared_ptr<mh::Texture>        mTextureSrc;
+        std::shared_ptr<ehw::Texture>        mTextureSrc;
         std::filesystem::path               mTextureDestDir;
     };
 

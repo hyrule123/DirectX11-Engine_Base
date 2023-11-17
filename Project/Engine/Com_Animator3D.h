@@ -5,7 +5,7 @@
 
 #include <fbxsdk/fbxsdk.h>
 
-namespace mh
+namespace ehw
 {
 	class StructBuffer;
 	class Mesh;

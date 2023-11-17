@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-namespace mh
+namespace ehw
 {
     class ThreadPoolMgr 
     {

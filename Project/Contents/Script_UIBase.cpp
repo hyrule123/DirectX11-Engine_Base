@@ -8,7 +8,7 @@
 #include <Engine/ResourceMgr.h>
 #include <Engine/define_Component.h>
 
-namespace mh
+namespace ehw
 {
 	Script_UIBase::Script_UIBase(eUIType _type)
 		: mUIMode(_type)

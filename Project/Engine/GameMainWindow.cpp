@@ -56,7 +56,7 @@ BOOL GameMainWindow::Init(const tDesc_GameMainWindow& _Desc)
     UpdateWindow(mHwnd);
 
 
-    mh::define::tDesc_Application AppDesc;
+    ehw::define::tDesc_Application AppDesc;
     AppDesc.Hwnd = mHwnd;
     AppDesc.Height = _Desc.Height;
     AppDesc.Width = _Desc.Width;
@@ -64,7 +64,7 @@ BOOL GameMainWindow::Init(const tDesc_GameMainWindow& _Desc)
     AppDesc.TopWindowPos = _Desc.TopPos;
     AppDesc.GPUDesc = _Desc.GPUDesc;
 
-    mh::Application::Init(AppDesc);
+    ehw::Application::Init(AppDesc);
    
     for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
     {
@@ -100,8 +100,8 @@ BOOL GameMainWindow::Loop()
         }
         else
         {
-            bReturn = mh::Application::Run();
-            mh::Application::Present();
+            bReturn = ehw::Application::Run();
+            ehw::Application::Present();
         }
     }
 

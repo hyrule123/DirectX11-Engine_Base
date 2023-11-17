@@ -7,7 +7,7 @@
 namespace gui
 {
 	guiCom_Transform::guiCom_Transform()
-		: guiComponent(mh::define::eComponentType::Transform)
+		: guiComponent(ehw::define::eComponentType::Transform)
 	{
 		//SetSize(ImVec2(200.0f, 120.0f));
 	}
@@ -19,7 +19,7 @@ namespace gui
 
 	void guiCom_Transform::Update()
 	{
-		mh::Com_Transform* tr = GetTarget()->GetComponent<mh::Com_Transform>();
+		ehw::Com_Transform* tr = GetTarget()->GetComponent<ehw::Com_Transform>();
 
 		mPosisition = tr->GetRelativePos();
 		mRotation = tr->GetRelativeRotXYZ();
@@ -34,7 +34,7 @@ namespace gui
 
 		if (GetTarget())
 		{
-			mh::Com_Transform* tr = GetTarget()->GetComponent<mh::Com_Transform>();
+			ehw::Com_Transform* tr = GetTarget()->GetComponent<ehw::Com_Transform>();
 
 			tr->SetRelativePos(mPosisition);
 			tr->SetRelativeRotXYZ(mRotation);

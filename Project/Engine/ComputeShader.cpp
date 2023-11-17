@@ -12,7 +12,7 @@
 
 
 
-namespace mh
+namespace ehw
 {
 	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
 		: IShader(define::eResourceType::ComputeShader)
@@ -42,7 +42,7 @@ namespace mh
 			nullptr, 
 			D3D_COMPILE_STANDARD_FILE_INCLUDE, 
 			std::string(_funcName).c_str(), 
-			mh::SHADER_VERSION::CS, 
+			ehw::SHADER_VERSION::CS, 
 			0, 
 			0, 
 			mCSBlob.GetAddressOf(), 

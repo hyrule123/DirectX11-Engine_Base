@@ -5,7 +5,7 @@
 #include "json-cpp\json.h"
 #include "GameObject.h"
 
-namespace mh
+namespace ehw
 {
 	namespace define::strKey::Json::Prefab
 	{

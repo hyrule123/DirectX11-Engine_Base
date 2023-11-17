@@ -8,7 +8,7 @@
 #include "Prefab.h"
 #include "EventMgr.h"
 
-namespace mh
+namespace ehw
 {
 	namespace define::strKey::Json
 	{

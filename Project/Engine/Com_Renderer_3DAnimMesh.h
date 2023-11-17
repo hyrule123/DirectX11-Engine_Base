@@ -1,7 +1,7 @@
 #pragma once
 #include "Com_Renderer_Mesh.h"
 
-namespace mh
+namespace ehw
 {
 	class Com_Renderer_3DAnimMesh :
 		public Com_Renderer_Mesh

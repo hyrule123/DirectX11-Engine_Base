@@ -95,7 +95,7 @@ void CreateTextureKey()
     DirTree DirTree;
     {
         stdfs::path DirPath = define_Preset::Path::Content::A;
-        DirPath /= mh::define::strKey::GetResName(mh::define::eResourceType::Texture);
+        DirPath /= ehw::define::strKey::GetResName(ehw::define::eResourceType::Texture);
         DirTree.SearchRecursive(DirPath, reg);
     }
 
@@ -165,8 +165,8 @@ void CreateComponentKey()
     Desc.ClassName = "ComponentInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";
     Desc.IncludeManagerHeader = R"(#include "ComMgr.h")";
-    Desc.MasterNamespace = "namespace mh";
-    Desc.UsingNamespace = "using namespace mh::define;";
+    Desc.MasterNamespace = "namespace ehw";
+    Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::com::##T))";
     Desc.UserClassMgr_InitFuncName = "Init()";
     Desc.FilePath = DirPath / "ComponentInitializer.cpp";
@@ -193,8 +193,8 @@ void CreateScriptKey()
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
     Desc.IncludeManagerHeader = "#include <Engine/ComMgr.h>";
-    Desc.MasterNamespace = "namespace mh";
-    Desc.UsingNamespace = "using namespace mh::define;";
+    Desc.MasterNamespace = "namespace ehw";
+    Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::Script::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScript()";
     Desc.FilePath = DirPath / "ContentsClassInitializer_Script.cpp";
@@ -222,8 +222,8 @@ void CreateSceneKey()
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
     Desc.IncludeManagerHeader = "#include <Engine/SceneMgr.h>";
-    Desc.MasterNamespace = "namespace mh";
-    Desc.UsingNamespace = "using namespace mh::define;";
+    Desc.MasterNamespace = "namespace ehw";
+    Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::Scene::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScene()";
     Desc.FilePath = DirPath / "ContentsClassInitializer_Scene.cpp";

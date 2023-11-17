@@ -84,7 +84,7 @@ namespace gui
 			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
-			waitDot += mh::TimeMgr::DeltaTime();
+			waitDot += ehw::TimeMgr::DeltaTime();
 			if (1.f < waitDot)
 			{
 				waitDot = 0.f;
@@ -98,8 +98,8 @@ namespace gui
 			std::future_status status = mFutureConvertResult.wait_for(std::chrono::milliseconds(10));
 			if (status == std::future_status::ready)
 			{
-				mh::eResult result = mFutureConvertResult.get();
-				if (mh::eResultSuccess(result))
+				ehw::eResult result = mFutureConvertResult.get();
+				if (ehw::eResultSuccess(result))
 				{
 					NOTIFICATION_W(L"저장 성공");
 				}
@@ -129,7 +129,7 @@ namespace gui
 		{
 			std::vector<std::fs::path> extensions = { ".fbx" };
 
-			std::fs::path filePath = mh::WinAPI::FileDialog(std::fs::current_path(), extensions);
+			std::fs::path filePath = ehw::WinAPI::FileDialog(std::fs::current_path(), extensions);
 			mFBXPath = filePath.string();
 
 			mOutputDirName = filePath.stem().string();
@@ -152,12 +152,12 @@ namespace gui
 				return;
 			}
 			
-			mFutureConvertResult = mh::ThreadPoolMgr::EnqueueJob(
-				[this]()->mh::eResult
+			mFutureConvertResult = ehw::ThreadPoolMgr::EnqueueJob(
+				[this]()->ehw::eResult
 				{
-					std::shared_ptr<mh::MeshData> meshData = std::make_unique<mh::MeshData>();
-					mh::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
-					if (mh::eResultSuccess(result))
+					std::shared_ptr<ehw::MeshData> meshData = std::make_unique<ehw::MeshData>();
+					ehw::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
+					if (ehw::eResultSuccess(result))
 					{
 						result = meshData->Save(mOutputDirName);
 					}
@@ -193,7 +193,7 @@ namespace gui
 			}
 			else
 			{
-				mh::MeshData::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
+				ehw::MeshData::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
 			}
 		}
 	}
@@ -201,7 +201,7 @@ namespace gui
 	void guiFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetKey("MeshData List");
-		const std::fs::path& meshPath = mh::PathMgr::GetContentPathRelative(mh::define::eResourceType::MeshData);
+		const std::fs::path& meshPath = ehw::PathMgr::GetContentPathRelative(ehw::define::eResourceType::MeshData);
 		for (const auto& entry : std::fs::directory_iterator(meshPath))
 		{
 			if (std::fs::is_directory(entry.path()))

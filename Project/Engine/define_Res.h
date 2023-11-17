@@ -3,7 +3,7 @@
 #include "define_Macro.h"
 #include "define_Enum.h"
 
-namespace mh::define
+namespace ehw::define
 {
 	enum class eResourceType
 	{

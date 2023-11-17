@@ -19,7 +19,7 @@ namespace gui
 		void SetMaterial(const std::string& _strKey);
 
 	private:
-		mh::Mesh* mMesh;
-		mh::Material* mMaterial;
+		ehw::Mesh* mMesh;
+		ehw::Material* mMaterial;
 	};
 }

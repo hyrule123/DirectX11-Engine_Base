@@ -1,7 +1,7 @@
 #pragma once
 #include "Com_Renderer_Mesh.h"
 
-namespace mh
+namespace ehw
 {
 	class Com_Animator2D;
 	class Com_Renderer_Sprite : public Com_Renderer_Mesh

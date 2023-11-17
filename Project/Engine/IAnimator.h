@@ -3,7 +3,7 @@
 #include "define_Struct.h"
 
 
-namespace mh
+namespace ehw
 {
 	class IAnimation;
 	class IAnimator :

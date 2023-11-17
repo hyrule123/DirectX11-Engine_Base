@@ -2,7 +2,7 @@
 
 #include "IResource.h"
 
-namespace mh
+namespace ehw
 {
     class GameObject;
 	class Prefab

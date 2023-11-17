@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-namespace mh
+namespace ehw
 {
 	class Layer : public Entity
 	{

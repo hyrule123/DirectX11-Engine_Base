@@ -11,11 +11,11 @@ namespace gui
 		struct tComboItem
 		{
 			std::string strName;
-			mh::define::tDataPtr pData;
+			ehw::define::tDataPtr pData;
 
 			tComboItem() : strName(), pData() {};
 
-			tComboItem(const std::string& _strName, mh::define::tDataPtr _pData = {})
+			tComboItem(const std::string& _strName, ehw::define::tDataPtr _pData = {})
 				: strName(_strName)
 				, pData(_pData)
 			{}

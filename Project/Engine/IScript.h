@@ -3,7 +3,7 @@
 #include "IComponent.h"
 #include "ICollider2D.h"
 
-namespace mh
+namespace ehw
 {
 	class IScript : public IComponent
 	{

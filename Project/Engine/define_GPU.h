@@ -24,7 +24,7 @@ namespace Microsoft::WRL
 #include "DefaultShader/SH_Resource.hlsli"
 
 
-namespace mh::define
+namespace ehw::define
 {
 	constexpr const int MRT_MAX = 8;
 
@@ -148,14 +148,14 @@ namespace mh::define
 
 	namespace strKey
 	{
-		constexpr const char* eSamplerType[(int)mh::define::eSamplerType::END]
+		constexpr const char* eSamplerType[(int)ehw::define::eSamplerType::END]
 		{
 			"Point",
 			"Linear",
 			"Anisotropic",
 		};
 
-		constexpr const char* eRSType[(int)mh::define::eRSType::END]
+		constexpr const char* eRSType[(int)ehw::define::eRSType::END]
 		{
 			"SolidBack",
 			"SolidFront",
@@ -163,7 +163,7 @@ namespace mh::define
 			"WireframeNone",
 		};
 
-		constexpr const char* eDSType[(int)mh::define::eDSType::END]
+		constexpr const char* eDSType[(int)ehw::define::eDSType::END]
 		{
 			"Less",
 			"Greater",
@@ -171,7 +171,7 @@ namespace mh::define
 			"None",
 		};
 
-		constexpr const char* eBSType[(int)mh::define::eBSType::END]
+		constexpr const char* eBSType[(int)ehw::define::eBSType::END]
 		{
 			"Default",
 			"AlphaBlend",

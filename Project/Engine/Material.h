@@ -12,7 +12,7 @@ namespace gui
 	class guiMaterialEditor;
 }
 
-namespace mh
+namespace ehw
 {
 	class Material : public IResource
 	{

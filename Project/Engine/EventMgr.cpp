@@ -8,7 +8,7 @@
 #include "Prefab.h"
 
 
-namespace mh
+namespace ehw
 {
 	std::vector<EventMgr::tEvent>	EventMgr::mEvents{};
 	std::vector<EventMgr::tEvent>	EventMgr::mLazyEvents{};

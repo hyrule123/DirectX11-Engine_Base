@@ -3,7 +3,7 @@
 #include "IScene.h"
 
 
-namespace mh
+namespace ehw
 {
 	IScene::IScene()
 		: mbInitialized()

@@ -2,20 +2,27 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="PCH_Contents.cpp" />
-    <ClCompile Include="*.cpp" />
-    <ClCompile Include="PCH_Contents.cpp" />
-    <ClCompile Include="PCH_Contents.cpp" />
-    <ClCompile Include="PCH_Contents.cpp" />
-    <ClCompile Include="PCH_Contents.cpp" />
-    <ClCompile Include="ContentsClassInitializer.cpp" />
-    <ClCompile Include="ContentsClassInitializer_Component.cpp" />
     <ClCompile Include="ContentsClassInitializer_Scene.cpp" />
     <ClCompile Include="ContentsClassInitializer_Script.cpp" />
     <ClCompile Include="PCH_Contents.cpp" />
     <ClCompile Include="Scene_Play.cpp" />
     <ClCompile Include="Scene_Title.cpp" />
     <ClCompile Include="Script_CameraMove.cpp" />
-    <ClCompile Include="Script_TestScript.cpp" />
+    <ClCompile Include="Script_Player.cpp" />
+    <ClCompile Include="Script_UIBase.cpp" />
+    <ClCompile Include="Script_UIButton.cpp" />
+    <ClCompile Include="Script_UIGauge.cpp" />
+    <ClCompile Include="PCH_Contents.cpp" />
+    <ClCompile Include="PCH_Contents.cpp" />
+    <ClCompile Include="PCH_Contents.cpp" />
+    <ClCompile Include="PCH_Contents.cpp" />
+    <ClCompile Include="ContentsClassInitializer.cpp" />
+    <ClCompile Include="ContentsClassInitializer_Scene.cpp" />
+    <ClCompile Include="ContentsClassInitializer_Script.cpp" />
+    <ClCompile Include="PCH_Contents.cpp" />
+    <ClCompile Include="Scene_Play.cpp" />
+    <ClCompile Include="Scene_Title.cpp" />
+    <ClCompile Include="Script_CameraMove.cpp" />
     <ClCompile Include="ContentsClassInitializer.cpp" />
     <ClCompile Include="ContentsClassInitializer_Component.cpp" />
     <ClCompile Include="ContentsClassInitializer_Scene.cpp" />
@@ -145,11 +152,12 @@
     <ClCompile Include="*.cpp" />
     <ClCompile Include="*.cpp" />
     <ClCompile Include="*.cpp" />
+    <ClCompile Include="Script_Player.cpp" />
+    <ClCompile Include="Script_UIBase.cpp" />
+    <ClCompile Include="Script_UIButton.cpp" />
+    <ClCompile Include="Script_UIGauge.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="strKey_Component.h">
-      <Filter>Auto Generated</Filter>
-    </ClInclude>
     <ClInclude Include="strKey_Scene.h">
       <Filter>Auto Generated</Filter>
     </ClInclude>
@@ -165,6 +173,13 @@
     <ClInclude Include="PCH_Contents.h">
       <Filter>PCH</Filter>
     </ClInclude>
+    <ClInclude Include="Scene_Play.h" />
+    <ClInclude Include="Scene_Title.h" />
+    <ClInclude Include="Script_CameraMove.h" />
+    <ClInclude Include="Script_Player.h" />
+    <ClInclude Include="Script_UIBase.h" />
+    <ClInclude Include="Script_UIButton.h" />
+    <ClInclude Include="Script_UIGauge.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Auto Generated">
@@ -176,5 +191,8 @@
     <Filter Include="PCH">
       <UniqueIdentifier>{c9d56e49-3de8-4e37-86d5-3e550462f260}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ContentsClassInitializer_Script.txt" />
   </ItemGroup>
 </Project>

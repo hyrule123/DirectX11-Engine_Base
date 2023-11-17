@@ -4,7 +4,7 @@
 #include "PathMgr.h"
 #include "json-cpp/json-forwards.h"
 
-namespace mh
+namespace ehw
 {
 	class IResource 
 		: public Entity

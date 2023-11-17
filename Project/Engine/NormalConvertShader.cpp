@@ -14,7 +14,7 @@
 #include "CompiledShaderHeader/CS_NormalConvertMH_Release.h"
 #endif
 
-namespace mh
+namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
 		: ComputeShader(uint3{32, 32, 1})

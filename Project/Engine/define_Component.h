@@ -3,7 +3,7 @@
 #include "define_Enum.h"
 #include "strKey_Component.h"
 
-namespace mh::define
+namespace ehw::define
 {
 	STRKEY ComponentPrefix = "Com_";
 	enum class eComponentType

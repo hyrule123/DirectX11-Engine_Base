@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponent.h"
 
-namespace mh
+namespace ehw
 {
 	class AudioClip;
 	class Com_AudioSource : public IComponent

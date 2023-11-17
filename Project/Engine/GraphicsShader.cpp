@@ -7,7 +7,7 @@
 #include "PathMgr.h"
 #include "json-cpp/jsonSaveLoad.h"
 
-namespace mh
+namespace ehw
 {
 	std::unordered_set<std::string> GraphicsShader::mSemanticNames{};
 
@@ -24,7 +24,7 @@ namespace mh
 
 
 	
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	GraphicsShader::GraphicsShader()
 		: IShader(eResourceType::GraphicsShader)

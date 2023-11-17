@@ -3,7 +3,7 @@
 
 #include "AtExit.h"
 
-namespace mh
+namespace ehw
 {
 	std::unordered_map<std::string, std::shared_ptr<IResource>, tHashFunc_StringView, std::equal_to<>> ResourceMgr::mArrRes[(int)eResourceType::END]{};
 

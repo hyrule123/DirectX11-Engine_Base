@@ -5,9 +5,9 @@
 #include "RenderMgr.h"
 #include "ConstBuffer.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	//StructBuffer::StructBuffer()
 	//	: GPUBuffer(eBufferType::Struct)
@@ -452,9 +452,9 @@ namespace mh
 	{
 		switch (mCurBoundView)
 		{
-		case mh::eBufferViewType::NONE:
+		case ehw::eBufferViewType::NONE:
 			break;
-		case mh::eBufferViewType::SRV:
+		case ehw::eBufferViewType::SRV:
 		{
 
 			auto pContext = GPUMgr::Context();
@@ -493,7 +493,7 @@ namespace mh
 			break;
 		}
 
-		case mh::eBufferViewType::UAV:
+		case ehw::eBufferViewType::UAV:
 		{
 			static const uint v2_Offset = -1;
 			ID3D11UnorderedAccessView* pUAV = nullptr;

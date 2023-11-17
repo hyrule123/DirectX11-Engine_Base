@@ -15,7 +15,7 @@ namespace gui
 
 			void UpdateUI();
 
-			void SetData(mh::define::tDataPtr _data) { mData = _data; }
+			void SetData(ehw::define::tDataPtr _data) { mData = _data; }
 
 			void SetStem(bool bEnable) { mbStem = bEnable; }
 
@@ -23,7 +23,7 @@ namespace gui
 			const std::vector<tNode*>& GetChilds() { return mChilds; }
 
 			TreeWidget* mTreeWidget;
-			mh::define::tDataPtr mData;
+			ehw::define::tDataPtr mData;
 
 			tNode* mParent;
 			std::vector<tNode*> mChilds;
@@ -37,12 +37,12 @@ namespace gui
 
 		virtual void UpdateUI() override;
 
-		tNode* AddNode(tNode* parent, const std::string& name, mh::define::tDataPtr data, bool stem = false);
+		tNode* AddNode(tNode* parent, const std::string& name, ehw::define::tDataPtr data, bool stem = false);
 		void Clear();
 		void SetDummyRoot(bool enable) { mbDummyRootUse = enable; }
 		void SetSelectedNode(tNode* node);
 
-		void SetEvent(guiBase* widget, std::function<void(mh::define::tDataPtr)> func)
+		void SetEvent(guiBase* widget, std::function<void(ehw::define::tDataPtr)> func)
 		{
 			mEventGUI = widget;
 			mEvent = func;
@@ -56,6 +56,6 @@ namespace gui
 		tNode* mSelectedNode;
 
 		guiBase* mEventGUI;
-		std::function<void(mh::define::tDataPtr data)> mEvent;
+		std::function<void(ehw::define::tDataPtr data)> mEvent;
 	};
 }

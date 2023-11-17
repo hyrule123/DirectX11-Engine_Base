@@ -8,7 +8,7 @@
 
 #include "json-cpp/json.h"
 
-namespace mh
+namespace ehw
 {
 	uint ICollider2D::gColliderNumber = 0;
 	ICollider2D::ICollider2D()

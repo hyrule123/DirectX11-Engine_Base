@@ -12,7 +12,7 @@
 #include "ResourceMgr.h"
 #include "Skeleton.h"
 
-namespace mh
+namespace ehw
 {
 	IRenderer::IRenderer()
 		: IComponent(define::eComponentType::Renderer)

@@ -10,7 +10,7 @@
 
 #include "ResourceMgr.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
 		: mAnimator()

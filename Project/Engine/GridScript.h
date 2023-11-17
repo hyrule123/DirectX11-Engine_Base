@@ -2,7 +2,7 @@
 #include "IScript.h"
 #include "Com_Camera.h"
 
-namespace mh
+namespace ehw
 {
 	class GridScript : public IScript
 	{

@@ -3,7 +3,7 @@
 #include "ParticleShader.h"
 #include "DefaultShader/SH_Particle.hlsli"
 
-namespace mh
+namespace ehw
 {
 	enum class eSimulationSpace
 	{

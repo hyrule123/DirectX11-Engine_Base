@@ -5,7 +5,7 @@
 #include <future>
 
 
-namespace mh
+namespace ehw
 {
 	class MeshData;
 }
@@ -37,7 +37,7 @@ namespace gui
 		std::string		mOutputDirName;
 		bool			mbStatic;
 
-		std::future<mh::eResult> mFutureConvertResult;
+		std::future<ehw::eResult> mFutureConvertResult;
 
 		guiComboBox		mProjMeshDataCombo;
 	};

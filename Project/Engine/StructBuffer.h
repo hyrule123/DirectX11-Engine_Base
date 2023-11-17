@@ -2,7 +2,7 @@
 
 #include "GPUBuffer.h"
 
-namespace mh
+namespace ehw
 {
     enum class eStructBufferType
     {

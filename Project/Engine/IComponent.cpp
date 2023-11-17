@@ -4,9 +4,9 @@
 
 #include "json-cpp\jsonSaveLoad.h"
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	IComponent::IComponent(define::eComponentType _type)
 		: mType(_type)

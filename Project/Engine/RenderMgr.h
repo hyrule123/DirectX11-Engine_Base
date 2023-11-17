@@ -4,7 +4,7 @@
 
 #include "DefaultShader/SH_Func_Light.hlsli"
 
-namespace mh
+namespace ehw
 {
 	class ConstBuffer;
 	class StructBuffer;

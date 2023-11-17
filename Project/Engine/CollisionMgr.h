@@ -2,7 +2,7 @@
 #include "EnumFlags.h"
 #include "ICollider2D.h"
 
-namespace mh
+namespace ehw
 {
 	union union_ColliderID
 	{

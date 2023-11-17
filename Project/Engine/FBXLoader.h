@@ -7,7 +7,7 @@
 #include <fbxsdk/fbxsdk.h>
 
 
-namespace mh
+namespace ehw
 {
 //===============
 // Struct of FBX 

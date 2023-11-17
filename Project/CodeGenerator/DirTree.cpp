@@ -40,7 +40,7 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 	Writer.WriteCode(0);
 	Writer.WriteCode(0);
 
-	std::string strCode = "namespace mh::define::strKey::";
+	std::string strCode = "namespace ehw::define::strKey::";
 	strCode += _RootNamespace.string();
 	Writer.WriteCode(0, strCode);
 
@@ -222,17 +222,17 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 		std::string strFileName = iter.first.string();
 
 		bool bIsGS = false;
-		for (int j = 0; j < (int)mh::define::eGSStage::END; ++j)
+		for (int j = 0; j < (int)ehw::define::eGSStage::END; ++j)
 		{
-			size_t Pos = strFileName.find(mh::define::strKey::ArrGSPrefix[j]);
+			size_t Pos = strFileName.find(ehw::define::strKey::ArrGSPrefix[j]);
 			if (std::string::npos != Pos)
 			{
 				//쉐이더별로 지정한 접두사가 있을 경우 해당 접두사를 제거한다.
-				strFileName.erase(0, Pos + strlen(mh::define::strKey::ArrGSPrefix[j]));
+				strFileName.erase(0, Pos + strlen(ehw::define::strKey::ArrGSPrefix[j]));
 
 				//파일의 확장자를 json으로 변경하고, 키값으로 사용.
 				stdfs::path ShaderGroupName = strFileName;
-				ShaderGroupName.replace_extension(mh::define::strKey::Ext_ShaderSetting);
+				ShaderGroupName.replace_extension(ehw::define::strKey::Ext_ShaderSetting);
 
 				//쉐이더 그룹명에 각 쉐이더 파이프라인의 데이터를 담은 파일의 이름을 추가한다.
 				umapGSGroup[ShaderGroupName].FileName[j] = iter.first;
@@ -385,9 +385,9 @@ bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::
 
 
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 
 	eResult SaveJson(Json::Value* _pjVal)
 	{

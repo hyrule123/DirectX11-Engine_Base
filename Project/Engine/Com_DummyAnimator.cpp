@@ -4,7 +4,7 @@
 #include "Com_Animator3D.h"
 #include "GameObject.h"
 
-namespace mh
+namespace ehw
 {
 
 	Com_DummyAnimator::Com_DummyAnimator()

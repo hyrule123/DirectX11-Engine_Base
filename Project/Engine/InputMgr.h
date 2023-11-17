@@ -3,7 +3,7 @@
 #include "EnumFlags.h"
 #include "SimpleMath.h"
 
-namespace mh
+namespace ehw
 {
 	enum class eKeyCode
 	{

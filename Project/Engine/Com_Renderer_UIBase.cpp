@@ -7,7 +7,7 @@
 #include "ResourceMgr.h"
 #include "Mesh.h"
 
-namespace mh
+namespace ehw
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
 		: mUIData()

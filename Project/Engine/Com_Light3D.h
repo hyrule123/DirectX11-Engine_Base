@@ -3,7 +3,7 @@
 #include "define_GPU.h"
 #include "defaultShader/SH_Func_Light.hlsli"
 
-namespace mh
+namespace ehw
 {
 	class Mesh;
 	class Material;

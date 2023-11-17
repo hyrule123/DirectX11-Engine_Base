@@ -2,7 +2,7 @@
 #include "guiWindow.h"
 #include "SimpleMath.h"
 
-namespace mh
+namespace ehw
 {
     class Texture;
 }
@@ -25,7 +25,7 @@ namespace gui
         void UpdateUVIndicator();
 
     private:
-        std::shared_ptr<mh::Texture> mTexture;
+        std::shared_ptr<ehw::Texture> mTexture;
         ImVec2                      mTexRenderSize;
 
         ImVec2 mCursorPos;

@@ -9,10 +9,10 @@
 #ifdef __cplusplus
 #include "Simplemath.h"
 
-using float2 = mh::math::Vector2;
-using float3 = mh::math::Vector3;
-using float4 = mh::math::Vector4;
-using MATRIX = mh::math::Matrix;
+using float2 = ehw::math::Vector2;
+using float3 = ehw::math::Vector3;
+using float4 = ehw::math::Vector4;
+using MATRIX = ehw::math::Matrix;
 using uint = UINT;
 
 //윈도우 쪽 헤더에 정의되어 있음

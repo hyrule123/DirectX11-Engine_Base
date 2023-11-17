@@ -2,7 +2,7 @@
 #include "IAnimation.h"
 
 
-namespace mh
+namespace ehw
 {
 	IAnimation::IAnimation()
 		:IResource(eResourceType::Animation)

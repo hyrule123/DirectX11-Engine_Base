@@ -4,7 +4,7 @@
 #include "define_Macro.h"
 #include "Texture.h"
 
-namespace mh
+namespace ehw
 {
 	MultiRenderTarget::MultiRenderTarget()
 		: mRenderTargetTextures{}

@@ -13,7 +13,7 @@
 
 
 
-namespace mh::define::strKey::Scene
+namespace ehw::define::strKey::Scene
 {
 	STRKEY Scene_Play = "Scene_Play";
 	STRKEY Scene_TestBehaviourTree = "Scene_TestBehaviourTree";

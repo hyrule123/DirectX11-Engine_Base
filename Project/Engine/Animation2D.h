@@ -2,9 +2,9 @@
 #include "IAnimation.h"
 #include "Texture.h"
 
-namespace mh
+namespace ehw
 {
-	using mh::Texture;
+	using ehw::Texture;
 
 	class Animation2D 
 		: public IAnimation

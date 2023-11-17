@@ -2,7 +2,7 @@
 #include "ComputeShader.h"
 #include "define_Global.h"
 
-namespace mh
+namespace ehw
 {
 	class StructBuffer;
 	class GPUInitSetting :

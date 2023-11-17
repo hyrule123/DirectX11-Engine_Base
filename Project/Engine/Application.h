@@ -6,7 +6,7 @@
 #include "SimpleMath.h"
 #include "define_Struct.h"
 
-namespace mh
+namespace ehw
 {
 	class Application
 	{

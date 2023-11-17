@@ -3,7 +3,7 @@
 #include "SimpleMath.h"
 #include "Shader_Common.h"
 
-namespace mh
+namespace ehw
 {
     struct tKeyFrame
     {

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "IAnimator.h"
 
-namespace mh
+namespace ehw
 {
 	IAnimator::IAnimator(define::eDimensionType _type)
 		: IComponent(define::eComponentType::Animator)

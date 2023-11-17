@@ -35,37 +35,37 @@
 #include <PhysX/PxPhysicsAPI.h>
 
 #ifdef _DEBUG
-#pragma comment(lib, "FBXLoader/Debug/libfbxsdk-md.lib")
+#pragma comment(lib, "fbxsdk/lib/Debug/libfbxsdk-md.lib")
 
-#pragma comment(lib, "PhysX/Debug/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXPvdSDK_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXVehicle_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXCooking_64.lib")
-#pragma comment(lib, "PhysX/Debug/PVDRuntime_64.lib")
-#pragma comment(lib, "PhysX/Debug/SceneQuery_static_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysX_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXCommon_64.lib")
-#pragma comment(lib, "PhysX/Debug/PhysXFoundation_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXExtensions_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXVehicle_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXVehicle2_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXCooking_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PVDRuntime_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/SceneQuery_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysX_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXCommon_64.lib")
+#pragma comment(lib, "PhysX/lib/Debug/PhysXFoundation_64.lib")
 
 
 
 #else
-#pragma comment(lib, "FBXLoader/Release/libfbxsdk-md.lib")
+#pragma comment(lib, "fbxsdk/lib/Release/libfbxsdk-md.lib")
 
 
-#pragma comment(lib, "PhysX/Release/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXPvdSDK_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXVehicle_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXCooking_64.lib")
-#pragma comment(lib, "PhysX/Release/PVDRuntime_64.lib")
-#pragma comment(lib, "PhysX/Release/SceneQuery_static_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysX_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXCommon_64.lib")
-#pragma comment(lib, "PhysX/Release/PhysXFoundation_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXExtensions_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXVehicle_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXVehicle2_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXCharacterKinematic_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXCooking_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PVDRuntime_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/SceneQuery_static_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysX_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXCommon_64.lib")
+#pragma comment(lib, "PhysX/lib/Release/PhysXFoundation_64.lib")
 
 #endif
 

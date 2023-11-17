@@ -1,11 +1,11 @@
 #include "PCH_Engine.h"
 #include "IShader.h"
 
-mh::IShader::IShader(define::eResourceType _ResType)
+ehw::IShader::IShader(define::eResourceType _ResType)
 	: IResource(_ResType)
 {
 }
 
-mh::IShader::~IShader()
+ehw::IShader::~IShader()
 {
 }

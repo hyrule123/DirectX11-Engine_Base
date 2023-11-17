@@ -8,7 +8,7 @@
 #include "CompiledShaderHeader/CS_GPUInitSetting_Release.h"
 #endif
 
-namespace mh
+namespace ehw
 {
 	GPUInitSetting::GPUInitSetting()
 		: ComputeShader(uint3(1u, 1u, 1u))

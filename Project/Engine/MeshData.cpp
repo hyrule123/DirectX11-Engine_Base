@@ -20,7 +20,7 @@
 
 #include <regex>
 
-namespace mh
+namespace ehw
 {
 	MeshData::MeshData()
 		: IResource(define::eResourceType::MeshData)

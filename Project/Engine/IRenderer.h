@@ -3,7 +3,7 @@
 #include "Mesh.h"
 #include "Material.h"
 
-namespace mh
+namespace ehw
 {
 	class Material;
 	enum class eMaterialMode

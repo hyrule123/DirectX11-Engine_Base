@@ -18,7 +18,7 @@
 #include "IScript.h"
 
 
-namespace mh
+namespace ehw
 {
 	class ResourceMgr
 	{

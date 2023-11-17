@@ -73,18 +73,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)External\Lib\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)External\$(ProjectName)\lib\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External\Lib\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)External\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)External\Lib\$(ProjectName)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)External\$(ProjectName)\lib\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External\Lib\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)External\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)External\Lib\$(ProjectName)\$(Configuration)\</OutDir>

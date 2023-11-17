@@ -8,9 +8,9 @@ namespace std
 #include "define_Res.h"
 
 
-namespace mh
+namespace ehw
 {
-	using namespace mh::define;
+	using namespace ehw::define;
 	class PathMgr
 	{
 		friend class Application;

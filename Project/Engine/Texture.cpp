@@ -2,9 +2,9 @@
 #include "Texture.h"
 
 #ifdef _DEBUG
-#pragma comment(lib, "DirectXTex/Debug/DirectXTex.lib") 
+#pragma comment(lib, "DirectXTex/lib/Debug/DirectXTex.lib") 
 #else 
-#pragma comment(lib, "DirectXTex/Release/DirectXTex.lib") 
+#pragma comment(lib, "DirectXTex/lib/Release/DirectXTex.lib") 
 #endif
 
 
@@ -14,7 +14,7 @@
 
 
 
-namespace mh
+namespace ehw
 {
 	
 
@@ -319,10 +319,10 @@ namespace mh
 	{
 		switch (mCurBoundView)
 		{
-		case mh::eBufferViewType::NONE:
+		case ehw::eBufferViewType::NONE:
 			break;
 
-		case mh::eBufferViewType::SRV:
+		case ehw::eBufferViewType::SRV:
 		{
 			MH_ASSERT(0 <= mCurBoundRegister);
 			ID3D11ShaderResourceView* srv = nullptr;
@@ -359,7 +359,7 @@ namespace mh
 			
 			break;
 		}
-		case mh::eBufferViewType::UAV:
+		case ehw::eBufferViewType::UAV:
 		{
 			ID3D11UnorderedAccessView* pUAV = nullptr;
 			uint u = -1;
@@ -373,9 +373,9 @@ namespace mh
 			break;
 		}
 			
-		case mh::eBufferViewType::RTV:
+		case ehw::eBufferViewType::RTV:
 			[[fallthrough]];
-		case mh::eBufferViewType::DSV:
+		case ehw::eBufferViewType::DSV:
 		{
 			ID3D11RenderTargetView* pRTV = nullptr;
 			ID3D11DepthStencilView* pDSV = nullptr;

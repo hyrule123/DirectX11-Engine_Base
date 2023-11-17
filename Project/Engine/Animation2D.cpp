@@ -8,7 +8,7 @@
 #include "json-cpp\json.h"
 
 
-namespace mh
+namespace ehw
 {
 	Animation2D::Animation2D()
 		: mAnimator(nullptr)
