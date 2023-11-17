@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Engine", "1. Engine", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Contents", "3. Contents", "{BCBC18FF-9369-4532-85F9-865FD0981208}"
 	ProjectSection(SolutionItems) = preProject
-		CopyList_Shader_Header.txt = CopyList_Shader_Header.txt
 		Copy_Shader.bat = Copy_Shader.bat
 	EndProjectSection
 EndProject
