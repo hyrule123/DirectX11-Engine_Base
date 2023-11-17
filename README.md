@@ -1,2 +1,3 @@
-# Monster Hunter World Clone Game
-리소스 및 외부 라이브러리는 Releases 항목에 별도로 올려놓았습니다.
+# DirectX11 Engine Base Code
+2D, 3D 포트폴리오의 base 엔진 코드
+이 프로젝트를 Superproject로 활용하고 2D, 3D 포트폴리오는 Submodule이 되어 동작하는 방식
