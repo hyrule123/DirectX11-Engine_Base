@@ -45,9 +45,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodeGenerator", "Project\Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. CodeGenerator", "0. CodeGenerator", "{839B9D89-4922-40DE-9661-6FC1CCDEE487}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "Project\Shader\HLSL.vcxproj", "{48BC2B1B-6C8F-499F-B5E9-4A9776259623}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Shader", "2. Shader", "{FDB9CA26-8DE0-4824-91FF-0C4FA35291F3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "Project\Shader\Shader.vcxproj", "{48BC2B1B-6C8F-499F-B5E9-4A9776259623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
