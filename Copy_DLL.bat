@@ -9,13 +9,14 @@ if "%Configuration%"=="" set Configuration=Debug
 echo Running %0... 
 echo Mode: %Configuration%
 
-set Target_Dir=.\Output\Bin\%Configuration%
+set SRC=.\External\dll\%Configuration%\*.dll
+set DEST=.\Output\Bin\%Configuration%
 
 :: 폴더가 없을 경우 폴더 생성
-if not exist %Target_Dir% ( mkdir %Target_Dir% )
+if not exist %DEST% ( mkdir %DEST% )
 
 :: *.dll 파일 복사
-xcopy /d /s /y /i /r .\External\dll\%Configuration%\*.dll %Target_Dir%
+xcopy /d /s /y /i /r %SRC% %DEST%
 
 
 :: 1번 Argument에 아무것도 들어오지 않았을 경우(== 직접 실행했을 경우) 일시 정지
