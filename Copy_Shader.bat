@@ -5,6 +5,7 @@ set Configuration=%1
 :: 만약 Argument가 들어오지 않았을 경우 기본값 설정
 if "%Configuration%"=="" set Configuration=Debug
 
+
 :: 메시지 표시
 echo Running %0... 
 echo Mode: %Configuration%
