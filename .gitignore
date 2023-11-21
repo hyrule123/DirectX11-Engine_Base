@@ -396,3 +396,7 @@ CompiledShaderHeader/
 *.fbx
 *.blend
 FBX/
+
+
+# .txt Files
+*.txt
