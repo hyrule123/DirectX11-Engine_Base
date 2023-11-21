@@ -2,7 +2,7 @@
 //트리 관리자 클래스
 #include "DirTreeNode.h"
 
-#include <Engine/define_Enum.h>
+#include "../Engine/define_Enum.h"
 #include "json-cpp/json-forwards.h"
 
 struct tAddBaseClassDesc
@@ -39,7 +39,7 @@ public:
 
 private:
 	std::unordered_map<stdfs::path, ePrevFileStatus> ReadPrevFilesList(const stdfs::path& _filePath);
-	bool CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList);
+	bool CheckDiffPrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList);
 	inline void ClearPrevFilesList(const stdfs::path& _filePath);
 
 private:

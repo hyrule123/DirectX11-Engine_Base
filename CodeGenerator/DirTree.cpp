@@ -6,9 +6,9 @@
 #include "CodeWriter.h"
 #include "DirTreeNode.h"
 
-#include <Engine/define_Res.h>
-#include <Engine/GraphicsShader.h>
-#include <Engine/ComputeShader.h>
+#include "../Engine/define_Res.h"
+#include "../Engine/GraphicsShader.h"
+#include "../Engine/ComputeShader.h"
 
 DirTree::DirTree()
 	: m_RootDir()
@@ -53,13 +53,13 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 
 	////////////////////////////////////////////////////////
 	//찾은 파일 리스트 저장 및 새로운 파일 발견여부 확인
-	bool bNewFileFound = CheckNewAndcreatePrevFilesList(_FilePath, prevFiles);
+	bool bModified = CheckDiffPrevFiles(_FilePath, prevFiles);
 	////////////////////////////////////////////////////
 
 
 	//새 파일 발견되었을 경우 저장
 	hr = S_OK;
-	if (bNewFileFound)
+	if (bModified)
 	{
 		hr = Writer.SaveAll<char>(_FilePath);
 		if (FAILED(hr))
@@ -135,7 +135,7 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 	m_RootDir.GetAllFiles(prevFiles, false);
 
 	//새 파일 발견했는지 여부 확인. 없을 경우 return
-	bool bNewFileDetected = CheckNewAndcreatePrevFilesList(_Desc.FilePath, prevFiles);
+	bool bNewFileDetected = CheckDiffPrevFiles(_Desc.FilePath, prevFiles);
 	if (false == bNewFileDetected)
 		return S_OK;
 	
@@ -204,7 +204,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	}
 
 	//갱신된 파일이 없을 경우 return
-	if (false == CheckNewAndcreatePrevFilesList(_FilePath, prevFiles))
+	if (false == CheckDiffPrevFiles(_FilePath, prevFiles))
 	{
 		return S_OK;
 	}
@@ -337,9 +337,9 @@ std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 	return prevFiles;
 }
 
-bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
+bool DirTree::CheckDiffPrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
 {
-	bool bNewFilesFound = false;
+	bool bModified = false;
 	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
 	if (ofs.is_open())
 	{
@@ -347,10 +347,11 @@ bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::
 		{
 			switch (iter->second)
 			{
-				//이전에 있었는데 없었을 경우 지워버린다
+				//이전에 있었는데 없었을 경우 지워버린다.
 			case ePrevFileStatus::NotFound:
 			{
 				iter = _prevFilesList.erase(iter);
+				bModified = true;
 			}
 			break;
 
@@ -364,7 +365,7 @@ bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::
 			case ePrevFileStatus::New:
 			{
 				//새 파일을 발견했는지 확인(하나라도 New == 새 파일 발견)
-				bNewFilesFound = true;
+				bModified = true;
 
 				ofs << iter->first.string() << std::endl;
 				++iter;
@@ -379,7 +380,7 @@ bool DirTree::CheckNewAndcreatePrevFilesList(const stdfs::path& _filePath, std::
 		ofs.close();
 	}
 
-	return bNewFilesFound;
+	return bModified;
 }
 
 

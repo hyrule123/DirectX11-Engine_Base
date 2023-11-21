@@ -110,7 +110,7 @@ R"(#ifndef STRKEY
 }
 
 
-#include <Engine/define_GPU.h>
+#include "../Engine/define_GPU.h"
 namespace define_ShaderGen
 {
 	struct tShaderSetting

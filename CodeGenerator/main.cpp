@@ -3,8 +3,8 @@
 #include "PCH_CodeGenerator.h"
 #include "DirTree.h"
 
-#include <Engine/define_Res.h>
-#include <Engine/define_GPU.h>
+#include "../Engine/define_Res.h"
+#include "../Engine/define_GPU.h"
 
 #include <iostream>
 
@@ -192,7 +192,7 @@ void CreateScriptKey()
     Desc.IncludePCH = R"(#include "PCH_Contents.h")";
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
-    Desc.IncludeManagerHeader = "#include <Engine/ComMgr.h>";
+    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::Script::##T))";
@@ -221,7 +221,7 @@ void CreateSceneKey()
     Desc.IncludePCH = R"(#include "PCH_Contents.h")";
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
-    Desc.IncludeManagerHeader = "#include <Engine/SceneMgr.h>";
+    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::Scene::##T))";
