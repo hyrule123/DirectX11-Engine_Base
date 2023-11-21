@@ -28,7 +28,7 @@ namespace define_Preset
 	namespace Path
 	{
 		PRESET(ContentsProj, "./Project/Contents");
-		PRESET(EngineProj, "./Project/Engine");
+		PRESET(EngineProj, "./Project/EngineBase/Engine");
 		PRESET(HLSL_Proj, "./Project/HLSL");
 
 
