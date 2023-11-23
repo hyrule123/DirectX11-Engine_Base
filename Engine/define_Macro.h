@@ -4,7 +4,7 @@
 //매크로에서 호출하는 함수. 직접 호출하지 말것
 inline void AssertW(const wchar_t* _expression, const wchar_t* _message, const wchar_t* _fileName, unsigned int _line)
 {
-	std::wstring assertMsg = std::wstring(_expression) + std::wstring(L"\n") + std::wstring(_message);
+	std::wstring assertMsg = std::wstring(_expression) + std::wstring(L"\n\nMessage: ") + std::wstring(_message);
 	_wassert(assertMsg.c_str(), _fileName, _line);
 }
 
