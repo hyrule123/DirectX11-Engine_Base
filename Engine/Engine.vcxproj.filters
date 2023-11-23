@@ -121,9 +121,6 @@
     <Filter Include="Component\Script">
       <UniqueIdentifier>{5d1a9b1c-e367-41ff-827a-0670e743acf2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Script\Contents">
-      <UniqueIdentifier>{0c9e0d2f-bd3f-44cc-a073-834f8bdf9d93}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Renderer">
       <UniqueIdentifier>{6cbbc9fb-29a5-4e89-a66a-edbeee8d0a1a}</UniqueIdentifier>
     </Filter>
@@ -230,12 +227,6 @@
     </ClCompile>
     <ClCompile Include="ICollider.cpp">
       <Filter>Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Component\Script\Contents</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>Component\Script\Contents</Filter>
     </ClCompile>
     <ClCompile Include="Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
@@ -480,7 +471,6 @@
     <ClCompile Include="ILight.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="GridScript.cpp" />
     <ClCompile Include="GPUInitSetting.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
@@ -519,6 +509,9 @@
     </ClCompile>
     <ClCompile Include="IAnimation.cpp">
       <Filter>Resource\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GridScript.cpp">
+      <Filter>Component\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -575,12 +568,6 @@
     </ClInclude>
     <ClInclude Include="ICollider.h">
       <Filter>Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Component\Script\Contents</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>Component\Script\Contents</Filter>
     </ClInclude>
     <ClInclude Include="Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
@@ -873,7 +860,6 @@
     <ClInclude Include="ILight.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="GridScript.h" />
     <ClInclude Include="GPUInitSetting.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
@@ -915,6 +901,9 @@
     </ClInclude>
     <ClInclude Include="IAnimation.h">
       <Filter>Resource\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="GridScript.h">
+      <Filter>Component\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

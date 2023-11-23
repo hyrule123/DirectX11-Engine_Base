@@ -357,12 +357,10 @@ call Copy_Shader.bat $(Configuration)</Command>
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="IRenderer.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="NormalConvertShader.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="IResource.h" />
     <ClInclude Include="ResourceMgr.h" />
@@ -532,11 +530,9 @@ call Copy_Shader.bat $(Configuration)</Command>
     <ClCompile Include="IShader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="IRenderer.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="NormalConvertShader.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="IResource.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
