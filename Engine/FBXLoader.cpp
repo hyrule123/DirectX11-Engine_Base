@@ -71,7 +71,7 @@ namespace ehw
 		mManager = fbxsdk::FbxManager::Create();
 		if (nullptr == mManager)
 		{
-			assert(nullptr);
+			ASSERT(mManager, "fbx Manager가 nullptr 입니다.");
 			Reset();
 			return eResult::Fail_Nullptr;
 		}
@@ -81,7 +81,7 @@ namespace ehw
 		mScene = fbxsdk::FbxScene::Create(mManager, "");
 		if (nullptr == mScene)
 		{
-			assert(nullptr);
+			ASSERT(mManager, "fbx Scene이 nullptr 입니다.");
 			Reset();
 			return eResult::Fail_Nullptr;
 		}
@@ -260,7 +260,7 @@ namespace ehw
 			//이 폴리곤을 구성하는 정점의 수를 얻어온다.
 			//삼각화를 진행한 상태이므로 무조건 3개가 들어와야 한다.
 			int polygonSize = _pFBXMesh->GetPolygonSize(i);
-			MH_ASSERT(3 == polygonSize);
+			ASSERT(3 == polygonSize, "삼각화를 진행했는데 1개 폴리곤의 정점이 3개가 아닙니다.");
 
 			//폴리곤 1개가 실제 몇번째 정점을 가르키는지를 저장
 			int vertexIndexOfPolygon[3] = {};
@@ -268,7 +268,7 @@ namespace ehw
 			{
 				//현재 삼각형을 구성하고 있는 버텍스정보 내에서의 인덱스를 구한다.(->해당 정점이 실제 몇번째 인덱스인지)
 				int vertexIdx = _pFBXMesh->GetPolygonVertex(i, j);
-				MH_ASSERT(0 <= vertexIdx);
+				ASSERT(0 <= vertexIdx, "해당 버텍스의 인덱스 번호가 음수입니다.");
 				vertexIndexOfPolygon[j] = vertexIdx;
 
 				GetTangent(_pFBXMesh, container, vertexIdx, vertexOrder);

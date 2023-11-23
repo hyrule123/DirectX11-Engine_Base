@@ -47,7 +47,7 @@ namespace ehw
 		virtual void Update() override; 
 		virtual void FixedUpdate() override;
 
-		virtual bool IsPlaying() const override { MH_ASSERT(false); return false; }
+		virtual bool IsPlaying() const override { ASSERT(false, "미구현"); return false; }
 
 		bool Create(const std::string_view _name
 			, std::shared_ptr<Texture> _atlas

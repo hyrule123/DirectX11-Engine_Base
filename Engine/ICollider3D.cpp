@@ -11,13 +11,13 @@ namespace ehw
 	ICollider3D::ICollider3D()
 		: ICollider(define::eColliderType::None)
 	{
-		MH_ASSERT(TRUE);
+		ASSERT(FALSE, "미구현");
 	}
 	
 	ICollider3D::ICollider3D(const ICollider3D& _collider)
 		: ICollider(_collider.mType)
 	{
-		MH_ASSERT(TRUE);
+		ASSERT(FALSE, "미구현");
 	}
 
 	ICollider3D::~ICollider3D()
@@ -26,7 +26,7 @@ namespace ehw
 
 	eResult ICollider3D::SaveJson(Json::Value* _pJVal)
 	{
-		MH_ASSERT(TRUE);
+		ASSERT(FALSE, "미구현");
 
 		//if (nullptr == _pJVal)
 		//{
@@ -48,7 +48,7 @@ namespace ehw
 
 	eResult ICollider3D::LoadJson(const Json::Value* _pJVal)
 	{
-		MH_ASSERT(TRUE);
+		ASSERT(FALSE, "미구현");
 
 		//if (nullptr == _pJVal)
 		//{

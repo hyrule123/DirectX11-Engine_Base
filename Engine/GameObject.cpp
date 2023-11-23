@@ -331,19 +331,15 @@ namespace ehw
 		if (nullptr == _pCom)
 			return nullptr;
 
+		//에러 발생시 leak 발생하지 않도록
+		std::unique_ptr<IComponent> uniqPtr(_pCom);
+
 		eComponentType ComType = _pCom->GetComType();
 
-		if (_pCom->GetKey().empty())
-		{
-			ERROR_MESSAGE_W(
-				LR"(
+		ASSERT(false == _pCom->GetKey().empty(), R"(
 컴포넌트에 String Key가 없습니다.
 AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 )");
-			MH_ASSERT(false == _pCom->GetKey().empty());
-			SAFE_DELETE(_pCom);
-			return nullptr;
-		}
 
 		if (eComponentType::Scripts == ComType)
 		{
@@ -351,13 +347,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		}
 		else
 		{
-			if (nullptr != mComponents[(int)ComType])
-			{
-				SAFE_DELETE(_pCom);
-				ERROR_MESSAGE_W(L"이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
-				MH_ASSERT(nullptr);
-				return nullptr;
-			}
+			ASSERT(nullptr == mComponents[(int)ComType], "이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
 
 			mComponents[(int)ComType] = _pCom;
 		}
@@ -365,12 +355,13 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		
 		_pCom->SetOwner(this);
 
-		//초기화되기 이전일 경우에만 RequireComponent를 실행
+		//초기화되기 이전일 경우에만 OnCreate를 실행
 		if (false == mbInitalized)
 		{
-			_pCom->RequireComponent();
+			_pCom->OnCreate();
 		}
-		return _pCom;
+
+		return uniqPtr.release();
 	}
 
 

@@ -11,7 +11,7 @@ void StrConverter::ConvertUTF8ToUnicode(__in const std::string_view _src, __out 
 
 	_dest.resize(len);
 	::MultiByteToWideChar(CP_UTF8, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size());
-}
+}	
 
 void StrConverter::ConvertUnicodeToUTF8(__in const std::wstring_view _src, __out std::string& _dest)
 {
@@ -30,6 +30,7 @@ std::wstring StrConverter::ConvertUTF8ToUnicode(const std::string_view _src)
 
 	int srcsize = (int)_src.size();
 	int len = ::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, nullptr, 0);
+
 
 	result.resize(len);
 	::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, result.data(), (int)result.size());

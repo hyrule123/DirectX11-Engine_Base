@@ -324,7 +324,7 @@ namespace ehw
 
 		case ehw::eBufferViewType::SRV:
 		{
-			MH_ASSERT(0 <= mCurBoundRegister);
+			ASSERT(0 <= mCurBoundRegister, "Bound된 레지스터 번호가 음수입니다.");
 			ID3D11ShaderResourceView* srv = nullptr;
 
 			auto pContext = GPUMgr::Context();

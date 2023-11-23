@@ -52,13 +52,15 @@ namespace ehw
 
 	inline void IScene::AddGameObject(const define::eLayerType _type, GameObject* _gameObj)
 	{
-		MH_ASSERT(eLayerType::None != _type && _gameObj);
+		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
+		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
 		GetLayer(_type).AddGameObject(_gameObj);
 	}
 
 	inline void IScene::AddGameObjectHierarchy(const define::eLayerType _type, GameObject* _gameObj)
 	{
-		MH_ASSERT(eLayerType::None != _type && _gameObj);
+		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
+		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
 
 		std::vector<GameObject*> gameObjs{};
 		_gameObj->GetGameObjectHierarchy(gameObjs);
@@ -70,7 +72,7 @@ namespace ehw
 
 	inline void IScene::ChangeGameObjectLayer(const define::eLayerType _targetLayer, GameObject* _gameObj)
 	{
-		MH_ASSERT(eLayerType::None != _targetLayer && _gameObj);
+		ASSERT(eLayerType::None != _targetLayer && _gameObj, "게임오브젝트가 없거나 목표 레이어가 설정되어 있지 않습니다.");
 
 		eLayerType prevLayer = _gameObj->GetLayerType();
 		if (define::eLayerType::None != prevLayer)
@@ -84,7 +86,8 @@ namespace ehw
 
 	inline void IScene::MoveGameObjectLayerHierarchy(const define::eLayerType _targetLayer, GameObject* _gameObj)
 	{
-		MH_ASSERT(eLayerType::None != _targetLayer && _gameObj);
+		ASSERT(eLayerType::None != _targetLayer, "목표 레이어를 지정하지 않았습니다.");
+		ASSERT(_gameObj, "게임오브젝트가 nullptr 입니다.");
 
 		std::vector<GameObject*> gameObjs{};
 		_gameObj->GetGameObjectHierarchy(gameObjs);

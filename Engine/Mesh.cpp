@@ -242,7 +242,7 @@ namespace ehw
 		for (size_t i = 0; i < mVertexSysMem.size(); i += mVertexByteStride)
 		{
 			//최대 size를 넘어가면 에러 발생시킴
-			MH_ASSERT(mVertexSysMem.size() > i + sizeof(VertexBase));
+			ASSERT(mVertexSysMem.size() > i + sizeof(VertexBase), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
 
 			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(mVertexSysMem[i]));
 
@@ -330,7 +330,7 @@ namespace ehw
 
 	eResult Mesh::CreateFromContainer(const tFBXContainer* _fbxContainer)
 	{
-		MH_ASSERT(_fbxContainer);
+		ASSERT(_fbxContainer, "fbx 컨테이너가 nullptr 입니다.");
 		if (nullptr == _fbxContainer)
 			return eResult::Fail_Nullptr;
 

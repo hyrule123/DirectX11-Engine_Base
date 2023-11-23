@@ -55,12 +55,7 @@ namespace ehw
 
 	void Com_Camera::FixedUpdate()
 	{
-		if (eProjectionType::None == mProjType)
-		{
-			ERROR_MESSAGE_W(L"카메라의 투영행렬 타입을 설정하지 않았습니다.");
-			MH_ASSERT(false);
-			return;
-		}
+		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
 		CreateViewMatrix();
 
@@ -196,7 +191,7 @@ namespace ehw
 				mCullingAgent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:
-				MH_ASSERT(nullptr);
+				ASSERT(nullptr, "Projection 타입이 설정되지 않았습니다.");
 				break;
 			}
 		}
@@ -236,7 +231,7 @@ namespace ehw
 			break;
 
 		default:
-			MH_ASSERT(false);
+			ASSERT(false, "Projection Type이 설정되지 않았습니다.");
 			break;
 		}
 

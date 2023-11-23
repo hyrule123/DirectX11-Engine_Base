@@ -159,7 +159,7 @@ namespace ehw
 	inline GameObject* GameObject::AddChild(GameObject* _pChild)
 	{
 		//nullptr이나 자기 자신을 인자로 호출했을 경우 오류 발생			
-		MH_ASSERT(_pChild && this != _pChild);
+		ASSERT(_pChild && this != _pChild, "child 포인터가 nullptr 이거나 자기 자신을 child로 추가했습니다.");
 
 		//부모 오브젝트가 있을 경우 기존의 부모 오브젝트에서 자신을 제거한 후 여기에 추가해야함
 		GameObject* parent = _pChild->GetParent();

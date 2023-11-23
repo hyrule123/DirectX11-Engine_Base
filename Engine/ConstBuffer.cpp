@@ -47,7 +47,8 @@ namespace ehw
 
 	void ConstBuffer::SetData(void* _data, uint _dataCount)
 	{
-		MH_ASSERT(nullptr != _data && _dataCount <= mDataCount);
+		ASSERT(nullptr != _data, "data가 nullptr 입니다.");
+		ASSERT(_dataCount <= mDataCount, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
 	
 
 		auto pContext = GPUMgr::Context();

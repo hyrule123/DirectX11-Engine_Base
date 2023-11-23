@@ -39,7 +39,8 @@ public:
 
 private:
 	std::unordered_map<stdfs::path, ePrevFileStatus> ReadPrevFilesList(const stdfs::path& _filePath);
-	bool CheckDiffPrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList);
+	//PrevFiles 목록과 비교해서 변경사항을 확인
+	bool CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList);
 	inline void ClearPrevFilesList(const stdfs::path& _filePath);
 
 private:

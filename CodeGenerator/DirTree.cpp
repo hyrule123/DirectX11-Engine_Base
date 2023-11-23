@@ -53,7 +53,7 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 
 	////////////////////////////////////////////////////////
 	//찾은 파일 리스트 저장 및 새로운 파일 발견여부 확인
-	bool bModified = CheckDiffPrevFiles(_FilePath, prevFiles);
+	bool bModified = CheckDiffAndWritePrevFiles(_FilePath, prevFiles);
 	////////////////////////////////////////////////////
 
 
@@ -135,7 +135,7 @@ HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
 	m_RootDir.GetAllFiles(prevFiles, false);
 
 	//새 파일 발견했는지 여부 확인. 없을 경우 return
-	bool bNewFileDetected = CheckDiffPrevFiles(_Desc.FilePath, prevFiles);
+	bool bNewFileDetected = CheckDiffAndWritePrevFiles(_Desc.FilePath, prevFiles);
 	if (false == bNewFileDetected)
 		return S_OK;
 	
@@ -204,7 +204,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	}
 
 	//갱신된 파일이 없을 경우 return
-	if (false == CheckDiffPrevFiles(_FilePath, prevFiles))
+	if (false == CheckDiffAndWritePrevFiles(_FilePath, prevFiles))
 	{
 		return S_OK;
 	}
@@ -326,7 +326,7 @@ std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 	{
 		std::string fileName;
 		while (std::getline(ifs, fileName))
-		{
+		{	
 			prevFiles.insert(std::make_pair(stdfs::path(fileName), ePrevFileStatus::NotFound));
 		}
 
@@ -337,17 +337,26 @@ std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 	return prevFiles;
 }
 
-bool DirTree::CheckDiffPrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
+bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
 {
 	bool bModified = false;
+
 	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
-	if (ofs.is_open())
+
+	//이전 파일 리스트가 비어있을 경우에는 무조건 새로 작성한다.
+	//이전 파일 리스트가 없고, 새로 발견된 파일이 없으면 갱신을 안하는 경우가 있음.
+	//그런데 이 때 코드 파일에는 지웠던 파일들이 있는 경우가 있음 -> 에러 발생
+	if (_prevFilesList.empty())
+	{
+		bModified = true;
+	}
+	else if (ofs.is_open())
 	{
 		for (auto iter = _prevFilesList.begin(); iter != _prevFilesList.end();)
 		{
 			switch (iter->second)
 			{
-				//이전에 있었는데 없었을 경우 지워버린다.
+			//이전에 있었는데 현재 없을 경우 -> 변경된 것임
 			case ePrevFileStatus::NotFound:
 			{
 				iter = _prevFilesList.erase(iter);

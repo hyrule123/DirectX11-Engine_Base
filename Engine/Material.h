@@ -97,7 +97,7 @@ namespace ehw
 			mCB.bTex_7 = bTex;
 			break;
 		default:
-			MH_ASSERT(false);
+			ASSERT(false, "미구현");
 			break;
 		}
 	}

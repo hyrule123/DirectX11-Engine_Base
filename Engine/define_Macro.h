@@ -1,4 +1,23 @@
 #pragma once
+#include <string>
+
+//매크로에서 호출하는 함수. 직접 호출하지 말것
+inline void AssertW(const wchar_t* _expression, const wchar_t* _message, const wchar_t* _fileName, unsigned int _line)
+{
+	std::wstring assertMsg = std::wstring(_expression) + std::wstring(L"\n") + std::wstring(_message);
+	_wassert(assertMsg.c_str(), _fileName, _line);
+}
+
+#define ASSERT(_expression, _message) (void) (					\
+	(!!(_expression)) || \
+	(AssertW(_CRT_WIDE(#_expression), _CRT_WIDE(_message), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)), 0) \
+)
+
+#ifdef _DEBUG
+#define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)
+#else
+#define ASSERT_DEBUG(_expression, _message)
+#endif _DEBUG
 
 #define STRKEY constexpr const char*
 #define STRKEY_DECLARE(_AStr) STRKEY _AStr = #_AStr
@@ -13,8 +32,6 @@
 #define ERROR_MESSAGE_W(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, NULL, MB_OK); DEBUG_BREAK
 
 #define NOTIFICATION_W(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, L"알림", MB_OK)
-
-#define MH_ASSERT(expression) assert(expression)
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
 

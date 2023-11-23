@@ -337,7 +337,7 @@ namespace ehw
 	void StructBuffer::BindDataUAV(int _UAVSlot)
 	{
 		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
-		MH_ASSERT(eStructBufferType::READ_WRITE == mSBufferDesc.eSBufferType);
+		ASSERT(eStructBufferType::READ_WRITE == mSBufferDesc.eSBufferType, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
 
 		UnBindData();
 

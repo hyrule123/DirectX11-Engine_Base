@@ -18,12 +18,7 @@ namespace ehw
 	}
 	bool MultiRenderTarget::Create(std::shared_ptr<Texture> _texture[MRT_MAX], std::shared_ptr<Texture> _dsTexture)
 	{
-		if (nullptr == _texture[0])
-		{
-			ERROR_MESSAGE_W(L"렌더타겟이 하나도 없습니다.");
-			MH_ASSERT(false);
-			return false;
-		}
+		ASSERT(nullptr != _texture[0], "렌더타겟이 하나도 없습니다.");
 
 		//렌더타겟의 갯수를 카운트
 		for (int i = 0; i < MRT_MAX; ++i)

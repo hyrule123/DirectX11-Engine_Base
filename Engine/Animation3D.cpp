@@ -24,7 +24,7 @@ namespace ehw
 
     void Animation3D::BindData()
     {
-        MH_ASSERT(m_SBufferKeyFrame);
+        ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
         m_SBufferKeyFrame->BindDataSRV();
     }
     void Animation3D::UnBindData()
@@ -218,7 +218,8 @@ namespace ehw
         }
         mValues.iEndFrame = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
         mValues.iFrameLength = (int)(mValues.iEndFrame - mValues.iStartFrame + 1);//+1 -> 0프레임부터 시작이므로
-        MH_ASSERT(mValues.iFrameLength >= 0);
+
+        ASSERT(mValues.iFrameLength >= 0, "3D 애니메이션의 프레임이 음수입니다.");
 
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
@@ -309,7 +310,7 @@ namespace ehw
 
     bool Animation3D::CreateKeyFrameSBuffer(const std::vector<tAnimKeyframeTranslation>& _vecAnimFrameTranslations)
     {
-        MH_ASSERT(false == _vecAnimFrameTranslations.empty());
+        ASSERT(false == _vecAnimFrameTranslations.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
 
         StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;

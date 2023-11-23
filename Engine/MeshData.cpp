@@ -241,7 +241,7 @@ namespace ehw
 		if (false == Instantiate(uniqObj.get()))
 		{
 			uniqObj.reset();
-			MH_ASSERT(uniqObj);
+			ASSERT(uniqObj, "MeshData Instantiate 실패.");
 		}
 		
 		//스폰 실패했을 경우 제거
@@ -249,7 +249,7 @@ namespace ehw
 		if (nullptr == obj)
 		{
 			uniqObj.reset();
-			MH_ASSERT(uniqObj);
+			ASSERT(uniqObj, "MeshData Instantiate 실패.");
 		}
 
 		//다 됐을 경우 unique_ptr 관리 해제 후 반환
@@ -322,7 +322,7 @@ namespace ehw
 					renderer = child->AddComponent<Com_Renderer_Mesh>();
 				}
 
-				MH_ASSERT(renderer);
+				ASSERT(renderer, "renderer가 생성되지 않았습니다.");
 				SetRenderer(renderer, (UINT)i);
 			}
 		}

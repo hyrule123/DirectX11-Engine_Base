@@ -100,7 +100,7 @@ namespace  ehw
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			virtual void FixedUpdate() { MH_ASSERT(false); }
+			virtual void FixedUpdate() { ASSERT(false, "미구현"); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -109,7 +109,7 @@ namespace  ehw
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
 
-			virtual void FixedUpdate() { MH_ASSERT(false); }
+			virtual void FixedUpdate() { ASSERT(false, "미구현"); }
 		};
 	};
 

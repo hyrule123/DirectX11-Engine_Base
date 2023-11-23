@@ -57,7 +57,8 @@ namespace ehw
 		//오브젝트가 nullptr일 경우
 		//레이어가 설정되지 않았을 경우
 		//ASSERT
-		MH_ASSERT(eLayerType::None != layerType && Obj);
+		ASSERT(eLayerType::None != layerType, "레이어 타입을 지정하지 않았습니다.");
+		ASSERT(Obj, "GameObject가 nullptr 입니다.");
 
 		SceneMgr::GetActiveScene()->AddGameObjectHierarchy(layerType, Obj);
 		mbLevelModified = true;
@@ -176,15 +177,13 @@ namespace ehw
 
 	GameObject* EventMgr::SpawnGameObject(define::eLayerType _layer, GameObject* _gameObj)
 	{
-		MH_ASSERT(
-			define::eLayerType::None != _layer ||
-			nullptr != _gameObj ||
-			define::eLayerType::None == _gameObj->GetLayerType()
-		);
+		ASSERT_DEBUG(define::eLayerType::None != _layer, "레이어를 지정하지 않았습니다.");
+		ASSERT_DEBUG(nullptr != _gameObj, "게임오브젝트가 nullptr 입니다.");
 
 		//Scene 시작 안됐을 경우 바로 넣어준다
 		IScene* scene = SceneMgr::GetActiveScene();
-		MH_ASSERT(scene);
+		ASSERT(scene, "scene이 없습니다.");
+
 		if (false == scene->IsInitialized())
 		{
 			scene->AddGameObject(_layer, _gameObj);
@@ -206,7 +205,7 @@ namespace ehw
 
 	void EventMgr::ChangeGameObjectLayer(define::eLayerType _layer, GameObject* _gameObj)
 	{
-		MH_ASSERT(define::eLayerType::None != _layer && _gameObj);
+		ASSERT(define::eLayerType::None != _layer && _gameObj, "목표 레이어가 없거나 게임오브젝트가 설정되어 있지 않습니다.");
 		tEvent evn{};
 		//lParam = GameObject Pointer
 		//wParam = Target Layer

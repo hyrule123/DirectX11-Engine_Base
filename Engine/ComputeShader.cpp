@@ -21,7 +21,7 @@ namespace ehw
 		, mCB_ComputeShader{ _threadsPerGroup,  }
 	{
 		//스레드가 하나라도 0이 들어있으면 안됨
-		MH_ASSERT(_threadsPerGroup.x && _threadsPerGroup.y && _threadsPerGroup.z);
+		ASSERT(_threadsPerGroup.x && _threadsPerGroup.y && _threadsPerGroup.z, "컴퓨트쉐이더 Thread Axis 중 하나에 0이 들어가 있습니다.");
 	}
 
 	ComputeShader::~ComputeShader()
@@ -78,7 +78,7 @@ namespace ehw
 		unsigned char* pCode = reinterpret_cast<unsigned char*>(mCSBlob->GetBufferPointer());
 		//할당된 메모리 사이즈는 무조건 같아야 함
 		size_t DestSize = mCSBlob->GetBufferSize();
-		MH_ASSERT(_ByteCodeSize == DestSize);
+		ASSERT(_ByteCodeSize == DestSize, "할당된 메모리와 쉐이더 byte code의 사이즈가 다릅니다.");
 
 		//데이터 복사
 		memcpy_s(pCode, DestSize, _pByteCode, _ByteCodeSize);

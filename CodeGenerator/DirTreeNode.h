@@ -30,6 +30,7 @@ private:
 public:
 	HRESULT SearchRecursive(stdfs::path const& _rootPath, stdfs::path const& _path, std::regex const& _regex);
 
+	//파일을 전부 가져오고, 이 파일이 이전에도 있었던 파일인지 여부를 확인한다.
 	HRESULT GetAllFiles(__out std::unordered_map<stdfs::path, ePrevFileStatus>& _filesList, bool _bAddRelativeDir);
 
 

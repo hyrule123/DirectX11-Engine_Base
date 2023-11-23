@@ -307,7 +307,7 @@ namespace ehw
 		unsigned char* pCode = reinterpret_cast<unsigned char*>(code.blob->GetBufferPointer());
 		//할당된 메모리 사이즈는 무조건 같아야 함
 		size_t DestSize = code.blob->GetBufferSize();
-		assert(_ByteCodeSize == DestSize);
+		ASSERT(_ByteCodeSize == DestSize, "Shader 데이터 사이즈와 할당된 blob의 데이터 사이즈가 다릅니다.");
 
 		//데이터 복사
 		memcpy_s(pCode, DestSize, _pByteCode, _ByteCodeSize);
@@ -424,7 +424,8 @@ namespace ehw
 
 	eResult GraphicsShader::CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize)
 	{
-		MH_ASSERT(_pByteCode && _ByteCodeSize);
+		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
+		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");
 
 		auto pDevice = GPUMgr::Device();
 		switch (_stage)

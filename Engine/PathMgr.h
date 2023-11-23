@@ -51,7 +51,7 @@ namespace ehw
 
 	inline std::filesystem::path PathMgr::CreateFullPathToContent(const std::filesystem::path& _filePath, define::eResourceType _resType)
 	{
-		MH_ASSERT(define::eResourceType::UNKNOWN != _resType);
+		ASSERT(define::eResourceType::UNKNOWN != _resType, "리소스 타입을 알 수 없습니다.");
 
 		std::filesystem::path fullPath = GetContentPathRelative(_resType);
 		fullPath /= _filePath;

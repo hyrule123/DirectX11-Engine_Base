@@ -12,7 +12,7 @@ namespace ehw
 
 	void IAnimator::AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func)
 	{
-		MH_ASSERT(nullptr != _anim || 0 < _frameIdx || _func);
+		ASSERT(nullptr != _anim || 0 < _frameIdx || _func, "애니메이션이 없거나 ");
 
 		using keyType = decltype(mMapEvent)::key_type;
 		
