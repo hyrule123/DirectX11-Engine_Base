@@ -1027,6 +1027,6 @@ namespace ehw::math
 #include "SimpleMath.inl"
 }
 
-#include "DefaultShader/SH_Common.hlsli"
+#include "DefaultShader/Common.hlsli"
 
 

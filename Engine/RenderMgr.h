@@ -2,7 +2,7 @@
 #include "define_GPU.h"
 #include "SimpleMath.h"
 
-#include "DefaultShader/SH_Func_Light.hlsli"
+#include "DefaultShader/Func_Light.hlsli"
 
 namespace ehw
 {

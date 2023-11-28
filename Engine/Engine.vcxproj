@@ -73,32 +73,32 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)External\$(ProjectName)\lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)External\$(ProjectName)\lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)External\Lib\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External\Lib\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)External\Lib\$(ProjectName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Output\Obj\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <MultiProcFXC>true</MultiProcFXC>
-    <LibraryPath>$(SolutionDir)External\Lib\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,8 +121,8 @@
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Configuration)
-call Copy_HLSL.bat $(Configuration)</Command>
+call Copy_DLL.bat $(Platform) $(Configuration)
+call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -132,6 +132,10 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -158,8 +162,8 @@ call Copy_HLSL.bat $(Configuration)</Command>
     </Link>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Configuration)
-call Copy_HLSL.bat $(Configuration)</Command>
+call Copy_DLL.bat $(Platform) $(Configuration)
+call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -169,6 +173,10 @@ call Copy_HLSL.bat $(Configuration)</Command>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -191,12 +199,11 @@ call Copy_HLSL.bat $(Configuration)</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Configuration)
-call Copy_Shader.bat $(Configuration)</Command>
+call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -232,12 +239,11 @@ call Copy_Shader.bat $(Configuration)</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Configuration)
-call Copy_Shader.bat $(Configuration)</Command>
+call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -552,25 +558,25 @@ call Copy_Shader.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-    <None Include="DefaultShader\SH_3D.hlsli" />
-    <None Include="DefaultShader\SH_Animation2D.hlsli" />
-    <None Include="DefaultShader\SH_Functions.hlsli" />
-    <None Include="DefaultShader\SH_Func_Animation3D.hlsli" />
-    <None Include="DefaultShader\SH_Func_Blur.hlsli" />
-    <None Include="DefaultShader\SH_Common.hlsli" />
-    <None Include="DefaultShader\SH_CommonStruct.hlsli" />
-    <None Include="DefaultShader\SH_ConstBuffer.hlsli" />
-    <None Include="DefaultShader\SH_Func_DecodeColor.hlsli" />
-    <None Include="DefaultShader\SH_Globals.hlsli" />
-    <None Include="DefaultShader\SH_Grid.hlsli" />
-    <None Include="DefaultShader\SH_Func_Light.hlsli" />
-    <None Include="DefaultShader\SH_Light.hlsli" />
-    <None Include="DefaultShader\SH_NormalConvertMH.hlsli" />
-    <None Include="DefaultShader\SH_Particle.hlsli" />
-    <None Include="DefaultShader\SH_PostProcess.hlsli" />
-    <None Include="DefaultShader\SH_Resource.hlsli" />
-    <None Include="DefaultShader\SH_Sampler.hlsli" />
-    <None Include="DefaultShader\SH_UserInterFace.hlsli" />
+    <None Include="DefaultShader\_3D.hlsli" />
+    <None Include="DefaultShader\Animation2D.hlsli" />
+    <None Include="DefaultShader\Functions.hlsli" />
+    <None Include="DefaultShader\Func_Animation3D.hlsli" />
+    <None Include="DefaultShader\Func_Blur.hlsli" />
+    <None Include="DefaultShader\Common.hlsli" />
+    <None Include="DefaultShader\CommonStruct.hlsli" />
+    <None Include="DefaultShader\ConstBuffer.hlsli" />
+    <None Include="DefaultShader\Func_DecodeColor.hlsli" />
+    <None Include="DefaultShader\Globals.hlsli" />
+    <None Include="DefaultShader\Grid.hlsli" />
+    <None Include="DefaultShader\Func_Light.hlsli" />
+    <None Include="DefaultShader\Light.hlsli" />
+    <None Include="DefaultShader\NormalConverter.hlsli" />
+    <None Include="DefaultShader\Particle.hlsli" />
+    <None Include="DefaultShader\PostProcess.hlsli" />
+    <None Include="DefaultShader\Resource.hlsli" />
+    <None Include="DefaultShader\Sampler.hlsli" />
+    <None Include="DefaultShader\UserInterface.hlsli" />
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <ItemGroup>
@@ -606,13 +612,13 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\VS_Basic3D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\VS_Debug.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -624,19 +630,19 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\VS_Grid.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\VS_LightDir.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\VS_LightPoint.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -648,25 +654,25 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\VS_Particle.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\VS_PostProcess.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\VS_Sprite.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\VS_Triangle.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -678,19 +684,19 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_3GS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\GS_Particle.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\PS_Basic3D.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\PS_Debug.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -702,19 +708,19 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\PS_Grid.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\PS_LightDir.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\PS_LightPoint.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -726,25 +732,25 @@ call Copy_Shader.bat $(Configuration)</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\PS_Particle.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\PS_PostProcess.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\PS_Sprite.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\PS_Triangle.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

@@ -1,4 +1,4 @@
-#include "SH_3D.hlsli"
+#include "_3D.hlsli"
 
 float4 main(VSOut_Merge In) : SV_Target
 {

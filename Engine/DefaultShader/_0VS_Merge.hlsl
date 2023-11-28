@@ -1,4 +1,4 @@
-#include "SH_3D.hlsli"
+#include "_3D.hlsli"
 
 VSOut_Merge main(VSIn_Merge In)
 {

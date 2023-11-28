@@ -1,4 +1,4 @@
-#include "SH_NormalConvertMH.hlsli"
+#include "NormalConverter.hlsli"
 
 float ConvertColor(uint2 _texPos, float _signFactor, float _indexFactor)
 {

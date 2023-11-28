@@ -20,8 +20,8 @@ namespace Microsoft::WRL
 #include "define_Enum.h"
 #include "define_Macro.h"
 
-#include "DefaultShader/SH_ConstBuffer.hlsli"
-#include "DefaultShader/SH_Resource.hlsli"
+#include "DefaultShader/ConstBuffer.hlsli"
+#include "DefaultShader/Resource.hlsli"
 
 
 namespace ehw::define
@@ -49,11 +49,11 @@ namespace ehw::define
 	{
 		STRKEY ArrGSPrefix[(int)eGSStage::END] =
 		{
-			"_0VS_",
-			"_1HS_",
-			"_2DS_",
-			"_3GS_",
-			"_4PS_",
+			"VS_",
+			"HS_",
+			"DS_",
+			"GS_",
+			"PS_",
 		};
 		STRKEY CSPrefix = "CS_";
 

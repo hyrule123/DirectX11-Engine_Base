@@ -49,7 +49,7 @@ namespace ehw::define
 		};
 		inline STRKEY GetResName(eResourceType _type) { return ArrResName[(int)_type]; }
 
-		STRKEY DirName_CompiledShader = "ShaderBin";
+		STRKEY DirName_CompiledShader = "Shader";
 		STRKEY Ext_CompiledShader = ".cso";
 		STRKEY Ext_Mesh = ".mesh";
 		STRKEY Ext_MeshData = ".json";

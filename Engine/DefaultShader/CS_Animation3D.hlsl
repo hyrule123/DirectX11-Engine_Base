@@ -1,6 +1,6 @@
-#include "SH_Func_Animation3D.hlsli"
-#include "SH_ConstBuffer.hlsli"
-#include "SH_Resource.hlsli"
+#include "Func_Animation3D.hlsli"
+#include "ConstBuffer.hlsli"
+#include "Resource.hlsli"
 
 
 

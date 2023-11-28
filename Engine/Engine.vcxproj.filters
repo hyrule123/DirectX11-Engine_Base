@@ -910,132 +910,132 @@
     <None Include="cpp.hint">
       <Filter>Common</Filter>
     </None>
-    <None Include="DefaultShader\SH_Func_Blur.hlsli">
+    <None Include="DefaultShader\Func_Blur.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Common.hlsli">
+    <None Include="DefaultShader\Common.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_ConstBuffer.hlsli">
+    <None Include="DefaultShader\ConstBuffer.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Func_DecodeColor.hlsli">
+    <None Include="DefaultShader\Func_DecodeColor.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Globals.hlsli">
+    <None Include="DefaultShader\Globals.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Resource.hlsli">
+    <None Include="DefaultShader\Resource.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Sampler.hlsli">
+    <None Include="DefaultShader\Sampler.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Grid.hlsli">
+    <None Include="DefaultShader\Grid.hlsli">
       <Filter>_DefaultShader\Grid</Filter>
     </None>
-    <None Include="DefaultShader\SH_Func_Light.hlsli">
+    <None Include="DefaultShader\Func_Light.hlsli">
       <Filter>_DefaultShader\Light</Filter>
     </None>
-    <None Include="DefaultShader\SH_PostProcess.hlsli">
+    <None Include="DefaultShader\PostProcess.hlsli">
       <Filter>_DefaultShader\PostProcess</Filter>
     </None>
-    <None Include="DefaultShader\SH_Particle.hlsli">
+    <None Include="DefaultShader\Particle.hlsli">
       <Filter>_DefaultShader\Particle</Filter>
     </None>
     <None Include="SimpleMath.inl">
       <Filter>Common\Math</Filter>
     </None>
-    <None Include="DefaultShader\SH_CommonStruct.hlsli">
+    <None Include="DefaultShader\CommonStruct.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Functions.hlsli">
+    <None Include="DefaultShader\Functions.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Func_Animation3D.hlsli">
+    <None Include="DefaultShader\Func_Animation3D.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\SH_Animation2D.hlsli">
+    <None Include="DefaultShader\Animation2D.hlsli">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </None>
-    <None Include="DefaultShader\SH_UserInterFace.hlsli">
+    <None Include="DefaultShader\UserInterface.hlsli">
       <Filter>_DefaultShader\UI</Filter>
     </None>
-    <None Include="DefaultShader\SH_NormalConvertMH.hlsli">
+    <None Include="DefaultShader\NormalConverter.hlsli">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </None>
-    <None Include="DefaultShader\SH_Light.hlsli">
+    <None Include="DefaultShader\Light.hlsli">
       <Filter>_DefaultShader\Light</Filter>
     </None>
-    <None Include="DefaultShader\SH_3D.hlsli">
+    <None Include="DefaultShader\_3D.hlsli">
       <Filter>_DefaultShader\3D</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DefaultShader\_0VS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\VS_Basic3D.hlsl">
       <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\VS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Deffered.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\VS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\VS_LightDir.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\VS_LightPoint.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_Merge.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\VS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\VS_PostProcess.hlsl">
       <Filter>_DefaultShader\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\VS_Triangle.hlsl">
       <Filter>_DefaultShader\Triangle</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_0VS_UserInterface.hlsl">
       <Filter>_DefaultShader\UI</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_3GS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\GS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\PS_Basic3D.hlsl">
       <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\PS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Deffered.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\PS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\PS_LightDir.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\PS_LightPoint.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_Merge.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\PS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\PS_PostProcess.hlsl">
       <Filter>_DefaultShader\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\PS_Triangle.hlsl">
       <Filter>_DefaultShader\Triangle</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\_4PS_UserInterface.hlsl">
@@ -1044,10 +1044,10 @@
     <FxCompile Include="DefaultShader\CS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_4PS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\PS_Sprite.hlsl">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\_0VS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\VS_Sprite.hlsl">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\CS_Animation3D.hlsl">

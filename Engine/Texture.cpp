@@ -1,11 +1,17 @@
 #include "PCH_Engine.h"
 #include "Texture.h"
 
+#ifdef _WIN64
 #ifdef _DEBUG
-#pragma comment(lib, "DirectXTex/lib/Debug/DirectXTex.lib") 
-#else 
-#pragma comment(lib, "DirectXTex/lib/Release/DirectXTex.lib") 
-#endif
+#pragma comment(lib, "DirectXTex/x64/Debug/DirectXTex.lib") 
+#else _DEBUG
+#pragma comment(lib, "DirectXTex/x64/Release/DirectXTex.lib") 
+#endif _DEBUG
+
+
+#else _WIN64
+#error "x64만 지원합니다"
+#endif _WIN64
 
 
 #include "define_Util.h"

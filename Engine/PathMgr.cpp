@@ -14,14 +14,14 @@ namespace ehw
 		AtExit::AddFunc(PathMgr::Release);
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
-		mAbsoluteResPath = std::filesystem::current_path().parent_path();
+		mAbsoluteResPath = std::filesystem::current_path().parent_path().parent_path().parent_path();
 		mAbsoluteResPath /= define::strKey::DirName_Resource;
 		if (false == std::fs::exists(mAbsoluteResPath))
 		{
 			std::fs::create_directories(mAbsoluteResPath);
 		}
 
-		mRelativeResPath = "../";
+		mRelativeResPath = "../../../";
 		mRelativeResPath /= ehw::define::strKey::DirName_Resource;
 		if (false == std::fs::exists(mRelativeResPath))
 		{

@@ -1,7 +1,7 @@
 #pragma once
 #include "ILight.h"
 #include "define_GPU.h"
-#include "defaultShader/SH_Func_Light.hlsli"
+#include "defaultShader/Func_Light.hlsli"
 
 namespace ehw
 {

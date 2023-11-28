@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultShader/SH_CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw
 {

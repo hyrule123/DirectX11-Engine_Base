@@ -1,7 +1,7 @@
 #pragma once
 #include "Com_Renderer_Mesh.h"
 #include "ParticleShader.h"
-#include "DefaultShader/SH_Particle.hlsli"
+#include "DefaultShader/Particle.hlsli"
 
 namespace ehw
 {

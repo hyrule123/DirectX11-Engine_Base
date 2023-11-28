@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DefaultShader/SH_Globals.hlsli"
-#include "DefaultShader/SH_Animation2D.hlsli"
-#include "DefaultShader/SH_3D.hlsli"
+#include "DefaultShader/Globals.hlsli"
+#include "DefaultShader/Animation2D.hlsli"
+#include "DefaultShader/_3D.hlsli"
 

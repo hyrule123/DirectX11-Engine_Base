@@ -2,7 +2,7 @@
 #include "Skeleton.h"
 
 #include "define_Util.h"
-#include "DefaultShader/SH_Resource.hlsli"
+#include "DefaultShader/Resource.hlsli"
 #include "StructBuffer.h"
 #include "FBXLoader.h"
 #include "PathMgr.h"

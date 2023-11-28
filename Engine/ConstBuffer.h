@@ -1,7 +1,7 @@
 #pragma once
 #include "GPUBuffer.h"
 
-#include "DefaultShader/SH_ConstBuffer.hlsli"
+#include "DefaultShader/ConstBuffer.hlsli"
 
 namespace ehw
 {

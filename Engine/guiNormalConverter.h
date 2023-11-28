@@ -1,7 +1,7 @@
 #pragma once
 #include "guiWindow.h"
 #include "guiComboBox.h"
-#include "DefaultShader/SH_CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw
 {

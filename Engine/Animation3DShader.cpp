@@ -4,7 +4,7 @@
 #include "RenderMgr.h"
 #include "ConstBuffer.h"
 #include "StructBuffer.h"
-#include "DefaultShader/SH_Resource.hlsli"
+#include "DefaultShader/Resource.hlsli"
 
 using namespace ehw::define;
 namespace ehw

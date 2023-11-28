@@ -3,7 +3,7 @@
 #include <vector>
 #include <Windows.h>
 
-#include "DefaultShader/SH_CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 #include "SimpleMath.h"
 
 #include <fbxsdk/core/base/fbxtime.h>

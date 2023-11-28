@@ -1,8 +1,8 @@
 #include "PCH_Engine.h"
 #include "NormalConvertShader.h"
 
-#include "DefaultShader/SH_Resource.hlsli"
-#include "DefaultShader/SH_NormalConvertMH.hlsli"
+#include "DefaultShader/Resource.hlsli"
+#include "DefaultShader/NormalConverter.hlsli"
 
 #include "Texture.h"
 #include "RenderMgr.h"

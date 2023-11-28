@@ -1,10 +1,17 @@
 #include "PCH_Engine.h"
 #include "FontWrapper.h"
+
+#ifdef _WIN64
 #ifdef _DEBUG
-#pragma comment(lib, "FW1FontWrapper/lib/Debug/FW1FontWrapperL.lib")
-#else
-#pragma comment(lib, "FW1FontWrapper/lib/Release/FW1FontWrapper.lib")
-#endif
+#pragma comment(lib, "FW1FontWrapper/x64/Debug/FW1FontWrapperL.lib")
+#else _DEBUG
+#pragma comment(lib, "FW1FontWrapper/x64/Release/FW1FontWrapper.lib")
+#endif _DEBUG
+
+
+#else _WIN64
+#error "x64만 지원합니다"
+#endif _WIN64
 
 #include "GPUMgr.h"
 

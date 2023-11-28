@@ -6,7 +6,7 @@
 #include "define_Util.h"
 
 #include "NormalConvertShader.h"
-#include "DefaultShader/SH_NormalConvertMH.hlsli"
+#include "DefaultShader/NormalConverter.hlsli"
 
 namespace gui
 {

@@ -1,4 +1,4 @@
-#include "SH_3D.hlsli"
+#include "_3D.hlsli"
 
 PSOut_Deffered main(VSOut _in)
 {

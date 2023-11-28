@@ -1,4 +1,4 @@
-#include "SH_UserInterFace.hlsli"
+#include "UserInterface.hlsli"
 VSOut main(VSIn In)
 {
     VSOut Out = (VSOut) 0.f;
