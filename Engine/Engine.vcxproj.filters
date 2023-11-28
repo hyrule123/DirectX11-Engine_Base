@@ -501,9 +501,6 @@
     <ClCompile Include="ThreadPoolMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentInitializer.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Animation3D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
@@ -512,6 +509,9 @@
     </ClCompile>
     <ClCompile Include="GridScript.cpp">
       <Filter>Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentInitializer.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1064,5 +1064,10 @@
     <ResourceCompile Include="Engine.rc">
       <Filter>Common\WindowResource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ComponentInitializer.txt">
+      <Filter>Component</Filter>
+    </Text>
   </ItemGroup>
 </Project>

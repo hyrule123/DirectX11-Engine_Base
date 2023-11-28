@@ -390,6 +390,7 @@ call Copy_Shader.bat $(Configuration)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ComMgr.cpp" />
+    <ClCompile Include="ComponentInitializer.cpp" />
     <ClCompile Include="Com_Animator2D.cpp" />
     <ClCompile Include="AtExit.cpp" />
     <ClCompile Include="AudioClip.cpp" />
@@ -402,7 +403,6 @@ call Copy_Shader.bat $(Configuration)</Command>
     <ClCompile Include="Com_DummyAnimator.cpp" />
     <ClCompile Include="Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Com_Renderer_UIBase.cpp" />
-    <ClCompile Include="ComponentInitializer.cpp" />
     <ClCompile Include="define_Global.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
@@ -759,6 +759,9 @@ call Copy_Shader.bat $(Configuration)</Command>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ComponentInitializer.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
