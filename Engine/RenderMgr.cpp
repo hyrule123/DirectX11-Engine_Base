@@ -1228,29 +1228,24 @@ namespace ehw
 		using namespace strKey::Default;
 
 		std::shared_ptr<Texture> pTex = nullptr;
-		pTex = ResourceMgr::Load<Texture>(texture::DefaultSprite);
-		assert(nullptr != pTex);
-
-		pTex = ResourceMgr::Load<Texture>(texture::CartoonSmoke);
-		assert(nullptr != pTex);
 
 		pTex = ResourceMgr::Load<Texture>(texture::noise_01);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceMgr::Load<Texture>(texture::noise_02);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceMgr::Load<Texture>(texture::noise_03);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceMgr::Load<Texture>(texture::BasicCube);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceMgr::Load<Texture>(texture::BasicCubeNormal);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceMgr::Load<Texture>(texture::Brick);
-		assert(nullptr != pTex);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 #pragma endregion
 

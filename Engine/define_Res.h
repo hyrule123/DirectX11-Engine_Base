@@ -97,8 +97,7 @@ namespace ehw::define
 
 			namespace texture
 			{
-				STRKEY SmileTexture = "Smile.png";
-				STRKEY DefaultSprite = "Light.png";
+				STRKEY DefaultSprite = "DefaultSprite.png";
 				STRKEY CartoonSmoke = "particle\\CartoonSmoke.png";
 				STRKEY noise_01 = "noise\\noise_01.png";
 				STRKEY noise_02 = "noise\\noise_02.png";

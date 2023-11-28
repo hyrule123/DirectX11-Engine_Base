@@ -16,8 +16,6 @@
 
 namespace ehw
 {
-	
-
 	Texture::Texture()
 		: IResource(eResourceType::Texture)
 		, mDesc()
@@ -179,7 +177,9 @@ namespace ehw
 
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일이 없습니다.");
+			std::wstring errMsg = fullPath.wstring() + L"\n";
+			errMsg += L"파일이 없습니다.";
+			ERROR_MESSAGE_W(errMsg.c_str());
 			return eResult::Fail_OpenFile;
 		}
 

@@ -10,6 +10,7 @@ namespace ehw
     class IComponent;
     class ComMgr
     {
+
         friend class Application;
     public:
         template <typename T>
