@@ -400,3 +400,4 @@ FBX/
 
 # .txt Files
 *.txt
+/Engine/ComponentInitializer.cpp
