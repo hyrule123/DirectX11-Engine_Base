@@ -10,7 +10,7 @@
 
 void ManualInput(std::vector<std::string>& _args);
 void CreateTextureKey();
-void CreateComputeShaderKey();
+void CreateShaderKey();
 void CreateComponentKey();
 void CreateScriptKey();
 void CreateSceneKey();
@@ -40,9 +40,9 @@ int main(int argc, char* argv[])
         {
             //CreateTextureKey();
         }
-        else if ("COMPUTESHADER" == args[i])
+        else if ("SHADER" == args[i])
         {
-            CreateComputeShaderKey();
+            CreateShaderKey();
         }
         else if ("COMPONENT" == args[i])
         {
@@ -129,13 +129,13 @@ void ManualInput(std::vector<std::string>& _args)
     }
 }
 
-void CreateComputeShaderKey()
+void CreateShaderKey()
 {
     //Generate Compute Shader Key    
     std::regex reg(define_Preset::Regex::AllShader::A);
 
     DirTree DirTree;
-    DirTree.SearchRecursive(define_Preset::Path::HLSL_Proj::A, reg);
+    DirTree.SearchRecursive(define_Preset::Path::Shader_Proj::A, reg);
 
     stdfs::path strKeyPath = define_Preset::Path::ContentsProj::A;
     strKeyPath /= "strKey_Shader.h";

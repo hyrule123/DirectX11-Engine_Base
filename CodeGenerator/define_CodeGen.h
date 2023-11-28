@@ -27,9 +27,9 @@ namespace define_Preset
 {
 	namespace Path
 	{
-		PRESET(ContentsProj, "./Project/Contents");
+		PRESET(ContentsProj, "./Project/UserContents");
 		PRESET(EngineProj, "./Project/EngineBase/Engine");
-		PRESET(HLSL_Proj, "./Project/HLSL");
+		PRESET(Shader_Proj, "./Project/UserShader");
 
 
 #ifdef _DEBUG
