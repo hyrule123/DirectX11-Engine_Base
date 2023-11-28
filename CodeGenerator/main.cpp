@@ -189,7 +189,7 @@ void CreateScriptKey()
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "IScript";
-    Desc.IncludePCH = R"(#include "PCH_Contents.h")";
+    Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComMgr.h>";
@@ -218,7 +218,7 @@ void CreateSceneKey()
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "IScene";
-    Desc.IncludePCH = R"(#include "PCH_Contents.h")";
+    Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "ContentsClassInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneMgr.h>";
