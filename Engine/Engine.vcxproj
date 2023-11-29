@@ -556,6 +556,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="DefaultShader\Func_Bitwise.hlsli" />
     <None Include="DefaultShader\_3D.hlsli" />
     <None Include="DefaultShader\Animation2D.hlsli" />
     <None Include="DefaultShader\Functions.hlsli" />

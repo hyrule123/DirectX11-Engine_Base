@@ -31,12 +31,13 @@ struct int2 { int x; int y; };
 struct int3 { int x; int y; int z; };
 struct int4 { int x; int y; int z; int w; };
 
-using uint = UINT;
+using uint = UINT32;
 struct uint2 { uint x; uint y; };
 struct uint3 { uint x; uint y; uint z; };
 struct uint4 { uint x; uint y; uint z; uint w; };
 
-
+struct uintx8 { uint u[8]; };
+struct uintx16 { uint u[16]; };
 
 #define SEMANTIC(_Type)
 
@@ -51,6 +52,9 @@ struct uint4 { uint x; uint y; uint z; uint w; };
 #define TRUE 1
 #define FALSE 0
 #define MATRIX row_major matrix
+
+#define uintx8 row_major uint2x4
+#define uintx16 row_major uint4x4
 
 #define SEMANTIC(_Type)  : _Type
 
