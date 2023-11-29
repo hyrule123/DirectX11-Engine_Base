@@ -120,9 +120,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Platform) $(Configuration)
-call Copy_Shader.bat $(Platform) $(Configuration)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -161,9 +160,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)
-call Copy_DLL.bat $(Platform) $(Configuration)
-call Copy_Shader.bat $(Platform) $(Configuration)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -202,8 +200,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
 start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)
-call Copy_Shader.bat $(Platform) $(Configuration)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
@@ -242,8 +240,8 @@ call Copy_Shader.bat $(Platform) $(Configuration)</Command>
 start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>cd $(SolutionDir)
-call Copy_Shader.bat $(Platform) $(Configuration)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
