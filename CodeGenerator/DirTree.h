@@ -32,7 +32,7 @@ public:
 	//파일 명을 헤더 파일에 등록(편의용도)
 	HRESULT CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path const& _RootNamespace, bool _bEraseExtension);
 
-	//ContentsClassInitializer에 자신의 클래스를 등록하는 코드를 생성하는 함수
+	//UserContentsInitializer에 자신의 클래스를 등록하는 코드를 생성하는 함수
 	HRESULT CreateComMgrInitCode(tAddBaseClassDesc const& _Desc);
 
 	HRESULT CreateShaderStrKey(stdfs::path const& _FilePath);

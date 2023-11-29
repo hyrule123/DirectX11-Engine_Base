@@ -11,7 +11,8 @@
 void ManualInput(std::vector<std::string>& _args);
 void CreateTextureKey();
 void CreateShaderKey();
-void CreateComponentKey();
+void CreateEngineComponentKey();
+void CreateUserComponentKey();
 void CreateScriptKey();
 void CreateSceneKey();
 
@@ -44,9 +45,13 @@ int main(int argc, char* argv[])
         {
             CreateShaderKey();
         }
-        else if ("COMPONENT" == args[i])
+        else if ("ENGINECOMPONENT" == args[i])
         {
-            CreateComponentKey();
+            CreateEngineComponentKey();
+        }
+        else if ("USERCOMPONENT" == args[i])
+        {
+            CreateUserComponentKey();
         }
         else if ("SCRIPT" == args[i])
         {
@@ -94,7 +99,7 @@ void CreateTextureKey()
 
     DirTree DirTree;
     {
-        stdfs::path DirPath = define_Preset::Path::Content::A;
+        stdfs::path DirPath = define_Preset::Path::Resources::A;
         DirPath /= ehw::define::strKey::GetResName(ehw::define::eResourceType::Texture);
         DirTree.SearchRecursive(DirPath, reg);
     }
@@ -147,7 +152,7 @@ void CreateShaderKey()
     
 }
 
-void CreateComponentKey()
+void CreateEngineComponentKey()
 {
     //Generate Componets
     std::regex regexCom(R"(^Com_\w+\.h)");
@@ -175,6 +180,33 @@ void CreateComponentKey()
     
 }
 
+void CreateUserComponentKey()
+{
+    //Generate Componets
+    std::regex regexCom(R"(^Com_\w+\.h)");
+
+    DirTree DirTree;
+    stdfs::path DirPath = define_Preset::Path::ContentsProj::A;
+
+    DirTree.SearchRecursive(DirPath, regexCom);
+
+    DirTree.CreateStrKeyHeader(DirPath / "strKey_UserComponent.h", "com", true);
+
+    tAddBaseClassDesc Desc = {};
+    Desc.BaseType = "IComponent";
+    Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
+    Desc.ClassName = "UserContentsInitializer";
+    Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
+    Desc.IncludeManagerHeader = R"(#include <EngineBase/Engine/ComMgr.h>)";
+    Desc.MasterNamespace = "namespace ehw";
+    Desc.UsingNamespace = "using namespace ehw::define;";
+    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::com::##T))";
+    Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
+    Desc.FilePath = DirPath / "UserContentsInitializer_Component.cpp";
+
+    DirTree.CreateComMgrInitCode(Desc);
+}
+
 void CreateScriptKey()
 {
     //Generate Scipts
@@ -190,14 +222,14 @@ void CreateScriptKey()
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "IScript";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
-    Desc.ClassName = "ContentsClassInitializer";
+    Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::Script::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScript()";
-    Desc.FilePath = DirPath / "ContentsClassInitializer_Script.cpp";
+    Desc.FilePath = DirPath / "UserContentsInitializer_Script.cpp";
 
     DirTree.CreateComMgrInitCode(Desc);
     
@@ -219,14 +251,14 @@ void CreateSceneKey()
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "IScene";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
-    Desc.ClassName = "ContentsClassInitializer";
+    Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "using namespace ehw::define;";
     Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::Scene::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScene()";
-    Desc.FilePath = DirPath / "ContentsClassInitializer_Scene.cpp";
+    Desc.FilePath = DirPath / "UserContentsInitializer_Scene.cpp";
 
     DirTree.CreateComMgrInitCode(Desc);
 }

@@ -134,7 +134,7 @@ call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </FxCompile>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -175,7 +175,7 @@ call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </FxCompile>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -199,7 +199,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)
@@ -239,7 +239,7 @@ call Copy_Shader.bat $(Platform) $(Configuration)</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe Component</Command>
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd $(SolutionDir)

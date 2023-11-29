@@ -33,9 +33,9 @@ namespace define_Preset
 
 
 #ifdef _DEBUG
-		PRESET(Content, "./Output/Debug/Res");
+		PRESET(Resources, "./Output/Debug/Res");
 #else
-		PRESET(Content, "./Output/Release/Res");
+		PRESET(Resources, "./Output/Release/Res");
 #endif
 
 		
