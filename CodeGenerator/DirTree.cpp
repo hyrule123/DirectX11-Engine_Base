@@ -341,6 +341,12 @@ bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unor
 {
 	bool bModified = false;
 
+	//타겟 파일이 존재하지 않을 경우 무조건 생성
+	if (false == stdfs::exists(_filePath))
+	{
+		return true;
+	}
+
 	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
 
 	//이전 파일 리스트가 비어있을 경우에는 무조건 새로 작성한다.
