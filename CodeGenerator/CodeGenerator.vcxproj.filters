@@ -10,11 +10,11 @@
     <Filter Include="JsonCPP">
       <UniqueIdentifier>{8970c20b-0990-4943-9257-98cfe45a878e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generator">
+      <UniqueIdentifier>{f92ed40f-86b0-467b-8bb7-82930fc24551}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirTreeNode.cpp" />
-    <ClCompile Include="DirTree.cpp" />
-    <ClCompile Include="CodeWriter.cpp" />
     <ClCompile Include="define_Util.cpp">
       <Filter>Default\Util</Filter>
     </ClCompile>
@@ -24,17 +24,21 @@
     <ClCompile Include="json-cpp\jsoncpp.cpp">
       <Filter>JsonCPP</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Default</Filter>
-    </ClCompile>
     <ClCompile Include="PCH_CodeGenerator.cpp">
       <Filter>Default</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="CodeWriter.cpp">
+      <Filter>Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="DirTree.cpp">
+      <Filter>Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="DirTreeNode.cpp">
+      <Filter>Generator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirTreeNode.h" />
-    <ClInclude Include="DirTree.h" />
-    <ClInclude Include="CodeWriter.h" />
     <ClInclude Include="define_Util.h">
       <Filter>Default\Util</Filter>
     </ClInclude>
@@ -49,6 +53,15 @@
     </ClInclude>
     <ClInclude Include="PCH_CodeGenerator.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeWriter.h">
+      <Filter>Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="DirTree.h">
+      <Filter>Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="DirTreeNode.h">
+      <Filter>Generator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
