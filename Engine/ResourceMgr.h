@@ -56,34 +56,36 @@ namespace ehw
 	{
 		static_assert(std::is_base_of_v<IResource, T>);
 
-		if constexpr (std::is_base_of_v<Mesh, T>)
+		if constexpr (std::is_same_v<Mesh, T>)
 		{
 			return eResourceType::Mesh;
 		}
-		else if constexpr (std::is_base_of_v<MeshData, T>)
+		else if constexpr (std::is_same_v<MeshData, T>)
 		{
 			return eResourceType::MeshData;
 		}
-		else if constexpr (std::is_base_of_v<Texture, T>)
+		else if constexpr (std::is_same_v<Texture, T>)
 		{
 			return eResourceType::Texture;
 		}
-		else if constexpr (std::is_base_of_v<Material, T>)
+		else if constexpr (std::is_same_v<Material, T>)
 		{
 			return eResourceType::Material;
 		}
-		else if constexpr (std::is_base_of_v<AudioClip, T>)
+		else if constexpr (std::is_same_v<AudioClip, T>)
 		{
 			return eResourceType::AudioClip;
 		}
-		else if constexpr (std::is_base_of_v<Prefab, T>)
+		else if constexpr (std::is_same_v<Prefab, T>)
 		{
 			return eResourceType::Prefab;
 		}
-		else if constexpr (std::is_base_of_v<GraphicsShader, T>)
+		else if constexpr (std::is_same_v<GraphicsShader, T>)
 		{
 			return eResourceType::GraphicsShader;
 		}
+
+		//컴퓨트쉐이더는 상속관계를 가질수있으므로 is_base_of_v를 사용.
 		else if constexpr (std::is_base_of_v<ComputeShader, T>)
 		{
 			return eResourceType::ComputeShader;
