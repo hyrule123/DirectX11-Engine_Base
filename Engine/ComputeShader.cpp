@@ -33,6 +33,7 @@ namespace ehw
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::ComputeShader);
 		return CreateByCSO(fullPath);
 	}
+
 	eResult ComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)
 	{
 		Microsoft::WRL::ComPtr<ID3DBlob> mErrorBlob = nullptr;

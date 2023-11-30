@@ -1,17 +1,16 @@
 #pragma once
 #include <string>
+#include <assert.h>
 
-//매크로에서 호출하는 함수. 직접 호출하지 말것
-inline void AssertMessageW(const wchar_t* _expression, const wchar_t* _message, const wchar_t* _fileName, unsigned int _line)
-{
-	std::wstring assertMsg = std::wstring(_expression) + std::wstring(L"\n\nMessage: ") + std::wstring(_message);
-	_wassert(assertMsg.c_str(), _fileName, _line);
-}
+#define ASSERT(_expression, _message) if(!(_expression)) { \
+		std::wstring assertMsg = \
+		std::wstring( _CRT_WIDE_(#_expression) ) + \
+		std::wstring(L"\n\nMessage: ") + \
+		std::wstring( _CRT_WIDE_(_message) ); \
+		_wassert(assertMsg.c_str(), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)) ;\
+	}
 
-#define ASSERT(_expression, _message) (void) (					\
-	(!!(_expression)) || \
-	(AssertMessageW(_CRT_WIDE(#_expression), _CRT_WIDE(_message), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)), 0) \
-)
+
 
 #ifdef _DEBUG
 #define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)

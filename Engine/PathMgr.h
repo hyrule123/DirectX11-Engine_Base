@@ -60,6 +60,7 @@ namespace ehw
 		std::fs::path checkDir = fullPath.parent_path();
 		if (false == std::fs::exists(checkDir))
 		{
+			
 			if (false == std::fs::create_directories(checkDir))
 			{
 				ERROR_MESSAGE_W(L"폴더 생성 실패.");
