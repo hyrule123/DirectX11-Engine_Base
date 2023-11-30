@@ -12,10 +12,10 @@ namespace ehw
 
 		virtual void Render() override;
 
-		tCB_UniformData& GetUIUniformData() { return mUIData; }
+		tCB_CustomData& GetUIUniformData() { return mUIData; }
 
 	private:
-		tCB_UniformData mUIData;
+		tCB_CustomData mUIData;
 	};
 }
 

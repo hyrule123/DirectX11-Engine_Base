@@ -25,7 +25,8 @@ CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 7);
 CBUFFER(CB_Noise, tCB_Noise, b, 8);
 CBUFFER(CB_SBufferCount, tCB_SBufferCount, b, 9);
 CBUFFER(CB_Animation3D, tCB_Animation3D, b, 10);
-CBUFFER(CB_UniformData, tCB_UniformData, b, 11);
+CBUFFER(CB_CustomData, tCB_CustomData, b, 11);
+
 
 #ifdef __cplusplus
 
@@ -44,7 +45,7 @@ namespace ehw::define
 		Noise = Register_b_CB_Noise,	
 		SBufferCount = Register_b_CB_SBufferCount,
 		Animation3D = Register_b_CB_Animation3D,
-		UniformData = Register_b_CB_UniformData,
+		CustomData = Register_b_CB_CustomData,
 		END
 	};
 };

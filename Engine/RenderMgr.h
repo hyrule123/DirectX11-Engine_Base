@@ -74,6 +74,7 @@ namespace ehw
 		static void LoadDefaultShader();
 		static void LoadDefaultTexture();
 
+
 		static void CreateSamplerStates();
 		static void CreateRasterizerStates();
 		static void CreateDepthStencilStates();

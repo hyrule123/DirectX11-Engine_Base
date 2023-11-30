@@ -148,7 +148,7 @@ struct alignas(16)  tCB_Animation3D
 	float2		Padding_Animation3D;
 };
 
-struct alignas(16)  tCB_UniformData
+struct alignas(16)  tCB_CustomData
 {
 	int int_0;
 	int int_1;

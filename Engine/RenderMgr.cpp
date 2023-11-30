@@ -1208,8 +1208,8 @@ namespace ehw
 		mConstBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
 		mConstBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
 
-		mConstBuffers[(uint)eCBType::UniformData] = std::make_unique<ConstBuffer>(eCBType::UniformData);
-		mConstBuffers[(uint)eCBType::UniformData]->Create<tCB_UniformData>();
+		mConstBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
+		mConstBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
 
 #pragma endregion
 #pragma region STRUCTED BUFFER
