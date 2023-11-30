@@ -89,7 +89,34 @@ namespace ehw
 
 	eResult ComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
 	{
-		return eResult::Fail_NotImplemented;
+		//CSO 파일이 있는 폴더에 접근
+		std::filesystem::path shaderBinPath = PathMgr::GetShaderCSOPath();
+		shaderBinPath /= _FileName;
+
+		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.(뒤에서부터)
+		std::ios_base::openmode openFlag = std::ios_base::ate | std::ios_base::binary; std::ios_base::in;
+		std::ifstream sFile(shaderBinPath, openFlag);
+
+		if (false == sFile.is_open())
+		{
+			std::wstring msg = L"Failed to open File.\n";
+			msg += shaderBinPath.wstring();
+			ERROR_MESSAGE_W(msg.c_str());
+		}
+
+		//Blob 내부에 공간을 할당.
+		bool result = SUCCEEDED(D3DCreateBlob(sFile.tellg(), mCSBlob.GetAddressOf()));
+		ASSERT(result, "쉐이더를 저장할 공간 할당에 실패했습니다.");
+		
+
+		//커서를 처음으로 돌린 후 파일을 읽어준다.
+		sFile.seekg(0, std::ios_base::beg);
+		sFile.read((char*)mCSBlob->GetBufferPointer(), mCSBlob->GetBufferSize());
+		sFile.close();
+
+		unsigned char* pCode = reinterpret_cast<unsigned char*>(mCSBlob->GetBufferPointer());
+
+		return CreateShader(pCode, mCSBlob->GetBufferSize());
 	}
 
 	void ComputeShader::OnExcute()
