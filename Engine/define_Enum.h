@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EnumFlags.h"
+
 namespace ehw
 {
 	enum class eResult
@@ -32,53 +34,51 @@ namespace ehw
 	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
 	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
 
-	namespace define
+	enum class eLayerType
 	{
-		enum class eLayerType
-		{
-			None = -1,
-			Com_Camera,
-			Grid,
-			Monster,
-			Player,
+		None = -1,
+		Com_Camera,
+		Grid,
+		Monster,
+		Player,
 
-			tParticle,
-			PostProcess,
-			UI,
+		tParticle,
+		PostProcess,
+		UI,
 
-			END
-		};
+		END
+	};
 
-		enum class eProjectionType
-		{
-			None = -1,
-			Perspective,
-			Orthographic,
-		};
+	enum class eProjectionType
+	{
+		None = -1,
+		Perspective,
+		Orthographic,
+	};
 
-		enum class eColliderType
-		{
-			None,
-			Rect,
-			Circle,
-			Box,
-			Sphere,
-			END,
-		};
+	enum class eColliderType
+	{
+		None,
+		Rect,
+		Circle,
+		Box,
+		Sphere,
+		END,
+	};
 
-		enum class eLightType
-		{
-			Directional,
-			Point,
-			Spot,
-			END,
-		};
+	enum class eLightType
+	{
+		Directional,
+		Point,
+		Spot,
+		END,
+	};
 
-		enum class eDimensionType
-		{
-			NOT_SET,
-			_2D,
-			_3D
-		};
-	}
+	enum class eDimensionType
+	{
+		NOT_SET,
+		_2D,
+		_3D
+	};
+
 }

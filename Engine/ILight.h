@@ -7,15 +7,15 @@ namespace ehw
         public IComponent
     {
     public:
-        ILight(define::eDimensionType _dimensionType);
+        ILight(eDimensionType _dimensionType);
         virtual ~ILight();
 
         virtual void Render() = 0;
 
-        define::eDimensionType GetDimensionType() const { return mDimension; }
+        eDimensionType GetDimensionType() const { return mDimension; }
 
     private:
-        define::eDimensionType mDimension;
+        eDimensionType mDimension;
     };
 }
 

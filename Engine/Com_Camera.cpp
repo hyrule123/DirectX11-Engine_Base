@@ -20,14 +20,12 @@ extern ehw::Application gApplication;
 
 namespace ehw
 {
-	using namespace ehw::define;
-
 	MATRIX Com_Camera::gView = MATRIX::Identity;
 	MATRIX Com_Camera::gViewInverse = MATRIX::Identity;
 	MATRIX Com_Camera::gProjection = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: IComponent(define::eComponentType::Camera)
+		: IComponent(eComponentType::Camera)
 		, mView()
 		, mViewInverse()
 		, mProjection()
@@ -184,10 +182,10 @@ namespace ehw
 		{
 			switch (mProjType)
 			{
-			case ehw::define::eProjectionType::Perspective:
+			case ehw::eProjectionType::Perspective:
 				mCullingAgent = std::make_unique<CullingAgent_Perspective>();
 				break;
-			case ehw::define::eProjectionType::Orthographic:
+			case ehw::eProjectionType::Orthographic:
 				mCullingAgent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:
@@ -250,11 +248,11 @@ namespace ehw
 
 	void Com_Camera::RegisterCameraInRenderer()
 	{
-		//define::eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
 		RenderMgr::RegisterCamera(this);
 	}
 
-	void Com_Camera::TurnLayerMask(define::eLayerType _layer, bool _enable)
+	void Com_Camera::TurnLayerMask(eLayerType _layer, bool _enable)
 	{
 		mLayerMasks.set((uint)_layer, _enable);
 	}
@@ -294,11 +292,11 @@ namespace ehw
 		mPostProcessGameObjects.clear();
 
 		IScene* scene = SceneMgr::GetActiveScene();
-		for (int index = 0; index < (uint)define::eLayerType::END; index++)
+		for (int index = 0; index < (uint)eLayerType::END; index++)
 		{
 			if (mLayerMasks[index] == true)
 			{
-				Layer& layer = scene->GetLayer((define::eLayerType)index);
+				Layer& layer = scene->GetLayer((eLayerType)index);
 				GameObjects gameObjects = layer.GetGameObjects();
 				if (gameObjects.size() == 0)
 					continue;

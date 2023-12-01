@@ -46,7 +46,7 @@ namespace gui
 		//mTreeWidget->Close();
 		mTreeWidget->Clear();
 
-		TreeWidget::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::define::tDataPtr{}, true);
+		TreeWidget::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);
 
 		//enum class eResourceType
 		//{
@@ -66,7 +66,7 @@ namespace gui
 		AddResources<ehw::GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void guiResources::toInspector(ehw::define::tDataPtr _data)
+	void guiResources::toInspector(ehw::tDataPtr _data)
 	{
 		ehw::IResource* resource = static_cast<ehw::IResource*>(_data.pData);
 

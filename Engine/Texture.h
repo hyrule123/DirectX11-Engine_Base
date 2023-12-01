@@ -6,7 +6,7 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
+	
 	using Microsoft::WRL::ComPtr;
 
 	class Texture : public IResource

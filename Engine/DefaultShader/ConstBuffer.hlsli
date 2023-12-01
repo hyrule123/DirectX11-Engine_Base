@@ -30,7 +30,7 @@ CBUFFER(CB_CustomData, tCB_CustomData, b, 11);
 
 #ifdef __cplusplus
 
-namespace ehw::define
+namespace ehw
 {
 	enum class eCBType
 	{

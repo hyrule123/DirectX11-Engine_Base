@@ -21,21 +21,21 @@ namespace gui
 		template <typename T>
 		void AddResources(TreeWidget::tNode* rootNode, const char* name)
 		{
-			const std::unordered_map<std::string, std::shared_ptr<ehw::IResource>, ehw::define::tHashFunc_StringView, std::equal_to<>>& resources
+			const std::unordered_map<std::string, std::shared_ptr<ehw::IResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
 				= ehw::ResourceMgr::GetResources<T>();
 
 			TreeWidget::tNode* stemNode
-				= mTreeWidget->AddNode(rootNode, name, ehw::define::tDataPtr{}, true);
+				= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);
 
 			for (const auto& resource : resources)
 			{
-				ehw::define::tDataPtr data{};
+				ehw::tDataPtr data{};
 				data.SetDataPtr(resource.second.get());
 				mTreeWidget->AddNode(stemNode, resource.first, data);
 			}
 		}
 
-		void toInspector(ehw::define::tDataPtr _data);
+		void toInspector(ehw::tDataPtr _data);
 
 		TreeWidget* mTreeWidget;
 	};

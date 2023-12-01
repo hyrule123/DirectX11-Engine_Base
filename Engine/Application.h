@@ -20,7 +20,7 @@ namespace ehw
 		//	int  Height;
 		//	tDesc_GPUMgr GPUDesc;
 		//};
-		static BOOL Init(const define::tDesc_Application& _AppDesc);
+		static BOOL Init(const tDesc_Application& _AppDesc);
 
 		static void Update();
 		static void FixedUpdate();

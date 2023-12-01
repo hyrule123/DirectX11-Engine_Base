@@ -19,10 +19,10 @@ namespace ehw
 		//virtual void Update() override;
 		virtual void FixedUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
 
-		void SetType(define::eColliderType _type) { mType = _type; }
+		void SetType(eColliderType _type) { mType = _type; }
 
 	private:
-		define::eColliderType mType;
+		eColliderType mType;
 	};
 }
 

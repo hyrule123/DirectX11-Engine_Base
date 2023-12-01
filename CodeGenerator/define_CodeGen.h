@@ -115,7 +115,7 @@ namespace define_ShaderGen
 {
 	struct tShaderSetting
 	{
-		stdfs::path FileName[(int)ehw::define::eGSStage::END];
+		stdfs::path FileName[(int)ehw::eGSStage::END];
 	};
 }
 

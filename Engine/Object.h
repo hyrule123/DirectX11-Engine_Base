@@ -7,7 +7,7 @@
 
 namespace ehw::object
 {
-	//inline GameObject* Instantiate(define::eLayerType _type, GameObject* _pObj)
+	//inline GameObject* Instantiate(eLayerType _type, GameObject* _pObj)
 	//{
 	//	IScene* scene = SceneMgr::GetActiveScene();
 

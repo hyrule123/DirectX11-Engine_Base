@@ -9,22 +9,22 @@ namespace ehw
 		: public GPUBuffer
 	{
 	public:
-		ConstBuffer(define::eCBType _type);
+		ConstBuffer(eCBType _type);
 		virtual ~ConstBuffer();
 
 		template <typename T>
 		bool Create(uint _dataCount = 1u);
 		bool Create(size_t _dataSize, uint _dataCount = 1u);
 		void SetData(void* _data, uint _dataCount = 1u);
-		void BindData(define::eShaderStageFlag_ _stageFlag = define::eShaderStageFlag::NONE);
+		void BindData(eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
-		void SetPresetTargetStage(define::eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
+		void SetPresetTargetStage(eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
 	private:
-		const define::eCBType mType;
+		const eCBType mType;
 
 		uint				mDataSize;
 		uint				mDataCount;
-		define::eShaderStageFlag_	mPresetTargetStage;
+		eShaderStageFlag_	mPresetTargetStage;
 	};
 
 

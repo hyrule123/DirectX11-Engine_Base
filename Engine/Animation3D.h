@@ -1,7 +1,7 @@
 #pragma once
 #include "IAnimation.h"
 #include "SimpleMath.h"
-#include "Shader_Common.h"
+#include "defines.h"
 
 namespace ehw
 {

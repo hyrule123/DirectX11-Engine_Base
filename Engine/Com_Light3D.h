@@ -31,11 +31,11 @@ namespace ehw
 		void SetDiffuse(const float4& diffuse) { mAttribute.color.diffuse = diffuse; }
 		void SetSpecular(const float4& spec) { mAttribute.color.specular = spec; }
 		void SetAmbient(const float4& ambient) { mAttribute.color.ambient = ambient; }
-		void SetLightType(define::eLightType type);
+		void SetLightType(eLightType type);
 		void SetRadius(float radius) { mAttribute.radius = radius; }
 		void SetAngle(float angle) { mAttribute.angle = angle; }
 		const float4& GetDiffuse() { mAttribute.color.diffuse; }
-		define::eLightType GetType() { return (define::eLightType)mAttribute.lightType; }
+		eLightType GetType() { return (eLightType)mAttribute.lightType; }
 		float GetRadius() { mAttribute.radius; }
 		float GetAngle() { mAttribute.angle; }
 		void SetIndex(uint _idx) { mIndex = _idx; }

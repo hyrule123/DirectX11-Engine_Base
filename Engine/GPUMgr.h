@@ -1,8 +1,5 @@
 #pragma once
-#include "define_GPU.h"
-#include "define_Enum.h"
-#include "define_Struct.h"
-#include "Shader_Common.h"
+#include "defines.h"
 
 namespace ehw
 {
@@ -34,7 +31,7 @@ namespace ehw
 		//	UINT RefreshRate;
 		//};
 	private:
-		static bool Init(const define::tDesc_GPUMgr& _Desc);
+		static bool Init(const tDesc_GPUMgr& _Desc);
 		static void Release();
 		static void Reset();
 		static bool CreateDevice(ID3D11Device** _ppDevice, ID3D11DeviceContext** _ppContext);

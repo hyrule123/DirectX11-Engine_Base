@@ -9,12 +9,12 @@ namespace ehw
 		: public IComponent
 	{
 	public:
-		ICollider(define::eColliderType _Type);
+		ICollider(eColliderType _Type);
 		ICollider(const ICollider& _collider) = default;
 		virtual ~ICollider();
 
 	private:
-		define::eColliderType mType;
+		eColliderType mType;
 	};
 }
 

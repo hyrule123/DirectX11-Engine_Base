@@ -3,6 +3,8 @@
 
 #include "Resource.hlsli"
 
+#ifdef __HLSL
+
 //==========================================
 //  한 변수를 둘로 나누는 작업 시에는 반드시 엔디안을 고려할것
 //  이 함수를 사용하는 경우 : 여러 개의 데이터를 뭉쳐서 전달하는 경우(UINT8 4개 배열을 uint로 전달하는 경우)
@@ -127,6 +129,6 @@ uint2 UnpackUINT16FromUINT32_ALL(in uint _u32Src)
 	return result;
 }
 
+#endif //__HLSL
 
-
-#endif
+#endif //S_H_FUNC_BITWISE

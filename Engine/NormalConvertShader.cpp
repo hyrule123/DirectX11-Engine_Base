@@ -3,16 +3,12 @@
 
 #include "DefaultShader/Resource.hlsli"
 #include "DefaultShader/NormalConverter.hlsli"
+#include "DefaultShaders.h"
 
 #include "Texture.h"
 #include "RenderMgr.h"
 #include "ConstBuffer.h"
 
-#ifdef _DEBUG
-#include "CompiledShaderHeader/CS_NormalConvertMH_Debug.h"
-#else
-#include "CompiledShaderHeader/CS_NormalConvertMH_Release.h"
-#endif
 
 namespace ehw
 {
@@ -33,7 +29,7 @@ namespace ehw
 	{
 		IResource::Load(_filePath);
 
-		return ComputeShader::CreateByHeader(CS_NormalConvertMH, sizeof(CS_NormalConvertMH));
+		return ComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
 	}
 
 	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)

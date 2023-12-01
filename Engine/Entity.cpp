@@ -8,8 +8,6 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
-
 	UINT32 Entity::gIDNext{};
 
 	Entity::Entity()

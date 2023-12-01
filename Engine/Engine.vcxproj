@@ -124,7 +124,7 @@
       </Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
       <ObjectFileOutput />
@@ -164,7 +164,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       </Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
       <ObjectFileOutput />
@@ -204,7 +204,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       </Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
       <ObjectFileOutput />
@@ -244,7 +244,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       </Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
       <ObjectFileOutput />
@@ -350,7 +350,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="IShader.h" />
-    <ClInclude Include="Shader_Common.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="json-cpp\json-forwards.h" />
@@ -599,7 +598,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_NormalConvertMH.hlsl">
+    <FxCompile Include="DefaultShader\CS_NormalConverter.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compute</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>

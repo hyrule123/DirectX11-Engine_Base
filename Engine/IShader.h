@@ -8,7 +8,7 @@ namespace ehw
 		public IResource
 	{
 	public:
-		IShader(define::eResourceType _ResType);
+		IShader(eResourceType _ResType);
 		virtual ~IShader();
 
 

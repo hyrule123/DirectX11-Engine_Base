@@ -101,14 +101,14 @@ namespace ehw
 		//Transform 조작은 Update()까지만 가능.
 		switch ((eLightType)mAttribute.lightType)
 		{
-		case ehw::define::eLightType::Directional:
+		case ehw::eLightType::Directional:
 			break;
-		case ehw::define::eLightType::Point:
+		case ehw::eLightType::Point:
 			tr->SetRelativeScale(float3(mAttribute.radius));
 			break;
-		case ehw::define::eLightType::Spot:
+		case ehw::eLightType::Spot:
 			break;
-		case ehw::define::eLightType::END:
+		case ehw::eLightType::END:
 			break;
 		default:
 			break;
@@ -125,15 +125,15 @@ namespace ehw
 
 		switch ((eLightType)mAttribute.lightType)
 		{
-		case ehw::define::eLightType::Directional:
+		case ehw::eLightType::Directional:
 			mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 			break;
-		case ehw::define::eLightType::Point:
+		case ehw::eLightType::Point:
 			//Update에서 수행했음.
 			break;
-		case ehw::define::eLightType::Spot:
+		case ehw::eLightType::Spot:
 			break;
-		case ehw::define::eLightType::END:
+		case ehw::eLightType::END:
 			break;
 		default:
 			break;

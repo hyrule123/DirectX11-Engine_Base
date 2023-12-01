@@ -7,7 +7,7 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
+	
 
 	//StructBuffer::StructBuffer()
 	//	: GPUBuffer(eBufferType::Struct)

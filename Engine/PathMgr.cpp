@@ -15,21 +15,21 @@ namespace ehw
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		mAbsoluteResPath = std::filesystem::current_path().parent_path().parent_path().parent_path();
-		mAbsoluteResPath /= define::strKey::DirName_Resource;
+		mAbsoluteResPath /= strKey::DirName_Resource;
 		if (false == std::fs::exists(mAbsoluteResPath))
 		{
 			std::fs::create_directories(mAbsoluteResPath);
 		}
 
 		mRelativeResPath = "../../../";
-		mRelativeResPath /= ehw::define::strKey::DirName_Resource;
+		mRelativeResPath /= ehw::strKey::DirName_Resource;
 		if (false == std::fs::exists(mRelativeResPath))
 		{
 			std::fs::create_directories(mRelativeResPath);
 		}
 
 		mRelativePath_ShaderCSO = ".";
-		mRelativePath_ShaderCSO /= ehw::define::strKey::DirName_CompiledShader;
+		mRelativePath_ShaderCSO /= ehw::strKey::DirName_CompiledShader;
 		if (false == std::fs::exists(mRelativePath_ShaderCSO))
 		{
 			std::fs::create_directories(mRelativePath_ShaderCSO);
@@ -38,7 +38,7 @@ namespace ehw
 		for (int i = 0; i < (int)eResourceType::END; ++i)
 		{
 			mRelativePathContent[i] = mRelativeResPath;
-			mRelativePathContent[i] /= ehw::define::strKey::ArrResName[i];
+			mRelativePathContent[i] /= ehw::strKey::ArrResName[i];
 
 			if (false == std::fs::exists(mRelativePathContent[i]))
 			{

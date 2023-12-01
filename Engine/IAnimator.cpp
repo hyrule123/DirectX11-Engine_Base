@@ -3,8 +3,8 @@
 
 namespace ehw
 {
-	IAnimator::IAnimator(define::eDimensionType _type)
-		: IComponent(define::eComponentType::Animator)
+	IAnimator::IAnimator(eDimensionType _type)
+		: IComponent(eComponentType::Animator)
 		, mDimensionType(_type)
 	{
 	}

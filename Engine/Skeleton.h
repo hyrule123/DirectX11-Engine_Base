@@ -21,7 +21,7 @@ namespace ehw
 
 	public:
 		//Animation 3D
-		const std::vector<define::tMTBone>& GetBones() const { return m_vecBones; }
+		const std::vector<tMTBone>& GetBones() const { return m_vecBones; }
 		UINT GetBoneCount() const { return (UINT)m_vecBones.size(); }
 		StructBuffer* GetBoneOffsetBuffer() { return  m_pBoneOffset.get(); }	   // 각 뼈의 offset 행렬
 
@@ -34,13 +34,13 @@ namespace ehw
 
 		//애니메이션을 이동가능한지 확인하고, 이동시켜주는 함수
 		bool CopyAnimationFromOther(const Skeleton& _other, const std::fs::path& _saveDir);
-		int FindSameBoneIndex(const define::tMTBone& _other) const;
+		int FindSameBoneIndex(const tMTBone& _other) const;
 
 	private:
 		void CreateBoneOffsetSBuffer();
 
 	private:
-		std::vector<define::tMTBone>					m_vecBones;
+		std::vector<tMTBone>					m_vecBones;
 		std::unique_ptr<StructBuffer>					m_pBoneOffset;	  // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
 
 		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>	mMapAnimations;

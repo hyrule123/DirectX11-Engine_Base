@@ -23,8 +23,8 @@ namespace ehw
 		static void FixedUpdate();
 		static void Render();
 
-		static void CollisionLayerCheck(define::eLayerType _left, define::eLayerType _right, bool _enable = true);
-		static void LayerCollision(class IScene* _scene, define::eLayerType _left, define::eLayerType _right);
+		static void CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable = true);
+		static void LayerCollision(class IScene* _scene, eLayerType _left, eLayerType _right);
 		static void ColliderCollision(ICollider2D* _left, ICollider2D* _right);
 		static bool Intersect(ICollider2D* _left, ICollider2D* _right);
 
@@ -33,7 +33,7 @@ namespace ehw
 		static void Release();
 
 	private:
-		static std::bitset<(uint)define::eLayerType::END> mLayerCollisionMatrix[(uint)define::eLayerType::END];
+		static std::bitset<(uint)eLayerType::END> mLayerCollisionMatrix[(uint)eLayerType::END];
 		static std::map<UINT64, bool> mCollisionMap;
 	};
 }

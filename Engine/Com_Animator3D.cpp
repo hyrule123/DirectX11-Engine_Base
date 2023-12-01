@@ -14,11 +14,8 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
-
-
 	Com_Animator3D::Com_Animator3D()
-		: IAnimator(define::eDimensionType::_3D)
+		: IAnimator(eDimensionType::_3D)
 		, mSkeleton()
 		//, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
@@ -242,7 +239,7 @@ namespace ehw
 		if (false == m_bFinalMatUpdate)
 		{
 			// Animation3D Update Compute Shader
-			static std::shared_ptr<Animation3DShader> pUpdateShader = ResourceMgr::Load<Animation3DShader>(define::strKey::Default::shader::compute::Animation3D);
+			static std::shared_ptr<Animation3DShader> pUpdateShader = ResourceMgr::Load<Animation3DShader>(strKey::Default::shader::compute::Animation3D);
 
 
 			//구조화 버퍼가 정상적으로 생성되었는지 확인한다.

@@ -168,7 +168,7 @@ namespace ehw
 	}
 	void RenderMgr::BindNoiseTexture()
 	{
-		std::shared_ptr<Texture> noise = ResourceMgr::Find<Texture>(define::strKey::Default::texture::noise_03);
+		std::shared_ptr<Texture> noise = ResourceMgr::Find<Texture>(strKey::Default::texture::noise_03);
 		noise->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
@@ -185,7 +185,7 @@ namespace ehw
 	}
 	void RenderMgr::CopyRenderTarget()
 	{
-		std::shared_ptr<Texture> renderTarget = ResourceMgr::Find<Texture>(define::strKey::Default::texture::RenderTarget);
+		std::shared_ptr<Texture> renderTarget = ResourceMgr::Find<Texture>(strKey::Default::texture::RenderTarget);
 			
 		//renderTarget->UnBindData();
 
@@ -407,7 +407,7 @@ namespace ehw
 
 	void RenderMgr::LoadDefaultMesh()
 	{
-		using namespace ehw::define;
+		
 		
 
 #pragma region POINT MESH

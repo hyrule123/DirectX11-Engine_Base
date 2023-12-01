@@ -30,15 +30,15 @@ namespace ehw
 		virtual void OnExit() {};
 		
 		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		inline void	AddGameObject(const define::eLayerType _type, GameObject* _gameObj);
-		inline void	AddGameObjectHierarchy(const define::eLayerType _type, GameObject* _gameObj);
+		inline void	AddGameObject(const eLayerType _type, GameObject* _gameObj);
+		inline void	AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj);
 
-		inline void	ChangeGameObjectLayer(const define::eLayerType _targetLayer, GameObject* _gameObj);
-		inline void	MoveGameObjectLayerHierarchy(const define::eLayerType _targetLayer, GameObject* _gameObj);
+		inline void	ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj);
+		inline void	MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj);
 
-		Layer&							GetLayer(define::eLayerType _type) { return mLayers[(uint)_type]; }
+		Layer&							GetLayer(eLayerType _type) { return mLayers[(uint)_type]; }
 		std::vector<GameObject*>		GetDontDestroyGameObjects();
-		const std::vector<GameObject*>& GetGameObjects(const define::eLayerType _type);
+		const std::vector<GameObject*>& GetGameObjects(const eLayerType _type);
 
 
 		bool	IsInitialized() const { return mbInitialized; }
@@ -46,18 +46,18 @@ namespace ehw
 
 
 	private:
-		std::array<Layer, (int)define::eLayerType::END> mLayers;
+		std::array<Layer, (int)eLayerType::END> mLayers;
 		bool mbInitialized;
 	};
 
-	inline void IScene::AddGameObject(const define::eLayerType _type, GameObject* _gameObj)
+	inline void IScene::AddGameObject(const eLayerType _type, GameObject* _gameObj)
 	{
 		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
 		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
 		GetLayer(_type).AddGameObject(_gameObj);
 	}
 
-	inline void IScene::AddGameObjectHierarchy(const define::eLayerType _type, GameObject* _gameObj)
+	inline void IScene::AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj)
 	{
 		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
 		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
@@ -70,12 +70,12 @@ namespace ehw
 		}
 	}
 
-	inline void IScene::ChangeGameObjectLayer(const define::eLayerType _targetLayer, GameObject* _gameObj)
+	inline void IScene::ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj)
 	{
 		ASSERT(eLayerType::None != _targetLayer && _gameObj, "게임오브젝트가 없거나 목표 레이어가 설정되어 있지 않습니다.");
 
 		eLayerType prevLayer = _gameObj->GetLayerType();
-		if (define::eLayerType::None != prevLayer)
+		if (eLayerType::None != prevLayer)
 		{
 			GetLayer(prevLayer).RemoveGameObject(_gameObj);
 		}
@@ -84,7 +84,7 @@ namespace ehw
 		GetLayer(_targetLayer).AddGameObject(_gameObj);
 	}
 
-	inline void IScene::MoveGameObjectLayerHierarchy(const define::eLayerType _targetLayer, GameObject* _gameObj)
+	inline void IScene::MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj)
 	{
 		ASSERT(eLayerType::None != _targetLayer, "목표 레이어를 지정하지 않았습니다.");
 		ASSERT(_gameObj, "게임오브젝트가 nullptr 입니다.");

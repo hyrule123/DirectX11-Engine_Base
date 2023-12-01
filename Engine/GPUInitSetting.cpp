@@ -1,12 +1,8 @@
 #include "PCH_Engine.h"
 #include "GPUInitSetting.h"
 #include "StructBuffer.h"
-
-#ifdef _DEBUG
-#include "CompiledShaderHeader/CS_GPUInitSetting_Debug.h"
-#else
-#include "CompiledShaderHeader/CS_GPUInitSetting_Release.h"
-#endif
+#include "DefaultShader/NormalConverter.hlsli"
+#include "DefaultShaders.h"
 
 namespace ehw
 {

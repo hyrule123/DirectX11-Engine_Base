@@ -10,22 +10,21 @@
 
 namespace gui
 {
-	using namespace ehw::define;
 	guiInspector::guiInspector()
 		: guiWindow(strKey::Inspector)
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)ehw::define::eComponentType::END);
-		mGuiResources.resize((int)ehw::define::eResourceType::END);
+		mGuiComponents.resize((int)ehw::eComponentType::END);
+		mGuiResources.resize((int)ehw::eResourceType::END);
 
-		mGuiComponents[(int)eComponentType::Transform] = new guiCom_Transform;
-		mGuiComponents[(int)eComponentType::Transform]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)ehw::eComponentType::Transform] = new guiCom_Transform;
+		mGuiComponents[(int)ehw::eComponentType::Transform]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiComponents[(int)eComponentType::Renderer] = new guiCom_Renderer;
-		mGuiComponents[(int)eComponentType::Renderer]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)ehw::eComponentType::Renderer] = new guiCom_Renderer;
+		mGuiComponents[(int)ehw::eComponentType::Renderer]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiResources[(int)eResourceType::Texture] = new guiTexture;
+		mGuiResources[(int)ehw::eResourceType::Texture] = new guiTexture;
 	}
 
 	guiInspector::~guiInspector()
@@ -95,7 +94,7 @@ namespace gui
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(ehw::define::strKey::eComponentType_String[(UINT)i]);
+			IndicatorButton(ehw::strKey::eComponentType_String[(UINT)i]);
 
 			if (mTargetGameObject && mGuiComponents[i])
 				mGuiComponents[i]->FixedUpdate();
@@ -103,7 +102,7 @@ namespace gui
 
 		for (size_t i = 0; i < mGuiResources.size(); ++i)
 		{
-			IndicatorButton(ehw::define::strKey::ArrResName[i]);
+			IndicatorButton(ehw::strKey::ArrResName[i]);
 
 			if (mTargetResource && mGuiResources[i])
 				mGuiResources[i]->FixedUpdate();

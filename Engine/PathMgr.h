@@ -10,7 +10,6 @@ namespace std
 
 namespace ehw
 {
-	using namespace ehw::define;
 	class PathMgr
 	{
 		friend class Application;
@@ -27,7 +26,7 @@ namespace ehw
 
 		static const std::fs::path& GetShaderCSOPath() { return mRelativePath_ShaderCSO; }
 
-		static inline std::fs::path CreateFullPathToContent(const std::fs::path& _filePath, define::eResourceType _resType);
+		static inline std::fs::path CreateFullPathToContent(const std::fs::path& _filePath, eResourceType _resType);
 
 		//Res/Texture/FBX/MyTex -> FBX/MyTex
 		static inline std::fs::path MakePathStrKey(const std::fs::path& _fullPath);
@@ -46,12 +45,12 @@ namespace ehw
 
 	inline std::filesystem::path PathMgr::GetContentPathAbsolute(eResourceType _eResType)
 	{
-		return mAbsoluteResPath / define::strKey::ArrResName[(int)_eResType];
+		return mAbsoluteResPath / strKey::ArrResName[(int)_eResType];
 	}
 
-	inline std::filesystem::path PathMgr::CreateFullPathToContent(const std::filesystem::path& _filePath, define::eResourceType _resType)
+	inline std::filesystem::path PathMgr::CreateFullPathToContent(const std::filesystem::path& _filePath, eResourceType _resType)
 	{
-		ASSERT(define::eResourceType::UNKNOWN != _resType, "리소스 타입을 알 수 없습니다.");
+		ASSERT(eResourceType::UNKNOWN != _resType, "리소스 타입을 알 수 없습니다.");
 
 		std::filesystem::path fullPath = GetContentPathRelative(_resType);
 		fullPath /= _filePath;

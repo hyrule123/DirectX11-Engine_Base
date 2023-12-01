@@ -12,8 +12,7 @@ namespace std
 
 namespace ehw
 {
-	using namespace define;
-	namespace define::strKey::Json::Entity
+	namespace strKey::Json::Entity
 	{
 		STRKEY_DECLARE(mStrKey);
 	}

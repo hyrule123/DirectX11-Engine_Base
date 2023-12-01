@@ -30,7 +30,7 @@ namespace gui
 
 		void InputElementEditModal();
 
-		void CreateSTDInputLayout(const ehw::define::eDimensionType _dimType);
+		void CreateSTDInputLayout(const ehw::eDimensionType _dimType);
 
 		void SaveModal();
 		void LoadModal();
@@ -51,7 +51,7 @@ namespace gui
 
 		guiComboBox mTopologyCombo;
 
-		std::array<std::string, (int)ehw::define::eGSStage::END> mStageNames;
+		std::array<std::string, (int)ehw::eGSStage::END> mStageNames;
 
 		guiComboBox mRSTypeCombo;
 		guiComboBox mDSTypeCombo;

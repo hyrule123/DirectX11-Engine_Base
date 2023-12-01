@@ -3,6 +3,7 @@
 #include "ConstBuffer.hlsli"
 #include "Resource.hlsli"
 
+#ifdef __HLSL
 static float GaussianFilter[5][5] =
 {
     0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
@@ -40,5 +41,7 @@ float4 GaussianBlur(float2 UV)
     
     return Out;
 }
+
+#endif //__HLSL
 
 #endif

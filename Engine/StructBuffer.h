@@ -14,14 +14,14 @@ namespace ehw
     //{
     //    eStructBufferType eSBufferType;
 
-    //    define::eShaderStageFlag_ TargetStageSRV;
+    //    eShaderStageFlag_ TargetStageSRV;
 
     //    int REGISLOT_t_SRV;
     //    int REGISLOT_u_UAV;
 
     //    tSBufferDesc()
     //        : eSBufferType()
-    //        , TargetStageSRV(define::eShaderStageFlag::ALL)
+    //        , TargetStageSRV(eShaderStageFlag::ALL)
     //        , REGISLOT_t_SRV(-1)
     //        , REGISLOT_u_UAV(-1)
     //    {}
@@ -35,14 +35,14 @@ namespace ehw
         {
             eStructBufferType eSBufferType;
 
-            define::eShaderStageFlag_ TargetStageSRV;
+            eShaderStageFlag_ TargetStageSRV;
 
             int REGISLOT_t_SRV;
             int REGISLOT_u_UAV;
 
             Desc()
                 : eSBufferType()
-                , TargetStageSRV(define::eShaderStageFlag::ALL)
+                , TargetStageSRV(eShaderStageFlag::ALL)
                 , REGISLOT_t_SRV(-1)
                 , REGISLOT_u_UAV(-1)
             {}
@@ -60,8 +60,8 @@ namespace ehw
 
     public:
         //Setter Getter Adder
-        void SetPipelineTarget(define::eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV = _StageFlag; }
-        void AddPipelineTarget(define::eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV |= _StageFlag; }
+        void SetPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV = _StageFlag; }
+        void AddPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV |= _StageFlag; }
 
         uint GetCapacity() const { return mElementCapacity; }
 
@@ -84,7 +84,7 @@ namespace ehw
         void GetData(T* _pDest) { GetData(static_cast<void*>(_pDest), sizeof(T)); }
 
         //데이터를 특정 레지스터에 바인딩. SRV에 바인딩할것인지 UAV에 바인딩할것인지를 지정
-        void BindDataSRV(int _SRVSlot = -1, define::eShaderStageFlag_ _stageFlag = define::eShaderStageFlag::NONE);
+        void BindDataSRV(int _SRVSlot = -1, eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
         //Bind buffer with UAV Mode to Compute shader 
         void BindDataUAV(int _UAVSlot = -1);
@@ -116,7 +116,7 @@ namespace ehw
         ComPtr<ID3D11Buffer>    mStagingBuffer;
 
         int                     mCurBoundRegister;
-        define::eBufferViewType         mCurBoundView;
+        eBufferViewType         mCurBoundView;
 	};
 
     inline void StructBuffer::SetDesc(const Desc& _tDesc)

@@ -20,10 +20,10 @@ namespace ehw
 		const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
 		std::vector<GameObject*> GetDontDestroyGameObjects();
 
-		void SetLayerType(define::eLayerType _type) { mLayerType = _type; }
+		void SetLayerType(eLayerType _type) { mLayerType = _type; }
 
 	private:
-		define::eLayerType mLayerType;
+		eLayerType mLayerType;
 		std::vector<GameObject*> mGameObjects;
 	};
 

@@ -11,7 +11,7 @@
 
 namespace gui
 {
-	STRKEY eRenderingMode_String[(int)ehw::define::eRenderingMode::END] =
+	STRKEY eRenderingMode_String[(int)ehw::eRenderingMode::END] =
 	{
 		//Deffered
 		"DefferdOpaque",
@@ -49,7 +49,7 @@ namespace gui
 		//렌더링 모드 UI 생성
 		mRenderingModeCombo.SetKey("Rendering Mode");
 		{
-			for (int i = 0; i < (int)ehw::define::eRenderingMode::END; ++i)
+			for (int i = 0; i < (int)ehw::eRenderingMode::END; ++i)
 			{
 				mRenderingModeCombo.AddItem(eRenderingMode_String[i]);
 			}
@@ -98,7 +98,7 @@ namespace gui
 	void guiMaterialEditor::RefreshShaderSettingFiles()
 	{
 		const std::fs::path& shaderPath = 
-			ehw::PathMgr::GetContentPathRelative(ehw::define::eResourceType::GraphicsShader);
+			ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -162,7 +162,7 @@ namespace gui
 	}
 	void guiMaterialEditor::UpdateTextureList()
 	{
-		for (int i = 0; i < (int)ehw::define::eTextureSlot::END; ++i)
+		for (int i = 0; i < (int)ehw::eTextureSlot::END; ++i)
 		{
 			constexpr const char* texText = "Texture_";
 			std::string text = texText;
@@ -172,7 +172,7 @@ namespace gui
 
 			ImGui::SameLine();
 
-			auto Tex = mTargetMaterial->GetTexture((ehw::define::eTextureSlot)i);
+			auto Tex = mTargetMaterial->GetTexture((ehw::eTextureSlot)i);
 			if (Tex)
 			{
 				ImGui::Text(Tex->GetKey().c_str());
@@ -188,12 +188,12 @@ namespace gui
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ehw::PathMgr::GetContentPathAbsolute(ehw::define::eResourceType::Texture);
+				const std::fs::path& texPath = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture);
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
+				for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
 				{
-					vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
+					vecExt.push_back(ehw::strKey::Ext_Tex[i]);
 				}
 				std::fs::path receivedPath = ehw::WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
@@ -203,7 +203,7 @@ namespace gui
 					std::shared_ptr<ehw::Texture> tex = ehw::ResourceMgr::Load<ehw::Texture>(PathstrKey);
 					if (tex)
 					{
-						mTargetMaterial->SetTexture((ehw::define::eTextureSlot)i, tex);
+						mTargetMaterial->SetTexture((ehw::eTextureSlot)i, tex);
 					}
 					else
 					{
@@ -218,13 +218,13 @@ namespace gui
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				mTargetMaterial->SetTexture((ehw::define::eTextureSlot)i, nullptr);
+				mTargetMaterial->SetTexture((ehw::eTextureSlot)i, nullptr);
 			}
 		}
 	}
 	void guiMaterialEditor::UpdateRenderingMode()
 	{
-		ehw::define::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
+		ehw::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
 		mRenderingModeCombo.SetCurrentIndex((int)mode);
 		mRenderingModeCombo.FixedUpdate();
 		if (mRenderingModeCombo.IsSelectionChanged())
@@ -232,7 +232,7 @@ namespace gui
 			int idx = mRenderingModeCombo.GetCurrentIndex();
 			if (0 <= idx)
 			{
-				mode = (ehw::define::eRenderingMode)idx;
+				mode = (ehw::eRenderingMode)idx;
 				mTargetMaterial->SetRenderingMode(mode);
 			}
 		}
@@ -374,7 +374,7 @@ namespace gui
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = ehw::PathMgr::GetContentPathAbsolute(ehw::define::eResourceType::Material);
+					const std::fs::path& mtrlDir = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Material);
 
 					//Res 폴더
 					const std::fs::path& resDir = ehw::PathMgr::GetResPathAbsolute();

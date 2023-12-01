@@ -18,7 +18,7 @@ namespace gui
 
 		virtual void Update() override;
 
-		void GameobjectSelectCallback(ehw::define::tDataPtr _data);
+		void GameobjectSelectCallback(ehw::tDataPtr _data);
 		void InitializeScene();
 		void AddGameObject(TreeWidget::tNode* parent, ehw::GameObject* gameObject);
 

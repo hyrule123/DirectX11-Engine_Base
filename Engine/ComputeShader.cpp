@@ -15,7 +15,7 @@
 namespace ehw
 {
 	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
-		: IShader(define::eResourceType::ComputeShader)
+		: IShader(eResourceType::ComputeShader)
 		, mCSBlob(nullptr)
 		, mCS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }
@@ -136,7 +136,7 @@ namespace ehw
 			
 		
 		//상수버퍼를 통해 데이터 수를 업로드
-		static ConstBuffer* const pCB = RenderMgr::GetConstBuffer(define::eCBType::ComputeShader);
+		static ConstBuffer* const pCB = RenderMgr::GetConstBuffer(eCBType::ComputeShader);
 		pCB->SetData(&mCB_ComputeShader);
 		pCB->BindData();
 

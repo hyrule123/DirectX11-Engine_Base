@@ -6,10 +6,8 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
-
 	ICollider3D::ICollider3D()
-		: ICollider(define::eColliderType::None)
+		: ICollider(eColliderType::None)
 	{
 		ASSERT(FALSE, "미구현");
 	}

@@ -56,7 +56,7 @@ BOOL GameMainWindow::Init(const tDesc_GameMainWindow& _Desc)
     UpdateWindow(mHwnd);
 
 
-    ehw::define::tDesc_Application AppDesc;
+    ehw::tDesc_Application AppDesc;
     AppDesc.Hwnd = mHwnd;
     AppDesc.Height = _Desc.Height;
     AppDesc.Width = _Desc.Width;

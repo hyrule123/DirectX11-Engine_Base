@@ -10,7 +10,7 @@ namespace ehw
 		: public Entity
 	{
 	public:
-		IResource(define::eResourceType _type);
+		IResource(eResourceType _type);
 
 		IResource(const IResource& _other) = default;
 
@@ -23,13 +23,13 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
-		define::eResourceType GetResType() { return mType; }
+		eResourceType GetResType() { return mType; }
 
 		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
 	private:
-		const define::eResourceType mType;
+		const eResourceType mType;
 		bool mbEngineDefaultRes;
 	};
 

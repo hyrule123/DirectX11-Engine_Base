@@ -26,7 +26,7 @@ namespace gui
 		template <typename T>
 		static T* AddGuiWindow();
 
-		static const std::unordered_map<std::string, guiBase*, ehw::define::tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
@@ -37,7 +37,7 @@ namespace gui
 		static void FixedUpdate();
 		static void Render();
 		
-		static void DebugRender(ehw::define::tDebugMesh& mesh);
+		static void DebugRender(ehw::tDebugMesh& mesh);
 
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
 		static Json::Value* CheckJsonSaved(const std::string& _strKey);
@@ -56,7 +56,7 @@ namespace gui
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, guiBase*, ehw::define::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
 
 		static std::vector<EditorObject*> mEditorObjects;
 		static std::vector<DebugObject*> mDebugObjects;

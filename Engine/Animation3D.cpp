@@ -4,9 +4,6 @@
 #include "StructBuffer.h"
 #include "Skeleton.h"
 #include "PathMgr.h"
-#include "define_Util.h"
-
-
 
 namespace ehw
 {
@@ -315,7 +312,7 @@ namespace ehw
         StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.REGISLOT_t_SRV = Register_t_g_FrameTransArray;
-        desc.TargetStageSRV = define::eShaderStageFlag::CS;
+        desc.TargetStageSRV = eShaderStageFlag::CS;
         m_SBufferKeyFrame = std::make_unique<StructBuffer>(desc);
 
         if (FAILED(m_SBufferKeyFrame->Create<tAnimKeyframeTranslation>

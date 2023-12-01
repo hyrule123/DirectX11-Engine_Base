@@ -30,7 +30,7 @@ namespace ehw
 		virtual void OnTriggerStay(ICollider2D* _collider);
 		virtual void OnTriggerExit(ICollider2D* _collider);
 
-		void SetType(define::eColliderType _type) { mType = _type; }
+		void SetType(eColliderType _type) { mType = _type; }
 		void SetSize(float2 _size) { mSize = _size; }
 		void SetCenter(float2 _center) { mCenter = _center; }
 		void SetRadius(float _radius) { mRadius = _radius; }
@@ -42,7 +42,7 @@ namespace ehw
 	private:
 		static uint gColliderNumber;
 		uint mID; 
-		define::eColliderType mType;
+		eColliderType mType;
 		Com_Transform* mTransform;
 
 		float2 mSize;

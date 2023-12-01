@@ -23,7 +23,7 @@
 namespace ehw
 {
 	MeshData::MeshData()
-		: IResource(define::eResourceType::MeshData)
+		: IResource(eResourceType::MeshData)
 	{
 	}
 
@@ -443,7 +443,7 @@ namespace ehw
 				}
 
 				//.msh로 확장자를 변경
-				strKey.replace_extension(define::strKey::Ext_Mesh);
+				strKey.replace_extension(strKey::Ext_Mesh);
 				//Key로 Mesh를 저장
 				meshCont.pMesh->SetKey(strKey.string());
 			}

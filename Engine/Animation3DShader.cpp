@@ -6,7 +6,6 @@
 #include "StructBuffer.h"
 #include "DefaultShader/Resource.hlsli"
 
-using namespace ehw::define;
 namespace ehw
 {
 	Animation3DShader::Animation3DShader()

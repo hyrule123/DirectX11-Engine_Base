@@ -6,7 +6,7 @@
 namespace gui
 {
 	guiTexture::guiTexture()
-		: guiResource(ehw::define::eResourceType::Texture)
+		: guiResource(ehw::eResourceType::Texture)
 	{
 
 	}

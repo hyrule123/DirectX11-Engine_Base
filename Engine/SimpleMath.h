@@ -12,7 +12,7 @@
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
-namespace ehw::define
+namespace ehw
 {
     enum class eAxis2D
     {
@@ -550,7 +550,7 @@ namespace ehw::math
         Matrix operator- () const noexcept;
 
         // Properties
-        Vector3 Axis(define::eAxis4D _Axis) const { return Vector3(this->m[(int)_Axis]); }
+        Vector3 Axis(eAxis4D _Axis) const { return Vector3(this->m[(int)_Axis]); }
 
         // Properties
         Vector3 Up() const noexcept { return Vector3(_21, _22, _23); }

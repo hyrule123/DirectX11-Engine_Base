@@ -2,6 +2,7 @@
 #define FUNC_DECODE_COLOR_HLSLI
 #include "Resource.hlsli"
 
+#ifdef __HLSL
 float4 DecodeColor(float _value)
 {
 	uint rgba = asint(_value);
@@ -32,4 +33,6 @@ uint4 DecodeColorUint(uint _u32Src)
 	
 	return result;
 }
+#endif //__HLSL
+
 #endif

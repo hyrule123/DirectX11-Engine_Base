@@ -8,8 +8,8 @@
 
 namespace gui
 {
-	guiComponent::guiComponent(ehw::define::eComponentType _type)
-		: guiChild(ehw::define::strKey::eComponentType_String[(int)_type])
+	guiComponent::guiComponent(ehw::eComponentType _type)
+		: guiChild(ehw::strKey::eComponentType_String[(int)_type])
 		, mType(_type)
 		, mTarget(nullptr)
 	{

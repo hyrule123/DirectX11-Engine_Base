@@ -6,9 +6,7 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
-
-	IComponent::IComponent(define::eComponentType _type)
+	IComponent::IComponent(eComponentType _type)
 		: mType(_type)
 		, mComTypeID()
 		, mOwner(nullptr)

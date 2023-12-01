@@ -45,7 +45,7 @@ namespace gui
 
 
 
-	void guiTree_GameObject::GameobjectSelectCallback(ehw::define::tDataPtr _data)
+	void guiTree_GameObject::GameobjectSelectCallback(ehw::tDataPtr _data)
 	{
 		ehw::RenderMgr::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
@@ -59,11 +59,11 @@ namespace gui
 		ehw::IScene* scene = ehw::SceneMgr::GetActiveScene();
 		std::string sceneName = scene->GetKey();
 
-		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::define::tDataPtr{}, true);
+		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);
 
-		for (size_t i = 0; i < (UINT)ehw::define::eLayerType::END; i++)
+		for (size_t i = 0; i < (UINT)ehw::eLayerType::END; i++)
 		{
-			ehw::Layer& layer = scene->GetLayer((ehw::define::eLayerType)i);
+			ehw::Layer& layer = scene->GetLayer((ehw::eLayerType)i);
 			const std::vector<ehw::GameObject*>& gameObjs
 				= layer.GetGameObjects();
 
@@ -84,7 +84,7 @@ namespace gui
 			name = "NoNameObj";
 		}
 
-		ehw::define::tDataPtr data{};
+		ehw::tDataPtr data{};
 		data.SetDataPtr(gameObject);
 
 		TreeWidget::tNode* node = mTreeWidget->AddNode(parent, name, data);

@@ -9,7 +9,7 @@
 #include <fbxsdk/core/base/fbxtime.h>
 
 //C++ 전용 '구조체' 모음
-namespace ehw::define
+namespace ehw
 {
 	struct tDesc_GPUMgr
 	{

@@ -11,11 +11,9 @@
 #include "Texture.h"
 
 #include "GPUInitSetting.h"
-#include "define_Global.h"
 
 namespace ehw
 {
-	using namespace ehw::define;
 
 	UINT GPUMgr::mResolutionX{};
 	UINT GPUMgr::mResolutionY{};

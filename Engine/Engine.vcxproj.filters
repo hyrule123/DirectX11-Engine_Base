@@ -842,9 +842,6 @@
     <ClInclude Include="guiConsole.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="Shader_Common.h">
-      <Filter>Common\define</Filter>
-    </ClInclude>
     <ClInclude Include="Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
@@ -1056,7 +1053,7 @@
     <FxCompile Include="DefaultShader\CS_Animation3D.hlsl">
       <Filter>_DefaultShader\Animation\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_NormalConvertMH.hlsl">
+    <FxCompile Include="DefaultShader\CS_NormalConverter.hlsl">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </FxCompile>
     <FxCompile Include="DefaultShader\CS_GPUInitSetting.hlsl">

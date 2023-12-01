@@ -11,7 +11,7 @@ namespace ehw
 	{
 		friend class ComMgr;
 	public:
-		IComponent(define::eComponentType _type);
+		IComponent(eComponentType _type);
 
 		IComponent(const IComponent& _other);
 		CLONE_DISABLE(IComponent);
@@ -30,13 +30,13 @@ namespace ehw
 		GameObject* GetOwner() const { return mOwner; }
 		void SetOwner(GameObject* _owner) { mOwner = _owner; }
 
-		define::eComponentType GetComType() const { return mType; };
+		eComponentType GetComType() const { return mType; };
 
 		void SetComTypeID(UINT32 _comTypeID) { mComTypeID = _comTypeID; }
 		UINT32 GetComTypeID() const { return mComTypeID; };
 
 	private:
-		const define::eComponentType mType;
+		const eComponentType mType;
 		UINT32 mComTypeID;
 		GameObject* mOwner;
 	};

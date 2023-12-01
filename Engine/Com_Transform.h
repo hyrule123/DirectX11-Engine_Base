@@ -91,13 +91,13 @@ namespace ehw
 
 
         MATRIX GetWorldRotMat() const;
-        float3 GetWorldRot(define::eAxis3D _eAxis) const;
+        float3 GetWorldRot(eAxis3D _eAxis) const;
 
-        const float3& GetRelativeDir(define::eDirectionType _eDir) const { return mDirRelative[(UINT)_eDir]; }
-        const float3& Forward() const { return mDirRelative[(int)define::eDirectionType::FRONT]; }
-        const float3& Up() const { return mDirRelative[(int)define::eDirectionType::UP]; }
-        const float3& Right() const { return mDirRelative[(int)define::eDirectionType::RIGHT]; }
-        float3 GetWorldDir(define::eDirectionType _eDir) const { return float3((float*)mMatRelative.m[(UINT)_eDir]).Normalize(); }
+        const float3& GetRelativeDir(eDirectionType _eDir) const { return mDirRelative[(UINT)_eDir]; }
+        const float3& Forward() const { return mDirRelative[(int)eDirectionType::FRONT]; }
+        const float3& Up() const { return mDirRelative[(int)eDirectionType::UP]; }
+        const float3& Right() const { return mDirRelative[(int)eDirectionType::RIGHT]; }
+        float3 GetWorldDir(eDirectionType _eDir) const { return float3((float*)mMatRelative.m[(UINT)_eDir]).Normalize(); }
         const MATRIX& GetWorldMat() const { return mCB_Transform.World; }
 
 
@@ -122,11 +122,11 @@ namespace ehw
         float3    mRotRelative;
 
         //앞, 위, 오른쪽으로 나타내는 직관적인 방향 정보
-        //define::eDirectionType 열거체를 사용.
-        float3    mDirRelative[(int)define::eDirectionType::END];
+        //eDirectionType 열거체를 사용.
+        float3    mDirRelative[(int)eDirectionType::END];
 
         //월드 방향(모든 회전정보 누적)
-        float3    mDirWorld[(int)define::eDirectionType::END];
+        float3    mDirWorld[(int)eDirectionType::END];
 
         //상속받지 않은 고유 트랜스폼. Scale은 적용, Size는 미적용
         MATRIX  mMatRelative;
@@ -194,9 +194,9 @@ namespace ehw
         return MATRIX(mCB_Transform.World.Right().Normalize(), mCB_Transform.World.Up().Normalize(), mCB_Transform.World.Forward().Normalize());
     }
 
-    inline float3 Com_Transform::GetWorldRot(define::eAxis3D _eAxis) const
+    inline float3 Com_Transform::GetWorldRot(eAxis3D _eAxis) const
     {
-        return mCB_Transform.World.Axis((define::eAxis4D)_eAxis).Normalize();
+        return mCB_Transform.World.Axis((eAxis4D)_eAxis).Normalize();
     }
 
     inline void Com_Transform::ClearUpdateState()

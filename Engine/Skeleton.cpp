@@ -11,7 +11,7 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
+	
 	Skeleton::Skeleton()
 		: m_vecBones{}
 		, m_pBoneOffset{}
@@ -255,7 +255,7 @@ namespace ehw
 		return true;
 	}
 
-	int Skeleton::FindSameBoneIndex(const define::tMTBone& _other) const
+	int Skeleton::FindSameBoneIndex(const tMTBone& _other) const
 	{
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{

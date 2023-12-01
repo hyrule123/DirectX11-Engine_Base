@@ -82,7 +82,7 @@ namespace ehw
 
 		return gameObjects;
 	}
-	const std::vector<GameObject*>& IScene::GetGameObjects(const define::eLayerType _type)
+	const std::vector<GameObject*>& IScene::GetGameObjects(const eLayerType _type)
 	{
 		return mLayers[(uint)_type].GetGameObjects();
 	}

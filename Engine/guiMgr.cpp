@@ -47,7 +47,7 @@ namespace gui
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, guiBase*, ehw::define::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
+	std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
 	//std::vector<guiBase*> guiMgr::mGuiWindows{};
 	std::vector<EditorObject*> guiMgr::mEditorObjects{};
 	std::vector<DebugObject*> guiMgr::mDebugObjects{};
@@ -59,7 +59,6 @@ namespace gui
 
 	ImGuizmo::OPERATION guiMgr::mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 
-	using namespace ehw::define;
 	using namespace ehw::math;
 	
 	void guiMgr::Init()
@@ -69,23 +68,23 @@ namespace gui
 		::GameMainWindow::RegisterImGuiWndProc(ImGui_ImplWin32_WndProcHandler);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
-		mDebugObjects.resize((UINT)eColliderType::END);
+		mDebugObjects.resize((UINT)ehw::eColliderType::END);
 
 		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceMgr::Find<ehw::Mesh>(ehw::strKey::Default::mesh::DebugRectMesh);
 		std::shared_ptr<ehw::Material> material = ehw::ResourceMgr::Find<ehw::Material>(ehw::strKey::Default::material::DebugMaterial);
 
-		mDebugObjects[(UINT)eColliderType::Rect] = new DebugObject();
+		mDebugObjects[(UINT)ehw::eColliderType::Rect] = new DebugObject();
 		ehw::Com_Renderer_Mesh* renderer
-			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<ehw::Com_Renderer_Mesh>();
+			= mDebugObjects[(UINT)ehw::eColliderType::Rect]->AddComponent<ehw::Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
 		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceMgr::Find<ehw::Mesh>("CircleMesh");
 
-		mDebugObjects[(UINT)eColliderType::Circle] = new DebugObject();
+		mDebugObjects[(UINT)ehw::eColliderType::Circle] = new DebugObject();
 		renderer
-			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<ehw::Com_Renderer_Mesh>();
+			= mDebugObjects[(UINT)ehw::eColliderType::Circle]->AddComponent<ehw::Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(circleMesh);
@@ -230,8 +229,8 @@ namespace gui
 			SAFE_DELETE(obj);
 		}
 
-		SAFE_DELETE(mDebugObjects[(UINT)eColliderType::Rect]);
-		SAFE_DELETE(mDebugObjects[(UINT)eColliderType::Circle]);
+		SAFE_DELETE(mDebugObjects[(UINT)ehw::eColliderType::Rect]);
+		SAFE_DELETE(mDebugObjects[(UINT)ehw::eColliderType::Circle]);
 
 		mEditorObjects.clear();
 		mDebugObjects.clear();
@@ -248,7 +247,7 @@ namespace gui
 		tr->SetRelativeRotXYZ(mesh.rotatation);
 		
 
-		if (mesh.type == eColliderType::Rect)
+		if (mesh.type == ehw::eColliderType::Rect)
 			tr->SetRelativeScale(mesh.scale);
 		else
 			tr->SetRelativeScale(Vector3(mesh.radius));

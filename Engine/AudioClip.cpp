@@ -12,7 +12,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: IResource(define::eResourceType::AudioClip)
+		: IResource(eResourceType::AudioClip)
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)

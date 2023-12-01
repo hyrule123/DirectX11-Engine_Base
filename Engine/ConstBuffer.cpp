@@ -5,8 +5,6 @@
 
 namespace ehw
 {
-	using namespace ehw::define;
-
 	ConstBuffer::ConstBuffer(eCBType _type)
 		: GPUBuffer(eBufferType::Const)
 		, mType(_type)

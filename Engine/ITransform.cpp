@@ -4,7 +4,7 @@
 namespace ehw
 {
 	ITransform::ITransform()
-		: IComponent(define::eComponentType::Transform)
+		: IComponent(eComponentType::Transform)
 	{
 	}
 	ITransform::~ITransform()

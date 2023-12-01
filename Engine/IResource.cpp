@@ -7,7 +7,7 @@
 
 namespace ehw
 {
-	namespace define::strKey::Json::IResource
+	namespace strKey::Json::IResource
 	{
 		STRKEY_DECLARE(mType);
 	}

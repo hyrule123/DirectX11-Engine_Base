@@ -67,9 +67,9 @@ namespace gui
 if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 {
 	std::vector<std::fs::path> vecExt{};
-	for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
+	for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
 	{
-		vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
+		vecExt.push_back(ehw::strKey::Ext_Tex[i]);
 	}
 
 	std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture), vecExt);
@@ -111,9 +111,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		if (ImGui::Button("Set Directory##Dest Texture", ImVec2(0.f, 25.f)))
 		{
 			std::vector<std::fs::path> vecExt{};
-			for (size_t i = 0; i < ehw::define::strKey::Ext_Tex_Size; ++i)
+			for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
 			{
-				vecExt.push_back(ehw::define::strKey::Ext_Tex[i]);
+				vecExt.push_back(ehw::strKey::Ext_Tex[i]);
 			}
 
 			std::fs::path texFile = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture);

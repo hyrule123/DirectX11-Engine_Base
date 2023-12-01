@@ -24,7 +24,7 @@ namespace Microsoft::WRL
 #include "DefaultShader/Resource.hlsli"
 
 
-namespace ehw::define
+namespace ehw
 {
 	constexpr const int MRT_MAX = 8;
 
@@ -148,14 +148,14 @@ namespace ehw::define
 
 	namespace strKey
 	{
-		constexpr const char* eSamplerType[(int)ehw::define::eSamplerType::END]
+		constexpr const char* eSamplerType[(int)ehw::eSamplerType::END]
 		{
 			"Point",
 			"Linear",
 			"Anisotropic",
 		};
 
-		constexpr const char* eRSType[(int)ehw::define::eRSType::END]
+		constexpr const char* eRSType[(int)ehw::eRSType::END]
 		{
 			"SolidBack",
 			"SolidFront",
@@ -163,7 +163,7 @@ namespace ehw::define
 			"WireframeNone",
 		};
 
-		constexpr const char* eDSType[(int)ehw::define::eDSType::END]
+		constexpr const char* eDSType[(int)ehw::eDSType::END]
 		{
 			"Less",
 			"Greater",
@@ -171,7 +171,7 @@ namespace ehw::define
 			"None",
 		};
 
-		constexpr const char* eBSType[(int)ehw::define::eBSType::END]
+		constexpr const char* eBSType[(int)ehw::eBSType::END]
 		{
 			"Default",
 			"AlphaBlend",
@@ -306,7 +306,7 @@ namespace ehw::define
 
 	struct tDebugMesh
 	{
-		define::eColliderType type;
+		eColliderType type;
 		float3 position;
 		float3 rotatation;
 		float3 scale;
@@ -325,7 +325,7 @@ namespace ehw::define
 	//	float4 position;
 	//	float4 direction;
 
-	//	define::eLightType type;
+	//	eLightType type;
 	//	float radius;
 	//	float angle;
 	//	int padding;

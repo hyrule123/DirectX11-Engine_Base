@@ -7,7 +7,7 @@ namespace gui
 	class guiResource : public guiChild
 	{
 	public:
-		guiResource(ehw::define::eResourceType _resType);
+		guiResource(ehw::eResourceType _resType);
 		virtual ~guiResource();
 
 		void UpdateUI() override;

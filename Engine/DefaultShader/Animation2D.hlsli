@@ -6,7 +6,7 @@
 TEXTURE2D(AtlasTexture, t, 0);
 #define IsAtlasTex bTex_0
 
-#ifndef __cplusplus
+#ifdef __HLSL
 #include "Func_Light.hlsli"
 struct VSIn
 {
@@ -20,6 +20,6 @@ struct VSOut
 	float3 WorldPos : POSITION;
 	float2 UV : TEXCOORD;
 };
-#endif//__cplusplus
+#endif//HLSL
 
 #endif

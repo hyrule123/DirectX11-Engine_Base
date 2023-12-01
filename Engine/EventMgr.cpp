@@ -122,7 +122,7 @@ namespace ehw
 	void EventMgr::MoveGameObjLayer(const tEvent& _event)
 	{
 		GameObject* pObj = reinterpret_cast<GameObject*>(_event.lParam);
-		define::eLayerType targetLayer = static_cast<define::eLayerType>(_event.wParam);
+		eLayerType targetLayer = static_cast<eLayerType>(_event.wParam);
 
 		IScene* scene = SceneMgr::GetActiveScene();
 		if (scene)
@@ -175,9 +175,9 @@ namespace ehw
 	}
 
 
-	GameObject* EventMgr::SpawnGameObject(define::eLayerType _layer, GameObject* _gameObj)
+	GameObject* EventMgr::SpawnGameObject(eLayerType _layer, GameObject* _gameObj)
 	{
-		ASSERT_DEBUG(define::eLayerType::None != _layer, "레이어를 지정하지 않았습니다.");
+		ASSERT_DEBUG(eLayerType::None != _layer, "레이어를 지정하지 않았습니다.");
 		ASSERT_DEBUG(nullptr != _gameObj, "게임오브젝트가 nullptr 입니다.");
 
 		//Scene 시작 안됐을 경우 바로 넣어준다
@@ -203,9 +203,9 @@ namespace ehw
 	}
 
 
-	void EventMgr::ChangeGameObjectLayer(define::eLayerType _layer, GameObject* _gameObj)
+	void EventMgr::ChangeGameObjectLayer(eLayerType _layer, GameObject* _gameObj)
 	{
-		ASSERT(define::eLayerType::None != _layer && _gameObj, "목표 레이어가 없거나 게임오브젝트가 설정되어 있지 않습니다.");
+		ASSERT(eLayerType::None != _layer && _gameObj, "목표 레이어가 없거나 게임오브젝트가 설정되어 있지 않습니다.");
 		tEvent evn{};
 		//lParam = GameObject Pointer
 		//wParam = Target Layer
@@ -216,7 +216,7 @@ namespace ehw
 	}
 
 
-	GameObject* EventMgr::SpawnGameObject(define::eLayerType _layer)
+	GameObject* EventMgr::SpawnGameObject(eLayerType _layer)
 	{
 		std::unique_ptr<GameObject> _obj = std::make_unique<GameObject>();
 		SpawnGameObject(_layer, _obj.get());

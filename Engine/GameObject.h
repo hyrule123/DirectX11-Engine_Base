@@ -50,7 +50,7 @@ namespace ehw
 		template <typename T>
 		inline T* GetComponent();
 
-		inline IComponent* GetComponent(define::eComponentType _type) { return mComponents[(int)_type]; }
+		inline IComponent* GetComponent(eComponentType _type) { return mComponents[(int)_type]; }
 
 		template <typename T>
 		inline eComponentType GetComponentType();
@@ -69,8 +69,8 @@ namespace ehw
 		bool IsDontDestroy() { return mbDontDestroy; }
 		void DontDestroy(bool _enable) { mbDontDestroy = _enable; }
 		
-		define::eLayerType GetLayerType() const { return mLayerType; }
-		void SetLayerType(define::eLayerType _type) { mLayerType = _type; }
+		eLayerType GetLayerType() const { return mLayerType; }
+		void SetLayerType(eLayerType _type) { mLayerType = _type; }
 
 		GameObject* AddChild(GameObject* _pObj);
 
@@ -104,7 +104,7 @@ namespace ehw
 	private:
 		std::string mName;
 		eState mState;
-		define::eLayerType mLayerType;
+		eLayerType mLayerType;
 
 		std::vector<IComponent*>	mComponents;
 
@@ -120,7 +120,7 @@ namespace ehw
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
-		define::eComponentType order = GetComponentType<T>();
+		eComponentType order = GetComponentType<T>();
 
 		if (eComponentType::UNKNOWN == order)
 			return nullptr;

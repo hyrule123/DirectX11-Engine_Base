@@ -10,7 +10,7 @@
 
 namespace ehw
 {
-	namespace define::strKey::Json
+	namespace strKey::Json
 	{
 		namespace GameObject
 		{
@@ -24,7 +24,7 @@ namespace ehw
 	GameObject::GameObject()
 		: mComponents()
 		, mState(eState::Active)
-		, mLayerType(define::eLayerType::None)
+		, mLayerType(eLayerType::None)
 		, mName()
 		, mParent()
 		, mChilds()

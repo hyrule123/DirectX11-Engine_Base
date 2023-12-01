@@ -7,7 +7,7 @@
 
 namespace ehw
 {
-	namespace define::strKey::Json::Prefab
+	namespace strKey::Json::Prefab
 	{
 		STRKEY_DECLARE(mPrefab);
 	}

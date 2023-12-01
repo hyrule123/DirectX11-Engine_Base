@@ -207,10 +207,10 @@ namespace gui
 
 		{
 			std::vector<guiComboBox::tComboItem> Items;
-			Items.reserve((size_t)ehw::define::eRSType::END);
-			for (size_t i = 0; i < (size_t)ehw::define::eRSType::END; ++i)
+			Items.reserve((size_t)ehw::eRSType::END);
+			for (size_t i = 0; i < (size_t)ehw::eRSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::define::strKey::eRSType[i],});
+				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eRSType[i],});
 			}
 			mRSTypeCombo.SetItems(Items);
 			mRSTypeCombo.SetKey("Rasterizer Type");
@@ -218,10 +218,10 @@ namespace gui
 
 		{
 			std::vector<guiComboBox::tComboItem> Items;
-			Items.reserve((size_t)ehw::define::eDSType::END);
-			for (size_t i = 0; i < (size_t)ehw::define::eDSType::END; ++i)
+			Items.reserve((size_t)ehw::eDSType::END);
+			for (size_t i = 0; i < (size_t)ehw::eDSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::define::strKey::eDSType[i], });
+				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eDSType[i], });
 			}
 			mDSTypeCombo.SetItems(Items);
 			mDSTypeCombo.SetKey("Depth-Stencil Type");
@@ -229,10 +229,10 @@ namespace gui
 
 		{
 			std::vector<guiComboBox::tComboItem> Items;
-			Items.reserve((size_t)ehw::define::eBSType::END);
-			for (size_t i = 0; i < (size_t)ehw::define::eBSType::END; ++i)
+			Items.reserve((size_t)ehw::eBSType::END);
+			for (size_t i = 0; i < (size_t)ehw::eBSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::define::strKey::eBSType[i], });
+				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eBSType[i], });
 			}
 			mBSTypeCombo.SetItems(Items);
 			mBSTypeCombo.SetKey("Blend State");
@@ -241,10 +241,10 @@ namespace gui
 
 		{
 			std::vector<guiComboBox::tComboItem> Items;
-			Items.reserve((int)ehw::define::eGSStage::END);
-			for (size_t i = 0; i < (int)ehw::define::eGSStage::END; ++i)
+			Items.reserve((int)ehw::eGSStage::END);
+			for (size_t i = 0; i < (int)ehw::eGSStage::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::define::strKey::ArrGSPrefix[i] });
+				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::ArrGSPrefix[i] });
 			}
 			mStageTypeCombo.SetItems(Items);
 			mStageTypeCombo.SetKey("Shader Type");
@@ -318,14 +318,14 @@ namespace gui
 
 		if(ImGui::Button("Standard 2D Input Layout", ImVec2(0.f, 40.f)))
 		{
-			CreateSTDInputLayout(ehw::define::eDimensionType::_2D);
+			CreateSTDInputLayout(ehw::eDimensionType::_2D);
 		}
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Standard 3D Input Layout", ImVec2(0.f, 40.f)))
 		{
-			CreateSTDInputLayout(ehw::define::eDimensionType::_3D);
+			CreateSTDInputLayout(ehw::eDimensionType::_3D);
 		}
 
 		ImGui::Separator();
@@ -336,9 +336,9 @@ namespace gui
 		ImGui::Separator();
 
 
-		for (size_t i = 0; i < (size_t)ehw::define::eGSStage::END; ++i)
+		for (size_t i = 0; i < (size_t)ehw::eGSStage::END; ++i)
 		{
-			ImGui::InputText(ehw::define::strKey::ArrGSPrefix[i], &mStageNames[i]);
+			ImGui::InputText(ehw::strKey::ArrGSPrefix[i], &mStageNames[i]);
 		}
 
 		ImGui::Separator();
@@ -387,7 +387,7 @@ namespace gui
 	{
 		struct tShaderGroup
 		{
-			std::array<std::fs::path, (int)ehw::define::eGSStage::END> FileName;
+			std::array<std::fs::path, (int)ehw::eGSStage::END> FileName;
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
@@ -410,13 +410,13 @@ namespace gui
 
 			std::string fileName = entry.path().filename().string();
 
-			for (size_t i = 0; i < (size_t)ehw::define::eGSStage::END; ++i)
+			for (size_t i = 0; i < (size_t)ehw::eGSStage::END; ++i)
 			{
-				size_t pos = fileName.find(ehw::define::strKey::ArrGSPrefix[i]);
+				size_t pos = fileName.find(ehw::strKey::ArrGSPrefix[i]);
 				if (std::string::npos != pos)
 				{
 					std::string baseFileName = entry.path().filename().replace_extension(ehw::strKey::Ext_ShaderSetting).string();
-					baseFileName.erase(pos, std::strlen(ehw::define::strKey::ArrGSPrefix[i]));
+					baseFileName.erase(pos, std::strlen(ehw::strKey::ArrGSPrefix[i]));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
 					break;
@@ -428,7 +428,7 @@ namespace gui
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<std::string> vecNewShaderGroup;
-		std::fs::path ShaderSettingDir = ehw::PathMgr::GetContentPathRelative(ehw::define::eResourceType::GraphicsShader);
+		std::fs::path ShaderSettingDir = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -437,7 +437,7 @@ namespace gui
 		//map을 순회 돌아주면서
 		for (const auto& iter : umapGSGroup)
 		{
-			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(ehw::define::strKey::Ext_ShaderSetting);
+			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(ehw::strKey::Ext_ShaderSetting);
 
 			//파일이 존재하지 않으면 json 파일 초기화 및 생성을 해준다.
 			if (false == std::fs::exists(ShaderFilePath))
@@ -458,7 +458,7 @@ namespace gui
 
 					for (size_t i = 0; i < fileNames.size(); ++i)
 					{
-						DummyGS.SetShaderKey((ehw::define::eGSStage)i, fileNames[i].string());
+						DummyGS.SetShaderKey((ehw::eGSStage)i, fileNames[i].string());
 					}
 
 					if (ehw::eResultFail(DummyGS.SaveJson(&jVal)))
@@ -468,9 +468,9 @@ namespace gui
 					}
 				}
 
-				//for (int i = 0; i < (int)ehw::define::eGSStage::END; ++i)
+				//for (int i = 0; i < (int)ehw::eGSStage::END; ++i)
 				//{
-				//	jVal[ehw::define::strKey::ArrGSPrefix[i]] = iter.second.FileName[i].string();
+				//	jVal[ehw::strKey::ArrGSPrefix[i]] = iter.second.FileName[i].string();
 				//}
 
 				ofs << jVal;
@@ -501,7 +501,7 @@ namespace gui
 
 	void guiGraphicsShaderEditor::LoadShaderSettingComboBox()
 	{
-		std::fs::path GSSettingsPath = ehw::PathMgr::GetContentPathRelative(ehw::define::eResourceType::GraphicsShader);
+		std::fs::path GSSettingsPath = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{
@@ -611,7 +611,7 @@ namespace gui
 		}
 	}
 
-	void guiGraphicsShaderEditor::CreateSTDInputLayout(ehw::define::eDimensionType _dimType)
+	void guiGraphicsShaderEditor::CreateSTDInputLayout(ehw::eDimensionType _dimType)
 	{
 		mInputLayoutDescs.clear();
 
@@ -635,7 +635,7 @@ namespace gui
 		mInputLayoutDescs.push_back(LayoutDesc);
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 
-		if (_dimType == ehw::define::eDimensionType::_3D)
+		if (_dimType == ehw::eDimensionType::_3D)
 		{
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 			LayoutDesc.AlignedByteOffset = 24;
@@ -807,16 +807,16 @@ namespace gui
 					NOTIFICATION_W(L"필수인 Vertex Shader가 설정되지 않았습니다.");
 					return;
 				}
-				shader.SetShaderKey((ehw::define::eGSStage)i, mStageNames[i]);
+				shader.SetShaderKey((ehw::eGSStage)i, mStageNames[i]);
 			}
 		}
 
 
 		{
 			int curSel = mRSTypeCombo.GetCurrentIndex();
-			if (0 <= curSel && curSel < (int)ehw::define::eRSType::END)
+			if (0 <= curSel && curSel < (int)ehw::eRSType::END)
 			{
-				ehw::define::eRSType Type = (ehw::define::eRSType)curSel;
+				ehw::eRSType Type = (ehw::eRSType)curSel;
 				shader.SetRSState(Type);
 			}
 			else
@@ -828,9 +828,9 @@ namespace gui
 
 		{
 			int curSel = mDSTypeCombo.GetCurrentIndex();
-			if (0 <= curSel && curSel < (int)ehw::define::eDSType::END)
+			if (0 <= curSel && curSel < (int)ehw::eDSType::END)
 			{
-				ehw::define::eDSType Type = (ehw::define::eDSType)curSel;
+				ehw::eDSType Type = (ehw::eDSType)curSel;
 				shader.SetDSState(Type);
 			}
 			else
@@ -843,9 +843,9 @@ namespace gui
 		{
 			int curSel = mBSTypeCombo.GetCurrentIndex();
 
-			if (0 <= curSel && curSel < (int)ehw::define::eBSType::END)
+			if (0 <= curSel && curSel < (int)ehw::eBSType::END)
 			{
-				ehw::define::eBSType Type = (ehw::define::eBSType)curSel;
+				ehw::eBSType Type = (ehw::eBSType)curSel;
 				shader.SetBSState(Type);
 			}
 			else
@@ -884,7 +884,7 @@ namespace gui
 
 		for (size_t i = 0; i < mStageNames.size(); ++i)
 		{	
-			mStageNames[i] = shader.GetShaderKey((ehw::define::eGSStage)i);
+			mStageNames[i] = shader.GetShaderKey((ehw::eGSStage)i);
 		}
 
 		mRSTypeCombo.SetCurrentIndex((int)shader.GetRSState());

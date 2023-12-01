@@ -12,7 +12,7 @@ namespace ehw
 {
 	uint ICollider2D::gColliderNumber = 0;
 	ICollider2D::ICollider2D()
-		: ICollider(define::eColliderType::None)
+		: ICollider(eColliderType::None)
 		, mTransform(nullptr)
 		, mSize(float2::One)
 		, mCenter(float2::Zero)

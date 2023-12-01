@@ -1,95 +1,111 @@
 #pragma once
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
+#ifdef _WIN64
+
 #ifdef _DEBUG
 	
-#include "CompiledShaderHeader/VS_Basic3D_Debug.h"
-#include "CompiledShaderHeader/PS_Basic3D_Debug.h"
+#include "CompiledShaderHeader/VS_Basic3D_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Basic3D_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Debug_Debug.h"
-#include "CompiledShaderHeader/PS_Debug_Debug.h"
+#include "CompiledShaderHeader/VS_Debug_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Debug_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Grid_Debug.h"
-#include "CompiledShaderHeader/PS_Grid_Debug.h"
+#include "CompiledShaderHeader/VS_Grid_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Grid_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Particle_Debug.h"
-#include "CompiledShaderHeader/GS_Particle_Debug.h"
-#include "CompiledShaderHeader/PS_Particle_Debug.h"
-#include "CompiledShaderHeader/CS_Particle_Debug.h"
+#include "CompiledShaderHeader/VS_Particle_x64_Debug.h"
+#include "CompiledShaderHeader/GS_Particle_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Particle_x64_Debug.h"
+#include "CompiledShaderHeader/CS_Particle_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_PostProcess_Debug.h"
-#include "CompiledShaderHeader/PS_PostProcess_Debug.h"
+#include "CompiledShaderHeader/VS_PostProcess_x64_Debug.h"
+#include "CompiledShaderHeader/PS_PostProcess_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Sprite_Debug.h"
-#include "CompiledShaderHeader/PS_Sprite_Debug.h"
+#include "CompiledShaderHeader/VS_Sprite_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Sprite_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Triangle_Debug.h"
-#include "CompiledShaderHeader/PS_Triangle_Debug.h"
+#include "CompiledShaderHeader/VS_Triangle_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Triangle_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_UserInterface_Debug.h"
-#include "CompiledShaderHeader/PS_UserInterface_Debug.h"
+#include "CompiledShaderHeader/VS_UserInterface_x64_Debug.h"
+#include "CompiledShaderHeader/PS_UserInterface_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Deffered_Debug.h"
-#include "CompiledShaderHeader/PS_Deffered_Debug.h"
+#include "CompiledShaderHeader/VS_Deffered_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Deffered_x64_Debug.h"
 
-//#include "CompiledShaderHeader/VS_Light_Debug.h"
-//#include "CompiledShaderHeader/PS_Light_Debug.h"
+//#include "CompiledShaderHeader/VS_Light_x64_Debug.h"
+//#include "CompiledShaderHeader/PS_Light_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_LightDir_Debug.h"
-#include "CompiledShaderHeader/PS_LightDir_Debug.h"
+#include "CompiledShaderHeader/VS_LightDir_x64_Debug.h"
+#include "CompiledShaderHeader/PS_LightDir_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_LightPoint_Debug.h"
-#include "CompiledShaderHeader/PS_LightPoint_Debug.h"
+#include "CompiledShaderHeader/VS_LightPoint_x64_Debug.h"
+#include "CompiledShaderHeader/PS_LightPoint_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Merge_Debug.h"
-#include "CompiledShaderHeader/PS_Merge_Debug.h"
+#include "CompiledShaderHeader/VS_Merge_x64_Debug.h"
+#include "CompiledShaderHeader/PS_Merge_x64_Debug.h"
 
-#include "CompiledShaderHeader/CS_Animation3D_Debug.h"
+#include "CompiledShaderHeader/CS_Animation3D_x64_Debug.h"
 
-#else
+#include "CompiledShaderHeader/CS_GPUInitSetting_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Basic3D_Release.h"
-#include "CompiledShaderHeader/PS_Basic3D_Release.h"
+#include "CompiledShaderHeader/CS_NormalConverter_x64_Debug.h"
 
-#include "CompiledShaderHeader/VS_Debug_Release.h"
-#include "CompiledShaderHeader/PS_Debug_Release.h"
+#else //_DEBUG
 
-#include "CompiledShaderHeader/VS_Grid_Release.h"
-#include "CompiledShaderHeader/PS_Grid_Release.h"
+#include "CompiledShaderHeader/VS_Basic3D_x64_Release.h"
+#include "CompiledShaderHeader/PS_Basic3D_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_Particle_Release.h"
-#include "CompiledShaderHeader/GS_Particle_Release.h"
-#include "CompiledShaderHeader/PS_Particle_Release.h"
-#include "CompiledShaderHeader/CS_Particle_Release.h"
+#include "CompiledShaderHeader/VS_Debug_x64_Release.h"
+#include "CompiledShaderHeader/PS_Debug_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_PostProcess_Release.h"
-#include "CompiledShaderHeader/PS_PostProcess_Release.h"
+#include "CompiledShaderHeader/VS_Grid_x64_Release.h"
+#include "CompiledShaderHeader/PS_Grid_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_Sprite_Release.h"
-#include "CompiledShaderHeader/PS_Sprite_Release.h"
+#include "CompiledShaderHeader/VS_Particle_x64_Release.h"
+#include "CompiledShaderHeader/GS_Particle_x64_Release.h"
+#include "CompiledShaderHeader/PS_Particle_x64_Release.h"
+#include "CompiledShaderHeader/CS_Particle_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_Triangle_Release.h"
-#include "CompiledShaderHeader/PS_Triangle_Release.h"
+#include "CompiledShaderHeader/VS_PostProcess_x64_Release.h"
+#include "CompiledShaderHeader/PS_PostProcess_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_UserInterface_Release.h"
-#include "CompiledShaderHeader/PS_UserInterface_Release.h"
+#include "CompiledShaderHeader/VS_Sprite_x64_Release.h"
+#include "CompiledShaderHeader/PS_Sprite_x64_Release.h"
 
-#include "CompiledShaderHeader/CS_Paint_Release.h"
+#include "CompiledShaderHeader/VS_Triangle_x64_Release.h"
+#include "CompiledShaderHeader/PS_Triangle_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_Deffered_Release.h"
-#include "CompiledShaderHeader/PS_Deffered_Release.h"
+#include "CompiledShaderHeader/VS_UserInterface_x64_Release.h"
+#include "CompiledShaderHeader/PS_UserInterface_x64_Release.h"
 
-//#include "CompiledShaderHeader/VS_Light_Release.h"
-//#include "CompiledShaderHeader/PS_Light_Release.h"
-#include "CompiledShaderHeader/VS_LightDir_Release.h"
-#include "CompiledShaderHeader/PS_LightDir_Release.h"
+#include "CompiledShaderHeader/CS_Paint_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_LightPoint_Release.h
-#include "CompiledShaderHeader/PS_LightPoint_Release.h"
+#include "CompiledShaderHeader/VS_Deffered_x64_Release.h"
+#include "CompiledShaderHeader/PS_Deffered_x64_Release.h"
 
-#include "CompiledShaderHeader/VS_Merge_Release.h"
-#include "CompiledShaderHeader/PS_Merge_Release.h"
+//#include "CompiledShaderHeader/VS_Light_x64_Release.h"
+//#include "CompiledShaderHeader/PS_Light_x64_Release.h"
+#include "CompiledShaderHeader/VS_LightDir_x64_Release.h"
+#include "CompiledShaderHeader/PS_LightDir_x64_Release.h"
 
-#include "CompiledShaderHeader/CS_Animation3D_Release.h"
+#include "CompiledShaderHeader/VS_LightPoint_x64_Release.h
+#include "CompiledShaderHeader/PS_LightPoint_x64_Release.h"
 
-#endif
+#include "CompiledShaderHeader/VS_Merge_x64_Release.h"
+#include "CompiledShaderHeader/PS_Merge_x64_Release.h"
+
+#include "CompiledShaderHeader/CS_Animation3D_x64_Release.h"
+
+#include "CompiledShaderHeader/CS_GPUInitSetting_x64_Release.h"
+
+#include "CompiledShaderHeader/CS_NormalConverter_x64_Release.h"
+
+#endif //_DEBUG
+
+#else //_WIN64
+
+#error "x64만 지원"
+
+#endif //_WIN64

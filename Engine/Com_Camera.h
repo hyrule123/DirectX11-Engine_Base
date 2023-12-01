@@ -29,12 +29,12 @@ namespace  ehw
 		
 		void RegisterCameraInRenderer();
 
-		void TurnLayerMask(define::eLayerType _layer, bool _enable = true);
+		void TurnLayerMask(eLayerType _layer, bool _enable = true);
 		void EnableLayerMasks() { mLayerMasks.set(); }
 		void DisableLayerMasks() { mLayerMasks.reset(); }
 
-		void SetProjectionType(define::eProjectionType _type) { mProjType = _type; CreateProjectionMatrix(); }
-		define::eProjectionType GetProjectionType() const { return mProjType; }
+		void SetProjectionType(eProjectionType _type) { mProjType = _type; CreateProjectionMatrix(); }
+		eProjectionType GetProjectionType() const { return mProjType; }
 
 		inline void SetCullEnable(bool _bCullingEnable);
 		bool IsCullEnabled() const { return mbCullEnable; }
@@ -65,7 +65,7 @@ namespace  ehw
 		MATRIX mViewInverse;
 		MATRIX mProjection;
 
-		define::eProjectionType mProjType;
+		eProjectionType mProjType;
 		std::unique_ptr<CullingAgent> mCullingAgent;
 		bool mbCullEnable;
 
@@ -75,7 +75,7 @@ namespace  ehw
 		float mFar;
 		float mScale;
 
-		std::bitset<(uint)define::eLayerType::END> mLayerMasks;
+		std::bitset<(uint)eLayerType::END> mLayerMasks;
 		std::vector<GameObject*> mDefferedOpaqueGameObjects;
 		std::vector<GameObject*> mOpaqueGameObjects;
 		std::vector<GameObject*> mCutoutGameObjects;

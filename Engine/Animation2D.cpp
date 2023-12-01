@@ -7,6 +7,7 @@
 #include "ConstBuffer.h"
 #include "json-cpp\json.h"
 
+#include "DefaultShader/Animation2D.hlsli"
 
 namespace ehw
 {
@@ -215,7 +216,7 @@ namespace ehw
 		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
-		info.animationType = (uint)define::eDimensionType::NOT_SET;
+		info.animationType = (uint)eDimensionType::NOT_SET;
 
 		cb->SetData(&info);
 		cb->BindData(eShaderStageFlag::PS);

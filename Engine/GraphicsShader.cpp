@@ -22,10 +22,6 @@ namespace ehw
 	};
 
 
-
-	
-	using namespace ehw::define;
-
 	GraphicsShader::GraphicsShader()
 		: IShader(eResourceType::GraphicsShader)
 		, mArrShaderCode{}
@@ -204,7 +200,7 @@ namespace ehw
 		IResource::Save(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
-		fullPath.replace_extension(define::strKey::Ext_ShaderSetting);
+		fullPath.replace_extension(strKey::Ext_ShaderSetting);
 
 		//파일 열고
 		std::ofstream ofs(fullPath);
@@ -234,7 +230,7 @@ namespace ehw
 		IResource::Load(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
-		fullPath.replace_extension(define::strKey::Ext_ShaderSetting);
+		fullPath.replace_extension(strKey::Ext_ShaderSetting);
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");

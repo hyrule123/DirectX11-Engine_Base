@@ -1,8 +1,10 @@
 #ifndef COMMON_HLSLI
 #define COMMON_HLSLI
 
+//C++ - HLSL 자료형 일치를 위한 헤더
+
 #ifndef __cplusplus
-#define HLSL_ONLY
+#define __HLSL
 #endif
 
 //C++
@@ -13,7 +15,7 @@ using float2 = ehw::math::Vector2;
 using float3 = ehw::math::Vector3;
 using float4 = ehw::math::Vector4;
 using MATRIX = ehw::math::Matrix;
-using uint = UINT;
+using uint = UINT32;
 
 //윈도우 쪽 헤더에 정의되어 있음
 #ifndef BOOL
