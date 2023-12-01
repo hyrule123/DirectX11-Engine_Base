@@ -341,13 +341,16 @@ bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unor
 {
 	bool bModified = false;
 
-	//타겟 파일이 존재하지 않을 경우 무조건 생성
-	if (false == stdfs::exists(_filePath))
+	stdfs::path txtPath = stdfs::path(_filePath).replace_extension(".txt");
+
+	//타겟 파일 또는 txt 파일이 존재하지 않을 경우 무조건 생성
+	if (false == stdfs::exists(_filePath) || false == stdfs::exists(txtPath))
 	{
-		return true;
+		bModified = true;
 	}
 
-	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"));
+	std::ofstream ofs(txtPath);
+	ASSERT(ofs.is_open(), "txt 파일 쓰기 모드로 열기 실패.");
 
 	//이전 파일 리스트가 비어있을 경우에는 무조건 새로 작성한다.
 	//이전 파일 리스트가 없고, 새로 발견된 파일이 없으면 갱신을 안하는 경우가 있음.
@@ -356,7 +359,7 @@ bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unor
 	{
 		bModified = true;
 	}
-	else if (ofs.is_open())
+	else
 	{
 		for (auto iter = _prevFilesList.begin(); iter != _prevFilesList.end();)
 		{
@@ -392,8 +395,8 @@ bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unor
 				break;
 			}
 		}
-		ofs.close();
 	}
+	ofs.close();
 
 	return bModified;
 }

@@ -7,21 +7,12 @@
 
 namespace ehw
 {
+	class IScene;
 	class Layer;
 	class GameObject : public Entity
 	{
 		friend class GameObject;
 		friend class EventMgr;
-	public:
-		enum class eState
-		{
-			Active,
-			Paused,
-			Dead,
-		};
-		inline static bool IsActive(eState _state) { return (eState::Active == _state); }
-		inline static bool IsDead(eState _state) { return (eState::Dead == _state); }
-		inline static bool IsPaused(eState _state) { return (eState::Paused == _state); }
 
 	public:
 		GameObject();
@@ -33,7 +24,7 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJson) override;
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 		
-		void Init();
+		void Awake();
 		void Start();
 		void Update();
 		void FixedUpdate();
@@ -50,70 +41,83 @@ namespace ehw
 		template <typename T>
 		inline T* GetComponent();
 
-		inline IComponent* GetComponent(eComponentType _type) { return mComponents[(int)_type]; }
+		inline IComponent* GetComponent(eComponentType _type) { return m_Components[(int)_type]; }
 
 		template <typename T>
 		inline eComponentType GetComponentType();
 
-		const std::vector<IComponent*>& GetComponents() { return mComponents; }
+		const std::vector<IComponent*>& GetComponents() { return m_Components; }
 		inline const std::span<IScript*> GetScripts();
 
-		void SetName(const std::string_view _Name) { mName = _Name; }
-		const std::string& GetName() const { return mName; }
+		void SetName(const std::string_view _Name) { m_Name = _Name; }
+		const std::string& GetName() const { return m_Name; }
+		
+		inline void SetActive(bool _bActive);
+		bool IsActive() const { return eState::Active == m_State; }
 
-		eState GetState() { return mState; }
-		
-		void Pause() { mState = eState::Paused; }
 		void Destroy();
+		bool IsDestroyed() const { return m_State == eState::Destroy; }
 				
-		bool IsDontDestroy() { return mbDontDestroy; }
-		void DontDestroy(bool _enable) { mbDontDestroy = _enable; }
+		bool IsDontDestroyOnSceneChange() const { return m_bDontDestroyOnSceneChange; }
+		void DontDestroyOnSceneChange(bool _enable) { m_bDontDestroyOnSceneChange = _enable; }
 		
-		eLayerType GetLayerType() const { return mLayerType; }
-		void SetLayerType(eLayerType _type) { mLayerType = _type; }
+		IScene* GetOwnerScene() const { return m_OwnerScene; }
+		void SetOwnerScene(IScene* _scene) { m_OwnerScene = _scene; }
+
+		eLayerType GetLayerType() const { return m_LayerType; }
+		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
 
 		GameObject* AddChild(GameObject* _pObj);
 
 		void GetGameObjectHierarchy(std::vector<GameObject*>& _gameObjects);
 
-		bool IsMaster() const { return (nullptr == mParent); }
-		GameObject* GetParent() { return mParent; }
-		const std::vector<GameObject*>& GetChilds() const { return mChilds; }
+		bool IsMaster() const { return (nullptr == m_Parent); }
+		GameObject* GetParent() { return m_Parent; }
+		const std::vector<GameObject*>& GetChilds() const { return m_Childs; }
 
-		void SetParent(GameObject* _pObj) { mParent = _pObj; }
+		void SetParent(GameObject* _pObj) { m_Parent = _pObj; }
 		void RemoveChild(GameObject* _pObj);
 
-		bool IsInitialized() const { return mbInitalized; }
-		bool IsStarted() const { return mbStarted; }
+		bool IsAwake() const { return m_bAwake; }
+		bool IsStarted() const { return m_bStart; }
 
 		//편의성을 위한 컴포넌트 받아오기 함수
-		ITransform* Transform() { return static_cast<ITransform*>(mComponents[(int)eComponentType::Transform]); }
-		ICollider* Collider() { return static_cast<ICollider*>(mComponents[(int)eComponentType::Collider]); }
-		IAnimator* Animator() { return static_cast<IAnimator*>(mComponents[(int)eComponentType::Animator]); }
-		ILight* Light() { return static_cast<ILight*>(mComponents[(int)eComponentType::Light]); }
+		ITransform* Transform() { return static_cast<ITransform*>(m_Components[(int)eComponentType::Transform]); }
+		ICollider* Collider() { return static_cast<ICollider*>(m_Components[(int)eComponentType::Collider]); }
+		IAnimator* Animator() { return static_cast<IAnimator*>(m_Components[(int)eComponentType::Animator]); }
+		ILight* Light() { return static_cast<ILight*>(m_Components[(int)eComponentType::Light]); }
 		
-		Com_Camera* Camera() { return static_cast<Com_Camera*>(mComponents[(int)eComponentType::Camera]); }
-		IRenderer* Renderer() { return static_cast<IRenderer*>(mComponents[(int)eComponentType::Renderer]); }
-		Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(mComponents[(int)eComponentType::AudioSource]); }
-		Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(mComponents[(int)eComponentType::AudioListener]); }
-		Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(mComponents[(int)eComponentType::BehaviorTree]); }
+		Com_Camera* Camera() { return static_cast<Com_Camera*>(m_Components[(int)eComponentType::Camera]); }
+		IRenderer* Renderer() { return static_cast<IRenderer*>(m_Components[(int)eComponentType::Renderer]); }
+		Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(m_Components[(int)eComponentType::AudioSource]); }
+		Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(m_Components[(int)eComponentType::AudioListener]); }
+		Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(m_Components[(int)eComponentType::BehaviorTree]); }
 
 	protected:
 		void DestroyRecursive();
 
 	private:
-		std::string mName;
-		eState mState;
-		eLayerType mLayerType;
+		std::string m_Name;
 
-		std::vector<IComponent*>	mComponents;
+		IScene* m_OwnerScene;
+		eLayerType m_LayerType;
 
-		GameObject* mParent;
-		std::vector<GameObject*> mChilds;
+		std::vector<IComponent*>	m_Components;
 
-		bool mbInitalized;
-		bool mbStarted;
-		bool mbDontDestroy;
+		GameObject* m_Parent;
+		std::vector<GameObject*> m_Childs;
+
+		bool m_bAwake;
+		bool m_bStart;
+
+		enum class eState
+		{
+			Active,
+			InActive,
+			Destroy
+		} m_State;
+
+		bool m_bDontDestroyOnSceneChange;
 	};
 
 
@@ -149,17 +153,18 @@ namespace ehw
 
 	inline void GameObject::DestroyRecursive()
 	{
-		mState = eState::Dead;
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		m_State = eState::Destroy;
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			mChilds[i]->DestroyRecursive();
+			m_Childs[i]->DestroyRecursive();
 		}
 	}
 
 	inline GameObject* GameObject::AddChild(GameObject* _pChild)
 	{
 		//nullptr이나 자기 자신을 인자로 호출했을 경우 오류 발생			
-		ASSERT(_pChild && this != _pChild, "child 포인터가 nullptr 이거나 자기 자신을 child로 추가했습니다.");
+		ASSERT(_pChild, "child 포인터가 nullptr 입니다.");
+		ASSERT(this != _pChild, "자기 자신을 child로 추가했습니다.");
 
 		//부모 오브젝트가 있을 경우 기존의 부모 오브젝트에서 자신을 제거한 후 여기에 추가해야함
 		GameObject* parent = _pChild->GetParent();
@@ -168,11 +173,11 @@ namespace ehw
 			parent->RemoveChild(_pChild);
 		}
 		_pChild->SetParent(this);
-		mChilds.push_back(_pChild);
+		m_Childs.push_back(_pChild);
 
-		if (mbInitalized && false == _pChild->IsInitialized())
+		if (m_bAwake && false == _pChild->IsAwake())
 		{
-			_pChild->Init();
+			_pChild->Awake();
 		}
 
 		return _pChild;
@@ -181,20 +186,20 @@ namespace ehw
 	inline void GameObject::GetGameObjectHierarchy(std::vector<GameObject*>& _gameObjects)
 	{
 		_gameObjects.push_back(this);
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			mChilds[i]->GetGameObjectHierarchy(_gameObjects);
+			m_Childs[i]->GetGameObjectHierarchy(_gameObjects);
 		}
 	}
 
 	inline void GameObject::RemoveChild(GameObject* _pObj)
 	{
-		for (auto iter = mChilds.begin(); iter != mChilds.end(); ++iter)
+		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
 		{
 			if ((*iter) == _pObj)
 			{
 				(*iter)->SetParent(nullptr);
-				mChilds.erase(iter);
+				m_Childs.erase(iter);
 				break;
 			}
 		}
@@ -209,11 +214,11 @@ namespace ehw
 		if constexpr (std::is_base_of_v<IScript, T>)
 		{
 			const std::string_view name = ComMgr::GetComName<T>();
-			for (size_t i = (size_t)eComponentType::Scripts; i < mComponents.size(); ++i)
+			for (size_t i = (size_t)eComponentType::Scripts; i < m_Components.size(); ++i)
 			{
-				if (name == mComponents[i]->GetKey())
+				if (name == m_Components[i]->GetKey())
 				{
-					pCom = static_cast<T*>(mComponents[i]);
+					pCom = static_cast<T*>(m_Components[i]);
 					break;
 				}
 			}
@@ -221,12 +226,12 @@ namespace ehw
 		else
 		{
 			eComponentType ComType = GetComponentType<T>();
-			if (mComponents[(int)ComType])
+			if (m_Components[(int)ComType])
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast해도 안전
-				if (ComMgr::GetComTypeID<T>() == mComponents[(int)ComType]->GetComTypeID())
+				if (ComMgr::GetComTypeID<T>() == m_Components[(int)ComType]->GetComTypeID())
 				{
-					pCom = static_cast<T*>(mComponents[(int)ComType]);
+					pCom = static_cast<T*>(m_Components[(int)ComType]);
 				}
 			}
 		}
@@ -287,11 +292,11 @@ namespace ehw
 	{
 		std::span<IScript*> scriptSpan{};
 
-		int ScriptSize = (int)mComponents.size() - (int)eComponentType::Scripts;
+		int ScriptSize = (int)m_Components.size() - (int)eComponentType::Scripts;
 		if (0 < ScriptSize)
 		{
 			scriptSpan =
-				std::span<IScript*>((IScript**)mComponents.data() + (size_t)eComponentType::Scripts, (size_t)ScriptSize);
+				std::span<IScript*>((IScript**)m_Components.data() + (size_t)eComponentType::Scripts, (size_t)ScriptSize);
 		}
 
 		return scriptSpan;

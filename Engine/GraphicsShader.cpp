@@ -73,17 +73,17 @@ namespace ehw
 			desc.InputSlotClass = mInputLayoutDescs[i].InputSlotClass;
 			desc.InstanceDataStepRate = mInputLayoutDescs[i].InstanceDataStepRate;
 
-			std::string converted = Json::MH::ConvertWrite(desc);
+			std::string converted = Json::SaveLoad::ConvertWrite(desc);
 
 			InputElement.append(converted);
 
 			jsonInputLayouts.append(InputElement);
 		}
 
-		//Json::MH::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));
+		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));
 
 		//토폴로지
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mTopology));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mTopology));
 
 		//쉐이더 파일명
 		{
@@ -95,9 +95,9 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mRSType));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mDSType));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mBSType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRSType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mDSType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mBSType));
 
 		return eResult::Success;
 	}
@@ -137,7 +137,7 @@ namespace ehw
 
 					const auto& pair = mSemanticNames.insert((*iter)[0].asString());
 
-					D3D11InputElementDescWithoutName descValue = Json::MH::ConvertRead<D3D11InputElementDescWithoutName>((*iter)[1]);
+					D3D11InputElementDescWithoutName descValue = Json::SaveLoad::ConvertRead<D3D11InputElementDescWithoutName>((*iter)[1]);
 
 					D3D11_INPUT_ELEMENT_DESC desc{};
 					desc.SemanticName = pair.first->c_str();
@@ -154,11 +154,11 @@ namespace ehw
 		}
 
 		//토폴로지
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mTopology));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mTopology));
 
 		//쉐이더
 		{
-			const std::vector<std::string>& vecStrKey = Json::MH::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mArrShaderCode));
+			const std::vector<std::string>& vecStrKey = Json::SaveLoad::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mArrShaderCode));
 
 			//에딧 모드가 아닐 경우에만 로드
 			for (size_t i = 0; i < mArrShaderCode.size(); ++i)
@@ -178,9 +178,9 @@ namespace ehw
 		}
 
 		//RS, DS, BS
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mRSType));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mDSType));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mBSType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRSType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mDSType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mBSType));
 
 		if (false == mbEditMode)
 		{

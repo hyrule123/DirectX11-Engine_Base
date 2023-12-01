@@ -10,7 +10,7 @@ namespace gui
 		EditorObject();
 		virtual ~EditorObject();
 
-		void Init();
+		void Awake();
 		void Update();
 		void FixedUpdate();
 		void Render();

@@ -54,7 +54,7 @@ namespace ehw
 
 		Json::Value& jVal = *_pJVal;
 
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mAttribute));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mAttribute));
 
 		return eResult::Success;
 	}
@@ -75,12 +75,12 @@ namespace ehw
 			return result;
 		}
 	
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute));
 
 		SetLightType((eLightType)mAttribute.lightType);
 
 		//불러오기 실패 시 기본값으로 적용
-		if (false == Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute.lightType)))
+		if (false == Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute.lightType)))
 		{
 			mAttribute.lightType = (int)eLightType::Directional;
 		}

@@ -102,6 +102,6 @@ namespace ehw
 		//OnEnter 호출
 		mActiveScene->OnEnter();
 
-		mActiveScene->SceneInit();
+		mActiveScene->SceneAwake();
 	}
 }

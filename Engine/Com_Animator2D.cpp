@@ -97,9 +97,7 @@ namespace ehw
 	{
 		return eResult();
 	}
-	void Com_Animator2D::Init()
-	{
-	}
+
 	void Com_Animator2D::Update()
 	{
 		if (mActiveAnimation == nullptr)

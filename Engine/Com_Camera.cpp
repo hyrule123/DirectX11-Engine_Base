@@ -43,7 +43,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Camera::Init()
+	void Com_Camera::Awake()
 	{
 	}
 
@@ -368,7 +368,7 @@ namespace ehw
 
 	void Com_Camera::PushGameObjectToRenderingModes(GameObject* _gameObj)
 	{
-		if (nullptr == _gameObj || GameObject::eState::Active != _gameObj->GetState())
+		if (nullptr == _gameObj || false == _gameObj->IsActive())
 			return;
 
 		IRenderer* renderer = _gameObj->Renderer();

@@ -36,7 +36,10 @@ namespace ehw
 		//Sprite Material을 받아온다
 		std::shared_ptr<Material> material = ResourceMgr::Find<Material>(strKey::Default::material::SpriteMaterial);
 		SetMaterial(material, 0);
+	}
 
+	void Com_Renderer_Sprite::Awake()
+	{
 		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
 	}
 

@@ -16,6 +16,7 @@ namespace ehw
 		virtual ~Com_Renderer_Sprite();
 		
 		virtual void Init() override;
+		virtual void Awake() override;
 		//virtual void Update() override;
 		virtual void FixedUpdate() override;
 		virtual void Render() override;

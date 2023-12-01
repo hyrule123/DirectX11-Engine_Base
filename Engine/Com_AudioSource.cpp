@@ -70,13 +70,6 @@ namespace ehw
 
 	}
 
-	void Com_AudioSource::Init()
-	{
-	}
-
-	void Com_AudioSource::Update()
-	{
-	}
 
 	void Com_AudioSource::FixedUpdate()
 	{

@@ -8,7 +8,7 @@ namespace gui
 
 	guiEntity::guiEntity(const std::string_view _strName)
 		: mID(++gIDNext)
-		, mName(_strName)
+		, m_Name(_strName)
 		, mStrKey(_strName)
 		, mbSaveEnable()	
 	{

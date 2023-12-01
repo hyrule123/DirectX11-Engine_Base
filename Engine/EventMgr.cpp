@@ -73,14 +73,14 @@ namespace ehw
 
 		//이미 삭제 대기 상태에 들어가 있는 경우 추가로 등록하지 않음.
 		//중복 삭제 방지(댕글링 포인터 위험)
-		if (GameObject::eState::Dead == _pObj->GetState())
+		if (_pObj->IsDestroyed())
 			return;
 
 		_pObj->DestroyRecursive();
 
 		//만약 부모 오브젝트는 삭제 대상이 아닐 경우 부모로부터 연결 해제
 		GameObject* pParent = _pObj->GetParent();
-		if (pParent && GameObject::eState::Dead != pParent->GetState())
+		if (pParent && false == _pObj->IsDestroyed())
 		{
 			pParent->RemoveChild(_pObj);
 		}
@@ -184,7 +184,7 @@ namespace ehw
 		IScene* scene = SceneMgr::GetActiveScene();
 		ASSERT(scene, "scene이 없습니다.");
 
-		if (false == scene->IsInitialized())
+		if (false == scene->IsAwaken())
 		{
 			scene->AddGameObject(_layer, _gameObj);
 		}

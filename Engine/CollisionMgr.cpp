@@ -69,14 +69,14 @@ namespace ehw
 
 		for (GameObject* left : lefts)
 		{
-			if (left->GetState() != GameObject::eState::Active)
+			if (false == left->IsActive())
 				continue;
 			if (left->GetComponent<ICollider2D>() == nullptr)
 				continue;
 
 			for (GameObject* right : rights)
 			{
-				if (right->GetState() != GameObject::eState::Active)
+				if (false == left->IsActive())
 					continue;
 				if (right->GetComponent<ICollider2D>() == nullptr)
 					continue;

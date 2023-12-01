@@ -27,7 +27,7 @@ namespace ehw
 
 	}
 
-	void GridScript::Init()
+	void GridScript::Awake()
 	{
 		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
 		mCamera = RenderMgr::GetCamera(0);

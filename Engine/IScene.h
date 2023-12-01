@@ -13,7 +13,7 @@ namespace ehw
 		virtual ~IScene();
 
 		//실제 로직은 여기서
-		void SceneInit();
+		void SceneAwake();
 		void SceneUpdate();
 		void SceneFixedUpdate();
 		void SceneRender();
@@ -22,7 +22,7 @@ namespace ehw
 
 		//아래 함수를 재정의해서 씬을 커스터마이즈 하면 됨
 		virtual void OnEnter() = 0;//리소스 로드
-		virtual void Init() {};//몬스터 배치
+
 		virtual void Update() {};
 		virtual void FixedUpdate() {};
 		virtual void Render() {};
@@ -36,18 +36,18 @@ namespace ehw
 		inline void	ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj);
 		inline void	MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj);
 
-		Layer&							GetLayer(eLayerType _type) { return mLayers[(uint)_type]; }
+		Layer&							GetLayer(eLayerType _type) { return m_Layers[(uint)_type]; }
 		std::vector<GameObject*>		GetDontDestroyGameObjects();
 		const std::vector<GameObject*>& GetGameObjects(const eLayerType _type);
 
 
-		bool	IsInitialized() const { return mbInitialized; }
+		bool	IsAwaken() const { return m_bAwake; }
 
 
 
 	private:
-		std::array<Layer, (int)eLayerType::END> mLayers;
-		bool mbInitialized;
+		std::array<Layer, (int)eLayerType::END> m_Layers;
+		bool m_bAwake;
 	};
 
 	inline void IScene::AddGameObject(const eLayerType _type, GameObject* _gameObj)

@@ -110,8 +110,8 @@ namespace ehw
         Json::Value& jVal = *_pJVal;
 
         //단순 Value의 경우에는 매크로로 바로 저장 가능
-        Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mCB));
-        Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mMode));
+        Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mCB));
+        Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mMode));
 
 
         //포인터의 경우에는 포인터 자체를 저장하는게 아니라 Key를 저장
@@ -119,7 +119,7 @@ namespace ehw
         {
             jVal[JSON_KEY(mShader)] = mShader->GetKey();
         }
-        Json::MH::SavePtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
+        Json::SaveLoad::SavePtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
 
         return eResult::Success;
     }
@@ -141,11 +141,11 @@ namespace ehw
         const Json::Value& jVal = *_pJVal;
 
         //단순 Value의 경우에는 함수로 바로 불러오기 가능
-        Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mMode));
-        Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mCB));
+        Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mMode));
+        Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mCB));
 
         //쉐이더 데이터가 있는지 확인하고 가져온 키값으로 쉐이더를 로드
-        std::string shaderStrKey = Json::MH::LoadPtrStrKey(_pJVal, JSON_KEY_PAIR(mShader));
+        std::string shaderStrKey = Json::SaveLoad::LoadPtrStrKey(_pJVal, JSON_KEY_PAIR(mShader));
         if (false == shaderStrKey.empty())
         {
             //쉐이더는 Base Path를 사용하지 않는다
@@ -153,7 +153,7 @@ namespace ehw
         }
         
         //포인터 배열은 MH::LoadPtrStrKeyVector 함수를 통해서 Key값을 싹 받아올 수 있음.
-        const auto& vecLoad = Json::MH::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
+        const auto& vecLoad = Json::SaveLoad::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
         for (size_t i = 0; i < vecLoad.size(); ++i)
         {
             if (false == vecLoad[i].empty())

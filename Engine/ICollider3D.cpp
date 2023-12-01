@@ -39,7 +39,7 @@ namespace ehw
 
 		//Json::Value& jVal = *_pJVal;
 
-		//Json::MH::SaveValue(_pJVal, JSONVAL(mType));
+		//Json::SaveLoad::SaveValue(_pJVal, JSONVAL(mType));
 
 		return eResult::Success;
 	}
@@ -61,7 +61,7 @@ namespace ehw
 
 		//const Json::Value& jVal = (*_pJVal);
 
-		//Json::MH::LoadValue(_pJVal, JSONVAL(mType));
+		//Json::SaveLoad::LoadValue(_pJVal, JSONVAL(mType));
 		
 		return eResult::Success;
 	}

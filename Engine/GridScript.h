@@ -10,7 +10,7 @@ namespace ehw
 		GridScript();
 		virtual ~GridScript();
 
-		virtual void Init();
+		virtual void Awake();
 		virtual void Update();
 
 		void SetCamera(Com_Camera* camera) { mCamera = camera; }

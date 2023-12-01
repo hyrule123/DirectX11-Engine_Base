@@ -10,7 +10,7 @@ namespace ehw
 {
 
 	Layer::Layer()
-		: mLayerType()
+		: m_LayerType()
 		, mGameObjects{}
 	{
 	}
@@ -29,12 +29,12 @@ namespace ehw
 		}
 	}
 
-	void Layer::Init()
+	void Layer::Awake()
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster())
-				mGameObjects[i]->Init();
+			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
+				mGameObjects[i]->Awake();
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster() && GameObject::eState::Active == mGameObjects[i]->GetState())
+			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
 				mGameObjects[i]->Update();
 		}
 	}
@@ -51,7 +51,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster() && GameObject::eState::Active == mGameObjects[i]->GetState())
+			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
 				mGameObjects[i]->FixedUpdate();
 		}
 
@@ -64,7 +64,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (GameObject::eState::Active == mGameObjects[i]->GetState())
+			if (mGameObjects[i]->IsActive())
 				mGameObjects[i]->Render();
 		}
 	}
@@ -76,7 +76,7 @@ namespace ehw
 			[&](GameObject* _obj)->bool
 			{
 				bool bRet = false;
-				if (GameObject::eState::Dead == _obj->GetState())
+				if (_obj->IsDestroyed())
 				{
 					if (_obj->IsMaster())
 						masterObjects.push_back(_obj);
@@ -95,12 +95,13 @@ namespace ehw
 
 	void Layer::AddGameObject(GameObject* gameObject)
 	{
-		if (gameObject == nullptr)
-			return;
+		ASSERT(gameObject, "GameObject가 nullptr 입니다.");
 
 		mGameObjects.push_back(gameObject);
-		gameObject->SetLayerType(mLayerType);
-		gameObject->Init();
+		gameObject->SetLayerType(m_LayerType);
+
+		if(gameObject->IsActive() && false == gameObject->IsAwake())
+			gameObject->Awake();
 	}
 
 	void Layer::RemoveGameObject(const GameObject* gameObject)
@@ -132,7 +133,7 @@ namespace ehw
 				[&](GameObject* _obj)
 				{
 					bool result = false;
-					if (_obj && _obj->IsDontDestroy())
+					if (_obj && _obj->IsDontDestroyOnSceneChange())
 					{
 						donts.push_back(_obj);
 						result = true;

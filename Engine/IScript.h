@@ -12,8 +12,8 @@ namespace ehw
 		IScript(const IScript& _other) = default;
 		virtual ~IScript();
 
-		virtual void OnCreate() {};
-		virtual void Init() override {};
+		virtual void Init() {};
+		virtual void Awake() override {};
 		virtual void Update() override {};
 		virtual void FixedUpdate() final {};
 

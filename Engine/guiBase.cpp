@@ -9,8 +9,8 @@ namespace gui
 {
 	guiBase::guiBase(const std::string_view _strName)
 		: guiEntity(_strName)
-		, mParent()
-		, mChilds{}
+		, m_Parent()
+		, m_Childs{}
 		, mbNoChild()
 		, mbEnable(true)
 	{
@@ -18,10 +18,10 @@ namespace gui
 
 	guiBase::~guiBase()
 	{
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			if (mChilds[i])
-				delete mChilds[i];
+			if (m_Childs[i])
+				delete m_Childs[i];
 		}
 	}
 	ehw::eResult guiBase::SaveJson(Json::Value* _pJval)
@@ -33,12 +33,12 @@ namespace gui
 		if (eResultFail(result))
 			return result;
 
-		Json::MH::SaveValue(_pJval, JSON_KEY_PAIR(mbEnable));
+		Json::SaveLoad::SaveValue(_pJval, JSON_KEY_PAIR(mbEnable));
 
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			if (mChilds[i])
-				mChilds[i]->SaveJson(_pJval);
+			if (m_Childs[i])
+				m_Childs[i]->SaveJson(_pJval);
 		}
 
 		return ehw::eResult::Success;
@@ -52,12 +52,12 @@ namespace gui
 		if (eResultFail(result))
 			return result;
 
-		Json::MH::LoadValue(_pJval, JSON_KEY_PAIR(mbEnable));
+		Json::SaveLoad::LoadValue(_pJval, JSON_KEY_PAIR(mbEnable));
 
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			if (mChilds[i])
-				mChilds[i]->LoadJson(_pJval);
+			if (m_Childs[i])
+				m_Childs[i]->LoadJson(_pJval);
 		}
 
 		return ehw::eResult::Success;
@@ -65,9 +65,9 @@ namespace gui
 	void guiBase::InitRecursive()
 	{
 		Init();
-		for (size_t i = 0; i < mChilds.size(); ++i)
+		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
-			mChilds[i]->InitRecursive();
+			m_Childs[i]->InitRecursive();
 		}
 	}
 	void guiBase::FixedUpdate()
@@ -81,9 +81,9 @@ namespace gui
 		if (true == BeginUI())
 		{
 			UpdateUI();
-			for (size_t i = 0; i < mChilds.size(); ++i)
+			for (size_t i = 0; i < m_Childs.size(); ++i)
 			{
-				mChilds[i]->FixedUpdate();
+				m_Childs[i]->FixedUpdate();
 			}
 
 			EndUI();
@@ -96,19 +96,19 @@ namespace gui
 		{
 			_pChild->MakeUniqueKeyByName();
 			_pChild->SetParent(this);
-			mChilds.push_back(_pChild);
+			m_Childs.push_back(_pChild);
 		}
 	}
 
 
 	void guiBase::RemoveChild(guiBase* _pChild)
 	{
-		for (auto iter = mChilds.begin(); iter != mChilds.end(); ++iter)
+		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
 		{
 			if ((*iter) == _pChild)
 			{
 				(*iter)->SetParent(nullptr);
-				mChilds.erase(iter);
+				m_Childs.erase(iter);
 				break;
 			}
 		}

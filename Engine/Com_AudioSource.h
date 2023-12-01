@@ -19,8 +19,6 @@ namespace ehw
 
 		virtual ~Com_AudioSource();
 
-		virtual void Init() override;
-		virtual void Update() override;
 		virtual void FixedUpdate() override;
 
 		void Play();

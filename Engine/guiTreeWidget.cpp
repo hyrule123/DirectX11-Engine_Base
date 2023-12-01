@@ -7,14 +7,14 @@ namespace gui
 		: guiEntity("")
 		, mTreeWidget(nullptr)
 		, mData{}
-		, mParent(nullptr)
+		, m_Parent(nullptr)
 		, mbSelected(false)
 		, mbStem(false)
 	{
 	}
 	TreeWidget::tNode::~tNode()
 	{
-		for (tNode* child : mChilds)
+		for (tNode* child : m_Childs)
 		{
 			delete child;
 			child = nullptr;
@@ -35,11 +35,11 @@ namespace gui
 		{
 			flag |= ImGuiTreeNodeFlags_Selected;
 		}
-		if (mChilds.empty())
+		if (m_Childs.empty())
 		{
 			flag |= ImGuiTreeNodeFlags_Leaf;
 		}
-		if (mbStem && mChilds.empty())
+		if (mbStem && m_Childs.empty())
 		{
 			SetKey("\t" + GetKey());
 		}
@@ -50,7 +50,7 @@ namespace gui
 				mTreeWidget->SetSelectedNode(this);
 			}
 
-			for (tNode* node : mChilds)
+			for (tNode* node : m_Childs)
 			{
 				node->UpdateUI();
 			}
@@ -61,8 +61,8 @@ namespace gui
 
 	void TreeWidget::tNode::AddNode(tNode* node)
 	{
-		node->mParent = this;
-		mChilds.push_back(node);
+		node->m_Parent = this;
+		m_Childs.push_back(node);
 	}
 
 	// Tree

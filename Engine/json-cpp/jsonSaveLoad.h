@@ -32,7 +32,7 @@ namespace Json
 	template <typename T>
 	inline constexpr bool need_base64_v = need_base64<T>::value;
 
-	class MH
+	class SaveLoad
 	{
 	public:
 		template <typename T, typename std::enable_if_t<(
@@ -293,8 +293,8 @@ namespace Json
 
 	private:
 
-		MH() = delete;
-		~MH() = delete;
+		SaveLoad() = delete;
+		~SaveLoad() = delete;
 	};
 
 	////Value가 들어있는 map만

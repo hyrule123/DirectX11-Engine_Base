@@ -19,7 +19,7 @@ namespace gui
 
 		UINT32 GetID() const { return mID; }
 
-		const std::string& GetName() const { return mName; }
+		const std::string& GetName() const { return m_Name; }
 
 		void MakeUniqueKeyByName() { mStrKey += "##"; mStrKey += std::to_string(mID); }
 		void SetKey(const std::string_view _strKey) { mStrKey = _strKey; }
@@ -33,7 +33,7 @@ namespace gui
 		const UINT32				mID;
 
 		//이름(중복 가능)
-		std::string					mName;
+		std::string					m_Name;
 		
 		//Key(중복 불가)
 		std::string					mStrKey;

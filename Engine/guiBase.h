@@ -33,13 +33,13 @@ namespace gui
 		virtual void EndUI() = 0;
 
 
-		guiBase* GetParent() { return mParent; }
+		guiBase* GetParent() { return m_Parent; }
 
 		template <typename T>
 		T* AddChild();
 		void AddChild(guiBase* _pChild);
 
-		void ReserveChildsVector(size_t _size) { mChilds.reserve(_size); }
+		void ReserveChildsVector(size_t _size) { m_Childs.reserve(_size); }
 
 		bool GetEnable() { return mbEnable; }
 		bool* GetEnablePtr() { return &mbEnable; }
@@ -52,14 +52,14 @@ namespace gui
 		//void LoadRecursive(Json::Value& _Node);
 
 		void SetNoChild(bool _bNoChild) { mbNoChild = _bNoChild; }
-		void SetParent(guiBase* _Parent) { mParent = _Parent; }
-		const std::vector<guiBase*>& GetChilds() { return mChilds; }
+		void SetParent(guiBase* _Parent) { m_Parent = _Parent; }
+		const std::vector<guiBase*>& GetChilds() { return m_Childs; }
 		void RemoveChild(guiBase* _pChild);
 
 
 	private:
-		guiBase* mParent;
-		std::vector<guiBase*>		mChilds;		// 자식 guiBase 목록
+		guiBase* m_Parent;
+		std::vector<guiBase*>		m_Childs;		// 자식 guiBase 목록
 		bool						mbNoChild;		// 자식 노드가 들어갈 수 없는 노드로 설정
 
 		bool						mbEnable;

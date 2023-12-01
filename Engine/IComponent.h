@@ -21,8 +21,10 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJson) override;
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 
-		virtual void OnCreate() {};
 		virtual void Init() {};
+		virtual void Awake() {};
+		virtual void OnEnable() {};
+		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
 		virtual void FixedUpdate() = 0;

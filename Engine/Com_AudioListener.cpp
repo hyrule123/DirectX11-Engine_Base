@@ -25,7 +25,7 @@ namespace ehw
 
 	}
 
-	void Com_AudioListener::Init()
+	void Com_AudioListener::Awake()
 	{
 
 	}

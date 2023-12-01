@@ -18,7 +18,7 @@ namespace  ehw
 		__forceinline static void SetGpuViewMatrix(MATRIX _view) { gView = _view; }
 		__forceinline static void SetGpuProjectionMatrix(MATRIX _projection) { gProjection = _projection; }
 
-		virtual void Init() override;
+		virtual void Awake() override;
 		virtual void Update() override;
 		virtual void FixedUpdate() override;
 

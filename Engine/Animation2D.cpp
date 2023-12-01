@@ -61,7 +61,7 @@ namespace ehw
 		//	//3. 순회돌면서 하나씩 추가한다.
 		//	jVal.append(Json::ConvertWrite(mSpriteSheet[i]));
 		//}
-		Json::MH::SaveValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
+		Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
 
 
 		return eResult::Success;
@@ -80,7 +80,7 @@ namespace ehw
 		}
 		const Json::Value& jVal = (*_pJVal);
 
-		const auto& SpriteData = Json::MH::LoadValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
+		const auto& SpriteData = Json::SaveLoad::LoadValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
 		mSpriteSheet = std::move(SpriteData);
 
 		

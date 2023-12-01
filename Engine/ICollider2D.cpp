@@ -54,12 +54,12 @@ namespace ehw
 
 		Json::Value& jVal = *_pJVal;
 
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mType));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mSize));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mCenter));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mPosition));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::MH::SaveValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mSize));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mCenter));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mPosition));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRadius));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
 
 		return eResult::Success;
 	}
@@ -79,12 +79,12 @@ namespace ehw
 
 		const Json::Value& jVal = (*_pJVal);
 
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mType));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mSize));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mCenter));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mPosition));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::MH::LoadValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mSize));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mCenter));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mPosition));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRadius));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
 
 		mID = gColliderNumber++;
 
@@ -100,7 +100,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void ICollider2D::Init()
+	void ICollider2D::Awake()
 	{
 		mTransform = GetOwner()->GetComponent<Com_Transform>();
 	}

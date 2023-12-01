@@ -20,13 +20,13 @@ namespace gui
 			void SetStem(bool bEnable) { mbStem = bEnable; }
 
 			void AddNode(tNode* node);
-			const std::vector<tNode*>& GetChilds() { return mChilds; }
+			const std::vector<tNode*>& GetChilds() { return m_Childs; }
 
 			TreeWidget* mTreeWidget;
 			ehw::tDataPtr mData;
 
-			tNode* mParent;
-			std::vector<tNode*> mChilds;
+			tNode* m_Parent;
+			std::vector<tNode*> m_Childs;
 
 			bool mbStem;
 			bool mbSelected;

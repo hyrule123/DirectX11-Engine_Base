@@ -6,11 +6,11 @@
 namespace ehw
 {
 	IScene::IScene()
-		: mbInitialized()
+		: m_bAwake(false)
 	{
-		for (size_t i = 0; i < mLayers.size(); ++i)
+		for (size_t i = 0; i < m_Layers.size(); ++i)
 		{
-			mLayers[i].SetLayerType((eLayerType)i);
+			m_Layers[i].SetLayerType((eLayerType)i);
 		}
 	}
 
@@ -18,22 +18,23 @@ namespace ehw
 	{
 	}
 
-	void IScene::SceneInit()
+	void IScene::SceneAwake()
 	{
-		if (mbInitialized)
+		if (m_bAwake)
 			return;
-		mbInitialized = true;
-		Init();
-		for (Layer& layer : mLayers)
+
+		m_bAwake = true;
+		
+		for (Layer& layer : m_Layers)
 		{
-			layer.Init();
+			layer.Awake();
 		}
 	}
 	void IScene::SceneUpdate()
 	{
 		Update();
 
-		for (Layer& layer : mLayers)
+		for (Layer& layer : m_Layers)
 		{
 			layer.Update();
 		}
@@ -41,7 +42,7 @@ namespace ehw
 	void IScene::SceneFixedUpdate()
 	{
 		FixedUpdate();
-		for (Layer& layer : mLayers)
+		for (Layer& layer : m_Layers)
 		{
 			layer.FixedUpdate();
 		}
@@ -49,7 +50,7 @@ namespace ehw
 	void IScene::SceneRender()
 	{
 		Render();
-		for (Layer& layer : mLayers)
+		for (Layer& layer : m_Layers)
 		{
 			layer.Render();
 		}
@@ -57,7 +58,7 @@ namespace ehw
 	void IScene::SceneDestroy()
 	{
 		Destroy();
-		for (Layer& layer : mLayers)
+		for (Layer& layer : m_Layers)
 		{
 			layer.Destroy();
 		}
@@ -70,7 +71,7 @@ namespace ehw
 	std::vector<GameObject*> IScene::GetDontDestroyGameObjects()
 	{
 		std::vector<GameObject*> gameObjects;
-		for (Layer& layer : mLayers)
+		for (Layer& layer : m_Layers)
 		{
 			std::vector<GameObject*> dontGameObjs
 				= layer.GetDontDestroyGameObjects();
@@ -84,6 +85,6 @@ namespace ehw
 	}
 	const std::vector<GameObject*>& IScene::GetGameObjects(const eLayerType _type)
 	{
-		return mLayers[(uint)_type].GetGameObjects();
+		return m_Layers[(uint)_type].GetGameObjects();
 	}
 }

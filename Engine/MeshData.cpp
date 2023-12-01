@@ -120,7 +120,7 @@ namespace ehw
 			if (eResultFail(result))
 				return result;
 		}
-		Json::MH::SavePtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
+		Json::SaveLoad::SavePtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
 
 
 
@@ -139,7 +139,7 @@ namespace ehw
 			{
 				return result;
 			}
-			Json::MH::SavePtrStrKey(&meshCont, JSON_KEY(pMesh), mMeshContainers[i].pMesh);
+			Json::SaveLoad::SavePtrStrKey(&meshCont, JSON_KEY(pMesh), mMeshContainers[i].pMesh);
 
 			Json::Value& arrMtrl = meshCont[JSON_KEY(pMaterials)];
 			//Material 저장
@@ -188,13 +188,13 @@ namespace ehw
 			tMeshContainer cont{};
 
 			//Mesh
-			std::string meshStrKey = Json::MH::LoadPtrStrKey(&(*iter), JSON_KEY(pMesh), cont.pMesh);
+			std::string meshStrKey = Json::SaveLoad::LoadPtrStrKey(&(*iter), JSON_KEY(pMesh), cont.pMesh);
 			cont.pMesh = ResourceMgr::Load<Mesh>(meshStrKey);
 			if (nullptr == cont.pMesh)
 				return eResult::Fail_Empty;
 
 			//Materials
-			const auto& materialsStrKey = Json::MH::LoadPtrStrKeyVector(&(*iter), JSON_KEY(pMaterials), cont.pMaterials);
+			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(pMaterials), cont.pMaterials);
 			for (size_t i = 0; i < materialsStrKey.size(); ++i)
 			{
 				std::shared_ptr<Material> mtrl = ResourceMgr::Load<Material>(materialsStrKey[i]);
@@ -205,7 +205,7 @@ namespace ehw
 			mMeshContainers.push_back(cont);
 		}
 
-		const std::string& skeletonKey = Json::MH::LoadPtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
+		const std::string& skeletonKey = Json::SaveLoad::LoadPtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
 		if (false == skeletonKey.empty())
 		{
 			mSkeleton = std::make_shared<Skeleton>();

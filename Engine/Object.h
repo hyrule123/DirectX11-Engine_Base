@@ -30,6 +30,6 @@ namespace ehw::object
 	//	if (_gameObject == nullptr)
 	//		return;
 
-	//	_gameObject->DontDestroy(true);
+	//	_gameObject->DontDestroyOnSceneChange(true);
 	//}
 }

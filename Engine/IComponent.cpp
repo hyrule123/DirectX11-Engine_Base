@@ -35,7 +35,7 @@ namespace ehw
 			return result;
 		}
 
-		Json::MH::SaveValue(_pJson, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(mType));
 
 		return eResult::Success;
 	}
