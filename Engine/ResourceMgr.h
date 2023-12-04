@@ -85,7 +85,7 @@ namespace ehw
 			return eResourceType::GraphicsShader;
 		}
 
-		//컴퓨트쉐이더는 상속관계를 가질수있으므로 is_base_of_v를 사용.
+		//컴퓨트쉐이더는 상속관계를 가질수 있으므로 is_base_of_v를 사용.
 		else if constexpr (std::is_base_of_v<ComputeShader, T>)
 		{
 			return eResourceType::ComputeShader;
@@ -137,6 +137,15 @@ namespace ehw
 		
 		if (iter == mArrRes[(int)ResType].end())
 			return nullptr;
+
+		//컴퓨트쉐이더는 상속구조를 가질수 있으므로 실제 타입의 ID를 비교한 후, 다르면 nullptr 반환
+		if constexpr (std::is_base_of_v<ComputeShader, T>)
+		{
+			if (typeid(T) != std::static_pointer_cast<ComputeShader>(iter->second)->GetLeafTypeID())
+			{
+				return nullptr;
+			}
+		}
 
 		return std::static_pointer_cast<T, IResource>(iter->second);
 	}

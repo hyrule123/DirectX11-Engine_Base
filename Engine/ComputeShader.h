@@ -15,7 +15,7 @@ namespace ehw
 	class ComputeShader : public IShader
 	{
 	public:
-		ComputeShader(uint3 _threadsPerGroup);
+		ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
 		virtual ~ComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
@@ -34,6 +34,8 @@ namespace ehw
 
 		void OnExcute();
 
+		const std::type_info& GetLeafTypeID() const { return m_LeafTypeID; }
+
 
 	protected:
 		virtual bool BindData() = 0;
@@ -43,8 +45,10 @@ namespace ehw
 		eResult CreateShader(const void* _pByteCode, size_t _ByteCodeSize);
 
 	private:
-		Microsoft::WRL::ComPtr<ID3DBlob> mCSBlob;
-		Microsoft::WRL::ComPtr<ID3D11ComputeShader> mCS;
+		const std::type_info& m_LeafTypeID;
+
+		Microsoft::WRL::ComPtr<ID3DBlob> m_CSBlob;
+		Microsoft::WRL::ComPtr<ID3D11ComputeShader> m_CS;
 
 		//스레드 갯수, 그룹 갯수 등 여기 저장
 		tCB_ComputeShader mCB_ComputeShader;

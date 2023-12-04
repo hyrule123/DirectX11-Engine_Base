@@ -13,7 +13,7 @@
 namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(uint3{32, 32, 1})
+		: ComputeShader(typeid(NormalConvertShader), uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		

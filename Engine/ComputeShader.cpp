@@ -14,10 +14,11 @@
 
 namespace ehw
 {
-	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
+	ComputeShader::ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
 		: IShader(eResourceType::ComputeShader)
-		, mCSBlob(nullptr)
-		, mCS(nullptr)
+		, m_LeafTypeID(_typeID)
+		, m_CSBlob(nullptr)
+		, m_CS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }
 	{
 		//스레드가 하나라도 0이 들어있으면 안됨
@@ -46,7 +47,7 @@ namespace ehw
 			ehw::SHADER_VERSION::CS, 
 			0, 
 			0, 
-			mCSBlob.GetAddressOf(), 
+			m_CSBlob.GetAddressOf(), 
 			mErrorBlob.GetAddressOf())))
 		{
 			std::string ErrMsg = "Failed to compile Compute GraphicsShader!\n\n";
@@ -68,7 +69,7 @@ namespace ehw
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
 		SetEngineDefaultRes(true);
 
-		HRESULT hr = D3DCreateBlob(_ByteCodeSize, mCSBlob.ReleaseAndGetAddressOf());
+		HRESULT hr = D3DCreateBlob(_ByteCodeSize, m_CSBlob.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
 			ERROR_MESSAGE_W(L"GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
@@ -76,9 +77,9 @@ namespace ehw
 			return eResult::Fail_Create;
 		}
 
-		unsigned char* pCode = reinterpret_cast<unsigned char*>(mCSBlob->GetBufferPointer());
+		unsigned char* pCode = reinterpret_cast<unsigned char*>(m_CSBlob->GetBufferPointer());
 		//할당된 메모리 사이즈는 무조건 같아야 함
-		size_t DestSize = mCSBlob->GetBufferSize();
+		size_t DestSize = m_CSBlob->GetBufferSize();
 		ASSERT(_ByteCodeSize == DestSize, "할당된 메모리와 쉐이더 byte code의 사이즈가 다릅니다.");
 
 		//데이터 복사
@@ -105,18 +106,18 @@ namespace ehw
 		}
 
 		//Blob 내부에 공간을 할당.
-		bool result = SUCCEEDED(D3DCreateBlob(sFile.tellg(), mCSBlob.GetAddressOf()));
+		bool result = SUCCEEDED(D3DCreateBlob(sFile.tellg(), m_CSBlob.GetAddressOf()));
 		ASSERT(result, "쉐이더를 저장할 공간 할당에 실패했습니다.");
 		
 
 		//커서를 처음으로 돌린 후 파일을 읽어준다.
 		sFile.seekg(0, std::ios_base::beg);
-		sFile.read((char*)mCSBlob->GetBufferPointer(), mCSBlob->GetBufferSize());
+		sFile.read((char*)m_CSBlob->GetBufferPointer(), m_CSBlob->GetBufferSize());
 		sFile.close();
 
-		unsigned char* pCode = reinterpret_cast<unsigned char*>(mCSBlob->GetBufferPointer());
+		unsigned char* pCode = reinterpret_cast<unsigned char*>(m_CSBlob->GetBufferPointer());
 
-		return CreateShader(pCode, mCSBlob->GetBufferSize());
+		return CreateShader(pCode, m_CSBlob->GetBufferSize());
 	}
 
 	void ComputeShader::OnExcute()
@@ -141,7 +142,7 @@ namespace ehw
 		pCB->BindData();
 
 		//쉐이더 바인딩
-		GPUMgr::Context()->CSSetShader(mCS.Get(), nullptr, 0);
+		GPUMgr::Context()->CSSetShader(m_CS.Get(), nullptr, 0);
 		GPUMgr::Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
 
 		//데이터 정리
@@ -161,7 +162,7 @@ namespace ehw
 			_pByteCode,
 			_ByteCodeSize,
 			nullptr,
-			mCS.ReleaseAndGetAddressOf()))
+			m_CS.ReleaseAndGetAddressOf()))
 			)
 		{
 			result = eResult::Success;

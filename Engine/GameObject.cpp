@@ -459,7 +459,8 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 
 				for (size_t i = 0; i < m_Components.size(); ++i)
 				{
-					m_Components[i]->OnEnable();
+					if (m_Components[i] && m_Components[i]->IsEnabled())
+						m_Components[i]->OnEnable();
 				}
 			}
 			else
@@ -468,7 +469,8 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 
 				for (size_t i = 0; i < m_Components.size(); ++i)
 				{
-					m_Components[i]->OnDisable();
+					if(m_Components[i] && m_Components[i]->IsEnabled())
+						m_Components[i]->OnDisable();
 				}
 			}
 
