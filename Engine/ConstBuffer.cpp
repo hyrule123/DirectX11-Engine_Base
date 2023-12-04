@@ -7,7 +7,7 @@ namespace ehw
 {
 	ConstBuffer::ConstBuffer(eCBType _type)
 		: GPUBuffer(eBufferType::Const)
-		, mType(_type)
+		, m_ComCategory(_type)
 		, mDataSize()
 		, mDataCount()
 		, mPresetTargetStage(eShaderStageFlag::ALL)
@@ -69,27 +69,27 @@ namespace ehw
 		auto pContext = GPUMgr::Context();
 		if (eShaderStageFlag::VS & _stageFlag)
 		{
-			pContext->VSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->VSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 		if (eShaderStageFlag::HS & _stageFlag)
 		{
-			pContext->HSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->HSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 		if (eShaderStageFlag::DS & _stageFlag)
 		{
-			pContext->DSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->DSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 		if (eShaderStageFlag::GS & _stageFlag)
 		{
-			pContext->GSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->GSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 		if (eShaderStageFlag::PS & _stageFlag)
 		{
-			pContext->PSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->PSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 		if (eShaderStageFlag::CS & _stageFlag)
 		{
-			pContext->CSSetConstantBuffers((uint)mType, 1u, mBuffer.GetAddressOf());
+			pContext->CSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
 	}
 }

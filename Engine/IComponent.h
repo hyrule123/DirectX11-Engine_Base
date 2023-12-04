@@ -7,11 +7,12 @@
 namespace ehw
 {
 	class GameObject;
+	class IScene;
 	class IComponent : public Entity
 	{
 		friend class ComMgr;
 	public:
-		IComponent(eComponentType _type);
+		IComponent(eComponentCategory _type);
 
 		IComponent(const IComponent& _other);
 		CLONE_DISABLE(IComponent);
@@ -27,19 +28,44 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
-		virtual void FixedUpdate() = 0;
+		virtual void OnDestroy() {};
+		virtual void InternalUpdate() = 0;
 
-		GameObject* GetOwner() const { return mOwner; }
-		void SetOwner(GameObject* _owner) { mOwner = _owner; }
+		GameObject* GetOwner() const { return m_Owner; }
+		void SetOwner(GameObject* _owner) { m_Owner = _owner; }
 
-		eComponentType GetComType() const { return mType; };
+		IScene* GetOwnerScene() const { return m_OwnerScene; }
+		void SetOwnerScene(IScene* _scene) { m_OwnerScene = _scene; }
 
-		void SetComTypeID(UINT32 _comTypeID) { mComTypeID = _comTypeID; }
-		UINT32 GetComTypeID() const { return mComTypeID; };
+		eComponentCategory GetComCategory() const { return m_ComCategory; };
+
+		void SetComTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
+		UINT32 GetComTypeID() const { return m_ComTypeID; };
+
+		void CallStart() { if (false == m_bStart) { Start(); m_bStart = true; } }
+
+		bool IsEnabled() const { return eState::Enabled == m_State; }
+		void SetEnable(bool _bEnable);
+
+		bool IsDestroyed() const { return eState::Destroy == m_State; }
+		void Destroy();
+		void ForceDestroy() { m_State = eState::Destroy; }
 
 	private:
-		const eComponentType mType;
-		UINT32 mComTypeID;
-		GameObject* mOwner;
+		const eComponentCategory m_ComCategory;
+		UINT32 m_ComTypeID;
+		GameObject* m_Owner;
+		IScene* m_OwnerScene;
+
+
+		bool m_bStart;
+
+		enum class eState
+		{
+			Disabled,
+			Enabled,
+			Destroy
+		} m_State;
+
 	};
 }

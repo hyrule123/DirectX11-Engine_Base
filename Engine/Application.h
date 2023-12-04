@@ -23,11 +23,11 @@ namespace ehw
 		static BOOL Init(const tDesc_Application& _AppDesc);
 
 		static void Update();
-		static void FixedUpdate();
+		static void InternalUpdate();
 		static void Render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨
-		static void EndFrame();
+		static void FrameEnd();
 
 		// Running main engine loop
 		static bool Run();
@@ -42,8 +42,6 @@ namespace ehw
 
 		static HWND GetHwnd() { return mHwnd; }
 
-		static void AddEndFrameFunc(const std::function<void()>& _Func) { mEndFrameFuncs.push_back(_Func); }
-
 		static void ShutDown() { mbInitialized = false; }
 
 	private:
@@ -51,7 +49,7 @@ namespace ehw
 		static HDC  mHdc;
 		static bool mbInitialized;
 
-		static std::vector<std::function<void()>> mEndFrameFuncs;
+		
 	public:
 		Application() = delete;
 		~Application() = delete;

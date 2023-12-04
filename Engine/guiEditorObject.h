@@ -12,7 +12,7 @@ namespace gui
 
 		void Awake();
 		void Update();
-		void FixedUpdate();
+		void InternalUpdate();
 		void Render();
 
 	private:

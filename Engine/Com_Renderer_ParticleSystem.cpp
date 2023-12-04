@@ -191,7 +191,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_ParticleSystem::FixedUpdate()
+	void Com_Renderer_ParticleSystem::InternalUpdate()
 	{
 		//파티클 생성 시간
 		float aliveTime = 1.0f / mFrequency;

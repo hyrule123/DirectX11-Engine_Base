@@ -7,7 +7,7 @@
 namespace gui
 {
 	guiCom_Transform::guiCom_Transform()
-		: guiComponent(ehw::eComponentType::Transform)
+		: guiComponent(ehw::eComponentCategory::Transform)
 	{
 		//SetSize(ImVec2(200.0f, 120.0f));
 	}

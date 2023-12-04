@@ -15,14 +15,14 @@ namespace gui
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)ehw::eComponentType::END);
+		mGuiComponents.resize((int)ehw::eComponentCategory::END);
 		mGuiResources.resize((int)ehw::eResourceType::END);
 
-		mGuiComponents[(int)ehw::eComponentType::Transform] = new guiCom_Transform;
-		mGuiComponents[(int)ehw::eComponentType::Transform]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)ehw::eComponentCategory::Transform] = new guiCom_Transform;
+		mGuiComponents[(int)ehw::eComponentCategory::Transform]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiComponents[(int)ehw::eComponentType::Renderer] = new guiCom_Renderer;
-		mGuiComponents[(int)ehw::eComponentType::Renderer]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)ehw::eComponentCategory::Renderer] = new guiCom_Renderer;
+		mGuiComponents[(int)ehw::eComponentCategory::Renderer]->SetSize(ImVec2(0.f, 100.f));
 
 		mGuiResources[(int)ehw::eResourceType::Texture] = new guiTexture;
 	}
@@ -97,7 +97,7 @@ namespace gui
 			IndicatorButton(ehw::strKey::eComponentType_String[(UINT)i]);
 
 			if (mTargetGameObject && mGuiComponents[i])
-				mGuiComponents[i]->FixedUpdate();
+				mGuiComponents[i]->InternalUpdate();
 		}
 
 		for (size_t i = 0; i < mGuiResources.size(); ++i)
@@ -105,7 +105,7 @@ namespace gui
 			IndicatorButton(ehw::strKey::ArrResName[i]);
 
 			if (mTargetResource && mGuiResources[i])
-				mGuiResources[i]->FixedUpdate();
+				mGuiResources[i]->InternalUpdate();
 		}
 	}
 

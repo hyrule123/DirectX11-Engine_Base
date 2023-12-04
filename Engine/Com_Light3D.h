@@ -21,7 +21,7 @@ namespace ehw
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
 		virtual void Update() override;
-		virtual void FixedUpdate() override;
+		virtual void InternalUpdate() override;
 
 		//Camera가 호출
 		virtual void Render() override;

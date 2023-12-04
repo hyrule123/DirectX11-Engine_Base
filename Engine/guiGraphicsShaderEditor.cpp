@@ -331,7 +331,7 @@ namespace gui
 		ImGui::Separator();
 
 		//토폴로지 업데이트
-		mTopologyCombo.FixedUpdate();
+		mTopologyCombo.InternalUpdate();
 
 		ImGui::Separator();
 
@@ -344,13 +344,13 @@ namespace gui
 		ImGui::Separator();
 
 		//Rasterizer State
-		mRSTypeCombo.FixedUpdate();
+		mRSTypeCombo.InternalUpdate();
 
 		//Depth Stencil
-		mDSTypeCombo.FixedUpdate();
+		mDSTypeCombo.InternalUpdate();
 
 		//Blend State
-		mBSTypeCombo.FixedUpdate();
+		mBSTypeCombo.InternalUpdate();
 
 		
 		ImGui::Spacing();
@@ -543,7 +543,7 @@ namespace gui
 				ImGui::InputText("SemanticName", &mSemanticName);
 
 				//DXGI Format 에딧
-				mDXGIFormatCombo.FixedUpdate();
+				mDXGIFormatCombo.InternalUpdate();
 
 				int ByteOffset = (int)mDescForEdit.AlignedByteOffset;
 				if (ImGui::InputInt("AlignedByteOffset", &ByteOffset) && ByteOffset >= 0)
@@ -738,7 +738,7 @@ namespace gui
 			ImGui::OpenPopup("Load Shader");
 			if (ImGui::BeginPopupModal("Load Shader"))
 			{
-				mLoadFileCombo.FixedUpdate();
+				mLoadFileCombo.InternalUpdate();
 
 				if (ImGui::Button("Load File"))
 				{

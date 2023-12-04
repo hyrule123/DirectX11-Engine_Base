@@ -22,7 +22,7 @@ namespace ehw
 
     public:
         //virtual void Init() override;
-        virtual void FixedUpdate() override;
+        virtual void InternalUpdate() override;
         virtual void BindData() override; 
 
     public:

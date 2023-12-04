@@ -16,7 +16,7 @@
 namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
-		: IComponent(eComponentType::AudioSource)
+		: IComponent(eComponentCategory::AudioSource)
 		, mAudioClip(nullptr)
 	{
 
@@ -71,7 +71,7 @@ namespace ehw
 	}
 
 
-	void Com_AudioSource::FixedUpdate()
+	void Com_AudioSource::InternalUpdate()
 	{
 		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetRelativePos();

@@ -114,7 +114,7 @@ namespace ehw
 		return -1;
 	}
 
-	void Animation2D::FixedUpdate()
+	void Animation2D::InternalUpdate()
 	{
 
 	}

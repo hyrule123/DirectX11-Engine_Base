@@ -28,13 +28,13 @@ namespace ehw
 		, m_Name()
 		, m_Parent()
 		, m_Childs()
-		, m_State(eState::Active)
+		, m_CurState(eState::Active)
+		, m_PrevState()
 		, m_bAwake()
-		, m_bStart()
-		, m_bDontDestroyOnSceneChange()
+		, m_bDontDestroyOnLoad()
 	{
-		m_Components.reserve((int)eComponentType::Scripts + 10);
-		m_Components.resize((int)eComponentType::Scripts);
+		m_Components.reserve((int)eComponentCategory::Scripts + 10);
+		m_Components.resize((int)eComponentCategory::Scripts);
 	}
 
 
@@ -45,13 +45,13 @@ namespace ehw
 		, m_LayerType(_other.m_LayerType)
 		, m_Name(_other.m_Name)
 		, m_Parent()
-		, m_State(_other.m_State)
+		, m_CurState(_other.m_CurState)
+		, m_PrevState()
 		, m_bAwake(_other.m_bAwake)
-		, m_bStart(_other.m_bStart)
-		, m_bDontDestroyOnSceneChange(_other.m_bDontDestroyOnSceneChange)
+		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
 	{
-		m_Components.reserve((int)eComponentType::Scripts + 10);
-		m_Components.resize((int)eComponentType::Scripts);
+		m_Components.reserve((int)eComponentCategory::Scripts + 10);
+		m_Components.resize((int)eComponentCategory::Scripts);
 		//AddComponent(&mTransform);
 
 		//TODO: Clone
@@ -97,7 +97,7 @@ namespace ehw
 
 		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_Name));
 		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_LayerType));
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnSceneChange));
+		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnLoad));
 		
 
 		{
@@ -105,7 +105,7 @@ namespace ehw
 			Json::Value& arrComponent = (*_pJson)[strKey::Json::GameObject::m_Components];
 			
 			//트랜스폼은 저장하지 않음
-			for (size_t i = (size_t)eComponentType::Transform + (size_t)1; i < m_Components.size(); ++i)
+			for (size_t i = (size_t)eComponentCategory::Transform + (size_t)1; i < m_Components.size(); ++i)
 			{
 				if (m_Components[i])
 				{
@@ -179,7 +179,7 @@ namespace ehw
 
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_Name));
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_LayerType));
-		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnSceneChange));
+		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnLoad));
 
 		//컴포넌트 추가
 		if (_pJson->isMember(strKey::Json::GameObject::m_Components))
@@ -245,12 +245,28 @@ namespace ehw
 	
 	void GameObject::Awake()
 	{
+		if (false == IsActive() || m_bAwake)
+		{
+			return;
+		}
+
 		m_bAwake = true;
 		for (size_t i = 0; i < m_Components.size(); ++i)
 		{
 			if (m_Components[i])
+			{
 				m_Components[i]->Awake();
+			}
 		}
+
+		for (size_t i = 0; i < m_Components.size(); ++i)
+		{
+			if (m_Components[i] && m_Components[i]->IsEnabled())
+			{
+				m_Components[i]->OnEnable();
+			}
+		}
+
 
 		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
@@ -259,36 +275,20 @@ namespace ehw
 		}
 	}
 
-
-	void GameObject::Start()
-	{
-		m_bStart = true;
-
-		for (size_t i = 0; i < m_Components.size(); ++i)
-		{
-			if (m_Components[i])
-				m_Components[i]->Start();
-		}
-
-		for (size_t i = 0; i < m_Childs.size(); ++i)
-		{
-			if (m_Childs[i])
-				m_Childs[i]->Start();
-		}
-	}
-
 	void GameObject::Update()
 	{
-		if (false == m_bStart)
+		if (false == IsActive())
 		{
-			Start();
+			return;
 		}
 			
-
 		for (size_t i = 0; i < m_Components.size(); ++i)
 		{
-			if (m_Components[i])
+			if (m_Components[i] && m_Components[i]->IsEnabled())
+			{
+				m_Components[i]->CallStart();
 				m_Components[i]->Update();
+			}
 		}
 
 		for (size_t i = 0; i < m_Childs.size(); ++i)
@@ -298,19 +298,25 @@ namespace ehw
 		}
 	}
 
-	void GameObject::FixedUpdate()
+	void GameObject::InternalUpdate()
 	{
+		if (false == IsActive())
+		{
+			return;
+		}
+
 		for (size_t i = 0; i < m_Components.size(); ++i)
 		{
-			if (nullptr == m_Components[i])
-				continue;
-			m_Components[i]->FixedUpdate();
+			if (m_Components[i] && m_Components[i]->IsEnabled())
+			{
+				m_Components[i]->InternalUpdate();
+			}
 		}
 
 		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
 			if (m_Childs[i])
-				m_Childs[i]->FixedUpdate();
+				m_Childs[i]->InternalUpdate();
 		}
 	}
 
@@ -318,9 +324,14 @@ namespace ehw
 	//
 	void GameObject::Render()
 	{
-		if (m_Components[(int)eComponentType::Renderer])
+		if (false == IsActive())
 		{
-			static_cast<IRenderer*>(m_Components[(int)eComponentType::Renderer])->Render();
+			return;
+		}
+
+		if (m_Components[(int)eComponentCategory::Renderer] && m_Components[(int)eComponentCategory::Renderer]->IsEnabled())
+		{
+			static_cast<IRenderer*>(m_Components[(int)eComponentCategory::Renderer])->Render();
 		}
 	}
 
@@ -334,14 +345,14 @@ namespace ehw
 		//에러 발생시 leak 발생하지 않도록
 		std::unique_ptr<IComponent> uniqPtr(_pCom);
 
-		eComponentType ComType = _pCom->GetComType();
+		eComponentCategory ComType = _pCom->GetComCategory();
 
 		ASSERT(false == _pCom->GetKey().empty(), R"(
 컴포넌트에 String Key가 없습니다.
 AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 )");
 
-		if (eComponentType::Scripts == ComType)
+		if (eComponentCategory::Scripts == ComType)
 		{
 			m_Components.push_back(_pCom);
 		}
@@ -353,9 +364,10 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		}
 
 		_pCom->SetOwner(this);
+		_pCom->SetOwnerScene(m_OwnerScene);
 		_pCom->Init();
 
-		//이미 Awake된 상태라면 바로 awake 진행
+		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
 		if (IsActive() && m_bAwake)
 		{
 			_pCom->Awake();
@@ -366,27 +378,104 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 
 
 
-	inline void GameObject::SetActive(bool _bActive)
+	void GameObject::SetActive(bool _bActive)
 	{
-		if (_bActive)
-		{
-			m_State = eState::Active;
+		if (IsDestroyed() || IsActive() == _bActive)
+			return;
 
-			if (m_OwnerScene->IsAwaken() && false == m_bAwake)
-			{
-				Awake();
-			}
+
+		//씬이 작동 중일 경우 EventMgr를 통해 람다함수를 등록
+		if (m_OwnerScene->IsAwaken())
+		{
+			EventMgr::AddFrameEndEvent(&GameObject::SetActiveRecursive, this, _bActive);
 		}
 
-		//한번 Destroy 되었으면 되돌릴 수 없음
-		else if (false == IsDestroyed())
+		//씬이 작동중이지 않을 경우 바로 호출
+		else
 		{
-			m_State = eState::InActive;
+			SetActiveRecursive(_bActive);
 		}
+
 	}
 
 	void GameObject::Destroy()
 	{
-		EventMgr::DestroyGameObj(this);
+		if (IsDestroyed())
+			return;
+
+
+		//씬이 작동 중일 경우 EventMgr를 통해 람다함수를 등록
+		if (m_OwnerScene->IsAwaken())
+		{
+			EventMgr::AddFrameEndEvent(&GameObject::DestroyRecursive, this);
+		}
+
+		//씬이 작동중이지 않을 경우 바로 호출
+		else
+		{
+			DestroyRecursive();
+		}
+
+	}
+
+
+	void GameObject::DestroyRecursive()
+	{
+		m_CurState = eState::Destroy;
+
+		for (size_t i = 0; i < m_Components.size(); ++i)
+		{
+			if (m_Components[i])
+			{
+				//게임오브젝트에서 제거하는 경우에는 강제 제거
+				m_Components[i]->ForceDestroy();
+			}
+		}
+
+		for (size_t i = 0; i < m_Childs.size(); ++i)
+		{
+			m_Childs[i]->DestroyRecursive();
+		}
+	}
+
+	void GameObject::SetActiveRecursive(bool _bActive)
+	{
+		//제거 대기 상태가 아님 && 바꾸고자 하는 상태가 현재 상태와 다른 경우에만
+		if (false == IsDestroyed() && IsActive() != _bActive)
+		{
+			if (_bActive)
+			{
+				m_CurState = eState::Active;
+
+				if (false == m_bAwake)
+				{
+					m_bAwake = true;
+
+					for (size_t i = 0; i < m_Components.size(); ++i)
+					{
+						m_Components[i]->Awake();
+					}
+				}
+
+				for (size_t i = 0; i < m_Components.size(); ++i)
+				{
+					m_Components[i]->OnEnable();
+				}
+			}
+			else
+			{
+				m_CurState = eState::InActive;
+
+				for (size_t i = 0; i < m_Components.size(); ++i)
+				{
+					m_Components[i]->OnDisable();
+				}
+			}
+
+			for (size_t i = 0; i < m_Childs.size(); ++i)
+			{
+				m_Childs[i]->SetActiveRecursive(_bActive);
+			}
+		}
 	}
 }

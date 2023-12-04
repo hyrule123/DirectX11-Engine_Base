@@ -4,7 +4,7 @@
 namespace ehw
 {
 	ILight::ILight(eDimensionType _dimensionType)
-		: IComponent(eComponentType::Light)
+		: IComponent(eComponentCategory::Light)
 		, mDimension(_dimensionType)
 	{
 	}

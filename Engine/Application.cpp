@@ -21,9 +21,6 @@
 
 namespace ehw
 {
-	std::vector<std::function<void()>> Application::mEndFrameFuncs{};
-
-
 	HWND			Application::mHwnd{};
 	HDC				Application::mHdc{};
 	bool			Application::mbInitialized{};
@@ -88,10 +85,10 @@ namespace ehw
 	}
 
 	// GPU update
-	void Application::FixedUpdate()
+	void Application::InternalUpdate()
 	{
-		CollisionMgr::FixedUpdate();
-		SceneMgr::FixedUpdate();
+		CollisionMgr::InternalUpdate();
+		SceneMgr::InternalUpdate();
 	}
 
 	void Application::Render()
@@ -104,29 +101,20 @@ namespace ehw
 		RenderMgr::Render();
 	}
 
-	void Application::EndFrame()
-	{
-		for (size_t i = 0; i < mEndFrameFuncs.size(); ++i)
-		{
-			if (mEndFrameFuncs[i])
-			{
-				mEndFrameFuncs[i]();
-			}
-		}
-		mEndFrameFuncs.clear();
-		
+	void Application::FrameEnd()
+	{		
 		SceneMgr::Destroy();
 
-		EventMgr::Update();
+		EventMgr::FrameEnd();
 	}
 
 	// Running main engine loop
 	bool Application::Run()
 	{
 		Update();
-		FixedUpdate();
+		InternalUpdate();
 		Render();
-		EndFrame();
+		FrameEnd();
 
 		gui::guiMgr::Run();
 		

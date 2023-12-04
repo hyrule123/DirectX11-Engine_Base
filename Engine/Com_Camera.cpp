@@ -25,7 +25,7 @@ namespace ehw
 	MATRIX Com_Camera::gProjection = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: IComponent(eComponentType::Camera)
+		: IComponent(eComponentCategory::Camera)
 		, mView()
 		, mViewInverse()
 		, mProjection()
@@ -51,7 +51,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Camera::FixedUpdate()
+	void Com_Camera::InternalUpdate()
 	{
 		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
@@ -104,7 +104,7 @@ namespace ehw
 	void Com_Camera::CreateViewMatrix()
 	{
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
-		Com_Transform* tr = static_cast<Com_Transform*>(GetOwner()->GetComponent(eComponentType::Transform));
+		Com_Transform* tr = static_cast<Com_Transform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		if (nullptr == tr || false == tr->IsUpdated())
 			return;
 
@@ -263,7 +263,7 @@ namespace ehw
 	//	bool bRet = false;
 	//	if (_pObj)
 	//	{
-	//		if (_pObj->GetComponent(eComponentType::Renderer))
+	//		if (_pObj->GetComponent(eComponentCategory::Renderer))
 	//		{
 	//			bRet = true;
 	//		}

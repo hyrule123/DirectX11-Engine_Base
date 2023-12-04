@@ -14,7 +14,7 @@ namespace ehw
 		virtual ~ICollider();
 
 	private:
-		eColliderType mType;
+		eColliderType m_ComCategory;
 	};
 }
 

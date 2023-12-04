@@ -6,9 +6,9 @@ namespace ehw
 	class Com_BehaviorTree : public IComponent
 	{
 	public:
-		Com_BehaviorTree() : IComponent(eComponentType::BehaviorTree){};
+		Com_BehaviorTree() : IComponent(eComponentCategory::BehaviorTree){};
 		virtual ~Com_BehaviorTree() {};
 
-		virtual void FixedUpdate() override {}
+		virtual void InternalUpdate() override {}
 	};
 }

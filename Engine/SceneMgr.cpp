@@ -34,10 +34,10 @@ namespace ehw
 			mActiveScene->SceneUpdate();
 	}
 
-	void SceneMgr::FixedUpdate()
+	void SceneMgr::InternalUpdate()
 	{
 		if (mActiveScene)
-			mActiveScene->SceneFixedUpdate();
+			mActiveScene->SceneInternalUpdate();
 	}
 
 	void SceneMgr::Render()
@@ -104,4 +104,5 @@ namespace ehw
 
 		mActiveScene->SceneAwake();
 	}
+
 }

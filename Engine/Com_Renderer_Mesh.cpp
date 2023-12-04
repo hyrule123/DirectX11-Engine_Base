@@ -12,7 +12,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentType::Transform));
+		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		tr->BindData();
 
 		//Render

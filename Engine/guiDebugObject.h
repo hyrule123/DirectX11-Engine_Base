@@ -11,7 +11,7 @@ namespace gui
 		DebugObject();
 		virtual ~DebugObject();
 
-		void FixedUpdate();
+		void InternalUpdate();
 	
 
 	private:

@@ -44,7 +44,7 @@ namespace ehw
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 
 		virtual void Update() override; 
-		virtual void FixedUpdate() override;
+		virtual void InternalUpdate() override;
 
 		virtual bool IsPlaying() const override { ASSERT(false, "미구현"); return false; }
 

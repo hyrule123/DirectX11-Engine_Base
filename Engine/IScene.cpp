@@ -10,6 +10,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_Layers.size(); ++i)
 		{
+			m_Layers[i].SetOwnerScene(this);
 			m_Layers[i].SetLayerType((eLayerType)i);
 		}
 	}
@@ -39,12 +40,12 @@ namespace ehw
 			layer.Update();
 		}
 	}
-	void IScene::SceneFixedUpdate()
+	void IScene::SceneInternalUpdate()
 	{
-		FixedUpdate();
+		InternalUpdate();
 		for (Layer& layer : m_Layers)
 		{
-			layer.FixedUpdate();
+			layer.InternalUpdate();
 		}
 	}
 	void IScene::SceneRender()

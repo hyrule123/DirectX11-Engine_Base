@@ -115,7 +115,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Light3D::FixedUpdate()
+	void Com_Light3D::InternalUpdate()
 	{
 		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
@@ -154,7 +154,7 @@ namespace ehw
 		}
 
 		//Transform
-		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentType::Transform));
+		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		if (nullptr == tr)
 			return;
 		tr->BindData();

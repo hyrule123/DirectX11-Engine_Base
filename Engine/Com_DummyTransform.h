@@ -15,7 +15,7 @@ namespace ehw
         virtual ~Com_DummyTransform();
 
         virtual void Init() override;
-        virtual void FixedUpdate() override {};
+        virtual void InternalUpdate() override {};
         virtual void BindData() override;
 
     private:

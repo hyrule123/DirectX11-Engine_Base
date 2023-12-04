@@ -15,7 +15,7 @@ namespace ehw
 		//실제 로직은 여기서
 		void SceneAwake();
 		void SceneUpdate();
-		void SceneFixedUpdate();
+		void SceneInternalUpdate();
 		void SceneRender();
 		void SceneDestroy();
 
@@ -24,7 +24,7 @@ namespace ehw
 		virtual void OnEnter() = 0;//리소스 로드
 
 		virtual void Update() {};
-		virtual void FixedUpdate() {};
+		virtual void InternalUpdate() {};
 		virtual void Render() {};
 		virtual void Destroy() {};
 		virtual void OnExit() {};
@@ -42,7 +42,6 @@ namespace ehw
 
 
 		bool	IsAwaken() const { return m_bAwake; }
-
 
 
 	private:

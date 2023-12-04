@@ -12,7 +12,7 @@ namespace ehw
 		virtual ~Com_DummyAnimator();
 		
 		virtual void Init() override;
-		virtual void FixedUpdate() override {};
+		virtual void InternalUpdate() override {};
 
 		virtual void BindData() override;
 		virtual void UnBindData() override;

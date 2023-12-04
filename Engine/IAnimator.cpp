@@ -4,7 +4,7 @@
 namespace ehw
 {
 	IAnimator::IAnimator(eDimensionType _type)
-		: IComponent(eComponentType::Animator)
+		: IComponent(eComponentCategory::Animator)
 		, mDimensionType(_type)
 	{
 	}

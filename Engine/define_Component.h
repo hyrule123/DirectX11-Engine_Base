@@ -6,7 +6,7 @@
 namespace ehw
 {
 	STRKEY ComponentPrefix = "Com_";
-	enum class eComponentType
+	enum class eComponentCategory
 	{
 		UNKNOWN = -1,
 
@@ -28,7 +28,7 @@ namespace ehw
 
 	namespace strKey
 	{
-		STRKEY eComponentType_String[(int)eComponentType::END] =
+		STRKEY eComponentType_String[(int)eComponentCategory::END] =
 		{
 			"Transform",
 			"Collider",

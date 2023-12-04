@@ -18,7 +18,7 @@ namespace ehw
 
 		virtual void Awake() override;
 		virtual void Update() override;
-		virtual void FixedUpdate() override;
+		virtual void InternalUpdate() override;
 	private:
 	};
 }

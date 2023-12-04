@@ -5,8 +5,8 @@
 namespace ehw
 {
 	ICollider::ICollider(eColliderType _Type)
-		: IComponent(eComponentType::Collider)
-		, mType(_Type)
+		: IComponent(eComponentCategory::Collider)
+		, m_ComCategory(_Type)
 	{
 	}
 

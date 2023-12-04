@@ -15,7 +15,7 @@ namespace gui
 		virtual ehw::eResult LoadJson(const Json::Value* _pJval) override;
 
 		void InitRecursive();
-		void FixedUpdate();
+		void InternalUpdate();
 
 		virtual void Init() {}
 		virtual void Update() {}

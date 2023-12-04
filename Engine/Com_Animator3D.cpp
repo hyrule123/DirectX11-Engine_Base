@@ -67,7 +67,7 @@ namespace ehw
 	}
 
 
-	void Com_Animator3D::FixedUpdate()
+	void Com_Animator3D::InternalUpdate()
 	{
 		//애니메이션이 없을 경우 플레이하지 않는다
 		if (nullptr == mSkeleton || nullptr == mCurrentAnim)

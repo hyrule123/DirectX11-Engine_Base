@@ -24,7 +24,7 @@ namespace ehw
 
 		virtual void Init() override;
 		virtual void Update() {};
-		virtual void FixedUpdate() override;
+		virtual void InternalUpdate() override;
 
 		virtual bool IsPlaying() const { return (nullptr != mCurrentAnim); }
 

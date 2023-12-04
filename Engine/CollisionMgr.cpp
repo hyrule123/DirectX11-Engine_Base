@@ -38,7 +38,7 @@ namespace ehw
 			}
 		}
 	}
-	void CollisionMgr::FixedUpdate()
+	void CollisionMgr::InternalUpdate()
 	{
 	}
 	void CollisionMgr::Render()

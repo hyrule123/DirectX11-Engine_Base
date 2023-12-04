@@ -7,7 +7,7 @@
 namespace ehw
 {
 	IScript::IScript()
-		: IComponent(eComponentType::Scripts)
+		: IComponent(eComponentCategory::Scripts)
 	{
 
 	}

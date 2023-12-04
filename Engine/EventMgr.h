@@ -3,8 +3,8 @@
 
 namespace ehw
 {
-    class Prefab;
     class GameObject;
+    class IScene;
     class EventMgr
     {
         friend class Application;
@@ -32,62 +32,52 @@ namespace ehw
 
         static void        ChangeGameObjectLayer(eLayerType _layer, GameObject* _gameObj);
 
-        static void         DestroyGameObj(GameObject* _pObject);
+        template <class F, class... Args>
+        static inline void AddFrameEndEvent(F&& _func, Args&&... _args);
 
-        //게임 진행 중에는 반드시 이 함수를 통해서 child를 집어넣을것
-        //새로운 게임오브젝트일 경우 반드시 SpawnGameObject도 해줘야 함
-        static void AddChildGameObj(GameObject* _pParent, GameObject* _pChild);
+        //리턴값이 필요한 경우(future 변수 사용)
+        template <class F, class... Args>
+        static inline std::future<typename std::invoke_result<F, Args...>::type> AddFrameEndEventReturn(F&& _func, Args&&... _args);
 
-
-        //프리팹(리소스)를 넣어서 게임오브젝트를 스폰시킬 경우 해당 게임오브젝트의 주소를 리턴해줌(추가적인 설정을 할수있게)	
-        //static GameObject* SpawnPrefab2D(std::shared_ptr<Prefab> _Prefab, const float2& _vWorldPosXY);
-        //static GameObject* SpawnPrefab(std::shared_ptr<Prefab> _Prefab, const float3& _vWorldPos);
-        //static GameObject* SpawnPrefab(std::shared_ptr<Prefab> _Prefab);
 
 
     private:
         static bool Init();
         static void Release();
 
-        static void Update();
+        static void FrameEnd();
 
-        static void AddEvent(const tEvent& _event) { mEvents.push_back(_event); }
-        static bool IsLevelChanged() { return mbLevelModified; }
-
-        //lParam = GameObject Pointer
-        //wParam = Layer Number
-        static void SpawnNewGameObj(const tEvent& _event);
-
-        //lParam = GameObject Pointer
-        //wParam = None
-        static void DestroyGameObj(const tEvent& _event);
-
-        //lParam = Parent GameObject*
-        //wParam = Child GameObject*
-        //SpawnNewGameObj는 따로 해주지 않으므로 주의
-        static void AddChildGameObj(const tEvent& _event);
-
-        //lParam = GameObject Pointer
-        //wParam = Target Layer
-        static void MoveGameObjLayer(const tEvent& _event);
 
     private:
-        static void ProcessEvent();
-        static void ProcessLazyEvent();
-
-    private:
-        static std::vector<tEvent> mEvents;
-
-        //한 프레임 기다렸다 처리해야 하는 이벤트는 여기에 저장
-        static std::vector<tEvent> mLazyEvents;
-
-        static bool           mbLevelModified;
-
+        static std::vector<std::function<void()>> m_FrameEndEvents;
 
     private:
         EventMgr() = delete;
         ~EventMgr() = delete;
     };
+
+    template<class F, class ...Args>
+    inline void EventMgr::AddFrameEndEvent(F&& _func, Args && ..._args)
+    {
+        auto func = std::bind(std::forward<F>(_func), std::forward<Args>(_args)...);
+        m_FrameEndEvents.push_back([func]() { func(); });
+    }
+
+    template<class F, class ...Args>
+    inline std::future<typename std::invoke_result<F, Args...>::type> EventMgr::AddFrameEndEventReturn(F&& _func, Args && ..._args)
+    {
+        using return_type = std::invoke_result<F, Args...>::type;
+
+        auto pFunc = std::make_shared<std::packaged_task<return_type()>>(
+            std::bind(std::forward<F>(_func), std::forward<Args>(_args)...)
+        );
+            
+        std::future<return_type> pFunc_result_future = pFunc->get_future();
+        m_FrameEndEvents.push_back([pFunc]() { (*pFunc)(); });
+
+        return pFunc_result_future;
+    }
+
 }
 
 

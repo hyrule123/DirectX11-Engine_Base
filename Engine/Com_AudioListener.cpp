@@ -15,7 +15,7 @@ namespace ehw
 	
 
 	Com_AudioListener::Com_AudioListener()
-		: IComponent(eComponentType::AudioListener)
+		: IComponent(eComponentCategory::AudioListener)
 	{
 
 	}
@@ -35,7 +35,7 @@ namespace ehw
 
 	}
 
-	void Com_AudioListener::FixedUpdate()
+	void Com_AudioListener::InternalUpdate()
 	{
 		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetRelativePos();

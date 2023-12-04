@@ -34,7 +34,7 @@ namespace gui
 		static void Release();
 
 		static void Update();
-		static void FixedUpdate();
+		static void InternalUpdate();
 		static void Render();
 		
 		static void DebugRender(ehw::tDebugMesh& mesh);

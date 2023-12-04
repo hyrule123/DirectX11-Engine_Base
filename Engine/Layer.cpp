@@ -1,16 +1,19 @@
-
 #include "PCH_Engine.h"
 
 #include "Layer.h"
+#include "IScene.h"
+
 #include "RenderMgr.h"
 #include "Com_Transform.h"
+
 
 
 namespace ehw
 {
 
 	Layer::Layer()
-		: m_LayerType()
+		: m_OwnerScene()
+		, m_LayerType()
 		, mGameObjects{}
 	{
 	}
@@ -33,7 +36,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
+			if (mGameObjects[i]->IsMaster())
 				mGameObjects[i]->Awake();
 		}
 	}
@@ -42,17 +45,17 @@ namespace ehw
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
+			if (mGameObjects[i]->IsMaster())
 				mGameObjects[i]->Update();
 		}
 	}
 
-	void Layer::FixedUpdate()
+	void Layer::InternalUpdate()
 	{
 		for (size_t i = 0; i < mGameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster() && mGameObjects[i]->IsActive())
-				mGameObjects[i]->FixedUpdate();
+			if (mGameObjects[i]->IsMaster())
+				mGameObjects[i]->InternalUpdate();
 		}
 
 		// sort z axis
@@ -98,10 +101,13 @@ namespace ehw
 		ASSERT(gameObject, "GameObject가 nullptr 입니다.");
 
 		mGameObjects.push_back(gameObject);
+		gameObject->SetOwnerScene(m_OwnerScene);
 		gameObject->SetLayerType(m_LayerType);
 
-		if(gameObject->IsActive() && false == gameObject->IsAwake())
+		if (m_OwnerScene->IsAwaken() && gameObject->IsActive())
+		{
 			gameObject->Awake();
+		}
 	}
 
 	void Layer::RemoveGameObject(const GameObject* gameObject)

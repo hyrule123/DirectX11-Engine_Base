@@ -8,9 +8,9 @@
 
 namespace gui
 {
-	guiComponent::guiComponent(ehw::eComponentType _type)
+	guiComponent::guiComponent(ehw::eComponentCategory _type)
 		: guiChild(ehw::strKey::eComponentType_String[(int)_type])
-		, mType(_type)
+		, m_ComCategory(_type)
 		, mTarget(nullptr)
 	{
 	}

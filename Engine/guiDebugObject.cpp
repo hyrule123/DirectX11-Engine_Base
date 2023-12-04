@@ -14,7 +14,7 @@ namespace gui
 
 	}
 
-	void DebugObject::FixedUpdate()
+	void DebugObject::InternalUpdate()
 	{
 		const auto& vecCom = GetComponents();
 		for (size_t i = 0; i < vecCom.size(); ++i)
@@ -22,7 +22,7 @@ namespace gui
 			if (nullptr == vecCom[i])
 				continue;
 
-			vecCom[i]->FixedUpdate();
+			vecCom[i]->InternalUpdate();
 		}
 	}
 }

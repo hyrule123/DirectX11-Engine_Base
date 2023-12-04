@@ -20,7 +20,7 @@ namespace ehw
 
 		void SetPresetTargetStage(eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
 	private:
-		const eCBType mType;
+		const eCBType m_ComCategory;
 
 		uint				mDataSize;
 		uint				mDataCount;

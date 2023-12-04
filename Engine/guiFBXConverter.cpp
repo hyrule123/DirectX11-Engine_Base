@@ -173,7 +173,7 @@ namespace gui
 		HilightText("Add Animation to Project MeshData");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
 
-		mProjMeshDataCombo.FixedUpdate();
+		mProjMeshDataCombo.InternalUpdate();
 		if (ImGui::Button("Refresh List"))
 		{
 			LoadProjMeshDataCombo();

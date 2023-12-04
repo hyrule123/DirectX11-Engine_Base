@@ -132,7 +132,7 @@ namespace gui
 		ImGui::Text(strCurShader.c_str());
 
 
-		mShaderCombo.FixedUpdate();
+		mShaderCombo.InternalUpdate();
 		if (ImGui::Button("Refresh Shaders"))
 		{
 			RefreshShaderSettingFiles();
@@ -226,7 +226,7 @@ namespace gui
 	{
 		ehw::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
 		mRenderingModeCombo.SetCurrentIndex((int)mode);
-		mRenderingModeCombo.FixedUpdate();
+		mRenderingModeCombo.InternalUpdate();
 		if (mRenderingModeCombo.IsSelectionChanged())
 		{
 			int idx = mRenderingModeCombo.GetCurrentIndex();
@@ -329,7 +329,7 @@ namespace gui
 			if (ImGui::BeginPopupModal("Material Load"))
 			{
 				HilightText("Res/Material");
-				mCurrentLoadedMtrl.FixedUpdate();
+				mCurrentLoadedMtrl.InternalUpdate();
 
 				if (ImGui::Button("Load##Material", ImVec2(100.f, 35.f)))
 				{

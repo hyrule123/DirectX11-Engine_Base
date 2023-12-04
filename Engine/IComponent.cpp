@@ -2,21 +2,28 @@
 
 #include "IComponent.h"
 
+#include "GameObject.h"
+#include "IScene.h"
+#include "EventMgr.h"
+
 #include "json-cpp\jsonSaveLoad.h"
 
 namespace ehw
 {
-	IComponent::IComponent(eComponentType _type)
-		: mType(_type)
-		, mComTypeID()
-		, mOwner(nullptr)
+	IComponent::IComponent(eComponentCategory _type)
+		: m_ComCategory(_type)
+		, m_ComTypeID()
+		, m_Owner(nullptr)
+		, m_State(eState::Enabled)
 	{
 	}
 
 	IComponent::IComponent(const IComponent& _other)
 		: Entity(_other)
-		, mType(_other.mType)
-		, mOwner(nullptr)
+		, m_ComCategory(_other.m_ComCategory)
+		, m_ComTypeID()
+		, m_Owner(nullptr)
+		, m_State(_other.m_State)
 	{
 	}
 
@@ -35,7 +42,7 @@ namespace ehw
 			return result;
 		}
 
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_ComCategory));
 
 		return eResult::Success;
 	}
@@ -51,8 +58,59 @@ namespace ehw
 			return result;
 		}
 
-		//MH_SAVE_VALUE(_pJson, mType);
-
 		return eResult::Success;
+	}
+
+	void IComponent::SetEnable(bool _bEnable)
+	{
+		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
+		if (IsDestroyed() || IsEnabled() == _bEnable)
+		{
+			return;
+		}
+
+		auto onEnableDisable = [this, _bEnable]()
+			{
+				if (_bEnable)
+				{
+					m_State = eState::Enabled;
+					OnEnable();
+				}
+				else
+				{
+					m_State = eState::Disabled;
+					OnDisable();
+				}
+			};
+
+		if (m_OwnerScene->IsAwaken())
+		{
+			EventMgr::AddFrameEndEvent(onEnableDisable);
+		}
+		else
+		{
+			onEnableDisable();
+		}
+
+	}
+
+	void IComponent::Destroy()
+	{
+		if (IsDestroyed())
+			return;
+
+		auto DestroyFunc = [this]()
+			{
+				m_State = eState::Destroy;
+			};
+
+		if (m_OwnerScene->IsAwaken())
+		{
+			EventMgr::AddFrameEndEvent(DestroyFunc);
+		}
+		else
+		{
+			DestroyFunc();
+		}
 	}
 }

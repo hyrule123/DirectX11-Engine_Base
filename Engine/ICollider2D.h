@@ -19,7 +19,7 @@ namespace ehw
 
 		virtual void Awake() override;
 		virtual void Update() override;
-		virtual void FixedUpdate() override;
+		virtual void InternalUpdate() override;
 
 
 		virtual void OnCollisionEnter(ICollider2D* _collider);
@@ -30,7 +30,7 @@ namespace ehw
 		virtual void OnTriggerStay(ICollider2D* _collider);
 		virtual void OnTriggerExit(ICollider2D* _collider);
 
-		void SetType(eColliderType _type) { mType = _type; }
+		void SetType(eColliderType _type) { m_ComCategory = _type; }
 		void SetSize(float2 _size) { mSize = _size; }
 		void SetCenter(float2 _center) { mCenter = _center; }
 		void SetRadius(float _radius) { mRadius = _radius; }
@@ -42,7 +42,7 @@ namespace ehw
 	private:
 		static uint gColliderNumber;
 		uint mID; 
-		eColliderType mType;
+		eColliderType m_ComCategory;
 		Com_Transform* mTransform;
 
 		float2 mSize;

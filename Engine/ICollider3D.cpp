@@ -13,7 +13,7 @@ namespace ehw
 	}
 	
 	ICollider3D::ICollider3D(const ICollider3D& _collider)
-		: ICollider(_collider.mType)
+		: ICollider(_collider.m_ComCategory)
 	{
 		ASSERT(FALSE, "미구현");
 	}
@@ -39,7 +39,7 @@ namespace ehw
 
 		//Json::Value& jVal = *_pJVal;
 
-		//Json::SaveLoad::SaveValue(_pJVal, JSONVAL(mType));
+		//Json::SaveLoad::SaveValue(_pJVal, JSONVAL(m_ComCategory));
 
 		return eResult::Success;
 	}
@@ -61,7 +61,7 @@ namespace ehw
 
 		//const Json::Value& jVal = (*_pJVal);
 
-		//Json::SaveLoad::LoadValue(_pJVal, JSONVAL(mType));
+		//Json::SaveLoad::LoadValue(_pJVal, JSONVAL(m_ComCategory));
 		
 		return eResult::Success;
 	}

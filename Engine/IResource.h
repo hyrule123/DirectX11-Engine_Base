@@ -23,13 +23,13 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
-		eResourceType GetResType() { return mType; }
+		eResourceType GetResType() { return m_ComCategory; }
 
 		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
 	private:
-		const eResourceType mType;
+		const eResourceType m_ComCategory;
 		bool mbEngineDefaultRes;
 	};
 

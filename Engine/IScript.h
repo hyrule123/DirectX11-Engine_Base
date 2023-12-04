@@ -15,7 +15,7 @@ namespace ehw
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
-		virtual void FixedUpdate() final {};
+		virtual void InternalUpdate() final {};
 
 		virtual void OnCollisionEnter(ICollider2D* _collider) {};
 		virtual void OnCollisionStay(ICollider2D* _collider) {};

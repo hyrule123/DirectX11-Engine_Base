@@ -138,7 +138,7 @@ namespace gui
 		if (false == mbEnable)
 			return;
 		Update();
-		FixedUpdate();
+		InternalUpdate();
 		Render();
 
 		mbInitialized = true;
@@ -155,16 +155,16 @@ namespace gui
 		}
 	}
 
-	void guiMgr::FixedUpdate()
+	void guiMgr::InternalUpdate()
 	{
 		for (EditorObject* obj : mEditorObjects)
 		{
-			obj->FixedUpdate();
+			obj->InternalUpdate();
 		}
 
 		for (const auto& guiPair : mGuiWindows)
 		{
-			guiPair.second->FixedUpdate();
+			guiPair.second->InternalUpdate();
 		}
 	}
 
@@ -256,7 +256,7 @@ namespace gui
 		ehw::IRenderer* renderer = debugObj->GetComponent<ehw::IRenderer>();
 		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
 
-		tr->FixedUpdate();
+		tr->InternalUpdate();
 
 		ehw::Com_Camera::SetGpuViewMatrix(
 			mainCam->GetViewMatrix());

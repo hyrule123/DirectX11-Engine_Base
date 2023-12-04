@@ -24,7 +24,7 @@ namespace ehw
 	}
 
 	ICollider2D::ICollider2D(const ICollider2D& _collider)
-		: ICollider(_collider.mType)
+		: ICollider(_collider.m_ComCategory)
 		, mTransform(nullptr)
 		, mSize(_collider.mSize)
 		, mCenter(_collider.mCenter)
@@ -54,7 +54,7 @@ namespace ehw
 
 		Json::Value& jVal = *_pJVal;
 
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(m_ComCategory));
 		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mSize));
 		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mCenter));
 		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mPosition));
@@ -79,7 +79,7 @@ namespace ehw
 
 		const Json::Value& jVal = (*_pJVal);
 
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(m_ComCategory));
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mSize));
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mCenter));
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mPosition));
@@ -109,7 +109,7 @@ namespace ehw
 	{
 	}
 
-	void ICollider2D::FixedUpdate()
+	void ICollider2D::InternalUpdate()
 	{
 		float3 scale = mTransform->GetRelativeScale();
 		scale *= float3(mSize.x, mSize.y, 1.0f);
@@ -136,7 +136,7 @@ namespace ehw
 		meshAttribute.radius = mRadius;
 		meshAttribute.rotatation = rotation;
 		meshAttribute.scale = scale;
-		meshAttribute.type = mType;
+		meshAttribute.type = m_ComCategory;
 
 		RenderMgr::AddDebugMesh(meshAttribute);
 	}

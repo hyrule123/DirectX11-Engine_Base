@@ -36,7 +36,7 @@ namespace ehw
 			return;
 
 		ITransform* tr = 
-			static_cast<ITransform*>(GetOwner()->GetComponent(eComponentType::Transform));
+			static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		tr->BindData();
 
 		animator->BindData();

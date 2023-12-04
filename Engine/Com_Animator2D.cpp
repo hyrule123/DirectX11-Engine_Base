@@ -125,7 +125,7 @@ namespace ehw
 		}
 
 	}
-	void Com_Animator2D::FixedUpdate()
+	void Com_Animator2D::InternalUpdate()
 	{
 	}
 

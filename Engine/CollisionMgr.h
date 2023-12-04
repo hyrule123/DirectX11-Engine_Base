@@ -20,7 +20,7 @@ namespace ehw
 		friend class Application;
 	public:
 		static void Update();
-		static void FixedUpdate();
+		static void InternalUpdate();
 		static void Render();
 
 		static void CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable = true);

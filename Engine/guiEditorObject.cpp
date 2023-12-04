@@ -20,9 +20,9 @@ namespace gui
 	{
 		GameObject::Update();
 	}
-	void EditorObject::FixedUpdate()
+	void EditorObject::InternalUpdate()
 	{
-		GameObject::FixedUpdate();
+		GameObject::InternalUpdate();
 	}
 	void EditorObject::Render()
 	{

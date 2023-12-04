@@ -35,7 +35,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Transform::FixedUpdate()
+	void Com_Transform::InternalUpdate()
 	{
 		//bool 값들은 Tick()에서 false로 초기화 된다.
 		//여기선 고유 크기(Size)를 반영하지 않은 월드행렬을 만든다.
@@ -73,7 +73,7 @@ namespace ehw
 			mCB_Transform.InverseWorld = mCB_Transform.World.Invert();
 		}
 
-		Application::AddEndFrameFunc(std::bind(&Com_Transform::ClearUpdateState, this));
+		//Application::(std::bind(&Com_Transform::ClearUpdateState, this));
 	}
 
 	eResult Com_Transform::SaveJson(Json::Value* _pJson)

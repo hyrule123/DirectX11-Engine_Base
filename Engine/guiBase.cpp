@@ -70,7 +70,7 @@ namespace gui
 			m_Childs[i]->InitRecursive();
 		}
 	}
-	void guiBase::FixedUpdate()
+	void guiBase::InternalUpdate()
 	{
 		if (false == GetEnable())
 			return;
@@ -83,7 +83,7 @@ namespace gui
 			UpdateUI();
 			for (size_t i = 0; i < m_Childs.size(); ++i)
 			{
-				m_Childs[i]->FixedUpdate();
+				m_Childs[i]->InternalUpdate();
 			}
 
 			EndUI();

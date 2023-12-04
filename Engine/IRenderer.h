@@ -31,7 +31,7 @@ namespace ehw
 
 		//virtual void Init() override;
 		//virtual void Update() override;
-		virtual void FixedUpdate() override {};
+		virtual void InternalUpdate() override {};
 		virtual void Render() = 0;
 
 		virtual eResult SaveJson(Json::Value* _pJson) override;

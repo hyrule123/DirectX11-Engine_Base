@@ -8,14 +8,14 @@ namespace gui
 	class guiComponent : public guiChild
 	{
 	public:
-		guiComponent(ehw::eComponentType _type);
+		guiComponent(ehw::eComponentCategory _type);
 		virtual ~guiComponent();
 		
 		void SetTarget(ehw::GameObject* _target) { mTarget = _target; }
 		ehw::GameObject* GetTarget() { return mTarget; }
 
 	private:
-		ehw::eComponentType mType;
+		ehw::eComponentCategory m_ComCategory;
 		ehw::GameObject* mTarget;
 	};
 }

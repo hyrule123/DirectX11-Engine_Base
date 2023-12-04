@@ -17,12 +17,12 @@ namespace ehw
 
 		//virtual void Init() override;
 		//virtual void Update() override;
-		virtual void FixedUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
+		virtual void InternalUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
 
-		void SetType(eColliderType _type) { mType = _type; }
+		void SetType(eColliderType _type) { m_ComCategory = _type; }
 
 	private:
-		eColliderType mType;
+		eColliderType m_ComCategory;
 	};
 }
 

@@ -41,7 +41,7 @@ namespace ehw
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
 		uint Update();
-		void FixedUpdate();
+		void InternalUpdate();
 		void Render();
 
 		void Create(const std::string_view _name, std::shared_ptr<Texture> _atlas

@@ -15,7 +15,7 @@
 namespace ehw
 {
 	IRenderer::IRenderer()
-		: IComponent(eComponentType::Renderer)
+		: IComponent(eComponentCategory::Renderer)
 		, mMesh(nullptr)
 		, mMaterials(1)
 		, mbCullingEnable(true)
