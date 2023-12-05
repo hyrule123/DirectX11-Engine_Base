@@ -198,10 +198,10 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="aScript.cpp">
+    <ClCompile Include="iScript.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="aRenderer.cpp">
+    <ClCompile Include="iRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Com_Camera.cpp">
@@ -213,25 +213,25 @@
     <ClCompile Include="Layer.cpp">
       <Filter>Scene\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="aScene.cpp">
+    <ClCompile Include="iScene.cpp">
       <Filter>Scene\Base</Filter>
     </ClCompile>
     <ClCompile Include="Prefab.cpp">
       <Filter>Resource\Prefab</Filter>
     </ClCompile>
-    <ClCompile Include="aCollider2D.cpp">
+    <ClCompile Include="iCollider2D.cpp">
       <Filter>Component\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="aCollider3D.cpp">
+    <ClCompile Include="iCollider3D.cpp">
       <Filter>Component\Collider\3D</Filter>
     </ClCompile>
-    <ClCompile Include="aCollider.cpp">
+    <ClCompile Include="iCollider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="iComputeShader.cpp">
+    <ClCompile Include="aiComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
     <ClCompile Include="Com_Light3D.cpp">
@@ -261,7 +261,7 @@
     <ClCompile Include="AtExit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="aShader.cpp">
+    <ClCompile Include="iShader.cpp">
       <Filter>Resource\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsShader.cpp">
@@ -282,7 +282,7 @@
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="aResource.cpp">
+    <ClCompile Include="iResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="ComMgr.cpp">
@@ -411,7 +411,7 @@
     <ClCompile Include="base64.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="aAnimator.cpp">
+    <ClCompile Include="iAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Com_Animator3D.cpp">
@@ -420,7 +420,7 @@
     <ClCompile Include="Animation3DShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="aTransform.cpp">
+    <ClCompile Include="iTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Com_Renderer_Mesh.cpp">
@@ -468,7 +468,7 @@
     <ClCompile Include="Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="aLight.cpp">
+    <ClCompile Include="iLight.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="GPUInitSetting.cpp">
@@ -539,10 +539,10 @@
     <ClInclude Include="Texture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="aScript.h">
+    <ClInclude Include="iScript.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="aRenderer.h">
+    <ClInclude Include="iRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Com_Camera.h">
@@ -554,25 +554,25 @@
     <ClInclude Include="Layer.h">
       <Filter>Scene\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="aScene.h">
+    <ClInclude Include="iScene.h">
       <Filter>Scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Resource\Prefab</Filter>
     </ClInclude>
-    <ClInclude Include="aCollider2D.h">
+    <ClInclude Include="iCollider2D.h">
       <Filter>Component\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="aCollider3D.h">
+    <ClInclude Include="iCollider3D.h">
       <Filter>Component\Collider\3D</Filter>
     </ClInclude>
-    <ClInclude Include="aCollider.h">
+    <ClInclude Include="iCollider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="iComputeShader.h">
+    <ClInclude Include="aiComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
     <ClInclude Include="Com_Light3D.h">
@@ -608,7 +608,7 @@
     <ClInclude Include="DefaultShaders.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="aShader.h">
+    <ClInclude Include="iShader.h">
       <Filter>Resource\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsShader.h">
@@ -650,7 +650,7 @@
     <ClInclude Include="Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="aResource.h">
+    <ClInclude Include="iResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="ComMgr.h">
@@ -797,7 +797,7 @@
     <ClInclude Include="base64.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="aAnimator.h">
+    <ClInclude Include="iAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Com_Animator3D.h">
@@ -806,7 +806,7 @@
     <ClInclude Include="Animation3DShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="aTransform.h">
+    <ClInclude Include="iTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Com_Renderer_Mesh.h">
@@ -854,7 +854,7 @@
     <ClInclude Include="Com_BehaviorTree.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="aLight.h">
+    <ClInclude Include="iLight.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="GPUInitSetting.h">
