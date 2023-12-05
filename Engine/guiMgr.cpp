@@ -255,7 +255,7 @@ namespace gui
 			tr->SetRelativeScale(Vector3(mesh.radius));
 
 
-		ehw::IRenderer* renderer = debugObj->GetComponent<ehw::IRenderer>();
+		ehw::iRenderer* renderer = debugObj->GetComponent<ehw::iRenderer>();
 		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
 
 		tr->InternalUpdate();

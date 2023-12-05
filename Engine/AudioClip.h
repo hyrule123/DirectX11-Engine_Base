@@ -1,5 +1,5 @@
 #pragma once
-#include "IResource.h"
+#include "iResource.h"
 #include "AudioMgr.h"
 
 
@@ -8,7 +8,7 @@ namespace ehw
 {
 	
 
-	class AudioClip : public IResource
+	class AudioClip : public iResource
 	{
 	public:
 		AudioClip();

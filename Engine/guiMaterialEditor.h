@@ -1,6 +1,7 @@
 #pragma once
 #include "guiWindow.h"
 #include "guiComboBox.h"
+#include "define_Struct.h"
 
 //Material 전방선언
 namespace ehw

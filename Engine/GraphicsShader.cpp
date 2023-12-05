@@ -23,7 +23,7 @@ namespace ehw
 
 
 	GraphicsShader::GraphicsShader()
-		: IShader(eResourceType::GraphicsShader)
+		: iShader(eResourceType::GraphicsShader)
 		, mArrShaderCode{}
 		, mTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, mRSType(eRSType::SolidBack)
@@ -45,7 +45,7 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IShader::SaveJson(_pJVal);
+		eResult result = iShader::SaveJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -108,7 +108,7 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IShader::LoadJson(_pJVal);
+		eResult result = iShader::LoadJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -197,7 +197,7 @@ namespace ehw
 
 	eResult GraphicsShader::Save(const std::fs::path& _filePath)
 	{
-		IResource::Save(_filePath);
+		iResource::Save(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(strKey::Ext_ShaderSetting);
@@ -227,7 +227,7 @@ namespace ehw
 
 	eResult GraphicsShader::Load(const std::fs::path& _filePath)
 	{
-		IResource::Load(_filePath);
+		iResource::Load(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(strKey::Ext_ShaderSetting);

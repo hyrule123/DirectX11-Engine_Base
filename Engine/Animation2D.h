@@ -1,5 +1,5 @@
 #pragma once
-#include "IAnimation.h"
+#include "iAnimation.h"
 #include "Texture.h"
 
 namespace ehw
@@ -7,7 +7,7 @@ namespace ehw
 	using ehw::Texture;
 
 	class Animation2D 
-		: public IAnimation
+		: public iAnimation
 	{
 	public:
 		struct tSprite

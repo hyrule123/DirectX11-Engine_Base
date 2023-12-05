@@ -1,5 +1,5 @@
 #pragma once
-#include "IAnimator.h"
+#include "iAnimator.h"
 
 #include "define_Struct.h"
 
@@ -12,7 +12,7 @@ namespace ehw
 	class Skeleton;
 	class Animation3D;
 	class Com_Animator3D :
-		public IAnimator
+		public iAnimator
 	{
 	public:
 		Com_Animator3D();

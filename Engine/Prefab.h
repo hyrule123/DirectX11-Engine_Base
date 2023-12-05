@@ -1,12 +1,12 @@
 #pragma once
 
-#include "IResource.h"
+#include "iResource.h"
 
 namespace ehw
 {
     class GameObject;
 	class Prefab
-		: public IResource
+		: public iResource
 	{
     public:
         Prefab();

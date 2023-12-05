@@ -1,17 +1,17 @@
 #pragma once
 
-#include "IComponent.h"
+#include "iComponent.h"
 
 
 namespace ehw
 {
-	class ICollider
-		: public IComponent
+	class iCollider
+		: public iComponent
 	{
 	public:
-		ICollider(eColliderType _Type);
-		ICollider(const ICollider& _collider) = default;
-		virtual ~ICollider();
+		iCollider(eColliderType _Type);
+		iCollider(const iCollider& _collider) = default;
+		virtual ~iCollider();
 
 	private:
 		eColliderType m_ComCategory;

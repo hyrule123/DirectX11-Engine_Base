@@ -4,7 +4,7 @@
 
 namespace ehw
 {
-	class IScene;
+	class iScene;
 	class Layer;
 	class GameObject : public Entity
 	{
@@ -32,18 +32,18 @@ namespace ehw
 		template <typename T>
 		inline T* AddComponent();
 		
-		IComponent* AddComponent(IComponent* _pCom);
-		inline IComponent* AddComponent(const std::string_view _strKey);
+		iComponent* AddComponent(iComponent* _pCom);
+		inline iComponent* AddComponent(const std::string_view _strKey);
 
 		template <typename T>
 		inline T* GetComponent();
 
-		inline IComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type]; }
+		inline iComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type]; }
 
 
 
-		const std::vector<IComponent*>& GetComponents() { return m_Components; }
-		inline const std::span<IScript*> GetScripts();
+		const std::vector<iComponent*>& GetComponents() { return m_Components; }
+		inline const std::span<iScript*> GetScripts();
 
 		void SetName(const std::string_view _Name) { m_Name = _Name; }
 		const std::string& GetName() const { return m_Name; }
@@ -57,8 +57,8 @@ namespace ehw
 		bool IsDontDestroyOnSceneChange() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnSceneChange(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		IScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(IScene* _scene) { m_OwnerScene = _scene; }
+		iScene* GetOwnerScene() const { return m_OwnerScene; }
+		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
 
 		eLayerType GetLayerType() const { return m_LayerType; }
 		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
@@ -77,13 +77,13 @@ namespace ehw
 		bool IsAwake() const { return m_bAwake; }
 
 		//편의성을 위한 컴포넌트 받아오기 함수
-		//ITransform* Transform() { return static_cast<ITransform*>(m_Components[(int)eComponentCategory::Transform]); }
-		//ICollider* Collider() { return static_cast<ICollider*>(m_Components[(int)eComponentCategory::Collider]); }
-		//IAnimator* Animator() { return static_cast<IAnimator*>(m_Components[(int)eComponentCategory::Animator]); }
-		//ILight* Light() { return static_cast<ILight*>(m_Components[(int)eComponentCategory::Light]); }
+		//iTransform* Transform() { return static_cast<iTransform*>(m_Components[(int)eComponentCategory::Transform]); }
+		//iCollider* Collider() { return static_cast<iCollider*>(m_Components[(int)eComponentCategory::Collider]); }
+		//iAnimator* Animator() { return static_cast<iAnimator*>(m_Components[(int)eComponentCategory::Animator]); }
+		//iLight* Light() { return static_cast<iLight*>(m_Components[(int)eComponentCategory::Light]); }
 		//
 		//Com_Camera* Camera() { return static_cast<Com_Camera*>(m_Components[(int)eComponentCategory::Camera]); }
-		//IRenderer* Renderer() { return static_cast<IRenderer*>(m_Components[(int)eComponentCategory::Renderer]); }
+		//iRenderer* Renderer() { return static_cast<iRenderer*>(m_Components[(int)eComponentCategory::Renderer]); }
 		//Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(m_Components[(int)eComponentCategory::AudioSource]); }
 		//Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(m_Components[(int)eComponentCategory::AudioListener]); }
 		//Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(m_Components[(int)eComponentCategory::BehaviorTree]); }
@@ -96,10 +96,10 @@ namespace ehw
 	private:
 		std::string m_Name;
 
-		IScene* m_OwnerScene;
+		iScene* m_OwnerScene;
 		eLayerType m_LayerType;
 
-		std::vector<IComponent*>	m_Components;
+		std::vector<iComponent*>	m_Components;
 
 		GameObject* m_Parent;
 		std::vector<GameObject*> m_Childs;
@@ -131,13 +131,13 @@ namespace ehw
 		pCom->SetComTypeID(ComMgr::GetComTypeID<T>());
 		pCom->SetKey(ComMgr::GetComName<T>());
 
-		//IComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return static_cast<T*>(AddComponent(static_cast<IComponent*>(pCom)));
+		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
+		return static_cast<T*>(AddComponent(static_cast<iComponent*>(pCom)));
 	}
 
-	inline IComponent* GameObject::AddComponent(const std::string_view _strKey)
+	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
-		IComponent* pCom = ComMgr::GetNewCom(_strKey);
+		iComponent* pCom = ComMgr::GetNewCom(_strKey);
 
 		if (nullptr == pCom)
 		{
@@ -202,7 +202,7 @@ namespace ehw
 	{
 		T* pCom{};
 
-		if constexpr (std::is_base_of_v<IScript, T>)
+		if constexpr (std::is_base_of_v<iScript, T>)
 		{
 			UINT32 comTypeID = ComMgr::GetComTypeID<T>();
 			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_Components.size(); ++i)
@@ -239,15 +239,15 @@ namespace ehw
 
 
 
-	inline const std::span<IScript*> GameObject::GetScripts()
+	inline const std::span<iScript*> GameObject::GetScripts()
 	{
-		std::span<IScript*> scriptSpan{};
+		std::span<iScript*> scriptSpan{};
 
 		int ScriptSize = (int)m_Components.size() - (int)eComponentCategory::Scripts;
 		if (0 < ScriptSize)
 		{
 			scriptSpan =
-				std::span<IScript*>((IScript**)m_Components.data() + (size_t)eComponentCategory::Scripts, (size_t)ScriptSize);
+				std::span<iScript*>((iScript**)m_Components.data() + (size_t)eComponentCategory::Scripts, (size_t)ScriptSize);
 		}
 
 		return scriptSpan;

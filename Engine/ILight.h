@@ -1,14 +1,14 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 
 namespace ehw
 {
-    class ILight :
-        public IComponent
+    class iLight :
+        public iComponent
     {
     public:
-        ILight(eDimensionType _dimensionType);
-        virtual ~ILight();
+        iLight(eDimensionType _dimensionType);
+        virtual ~iLight();
 
         virtual void Render() = 0;
 

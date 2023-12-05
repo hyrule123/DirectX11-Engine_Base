@@ -2,7 +2,7 @@
 #include "Com_Renderer_Mesh.h"
 
 #include "GameObject.h"
-#include "IAnimator.h"
+#include "iAnimator.h"
 
 namespace ehw
 {
@@ -12,7 +12,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
+		iTransform* tr = static_cast<iTransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		tr->BindData();
 
 		//Render

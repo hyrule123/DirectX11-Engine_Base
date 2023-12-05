@@ -1,5 +1,5 @@
 #pragma once
-#include "IResource.h"
+#include "iResource.h"
 #include "define_GPU.h"
 #include "define_Struct.h"
 
@@ -44,7 +44,7 @@ namespace ehw
 	class StructBuffer;
 	class Skeleton;
 	struct tFBXContainer;
-	class Mesh : public IResource 
+	class Mesh : public iResource 
 	{
 	public:
 		Mesh();

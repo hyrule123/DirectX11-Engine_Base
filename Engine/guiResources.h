@@ -2,7 +2,7 @@
 #include "guiChild.h"
 #include "guiTreeWidget.h"
 
-#include "IResource.h"
+#include "iResource.h"
 #include "ResourceMgr.h"
 
 namespace gui
@@ -21,7 +21,7 @@ namespace gui
 		template <typename T>
 		void AddResources(TreeWidget::tNode* rootNode, const char* name)
 		{
-			const std::unordered_map<std::string, std::shared_ptr<ehw::IResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
+			const std::unordered_map<std::string, std::shared_ptr<ehw::iResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
 				= ehw::ResourceMgr::GetResources<T>();
 
 			TreeWidget::tNode* stemNode

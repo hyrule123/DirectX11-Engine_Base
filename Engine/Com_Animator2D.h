@@ -1,12 +1,12 @@
 #pragma once
-#include "IAnimator.h"
+#include "iAnimator.h"
 #include "Animation2D.h"
 
 #include "define_Struct.h"
 
 namespace ehw
 {
-	class Com_Animator2D : public IAnimator
+	class Com_Animator2D : public iAnimator
 	{
 	public:
 		struct tEvents

@@ -1,14 +1,14 @@
 #pragma once
-#include "IResource.h"
+#include "iResource.h"
 
 namespace ehw
 {
-    class IAnimation :
-        public IResource
+    class iAnimation :
+        public iResource
     {
     protected:
-        IAnimation();
-        virtual ~IAnimation();
+        iAnimation();
+        virtual ~iAnimation();
     };
 }
 

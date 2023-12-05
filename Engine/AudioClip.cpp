@@ -12,7 +12,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: IResource(eResourceType::AudioClip)
+		: iResource(eResourceType::AudioClip)
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)
@@ -31,7 +31,7 @@ namespace ehw
 
 	eResult AudioClip::Load(const std::fs::path& _filePath)
 	{
-		IResource::Save(_filePath);
+		iResource::Save(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		if (false == std::fs::exists(fullPath))

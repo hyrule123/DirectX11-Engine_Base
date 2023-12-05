@@ -1,10 +1,10 @@
 #pragma once
-#include "IRenderer.h"
+#include "iRenderer.h"
 
 namespace ehw
 {
     class Com_Renderer_Mesh :
-        public IRenderer
+        public iRenderer
     {
     public:
         Com_Renderer_Mesh() {};

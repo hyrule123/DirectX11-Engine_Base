@@ -1,6 +1,6 @@
 #pragma once
 #include "define_GPU.h"
-#include "IShader.h"
+#include "iShader.h"
 
 
 //1. BindData() 함수를 재정의해서 필요한 데이터를 바인딩하도록 설정
@@ -12,7 +12,7 @@
 namespace ehw
 {
 
-	class iComputeShader : public IShader
+	class iComputeShader : public iShader
 	{
 	public:
 		iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);

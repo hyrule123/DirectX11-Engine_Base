@@ -3,16 +3,16 @@
 
 #include "AtExit.h"
 
-#include "IComponent.h"
+#include "iComponent.h"
 
 namespace ehw
 {
-	std::unordered_map<std::string_view, std::function<IComponent* ()>> ComMgr::mUmapComConstructor{};
+	std::unordered_map<std::string_view, std::function<iComponent* ()>> ComMgr::mUmapComConstructor{};
 	std::vector<std::string_view> ComMgr::mComNamesByID{};
 
-	IComponent* ComMgr::GetNewCom(const std::string_view _strKey)
+	iComponent* ComMgr::GetNewCom(const std::string_view _strKey)
 	{
-		IComponent* com = nullptr;
+		iComponent* com = nullptr;
 		const auto& iter = mUmapComConstructor.find(_strKey);
 		if (iter != mUmapComConstructor.end())
 		{

@@ -1,18 +1,18 @@
 #pragma once
-#include "ICollider.h"
+#include "iCollider.h"
 
 
 namespace ehw
 {
 	class Com_Transform;
-	class ICollider2D : public ICollider
+	class iCollider2D : public iCollider
 	{
 	public:
-		ICollider2D();
-		ICollider2D(const ICollider2D& _collider);
-		CLONE(ICollider2D);
+		iCollider2D();
+		iCollider2D(const iCollider2D& _collider);
+		CLONE(iCollider2D);
 
-		virtual ~ICollider2D();
+		virtual ~iCollider2D();
 
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
@@ -22,13 +22,13 @@ namespace ehw
 		virtual void InternalUpdate() override;
 
 
-		virtual void OnCollisionEnter(ICollider2D* _collider);
-		virtual void OnCollisionStay(ICollider2D* _collider);
-		virtual void OnCollisionExit(ICollider2D* _collider);
+		virtual void OnCollisionEnter(iCollider2D* _collider);
+		virtual void OnCollisionStay(iCollider2D* _collider);
+		virtual void OnCollisionExit(iCollider2D* _collider);
 
-		virtual void OnTriggerEnter(ICollider2D* _collider);
-		virtual void OnTriggerStay(ICollider2D* _collider);
-		virtual void OnTriggerExit(ICollider2D* _collider);
+		virtual void OnTriggerEnter(iCollider2D* _collider);
+		virtual void OnTriggerStay(iCollider2D* _collider);
+		virtual void OnTriggerExit(iCollider2D* _collider);
 
 		void SetType(eColliderType _type) { m_ComCategory = _type; }
 		void SetSize(float2 _size) { mSize = _size; }

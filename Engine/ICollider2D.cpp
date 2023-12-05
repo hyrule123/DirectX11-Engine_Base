@@ -1,10 +1,10 @@
 #include "PCH_Engine.h"
-#include "ICollider2D.h"
+#include "iCollider2D.h"
 
 #include "GameObject.h"
 
 #include "RenderMgr.h"
-#include "IScript.h"
+#include "iScript.h"
 
 #include "json-cpp/json.h"
 
@@ -12,9 +12,9 @@
 
 namespace ehw
 {
-	uint ICollider2D::gColliderNumber = 0;
-	ICollider2D::ICollider2D()
-		: ICollider(eColliderType::None)
+	uint iCollider2D::gColliderNumber = 0;
+	iCollider2D::iCollider2D()
+		: iCollider(eColliderType::None)
 		, mTransform(nullptr)
 		, mSize(float2::One)
 		, mCenter(float2::Zero)
@@ -25,8 +25,8 @@ namespace ehw
 		mID = gColliderNumber++;
 	}
 
-	ICollider2D::ICollider2D(const ICollider2D& _collider)
-		: ICollider(_collider.m_ComCategory)
+	iCollider2D::iCollider2D(const iCollider2D& _collider)
+		: iCollider(_collider.m_ComCategory)
 		, mTransform(nullptr)
 		, mSize(_collider.mSize)
 		, mCenter(_collider.mCenter)
@@ -37,18 +37,18 @@ namespace ehw
 		mID = gColliderNumber++;
 	}
 
-	ICollider2D::~ICollider2D()
+	iCollider2D::~iCollider2D()
 	{
 	}
 
-	eResult ICollider2D::SaveJson(Json::Value* _pJVal)
+	eResult iCollider2D::SaveJson(Json::Value* _pJVal)
 	{
 		if (nullptr == _pJVal)
 		{
 			return eResult::Fail_Nullptr;
 		}
 
-		eResult result = ICollider::SaveJson(_pJVal);
+		eResult result = iCollider::SaveJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -66,14 +66,14 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult ICollider2D::LoadJson(const Json::Value* _pJVal)
+	eResult iCollider2D::LoadJson(const Json::Value* _pJVal)
 	{
 		if (nullptr == _pJVal)
 		{
 			return eResult::Fail_Nullptr;
 		}
 
-		eResult result = ICollider::LoadJson(_pJVal);
+		eResult result = iCollider::LoadJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -102,16 +102,16 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void ICollider2D::Awake()
+	void iCollider2D::Awake()
 	{
 		mTransform = GetOwner()->GetComponent<Com_Transform>();
 	}
 
-	void ICollider2D::Update()
+	void iCollider2D::Update()
 	{
 	}
 
-	void ICollider2D::InternalUpdate()
+	void iCollider2D::InternalUpdate()
 	{
 		float3 scale = mTransform->GetRelativeScale();
 		scale *= float3(mSize.x, mSize.y, 1.0f);
@@ -144,55 +144,55 @@ namespace ehw
 	}
 
 
-	void ICollider2D::OnCollisionEnter(ICollider2D* _collider)
+	void iCollider2D::OnCollisionEnter(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnCollisionEnter(_collider);
 		}
 	}
 
-	void ICollider2D::OnCollisionStay(ICollider2D* _collider)
+	void iCollider2D::OnCollisionStay(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnCollisionStay(_collider);
 		}
 	}
 
-	void ICollider2D::OnCollisionExit(ICollider2D* _collider)
+	void iCollider2D::OnCollisionExit(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnCollisionExit(_collider);
 		}
 	}
 
-	void ICollider2D::OnTriggerEnter(ICollider2D* _collider)
+	void iCollider2D::OnTriggerEnter(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnTriggerEnter(_collider);
 		}
 	}
 
-	void ICollider2D::OnTriggerStay(ICollider2D* _collider)
+	void iCollider2D::OnTriggerStay(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnTriggerStay(_collider);
 		}
 	}
 
-	void ICollider2D::OnTriggerExit(ICollider2D* _collider)
+	void iCollider2D::OnTriggerExit(iCollider2D* _collider)
 	{
-		const std::span<IScript*> scripts = GetOwner()->GetScripts();
-		for (IScript* script : scripts)
+		const std::span<iScript*> scripts = GetOwner()->GetScripts();
+		for (iScript* script : scripts)
 		{
 			script->OnTriggerExit(_collider);
 		}

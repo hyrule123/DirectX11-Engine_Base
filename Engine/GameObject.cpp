@@ -199,7 +199,7 @@ namespace ehw
 						continue;
 					}
 
-					IComponent* pCom = ComMgr::GetNewCom((*iter)[strKey::Json::Entity::mStrKey].asString());
+					iComponent* pCom = ComMgr::GetNewCom((*iter)[strKey::Json::Entity::mStrKey].asString());
 					if (pCom)
 					{
 						AddComponent(pCom);
@@ -331,19 +331,19 @@ namespace ehw
 
 		if (m_Components[(int)eComponentCategory::Renderer] && m_Components[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<IRenderer*>(m_Components[(int)eComponentCategory::Renderer])->Render();
+			static_cast<iRenderer*>(m_Components[(int)eComponentCategory::Renderer])->Render();
 		}
 	}
 
 
 
-	IComponent* GameObject::AddComponent(IComponent* _pCom)
+	iComponent* GameObject::AddComponent(iComponent* _pCom)
 	{
 		if (nullptr == _pCom)
 			return nullptr;
 
 		//에러 발생시 leak 발생하지 않도록
-		std::unique_ptr<IComponent> uniqPtr(_pCom);
+		std::unique_ptr<iComponent> uniqPtr(_pCom);
 
 		eComponentCategory ComType = _pCom->GetComCategory();
 

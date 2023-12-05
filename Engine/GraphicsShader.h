@@ -1,5 +1,5 @@
 #pragma once
-#include "IShader.h"
+#include "iShader.h"
 #include "define_GPU.h"
 #include <unordered_set>
 
@@ -16,7 +16,7 @@ namespace ehw
 		std::string strKey;
 	};
 
-	class GraphicsShader : public IShader
+	class GraphicsShader : public iShader
 	{
 		friend class gui::guiGraphicsShaderEditor;
 	public:

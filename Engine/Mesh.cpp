@@ -19,7 +19,7 @@
 namespace ehw
 {
 	Mesh::Mesh()
-		: IResource(eResourceType::Mesh)
+		: iResource(eResourceType::Mesh)
 		, mVertexBuffer{}
 		, mVBDesc{}
 		, mVertexByteStride{}
@@ -42,7 +42,7 @@ namespace ehw
 
 	eResult Mesh::Save(const std::fs::path& _filePath)
 	{
-		IResource::Save(_filePath);
+		iResource::Save(_filePath);
 
 		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);
@@ -92,7 +92,7 @@ namespace ehw
 
 	eResult Mesh::Load(const std::fs::path& _filePath)
 	{
-		IResource::Load(_filePath);
+		iResource::Load(_filePath);
 
 		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);

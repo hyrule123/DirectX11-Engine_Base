@@ -165,7 +165,7 @@ void CreateEngineComponentKey()
     DirTree.CreateStrKeyHeader(DirPath / "strKey_Component.h", "com", true);
 
     tAddBaseClassDesc Desc = {};
-    Desc.BaseType = "IComponent";
+    Desc.BaseType = "iComponent";
     Desc.IncludePCH = R"(#include "PCH_Engine.h")";
     Desc.ClassName = "ComponentInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";
@@ -193,7 +193,7 @@ void CreateUserComponentKey()
     DirTree.CreateStrKeyHeader(DirPath / "strKey_UserComponent.h", "com", true);
 
     tAddBaseClassDesc Desc = {};
-    Desc.BaseType = "IComponent";
+    Desc.BaseType = "iComponent";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
@@ -220,7 +220,7 @@ void CreateScriptKey()
     DirTree.CreateStrKeyHeader(DirPath / "strKey_Script.h", "Script", true);
 
     tAddBaseClassDesc Desc = {};
-    Desc.BaseType = "IScript";
+    Desc.BaseType = "iScript";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
@@ -249,7 +249,7 @@ void CreateSceneKey()
     DirTree.CreateStrKeyHeader(DirPath / "strKey_Scene.h", "Scene", true);
 
     tAddBaseClassDesc Desc = {};
-    Desc.BaseType = "IScene";
+    Desc.BaseType = "iScene";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";

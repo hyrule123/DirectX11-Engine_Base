@@ -1,13 +1,13 @@
 #include "PCH_Engine.h"
-#include "ITransform.h"
+#include "iTransform.h"
 
 namespace ehw
 {
-	ITransform::ITransform()
-		: IComponent(eComponentCategory::Transform)
+	iTransform::iTransform()
+		: iComponent(eComponentCategory::Transform)
 	{
 	}
-	ITransform::~ITransform()
+	iTransform::~iTransform()
 	{
 	}
 }

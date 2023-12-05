@@ -1,16 +1,16 @@
 #include "PCH_Engine.h"
-#include "IAnimator.h"
+#include "iAnimator.h"
 
 namespace ehw
 {
-	IAnimator::IAnimator(eDimensionType _type)
-		: IComponent(eComponentCategory::Animator)
+	iAnimator::iAnimator(eDimensionType _type)
+		: iComponent(eComponentCategory::Animator)
 		, mDimensionType(_type)
 	{
 	}
 
 
-	void IAnimator::AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func)
+	void iAnimator::AddEvent(iAnimation* _anim, int _frameIdx, const std::function<void()>& _func)
 	{
 		ASSERT(nullptr != _anim || 0 < _frameIdx || _func, "애니메이션이 없거나 ");
 
@@ -22,7 +22,7 @@ namespace ehw
 		auto eventIter = mMapEvent.find(key);
 		if (eventIter == mMapEvent.end())
 		{
-			mMapEvent.insert(std::make_pair(key, IAnimator::tEvent()));
+			mMapEvent.insert(std::make_pair(key, iAnimator::tEvent()));
 			eventIter = mMapEvent.find(key);
 		}
 		
@@ -39,7 +39,7 @@ namespace ehw
 		callbackFuncIter->second.push_back(_func);
 	}
 
-	void IAnimator::CallEvent(IAnimation* _anim, int _frameIdx)
+	void iAnimator::CallEvent(iAnimation* _anim, int _frameIdx)
 	{
 		//해당 애니메이션 포인터 주소로 등록된 이벤트가 있는지 확인
 		auto eventIter = mMapEvent.find(reinterpret_cast<DWORD_PTR>(_anim));

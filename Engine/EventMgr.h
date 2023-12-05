@@ -4,7 +4,7 @@
 namespace ehw
 {
     class GameObject;
-    class IScene;
+    class iScene;
     class EventMgr
     {
         friend class Application;

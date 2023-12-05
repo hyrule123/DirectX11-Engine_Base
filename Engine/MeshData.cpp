@@ -23,7 +23,7 @@
 namespace ehw
 {
 	MeshData::MeshData()
-		: IResource(eResourceType::MeshData)
+		: iResource(eResourceType::MeshData)
 	{
 	}
 
@@ -44,7 +44,7 @@ namespace ehw
 		fileName.replace_extension(strKey::Ext_MeshData);
 
 		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
-		IResource::Save(fileName);
+		iResource::Save(fileName);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
 
@@ -76,7 +76,7 @@ namespace ehw
 		fileName.replace_extension(strKey::Ext_MeshData);
 
 		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
-		IResource::Load(fileName);
+		iResource::Load(fileName);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
 
@@ -102,7 +102,7 @@ namespace ehw
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
-		eResult result = IResource::SaveJson(_pJson);
+		eResult result = iResource::SaveJson(_pJson);
 		if (eResultFail(result))
 			return result;
 
@@ -173,7 +173,7 @@ namespace ehw
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
-		eResult result = IResource::LoadJson(_pJson);
+		eResult result = iResource::LoadJson(_pJson);
 		if (eResultFail(result))
 			return result;
 		

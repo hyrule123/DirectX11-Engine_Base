@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "CollisionMgr.h"
 
-#include "IScene.h"
+#include "iScene.h"
 #include "SceneMgr.h"
 
 #include "AtExit.h"
@@ -28,7 +28,7 @@ namespace ehw
 	}
 	void CollisionMgr::Update()
 	{
-		IScene* scene = SceneMgr::GetActiveScene();
+		iScene* scene = SceneMgr::GetActiveScene();
 		for (uint row = 0; row < (uint)eLayerType::END; row++)
 		{
 			for (uint column = 0; column < (uint)eLayerType::END; column++)
@@ -64,7 +64,7 @@ namespace ehw
 
 		mLayerCollisionMatrix[row][column] = _enable;
 	}
-	void CollisionMgr::LayerCollision(IScene* _scene, eLayerType _left, eLayerType _right)
+	void CollisionMgr::LayerCollision(iScene* _scene, eLayerType _left, eLayerType _right)
 	{
 		const std::vector<GameObject*>& lefts = _scene->GetGameObjects(_left);
 		const std::vector<GameObject*>& rights = _scene->GetGameObjects(_right);
@@ -73,19 +73,19 @@ namespace ehw
 		{
 			if (false == left->IsActive())
 				continue;
-			if (left->GetComponent<ICollider2D>() == nullptr)
+			if (left->GetComponent<iCollider2D>() == nullptr)
 				continue;
 
 			for (GameObject* right : rights)
 			{
 				if (false == left->IsActive())
 					continue;
-				if (right->GetComponent<ICollider2D>() == nullptr)
+				if (right->GetComponent<iCollider2D>() == nullptr)
 					continue;
 				/*if (left == right) //지워도 상관없어서 주석처리 (오류나면 수정)
 					continue;*/
 
-				ColliderCollision(left->GetComponent<ICollider2D>(), right->GetComponent<ICollider2D>());
+				ColliderCollision(left->GetComponent<iCollider2D>(), right->GetComponent<iCollider2D>());
 			}
 
 			/*if ((uint)left == (uint)right)  
@@ -94,7 +94,7 @@ namespace ehw
 
 	}
 
-	void CollisionMgr::ColliderCollision(ICollider2D* _left, ICollider2D* _right)
+	void CollisionMgr::ColliderCollision(iCollider2D* _left, iCollider2D* _right)
 	{
 		// 두 충돌체 레이어로 구성된 ID 확인
 		union_ColliderID colliderID;
@@ -162,7 +162,7 @@ namespace ehw
 		}
 	}
 
-	bool CollisionMgr::Intersect(ICollider2D* _left, ICollider2D* _right)
+	bool CollisionMgr::Intersect(iCollider2D* _left, iCollider2D* _right)
 	{
 		// Rect vs Rect 
 		// 0 --- 1

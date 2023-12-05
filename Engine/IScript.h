@@ -1,29 +1,29 @@
 
 #pragma once
-#include "IComponent.h"
-#include "ICollider2D.h"
+#include "iComponent.h"
+#include "iCollider2D.h"
 
 namespace ehw
 {
-	class IScript : public IComponent
+	class iScript : public iComponent
 	{
 	public:
-		IScript();
-		IScript(const IScript& _other) = default;
-		virtual ~IScript();
+		iScript();
+		iScript(const iScript& _other) = default;
+		virtual ~iScript();
 
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
 		virtual void InternalUpdate() final {};
 
-		virtual void OnCollisionEnter(ICollider2D* _collider) {};
-		virtual void OnCollisionStay(ICollider2D* _collider) {};
-		virtual void OnCollisionExit(ICollider2D* _collider) {};
+		virtual void OnCollisionEnter(iCollider2D* _collider) {};
+		virtual void OnCollisionStay(iCollider2D* _collider) {};
+		virtual void OnCollisionExit(iCollider2D* _collider) {};
 
-		virtual void OnTriggerEnter(ICollider2D* _collider) {};
-		virtual void OnTriggerStay(ICollider2D* _collider) {};
-		virtual void OnTriggerExit(ICollider2D* _collider) {};
+		virtual void OnTriggerEnter(iCollider2D* _collider) {};
+		virtual void OnTriggerStay(iCollider2D* _collider) {};
+		virtual void OnTriggerExit(iCollider2D* _collider) {};
 
 	private:
 	};

@@ -15,7 +15,7 @@
 namespace ehw
 {
 	iComputeShader::iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
-		: IShader(eResourceType::ComputeShader)
+		: iShader(eResourceType::ComputeShader)
 		, m_LeafTypeID(_typeID)
 		, m_CSBlob(nullptr)
 		, m_CS(nullptr)

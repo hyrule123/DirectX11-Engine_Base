@@ -1,15 +1,15 @@
 #include "PCH_Engine.h"
-#include "ILight.h"
+#include "iLight.h"
 
 namespace ehw
 {
-	ILight::ILight(eDimensionType _dimensionType)
-		: IComponent(eComponentCategory::Light)
+	iLight::iLight(eDimensionType _dimensionType)
+		: iComponent(eComponentCategory::Light)
 		, mDimension(_dimensionType)
 	{
 	}
 
-	ILight::~ILight()
+	iLight::~iLight()
 	{
 	}
 }

@@ -110,7 +110,7 @@ namespace ehw
 	//		{
 	//			std::vector<GameObject*> gameObjs;
 	//			pChild->GetGameObjectHierarchy(gameObjs);
-	//			IScene* scene = SceneMgr::GetActiveScene();
+	//			iScene* scene = SceneMgr::GetActiveScene();
 	//			for (size_t i = 0; i < gameObjs.size(); ++i)
 	//			{
 	//				SceneMgr::GetActiveScene()->ChangeGameObjectLayer(pParent->GetLayerType(), pChild);
@@ -125,7 +125,7 @@ namespace ehw
 	//	GameObject* pObj = reinterpret_cast<GameObject*>(_event.lParam);
 	//	eLayerType targetLayer = static_cast<eLayerType>(_event.wParam);
 
-	//	IScene* scene = SceneMgr::GetActiveScene();
+	//	iScene* scene = SceneMgr::GetActiveScene();
 	//	if (scene)
 	//		scene->ChangeGameObjectLayer(targetLayer, pObj);
 	//}
@@ -182,7 +182,7 @@ namespace ehw
 		ASSERT_DEBUG(nullptr != _gameObj, "게임오브젝트가 nullptr 입니다.");
 
 		//Scene 시작 안됐을 경우 바로 넣어준다
-		IScene* scene = SceneMgr::GetActiveScene();
+		iScene* scene = SceneMgr::GetActiveScene();
 		ASSERT(scene, "scene이 없습니다.");
 
 		if (false == scene->IsAwaken())
@@ -214,7 +214,7 @@ namespace ehw
 
 		AddFrameEndEvent([_layer, _gameObj]()->void
 			{
-				IScene* scene = SceneMgr::GetActiveScene();
+				iScene* scene = SceneMgr::GetActiveScene();
 				if (scene)
 					scene->ChangeGameObjectLayer(_layer, _gameObj);
 			}

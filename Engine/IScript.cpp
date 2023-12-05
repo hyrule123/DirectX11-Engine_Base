@@ -1,18 +1,18 @@
 #include "PCH_Engine.h"
 
-#include "IScript.h"
+#include "iScript.h"
 
 
 
 namespace ehw
 {
-	IScript::IScript()
-		: IComponent(eComponentCategory::Scripts)
+	iScript::iScript()
+		: iComponent(eComponentCategory::Scripts)
 	{
 
 	}
 
-	IScript::~IScript()
+	iScript::~iScript()
 	{
 	}
 }

@@ -15,8 +15,8 @@ namespace ehw
 		void Render();
 		void Destroy();
 
-		IScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(IScene* _scene) { m_OwnerScene = _scene; }
+		iScene* GetOwnerScene() const { return m_OwnerScene; }
+		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
 		void AddGameObject(GameObject* gameObject);
 		void RemoveGameObject(const GameObject* gameObject);
 		const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
@@ -25,7 +25,7 @@ namespace ehw
 		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
 
 	private:
-		IScene* m_OwnerScene;
+		iScene* m_OwnerScene;
 		eLayerType m_LayerType;
 		std::vector<GameObject*> mGameObjects;
 	};

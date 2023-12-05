@@ -1,5 +1,5 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -20,14 +20,14 @@ namespace ehw
 		eMaterialMode MaterialMode;
 	};
 
-	class IRenderer : public IComponent
+	class iRenderer : public iComponent
 	{
 	public:
-		IRenderer();
+		iRenderer();
 
-		IRenderer(const IRenderer& _other);
+		iRenderer(const iRenderer& _other);
 
-		virtual ~IRenderer();
+		virtual ~iRenderer();
 
 		//virtual void Init() override;
 		//virtual void Update() override;
@@ -65,7 +65,7 @@ namespace ehw
 		bool mbCullingEnable;
 	};
 
-	inline void IRenderer::SetMaterial(const std::shared_ptr<Material> _Mtrl, UINT _idx)
+	inline void iRenderer::SetMaterial(const std::shared_ptr<Material> _Mtrl, UINT _idx)
 	{
 		if ((UINT)mMaterials.size() <= _idx)
 			mMaterials.resize(_idx + 1u);
@@ -75,7 +75,7 @@ namespace ehw
 		mMaterials[_idx].CurrentMaterial = mMaterials[_idx].SharedMaterial.get();
 	}
 
-	inline Material* IRenderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)
+	inline Material* iRenderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)
 	{
 		tMaterialSet* mtrlSet = GetMaterialSet(_idx);
 		Material* mtrl = nullptr;
@@ -106,7 +106,7 @@ namespace ehw
 	}
 
 
-	inline Material* IRenderer::GetCurrentMaterial(UINT _idx)
+	inline Material* iRenderer::GetCurrentMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
 		if ((UINT)mMaterials.size() > _idx)
@@ -117,7 +117,7 @@ namespace ehw
 		return retMtrl;
 	}
 
-	inline std::shared_ptr<Material> IRenderer::GetSharedMaterial(UINT _idx)
+	inline std::shared_ptr<Material> iRenderer::GetSharedMaterial(UINT _idx)
 	{
 		std::shared_ptr<Material> retMtrl = nullptr;
 		if ((UINT)mMaterials.size() > _idx)
@@ -127,7 +127,7 @@ namespace ehw
 		return retMtrl;
 	}
 
-	inline Material* IRenderer::GetDynamicMaterial(UINT _idx)
+	inline Material* iRenderer::GetDynamicMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
 		if ((UINT)mMaterials.size() > _idx)
@@ -138,7 +138,7 @@ namespace ehw
 	}
 
 
-	inline tMaterialSet* IRenderer::GetMaterialSet(UINT _idx)
+	inline tMaterialSet* iRenderer::GetMaterialSet(UINT _idx)
 	{
 		tMaterialSet* mtrlSet = nullptr;
 		if ((UINT)mMaterials.size() > _idx)

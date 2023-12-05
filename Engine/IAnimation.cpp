@@ -1,15 +1,15 @@
 #include "PCH_Engine.h"
-#include "IAnimation.h"
+#include "iAnimation.h"
 
 
 namespace ehw
 {
-	IAnimation::IAnimation()
-		:IResource(eResourceType::Animation)
+	iAnimation::iAnimation()
+		:iResource(eResourceType::Animation)
 	{
 	}
 
-	IAnimation::~IAnimation()
+	iAnimation::~iAnimation()
 	{
 	}
 }

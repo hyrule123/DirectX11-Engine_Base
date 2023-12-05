@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_Animator3D::Com_Animator3D()
-		: IAnimator(eDimensionType::_3D)
+		: iAnimator(eDimensionType::_3D)
 		, mSkeleton()
 		//, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
@@ -32,7 +32,7 @@ namespace ehw
 	}
 
 	Com_Animator3D::Com_Animator3D(const Com_Animator3D& _other)
-		: IAnimator(_other)
+		: iAnimator(_other)
 		, mSkeleton()
 		//, m_iFramePerSecond(_other.m_iFramePerSecond)
 		, m_pBoneFinalMatBuffer(nullptr)
@@ -123,7 +123,7 @@ namespace ehw
 			//이전 프레임 번호 업데이트 및 이벤트함수 호출
 			if (m_PrevFrame != m_Anim3DCBuffer.CurrentFrame)
 			{
-				IAnimator::CallEvent(static_cast<IAnimation*>(mCurrentAnim.get()), m_Anim3DCBuffer.CurrentFrame - mCurrentAnim->GetStartFrame());
+				iAnimator::CallEvent(static_cast<iAnimation*>(mCurrentAnim.get()), m_Anim3DCBuffer.CurrentFrame - mCurrentAnim->GetStartFrame());
 			}
 			m_PrevFrame = m_Anim3DCBuffer.CurrentFrame;
 		}
@@ -165,7 +165,7 @@ namespace ehw
 			_frameIdx = anim->GetFrameLength() - 1;
 		}
 
-		IAnimator::AddEvent(static_cast<IAnimation*>(anim.get()), _frameIdx, _func);
+		iAnimator::AddEvent(static_cast<iAnimation*>(anim.get()), _frameIdx, _func);
 
 		return true;
 	}

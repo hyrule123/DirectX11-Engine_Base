@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_Light3D::Com_Light3D()
-		: ILight(eDimensionType::_3D)
+		: iLight(eDimensionType::_3D)
 		, mVolumeMesh()
 		, mLightMaterial()
 		, mIndex()
@@ -25,7 +25,7 @@ namespace ehw
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
-		: ILight(_other)
+		: iLight(_other)
 		, mIndex(_other.mIndex)
 		, mAttribute(_other.mAttribute)
 		, mVolumeMesh(_other.mVolumeMesh)
@@ -46,7 +46,7 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		eResult result = IComponent::SaveJson(_pJVal);
+		eResult result = iComponent::SaveJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -69,7 +69,7 @@ namespace ehw
 
 		//부모클래스의 LoadJson()을 호출해서 부모클래스의 데이터를 저장
 		//실패시 실패결과를 리턴
-		eResult result = IComponent::LoadJson(_pJVal);
+		eResult result = iComponent::LoadJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -154,7 +154,7 @@ namespace ehw
 		}
 
 		//Transform
-		ITransform* tr = static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
+		iTransform* tr = static_cast<iTransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		if (nullptr == tr)
 			return;
 		tr->BindData();

@@ -1,5 +1,5 @@
 #pragma once
-#include "ILight.h"
+#include "iLight.h"
 #include "define_GPU.h"
 #include "defaultShader/Func_Light.hlsli"
 
@@ -7,7 +7,7 @@ namespace ehw
 {
 	class Mesh;
 	class Material;
-	class Com_Light3D : public ILight
+	class Com_Light3D : public iLight
 	{
 	public:
 		Com_Light3D();

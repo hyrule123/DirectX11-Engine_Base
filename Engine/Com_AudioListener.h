@@ -1,9 +1,9 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 
 namespace ehw
 {
-	class Com_AudioListener : public IComponent
+	class Com_AudioListener : public iComponent
 	{
 	public:
 		Com_AudioListener();

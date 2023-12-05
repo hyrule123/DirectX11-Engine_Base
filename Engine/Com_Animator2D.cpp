@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
-		: IAnimator(eDimensionType::_2D)
+		: iAnimator(eDimensionType::_2D)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)
@@ -19,7 +19,7 @@ namespace ehw
 
 	}
 	Com_Animator2D::Com_Animator2D(const Com_Animator2D& _other)
-		: IAnimator(_other)
+		: iAnimator(_other)
 		//복사작업을 따로 해줘야할 경우 여기서는 일단 초기화해줌
 		, mAnimations{}
 		, mEvents{}

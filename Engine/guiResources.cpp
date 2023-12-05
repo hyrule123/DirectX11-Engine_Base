@@ -68,7 +68,7 @@ namespace gui
 
 	void guiResources::toInspector(ehw::tDataPtr _data)
 	{
-		ehw::IResource* resource = static_cast<ehw::IResource*>(_data.pData);
+		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);

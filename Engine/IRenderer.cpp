@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "IRenderer.h"
+#include "iRenderer.h"
 
 #include "Mesh.h"
 #include "Material.h"
@@ -14,20 +14,20 @@
 
 namespace ehw
 {
-	IRenderer::IRenderer()
-		: IComponent(eComponentCategory::Renderer)
+	iRenderer::iRenderer()
+		: iComponent(eComponentCategory::Renderer)
 		, mMesh(nullptr)
 		, mMaterials(1)
 		, mbCullingEnable(true)
 	{
 	}
 
-	IRenderer::~IRenderer()
+	iRenderer::~iRenderer()
 	{
 	}
 
-	IRenderer::IRenderer(const IRenderer& _other)
-		: IComponent(_other)
+	iRenderer::iRenderer(const iRenderer& _other)
+		: iComponent(_other)
 		, mMesh(_other.mMesh)
 		, mMaterials{}
 		, mbCullingEnable(_other.mbCullingEnable)
@@ -46,13 +46,13 @@ namespace ehw
 		}
 	}
 
-	eResult IRenderer::SaveJson(Json::Value* _pJson)
+	eResult iRenderer::SaveJson(Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IComponent::SaveJson(_pJson);
+		eResult result = iComponent::SaveJson(_pJson);
 		if (eResultFail(result))
 		{
 			return result;
@@ -74,13 +74,13 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult IRenderer::LoadJson(const Json::Value* _pJson)
+	eResult iRenderer::LoadJson(const Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IComponent::LoadJson(_pJson);
+		eResult result = iComponent::LoadJson(_pJson);
 		if (eResultFail(result))
 		{
 			return result;
@@ -103,7 +103,7 @@ namespace ehw
 
 
 
-	void IRenderer::SetMesh(const std::shared_ptr<Mesh> _mesh)
+	void iRenderer::SetMesh(const std::shared_ptr<Mesh> _mesh)
 	{
 		mMesh = _mesh;
 

@@ -76,7 +76,7 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IRenderer::SaveJson(_pJVal);
+		eResult result = iRenderer::SaveJson(_pJVal);
 
 		if (eResultFail(result))
 		{
@@ -124,7 +124,7 @@ namespace ehw
 
 		//부모클래스의 LoadJson()을 호출해서 부모클래스의 데이터를 저장
 		//실패시 실패결과를 리턴
-		eResult result = IRenderer::LoadJson(_pJVal);
+		eResult result = iRenderer::LoadJson(_pJVal);
 
 		if (eResultFail(result))
 		{

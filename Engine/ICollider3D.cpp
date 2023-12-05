@@ -1,28 +1,28 @@
 #include "PCH_Engine.h"
-#include "ICollider3D.h"
+#include "iCollider3D.h"
 #include "Com_Transform.h"
 
 #include "json-cpp/json.h"
 
 namespace ehw
 {
-	ICollider3D::ICollider3D()
-		: ICollider(eColliderType::None)
+	iCollider3D::iCollider3D()
+		: iCollider(eColliderType::None)
 	{
 		ASSERT(FALSE, "미구현");
 	}
 	
-	ICollider3D::ICollider3D(const ICollider3D& _collider)
-		: ICollider(_collider.m_ComCategory)
+	iCollider3D::iCollider3D(const iCollider3D& _collider)
+		: iCollider(_collider.m_ComCategory)
 	{
 		ASSERT(FALSE, "미구현");
 	}
 
-	ICollider3D::~ICollider3D()
+	iCollider3D::~iCollider3D()
 	{
 	}
 
-	eResult ICollider3D::SaveJson(Json::Value* _pJVal)
+	eResult iCollider3D::SaveJson(Json::Value* _pJVal)
 	{
 		ASSERT(FALSE, "미구현");
 
@@ -31,7 +31,7 @@ namespace ehw
 		//	return eResult::Fail_Nullptr;
 		//}
 
-		//eResult result = ICollider::SaveJson(_pJVal);
+		//eResult result = iCollider::SaveJson(_pJVal);
 		//if (eResultFail(result))
 		//{
 		//	return result;
@@ -44,7 +44,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult ICollider3D::LoadJson(const Json::Value* _pJVal)
+	eResult iCollider3D::LoadJson(const Json::Value* _pJVal)
 	{
 		ASSERT(FALSE, "미구현");
 
@@ -53,7 +53,7 @@ namespace ehw
 		//	return eResult::Fail_Nullptr;
 		//}
 
-		//eResult result = ICollider::LoadJson(_pJVal);
+		//eResult result = iCollider::LoadJson(_pJVal);
 		//if (eResultFail(result))
 		//{
 		//	return result;

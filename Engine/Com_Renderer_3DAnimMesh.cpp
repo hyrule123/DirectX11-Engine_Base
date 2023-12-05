@@ -21,7 +21,7 @@ namespace ehw
 		//3D 애니메이터가 아니거나
 		//재생 중이 아니거나
 		//->일반 Mesh 타입으로 렌더링
-		IAnimator* animator = GetOwner()->GetComponent<IAnimator>();
+		iAnimator* animator = GetOwner()->GetComponent<iAnimator>();
 		if (
 			nullptr == animator 
 			|| eDimensionType::_3D != animator->GetDimensionType()
@@ -35,8 +35,8 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		ITransform* tr = 
-			static_cast<ITransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
+		iTransform* tr = 
+			static_cast<iTransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
 		tr->BindData();
 
 		animator->BindData();

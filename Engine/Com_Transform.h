@@ -1,12 +1,12 @@
 #pragma once
-#include "ITransform.h"
+#include "iTransform.h"
 #include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw
 {
     class GameObject;
     class Com_Transform :
-        public ITransform
+        public iTransform
     {
     public:
         Com_Transform();

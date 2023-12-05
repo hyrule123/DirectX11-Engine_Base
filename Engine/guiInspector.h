@@ -19,8 +19,8 @@ namespace gui
 		void SetTargetGameObject(ehw::GameObject* _targetObj) { mTargetGameObject = _targetObj; }
 		ehw::GameObject* GetTargetGameObject() const { return mTargetGameObject; }
 
-		void SetTargetResource(ehw::IResource* _targetRes) { mTargetResource = _targetRes; }
-		ehw::IResource* GetTargetResource() const { return mTargetResource; }
+		void SetTargetResource(ehw::iResource* _targetRes) { mTargetResource = _targetRes; }
+		ehw::iResource* GetTargetResource() const { return mTargetResource; }
 
 
 	private:
@@ -28,7 +28,7 @@ namespace gui
 
 	private:
 		ehw::GameObject* mTargetGameObject;
-		ehw::IResource* mTargetResource;
+		ehw::iResource* mTargetResource;
 
 		std::vector<gui::guiComponent*> mGuiComponents;
 		std::vector<gui::guiResource*> mGuiResources;

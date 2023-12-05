@@ -1,11 +1,11 @@
 #include "PCH_Engine.h"
 
-#include "IScene.h"
+#include "iScene.h"
 
 
 namespace ehw
 {
-	IScene::IScene()
+	iScene::iScene()
 		: m_bAwake(false)
 	{
 		for (size_t i = 0; i < m_Layers.size(); ++i)
@@ -15,11 +15,11 @@ namespace ehw
 		}
 	}
 
-	IScene::~IScene()
+	iScene::~iScene()
 	{
 	}
 
-	void IScene::SceneAwake()
+	void iScene::SceneAwake()
 	{
 		if (m_bAwake)
 			return;
@@ -31,7 +31,7 @@ namespace ehw
 			layer.Awake();
 		}
 	}
-	void IScene::SceneUpdate()
+	void iScene::SceneUpdate()
 	{
 		Update();
 
@@ -40,7 +40,7 @@ namespace ehw
 			layer.Update();
 		}
 	}
-	void IScene::SceneInternalUpdate()
+	void iScene::SceneInternalUpdate()
 	{
 		InternalUpdate();
 		for (Layer& layer : m_Layers)
@@ -48,7 +48,7 @@ namespace ehw
 			layer.InternalUpdate();
 		}
 	}
-	void IScene::SceneRender()
+	void iScene::SceneRender()
 	{
 		Render();
 		for (Layer& layer : m_Layers)
@@ -56,7 +56,7 @@ namespace ehw
 			layer.Render();
 		}
 	}
-	void IScene::SceneDestroy()
+	void iScene::SceneDestroy()
 	{
 		Destroy();
 		for (Layer& layer : m_Layers)
@@ -69,7 +69,7 @@ namespace ehw
 
 
 
-	std::vector<GameObject*> IScene::GetDontDestroyGameObjects()
+	std::vector<GameObject*> iScene::GetDontDestroyGameObjects()
 	{
 		std::vector<GameObject*> gameObjects;
 		for (Layer& layer : m_Layers)
@@ -84,7 +84,7 @@ namespace ehw
 
 		return gameObjects;
 	}
-	const std::vector<GameObject*>& IScene::GetGameObjects(const eLayerType _type)
+	const std::vector<GameObject*>& iScene::GetGameObjects(const eLayerType _type)
 	{
 		return m_Layers[(uint)_type].GetGameObjects();
 	}

@@ -1,11 +1,11 @@
 #pragma once
-#include "IAnimator.h"
+#include "iAnimator.h"
 
 namespace ehw
 {
 	class Com_Animator3D;
 	class Com_DummyAnimator :
-		public IAnimator
+		public iAnimator
 	{
 	public:
 		Com_DummyAnimator();

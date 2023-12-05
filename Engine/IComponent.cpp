@@ -1,16 +1,16 @@
 #include "PCH_Engine.h"
 
-#include "IComponent.h"
+#include "iComponent.h"
 
 #include "GameObject.h"
-#include "IScene.h"
+#include "iScene.h"
 #include "EventMgr.h"
 
 #include "json-cpp\jsonSaveLoad.h"
 
 namespace ehw
 {
-	IComponent::IComponent(eComponentCategory _type)
+	iComponent::iComponent(eComponentCategory _type)
 		: m_ComCategory(_type)
 		, m_ComTypeID()
 		, m_Owner(nullptr)
@@ -18,7 +18,7 @@ namespace ehw
 	{
 	}
 
-	IComponent::IComponent(const IComponent& _other)
+	iComponent::iComponent(const iComponent& _other)
 		: Entity(_other)
 		, m_ComCategory(_other.m_ComCategory)
 		, m_ComTypeID()
@@ -27,10 +27,10 @@ namespace ehw
 	{
 	}
 
-	IComponent::~IComponent()
+	iComponent::~iComponent()
 	{
 	}
-	eResult IComponent::SaveJson(Json::Value* _pJson)
+	eResult iComponent::SaveJson(Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 		{
@@ -46,7 +46,7 @@ namespace ehw
 
 		return eResult::Success;
 	}
-	eResult IComponent::LoadJson(const Json::Value* _pJson)
+	eResult iComponent::LoadJson(const Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 		{
@@ -61,7 +61,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void IComponent::SetEnable(bool _bEnable)
+	void iComponent::SetEnable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
 		if (IsDestroyed() || IsEnabled() == _bEnable)
@@ -94,7 +94,7 @@ namespace ehw
 
 	}
 
-	void IComponent::Destroy()
+	void iComponent::Destroy()
 	{
 		if (IsDestroyed())
 			return;

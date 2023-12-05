@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: IResource(eResourceType::Texture)
+		: iResource(eResourceType::Texture)
 		, mDesc()
 		, mTexture()
 		, mImage()
@@ -177,7 +177,7 @@ namespace ehw
 
 	eResult Texture::Load(const std::filesystem::path& _filePath)
 	{
-		IResource::Load(_filePath);
+		iResource::Load(_filePath);
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
 

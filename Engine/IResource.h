@@ -6,15 +6,15 @@
 
 namespace ehw
 {
-	class IResource 
+	class iResource 
 		: public Entity
 	{
 	public:
-		IResource(eResourceType _type);
+		iResource(eResourceType _type);
 
-		IResource(const IResource& _other) = default;
+		iResource(const iResource& _other) = default;
 
-		virtual ~IResource();
+		virtual ~iResource();
 
 		//BasePath를 저장
 		virtual eResult Save(const std::fs::path& _filePath);

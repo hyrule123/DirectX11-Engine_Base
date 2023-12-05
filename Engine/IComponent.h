@@ -7,17 +7,17 @@
 namespace ehw
 {
 	class GameObject;
-	class IScene;
-	class IComponent : public Entity
+	class iScene;
+	class iComponent : public Entity
 	{
 		friend class ComMgr;
 	public:
-		IComponent(eComponentCategory _type);
+		iComponent(eComponentCategory _type);
 
-		IComponent(const IComponent& _other);
-		CLONE_DISABLE(IComponent);
+		iComponent(const iComponent& _other);
+		CLONE_DISABLE(iComponent);
 
-		virtual ~IComponent();
+		virtual ~iComponent();
 
 		virtual eResult SaveJson(Json::Value* _pJson) override;
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
@@ -34,8 +34,8 @@ namespace ehw
 		GameObject* GetOwner() const { return m_Owner; }
 		void SetOwner(GameObject* _owner) { m_Owner = _owner; }
 
-		IScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(IScene* _scene) { m_OwnerScene = _scene; }
+		iScene* GetOwnerScene() const { return m_OwnerScene; }
+		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
 
 		eComponentCategory GetComCategory() const { return m_ComCategory; };
 
@@ -55,7 +55,7 @@ namespace ehw
 		const eComponentCategory m_ComCategory;
 		UINT32 m_ComTypeID;
 		GameObject* m_Owner;
-		IScene* m_OwnerScene;
+		iScene* m_OwnerScene;
 
 
 		bool m_bStart;

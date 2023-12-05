@@ -14,7 +14,7 @@ namespace ehw
     using namespace ehw;
 
     Material::Material()
-        : IResource(eResourceType::Material)
+        : iResource(eResourceType::Material)
         , mCB{}
         , mMode(eRenderingMode::Opaque)
         , mShader{}
@@ -24,7 +24,7 @@ namespace ehw
 
 
     Material::Material(const Material& _other)
-        : IResource(_other)
+        : iResource(_other)
         , mShader(_other.mShader)
         , mTextures(_other.mTextures)
         , mCB(_other.mCB)
@@ -38,7 +38,7 @@ namespace ehw
 
     eResult Material::Save(const std::fs::path& _filePath)
     {
-        IResource::Save(_filePath);
+        iResource::Save(_filePath);
         std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
 
@@ -64,7 +64,7 @@ namespace ehw
 
     eResult Material::Load(const std::fs::path& _filePath)
     {
-        IResource::Load(_filePath);
+        iResource::Load(_filePath);
         std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
         if (false == std::fs::exists(fullPath))
@@ -100,7 +100,7 @@ namespace ehw
         }
 
         //부모 클래스 저장
-        eResult result = IResource::SaveJson(_pJVal);
+        eResult result = iResource::SaveJson(_pJVal);
         if (eResultFail(result))
         {
             return result;
@@ -133,7 +133,7 @@ namespace ehw
         }
 
         //부모 클래스 저장
-        eResult result = IResource::LoadJson(_pJVal);
+        eResult result = iResource::LoadJson(_pJVal);
         if (eResultFail(result))
         {
             return result;

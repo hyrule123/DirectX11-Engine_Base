@@ -6,10 +6,10 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "RenderMgr.h"
-#include "IScene.h"
+#include "iScene.h"
 #include "SceneMgr.h"
 #include "Material.h"
-#include "IRenderer.h"
+#include "iRenderer.h"
 #include "SceneMgr.h"
 #include "ResourceMgr.h"
 #include "Com_Light3D.h"
@@ -25,7 +25,7 @@ namespace ehw
 	MATRIX Com_Camera::gProjection = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: IComponent(eComponentCategory::Camera)
+		: iComponent(eComponentCategory::Camera)
 		, mView()
 		, mViewInverse()
 		, mProjection()
@@ -291,7 +291,7 @@ namespace ehw
 		mTransparentGameObjects.clear();
 		mPostProcessGameObjects.clear();
 
-		IScene* scene = SceneMgr::GetActiveScene();
+		iScene* scene = SceneMgr::GetActiveScene();
 		for (int index = 0; index < (uint)eLayerType::END; index++)
 		{
 			if (mLayerMasks[index] == true)
@@ -371,7 +371,7 @@ namespace ehw
 		if (nullptr == _gameObj || false == _gameObj->IsActive())
 			return;
 
-		IRenderer* renderer = _gameObj->GetComponent<IRenderer>();
+		iRenderer* renderer = _gameObj->GetComponent<iRenderer>();
 
 		if (nullptr == renderer)
 			return;

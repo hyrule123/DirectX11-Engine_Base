@@ -1,5 +1,5 @@
 #pragma once
-#include "IAnimation.h"
+#include "iAnimation.h"
 #include "SimpleMath.h"
 #include "defines.h"
 
@@ -25,7 +25,7 @@ namespace ehw
     class StructBuffer;
     class Skeleton;
 	class Animation3D :
-		public IAnimation
+		public iAnimation
 	{
         friend class Skeleton;
 	public:

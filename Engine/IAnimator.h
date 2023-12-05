@@ -1,13 +1,13 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 #include "define_Struct.h"
 
 
 namespace ehw
 {
-	class IAnimation;
-	class IAnimator :
-		public IComponent
+	class iAnimation;
+	class iAnimator :
+		public iComponent
 	{
 	public:
 		struct tEvent
@@ -16,8 +16,8 @@ namespace ehw
 		};
 
 	public:
-		IAnimator(eDimensionType _type);
-		virtual ~IAnimator() {};
+		iAnimator(eDimensionType _type);
+		virtual ~iAnimator() {};
 
 		virtual void BindData() = 0;
 		virtual void UnBindData() = 0;
@@ -29,10 +29,10 @@ namespace ehw
 		//아래 함수를 재정의해서 protected된 AddEvent를 호출하는 방식
 		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) { return false; };
 
-		void CallEvent(IAnimation* _anim, int _frameIdx);
+		void CallEvent(iAnimation* _anim, int _frameIdx);
 
 	protected:
-		void AddEvent(IAnimation* _anim, int _frameIdx, const std::function<void()>& _func);
+		void AddEvent(iAnimation* _anim, int _frameIdx, const std::function<void()>& _func);
 
 	private:
 		eDimensionType mDimensionType;

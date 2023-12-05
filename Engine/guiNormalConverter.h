@@ -1,6 +1,8 @@
 #pragma once
 #include "guiWindow.h"
 #include "guiComboBox.h"
+
+#include "define_Struct.h"
 #include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw

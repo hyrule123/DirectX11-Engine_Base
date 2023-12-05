@@ -19,9 +19,9 @@
 #include "AtExit.h"
 namespace ehw
 {
-	std::unique_ptr<IScene> SceneMgr::mActiveScene = nullptr;
+	std::unique_ptr<iScene> SceneMgr::mActiveScene = nullptr;
 
-	std::unordered_map<std::string_view, std::function<IScene* ()>> SceneMgr::mUmapSceneConstructor{};
+	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneMgr::mUmapSceneConstructor{};
 
 	void SceneMgr::Init()
 	{
@@ -69,7 +69,7 @@ namespace ehw
 			return;
 		}
 
-		std::unique_ptr<IScene> NewScene = std::unique_ptr<IScene>(Func->second());
+		std::unique_ptr<iScene> NewScene = std::unique_ptr<iScene>(Func->second());
 		if (nullptr == NewScene)
 		{
 			ERROR_MESSAGE_W(L"씬 생성 실패");

@@ -5,12 +5,12 @@
 namespace ehw
 {
 	class GameObject;
-	class IScene 
+	class iScene 
 		: public Entity
 	{
 	public:
-		IScene();
-		virtual ~IScene();
+		iScene();
+		virtual ~iScene();
 
 		//실제 로직은 여기서
 		void SceneAwake();
@@ -49,14 +49,14 @@ namespace ehw
 		bool m_bAwake;
 	};
 
-	inline void IScene::AddGameObject(const eLayerType _type, GameObject* _gameObj)
+	inline void iScene::AddGameObject(const eLayerType _type, GameObject* _gameObj)
 	{
 		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
 		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
 		GetLayer(_type).AddGameObject(_gameObj);
 	}
 
-	inline void IScene::AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj)
+	inline void iScene::AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj)
 	{
 		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
 		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
@@ -69,7 +69,7 @@ namespace ehw
 		}
 	}
 
-	inline void IScene::ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj)
+	inline void iScene::ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj)
 	{
 		ASSERT(eLayerType::None != _targetLayer && _gameObj, "게임오브젝트가 없거나 목표 레이어가 설정되어 있지 않습니다.");
 
@@ -83,7 +83,7 @@ namespace ehw
 		GetLayer(_targetLayer).AddGameObject(_gameObj);
 	}
 
-	inline void IScene::MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj)
+	inline void iScene::MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj)
 	{
 		ASSERT(eLayerType::None != _targetLayer, "목표 레이어를 지정하지 않았습니다.");
 		ASSERT(_gameObj, "게임오브젝트가 nullptr 입니다.");

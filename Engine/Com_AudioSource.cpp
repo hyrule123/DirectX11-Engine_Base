@@ -16,7 +16,7 @@
 namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
-		: IComponent(eComponentCategory::AudioSource)
+		: iComponent(eComponentCategory::AudioSource)
 		, mAudioClip(nullptr)
 	{
 
@@ -28,7 +28,7 @@ namespace ehw
 		{
 			return eResult::Fail;
 		}
-		eResult result = IComponent::SaveJson(_pJson);
+		eResult result = iComponent::SaveJson(_pJson);
 		if (eResultFail(result))
 		{
 			return result;
@@ -49,7 +49,7 @@ namespace ehw
 		{
 			return eResult::Fail;
 		}
-		eResult result = IComponent::LoadJson(_pJson);
+		eResult result = iComponent::LoadJson(_pJson);
 		if (eResultFail(result))
 		{
 			return result;

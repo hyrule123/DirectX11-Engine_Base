@@ -15,7 +15,7 @@ namespace ehw
 	
 
 	Prefab::Prefab()
-		: IResource(eResourceType::Prefab)
+		: iResource(eResourceType::Prefab)
 		, mPrefab()
 		, mbDontDelete()
 	{

@@ -8,7 +8,7 @@ namespace ehw
 {
 
 	Com_DummyAnimator::Com_DummyAnimator()
-		: IAnimator(eDimensionType::_3D)
+		: iAnimator(eDimensionType::_3D)
 		, mParentAnimator()
 	{
 	}

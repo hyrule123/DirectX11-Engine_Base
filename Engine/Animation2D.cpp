@@ -23,7 +23,7 @@ namespace ehw
 	}
 
 	Animation2D::Animation2D(const Animation2D& _other)
-		: IAnimation(_other)
+		: iAnimation(_other)
 		, mAnimator() //이건 이 애니메이션을 복사해서 가져가는 주인이 새로 설정해줘야함
 		, mAnimationName(_other.mAnimationName)
 		, mAtlas(_other.mAtlas) //Atlas == Texture -> 공유하는 리소스
@@ -45,7 +45,7 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IResource::SaveJson(_pJVal);
+		eResult result = iResource::SaveJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;
@@ -73,7 +73,7 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		eResult result = IResource::LoadJson(_pJVal);
+		eResult result = iResource::LoadJson(_pJVal);
 		if (eResultFail(result))
 		{
 			return result;

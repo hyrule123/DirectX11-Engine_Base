@@ -1,6 +1,9 @@
 #pragma once
 #include "define_GPU.h"
+#include "define_Struct.h"
 #include "SimpleMath.h"
+
+
 
 #include "DefaultShader/Func_Light.hlsli"
 

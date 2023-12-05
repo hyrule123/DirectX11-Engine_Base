@@ -4,7 +4,7 @@
 #include "Com_Renderer_Mesh.h"
 #include "ResourceMgr.h"
 #include "Com_Renderer_Sprite.h"
-#include "IResource.h"
+#include "iResource.h"
 #include "GameObject.h"
 
 #include "guiCom_Renderer.h"

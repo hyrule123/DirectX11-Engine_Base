@@ -1,16 +1,16 @@
 #include "PCH_Engine.h"
 
-#include "ICollider.h"
+#include "iCollider.h"
 
 namespace ehw
 {
-	ICollider::ICollider(eColliderType _Type)
-		: IComponent(eComponentCategory::Collider)
+	iCollider::iCollider(eColliderType _Type)
+		: iComponent(eComponentCategory::Collider)
 		, m_ComCategory(_Type)
 	{
 	}
 
-	ICollider::~ICollider()
+	iCollider::~iCollider()
 	{
 	}
 }

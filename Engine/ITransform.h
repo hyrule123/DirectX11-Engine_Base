@@ -1,14 +1,14 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 
 namespace ehw
 {
-	class ITransform :
-		public IComponent
+	class iTransform :
+		public iComponent
 	{
 	public:
-		ITransform();
-		virtual ~ITransform();
+		iTransform();
+		virtual ~iTransform();
 
 		virtual void BindData() = 0;
 

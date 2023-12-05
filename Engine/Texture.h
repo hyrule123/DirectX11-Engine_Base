@@ -1,5 +1,5 @@
 #pragma once
-#include "IResource.h"
+#include "iResource.h"
 #include "GPUMgr.h"
 
 #include <DirectXTex/DirectXTex.h>
@@ -9,7 +9,7 @@ namespace ehw
 	
 	using Microsoft::WRL::ComPtr;
 
-	class Texture : public IResource
+	class Texture : public iResource
 	{
 	public:
 		Texture();

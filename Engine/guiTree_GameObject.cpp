@@ -2,7 +2,7 @@
 #include "guiTree_GameObject.h"
 
 #include "Application.h"
-#include "IScene.h"
+#include "iScene.h"
 #include "Layer.h"
 #include "SceneMgr.h"
 #include "RenderMgr.h"
@@ -56,7 +56,7 @@ namespace gui
 	{
 		mTreeWidget->Clear();
 
-		ehw::IScene* scene = ehw::SceneMgr::GetActiveScene();
+		ehw::iScene* scene = ehw::SceneMgr::GetActiveScene();
 		std::string sceneName = scene->GetKey();
 
 		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);

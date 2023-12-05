@@ -1,12 +1,12 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 
 namespace ehw
 {
-	class Com_BehaviorTree : public IComponent
+	class Com_BehaviorTree : public iComponent
 	{
 	public:
-		Com_BehaviorTree() : IComponent(eComponentCategory::BehaviorTree){};
+		Com_BehaviorTree() : iComponent(eComponentCategory::BehaviorTree){};
 		virtual ~Com_BehaviorTree() {};
 
 		virtual void InternalUpdate() override {}

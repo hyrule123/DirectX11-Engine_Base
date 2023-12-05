@@ -1,6 +1,6 @@
 #pragma once
 #include "EnumFlags.h"
-#include "ICollider2D.h"
+#include "iCollider2D.h"
 
 namespace ehw
 {
@@ -24,9 +24,9 @@ namespace ehw
 		static void Render();
 
 		static void CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable = true);
-		static void LayerCollision(class IScene* _scene, eLayerType _left, eLayerType _right);
-		static void ColliderCollision(ICollider2D* _left, ICollider2D* _right);
-		static bool Intersect(ICollider2D* _left, ICollider2D* _right);
+		static void LayerCollision(class iScene* _scene, eLayerType _left, eLayerType _right);
+		static void ColliderCollision(iCollider2D* _left, iCollider2D* _right);
+		static bool Intersect(iCollider2D* _left, iCollider2D* _right);
 
 	private:
 		static void Init();

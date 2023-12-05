@@ -17,7 +17,7 @@ namespace ehw
 
 	eResult GPUInitSetting::Load(const std::filesystem::path& _filePath)
 	{
-		IResource::Load(_filePath);
+		iResource::Load(_filePath);
 
 		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 

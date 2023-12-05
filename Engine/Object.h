@@ -1,5 +1,5 @@
 #pragma once
-#include "IScene.h"
+#include "iScene.h"
 #include "Layer.h"
 #include "GameObject.h"
 #include "SceneMgr.h"
@@ -9,7 +9,7 @@ namespace ehw::object
 {
 	//inline GameObject* Instantiate(eLayerType _type, GameObject* _pObj)
 	//{
-	//	IScene* scene = SceneMgr::GetActiveScene();
+	//	iScene* scene = SceneMgr::GetActiveScene();
 
 	//	_pObj->AddToLayerRecursive(_type);
 

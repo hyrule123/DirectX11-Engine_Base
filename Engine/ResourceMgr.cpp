@@ -5,7 +5,7 @@
 
 namespace ehw
 {
-	std::unordered_map<std::string, std::shared_ptr<IResource>, tHashFunc_StringView, std::equal_to<>> ResourceMgr::mArrRes[(int)eResourceType::END]{};
+	std::unordered_map<std::string, std::shared_ptr<iResource>, tHashFunc_StringView, std::equal_to<>> ResourceMgr::mArrRes[(int)eResourceType::END]{};
 
 	void ResourceMgr::Init()
 	{

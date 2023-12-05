@@ -1,11 +1,11 @@
 #include "PCH_Engine.h"
-#include "IShader.h"
+#include "iShader.h"
 
-ehw::IShader::IShader(eResourceType _ResType)
-	: IResource(_ResType)
+ehw::iShader::iShader(eResourceType _ResType)
+	: iResource(_ResType)
 {
 }
 
-ehw::IShader::~IShader()
+ehw::iShader::~iShader()
 {
 }

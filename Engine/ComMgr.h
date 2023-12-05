@@ -17,7 +17,7 @@ namespace ehw
         template <typename T>
         static inline void AddComConstructor(const std::string_view _strKey);
 
-        static IComponent* GetNewCom(const std::string_view _strKey);
+        static iComponent* GetNewCom(const std::string_view _strKey);
 
         template <typename T>
         static const std::string_view GetComName();
@@ -39,14 +39,14 @@ namespace ehw
         static inline UINT32 GetNextComTypeID();
 
     private:
-        static std::unordered_map<std::string_view, std::function<IComponent* ()>> mUmapComConstructor;
+        static std::unordered_map<std::string_view, std::function<iComponent* ()>> mUmapComConstructor;
         static std::vector<std::string_view> mComNamesByID;
     };
 
     template <typename T>
     static inline void ComMgr::AddComConstructor(const std::string_view _strKey)
     {
-        static_assert(std::is_base_of_v<IComponent, T>);
+        static_assert(std::is_base_of_v<iComponent, T>);
         UINT32 ComIDIndex = ComMgr::GetComTypeID<T>();
         if ((UINT32)mComNamesByID.size() <= ComIDIndex)
         {
@@ -77,7 +77,7 @@ namespace ehw
     template<typename T>
     inline UINT32 ComMgr::GetComTypeID()
     {
-        static_assert(std::is_base_of_v<IComponent, T>);
+        static_assert(std::is_base_of_v<iComponent, T>);
         static UINT32 typeId = GetNextComTypeID();
         return typeId;
     }
@@ -97,19 +97,19 @@ namespace ehw
     template<typename T>
     inline constexpr eComponentCategory ComMgr::GetComponentCategory()
     {
-        if constexpr (std::is_base_of_v<ITransform, T>)
+        if constexpr (std::is_base_of_v<iTransform, T>)
         {
             return eComponentCategory::Transform;
         }
-        else if constexpr (std::is_base_of_v<ICollider, T>)
+        else if constexpr (std::is_base_of_v<iCollider, T>)
         {
             return eComponentCategory::Collider;
         }
-        else if constexpr (std::is_base_of_v<IAnimator, T>)
+        else if constexpr (std::is_base_of_v<iAnimator, T>)
         {
             return eComponentCategory::Animator;
         }
-        else if constexpr (std::is_base_of_v<ILight, T>)
+        else if constexpr (std::is_base_of_v<iLight, T>)
         {
             return eComponentCategory::Light;
         }
@@ -125,7 +125,7 @@ namespace ehw
         {
             return eComponentCategory::AudioListener;
         }
-        else if constexpr (std::is_base_of_v<IRenderer, T>)
+        else if constexpr (std::is_base_of_v<iRenderer, T>)
         {
             return eComponentCategory::Renderer;
         }
@@ -133,7 +133,7 @@ namespace ehw
         {
             return eComponentCategory::BehaviorTree;
         }
-        else if constexpr (std::is_base_of_v<IScript, T>)
+        else if constexpr (std::is_base_of_v<iScript, T>)
         {
             return eComponentCategory::Scripts;
         }
@@ -144,23 +144,23 @@ namespace ehw
     template<typename T>
     inline constexpr bool ComMgr::IsBaseComponent()
     {
-        if constexpr (std::is_same_v<IComponent, T>)
+        if constexpr (std::is_same_v<iComponent, T>)
         {
             return true;
         }
-        else if constexpr (std::is_same_v<ITransform, T>)
+        else if constexpr (std::is_same_v<iTransform, T>)
         {
             return true;
         }
-        else if constexpr (std::is_same_v<ICollider, T>)
+        else if constexpr (std::is_same_v<iCollider, T>)
         {
             return true;
         }
-        else if constexpr (std::is_same_v<IAnimator, T>)
+        else if constexpr (std::is_same_v<iAnimator, T>)
         {
             return true;
         }
-        else if constexpr (std::is_same_v<ILight, T>)
+        else if constexpr (std::is_same_v<iLight, T>)
         {
             return true;
         }
@@ -176,7 +176,7 @@ namespace ehw
         {
             return true;
         }
-        else if constexpr (std::is_same_v<IRenderer, T>)
+        else if constexpr (std::is_same_v<iRenderer, T>)
         {
             return true;
         }
@@ -184,7 +184,7 @@ namespace ehw
         {
             return true;
         }
-        else if constexpr (std::is_same_v<IScript, T>)
+        else if constexpr (std::is_same_v<iScript, T>)
         {
             return true;
         }

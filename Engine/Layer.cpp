@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 
 #include "Layer.h"
-#include "IScene.h"
+#include "iScene.h"
 
 #include "RenderMgr.h"
 #include "Com_Transform.h"

@@ -1,15 +1,15 @@
 #pragma once
-#include "IResource.h"
+#include "iResource.h"
 
 
 namespace ehw
 {
-	class IShader :
-		public IResource
+	class iShader :
+		public iResource
 	{
 	public:
-		IShader(eResourceType _ResType);
-		virtual ~IShader();
+		iShader(eResourceType _ResType);
+		virtual ~iShader();
 
 
 	};

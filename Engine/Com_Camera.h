@@ -1,11 +1,11 @@
 #pragma once
-#include "IComponent.h"
+#include "iComponent.h"
 #include "define_Enum.h"
 
 namespace  ehw
 {
 	
-	class Com_Camera : public IComponent
+	class Com_Camera : public iComponent
 	{
 		class CullingAgent;
 	public:

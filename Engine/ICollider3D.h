@@ -1,16 +1,16 @@
 #pragma once
-#include "ICollider.h"
+#include "iCollider.h"
 
 namespace ehw
 {
-	class ICollider3D : public ICollider
+	class iCollider3D : public iCollider
 	{
 	public:
-		ICollider3D();
-		ICollider3D(const ICollider3D& _collider);
-		CLONE(ICollider3D);
+		iCollider3D();
+		iCollider3D(const iCollider3D& _collider);
+		CLONE(iCollider3D);
 		
-		virtual ~ICollider3D();
+		virtual ~iCollider3D();
 
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
