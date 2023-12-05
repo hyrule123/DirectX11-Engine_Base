@@ -1,12 +1,12 @@
 #pragma once
-#include "ComputeShader.h"
+#include "iComputeShader.h"
 #include "Texture.h"
 
 
 
 namespace ehw
 {
-	class NormalConvertShader : public ComputeShader
+	class NormalConvertShader : public iComputeShader
 	{
 	public:
 		NormalConvertShader();

@@ -9,7 +9,7 @@
 namespace ehw
 {
 	Animation3DShader::Animation3DShader()
-		: ComputeShader(typeid(Animation3DShader), uint3(256u, 1u, 1u))
+		: iComputeShader(typeid(Animation3DShader), uint3(256u, 1u, 1u))
 		, mDesc()
 	{ 
 	}

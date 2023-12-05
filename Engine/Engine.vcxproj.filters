@@ -231,7 +231,7 @@
     <ClCompile Include="Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="ComputeShader.cpp">
+    <ClCompile Include="iComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
     <ClCompile Include="Com_Light3D.cpp">
@@ -572,7 +572,7 @@
     <ClInclude Include="Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="ComputeShader.h">
+    <ClInclude Include="iComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
     <ClInclude Include="Com_Light3D.h">

@@ -36,6 +36,8 @@
 #include "guiNormalConverter.h"
 #include "guiUVCalculator.h"
 
+#include "Com_Renderer_Mesh.h"
+
 #include "json-cpp/json.h"
 
 

@@ -1,12 +1,12 @@
 #pragma once
-#include "ComputeShader.h"
+#include "iComputeShader.h"
 #include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw
 {
 	class StructBuffer;
     class Animation3DShader :
-        public ComputeShader
+        public iComputeShader
     {
 	public:
 

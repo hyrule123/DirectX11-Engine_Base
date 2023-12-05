@@ -1,5 +1,5 @@
 #pragma once
-#include "ComputeShader.h"
+#include "iComputeShader.h"
 #include "define_Global.h"
 
 
@@ -7,7 +7,7 @@ namespace ehw
 {
 	class StructBuffer;
 	class GPUInitSetting :
-		public ComputeShader
+		public iComputeShader
 	{
 	public:
 		GPUInitSetting();

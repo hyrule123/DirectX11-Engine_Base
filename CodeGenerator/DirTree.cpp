@@ -8,7 +8,7 @@
 
 #include "../Engine/define_Res.h"
 #include "../Engine/GraphicsShader.h"
-#include "../Engine/ComputeShader.h"
+#include "../Engine/iComputeShader.h"
 
 DirTree::DirTree()
 	: m_RootDir()

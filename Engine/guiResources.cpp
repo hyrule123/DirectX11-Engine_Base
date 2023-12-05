@@ -57,7 +57,7 @@ namespace gui
 		//	Prefab,
 		//	MeshData,
 		//	GraphicsShader,
-		//	ComputeShader,
+		//	iComputeShader,
 		//	End,
 		//};
 		AddResources<ehw::Mesh>(pRootNode, "Mesh");

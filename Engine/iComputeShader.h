@@ -12,11 +12,11 @@
 namespace ehw
 {
 
-	class ComputeShader : public IShader
+	class iComputeShader : public IShader
 	{
 	public:
-		ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
-		virtual ~ComputeShader();
+		iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
+		virtual ~iComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
 		//다른 리소스와는 로드 방식이 다름.
@@ -54,7 +54,7 @@ namespace ehw
 		tCB_ComputeShader mCB_ComputeShader;
 	};
 
-	void ComputeShader::CalculateGroupCount(const uint3& _dataCounts)
+	void iComputeShader::CalculateGroupCount(const uint3& _dataCounts)
 	{
 		mCB_ComputeShader.TotalDataCount = _dataCounts;
 

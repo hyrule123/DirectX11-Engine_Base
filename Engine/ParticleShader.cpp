@@ -8,7 +8,7 @@
 namespace ehw
 {
 	ParticleShader::ParticleShader()
-		: ComputeShader(typeid(ParticleShader), uint3(128, 1, 1))
+		: iComputeShader(typeid(ParticleShader), uint3(128, 1, 1))
 		, mBuffer(nullptr)
 		, mSharedBuffer(nullptr)
 	{
