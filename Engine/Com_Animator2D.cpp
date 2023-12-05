@@ -5,6 +5,8 @@
 #include "json-cpp\json.h"
 #include "GameObject.h"
 
+#include "Com_Transform.h"
+
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()

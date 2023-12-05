@@ -8,6 +8,8 @@
 
 #include "json-cpp/json.h"
 
+#include "Com_Transform.h"
+
 namespace ehw
 {
 	uint ICollider2D::gColliderNumber = 0;

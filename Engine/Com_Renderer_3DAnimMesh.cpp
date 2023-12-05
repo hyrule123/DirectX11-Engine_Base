@@ -21,7 +21,7 @@ namespace ehw
 		//3D 애니메이터가 아니거나
 		//재생 중이 아니거나
 		//->일반 Mesh 타입으로 렌더링
-		IAnimator* animator = GetOwner()->Animator();
+		IAnimator* animator = GetOwner()->GetComponent<IAnimator>();
 		if (
 			nullptr == animator 
 			|| eDimensionType::_3D != animator->GetDimensionType()

@@ -10,6 +10,8 @@
 
 #include "ResourceMgr.h"
 
+#include "Com_Transform.h"
+
 namespace ehw
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()

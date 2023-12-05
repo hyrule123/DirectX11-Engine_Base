@@ -6,6 +6,8 @@
 
 #include "AtExit.h"
 
+#include "Com_Transform.h"
+
 namespace ehw
 {
 	std::bitset<(uint)eLayerType::END> CollisionMgr::mLayerCollisionMatrix[(uint)eLayerType::END] = {};

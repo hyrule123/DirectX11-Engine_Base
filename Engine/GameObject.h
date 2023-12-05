@@ -1,9 +1,6 @@
 		#pragma once
 #include "Entity.h"
-
-#include "Components.h"
 #include "ComMgr.h"
-#include "Com_Transform.h"
 
 namespace ehw
 {
@@ -43,8 +40,7 @@ namespace ehw
 
 		inline IComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type]; }
 
-		template <typename T>
-		inline eComponentCategory GetComponentType();
+
 
 		const std::vector<IComponent*>& GetComponents() { return m_Components; }
 		inline const std::span<IScript*> GetScripts();
@@ -81,16 +77,16 @@ namespace ehw
 		bool IsAwake() const { return m_bAwake; }
 
 		//편의성을 위한 컴포넌트 받아오기 함수
-		ITransform* Transform() { return static_cast<ITransform*>(m_Components[(int)eComponentCategory::Transform]); }
-		ICollider* Collider() { return static_cast<ICollider*>(m_Components[(int)eComponentCategory::Collider]); }
-		IAnimator* Animator() { return static_cast<IAnimator*>(m_Components[(int)eComponentCategory::Animator]); }
-		ILight* Light() { return static_cast<ILight*>(m_Components[(int)eComponentCategory::Light]); }
-		
-		Com_Camera* Camera() { return static_cast<Com_Camera*>(m_Components[(int)eComponentCategory::Camera]); }
-		IRenderer* Renderer() { return static_cast<IRenderer*>(m_Components[(int)eComponentCategory::Renderer]); }
-		Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(m_Components[(int)eComponentCategory::AudioSource]); }
-		Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(m_Components[(int)eComponentCategory::AudioListener]); }
-		Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(m_Components[(int)eComponentCategory::BehaviorTree]); }
+		//ITransform* Transform() { return static_cast<ITransform*>(m_Components[(int)eComponentCategory::Transform]); }
+		//ICollider* Collider() { return static_cast<ICollider*>(m_Components[(int)eComponentCategory::Collider]); }
+		//IAnimator* Animator() { return static_cast<IAnimator*>(m_Components[(int)eComponentCategory::Animator]); }
+		//ILight* Light() { return static_cast<ILight*>(m_Components[(int)eComponentCategory::Light]); }
+		//
+		//Com_Camera* Camera() { return static_cast<Com_Camera*>(m_Components[(int)eComponentCategory::Camera]); }
+		//IRenderer* Renderer() { return static_cast<IRenderer*>(m_Components[(int)eComponentCategory::Renderer]); }
+		//Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(m_Components[(int)eComponentCategory::AudioSource]); }
+		//Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(m_Components[(int)eComponentCategory::AudioListener]); }
+		//Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(m_Components[(int)eComponentCategory::BehaviorTree]); }
 
 	protected:
 		void SetActiveRecursive(bool _bActive);
@@ -126,7 +122,7 @@ namespace ehw
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
-		eComponentCategory order = GetComponentType<T>();
+		eComponentCategory order = ComMgr::GetComponentCategory<T>();
 
 		if (eComponentCategory::UNKNOWN == order)
 			return nullptr;
@@ -208,10 +204,10 @@ namespace ehw
 
 		if constexpr (std::is_base_of_v<IScript, T>)
 		{
-			const std::string_view name = ComMgr::GetComName<T>();
+			UINT32 comTypeID = ComMgr::GetComTypeID<T>();
 			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_Components.size(); ++i)
 			{
-				if (name == m_Components[i]->GetKey())
+				if (comTypeID == m_Components[i]->GetComTypeID())
 				{
 					pCom = static_cast<T*>(m_Components[i]);
 					break;
@@ -220,11 +216,16 @@ namespace ehw
 		}
 		else
 		{
-			eComponentCategory ComType = GetComponentType<T>();
+			eComponentCategory ComType = ComMgr::GetComponentCategory<T>();
 			if (m_Components[(int)ComType])
 			{
+				//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
+				if constexpr (ComMgr::IsBaseComponent<T>())
+				{
+					pCom = static_cast<T*>(m_Components[(int)ComType]);
+				}
 				//일단 ID값으로 비교 후 일치 시 static_cast해도 안전
-				if (ComMgr::GetComTypeID<T>() == m_Components[(int)ComType]->GetComTypeID())
+				else if (ComMgr::GetComTypeID<T>() == m_Components[(int)ComType]->GetComTypeID())
 				{
 					pCom = static_cast<T*>(m_Components[(int)ComType]);
 				}
@@ -235,52 +236,7 @@ namespace ehw
 	}
 
 
-	template<typename T>
-	inline eComponentCategory GameObject::GetComponentType()
-	{
-		if constexpr (std::is_base_of_v<ITransform, T>)
-		{
-			return eComponentCategory::Transform;
-		}
-		else if constexpr (std::is_base_of_v<ICollider, T>)
-		{
-			return eComponentCategory::Collider;
-		}
-		else if constexpr (std::is_base_of_v<IAnimator, T>)
-		{
-			return eComponentCategory::Animator;
-		}
-		else if constexpr (std::is_base_of_v<ILight, T>)
-		{
-			return eComponentCategory::Light;
-		}
-		else if constexpr (std::is_base_of_v<Com_Camera, T>)
-		{
-			return eComponentCategory::Camera;
-		}
-		else if constexpr (std::is_base_of_v<Com_AudioSource, T>)
-		{
-			return eComponentCategory::AudioSource;
-		}
-		else if constexpr (std::is_base_of_v<Com_AudioListener, T>)
-		{
-			return eComponentCategory::AudioListener;
-		}
-		else if constexpr (std::is_base_of_v<IRenderer, T>)
-		{
-			return eComponentCategory::Renderer;
-		}
-		else if constexpr (std::is_base_of_v<Com_BehaviorTree, T>)
-		{
-			return eComponentCategory::BehaviorTree;
-		}
-		else if constexpr (std::is_base_of_v<IScript, T>)
-		{
-			return eComponentCategory::Scripts;
-		}
 
-		return eComponentCategory::UNKNOWN;
-	}
 
 
 	inline const std::span<IScript*> GameObject::GetScripts()

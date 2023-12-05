@@ -371,7 +371,7 @@ namespace ehw
 		if (nullptr == _gameObj || false == _gameObj->IsActive())
 			return;
 
-		IRenderer* renderer = _gameObj->Renderer();
+		IRenderer* renderer = _gameObj->GetComponent<IRenderer>();
 
 		if (nullptr == renderer)
 			return;
