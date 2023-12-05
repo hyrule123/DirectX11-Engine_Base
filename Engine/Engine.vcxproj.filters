@@ -231,7 +231,7 @@
     <ClCompile Include="Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="aiComputeShader.cpp">
+    <ClCompile Include="iComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
     <ClCompile Include="Com_Light3D.cpp">
@@ -267,7 +267,7 @@
     <ClCompile Include="GraphicsShader.cpp">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="aComponent.cpp">
+    <ClCompile Include="iComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="ResourceMgr.cpp">
@@ -504,7 +504,7 @@
     <ClCompile Include="Animation3D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="aAnimation.cpp">
+    <ClCompile Include="iAnimation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="GridScript.cpp">
@@ -530,7 +530,7 @@
     <ClInclude Include="Mesh.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="aComponent.h">
+    <ClInclude Include="iComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
@@ -572,7 +572,7 @@
     <ClInclude Include="Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="aiComputeShader.h">
+    <ClInclude Include="iComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
     <ClInclude Include="Com_Light3D.h">
@@ -896,7 +896,7 @@
     <ClInclude Include="Animation3D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="aAnimation.h">
+    <ClInclude Include="iAnimation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="GridScript.h">

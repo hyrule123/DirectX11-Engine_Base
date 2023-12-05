@@ -7,6 +7,7 @@ namespace ehw
 	class Com_Transform;
 	class iCollider2D : public iCollider
 	{
+
 	public:
 		iCollider2D();
 		iCollider2D(const iCollider2D& _collider);

@@ -303,7 +303,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiTree_GameObject.h" />
     <ClInclude Include="guiUVCalculator.h" />
     <ClInclude Include="guiWindow.h" />
-    <ClInclude Include="aAnimation.h" />
+    <ClInclude Include="iAnimation.h" />
     <ClInclude Include="iAnimator.h" />
     <ClInclude Include="iCollider3D.h" />
     <ClInclude Include="iCollider2D.h" />
@@ -335,8 +335,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="define_Res.h" />
     <ClInclude Include="define_Struct.h" />
     <ClInclude Include="GPUBuffer.h" />
-    <ClInclude Include="aComponent.h" />
-    <ClInclude Include="aiComputeShader.h" />
+    <ClInclude Include="iComponent.h" />
+    <ClInclude Include="iComputeShader.h" />
     <ClInclude Include="ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
     <ClInclude Include="Entity.h" />
@@ -437,7 +437,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiTree_GameObject.cpp" />
     <ClCompile Include="guiUVCalculator.cpp" />
     <ClCompile Include="guiWindow.cpp" />
-    <ClCompile Include="aAnimation.cpp" />
+    <ClCompile Include="iAnimation.cpp" />
     <ClCompile Include="iAnimator.cpp" />
     <ClCompile Include="iCollider3D.cpp" />
     <ClCompile Include="iCollider2D.cpp" />
@@ -509,8 +509,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </ClCompile>
     <ClInclude Include="EnumFlags.h" />
     <ClCompile Include="GPUBuffer.cpp" />
-    <ClCompile Include="aComponent.cpp" />
-    <ClCompile Include="aiComputeShader.cpp" />
+    <ClCompile Include="iComponent.cpp" />
+    <ClCompile Include="iComputeShader.cpp" />
     <ClCompile Include="ConstBuffer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="AudioMgr.cpp" />
