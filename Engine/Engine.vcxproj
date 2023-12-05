@@ -303,13 +303,13 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiTree_GameObject.h" />
     <ClInclude Include="guiUVCalculator.h" />
     <ClInclude Include="guiWindow.h" />
-    <ClInclude Include="iAnimation.h" />
-    <ClInclude Include="iAnimator.h" />
-    <ClInclude Include="iCollider3D.h" />
-    <ClInclude Include="iCollider2D.h" />
+    <ClInclude Include="aAnimation.h" />
+    <ClInclude Include="aAnimator.h" />
+    <ClInclude Include="aCollider3D.h" />
+    <ClInclude Include="aCollider2D.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="iLight.h" />
+    <ClInclude Include="aLight.h" />
     <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -322,12 +322,12 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Com_Camera.h" />
     <ClInclude Include="GPUInitSetting.h" />
-    <ClInclude Include="iTransform.h" />
+    <ClInclude Include="aTransform.h" />
     <ClInclude Include="json-cpp\jsonSaveLoad.h" />
     <ClInclude Include="MultiRenderTarget.h" />
     <ClInclude Include="RenderMgr.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="iCollider.h" />
+    <ClInclude Include="aCollider.h" />
     <ClInclude Include="DefaultShaders.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="define_Component.h" />
@@ -335,7 +335,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="define_Res.h" />
     <ClInclude Include="define_Struct.h" />
     <ClInclude Include="GPUBuffer.h" />
-    <ClInclude Include="iComponent.h" />
+    <ClInclude Include="aComponent.h" />
     <ClInclude Include="iComputeShader.h" />
     <ClInclude Include="ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
@@ -349,7 +349,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="GridScript.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="MeshData.h" />
-    <ClInclude Include="iShader.h" />
+    <ClInclude Include="aShader.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="json-cpp\json-forwards.h" />
@@ -359,17 +359,17 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Material.h" />
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="iRenderer.h" />
+    <ClInclude Include="aRenderer.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="NormalConvertShader.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Prefab.h" />
-    <ClInclude Include="iResource.h" />
+    <ClInclude Include="aResource.h" />
     <ClInclude Include="ResourceMgr.h" />
-    <ClInclude Include="iScene.h" />
+    <ClInclude Include="aScene.h" />
     <ClInclude Include="SceneMgr.h" />
-    <ClInclude Include="iScript.h" />
+    <ClInclude Include="aScript.h" />
     <ClInclude Include="GraphicsShader.h" />
     <ClInclude Include="Com_Renderer_Sprite.h" />
     <ClInclude Include="Skeleton.h" />
@@ -437,13 +437,13 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiTree_GameObject.cpp" />
     <ClCompile Include="guiUVCalculator.cpp" />
     <ClCompile Include="guiWindow.cpp" />
-    <ClCompile Include="iAnimation.cpp" />
-    <ClCompile Include="iAnimator.cpp" />
-    <ClCompile Include="iCollider3D.cpp" />
-    <ClCompile Include="iCollider2D.cpp" />
+    <ClCompile Include="aAnimation.cpp" />
+    <ClCompile Include="aAnimator.cpp" />
+    <ClCompile Include="aCollider3D.cpp" />
+    <ClCompile Include="aCollider2D.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="iLight.cpp" />
+    <ClCompile Include="aLight.cpp" />
     <ClCompile Include="ImGuizmo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -497,10 +497,10 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </ClCompile>
     <ClCompile Include="Com_Camera.cpp" />
     <ClCompile Include="GPUInitSetting.cpp" />
-    <ClCompile Include="iTransform.cpp" />
+    <ClCompile Include="aTransform.cpp" />
     <ClCompile Include="MultiRenderTarget.cpp" />
     <ClCompile Include="RenderMgr.cpp" />
-    <ClCompile Include="iCollider.cpp" />
+    <ClCompile Include="aCollider.cpp" />
     <ClCompile Include="PCH_Engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -509,7 +509,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </ClCompile>
     <ClInclude Include="EnumFlags.h" />
     <ClCompile Include="GPUBuffer.cpp" />
-    <ClCompile Include="iComponent.cpp" />
+    <ClCompile Include="aComponent.cpp" />
     <ClCompile Include="iComputeShader.cpp" />
     <ClCompile Include="ConstBuffer.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -530,18 +530,18 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="PathMgr.cpp" />
-    <ClCompile Include="iShader.cpp" />
+    <ClCompile Include="aShader.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="iRenderer.cpp" />
+    <ClCompile Include="aRenderer.cpp" />
     <ClCompile Include="NormalConvertShader.cpp" />
     <ClCompile Include="ParticleShader.cpp" />
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Prefab.cpp" />
-    <ClCompile Include="iResource.cpp" />
+    <ClCompile Include="aResource.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
-    <ClCompile Include="iScene.cpp" />
+    <ClCompile Include="aScene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
-    <ClCompile Include="iScript.cpp" />
+    <ClCompile Include="aScript.cpp" />
     <ClCompile Include="GraphicsShader.cpp" />
     <ClCompile Include="Com_Renderer_Sprite.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
