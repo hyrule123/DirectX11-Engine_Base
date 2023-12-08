@@ -273,7 +273,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Com_Renderer_UIBase.h" />
     <ClInclude Include="ComponentInitializer.h" />
     <ClInclude Include="define_Global.h" />
-    <ClInclude Include="EventMgr.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
     <ClInclude Include="guiBase.h" />
@@ -407,7 +406,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Com_Renderer_UIBase.cpp" />
     <ClCompile Include="define_Global.cpp" />
-    <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
     <ClCompile Include="guiBase.cpp" />

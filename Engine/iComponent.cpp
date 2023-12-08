@@ -4,7 +4,6 @@
 
 #include "GameObject.h"
 #include "iScene.h"
-#include "EventMgr.h"
 
 #include "json-cpp\jsonSaveLoad.h"
 
@@ -85,7 +84,7 @@ namespace ehw
 
 		if (m_OwnerScene->IsAwaken())
 		{
-			EventMgr::AddFrameEndEvent(onEnableDisable);
+			m_OwnerScene->AddFrameEndJob(onEnableDisable);
 		}
 		else
 		{
@@ -106,7 +105,7 @@ namespace ehw
 
 		if (m_OwnerScene->IsAwaken())
 		{
-			EventMgr::AddFrameEndEvent(DestroyFunc);
+			m_OwnerScene->AddFrameEndJob(DestroyFunc);
 		}
 		else
 		{

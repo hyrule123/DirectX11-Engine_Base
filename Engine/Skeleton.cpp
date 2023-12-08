@@ -43,7 +43,7 @@ namespace ehw
 		if (false == ofs.is_open())
 		{
 			ERROR_MESSAGE_W(L"Bone 저장에 실패했습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		Binary::SaveValue(ofs, m_vecBones.size());
@@ -83,14 +83,14 @@ namespace ehw
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 
 		std::ifstream ifs(fullPath, std::ios::binary);
 		if (false == ifs.is_open())
 		{
 			ERROR_MESSAGE_W(L"Bone 저장에 실패했습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 

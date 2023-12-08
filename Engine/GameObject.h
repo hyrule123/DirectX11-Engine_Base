@@ -49,46 +49,39 @@ namespace ehw
 		const std::string& GetName() const { return m_Name; }
 		
 		void SetActive(bool _bActive);
-		bool IsActive() const { return eState::Active == m_CurState; }
+		bool IsActive() const { return eState::Active == m_State; }
 
 		void Destroy();
-		bool IsDestroyed() const { return m_CurState == eState::Destroy; }
+		bool IsDestroyed() const { return m_State == eState::Destroy; }
 				
-		bool IsDontDestroyOnSceneChange() const { return m_bDontDestroyOnLoad; }
-		void DontDestroyOnSceneChange(bool _enable) { m_bDontDestroyOnLoad = _enable; }
+		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
+		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
 		iScene* GetOwnerScene() const { return m_OwnerScene; }
 		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
 
 		eLayerType GetLayerType() const { return m_LayerType; }
+
+		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
 		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
 
-		GameObject* AddChild(GameObject* _pObj);
+		//특정 게임오브젝트를 자녀로 추가. Scene에 등록해주지는 않으므로 유의
+		GameObject* AddChild(const std::shared_ptr<GameObject>& _pObj);
 
-		void GetGameObjectHierarchy(std::vector<GameObject*>& _gameObjects);
 
-		bool IsMaster() const { return (nullptr == m_Parent); }
-		GameObject* GetParent() { return m_Parent; }
-		const std::vector<GameObject*>& GetChilds() const { return m_Childs; }
+		std::vector<std::shared_ptr<GameObject>> GetGameObjectsInHierarchy();
 
-		void SetParent(GameObject* _pObj) { m_Parent = _pObj; }
+		bool IsMaster() const { return m_Parent.expired(); }
+		GameObject* GetParent() { return m_Parent.lock().get(); }
+		const std::vector<std::shared_ptr<GameObject>>& GetChilds() const { return m_Childs; }
+
+		void SetParent(const std::shared_ptr<GameObject>& _pObj) { m_Parent = _pObj; }
 		void RemoveChild(GameObject* _pObj);
 
-		bool IsAwake() const { return m_bAwake; }
-
-		//편의성을 위한 컴포넌트 받아오기 함수
-		//iTransform* Transform() { return static_cast<iTransform*>(m_Components[(int)eComponentCategory::Transform]); }
-		//iCollider* Collider() { return static_cast<iCollider*>(m_Components[(int)eComponentCategory::Collider]); }
-		//iAnimator* Animator() { return static_cast<iAnimator*>(m_Components[(int)eComponentCategory::Animator]); }
-		//iLight* Light() { return static_cast<iLight*>(m_Components[(int)eComponentCategory::Light]); }
-		//
-		//Com_Camera* Camera() { return static_cast<Com_Camera*>(m_Components[(int)eComponentCategory::Camera]); }
-		//iRenderer* Renderer() { return static_cast<iRenderer*>(m_Components[(int)eComponentCategory::Renderer]); }
-		//Com_AudioSource* AudioSource() { return static_cast<Com_AudioSource*>(m_Components[(int)eComponentCategory::AudioSource]); }
-		//Com_AudioListener* AudioListener() { return static_cast<Com_AudioListener*>(m_Components[(int)eComponentCategory::AudioListener]); }
-		//Com_BehaviorTree* BehaviorTree() { return static_cast<Com_BehaviorTree*>(m_Components[(int)eComponentCategory::BehaviorTree]); }
+		bool IsAwaken() const { return m_bAwake; }
 
 	protected:
+		void GetGameObjectsRecursive(std::vector<std::shared_ptr<GameObject>>& _gameObjects);
 		void SetActiveRecursive(bool _bActive);
 		void DestroyRecursive();
 		
@@ -101,21 +94,20 @@ namespace ehw
 
 		std::vector<iComponent*>	m_Components;
 
-		GameObject* m_Parent;
-		std::vector<GameObject*> m_Childs;
+		std::weak_ptr<GameObject> m_Parent;
+		std::vector<std::shared_ptr<GameObject>> m_Childs;
 
 		enum class eState
 		{
 			InActive,
 			Active,
 			Destroy
-		} m_CurState;
-		eState m_PrevState;
+		} m_State;
 		bool m_bAwake;
 
 		bool m_bDontDestroyOnLoad;
 
-		void SetState(eState _state) { m_CurState = _state; }
+		void SetState(eState _state) { m_State = _state; }
 	};
 
 
@@ -148,59 +140,11 @@ namespace ehw
 	}
 
 
-
-
-
-	inline GameObject* GameObject::AddChild(GameObject* _pChild)
-	{
-		//nullptr이나 자기 자신을 인자로 호출했을 경우 오류 발생			
-		ASSERT(_pChild, "child 포인터가 nullptr 입니다.");
-		ASSERT(this != _pChild, "자기 자신을 child로 추가했습니다.");
-
-		//부모 오브젝트가 있을 경우 기존의 부모 오브젝트에서 자신을 제거한 후 여기에 추가해야함
-		GameObject* parent = _pChild->GetParent();
-		if (parent)
-		{
-			parent->RemoveChild(_pChild);
-		}
-		_pChild->SetParent(this);
-		m_Childs.push_back(_pChild);
-
-		if (m_bAwake && false == _pChild->IsAwake())
-		{
-			_pChild->Awake();
-		}
-
-		return _pChild;
-	}
-
-	inline void GameObject::GetGameObjectHierarchy(std::vector<GameObject*>& _gameObjects)
-	{
-		_gameObjects.push_back(this);
-		for (size_t i = 0; i < m_Childs.size(); ++i)
-		{
-			m_Childs[i]->GetGameObjectHierarchy(_gameObjects);
-		}
-	}
-
-	inline void GameObject::RemoveChild(GameObject* _pObj)
-	{
-		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
-		{
-			if ((*iter) == _pObj)
-			{
-				(*iter)->SetParent(nullptr);
-				m_Childs.erase(iter);
-				break;
-			}
-		}
-	}
-
-
 	template <typename T>
 	T* GameObject::GetComponent()
 	{
 		T* pCom{};
+
 
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
@@ -214,21 +158,27 @@ namespace ehw
 				}
 			}
 		}
-		else
+
+		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
+		else if constexpr (ComMgr::IsBaseComponent<T>())
 		{
-			eComponentCategory ComType = ComMgr::GetComponentCategory<T>();
-			if (m_Components[(int)ComType])
+			eComponentCategory comCategory = ComMgr::GetComponentCategory<T>();
+
+			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
+			pCom = static_cast<T*>(m_Components[(int)comCategory]);
+		}
+
+		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
+		else //constexpr
+		{
+			eComponentCategory comCategory = ComMgr::GetComponentCategory<T>();
+			if (
+				m_Components[(int)comCategory] &&
+				m_Components[(int)comCategory]->GetComTypeID() == ComMgr::GetComTypeID<T>()
+				)
 			{
-				//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-				if constexpr (ComMgr::IsBaseComponent<T>())
-				{
-					pCom = static_cast<T*>(m_Components[(int)ComType]);
-				}
-				//일단 ID값으로 비교 후 일치 시 static_cast해도 안전
-				else if (ComMgr::GetComTypeID<T>() == m_Components[(int)ComType]->GetComTypeID())
-				{
-					pCom = static_cast<T*>(m_Components[(int)ComType]);
-				}
+				//일단 ID값으로 비교 후 일치 시 static_cast
+				pCom = static_cast<T*>(m_Components[(int)comCategory]);
 			}
 		}
 

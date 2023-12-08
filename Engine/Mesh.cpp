@@ -31,6 +31,7 @@ namespace ehw
 		, mIndexInfos{}
 		, mSkeleton{}
 	{
+		
 		//최대값에는 초기값으로 부동소수점 최소값을, 최소값에는 초기값으로 부동소수점 최대값을 대입
 		mBoundingBoxMinMax.Max = float3(-FLT_MAX);
 		mBoundingBoxMinMax.Min = float3(FLT_MAX);
@@ -50,7 +51,7 @@ namespace ehw
 		std::ofstream ofs(fullPath, std::ios::binary);
 		if (false == ofs.is_open())
 		{
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 		
 		//Key값 저장
@@ -100,13 +101,13 @@ namespace ehw
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 
 		std::ifstream ifs(fullPath, std::ios::binary);
 		if (false == ifs.is_open())
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 
 		//Key값 가져오기
 		std::string strKey;

@@ -2,7 +2,6 @@
 #include "MeshData.h"
 
 #include "define_Util.h"
-#include "EventMgr.h"
 #include "PathMgr.h"
 #include "ResourceMgr.h"
 #include "FBXLoader.h"
@@ -50,7 +49,7 @@ namespace ehw
 
 		std::ofstream ofs(fullPath);
 		if (false == ofs.is_open())
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 
 		Json::Value jVal{};
 		result = SaveJson(&jVal);
@@ -85,7 +84,7 @@ namespace ehw
 		std::ifstream ifs(fullPath);
 		if (false == ifs.is_open())
 		{
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		ifs >> jVal;
@@ -229,54 +228,43 @@ namespace ehw
 	}
 
 
-	GameObject* MeshData::Instantiate(eLayerType _layerType)
+	std::shared_ptr<GameObject> MeshData::Instantiate()
 	{
+		std::shared_ptr<GameObject> rootObj{}; 
 		if (mMeshContainers.empty())
 		{
-			return nullptr;
+			return rootObj;
 		}
+		rootObj = std::make_shared<GameObject>();
 
-		std::unique_ptr<GameObject> uniqObj = std::make_unique<GameObject>();
-
-		if (false == Instantiate(uniqObj.get()))
+		if (eResultFail(Instantiate(rootObj.get())))
 		{
-			uniqObj.reset();
-			ASSERT(uniqObj, "MeshData Instantiate 실패.");
-		}
-		
-		//스폰 실패했을 경우 제거
-		GameObject* obj = EventMgr::SpawnGameObject(_layerType, uniqObj.get());
-		if (nullptr == obj)
-		{
-			uniqObj.reset();
-			ASSERT(uniqObj, "MeshData Instantiate 실패.");
+			rootObj = nullptr;
 		}
 
-		//다 됐을 경우 unique_ptr 관리 해제 후 반환
-		return uniqObj.release();
+		//만들어진 GameObject 주소를 반환
+		return rootObj;
 	}
 
-	bool MeshData::Instantiate(GameObject* _gameObj)
+	eResult MeshData::Instantiate(GameObject* _emptyGameObj)
 	{
-		Com_Transform* tr = _gameObj->AddComponent<Com_Transform>();
-		if (nullptr == tr)
+		if (nullptr == _emptyGameObj)
 		{
-			return false;
+			ERROR_MESSAGE_W(L"GameObject가 nullptr 입니다.");
+			return eResult::Fail_Nullptr;
 		}
 
+		Com_Transform* tr = _emptyGameObj->AddComponent<Com_Transform>();
+		ASSERT(tr, "트랜스폼 컴포넌트 생성 실패");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		Com_Animator3D* animator = nullptr;
 		if (mSkeleton)
 		{
-			animator = _gameObj->AddComponent<Com_Animator3D>();
-			if (nullptr == tr)
-			{
-				return false;
-			}
+			animator = _emptyGameObj->AddComponent<Com_Animator3D>();
+			ASSERT(animator, "애니메이터 컴포넌트 생성 실패");
 			animator->SetSkeleton(mSkeleton);
 		}
-
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
 		if (1u == (UINT)mMeshContainers.size())
@@ -285,16 +273,12 @@ namespace ehw
 			if (animator)
 			{
 				//수동으로 애니메이터를 설정
-				auto* renderer3D = _gameObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				auto* renderer3D = _emptyGameObj->AddComponent<Com_Renderer_3DAnimMesh>();
 				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
 			}
 			else
 			{
-				renderer = _gameObj->AddComponent<Com_Renderer_Mesh>();
-			}
-			if (nullptr == renderer)
-			{
-				return false;
+				renderer = _emptyGameObj->AddComponent<Com_Renderer_Mesh>();
 			}
 
 			SetRenderer(renderer, 0);
@@ -305,7 +289,8 @@ namespace ehw
 		{
 			for (size_t i = 0; i < mMeshContainers.size(); ++i)
 			{
-				GameObject* child = _gameObj->AddChild(new GameObject);
+				GameObject* child = _emptyGameObj->AddChild(std::make_shared<GameObject>());
+
 				child->AddComponent<Com_DummyTransform>();
 				child->AddComponent<Com_DummyAnimator>();
 
@@ -327,7 +312,8 @@ namespace ehw
 			}
 		}
 
-		return true;
+
+		return eResult::Success;
 	}
 
 	eResult MeshData::ConvertFBX(
@@ -361,12 +347,12 @@ namespace ehw
 		if (false == std::fs::exists(_fbxPath))
 		{
 			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 		else if (_dirAndFileName.empty())
 		{
 			ERROR_MESSAGE_W(L"파일명을 설정하지 않았습니다.");
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 
 		FBXLoader loader{};
@@ -473,7 +459,7 @@ namespace ehw
 		if (false == std::fs::exists(_fbxPath))
 		{
 			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 
 		FBXLoader loader{};
@@ -484,7 +470,7 @@ namespace ehw
 			return result;
 		}
 
-		std::unique_ptr<Skeleton> skeletonOfFBX = std::make_unique<Skeleton>();
+		std::shared_ptr<Skeleton> skeletonOfFBX = std::make_shared<Skeleton>();
 		result = skeletonOfFBX->CreateFromFBX(&loader);
 		if (eResultFail(result))
 		{
@@ -493,7 +479,7 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::unique_ptr<Skeleton> skeletonOfProj = std::make_unique<Skeleton>();
+		std::shared_ptr<Skeleton> skeletonOfProj = std::make_shared<Skeleton>();
 
 		//Skeleton의 실제 경로: Player/Player
 		result = skeletonOfProj->Load(_meshDataName / _meshDataName);

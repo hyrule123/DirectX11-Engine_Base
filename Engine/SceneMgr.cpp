@@ -52,6 +52,12 @@ namespace ehw
 			mActiveScene->SceneDestroy();
 	}
 
+	void SceneMgr::FrameEnd()
+	{
+		if (mActiveScene)
+			mActiveScene->SceneFrameEnd();
+	}
+
 	void SceneMgr::Release()
 	{
 		mActiveScene.reset();
@@ -77,11 +83,11 @@ namespace ehw
 		}
 
 		// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
-		std::vector<GameObject*> gameObjs;
+		std::vector<std::shared_ptr<GameObject>> dontDestroyObjs;
 
 		if (mActiveScene)
 		{
-			gameObjs = mActiveScene->GetDontDestroyGameObjects();
+			dontDestroyObjs = mActiveScene->GetDontDestroyGameObjects();
 		}
 			
 
@@ -92,11 +98,9 @@ namespace ehw
 		mActiveScene.reset();
 		mActiveScene = std::move(NewScene);
 
-		
-		//dontdestroy 오브젝트 추가
-		for (GameObject* obj : gameObjs)
+		for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		{
-			mActiveScene->AddGameObject(obj->GetLayerType(), obj);
+			mActiveScene->AddNewGameObject(dontDestroyObjs[i]->GetLayerType(), std::move(dontDestroyObjs[i]));
 		}
 
 		//OnEnter 호출

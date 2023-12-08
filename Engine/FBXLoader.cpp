@@ -65,7 +65,7 @@ namespace ehw
 
 		if (false == std::fs::exists(_strPath))
 		{
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 		
 		mManager = fbxsdk::FbxManager::Create();
@@ -96,7 +96,7 @@ namespace ehw
 			{
 				importer->Destroy();
 			}
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		if (false == importer->Import(mScene))

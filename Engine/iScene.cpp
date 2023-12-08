@@ -65,27 +65,52 @@ namespace ehw
 		}
 	}
 
-
-
-
-
-	std::vector<GameObject*> iScene::GetDontDestroyGameObjects()
+	void iScene::SceneFrameEnd()
 	{
-		std::vector<GameObject*> gameObjects;
-		for (Layer& layer : m_Layers)
+		while (false == m_FrameEndJobs.empty())
 		{
-			std::vector<GameObject*> dontGameObjs
-				= layer.GetDontDestroyGameObjects();
+			m_FrameEndJobs.front()();
+			m_FrameEndJobs.pop();
+		}
+	}
 
-			gameObjects.insert(gameObjects.end()
-			, dontGameObjs.begin()
-			, dontGameObjs.end());
+
+
+
+
+	std::vector<std::shared_ptr<GameObject>> iScene::GetDontDestroyGameObjects()
+	{
+		std::vector<std::shared_ptr<GameObject>> dontGameObjs{};
+
+		for (int i = 0; i < (int)eLayerType::END; ++i)
+		{
+			m_Layers[i].GetDontDestroyGameObjects(dontGameObjs);
 		}
 
-		return gameObjects;
+		return dontGameObjs;
 	}
-	const std::vector<GameObject*>& iScene::GetGameObjects(const eLayerType _type)
+	const std::vector<std::shared_ptr<GameObject>>& iScene::GetGameObjects(const eLayerType _type)
 	{
 		return m_Layers[(uint)_type].GetGameObjects();
+	}
+
+	GameObject* iScene::AddNewGameObject(const eLayerType _type, std::shared_ptr<GameObject> _newGameObj)
+	{
+		GameObject* ret = _newGameObj.get();
+
+		if (false == m_bAwake)
+		{
+			AddNewGameObject(_type, std::move(_newGameObj));
+		}
+		else
+		{
+			AddFrameEndJob(
+				[this, _type, _newGameObj]() ->void
+				{
+					AddNewGameObject(_type, std::move(_newGameObj));
+				});
+		}
+
+		return ret;
 	}
 }

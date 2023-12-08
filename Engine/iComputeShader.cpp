@@ -57,7 +57,7 @@ namespace ehw
 
 			mErrorBlob = nullptr;
 
-			return eResult::Fail_Compile;
+			return eResult::Fail_Open;
 		}
 
 

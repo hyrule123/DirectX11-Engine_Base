@@ -66,17 +66,17 @@ namespace ehw
 	}
 	void CollisionMgr::LayerCollision(iScene* _scene, eLayerType _left, eLayerType _right)
 	{
-		const std::vector<GameObject*>& lefts = _scene->GetGameObjects(_left);
-		const std::vector<GameObject*>& rights = _scene->GetGameObjects(_right);
+		const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
+		const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
 
-		for (GameObject* left : lefts)
+		for (const std::shared_ptr<GameObject>& left : lefts)
 		{
 			if (false == left->IsActive())
 				continue;
 			if (left->GetComponent<iCollider2D>() == nullptr)
 				continue;
 
-			for (GameObject* right : rights)
+			for (const std::shared_ptr<GameObject>& right : rights)
 			{
 				if (false == left->IsActive())
 					continue;

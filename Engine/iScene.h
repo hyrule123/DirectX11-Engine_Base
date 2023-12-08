@@ -18,6 +18,7 @@ namespace ehw
 		void SceneInternalUpdate();
 		void SceneRender();
 		void SceneDestroy();
+		void SceneFrameEnd();
 
 
 		//아래 함수를 재정의해서 씬을 커스터마이즈 하면 됨
@@ -29,71 +30,58 @@ namespace ehw
 		virtual void Destroy() {};
 		virtual void OnExit() {};
 		
-		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		inline void	AddGameObject(const eLayerType _type, GameObject* _gameObj);
-		inline void	AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj);
-
-		inline void	ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj);
-		inline void	MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj);
-
 		Layer&							GetLayer(eLayerType _type) { return m_Layers[(uint)_type]; }
-		std::vector<GameObject*>		GetDontDestroyGameObjects();
-		const std::vector<GameObject*>& GetGameObjects(const eLayerType _type);
-
 
 		bool	IsAwaken() const { return m_bAwake; }
 
+		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
+		inline GameObject* NewGameObject(const eLayerType _type);
+		GameObject* AddNewGameObject(const eLayerType _type, std::shared_ptr<GameObject> _newGameObj);
+
+		template <class F, class... Args>
+		inline void AddFrameEndJob(F&& _func, Args&&... _args);
+
+		//리턴값이 필요한 경우(future 변수 사용)
+		template <class F, class... Args>
+		inline std::future<typename std::invoke_result<F, Args...>::type> 
+			AddFrameEndJobReturn(F&& _func, Args&&... _args);
+
+		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
+		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayerType _type);
 
 	private:
 		std::array<Layer, (int)eLayerType::END> m_Layers;
 		bool m_bAwake;
+
+		std::queue<std::function<void()>> m_FrameEndJobs;
 	};
 
-	inline void iScene::AddGameObject(const eLayerType _type, GameObject* _gameObj)
+	inline GameObject* iScene::NewGameObject(const eLayerType _type)
 	{
-		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
-		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
-		GetLayer(_type).AddGameObject(_gameObj);
+		return AddNewGameObject(_type, std::make_shared<GameObject>());
 	}
 
-	inline void iScene::AddGameObjectHierarchy(const eLayerType _type, GameObject* _gameObj)
-	{
-		ASSERT_DEBUG(eLayerType::None != _type, "레이어를 지정하지 않았습니다.");
-		ASSERT_DEBUG(_gameObj, "GameObject가 nullptr 입니다.");
 
-		std::vector<GameObject*> gameObjs{};
-		_gameObj->GetGameObjectHierarchy(gameObjs);
-		for (size_t i = 0; i < gameObjs.size(); ++i)
-		{
-			AddGameObject(_type, gameObjs[i]);
-		}
+	template<class F, class ...Args>
+	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)
+	{
+		m_FrameEndJobs.push(std::bind(std::forward<F>(_func), std::forward<Args>(_args)...));
 	}
 
-	inline void iScene::ChangeGameObjectLayer(const eLayerType _targetLayer, GameObject* _gameObj)
+
+	template<class F, class ...Args>
+	inline std::future<typename std::invoke_result<F, Args...>::type> iScene::AddFrameEndJobReturn(F&& _func, Args && ..._args)
 	{
-		ASSERT(eLayerType::None != _targetLayer && _gameObj, "게임오브젝트가 없거나 목표 레이어가 설정되어 있지 않습니다.");
+		using return_type = std::invoke_result<F, Args...>::type;
 
-		eLayerType prevLayer = _gameObj->GetLayerType();
-		if (eLayerType::None != prevLayer)
-		{
-			GetLayer(prevLayer).RemoveGameObject(_gameObj);
-		}
+		auto pFunc = std::make_shared<std::packaged_task<return_type()>>(
+			std::bind(std::forward<F>(_func), std::forward<Args>(_args)...)
+		);
 
-		//새 레이어에 넣어준다.
-		GetLayer(_targetLayer).AddGameObject(_gameObj);
-	}
+		std::future<return_type> pFunc_result_future = pFunc->get_future();
+		m_FrameEndJobs.push([pFunc]() { (*pFunc)(); });
 
-	inline void iScene::MoveGameObjectLayerHierarchy(const eLayerType _targetLayer, GameObject* _gameObj)
-	{
-		ASSERT(eLayerType::None != _targetLayer, "목표 레이어를 지정하지 않았습니다.");
-		ASSERT(_gameObj, "게임오브젝트가 nullptr 입니다.");
-
-		std::vector<GameObject*> gameObjs{};
-		_gameObj->GetGameObjectHierarchy(gameObjs);
-		for (size_t i = 0; i < gameObjs.size(); ++i)
-		{
-			ChangeGameObjectLayer(_targetLayer, gameObjs[i]);
-		}
+		return pFunc_result_future;
 	}
 
 }

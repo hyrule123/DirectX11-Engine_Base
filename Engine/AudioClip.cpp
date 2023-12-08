@@ -37,11 +37,11 @@ namespace ehw
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		if (false == AudioMgr::CreateSound(fullPath, &mSound))
-			return eResult::Fail_Create;
+			return eResult::Fail_Open;
 
 		mSound->set3DMinMaxDistance(mMinDistance, mMaxDistance);
 

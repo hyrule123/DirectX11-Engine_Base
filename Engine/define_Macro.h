@@ -2,35 +2,29 @@
 #include <string>
 #include <assert.h>
 
-#define ASSERT(_expression, _message) if(!(_expression)) { \
-		std::wstring assertMsg = \
-		std::wstring( _CRT_WIDE_(#_expression) ) + \
-		std::wstring(L"\n\nMessage: ") + \
-		std::wstring( _CRT_WIDE_(_message) ); \
-		_wassert(assertMsg.c_str(), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)) ;\
-	}
-
-
-
 #ifdef _DEBUG
+
+#define ASSERT(_expression, _message) if (!(_expression)) assert(!_message)
 #define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)
+
 #else
-#define ASSERT_DEBUG(_expression, _message)
-#endif _DEBUG
+#define ASSERT(_expression, _message) if(!(_expression)) { \
+		MessageBoxW(nullptr, L##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		__debugbreak();\
+	}
+#define ASSERT(_expression, _messageW) 0
+#endif _DEBUG	
+
+#define ERROR_MESSAGE_W(_message) MessageBoxW(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)
+#define ERROR_MESSAGE_A(_message) MessageBoxA(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)
+
+#define NOTIFICATION_W(_message) MessageBoxW(nullptr, _message, L"Notification", MB_OK)
+#define NOTIFICATION_A(_message) MessageBoxA(nullptr, _message, "Notification", MB_OK)
+
 
 #define STRKEY constexpr const char*
 #define STRKEY_DECLARE(_AStr) STRKEY _AStr = #_AStr
 
-#ifdef _DEBUG
-#define DEBUG_BREAK DebugBreak()
-#else
-#define DEBUG_BREAK
-#endif
-
-#define ERROR_MESSAGE_A(_aStrMessage) MessageBoxA(nullptr, _aStrMessage, NULL, MB_OK); DEBUG_BREAK
-#define ERROR_MESSAGE_W(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, NULL, MB_OK); DEBUG_BREAK
-
-#define NOTIFICATION_W(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, L"알림", MB_OK)
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
 

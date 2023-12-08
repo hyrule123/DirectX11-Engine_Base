@@ -207,7 +207,7 @@ namespace ehw
 		if (false == ofs.is_open())
 		{
 			ERROR_MESSAGE_W(L"파일을 열지 못했습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		//json 저장하고
@@ -231,17 +231,19 @@ namespace ehw
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(strKey::Ext_ShaderSetting);
+
+		
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 
 
 		std::ifstream ifs(fullPath);
 		if (false == ifs.is_open())
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 
 		Json::Value jVal{};
 		ifs >> jVal;
@@ -275,9 +277,10 @@ namespace ehw
 			ErrMsg += static_cast<const char*>(mErrorBlob->GetBufferPointer());
 			ERROR_MESSAGE_A(ErrMsg.c_str());
 
+
 			mErrorBlob = nullptr;
 
-			return eResult::Fail_Compile;
+			return eResult::Fail_Open;
 		}
 
 		return eResult::Success;
@@ -319,7 +322,7 @@ namespace ehw
 
 		if (false == std::fs::exists(shaderBinPath))
 		{
-			return eResult::Fail_PathNotExist;
+			return eResult::Fail_Open;
 		}
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.

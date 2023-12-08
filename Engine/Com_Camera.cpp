@@ -297,13 +297,13 @@ namespace ehw
 			if (mLayerMasks[index] == true)
 			{
 				Layer& layer = scene->GetLayer((eLayerType)index);
-				GameObjects gameObjects = layer.GetGameObjects();
+				const std::vector<std::shared_ptr<GameObject>>& gameObjects = layer.GetGameObjects();
 				if (gameObjects.size() == 0)
 					continue;
 
-				for (GameObject* obj : gameObjects)
+				for (size_t i = 0; i < gameObjects.size(); ++i)
 				{
-					PushGameObjectToRenderingModes(obj);
+					PushGameObjectToRenderingModes(gameObjects[i].get());
 				}
 			}
 		}

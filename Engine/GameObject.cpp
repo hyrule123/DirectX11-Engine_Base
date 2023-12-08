@@ -6,7 +6,6 @@
 
 #include "json-cpp/json.h"
 #include "Prefab.h"
-#include "EventMgr.h"
 
 namespace ehw
 {
@@ -28,8 +27,7 @@ namespace ehw
 		, m_Name()
 		, m_Parent()
 		, m_Childs()
-		, m_CurState(eState::Active)
-		, m_PrevState()
+		, m_State(eState::Active)
 		, m_bAwake()
 		, m_bDontDestroyOnLoad()
 	{
@@ -45,8 +43,7 @@ namespace ehw
 		, m_LayerType(_other.m_LayerType)
 		, m_Name(_other.m_Name)
 		, m_Parent()
-		, m_CurState(_other.m_CurState)
-		, m_PrevState()
+		, m_State(_other.m_State)
 		, m_bAwake(_other.m_bAwake)
 		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
 	{
@@ -75,15 +72,10 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_Components.size(); ++i)
 		{
-			//컴포넌트의 주인이 자신일 경우 제거
-			if (m_Components[i] && this == m_Components[i]->GetOwner())
+			if (m_Components[i])
+			{
 				delete m_Components[i];
-		}
-
-		for (size_t i = 0; i < m_Childs.size(); ++i)
-		{
-			if (m_Childs[i])
-				delete m_Childs[i];
+			}
 		}
 	}
 
@@ -148,7 +140,7 @@ namespace ehw
 					}
 
 					Prefab SavePrefab{};
-					SavePrefab.RegisterPrefab(m_Childs[i], true);
+					SavePrefab.RegisterPrefab(m_Childs[i].get(), true);
 					eResult Result = SavePrefab.Save(childStrKey);
 					if (eResultFail(Result))
 					{
@@ -225,13 +217,13 @@ namespace ehw
 						continue;
 					}
 
-					GameObject* child = new GameObject;
+					std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
 					const Json::Value& childJson = *iter;
 					Result = child->LoadJson(&childJson);
 					if (eResultFail(Result))
 					{
 						ERROR_MESSAGE_W(L"Child 오브젝트 로드 실패.");
-						SAFE_DELETE(child);
+						child = nullptr;
 						return Result;
 					}
 
@@ -376,6 +368,62 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		return uniqPtr.release();
 	}
 
+	GameObject* GameObject::AddChild(const std::shared_ptr<GameObject>& _pChild)
+	{
+		//nullptr이나 자기 자신을 인자로 호출했을 경우 오류 발생			
+		ASSERT_DEBUG(_pChild, "child 포인터가 nullptr 입니다.");
+		ASSERT_DEBUG(this != _pChild.get(), "자기 자신을 child로 추가했습니다.");
+		ASSERT_DEBUG(eLayerType::None == _pChild->GetLayerType(), "Scene에 생성되지 않은 GameObject 입니다.");
+
+		//부모 오브젝트가 있을 경우 기존의 부모 오브젝트에서 자신을 제거한 후 여기에 추가해야함
+		GameObject* parent = _pChild->GetParent();
+		if (parent)
+		{
+			parent->RemoveChild(_pChild.get());
+		}
+		_pChild->SetParent(std::static_pointer_cast<GameObject>(shared_from_this()));
+		m_Childs.push_back(_pChild);
+
+		if (m_bAwake && false == _pChild->IsAwaken())
+		{
+			_pChild->Awake();
+		}
+
+		return _pChild.get();
+	}
+
+	std::vector<std::shared_ptr<GameObject>> GameObject::GetGameObjectsInHierarchy()
+	{
+		std::vector<std::shared_ptr<GameObject>> retVec {};
+		
+		GetGameObjectsRecursive(retVec);
+
+		return retVec;
+	}
+
+	void GameObject::RemoveChild(GameObject* _pObj)
+	{
+		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
+		{
+			if ((*iter).get() == _pObj)
+			{
+				(*iter)->SetParent(nullptr);
+				m_Childs.erase(iter);
+				break;
+			}
+		}
+	}
+
+
+	void GameObject::GetGameObjectsRecursive(std::vector<std::shared_ptr<GameObject>>& _gameObjects)
+	{
+		_gameObjects.push_back(std::static_pointer_cast<GameObject>(shared_from_this()));
+		for (size_t i = 0; i < m_Childs.size(); ++i)
+		{
+			m_Childs[i]->GetGameObjectsRecursive(_gameObjects);
+		}
+	}
+
 
 
 	void GameObject::SetActive(bool _bActive)
@@ -387,7 +435,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		//씬이 작동 중일 경우 EventMgr를 통해 람다함수를 등록
 		if (m_OwnerScene->IsAwaken())
 		{
-			EventMgr::AddFrameEndEvent(&GameObject::SetActiveRecursive, this, _bActive);
+			m_OwnerScene->AddFrameEndJob(&GameObject::SetActiveRecursive, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
@@ -403,11 +451,10 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		if (IsDestroyed())
 			return;
 
-
-		//씬이 작동 중일 경우 EventMgr를 통해 람다함수를 등록
+		//씬이 작동 중일 경우 지연 실행
 		if (m_OwnerScene->IsAwaken())
 		{
-			EventMgr::AddFrameEndEvent(&GameObject::DestroyRecursive, this);
+			m_OwnerScene->AddFrameEndJob(&GameObject::DestroyRecursive, this);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
@@ -421,7 +468,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 
 	void GameObject::DestroyRecursive()
 	{
-		m_CurState = eState::Destroy;
+		m_State = eState::Destroy;
 
 		for (size_t i = 0; i < m_Components.size(); ++i)
 		{
@@ -431,7 +478,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 				m_Components[i]->ForceDestroy();
 			}
 		}
-
+		
 		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
 			m_Childs[i]->DestroyRecursive();
@@ -445,9 +492,10 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		{
 			if (_bActive)
 			{
-				m_CurState = eState::Active;
+				m_State = eState::Active;
 
-				if (false == m_bAwake)
+				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
+				if (m_OwnerScene->IsAwaken() && false == m_bAwake)
 				{
 					m_bAwake = true;
 
@@ -465,7 +513,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 			}
 			else
 			{
-				m_CurState = eState::InActive;
+				m_State = eState::InActive;
 
 				for (size_t i = 0; i < m_Components.size(); ++i)
 				{

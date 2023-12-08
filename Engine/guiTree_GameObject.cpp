@@ -64,12 +64,12 @@ namespace gui
 		for (size_t i = 0; i < (UINT)ehw::eLayerType::END; i++)
 		{
 			ehw::Layer& layer = scene->GetLayer((ehw::eLayerType)i);
-			const std::vector<ehw::GameObject*>& gameObjs
+			const std::vector<std::shared_ptr<ehw::GameObject>>& gameObjs
 				= layer.GetGameObjects();
 
-			for (ehw::GameObject* obj : gameObjs)
+			for (const std::shared_ptr<ehw::GameObject>& obj : gameObjs)
 			{
-				AddGameObject(root, obj);
+				AddGameObject(root, obj.get());
 			}
 		}
 

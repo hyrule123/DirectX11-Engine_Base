@@ -40,10 +40,8 @@ namespace ehw
 		virtual eResult LoadJson(const Json::Value* _pJson) override;
 
 		//아예 새 게임오브젝트를 반환
-		GameObject* Instantiate(eLayerType _layerType);
-
-		//비어있는 게임오브젝트를 받아서 MeshData를 추가해서 반환
-		bool Instantiate(GameObject* _gameObj);
+		std::shared_ptr<GameObject> Instantiate();
+		eResult Instantiate(GameObject* _emptyGameObj);
 
 	private:
 		eResult ConvertFBX(

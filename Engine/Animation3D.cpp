@@ -57,7 +57,7 @@ namespace ehw
         {
             std::fs::path npt = std::fs::absolute(fullPath);
             ERROR_MESSAGE_W(L"파일 오픈 실패");
-            return eResult::Fail_OpenFile;
+            return eResult::Fail_Open;
         }
 
         if (nullptr == m_OwnerSkeleton)
@@ -95,7 +95,7 @@ namespace ehw
         if (false == std::fs::exists(fullPath))
         {
             ERROR_MESSAGE_W(L"파일이 존재하지 않습니다.");
-            return eResult::Fail_PathNotExist;
+            return eResult::Fail_Open;
         }
 
        
@@ -103,7 +103,7 @@ namespace ehw
         if (false == ifs.is_open())
         {
             ERROR_MESSAGE_W(L"파일 오픈 실패");
-            return eResult::Fail_OpenFile;
+            return eResult::Fail_Open;
         }
 
         Binary::LoadValue(ifs, mValues);

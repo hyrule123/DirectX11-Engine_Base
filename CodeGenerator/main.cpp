@@ -217,7 +217,7 @@ void CreateScriptKey()
 
     DirTree.SearchRecursive(DirPath, regexCom);
 
-    DirTree.CreateStrKeyHeader(DirPath / "strKey_Script.h", "Script", true);
+    DirTree.CreateStrKeyHeader(DirPath / "strKey_Script.h", "script", true);
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "iScript";
@@ -246,7 +246,7 @@ void CreateSceneKey()
 
     DirTree.SearchRecursive(DirPath, regexCom);
 
-    DirTree.CreateStrKeyHeader(DirPath / "strKey_Scene.h", "Scene", true);
+    DirTree.CreateStrKeyHeader(DirPath / "strKey_Scene.h", "scene", true);
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "iScene";

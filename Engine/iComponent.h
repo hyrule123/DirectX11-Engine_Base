@@ -28,7 +28,6 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
-		virtual void OnDestroy() {};
 		virtual void InternalUpdate() = 0;
 
 		GameObject* GetOwner() const { return m_Owner; }

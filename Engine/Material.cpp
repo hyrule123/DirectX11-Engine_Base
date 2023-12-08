@@ -47,7 +47,7 @@ namespace ehw
         if (false == ofs.is_open())
         {
             ERROR_MESSAGE_W(L"파일 열기에 실패했습니다.");
-            return eResult::Fail_OpenFile;
+            return eResult::Fail_Open;
         }
             
 
@@ -69,14 +69,14 @@ namespace ehw
         fullPath.replace_extension(strKey::Ext_Material);
         if (false == std::fs::exists(fullPath))
         {
-            return eResult::Fail_OpenFile;
+            return eResult::Fail_Open;
         }
 
         std::ifstream ifs(fullPath);
         if (false == ifs.is_open())
         {
             ERROR_MESSAGE_W(L"Material 파일이 없습니다.");
-            return eResult::Fail_OpenFile;
+            return eResult::Fail_Open;
         }
 
         Json::Value jVal{};

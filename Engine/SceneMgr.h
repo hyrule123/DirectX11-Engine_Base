@@ -11,6 +11,7 @@ namespace ehw
 		static void InternalUpdate();
 		static void Render();
 		static void Destroy();
+		static void FrameEnd();
 		static void Release();
 
 		static void		LoadScene(const std::string_view _strKey);

@@ -780,6 +780,7 @@ namespace gui
 			{
 				std::wstring errorMsg = std::to_wstring(i);
 				errorMsg += L" 번 입력 레이아웃의 Semantic 이름이 존재하지 않습니다.";
+				ERROR_MESSAGE_W(errorMsg.c_str());
 				return;
 			}
 		}

@@ -62,7 +62,7 @@ namespace ehw
 		//하지만 string key의 경우는 반드시 있어야 하므로 json에 값이 저장되어있지 않을 경우 에러를 반환
 		else
 		{
-			return eResult::Fail_MissingValue;
+			return eResult::Fail_InValid;
 		}
 
 		return eResult::Success;

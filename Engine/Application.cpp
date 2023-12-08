@@ -13,7 +13,6 @@
 #include "AudioMgr.h"
 #include "FontWrapper.h"
 #include "PathMgr.h"
-#include "EventMgr.h"
 #include "guiMgr.h"
 #include "ThreadPoolMgr.h"
 
@@ -67,7 +66,7 @@ namespace ehw
 		
 		SceneMgr::Init();
 
-		EventMgr::Init();
+		//EventMgr::Init();
 
 		mbInitialized = true;
 
@@ -105,7 +104,7 @@ namespace ehw
 	{		
 		SceneMgr::Destroy();
 
-		EventMgr::FrameEnd();
+		SceneMgr::FrameEnd();
 	}
 
 	// Running main engine loop

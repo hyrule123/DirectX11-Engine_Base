@@ -17,19 +17,20 @@ namespace ehw
 
 		iScene* GetOwnerScene() const { return m_OwnerScene; }
 		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
-		void AddGameObject(GameObject* gameObject);
+		void AddGameObject(std::shared_ptr<GameObject> _gameObject);
+
 		void RemoveGameObject(const GameObject* gameObject);
-		const std::vector<GameObject*>& GetGameObjects() { return mGameObjects; }
-		std::vector<GameObject*> GetDontDestroyGameObjects();
+
+		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects() { return m_GameObjects; }
+
+		void GetDontDestroyGameObjects(std::vector<std::shared_ptr<GameObject>>& _dontObjects);
 
 		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
 
 	private:
 		iScene* m_OwnerScene;
 		eLayerType m_LayerType;
-		std::vector<GameObject*> mGameObjects;
-	};
 
-	typedef const std::vector<GameObject*>& GameObjects;
-	typedef std::vector<GameObject*>::iterator GameObjectIter;
+		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
+	};
 }

@@ -10,6 +10,7 @@
 
 #include <array>
 #include <vector>
+#include <queue>
 #include <list>
 #include <map>
 #include <bitset>

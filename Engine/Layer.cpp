@@ -10,103 +10,76 @@
 
 namespace ehw
 {
-
 	Layer::Layer()
 		: m_OwnerScene()
 		, m_LayerType()
-		, mGameObjects{}
+		, m_GameObjects{}
 	{
 	}
 
 	Layer::~Layer()
 	{
-		auto iter = std::remove_if(mGameObjects.begin(), mGameObjects.end(),
-			[](GameObject* _obj)->bool
-			{
-				return !(_obj->IsMaster());
-			});
-		mGameObjects.erase(iter, mGameObjects.end());
-		for (size_t i = 0; i < mGameObjects.size(); ++i)
-		{
-			delete mGameObjects[i];
-		}
 	}
 
 	void Layer::Awake()
 	{
-		for (size_t i = 0; i < mGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster())
-				mGameObjects[i]->Awake();
+			if (m_GameObjects[i]->IsMaster())
+				m_GameObjects[i]->Awake();
 		}
 	}
 
 	void Layer::Update()
 	{
-		for (size_t i = 0; i < mGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster())
-				mGameObjects[i]->Update();
+			if (m_GameObjects[i]->IsMaster())
+				m_GameObjects[i]->Update();
 		}
 	}
 
 	void Layer::InternalUpdate()
 	{
-		for (size_t i = 0; i < mGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsMaster())
-				mGameObjects[i]->InternalUpdate();
+			if (m_GameObjects[i]->IsMaster())
+				m_GameObjects[i]->InternalUpdate();
 		}
 
 		// sort z axis
-		//std::vector<GameObject*> mGameObjects;
-		//std::sort(mGameObjects.begin(), mGameObjects.end(), CompareGameObjectByZAxis);
+		//std::vector<GameObject*> m_GameObjects;
+		//std::sort(m_GameObjects.begin(), m_GameObjects.end(), CompareGameObjectByZAxis);
 	}
 
 	void Layer::Render()
 	{
-		for (size_t i = 0; i < mGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (mGameObjects[i]->IsActive())
-				mGameObjects[i]->Render();
+			if (m_GameObjects[i]->IsActive())
+				m_GameObjects[i]->Render();
 		}
 	}
 
 	void Layer::Destroy()
 	{
-		std::vector<GameObject*> masterObjects;
-		auto iter = std::remove_if(mGameObjects.begin(), mGameObjects.end(),
-			[&](GameObject* _obj)->bool
+		std::erase_if(m_GameObjects,
+			[](const std::shared_ptr<GameObject>& _gameObj)
 			{
-				bool bRet = false;
-				if (_obj->IsDestroyed())
-				{
-					if (_obj->IsMaster())
-						masterObjects.push_back(_obj);
-					bRet = true;
-				}
-				return bRet;
+				return _gameObj->IsDestroyed();
 			}
 		);
-		mGameObjects.erase(iter, mGameObjects.end());
-
-		for (size_t i = 0; i < masterObjects.size(); ++i)
-		{
-			delete masterObjects[i];
-		}
 	}
 
-	void Layer::AddGameObject(GameObject* gameObject)
+	void Layer::AddGameObject(std::shared_ptr<GameObject> _gameObject)
 	{
-		ASSERT(gameObject, "GameObject가 nullptr 입니다.");
+		const auto& obj = m_GameObjects.emplace_back(std::move(_gameObject));
+		
+		obj->SetLayerType(m_LayerType);
 
-		mGameObjects.push_back(gameObject);
-		gameObject->SetOwnerScene(m_OwnerScene);
-		gameObject->SetLayerType(m_LayerType);
-
-		if (m_OwnerScene->IsAwaken() && gameObject->IsActive())
+		if (m_OwnerScene->IsAwaken())
 		{
-			gameObject->Awake();
+			obj->Awake();
 		}
 	}
 
@@ -114,42 +87,28 @@ namespace ehw
 	{
 		if (gameObject)
 		{
-			auto iter = mGameObjects.begin();
-			const auto& iterEnd = mGameObjects.end();
+			auto iter = m_GameObjects.begin();
+			const auto& iterEnd = m_GameObjects.end();
 			for (iter; iter != iterEnd; ++iter)
 			{
-				if (gameObject == (*iter))
+				if (gameObject == iter->get())
 				{
-					mGameObjects.erase(iter);
+					m_GameObjects.erase(iter);
 					break;
 				}
 			}
 		}
 	}
-	std::vector<GameObject*> Layer::GetDontDestroyGameObjects()
+
+	void Layer::GetDontDestroyGameObjects(std::vector<std::shared_ptr<GameObject>>& _dontObjects)
 	{
-		std::vector<GameObject*> donts;
-
-		//mGameObjects에서 삭제 안할 게임오브젝트들을 제거하고 
-		//그걸 donts 벡터에 추가
-		//나머지는 냄겨둠
-		mGameObjects.erase
-		(
-			std::remove_if(mGameObjects.begin(), mGameObjects.end(), 
-				[&](GameObject* _obj)
-				{
-					bool result = false;
-					if (_obj && _obj->IsDontDestroyOnSceneChange())
-					{
-						donts.push_back(_obj);
-						result = true;
-					}
-
-					return result;
-				})
-			, mGameObjects.end()
+		auto iter = std::partition(m_GameObjects.begin(), m_GameObjects.end(),
+			[](const std::shared_ptr<GameObject>& _gameObj)->bool
+			{
+				return !_gameObj->IsDontDestroyOnLoad();
+			}
 		);
-
-		return donts;
+		
+		std::move(iter, m_GameObjects.end(), std::back_inserter(_dontObjects));
 	}
 }

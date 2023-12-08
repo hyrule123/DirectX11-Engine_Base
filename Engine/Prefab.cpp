@@ -48,7 +48,7 @@ namespace ehw
 		std::ofstream saveFile(fullPath);
 		if (false == saveFile.is_open())
 		{
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		//프리팹(GameObject)의 데이터 저장
@@ -58,7 +58,7 @@ namespace ehw
 		{
 			//json 저장에 실패 시 파일을 작성하지 않는다.
 			saveFile.close();
-			return eResult::Fail_Json;
+			return eResult::Fail_Create;
 		}
 		
 		//저장
@@ -84,14 +84,14 @@ namespace ehw
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		std::ifstream LoadFile(fullPath);
 		if (false == LoadFile.is_open())
 		{
 			ERROR_MESSAGE_W(L"파일을 여는 데 실패했습니다.");
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 		//파일에서 데이터를 읽어온다.
@@ -103,14 +103,14 @@ namespace ehw
 		eResult result = LoadJson(&LoadJVal);
 		if (eResultFail(result))
 		{
-			return eResult::Fail_Json;
+			return eResult::Fail_Read;
 		}
 
 		//게임오브젝트 데이터를 로드한다.
 		if (false == LoadJVal.isMember(strKey::Json::Prefab::mPrefab))
 		{
 			ERROR_MESSAGE_W(L"Prefab Data를 찾지 못했습니다.");
-			return eResult::Fail_Json;
+			return eResult::Fail_Read;
 		}
 
 		const Json::Value& PrefabJVal = LoadJVal[strKey::Json::Prefab::mPrefab];
@@ -119,7 +119,7 @@ namespace ehw
 		{
 			ERROR_MESSAGE_W(L"프리팹을 불러오는 데 실패했습니다.");
 			SAFE_DELETE(mPrefab);
-			return eResult::Fail_Json;
+			return eResult::Fail_Read;
 		}
 
 		return eResult::Success;

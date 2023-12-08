@@ -186,7 +186,7 @@ namespace ehw
 			std::wstring errMsg = fullPath.wstring() + L"\n";
 			errMsg += L"파일이 없습니다.";
 			ERROR_MESSAGE_W(errMsg.c_str());
-			return eResult::Fail_OpenFile;
+			return eResult::Fail_Open;
 		}
 
 
@@ -207,17 +207,17 @@ namespace ehw
 		if (Extension == L".DDS")
 		{
 			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DDS_FLAGS::DDS_FLAGS_NONE, nullptr, mImage)))
-				return eResult::Fail_OpenFile;
+				return eResult::Fail_Open;
 		}
 		else if (Extension == L".TGA")
 		{
 			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), TGA_FLAGS::TGA_FLAGS_NONE, nullptr, mImage)))
-				return eResult::Fail_OpenFile;
+				return eResult::Fail_Open;
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
 			if (FAILED(LoadFromWICFile(_fullPath.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, nullptr, mImage)))
-				return eResult::Fail_OpenFile;
+				return eResult::Fail_Open;
 		}
 
 		return eResult::Success;

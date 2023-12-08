@@ -15,21 +15,18 @@ namespace ehw
 		//양수 = 실패
 		Fail,
 
-		Fail_OpenFile,
+		Fail_Open,
 
-		Fail_Compile,
 		Fail_Create,
+
+		Fail_Write,
+		Fail_Read,
 
 		Fail_Nullptr,
 
-		Fail_MissingValue,
-
-		Fail_Json,
 		Fail_InValid,
 
-		Fail_PathNotExist,
-
-		Fail_Empty,
+		Fail_Empty
 	};
 	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
 	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
