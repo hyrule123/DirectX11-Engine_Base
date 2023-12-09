@@ -71,15 +71,15 @@ namespace ehw
 		);
 	}
 
-	void Layer::AddGameObject(std::shared_ptr<GameObject> _gameObject)
+	void Layer::AddGameObject(const std::shared_ptr<GameObject>& _gameObject)
 	{
-		const auto& obj = m_GameObjects.emplace_back(std::move(_gameObject));
+		m_GameObjects.push_back(_gameObject);
 		
-		obj->SetLayerType(m_LayerType);
+		_gameObject->SetLayerType(m_LayerType);
 
 		if (m_OwnerScene->IsAwaken())
 		{
-			obj->Awake();
+			_gameObject->Awake();
 		}
 	}
 

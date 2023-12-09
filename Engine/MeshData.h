@@ -41,7 +41,7 @@ namespace ehw
 
 		//아예 새 게임오브젝트를 반환
 		std::shared_ptr<GameObject> Instantiate();
-		eResult Instantiate(GameObject* _emptyGameObj);
+		eResult Instantiate(GameObject* _emptyRootObj);
 
 	private:
 		eResult ConvertFBX(

@@ -17,7 +17,7 @@ namespace ehw
         template <typename T>
         static inline void AddComConstructor(const std::string_view _strKey);
 
-        static iComponent* GetNewCom(const std::string_view _strKey);
+        static std::shared_ptr<iComponent> GetNewCom(const std::string_view _strKey);
 
         template <typename T>
         static const std::string_view GetComName();
@@ -39,7 +39,7 @@ namespace ehw
         static inline UINT32 GetNextComTypeID();
 
     private:
-        static std::unordered_map<std::string_view, std::function<iComponent* ()>> mUmapComConstructor;
+        static std::unordered_map<std::string_view, std::function<std::shared_ptr<iComponent>()>> mUmapComConstructor;
         static std::vector<std::string_view> mComNamesByID;
     };
 
@@ -55,9 +55,9 @@ namespace ehw
 
         mComNamesByID[ComIDIndex] = _strKey;
         mUmapComConstructor.insert(std::make_pair(_strKey,
-            []()->T*
+            []()->std::shared_ptr<iComponent>
             {
-                T* com = new T;
+                std::shared_ptr<iComponent> com = std::make_shared<T>();
                 com->SetComTypeID(ComMgr::GetComTypeID<T>());
                 return com;
             }

@@ -7,12 +7,12 @@
 
 namespace ehw
 {
-	std::unordered_map<std::string_view, std::function<iComponent* ()>> ComMgr::mUmapComConstructor{};
+	std::unordered_map<std::string_view, std::function<std::shared_ptr<iComponent>()>> ComMgr::mUmapComConstructor{};
 	std::vector<std::string_view> ComMgr::mComNamesByID{};
 
-	iComponent* ComMgr::GetNewCom(const std::string_view _strKey)
+	std::shared_ptr<iComponent> ComMgr::GetNewCom(const std::string_view _strKey)
 	{
-		iComponent* com = nullptr;
+		std::shared_ptr<iComponent> com{};
 		const auto& iter = mUmapComConstructor.find(_strKey);
 		if (iter != mUmapComConstructor.end())
 		{

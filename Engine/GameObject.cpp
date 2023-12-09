@@ -70,13 +70,13 @@ namespace ehw
 
 	GameObject::~GameObject()
 	{
-		for (size_t i = 0; i < m_Components.size(); ++i)
-		{
-			if (m_Components[i])
-			{
-				delete m_Components[i];
-			}
-		}
+		//for (size_t i = 0; i < m_Components.size(); ++i)
+		//{
+		//	if (m_Components[i])
+		//	{
+		//		delete m_Components[i];
+		//	}
+		//}
 	}
 
 	eResult GameObject::SaveJson(Json::Value* _pJson)
@@ -191,7 +191,7 @@ namespace ehw
 						continue;
 					}
 
-					iComponent* pCom = ComMgr::GetNewCom((*iter)[strKey::Json::Entity::mStrKey].asString());
+					std::shared_ptr<iComponent> pCom = ComMgr::GetNewCom((*iter)[strKey::Json::Entity::mStrKey].asString());
 					if (pCom)
 					{
 						AddComponent(pCom);
@@ -323,19 +323,16 @@ namespace ehw
 
 		if (m_Components[(int)eComponentCategory::Renderer] && m_Components[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<iRenderer*>(m_Components[(int)eComponentCategory::Renderer])->Render();
+			static_cast<iRenderer*>(m_Components[(int)eComponentCategory::Renderer].get())->Render();
 		}
 	}
 
 
 
-	iComponent* GameObject::AddComponent(iComponent* _pCom)
+	iComponent* GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
 	{
 		if (nullptr == _pCom)
 			return nullptr;
-
-		//에러 발생시 leak 발생하지 않도록
-		std::unique_ptr<iComponent> uniqPtr(_pCom);
 
 		eComponentCategory ComType = _pCom->GetComCategory();
 
@@ -365,7 +362,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 			_pCom->Awake();
 		}
 
-		return uniqPtr.release();
+		return _pCom.get();
 	}
 
 	GameObject* GameObject::AddChild(const std::shared_ptr<GameObject>& _pChild)
@@ -381,8 +378,14 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		{
 			parent->RemoveChild(_pChild.get());
 		}
-		_pChild->SetParent(std::static_pointer_cast<GameObject>(shared_from_this()));
+		_pChild->SetParent(shared_from_this_T<GameObject>());
 		m_Childs.push_back(_pChild);
+
+		//나는 씬에 들어갔는데 자식은 들어가지 않은 경우 자식을 넣어줌
+		if (IsInScene() && false == _pChild->IsInScene())
+		{
+			m_OwnerScene->AddNewGameObjectHierarchy(m_LayerType, _pChild);
+		}
 
 		if (m_bAwake && false == _pChild->IsAwaken())
 		{
@@ -417,7 +420,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 
 	void GameObject::GetGameObjectsRecursive(std::vector<std::shared_ptr<GameObject>>& _gameObjects)
 	{
-		_gameObjects.push_back(std::static_pointer_cast<GameObject>(shared_from_this()));
+		_gameObjects.push_back(shared_from_this_T<GameObject>());
 		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
 			m_Childs[i]->GetGameObjectsRecursive(_gameObjects);
@@ -464,6 +467,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 		}
 
 	}
+
 
 
 	void GameObject::DestroyRecursive()

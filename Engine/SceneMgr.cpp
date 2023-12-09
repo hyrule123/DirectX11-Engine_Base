@@ -100,7 +100,7 @@ namespace ehw
 
 		for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		{
-			mActiveScene->AddNewGameObject(dontDestroyObjs[i]->GetLayerType(), std::move(dontDestroyObjs[i]));
+			mActiveScene->AddNewGameObjectHierarchy(dontDestroyObjs[i]->GetLayerType(), std::move(dontDestroyObjs[i]));
 		}
 
 		//OnEnter 호출

@@ -246,22 +246,22 @@ namespace ehw
 		return rootObj;
 	}
 
-	eResult MeshData::Instantiate(GameObject* _emptyGameObj)
+	eResult MeshData::Instantiate(GameObject* _emptyRootObj)
 	{
-		if (nullptr == _emptyGameObj)
+		if (nullptr == _emptyRootObj)
 		{
 			ERROR_MESSAGE_W(L"GameObject가 nullptr 입니다.");
 			return eResult::Fail_Nullptr;
 		}
 
-		Com_Transform* tr = _emptyGameObj->AddComponent<Com_Transform>();
+		Com_Transform* tr = _emptyRootObj->AddComponent<Com_Transform>();
 		ASSERT(tr, "트랜스폼 컴포넌트 생성 실패");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		Com_Animator3D* animator = nullptr;
 		if (mSkeleton)
 		{
-			animator = _emptyGameObj->AddComponent<Com_Animator3D>();
+			animator = _emptyRootObj->AddComponent<Com_Animator3D>();
 			ASSERT(animator, "애니메이터 컴포넌트 생성 실패");
 			animator->SetSkeleton(mSkeleton);
 		}
@@ -273,12 +273,12 @@ namespace ehw
 			if (animator)
 			{
 				//수동으로 애니메이터를 설정
-				auto* renderer3D = _emptyGameObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				auto* renderer3D = _emptyRootObj->AddComponent<Com_Renderer_3DAnimMesh>();
 				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
 			}
 			else
 			{
-				renderer = _emptyGameObj->AddComponent<Com_Renderer_Mesh>();
+				renderer = _emptyRootObj->AddComponent<Com_Renderer_Mesh>();
 			}
 
 			SetRenderer(renderer, 0);
@@ -289,7 +289,8 @@ namespace ehw
 		{
 			for (size_t i = 0; i < mMeshContainers.size(); ++i)
 			{
-				GameObject* child = _emptyGameObj->AddChild(std::make_shared<GameObject>());
+				std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
+				_emptyRootObj->AddChild(child);
 
 				child->AddComponent<Com_DummyTransform>();
 				child->AddComponent<Com_DummyAnimator>();

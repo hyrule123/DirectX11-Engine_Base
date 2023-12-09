@@ -24,7 +24,7 @@ namespace ehw
 		Entity();
 
 		Entity(const Entity& _other);
-		virtual Entity* Clone() { ERROR_MESSAGE_W(L"이 클래스는 Clone할수 없습니다."); return nullptr; }
+		virtual Entity* Clone() { ASSERT(false, L"Entity 클래스는 Clone할수 없습니다."); return nullptr; }
 
 		Entity(Entity&& _move);
 
@@ -37,6 +37,9 @@ namespace ehw
 		const std::string& GetKey() const { return mStrKey; }
 		UINT32 GetID() const { return mID; }
 
+		template <typename T>
+		inline std::shared_ptr<T> shared_from_this_T();
+
 	private:
 		std::string mStrKey;
 		
@@ -44,6 +47,13 @@ namespace ehw
 		static UINT32 gIDNext;
 		const UINT32 mID;
 	};
+
+	template<typename T>
+	inline std::shared_ptr<T> Entity::shared_from_this_T()
+	{
+		static_assert(std::is_base_of_v<Entity, T>);
+		return std::static_pointer_cast<T>(shared_from_this());
+	}
 }
 
 

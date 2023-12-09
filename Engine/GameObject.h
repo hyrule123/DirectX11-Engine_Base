@@ -32,18 +32,18 @@ namespace ehw
 		template <typename T>
 		inline T* AddComponent();
 		
-		iComponent* AddComponent(iComponent* _pCom);
+		iComponent* AddComponent(const std::shared_ptr<iComponent>& _pCom);
 		inline iComponent* AddComponent(const std::string_view _strKey);
 
 		template <typename T>
 		inline T* GetComponent();
 
-		inline iComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type]; }
+		inline iComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type].get(); }
 
 
 
-		const std::vector<iComponent*>& GetComponents() { return m_Components; }
-		inline const std::span<iScript*> GetScripts();
+		const std::vector<std::shared_ptr<iComponent>>& GetComponents() { return m_Components; }
+		inline const std::span<std::shared_ptr<iScript>> GetScripts();
 
 		void SetName(const std::string_view _Name) { m_Name = _Name; }
 		const std::string& GetName() const { return m_Name; }
@@ -59,6 +59,7 @@ namespace ehw
 		
 		iScene* GetOwnerScene() const { return m_OwnerScene; }
 		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
+		bool IsInScene() const { return (nullptr != m_OwnerScene); }
 
 		eLayerType GetLayerType() const { return m_LayerType; }
 
@@ -92,7 +93,7 @@ namespace ehw
 		iScene* m_OwnerScene;
 		eLayerType m_LayerType;
 
-		std::vector<iComponent*>	m_Components;
+		std::vector<std::shared_ptr<iComponent>>	m_Components;
 
 		std::weak_ptr<GameObject> m_Parent;
 		std::vector<std::shared_ptr<GameObject>> m_Childs;
@@ -119,17 +120,17 @@ namespace ehw
 		if (eComponentCategory::UNKNOWN == order)
 			return nullptr;
 
-		T* pCom = new T;
+		std::shared_ptr<iComponent> pCom = std::make_shared<T>();
 		pCom->SetComTypeID(ComMgr::GetComTypeID<T>());
 		pCom->SetKey(ComMgr::GetComName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return static_cast<T*>(AddComponent(static_cast<iComponent*>(pCom)));
+		return static_cast<T*>(AddComponent(pCom));
 	}
 
 	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
-		iComponent* pCom = ComMgr::GetNewCom(_strKey);
+		std::shared_ptr<iComponent> pCom = ComMgr::GetNewCom(_strKey);
 
 		if (nullptr == pCom)
 		{
@@ -145,7 +146,6 @@ namespace ehw
 	{
 		T* pCom{};
 
-
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
 			UINT32 comTypeID = ComMgr::GetComTypeID<T>();
@@ -153,7 +153,7 @@ namespace ehw
 			{
 				if (comTypeID == m_Components[i]->GetComTypeID())
 				{
-					pCom = static_cast<T*>(m_Components[i]);
+					pCom = static_cast<T*>(m_Components[i].get());
 					break;
 				}
 			}
@@ -165,7 +165,7 @@ namespace ehw
 			eComponentCategory comCategory = ComMgr::GetComponentCategory<T>();
 
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_Components[(int)comCategory]);
+			pCom = static_cast<T*>(m_Components[(int)comCategory].get());
 		}
 
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
@@ -178,7 +178,7 @@ namespace ehw
 				)
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast
-				pCom = static_cast<T*>(m_Components[(int)comCategory]);
+				pCom = static_cast<T*>(m_Components[(int)comCategory].get());
 			}
 		}
 
@@ -189,15 +189,15 @@ namespace ehw
 
 
 
-	inline const std::span<iScript*> GameObject::GetScripts()
+	inline const std::span<std::shared_ptr<iScript>> GameObject::GetScripts()
 	{
-		std::span<iScript*> scriptSpan{};
+		std::span<std::shared_ptr<iScript>> scriptSpan{};
 
 		int ScriptSize = (int)m_Components.size() - (int)eComponentCategory::Scripts;
 		if (0 < ScriptSize)
 		{
 			scriptSpan =
-				std::span<iScript*>((iScript**)m_Components.data() + (size_t)eComponentCategory::Scripts, (size_t)ScriptSize);
+				std::span<std::shared_ptr<iScript>>((std::shared_ptr<iScript>*)m_Components.data() + (size_t)eComponentCategory::Scripts, (size_t)ScriptSize);
 		}
 
 		return scriptSpan;

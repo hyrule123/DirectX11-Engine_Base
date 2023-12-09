@@ -4,7 +4,8 @@
 
 #ifdef _DEBUG
 
-#define ASSERT(_expression, _message) if (!(_expression)) assert(!_message)
+#define ASSERT(_expression, _message) if (!(_expression)) { assert(!_message); }
+//#define ASSERT(expr, msg) assert(( (void)(msg), (expr) ))
 #define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)
 
 #else

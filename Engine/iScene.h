@@ -35,8 +35,12 @@ namespace ehw
 		bool	IsAwaken() const { return m_bAwake; }
 
 		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
+		GameObject* AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj);
 		inline GameObject* NewGameObject(const eLayerType _type);
-		GameObject* AddNewGameObject(const eLayerType _type, std::shared_ptr<GameObject> _newGameObj);
+		inline GameObject* NewGameObject(const eLayerType _type, const std::string_view _name);
+
+		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
+		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayerType _type);
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
@@ -45,9 +49,6 @@ namespace ehw
 		template <class F, class... Args>
 		inline std::future<typename std::invoke_result<F, Args...>::type> 
 			AddFrameEndJobReturn(F&& _func, Args&&... _args);
-
-		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
-		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayerType _type);
 
 	private:
 		std::array<Layer, (int)eLayerType::END> m_Layers;
@@ -58,9 +59,15 @@ namespace ehw
 
 	inline GameObject* iScene::NewGameObject(const eLayerType _type)
 	{
-		return AddNewGameObject(_type, std::make_shared<GameObject>());
+		return AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
 	}
 
+	inline GameObject* iScene::NewGameObject(const eLayerType _type, const std::string_view _name)
+	{
+		GameObject* retObj = AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
+		retObj->SetName(_name);
+		return retObj;
+	}
 
 	template<class F, class ...Args>
 	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)

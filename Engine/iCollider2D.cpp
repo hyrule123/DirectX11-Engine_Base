@@ -146,8 +146,8 @@ namespace ehw
 
 	void iCollider2D::OnCollisionEnter(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnCollisionEnter(_collider);
 		}
@@ -155,8 +155,8 @@ namespace ehw
 
 	void iCollider2D::OnCollisionStay(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnCollisionStay(_collider);
 		}
@@ -164,8 +164,8 @@ namespace ehw
 
 	void iCollider2D::OnCollisionExit(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnCollisionExit(_collider);
 		}
@@ -173,8 +173,8 @@ namespace ehw
 
 	void iCollider2D::OnTriggerEnter(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnTriggerEnter(_collider);
 		}
@@ -182,8 +182,8 @@ namespace ehw
 
 	void iCollider2D::OnTriggerStay(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnTriggerStay(_collider);
 		}
@@ -191,8 +191,8 @@ namespace ehw
 
 	void iCollider2D::OnTriggerExit(iCollider2D* _collider)
 	{
-		const std::span<iScript*> scripts = GetOwner()->GetScripts();
-		for (iScript* script : scripts)
+		const std::span<std::shared_ptr<iScript>> scripts = GetOwner()->GetScripts();
+		for (const std::shared_ptr<iScript>& script : scripts)
 		{
 			script->OnTriggerExit(_collider);
 		}
