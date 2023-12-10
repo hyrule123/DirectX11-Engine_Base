@@ -5,7 +5,7 @@
 #include "RenderManager.h"
 
 #include "guiCom_Transform.h"
-#include "guiCom_Renderer.h"
+#include "EditorCom_Renderer.h"
 #include "guiTexture.h"
 
 namespace editor
@@ -21,7 +21,7 @@ namespace editor
 		mGuiComponents[(int)ehw::eComponentCategory::Transform] = new guiCom_Transform;
 		mGuiComponents[(int)ehw::eComponentCategory::Transform]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiComponents[(int)ehw::eComponentCategory::Renderer] = new guiCom_Renderer;
+		mGuiComponents[(int)ehw::eComponentCategory::Renderer] = new EditorCom_Renderer;
 		mGuiComponents[(int)ehw::eComponentCategory::Renderer]->SetSize(ImVec2(0.f, 100.f));
 
 		mGuiResources[(int)ehw::eResourceType::Texture] = new guiTexture;

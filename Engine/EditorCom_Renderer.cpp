@@ -1,5 +1,6 @@
 
 #include "PCH_Engine.h"
+#include "EditorCom_Renderer.h"
 
 #include "Com_Renderer_Mesh.h"
 #include "ResourceManager.h"
@@ -7,7 +8,7 @@
 #include "iResource.h"
 #include "GameObject.h"
 
-#include "guiCom_Renderer.h"
+
 #include "EditorManager.h"
 #include "EditorWidget_List.h"
 #include "guiInspector.h"
@@ -15,19 +16,19 @@
 
 namespace editor
 {
-	guiCom_Renderer::guiCom_Renderer()
+	EditorCom_Renderer::EditorCom_Renderer()
 		: guiComponent(ehw::eComponentCategory::Renderer)
 		, mMesh{}
 		, mMaterial{}
 	{
 	}
 
-	guiCom_Renderer::~guiCom_Renderer()
+	EditorCom_Renderer::~EditorCom_Renderer()
 	{
 
 	}
 
-	void guiCom_Renderer::Update()
+	void EditorCom_Renderer::Update()
 	{
 		if (GetTarget())
 		{
@@ -49,7 +50,7 @@ namespace editor
 		}
 	}
 
-	void guiCom_Renderer::UpdateUI()
+	void EditorCom_Renderer::UpdateUI()
 	{
 		if (mMesh == nullptr || mMaterial == nullptr)
 			return;
@@ -80,7 +81,7 @@ namespace editor
 			}
 
 			listUI->SetItemList(name);
-			listUI->SetEvent(this, std::bind(&guiCom_Renderer::SetMesh
+			listUI->SetEvent(this, std::bind(&EditorCom_Renderer::SetMesh
 				, this, std::placeholders::_1));
 		}
 
@@ -105,13 +106,13 @@ namespace editor
 			}
 
 			listUI->SetItemList(Name);
-			listUI->SetEvent(this, std::bind(&guiCom_Renderer::SetMaterial
+			listUI->SetEvent(this, std::bind(&EditorCom_Renderer::SetMaterial
 				, this, std::placeholders::_1));
 		}
 	}
 
 
-	void guiCom_Renderer::SetMesh(const std::string& _strKey)
+	void EditorCom_Renderer::SetMesh(const std::string& _strKey)
 	{
 		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager::Find<ehw::Mesh>(_strKey);
 
@@ -119,7 +120,7 @@ namespace editor
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
 	}
 
-	void guiCom_Renderer::SetMaterial(const std::string& _strKey)
+	void EditorCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
 		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(_strKey);
 

@@ -5,11 +5,11 @@
 
 namespace editor
 {
-	class guiCom_Renderer : public guiComponent
+	class EditorCom_Renderer : public guiComponent
 	{
 	public:
-		guiCom_Renderer();
-		virtual ~guiCom_Renderer();
+		EditorCom_Renderer();
+		virtual ~EditorCom_Renderer();
 
 		virtual void Update() override;
 
