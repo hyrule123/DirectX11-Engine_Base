@@ -1,6 +1,6 @@
 #pragma once
 
-#include "guiWindow.h"
+#include "EditorWindow.h"
 #include "define_GPU.h"
 #include "guiComboBox.h"
 
@@ -12,7 +12,7 @@ namespace ehw
 namespace editor
 {
 	class guiGraphicsShaderEditor
-		: public guiWindow
+		: public EditorWindow
 	{
 	public:
 		guiGraphicsShaderEditor();

@@ -354,7 +354,7 @@
     <ClCompile Include="guiChild.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
-    <ClCompile Include="guiWindow.cpp">
+    <ClCompile Include="EditorWindow.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
     <ClCompile Include="guiCom_Transform.cpp">
@@ -728,7 +728,7 @@
     <ClInclude Include="guiChild.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
-    <ClInclude Include="guiWindow.h">
+    <ClInclude Include="EditorWindow.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="strKey_gui.h">

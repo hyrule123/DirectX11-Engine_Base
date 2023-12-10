@@ -1,5 +1,5 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 #include "SimpleMath.h"
 
 namespace ehw
@@ -10,7 +10,7 @@ namespace ehw
 namespace editor
 {
     class guiUVCalculator :
-        public guiWindow
+        public EditorWindow
     {
     public:
         guiUVCalculator();

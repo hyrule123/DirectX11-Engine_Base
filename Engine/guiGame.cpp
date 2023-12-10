@@ -9,7 +9,7 @@
 namespace editor
 {
 	guiGame::guiGame()
-		: guiWindow(strKey::GameViewer)
+		: EditorWindow(strKey::GameViewer)
 	{
 	}
 

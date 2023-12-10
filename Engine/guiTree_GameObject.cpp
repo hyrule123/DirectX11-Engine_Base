@@ -16,7 +16,7 @@
 namespace editor
 {
 	guiTree_GameObject::guiTree_GameObject()
-		: guiWindow(strKey::GameObjects)
+		: EditorWindow(strKey::GameObjects)
 		, mTreeWidget(nullptr)
 	{
 		int2 winSize = ehw::Application::GetWindowSize();

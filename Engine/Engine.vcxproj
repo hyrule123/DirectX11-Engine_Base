@@ -302,7 +302,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiTreeWidget.h" />
     <ClInclude Include="guiTree_GameObject.h" />
     <ClInclude Include="guiUVCalculator.h" />
-    <ClInclude Include="guiWindow.h" />
+    <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="iAnimation.h" />
     <ClInclude Include="iAnimator.h" />
     <ClInclude Include="iCollider3D.h" />
@@ -434,7 +434,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiTreeWidget.cpp" />
     <ClCompile Include="guiTree_GameObject.cpp" />
     <ClCompile Include="guiUVCalculator.cpp" />
-    <ClCompile Include="guiWindow.cpp" />
+    <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="iAnimation.cpp" />
     <ClCompile Include="iAnimator.cpp" />
     <ClCompile Include="iCollider3D.cpp" />

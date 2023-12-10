@@ -1,5 +1,5 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 #include "guiComboBox.h"
 #include "define_Struct.h"
 
@@ -12,7 +12,7 @@ namespace ehw
 namespace editor
 {
 	class guiMaterialEditor
-		: public guiWindow
+		: public EditorWindow
 	{
 	public:
 		guiMaterialEditor();

@@ -11,7 +11,7 @@
 namespace editor
 {
 	guiInspector::guiInspector()
-		: guiWindow(strKey::Inspector)
+		: EditorWindow(strKey::Inspector)
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리

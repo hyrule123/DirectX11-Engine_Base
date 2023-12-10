@@ -10,7 +10,7 @@ namespace ehw
 
 namespace editor
 {
-	class guiTree_GameObject : public guiWindow
+	class guiTree_GameObject : public EditorWindow
 	{
 	public:
 		guiTree_GameObject();

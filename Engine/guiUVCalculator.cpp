@@ -11,7 +11,7 @@
 namespace editor
 {
 	guiUVCalculator::guiUVCalculator()
-		: guiWindow("UV Calculator")
+		: EditorWindow("UV Calculator")
 		, mTexture()
 		, mCursorPos()
 		, mDragStartPos()

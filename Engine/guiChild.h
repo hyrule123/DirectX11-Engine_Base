@@ -1,10 +1,10 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 
 namespace editor
 {
 	class guiChild :
-		public guiWindow
+		public EditorWindow
 	{
 	public:
 		guiChild(const std::string_view _strName);

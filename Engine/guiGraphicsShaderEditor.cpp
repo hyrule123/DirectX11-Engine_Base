@@ -159,7 +159,7 @@ namespace editor
 
 
 	guiGraphicsShaderEditor::guiGraphicsShaderEditor()
-		: guiWindow(strKey::guiGraphicsShaderEditor)
+		: EditorWindow(strKey::guiGraphicsShaderEditor)
 		, mDescForEdit()
 		, mSemanticEditIdx(-1)
 		, mSemanticName{}

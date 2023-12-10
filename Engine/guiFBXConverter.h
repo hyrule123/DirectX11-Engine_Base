@@ -1,5 +1,5 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 #include "guiComboBox.h"
 #include <thread>
 #include <future>
@@ -15,7 +15,7 @@ namespace editor
 {
 
 	class guiFBXConverter :
-		public guiWindow
+		public EditorWindow
 	{
 	public:
 		guiFBXConverter();

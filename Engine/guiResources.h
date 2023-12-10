@@ -7,7 +7,7 @@
 
 namespace editor
 {
-	class guiResources : public guiWindow
+	class guiResources : public EditorWindow
 	{
 	public:
 		guiResources();

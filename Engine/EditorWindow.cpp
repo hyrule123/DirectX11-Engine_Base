@@ -1,19 +1,19 @@
 #include "PCH_Engine.h"
-#include "guiWIndow.h"
+#include "EditorWindow.h"
 
 
 namespace editor
 {
-	guiWindow::guiWindow(const std::string_view _strName)
+	EditorWindow::EditorWindow(const std::string_view _strName)
 		: EditorBase(_strName)
 		, mWindowFlag()
 	{
 		SetSaveEnable(true);
 	}
-	guiWindow::~guiWindow()
+	EditorWindow::~EditorWindow()
 	{
 	}
-	bool guiWindow::BeginUI()
+	bool EditorWindow::BeginUI()
 	{
 		bool retVal = ImGui::Begin(GetStrKey().c_str(), GetEnablePtr(), mWindowFlag);
 		if(false == retVal)
@@ -23,7 +23,7 @@ namespace editor
 
 		return retVal;
 	}
-	void guiWindow::EndUI()
+	void EditorWindow::EndUI()
 	{
 		ImGui::End();
 	}

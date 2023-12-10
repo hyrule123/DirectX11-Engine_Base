@@ -11,7 +11,7 @@
 namespace editor
 {
 	guiNormalConverter::guiNormalConverter()
-		: guiWindow("Normal Converter")
+		: EditorWindow("Normal Converter")
 		, mTextureSrc{}
 		, mTextureDestDir{}
 	{

@@ -6,7 +6,7 @@
 
 namespace editor
 {
-	class guiInspector : public guiWindow
+	class guiInspector : public EditorWindow
 	{
 	public:
 		guiInspector();

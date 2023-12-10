@@ -1,5 +1,5 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 #include "guiComboBox.h"
 
 #include "define_Struct.h"
@@ -13,7 +13,7 @@ namespace ehw
 namespace editor
 {
     class guiNormalConverter :
-        public guiWindow
+        public EditorWindow
     {
     public:
         guiNormalConverter();

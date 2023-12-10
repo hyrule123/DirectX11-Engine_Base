@@ -2,7 +2,7 @@
 #include "guiChild.h"
 
 editor::guiChild::guiChild(const std::string_view _strName)
-    : guiWindow(_strName)
+    : EditorWindow(_strName)
     , mbBorder(true)
 	, mSize{}
 {

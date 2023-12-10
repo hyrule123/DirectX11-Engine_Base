@@ -29,7 +29,7 @@ namespace editor
 
 
 	guiMaterialEditor::guiMaterialEditor()
-		: guiWindow("Material Editor")
+		: EditorWindow("Material Editor")
 		, mTargetMaterial()
 		, mShaderCombo{}
 		, mbNewMaterial()

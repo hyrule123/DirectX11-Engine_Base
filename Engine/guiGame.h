@@ -1,9 +1,9 @@
 #pragma once
-#include "guiWindow.h"
+#include "EditorWindow.h"
 
 namespace editor
 {
-	class guiGame : public guiWindow
+	class guiGame : public EditorWindow
 	{
 	public:
 		guiGame();

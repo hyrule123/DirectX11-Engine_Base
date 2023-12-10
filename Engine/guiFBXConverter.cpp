@@ -10,7 +10,7 @@
 namespace editor
 {
 	guiFBXConverter::guiFBXConverter()
-		: guiWindow("FBX Converter")
+		: EditorWindow("FBX Converter")
 		, mFBXPath()
 		, mOutputDirName()
 		, mbStatic(true)

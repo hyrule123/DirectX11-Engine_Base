@@ -21,7 +21,7 @@ namespace editor
 	using namespace ehw::math;
 
 	guiResources::guiResources()
-		: guiWindow(strKey::ResourceViewer)
+		: EditorWindow(strKey::ResourceViewer)
 		, mTreeWidget(nullptr)
 	{
 		mTreeWidget = AddChild<TreeWidget>();
