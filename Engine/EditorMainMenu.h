@@ -4,11 +4,11 @@
 
 namespace editor
 {
-	class guiMainMenu : public EditorBase
+	class EditorMainMenu : public EditorBase
 	{
 	public:
-		guiMainMenu();
-		virtual ~guiMainMenu();
+		EditorMainMenu();
+		virtual ~EditorMainMenu();
 
 		virtual bool BeginUI() final { return ImGui::BeginMainMenuBar(); }
 		virtual void UpdateUI() override;

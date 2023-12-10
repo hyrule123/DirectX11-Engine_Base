@@ -432,7 +432,7 @@
     <ClCompile Include="guiTree_GameObject.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="guiMainMenu.cpp">
+    <ClCompile Include="EditorMainMenu.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="EditorInspector.cpp">
@@ -809,7 +809,7 @@
     <ClInclude Include="guiTree_GameObject.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="guiMainMenu.h">
+    <ClInclude Include="EditorMainMenu.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="EditorInspector.h">

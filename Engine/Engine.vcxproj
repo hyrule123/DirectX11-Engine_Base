@@ -292,7 +292,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="EditorGraphicsShader.h" />
     <ClInclude Include="EditorInspector.h" />
     <ClInclude Include="EditorWidget_List.h" />
-    <ClInclude Include="guiMainMenu.h" />
+    <ClInclude Include="EditorMainMenu.h" />
     <ClInclude Include="EditorMaterial.h" />
     <ClInclude Include="EditorMesh.h" />
     <ClInclude Include="guiNormalConverter.h" />
@@ -424,7 +424,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="EditorGraphicsShader.cpp" />
     <ClCompile Include="EditorInspector.cpp" />
     <ClCompile Include="EditorWidget_List.cpp" />
-    <ClCompile Include="guiMainMenu.cpp" />
+    <ClCompile Include="EditorMainMenu.cpp" />
     <ClCompile Include="EditorMaterial.cpp" />
     <ClCompile Include="EditorMesh.cpp" />
     <ClCompile Include="guiNormalConverter.cpp" />

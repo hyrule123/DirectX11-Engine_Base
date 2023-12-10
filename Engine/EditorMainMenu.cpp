@@ -1,23 +1,23 @@
 #include "PCH_Engine.h"
 
-#include "guiMainMenu.h"
+#include "EditorMainMenu.h"
 #include "Application.h"
 #include "EditorManager.h"
 
 namespace editor
 {
-	guiMainMenu::guiMainMenu()
+	EditorMainMenu::EditorMainMenu()
 		: EditorBase(strKey::MainMenu)
 	{
         //SetSize(ImVec2(100.0f, 100.0f));
 	}
 
-	guiMainMenu::~guiMainMenu()
+	EditorMainMenu::~EditorMainMenu()
 	{
 	}
 
 
-	void guiMainMenu::UpdateUI()
+	void EditorMainMenu::UpdateUI()
 	{
 		if (ImGui::BeginMenu("UI Menu"))
 		{

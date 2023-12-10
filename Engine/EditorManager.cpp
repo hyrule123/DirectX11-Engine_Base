@@ -23,7 +23,7 @@
 #include "EditorGame.h"
 #include "EditorBase.h"
 #include "EditorResources.h"
-#include "guiMainMenu.h"
+#include "EditorMainMenu.h"
 #include "EditorConsole.h"
 #include "EditorWidget_List.h"
 #include "guiTree_GameObject.h"
@@ -280,7 +280,7 @@ namespace editor
 
 	void EditorManager::InitGuiWindows()
 	{
-		AddGuiWindow<guiMainMenu>();
+		AddGuiWindow<EditorMainMenu>();
 
 		AddGuiWindow<EditorInspector>();
 
