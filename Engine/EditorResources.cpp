@@ -9,7 +9,7 @@
 #include "GraphicsShader.h"
 #include "ResourceManager.h"
 
-#include "guiInspector.h"
+#include "EditorInspector.h"
 #include "EditorResource.h"
 
 #include "EditorManager.h"
@@ -70,7 +70,7 @@ namespace editor
 	{
 		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
 
-		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
+		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);
 		//inspector->InitializeTargetResource();
 	}

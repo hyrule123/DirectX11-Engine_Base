@@ -6,11 +6,11 @@
 
 namespace editor
 {
-	class guiInspector : public EditorWindow
+	class EditorInspector : public EditorWindow
 	{
 	public:
-		guiInspector();
-		virtual ~guiInspector();
+		EditorInspector();
+		virtual ~EditorInspector();
 
 		virtual void Init() override;
 		virtual void Update() override;

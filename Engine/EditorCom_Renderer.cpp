@@ -11,7 +11,7 @@
 
 #include "EditorManager.h"
 #include "EditorWidget_List.h"
-#include "guiInspector.h"
+#include "EditorInspector.h"
 
 
 namespace editor
@@ -116,7 +116,7 @@ namespace editor
 	{
 		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager::Find<ehw::Mesh>(_strKey);
 
-		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow("guiInspector"));
+		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
 	}
 
@@ -124,7 +124,7 @@ namespace editor
 	{
 		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(_strKey);
 
-		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow("guiInspector"));
+		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);
 	}
 }

@@ -3,7 +3,7 @@
 
 namespace editor
 {
-	class guiInspector;
+	class EditorInspector;
 	class EditorCom_Transform : public EditorComponent
 	{
 	public:

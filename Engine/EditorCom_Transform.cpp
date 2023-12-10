@@ -2,7 +2,7 @@
 #include "EditorCom_Transform.h"
 
 #include "Com_Transform.h"
-#include "guiInspector.h"
+#include "EditorInspector.h"
 
 namespace editor
 {

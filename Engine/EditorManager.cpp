@@ -19,7 +19,7 @@
 #include "InputManager.h"
 #include "PathManager.h"
 
-#include "guiInspector.h"
+#include "EditorInspector.h"
 #include "EditorGame.h"
 #include "EditorBase.h"
 #include "EditorResources.h"
@@ -282,7 +282,7 @@ namespace editor
 	{
 		AddGuiWindow<guiMainMenu>();
 
-		AddGuiWindow<guiInspector>();
+		AddGuiWindow<EditorInspector>();
 
 		AddGuiWindow<guiTree_GameObject>();
 

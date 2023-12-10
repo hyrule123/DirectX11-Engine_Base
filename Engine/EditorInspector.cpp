@@ -1,6 +1,6 @@
 #include "PCH_Engine.h"
 
-#include "guiInspector.h"
+#include "EditorInspector.h"
 
 #include "RenderManager.h"
 
@@ -10,7 +10,7 @@
 
 namespace editor
 {
-	guiInspector::guiInspector()
+	EditorInspector::EditorInspector()
 		: EditorWindow(strKey::Inspector)
 		, mTargetResource()
 	{
@@ -27,7 +27,7 @@ namespace editor
 		mGuiResources[(int)ehw::eResourceType::Texture] = new EditorTexture;
 	}
 
-	guiInspector::~guiInspector()
+	EditorInspector::~EditorInspector()
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
@@ -42,7 +42,7 @@ namespace editor
 		}
 	}
 
-	void guiInspector::Init()
+	void EditorInspector::Init()
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
@@ -57,7 +57,7 @@ namespace editor
 		}
 	}
 
-	void guiInspector::Update()
+	void EditorInspector::Update()
 	{
 		mTargetGameObject = ehw::RenderManager::GetInspectorGameObject();
 
@@ -90,7 +90,7 @@ namespace editor
 		}
 	}
 
-	void guiInspector::UpdateUI()
+	void EditorInspector::UpdateUI()
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
@@ -109,7 +109,7 @@ namespace editor
 		}
 	}
 
-	void guiInspector::IndicatorButton(const char* _strButtonName)
+	void EditorInspector::IndicatorButton(const char* _strButtonName)
 	{
 		ImGui::PushID(0);
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));

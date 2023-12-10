@@ -7,9 +7,9 @@
 #include "SceneManager.h"
 #include "RenderManager.h"
 
-#include "guiInspector.h"
+#include "EditorInspector.h"
 #include "EditorManager.h"
-#include "guiInspector.h"
+#include "EditorInspector.h"
 
 #include "Application.h"
 
@@ -48,7 +48,7 @@ namespace editor
 	void guiTree_GameObject::GameobjectSelectCallback(ehw::tDataPtr _data)
 	{
 		ehw::RenderManager::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
-		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
+		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetGameObject(ehw::RenderManager::GetInspectorGameObject());
 	}
 
