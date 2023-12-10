@@ -31,7 +31,7 @@
 #include "guiGraphicsShaderEditor.h"
 #include "DebugObject.h"
 #include "EditorObject.h"
-#include "guiMaterialEditor.h"
+#include "EditorMaterial.h"
 #include "guiNormalConverter.h"
 #include "guiUVCalculator.h"
 
@@ -292,7 +292,7 @@ namespace editor
 
 		AddGuiWindow<guiFBXConverter>();
 
-		AddGuiWindow<guiMaterialEditor>();
+		AddGuiWindow<EditorMaterial>();
 
 		AddGuiWindow<guiNormalConverter>();
 

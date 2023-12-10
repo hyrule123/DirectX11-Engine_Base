@@ -9,14 +9,14 @@
 //에디터 전방선언
 namespace editor
 {
-	class guiMaterialEditor;
+	class EditorMaterial;
 }
 
 namespace ehw
 {
 	class Material : public iResource
 	{
-		friend class editor::guiMaterialEditor;
+		friend class editor::EditorMaterial;
 	public:
 		Material();
 

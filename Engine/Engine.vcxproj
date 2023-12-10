@@ -293,8 +293,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiInspector.h" />
     <ClInclude Include="EditorWidget_List.h" />
     <ClInclude Include="guiMainMenu.h" />
-    <ClInclude Include="guiMaterialEditor.h" />
-    <ClInclude Include="guiMesh.h" />
+    <ClInclude Include="EditorMaterial.h" />
+    <ClInclude Include="EditorMesh.h" />
     <ClInclude Include="guiNormalConverter.h" />
     <ClInclude Include="guiResource.h" />
     <ClInclude Include="guiResources.h" />
@@ -425,8 +425,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiInspector.cpp" />
     <ClCompile Include="EditorWidget_List.cpp" />
     <ClCompile Include="guiMainMenu.cpp" />
-    <ClCompile Include="guiMaterialEditor.cpp" />
-    <ClCompile Include="guiMesh.cpp" />
+    <ClCompile Include="EditorMaterial.cpp" />
+    <ClCompile Include="EditorMesh.cpp" />
     <ClCompile Include="guiNormalConverter.cpp" />
     <ClCompile Include="guiResource.cpp" />
     <ClCompile Include="guiResources.cpp" />

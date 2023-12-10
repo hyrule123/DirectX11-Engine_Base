@@ -11,12 +11,12 @@ namespace ehw
 
 namespace editor
 {
-	class guiMaterialEditor
+	class EditorMaterial
 		: public EditorWindow
 	{
 	public:
-		guiMaterialEditor();
-		virtual ~guiMaterialEditor();
+		EditorMaterial();
+		virtual ~EditorMaterial();
 
 		virtual void Init() override;
 		virtual void Update() override;

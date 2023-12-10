@@ -390,10 +390,10 @@
     <ClCompile Include="guiTexture.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="guiMesh.cpp">
+    <ClCompile Include="EditorMesh.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="guiMaterialEditor.cpp">
+    <ClCompile Include="EditorMaterial.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
     <ClCompile Include="EditorEntity.cpp">
@@ -764,10 +764,10 @@
     <ClInclude Include="guiTexture.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="guiMesh.h">
+    <ClInclude Include="EditorMesh.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="guiMaterialEditor.h">
+    <ClInclude Include="EditorMaterial.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
     <ClInclude Include="EditorEntity.h">

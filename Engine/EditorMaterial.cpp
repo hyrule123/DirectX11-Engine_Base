@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiMaterialEditor.h"
+#include "EditorMaterial.h"
 
 #include "Material.h"
 #include "PathManager.h"
@@ -28,7 +28,7 @@ namespace editor
 
 
 
-	guiMaterialEditor::guiMaterialEditor()
+	EditorMaterial::EditorMaterial()
 		: EditorWindow("Material Editor")
 		, mTargetMaterial()
 		, mShaderCombo{}
@@ -36,11 +36,11 @@ namespace editor
 	{
 		mTargetMaterial = std::make_shared<ehw::Material>();
 	}
-	guiMaterialEditor::~guiMaterialEditor()
+	EditorMaterial::~EditorMaterial()
 	{
 	}
 
-	void guiMaterialEditor::Init()
+	void EditorMaterial::Init()
 	{
 		//쉐이더 파일 목록 업데이트
 		mShaderCombo.SetStrKey("Shader Lists");
@@ -56,7 +56,7 @@ namespace editor
 		}
 	}
 
-	void guiMaterialEditor::Update()
+	void EditorMaterial::Update()
 	{
 		if (mShaderCombo.IsSelectionChanged())
 		{
@@ -68,7 +68,7 @@ namespace editor
 		}
 	}
 
-	void guiMaterialEditor::UpdateUI()
+	void EditorMaterial::UpdateUI()
 	{
 		UpdateShader();
 
@@ -95,7 +95,7 @@ namespace editor
 
 		UpdateSaveLoad();
 	}
-	void guiMaterialEditor::RefreshShaderSettingFiles()
+	void EditorMaterial::RefreshShaderSettingFiles()
 	{
 		const std::fs::path& shaderPath = 
 			ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
@@ -115,7 +115,7 @@ namespace editor
 			mShaderCombo.AddItem(relPath.string());
 		}
 	}
-	void guiMaterialEditor::UpdateShader()
+	void EditorMaterial::UpdateShader()
 	{
 		std::string strCurShader = "Current Shader: ";
 		{
@@ -160,7 +160,7 @@ namespace editor
 		}
 		ImGui::Text(shaderKey.c_str());
 	}
-	void guiMaterialEditor::UpdateTextureList()
+	void EditorMaterial::UpdateTextureList()
 	{
 		for (int i = 0; i < (int)ehw::eTextureSlot::END; ++i)
 		{
@@ -222,7 +222,7 @@ namespace editor
 			}
 		}
 	}
-	void guiMaterialEditor::UpdateRenderingMode()
+	void EditorMaterial::UpdateRenderingMode()
 	{
 		ehw::eRenderingMode mode = mTargetMaterial->GetRenderingMode();
 		mRenderingModeCombo.SetCurrentIndex((int)mode);
@@ -237,7 +237,7 @@ namespace editor
 			}
 		}
 	}
-	void guiMaterialEditor::UpdateMtrlConstBuffer()
+	void EditorMaterial::UpdateMtrlConstBuffer()
 	{
 		ImGui::DragFloat4("Diffuse Color", 
 			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Diff)));
@@ -251,7 +251,7 @@ namespace editor
 		ImGui::DragFloat4("Emissive Color",
 			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Emv)));
 	}
-	void guiMaterialEditor::UpdateSaveLoad()
+	void EditorMaterial::UpdateSaveLoad()
 	{
 		if (ImGui::Button("Save to File", ImVec2(0.f, 35.f)))
 		{
@@ -280,7 +280,7 @@ namespace editor
 		}
 		LoadFromFile();
 	}
-	bool guiMaterialEditor::CheckSavePossible()
+	bool EditorMaterial::CheckSavePossible()
 	{
 		bool bPossible = true;
 		//저장 조건 확인
@@ -299,7 +299,7 @@ namespace editor
 
 		return bPossible;
 	}
-	void guiMaterialEditor::SaveToFile()
+	void EditorMaterial::SaveToFile()
 	{
 		std::fs::path outputPath = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Material);
 		outputPath /= mSaveLoadFileName;
@@ -319,7 +319,7 @@ namespace editor
 		mTargetMaterial->Save(strKey);
 
 	}
-	void guiMaterialEditor::LoadFromFile()
+	void EditorMaterial::LoadFromFile()
 	{
 		if (eContext::LoadFromFile == mCurContext)
 		{
@@ -404,7 +404,7 @@ namespace editor
 			}
 		}
 	}
-	void guiMaterialEditor::NewMaterial()
+	void EditorMaterial::NewMaterial()
 	{
 		mTargetMaterial = std::make_shared<ehw::Material>();
 	}
