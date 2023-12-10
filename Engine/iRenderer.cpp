@@ -9,7 +9,7 @@
 #include "Com_Animator2D.h"
 #include "Com_Animator3D.h"
 #include "json-cpp/json.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Skeleton.h"
 
 namespace ehw
@@ -89,13 +89,13 @@ namespace ehw
 
 		if (jVal.isMember(JSON_KEY(mMesh)))
 		{
-			mMesh = ResourceMgr::Load<Mesh>(jVal[JSON_KEY(mMesh)].asString());
+			mMesh = ResourceManager::Load<Mesh>(jVal[JSON_KEY(mMesh)].asString());
 		}
 
 		//TODO: FBX 로드를 위해 주석 처리
 		//if (jVal.isMember(JSON_KEY(mMaterial)))
 		//{
-		//	mMaterial = ResourceMgr::Load<Material>(jVal[JSON_KEY(mMaterial)].asString());
+		//	mMaterial = ResourceManager::Load<Material>(jVal[JSON_KEY(mMaterial)].asString());
 		//}
 
 		return eResult::Success;

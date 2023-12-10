@@ -2,7 +2,7 @@
 #include "PCH_Engine.h"
 #include "guiGame.h"
 
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Texture.h"
 #include "GPUManager.h"
 

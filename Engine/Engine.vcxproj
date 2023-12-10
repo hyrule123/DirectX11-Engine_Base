@@ -364,7 +364,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="iResource.h" />
-    <ClInclude Include="ResourceMgr.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="iScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="iScript.h" />
@@ -535,7 +535,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="iResource.cpp" />
-    <ClCompile Include="ResourceMgr.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="iScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="iScript.cpp" />

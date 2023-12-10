@@ -2,7 +2,7 @@
 #include "Com_Renderer_ParticleSystem.h"
 
 #include "Mesh.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Material.h"
 #include "StructBuffer.h"
 #include "Com_Transform.h"
@@ -152,16 +152,16 @@ namespace ehw
 	void Com_Renderer_ParticleSystem::Init()
 	{
 		using namespace strKey::Default;
-		mCS = ResourceMgr::Find<ParticleShader>(shader::compute::ParticleCS);
+		mCS = ResourceManager::Find<ParticleShader>(shader::compute::ParticleCS);
 
-		std::shared_ptr<Mesh> point = ResourceMgr::Find<Mesh>(mesh::PointMesh);
+		std::shared_ptr<Mesh> point = ResourceManager::Find<Mesh>(mesh::PointMesh);
 		SetMesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceMgr::Find<Material>(material::ParticleMaterial);
+		std::shared_ptr<Material> material = ResourceManager::Find<Material>(material::ParticleMaterial);
 		SetMaterial(material, 0);
 
-		std::shared_ptr<Texture> tex = ResourceMgr::Find<Texture>(texture::CartoonSmoke);
+		std::shared_ptr<Texture> tex = ResourceManager::Find<Texture>(texture::CartoonSmoke);
 		material->SetTexture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};

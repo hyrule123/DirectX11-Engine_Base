@@ -4,7 +4,7 @@
 #include "Com_Transform.h"
 #include "GameObject.h"
 #include "RenderManager.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -180,13 +180,13 @@ namespace ehw
 		mAttribute.lightType = (int)type;
 		if (mAttribute.lightType == (int)eLightType::Directional)
 		{
-			mVolumeMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
-			mLightMaterial = ResourceMgr::Find<Material>(strKey::Default::material::LightDirMaterial);
+			mVolumeMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::RectMesh);
+			mLightMaterial = ResourceManager::Find<Material>(strKey::Default::material::LightDirMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Point)
 		{
-			mVolumeMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::SphereMesh);
-			mLightMaterial = ResourceMgr::Find<Material>(strKey::Default::material::LightPointMaterial);
+			mVolumeMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::SphereMesh);
+			mLightMaterial = ResourceManager::Find<Material>(strKey::Default::material::LightPointMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Spot)
 		{

@@ -2,7 +2,7 @@
 #include "PCH_Engine.h"
 
 #include "Com_Renderer_Mesh.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Com_Renderer_Sprite.h"
 #include "iResource.h"
 #include "GameObject.h"
@@ -71,7 +71,7 @@ namespace gui
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= ehw::ResourceMgr::GetResources<ehw::Mesh>();
+				= ehw::ResourceManager::GetResources<ehw::Mesh>();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -96,7 +96,7 @@ namespace gui
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ehw::ResourceMgr::GetResources<ehw::Material>();
+				= ehw::ResourceManager::GetResources<ehw::Material>();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -113,7 +113,7 @@ namespace gui
 
 	void guiCom_Renderer::SetMesh(const std::string& _strKey)
 	{
-		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceMgr::Find<ehw::Mesh>(_strKey);
+		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager::Find<ehw::Mesh>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
@@ -121,7 +121,7 @@ namespace gui
 
 	void guiCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
-		std::shared_ptr<ehw::Material> material = ehw::ResourceMgr::Find<ehw::Material>(_strKey);
+		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(_strKey);
 
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);

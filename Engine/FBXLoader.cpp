@@ -2,7 +2,7 @@
 #include "FBXLoader.h"
 
 #include "PathManager.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Texture.h"
 #include "Material.h"
 #include "define_Util.h"
@@ -575,7 +575,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceMgr::Load<Texture>(_TextureRelativePath))
+				if (nullptr == ResourceManager::Load<Texture>(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -638,7 +638,7 @@ namespace ehw
 				//std::string strName = strPath;
 
 				// 이미 로딩된 재질이면 로딩된 것을 사용
-				std::shared_ptr<Material> pMaterial = ResourceMgr::Find<Material>(mContainers[i].vecMtrl[j].strMtrlName);
+				std::shared_ptr<Material> pMaterial = ResourceManager::Find<Material>(mContainers[i].vecMtrl[j].strMtrlName);
 				if (nullptr != pMaterial)
 					continue;
 
@@ -650,11 +650,11 @@ namespace ehw
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 				pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
-				pMaterial->SetShader(ResourceMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader));
+				pMaterial->SetShader(ResourceManager::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader));
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceMgr::Load<Texture>(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Albedo, pTex);
@@ -663,7 +663,7 @@ namespace ehw
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceMgr::Load<Texture>(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Normal, pTex);
@@ -671,7 +671,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceMgr::Load<Texture>(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Specular, pTex);
@@ -679,7 +679,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceMgr::Find<Texture>(mContainers[i].vecMtrl[j].strEmissiveTex);
+					std::shared_ptr<Texture> pTex = ResourceManager::Find<Texture>(mContainers[i].vecMtrl[j].strEmissiveTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Emissive, pTex);
@@ -701,7 +701,7 @@ namespace ehw
 					ERROR_MESSAGE_W(L"FBX 변환 에러: Material 저장 실패");
 				}
 
-				ResourceMgr::Insert(pMaterial->GetStrKey(), pMaterial);
+				ResourceManager::Insert(pMaterial->GetStrKey(), pMaterial);
 				
 			}
 		}

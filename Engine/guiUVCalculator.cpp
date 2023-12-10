@@ -3,7 +3,7 @@
 
 #include "guiTexture.h"
 
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 
 #include "define_Util.h"
 #include "PathManager.h"
@@ -52,7 +52,7 @@ namespace gui
 
 			texPath = ehw::PathManager::MakePathStrKey(texPath);
 
-			mTexture = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
+			mTexture = ehw::ResourceManager::Load<ehw::Texture>(texPath);
 
 			if (mTexture)
 			{

@@ -4,7 +4,7 @@
 #include "RenderManager.h"
 #include "ConstBuffer.h"
 
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "Mesh.h"
 
 namespace ehw
@@ -13,10 +13,10 @@ namespace ehw
 		: mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
+		std::shared_ptr<Mesh> uiMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::RectMesh);
 		SetMesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResourceMgr::Find<Material>(strKey::Default::material::UIMaterial);
+		std::shared_ptr<Material> uiMaterial = ResourceManager::Find<Material>(strKey::Default::material::UIMaterial);
 		SetMaterial(uiMaterial, 0u);
 		SetMaterialMode(0u, eMaterialMode::Dynamic);
 	}

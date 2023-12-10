@@ -3,7 +3,7 @@
 #include "guiTreeWidget.h"
 
 #include "iResource.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 
 namespace gui
 {
@@ -22,7 +22,7 @@ namespace gui
 		void AddResources(TreeWidget::tNode* rootNode, const char* name)
 		{
 			const std::unordered_map<std::string, std::shared_ptr<ehw::iResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
-				= ehw::ResourceMgr::GetResources<T>();
+				= ehw::ResourceManager::GetResources<T>();
 
 			TreeWidget::tNode* stemNode
 				= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);

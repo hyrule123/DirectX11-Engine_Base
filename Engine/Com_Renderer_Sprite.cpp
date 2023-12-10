@@ -8,7 +8,7 @@
 #include "Com_Transform.h"
 #include "Com_Animator2D.h"
 
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 
 #include "Com_Transform.h"
 
@@ -32,11 +32,11 @@ namespace ehw
 		//	재질 2. 텍스처
 
 		//기본 Rect Mesh로 메쉬를 설정
-		std::shared_ptr<Mesh> mesh = ResourceMgr::Find<Mesh>(strKey::Default::mesh::RectMesh);
+		std::shared_ptr<Mesh> mesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::RectMesh);
 		SetMesh(mesh);
 
 		//Sprite Material을 받아온다
-		std::shared_ptr<Material> material = ResourceMgr::Find<Material>(strKey::Default::material::SpriteMaterial);
+		std::shared_ptr<Material> material = ResourceManager::Find<Material>(strKey::Default::material::SpriteMaterial);
 		SetMaterial(material, 0);
 	}
 

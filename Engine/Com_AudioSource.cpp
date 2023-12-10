@@ -6,7 +6,7 @@
 #include "GameObject.h"
 
 #include "json-cpp/json.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -59,7 +59,7 @@ namespace ehw
 		if (jVal.isMember(JSON_KEY(mAudioClip)))
 		{
 			std::string strKey = jVal[JSON_KEY(mAudilClip)].asString();
-			mAudioClip = ResourceMgr::Load<AudioClip>(strKey);
+			mAudioClip = ResourceManager::Load<AudioClip>(strKey);
 		}
 
 		return eResult::Success;

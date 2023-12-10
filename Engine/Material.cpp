@@ -4,7 +4,7 @@
 #include "ConstBuffer.h"
 
 #include "json-cpp/json.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "PathManager.h"
 
 #include "json-cpp/json.h"
@@ -149,7 +149,7 @@ namespace ehw
         if (false == shaderStrKey.empty())
         {
             //쉐이더는 Base Path를 사용하지 않는다
-            SetShader(ResourceMgr::Load<GraphicsShader>(shaderStrKey));
+            SetShader(ResourceManager::Load<GraphicsShader>(shaderStrKey));
         }
         
         //포인터 배열은 MH::LoadPtrStrKeyVector 함수를 통해서 Key값을 싹 받아올 수 있음.
@@ -158,7 +158,7 @@ namespace ehw
         {
             if (false == vecLoad[i].empty())
             {
-                SetTexture((eTextureSlot)i, ResourceMgr::Load<Texture>(vecLoad[i]));
+                SetTexture((eTextureSlot)i, ResourceManager::Load<Texture>(vecLoad[i]));
             }
         }
         return eResult::Success;

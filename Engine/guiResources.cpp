@@ -7,7 +7,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "GraphicsShader.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 
 #include "guiInspector.h"
 #include "guiResource.h"

@@ -2,7 +2,7 @@
 #include "guiNormalConverter.h"
 
 #include "PathManager.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "define_Util.h"
 
 #include "NormalConvertShader.h"
@@ -76,7 +76,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	texPath = ehw::PathManager::MakePathStrKey(texPath);
 
-	mTextureSrc = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
+	mTextureSrc = ehw::ResourceManager::Load<ehw::Texture>(texPath);
 }
 
 ImGui::SameLine();
@@ -150,7 +150,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<ehw::NormalConvertShader> converter = ehw::ResourceMgr::Load<ehw::NormalConvertShader>(ehw::strKey::Default::shader::compute::NormalConvert);
+			std::shared_ptr<ehw::NormalConvertShader> converter = ehw::ResourceManager::Load<ehw::NormalConvertShader>(ehw::strKey::Default::shader::compute::NormalConvert);
 
 			std::shared_ptr<ehw::Texture> convertedTex = converter->Convert(mTextureSrc);
 

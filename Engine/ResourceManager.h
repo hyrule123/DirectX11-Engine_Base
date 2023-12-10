@@ -20,7 +20,7 @@
 
 namespace ehw
 {
-	class ResourceMgr
+	class ResourceManager
 	{
 		friend class Application;
 	public:
@@ -52,7 +52,7 @@ namespace ehw
 
 
 	template<typename T>
-	inline eResourceType ResourceMgr::GetResType()
+	inline eResourceType ResourceManager::GetResType()
 	{
 		static_assert(std::is_base_of_v<iResource, T>);
 
@@ -95,7 +95,7 @@ namespace ehw
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> ResourceMgr::Load(const std::filesystem::path& _filePath)
+	inline std::shared_ptr<T> ResourceManager::Load(const std::filesystem::path& _filePath)
 	{
 		//IRes를 상속받는 클래스가 아닐 경우 컴파일 중지
 		static_assert(std::is_base_of<iResource, T>::value);
@@ -126,7 +126,7 @@ namespace ehw
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> ResourceMgr::Find(const std::string_view _strKey)
+	inline std::shared_ptr<T> ResourceManager::Find(const std::string_view _strKey)
 	{
 		eResourceType ResType = GetResType<T>();
 
@@ -151,7 +151,7 @@ namespace ehw
 	}
 
 	template<typename T>
-	inline const std::unordered_map<std::string, std::shared_ptr<iResource>, tHashFunc_StringView, std::equal_to<>>& ResourceMgr::GetResources()
+	inline const std::unordered_map<std::string, std::shared_ptr<iResource>, tHashFunc_StringView, std::equal_to<>>& ResourceManager::GetResources()
 	{
 		eResourceType Type = GetResType<T>();
 		assert(eResourceType::UNKNOWN != Type);
@@ -161,7 +161,7 @@ namespace ehw
 
 
 
-	inline std::shared_ptr<iResource> ResourceMgr::Find(eResourceType _ResType, const std::string_view _strKey)
+	inline std::shared_ptr<iResource> ResourceManager::Find(eResourceType _ResType, const std::string_view _strKey)
 	{
 		if (eResourceType::UNKNOWN == _ResType)
 			return nullptr;
@@ -174,7 +174,7 @@ namespace ehw
 		return iter->second;
 	}
 
-	inline void ResourceMgr::Insert(const std::string_view _strKey, std::shared_ptr<iResource> _Res)
+	inline void ResourceManager::Insert(const std::string_view _strKey, std::shared_ptr<iResource> _Res)
 	{
 		eResourceType ResType = _Res->GetResType();
 

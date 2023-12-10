@@ -3,7 +3,7 @@
 
 #include "define_Util.h"
 #include "PathManager.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "FBXLoader.h"
 #include "GameObject.h"
 #include "Com_DummyTransform.h"
@@ -187,7 +187,7 @@ namespace ehw
 
 			//Mesh
 			std::string meshStrKey = Json::SaveLoad::LoadPtrStrKey(&(*iter), JSON_KEY(pMesh), cont.pMesh);
-			cont.pMesh = ResourceMgr::Load<Mesh>(meshStrKey);
+			cont.pMesh = ResourceManager::Load<Mesh>(meshStrKey);
 			if (nullptr == cont.pMesh)
 				return eResult::Fail_Empty;
 
@@ -195,7 +195,7 @@ namespace ehw
 			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(pMaterials), cont.pMaterials);
 			for (size_t i = 0; i < materialsStrKey.size(); ++i)
 			{
-				std::shared_ptr<Material> mtrl = ResourceMgr::Load<Material>(materialsStrKey[i]);
+				std::shared_ptr<Material> mtrl = ResourceManager::Load<Material>(materialsStrKey[i]);
 				cont.pMaterials.push_back(mtrl);
 			}
 
@@ -570,7 +570,7 @@ namespace ehw
 		mtrl->SetTexture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->SetTexture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResourceMgr::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
+		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
 		mtrl->SetShader(defferedShader);
 
 		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);

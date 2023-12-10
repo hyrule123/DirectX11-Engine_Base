@@ -3,7 +3,7 @@
 
 #include "Material.h"
 #include "PathManager.h"
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "GraphicsShader.h"
 #include "Application.h"
 #include "define_Util.h"
@@ -63,7 +63,7 @@ namespace gui
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<ehw::GraphicsShader> gs = ehw::ResourceMgr::Load<ehw::GraphicsShader>(shaderName);
+				std::shared_ptr<ehw::GraphicsShader> gs = ehw::ResourceManager::Load<ehw::GraphicsShader>(shaderName);
 			}
 		}
 	}
@@ -143,7 +143,7 @@ namespace gui
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<ehw::GraphicsShader> GS = ehw::ResourceMgr::Load<ehw::GraphicsShader>(shaderKey);
+				std::shared_ptr<ehw::GraphicsShader> GS = ehw::ResourceManager::Load<ehw::GraphicsShader>(shaderKey);
 				mTargetMaterial->SetShader(GS);
 			}
 		}
@@ -200,7 +200,7 @@ namespace gui
 				{
 					std::fs::path PathstrKey =  ehw::PathManager::MakePathStrKey(receivedPath);
 
-					std::shared_ptr<ehw::Texture> tex = ehw::ResourceMgr::Load<ehw::Texture>(PathstrKey);
+					std::shared_ptr<ehw::Texture> tex = ehw::ResourceManager::Load<ehw::Texture>(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->SetTexture((ehw::eTextureSlot)i, tex);
@@ -272,7 +272,7 @@ namespace gui
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = ehw::ResourceMgr::GetResources<ehw::Material>();
+			const auto& materials = ehw::ResourceManager::GetResources<ehw::Material>();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->GetStrKey());
@@ -340,7 +340,7 @@ namespace gui
 					}
 					else
 					{
-						std::shared_ptr<ehw::Material> mtrl = ehw::ResourceMgr::Find<ehw::Material>(mtrlKey);
+						std::shared_ptr<ehw::Material> mtrl = ehw::ResourceManager::Find<ehw::Material>(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
