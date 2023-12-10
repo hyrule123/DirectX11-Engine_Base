@@ -33,7 +33,7 @@ public:
 	HRESULT CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path const& _RootNamespace, bool _bEraseExtension);
 
 	//UserContentsInitializer에 자신의 클래스를 등록하는 코드를 생성하는 함수
-	HRESULT CreateComMgrInitCode(tAddBaseClassDesc const& _Desc);
+	HRESULT CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc);
 
 	HRESULT CreateShaderStrKey(stdfs::path const& _FilePath);
 

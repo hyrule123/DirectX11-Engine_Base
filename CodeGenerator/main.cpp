@@ -162,21 +162,21 @@ void CreateEngineComponentKey()
 
     DirTree.SearchRecursive(DirPath, regexCom);
 
-    DirTree.CreateStrKeyHeader(DirPath / "strKey_Component.h", "com", true);
+    DirTree.CreateStrKeyHeader(DirPath / "strKey_Component.h", "component", true);
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "iComponent";
     Desc.IncludePCH = R"(#include "PCH_Engine.h")";
     Desc.ClassName = "ComponentInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";
-    Desc.IncludeManagerHeader = R"(#include "ComMgr.h")";
+    Desc.IncludeManagerHeader = R"(#include "ComponentManager.h")";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::com::##T))";
+    Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
     Desc.UserClassMgr_InitFuncName = "Init()";
     Desc.FilePath = DirPath / "ComponentInitializer.cpp";
 
-    DirTree.CreateComMgrInitCode(Desc);
+    DirTree.CreateComponentManagerInitCode(Desc);
     
 }
 
@@ -190,21 +190,21 @@ void CreateUserComponentKey()
 
     DirTree.SearchRecursive(DirPath, regexCom);
 
-    DirTree.CreateStrKeyHeader(DirPath / "strKey_UserComponent.h", "com", true);
+    DirTree.CreateStrKeyHeader(DirPath / "strKey_UserComponent.h", "component", true);
 
     tAddBaseClassDesc Desc = {};
     Desc.BaseType = "iComponent";
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
-    Desc.IncludeManagerHeader = R"(#include <EngineBase/Engine/ComMgr.h>)";
+    Desc.IncludeManagerHeader = R"(#include <EngineBase/Engine/ComponentManager.h>)";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::com::##T))";
+    Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
     Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
     Desc.FilePath = DirPath / "UserContentsInitializer_Component.cpp";
 
-    DirTree.CreateComMgrInitCode(Desc);
+    DirTree.CreateComponentManagerInitCode(Desc);
 }
 
 void CreateScriptKey()
@@ -224,14 +224,14 @@ void CreateScriptKey()
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
-    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComMgr.h>";
+    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComponentManager.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::script::##T))";
+    Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::script::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScript()";
     Desc.FilePath = DirPath / "UserContentsInitializer_Script.cpp";
 
-    DirTree.CreateComMgrInitCode(Desc);
+    DirTree.CreateComponentManagerInitCode(Desc);
     
 }
 
@@ -256,9 +256,9 @@ void CreateSceneKey()
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::Scene::##T))";
+    Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::scene::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScene()";
     Desc.FilePath = DirPath / "UserContentsInitializer_Scene.cpp";
 
-    DirTree.CreateComMgrInitCode(Desc);
+    DirTree.CreateComponentManagerInitCode(Desc);
 }

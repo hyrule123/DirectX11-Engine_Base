@@ -94,7 +94,7 @@ namespace gui
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(ehw::strKey::eComponentType_String[(UINT)i]);
+			IndicatorButton(ehw::strKey::eComponentCategory_String[(UINT)i]);
 
 			if (mTargetGameObject && mGuiComponents[i])
 				mGuiComponents[i]->InternalUpdate();

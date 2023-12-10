@@ -294,7 +294,7 @@ namespace ehw
 				child->AddComponent<Com_DummyTransform>();
 				child->AddComponent<Com_DummyAnimator>();
 
-				//ComMgr로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
+				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				Com_Renderer_Mesh* renderer = nullptr;
 				if (animator)
 				{

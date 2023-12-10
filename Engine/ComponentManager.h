@@ -9,22 +9,22 @@
 
 namespace ehw
 {
-    class ComMgr
+    class ComponentManager
     {
 
         friend class Application;
     public:
         template <typename T>
-        static inline void AddComConstructor(const std::string_view _strKey);
+        static inline void AddComponentConstructor(const std::string_view _strKey);
 
-        static std::shared_ptr<iComponent> GetNewCom(const std::string_view _strKey);
-
-        template <typename T>
-        static const std::string_view GetComName();
-        inline static const std::string_view GetComName(UINT32 _ComID);
+        static std::shared_ptr<iComponent> GetNewComponent(const std::string_view _strKey);
 
         template <typename T>
-        static inline UINT32 GetComTypeID();
+        static const std::string_view GetComponentName();
+        inline static const std::string_view GetComponentName(UINT32 _ComID);
+
+        template <typename T>
+        static inline UINT32 GetComponentTypeID();
 
         template <typename T>
         static inline constexpr eComponentCategory GetComponentCategory();
@@ -36,7 +36,7 @@ namespace ehw
         static void Init();
         static void Release();
 
-        static inline UINT32 GetNextComTypeID();
+        static inline UINT32 GetNextComponentTypeID();
 
     private:
         static std::unordered_map<std::string_view, std::function<std::shared_ptr<iComponent>()>> mUmapComConstructor;
@@ -44,10 +44,10 @@ namespace ehw
     };
 
     template <typename T>
-    static inline void ComMgr::AddComConstructor(const std::string_view _strKey)
+    static inline void ComponentManager::AddComponentConstructor(const std::string_view _strKey)
     {
         static_assert(std::is_base_of_v<iComponent, T>);
-        UINT32 ComIDIndex = ComMgr::GetComTypeID<T>();
+        UINT32 ComIDIndex = ComponentManager::GetComponentTypeID<T>();
         if ((UINT32)mComNamesByID.size() <= ComIDIndex)
         {
             mComNamesByID.resize(mComNamesByID.size() * 2 + 1);
@@ -58,13 +58,13 @@ namespace ehw
             []()->std::shared_ptr<iComponent>
             {
                 std::shared_ptr<iComponent> com = std::make_shared<T>();
-                com->SetComTypeID(ComMgr::GetComTypeID<T>());
+                com->SetComponentTypeID(ComponentManager::GetComponentTypeID<T>());
                 return com;
             }
         ));
     }
 
-    inline const std::string_view ComMgr::GetComName(UINT32 _ComID)
+    inline const std::string_view ComponentManager::GetComponentName(UINT32 _ComID)
     {
         std::string_view retStr{};
         if (_ComID < (UINT32)mComNamesByID.size())
@@ -75,27 +75,27 @@ namespace ehw
     }
 
     template<typename T>
-    inline UINT32 ComMgr::GetComTypeID()
+    inline UINT32 ComponentManager::GetComponentTypeID()
     {
         static_assert(std::is_base_of_v<iComponent, T>);
-        static UINT32 typeId = GetNextComTypeID();
+        static UINT32 typeId = GetNextComponentTypeID();
         return typeId;
     }
 
-    inline UINT32 ComMgr::GetNextComTypeID()
+    inline UINT32 ComponentManager::GetNextComponentTypeID()
     {
         static UINT32 lastID = UINT32_MAX;
         return ++lastID;
     }
     template<typename T>
-    static inline const std::string_view ComMgr::GetComName()
+    static inline const std::string_view ComponentManager::GetComponentName()
     {
-        return GetComName(GetComTypeID<T>());
+        return GetComponentName(GetComponentTypeID<T>());
     }
 
 
     template<typename T>
-    inline constexpr eComponentCategory ComMgr::GetComponentCategory()
+    inline constexpr eComponentCategory ComponentManager::GetComponentCategory()
     {
         if constexpr (std::is_base_of_v<iTransform, T>)
         {
@@ -142,7 +142,7 @@ namespace ehw
     }
 
     template<typename T>
-    inline constexpr bool ComMgr::IsBaseComponent()
+    inline constexpr bool ComponentManager::IsBaseComponent()
     {
         if constexpr (std::is_same_v<iComponent, T>)
         {

@@ -74,7 +74,7 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 
 
 
-HRESULT DirTree::CreateComMgrInitCode(tAddBaseClassDesc const& _Desc)
+HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 {
 	CodeWriter Writer;
 

@@ -191,7 +191,7 @@ namespace ehw
 						continue;
 					}
 
-					std::shared_ptr<iComponent> pCom = ComMgr::GetNewCom((*iter)[strKey::Json::Entity::mStrKey].asString());
+					std::shared_ptr<iComponent> pCom = ComponentManager::GetNewComponent((*iter)[strKey::Json::Entity::mStrKey].asString());
 					if (pCom)
 					{
 						AddComponent(pCom);
@@ -338,7 +338,7 @@ namespace ehw
 
 		ASSERT(false == _pCom->GetStrKey().empty(), R"(
 컴포넌트에 String Key가 없습니다.
-AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
+AddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.
 )");
 
 		if (eComponentCategory::Scripts == ComType)

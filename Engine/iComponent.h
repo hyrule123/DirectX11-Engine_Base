@@ -10,7 +10,7 @@ namespace ehw
 	class iScene;
 	class iComponent : public Entity
 	{
-		friend class ComMgr;
+		friend class ComponentManager;
 	public:
 		iComponent(eComponentCategory _type);
 
@@ -38,8 +38,8 @@ namespace ehw
 
 		eComponentCategory GetComCategory() const { return m_ComCategory; };
 
-		void SetComTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
-		UINT32 GetComTypeID() const { return m_ComTypeID; };
+		void SetComponentTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
+		UINT32 GetComponentTypeID() const { return m_ComTypeID; };
 
 		void CallStart() { if (false == m_bStart) { Start(); m_bStart = true; } }
 

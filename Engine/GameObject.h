@@ -1,6 +1,6 @@
 		#pragma once
 #include "Entity.h"
-#include "ComMgr.h"
+#include "ComponentManager.h"
 
 namespace ehw
 {
@@ -114,14 +114,14 @@ namespace ehw
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
-		eComponentCategory order = ComMgr::GetComponentCategory<T>();
+		eComponentCategory order = ComponentManager::GetComponentCategory<T>();
 
 		if (eComponentCategory::UNKNOWN == order)
 			return nullptr;
 
 		std::shared_ptr<iComponent> pCom = std::make_shared<T>();
-		pCom->SetComTypeID(ComMgr::GetComTypeID<T>());
-		pCom->SetStrKey(ComMgr::GetComName<T>());
+		pCom->SetComponentTypeID(ComponentManager::GetComponentTypeID<T>());
+		pCom->SetStrKey(ComponentManager::GetComponentName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
 		return static_cast<T*>(AddComponent(pCom));
@@ -129,7 +129,7 @@ namespace ehw
 
 	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
-		std::shared_ptr<iComponent> pCom = ComMgr::GetNewCom(_strKey);
+		std::shared_ptr<iComponent> pCom = ComponentManager::GetNewComponent(_strKey);
 
 		if (nullptr == pCom)
 		{
@@ -147,10 +147,10 @@ namespace ehw
 
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
-			UINT32 comTypeID = ComMgr::GetComTypeID<T>();
+			UINT32 comTypeID = ComponentManager::GetComponentTypeID<T>();
 			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_Components.size(); ++i)
 			{
-				if (comTypeID == m_Components[i]->GetComTypeID())
+				if (comTypeID == m_Components[i]->GetComponentTypeID())
 				{
 					pCom = static_cast<T*>(m_Components[i].get());
 					break;
@@ -159,9 +159,9 @@ namespace ehw
 		}
 
 		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
-		else if constexpr (ComMgr::IsBaseComponent<T>())
+		else if constexpr (ComponentManager::IsBaseComponent<T>())
 		{
-			eComponentCategory comCategory = ComMgr::GetComponentCategory<T>();
+			eComponentCategory comCategory = ComponentManager::GetComponentCategory<T>();
 
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
 			pCom = static_cast<T*>(m_Components[(int)comCategory].get());
@@ -170,10 +170,10 @@ namespace ehw
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
 		else //constexpr
 		{
-			eComponentCategory comCategory = ComMgr::GetComponentCategory<T>();
+			eComponentCategory comCategory = ComponentManager::GetComponentCategory<T>();
 			if (
 				m_Components[(int)comCategory] &&
-				m_Components[(int)comCategory]->GetComTypeID() == ComMgr::GetComTypeID<T>()
+				m_Components[(int)comCategory]->GetComponentTypeID() == ComponentManager::GetComponentTypeID<T>()
 				)
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast

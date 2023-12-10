@@ -28,7 +28,7 @@ namespace ehw
 
 	namespace strKey
 	{
-		STRKEY eComponentType_String[(int)eComponentCategory::END] =
+		STRKEY eComponentCategory_String[(int)eComponentCategory::END] =
 		{
 			"Transform",
 			"Collider",

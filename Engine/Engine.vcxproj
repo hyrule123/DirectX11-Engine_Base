@@ -257,7 +257,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Animation3D.h" />
     <ClInclude Include="Animation3DShader.h" />
     <ClInclude Include="base64.h" />
-    <ClInclude Include="ComMgr.h" />
+    <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="Com_Animator2D.h" />
     <ClInclude Include="AtExit.h" />
@@ -390,7 +390,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ComMgr.cpp" />
+    <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="ComponentInitializer.cpp" />
     <ClCompile Include="Com_Animator2D.cpp" />
     <ClCompile Include="AtExit.cpp" />
@@ -763,6 +763,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ComponentInitializer.txt" />
+    <Text Include="strKey_Component.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

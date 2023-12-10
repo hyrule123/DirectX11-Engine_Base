@@ -285,7 +285,7 @@
     <ClCompile Include="iResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="ComMgr.cpp">
+    <ClCompile Include="ComponentManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Com_Transform.cpp">
@@ -650,7 +650,7 @@
     <ClInclude Include="iResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="ComMgr.h">
+    <ClInclude Include="ComponentManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Com_Transform.h">
@@ -1058,6 +1058,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ComponentInitializer.txt">
+      <Filter>Component</Filter>
+    </Text>
+    <Text Include="strKey_Component.txt">
       <Filter>Component</Filter>
     </Text>
   </ItemGroup>
