@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ConstBuffer.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "SceneMgr.h"
 
 extern ehw::Application gApplication;
@@ -30,7 +30,7 @@ namespace ehw
 	void GridScript::Awake()
 	{
 		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
-		mCamera = RenderMgr::GetCamera(0);
+		mCamera = RenderManager::GetCamera(0);
 	}
 
 	void GridScript::Update()
@@ -55,7 +55,7 @@ namespace ehw
 		float2 resolution(width, height);
 
 		// Constant buffer
-		ConstBuffer* CB = RenderMgr::GetConstBuffer(eCBType::Grid);
+		ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Grid);
 		tCB_Grid data;
 		data.cameraPosition = position;
 		data.cameraScale = float2(scale, scale);

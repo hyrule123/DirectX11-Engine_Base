@@ -4,7 +4,7 @@
 
 #include "iComputeShader.h"
 #include "GPUManager.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ConstBuffer.h"
 
 #include "define_GPU.h"
@@ -137,7 +137,7 @@ namespace ehw
 			
 		
 		//상수버퍼를 통해 데이터 수를 업로드
-		static ConstBuffer* const pCB = RenderMgr::GetConstBuffer(eCBType::ComputeShader);
+		static ConstBuffer* const pCB = RenderManager::GetConstBuffer(eCBType::ComputeShader);
 		pCB->SetData(&mCB_ComputeShader);
 		pCB->BindData();
 

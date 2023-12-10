@@ -20,7 +20,7 @@ namespace ehw
 	
 
 	class MultiRenderTarget;
-	class RenderMgr
+	class RenderManager
 	{
 		friend class Application;
 		friend class GPUManager;
@@ -112,7 +112,7 @@ namespace ehw
 	};
 
 
-	inline Com_Camera* RenderMgr::GetCamera(uint _Idx)
+	inline Com_Camera* RenderManager::GetCamera(uint _Idx)
 	{
 		Com_Camera* pCam = nullptr;
 		if (mCameras.size() > (size_t)_Idx)
@@ -121,7 +121,7 @@ namespace ehw
 		return pCam;
 	}
 
-	inline MultiRenderTarget* RenderMgr::GetMultiRenderTarget(eMRTType _Type)
+	inline MultiRenderTarget* RenderManager::GetMultiRenderTarget(eMRTType _Type)
 	{
 		return mMultiRenderTargets[(int)_Type].get();
 	}

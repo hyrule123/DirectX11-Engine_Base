@@ -3,7 +3,7 @@
 #include "Layer.h"
 #include "iScene.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "Com_Transform.h"
 
 

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 
 #include "ParticleShader.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ConstBuffer.h"
 #include "TimeMgr.h"
 

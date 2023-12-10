@@ -2,7 +2,7 @@
 #include "StructBuffer.h"
 
 #include "GPUManager.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ConstBuffer.h"
 
 namespace ehw

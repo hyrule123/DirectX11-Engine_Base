@@ -4,7 +4,7 @@
 #include "iResource.h"
 #include "GraphicsShader.h"
 #include "Texture.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 //에디터 전방선언
 namespace gui

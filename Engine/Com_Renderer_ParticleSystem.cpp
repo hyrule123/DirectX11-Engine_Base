@@ -226,7 +226,7 @@ namespace ehw
 		mCBData.deltaTime = TimeMgr::DeltaTime();
 		mCBData.elapsedTime += TimeMgr::DeltaTime();
 
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::ParticleSystem);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::ParticleSystem);
 		cb->SetData(&mCBData);
 		cb->BindData(eShaderStageFlag::ALL);
 

@@ -179,7 +179,7 @@ namespace ehw
             }
         }
 
-        static ConstBuffer* CB = RenderMgr::GetConstBuffer(eCBType::Material);
+        static ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
         CB->SetData(&mCB);
 
         eShaderStageFlag_ flag = eShaderStageFlag::VS | eShaderStageFlag::GS | eShaderStageFlag::PS;

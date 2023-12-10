@@ -5,7 +5,7 @@
 #include "Com_Transform.h"
 #include "GameObject.h"
 #include "Application.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "iScene.h"
 #include "SceneMgr.h"
 #include "Material.h"
@@ -69,22 +69,22 @@ namespace ehw
 		SortGameObjects();
 
 		//deffered opaque render
-		RenderMgr::GetMultiRenderTarget(eMRTType::Deffered)->Bind();
+		RenderManager::GetMultiRenderTarget(eMRTType::Deffered)->Bind();
 		RenderDeffered();
 
 		//// deffered light 
-		RenderMgr::GetMultiRenderTarget(eMRTType::Light)->Bind();
+		RenderManager::GetMultiRenderTarget(eMRTType::Light)->Bind();
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 		// 붙여버리자
 
-		const auto& Lights = RenderMgr::GetLights();
+		const auto& Lights = RenderManager::GetLights();
 		for (size_t i = 0; i < Lights.size(); ++i)
 		{
 			Lights[i]->Render();
 		}
 
 		// Forward render
-		RenderMgr::GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+		RenderManager::GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
 
 
 		//// defferd + swapchain merge
@@ -249,7 +249,7 @@ namespace ehw
 	void Com_Camera::RegisterCameraInRenderer()
 	{
 		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
-		RenderMgr::RegisterCamera(this);
+		RenderManager::RegisterCamera(this);
 	}
 
 	void Com_Camera::TurnLayerMask(eLayerType _layer, bool _enable)
@@ -361,7 +361,7 @@ namespace ehw
 			if (obj == nullptr)
 				continue;
 
-			RenderMgr::CopyRenderTarget();
+			RenderManager::CopyRenderTarget();
 			obj->Render();
 		}
 	}

@@ -2,7 +2,7 @@
 #include "Mesh.h"
 
 #include "define_Global.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "GPUManager.h"
 #include "FBXLoader.h"
 #include "StructBuffer.h"

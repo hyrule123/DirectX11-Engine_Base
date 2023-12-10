@@ -4,7 +4,7 @@
 #include "AtExit.h"
 
 #include "ComponentInitializer.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "TimeMgr.h"
 #include "InputManager.h"
 #include "SceneMgr.h"
@@ -95,7 +95,7 @@ namespace ehw
 		//최종 렌더타겟 Clear
 		GPUManager::ClearRenderTarget();
 
-		RenderMgr::Render();
+		RenderManager::Render();
 	}
 
 	void Application::FrameEnd()

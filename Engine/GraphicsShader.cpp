@@ -2,7 +2,7 @@
 
 #include "GraphicsShader.h"
 #include "GPUManager.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 #include "PathManager.h"
 #include "json-cpp/jsonSaveLoad.h"
@@ -410,9 +410,9 @@ namespace ehw
 		pContext->PSSetShader(mPS.Get(), nullptr, 0);
 
 		
-		ID3D11RasterizerState*		rs = RenderMgr::GetRasterizerState(mRSType).Get();
-		ID3D11DepthStencilState*	ds = RenderMgr::GetDepthStencilState(mDSType).Get();
-		ID3D11BlendState*			bs = RenderMgr::GetBlendState(mBSType).Get();
+		ID3D11RasterizerState*		rs = RenderManager::GetRasterizerState(mRSType).Get();
+		ID3D11DepthStencilState*	ds = RenderManager::GetDepthStencilState(mDSType).Get();
+		ID3D11BlendState*			bs = RenderManager::GetBlendState(mBSType).Get();
 
 		pContext->RSSetState(rs);
 		pContext->OMSetDepthStencilState(ds, 10u);

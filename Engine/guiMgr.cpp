@@ -176,7 +176,7 @@ namespace gui
 			obj->Render();
 		}
 
-		auto& DebugMeshes = ehw::RenderMgr::GetDebugMeshes();
+		auto& DebugMeshes = ehw::RenderManager::GetDebugMeshes();
 		for ( ehw::tDebugMesh& mesh : DebugMeshes)
 		{
 			DebugRender(mesh);
@@ -255,7 +255,7 @@ namespace gui
 
 
 		ehw::iRenderer* renderer = debugObj->GetComponent<ehw::iRenderer>();
-		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
+		ehw::Com_Camera* mainCam = ehw::RenderManager::GetMainCam();
 
 		tr->InternalUpdate();
 
@@ -452,14 +452,14 @@ namespace gui
 
 	void guiMgr::RenderGuizmo()
 	{
-		ehw::GameObject* targetgameobject = ehw::RenderMgr::GetInspectorGameObject();
+		ehw::GameObject* targetgameobject = ehw::RenderManager::GetInspectorGameObject();
 
 		if (!targetgameobject)
 		{
 			return;
 		}
 
-		ehw::Com_Camera* mainCam = ehw::RenderMgr::GetMainCam();
+		ehw::Com_Camera* mainCam = ehw::RenderManager::GetMainCam();
 
 		if (!mainCam)
 		{

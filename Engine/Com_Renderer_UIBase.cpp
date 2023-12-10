@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "Com_Renderer_UIBase.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ConstBuffer.h"
 
 #include "ResourceMgr.h"
@@ -27,7 +27,7 @@ namespace ehw
 
 	void Com_Renderer_UIBase::Render()
 	{
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::CustomData);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::CustomData);
 		cb->SetData(&mUIData);
 		cb->BindData(eShaderStageFlag::VS | eShaderStageFlag::PS);
 

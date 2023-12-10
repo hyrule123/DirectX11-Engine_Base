@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "iScript.h"
 
 #include "json-cpp/json.h"
@@ -140,7 +140,7 @@ namespace ehw
 		meshAttribute.scale = scale;
 		meshAttribute.type = m_ComCategory;
 
-		RenderMgr::AddDebugMesh(meshAttribute);
+		RenderManager::AddDebugMesh(meshAttribute);
 	}
 
 

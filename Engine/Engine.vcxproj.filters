@@ -297,7 +297,7 @@
     <ClCompile Include="AudioClip.cpp">
       <Filter>Resource\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="RenderMgr.cpp">
+    <ClCompile Include="RenderManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
@@ -662,7 +662,7 @@
     <ClInclude Include="AudioClip.h">
       <Filter>Resource\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="RenderMgr.h">
+    <ClInclude Include="RenderManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">

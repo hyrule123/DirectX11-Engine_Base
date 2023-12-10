@@ -7,7 +7,7 @@
 
 #include "Com_Renderer_Mesh.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ResourceMgr.h"
 
 

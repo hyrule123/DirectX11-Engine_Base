@@ -2,7 +2,7 @@
 #include "Com_Transform.h"
 
 #include "GameObject.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "Com_Camera.h"
 
 #include "ConstBuffer.h"
@@ -308,7 +308,7 @@ namespace ehw
 		mCB_Transform.WorldView = mCB_Transform.World * mCB_Transform.View;
 		mCB_Transform.WVP = mCB_Transform.WorldView * mCB_Transform.Projection;
 
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::Transform);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::Transform);
 		cb->SetData(&mCB_Transform);
 		cb->BindData(eShaderStageFlag::ALL);
 	}

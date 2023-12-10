@@ -3,7 +3,7 @@
 #include "Com_Light3D.h"
 #include "Com_Transform.h"
 #include "GameObject.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ResourceMgr.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -20,7 +20,7 @@ namespace ehw
 		, mLightMaterial()
 		, mIndex()
 	{
-		RenderMgr::AddLight(this);
+		RenderManager::AddLight(this);
 
 	}
 
@@ -31,12 +31,12 @@ namespace ehw
 		, mVolumeMesh(_other.mVolumeMesh)
 		, mLightMaterial(_other.mLightMaterial)
 	{
-		RenderMgr::AddLight(this);
+		RenderManager::AddLight(this);
 	}
 
 	Com_Light3D::~Com_Light3D()
 	{
-		RenderMgr::RemoveLight(this);
+		RenderManager::RemoveLight(this);
 	}
 
 	eResult Com_Light3D::SaveJson(Json::Value* _pJVal)
@@ -142,7 +142,7 @@ namespace ehw
 		float3 position = tr->GetRelativePos();
 		mAttribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		RenderMgr::PushLightAttribute(mAttribute);
+		RenderManager::PushLightAttribute(mAttribute);
 	}
 
 
@@ -160,9 +160,9 @@ namespace ehw
 		tr->BindData();
 
 		//Light
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::numberOfLight);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::numberOfLight);
 		tCB_NumberOfLight data = {};
-		data.numberOfLight = (uint)RenderMgr::GetLights().size();
+		data.numberOfLight = (uint)RenderManager::GetLights().size();
 		data.indexOfLight = mIndex;
 
 		cb->SetData(&data);

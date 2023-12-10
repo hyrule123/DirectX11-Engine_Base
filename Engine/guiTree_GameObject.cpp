@@ -5,7 +5,7 @@
 #include "iScene.h"
 #include "Layer.h"
 #include "SceneMgr.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 #include "guiInspector.h"
 #include "guiMgr.h"
@@ -47,9 +47,9 @@ namespace gui
 
 	void guiTree_GameObject::GameobjectSelectCallback(ehw::tDataPtr _data)
 	{
-		ehw::RenderMgr::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
+		ehw::RenderManager::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
 		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
-		inspector->SetTargetGameObject(ehw::RenderMgr::GetInspectorGameObject());
+		inspector->SetTargetGameObject(ehw::RenderManager::GetInspectorGameObject());
 	}
 
 	void guiTree_GameObject::InitializeScene()

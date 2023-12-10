@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "Animation3DShader.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ConstBuffer.h"
 #include "StructBuffer.h"
 #include "DefaultShader/Resource.hlsli"
@@ -44,7 +44,7 @@ namespace ehw
 		mDesc.FinalBoneTranslationMatrixBuffer->BindDataUAV(Register_u_g_FinalBoneMatrixArrayRW); // u0
 		
 		//애니메이션 3D 상수버퍼 바인드
-		ConstBuffer* pAnimCB = RenderMgr::GetConstBuffer(eCBType::Animation3D);
+		ConstBuffer* pAnimCB = RenderManager::GetConstBuffer(eCBType::Animation3D);
 		pAnimCB->SetData(mDesc.Anim3DData);
 		pAnimCB->BindData();
 

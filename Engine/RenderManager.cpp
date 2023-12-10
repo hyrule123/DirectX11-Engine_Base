@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 #include "AtExit.h"
 
@@ -30,26 +30,26 @@
 
 namespace ehw
 {
-	Com_Camera*							RenderMgr::mMainCamera{};
-	GameObject*							RenderMgr::mInspectorGameObject{};
+	Com_Camera*							RenderManager::mMainCamera{};
+	GameObject*							RenderManager::mInspectorGameObject{};
 
-	std::unique_ptr<ConstBuffer>		RenderMgr::mConstBuffers[(uint)eCBType::END]{};
-	ComPtr<ID3D11SamplerState>			RenderMgr::mSamplerStates[(uint)eSamplerType::END]{};
-	ComPtr<ID3D11RasterizerState>		RenderMgr::mRasterizerStates[(uint)eRSType::END]{};
-	ComPtr<ID3D11DepthStencilState>		RenderMgr::mDepthStencilStates[(uint)eDSType::END]{};
-	ComPtr<ID3D11BlendState>			RenderMgr::mBlendStates[(uint)eBSType::END]{};
-	std::vector<Com_Camera*>			RenderMgr::mCameras{};
-	std::vector<tDebugMesh>				RenderMgr::mDebugMeshes{};
+	std::unique_ptr<ConstBuffer>		RenderManager::mConstBuffers[(uint)eCBType::END]{};
+	ComPtr<ID3D11SamplerState>			RenderManager::mSamplerStates[(uint)eSamplerType::END]{};
+	ComPtr<ID3D11RasterizerState>		RenderManager::mRasterizerStates[(uint)eRSType::END]{};
+	ComPtr<ID3D11DepthStencilState>		RenderManager::mDepthStencilStates[(uint)eDSType::END]{};
+	ComPtr<ID3D11BlendState>			RenderManager::mBlendStates[(uint)eBSType::END]{};
+	std::vector<Com_Camera*>			RenderManager::mCameras{};
+	std::vector<tDebugMesh>				RenderManager::mDebugMeshes{};
 
-	std::unique_ptr<MultiRenderTarget>	RenderMgr::mMultiRenderTargets[(uint)eMRTType::END]{};
+	std::unique_ptr<MultiRenderTarget>	RenderManager::mMultiRenderTargets[(uint)eMRTType::END]{};
 
-	std::vector<Com_Light3D*>				RenderMgr::mLights{};
-	std::vector<tLightAttribute>		RenderMgr::mLightAttributes{};
-	std::unique_ptr<StructBuffer>		RenderMgr::mLightsBuffer{};
-	std::shared_ptr<Texture>			RenderMgr::mPostProcessTexture{};
+	std::vector<Com_Light3D*>				RenderManager::mLights{};
+	std::vector<tLightAttribute>		RenderManager::mLightAttributes{};
+	std::unique_ptr<StructBuffer>		RenderManager::mLightsBuffer{};
+	std::shared_ptr<Texture>			RenderManager::mPostProcessTexture{};
 	
 
-	void RenderMgr::Init()
+	void RenderManager::Init()
 	{
 		AtExit::AddFunc(Release);
 
@@ -69,7 +69,7 @@ namespace ehw
 		initSetting->OnExcute();
 	}
 
-	void RenderMgr::Release()
+	void RenderManager::Release()
 	{
 		mMainCamera = nullptr;
 		mInspectorGameObject = nullptr;
@@ -111,7 +111,7 @@ namespace ehw
 		
 	}
 
-	void RenderMgr::Render()
+	void RenderManager::Render()
 	{
 		ClearMultiRenderTargets();
 
@@ -133,7 +133,7 @@ namespace ehw
 	}
 
 
-	void RenderMgr::RemoveLight(Com_Light3D* _pComLight)
+	void RenderManager::RemoveLight(Com_Light3D* _pComLight)
 	{
 		for (auto iter = mLights.begin(); iter != mLights.end(); ++iter)
 		{
@@ -145,7 +145,7 @@ namespace ehw
 		}
 	}
 
-	void RenderMgr::BindLights()
+	void RenderManager::BindLights()
 	{
 		mLightsBuffer->SetData(mLightAttributes.data(), mLightAttributes.size());
 
@@ -166,7 +166,7 @@ namespace ehw
 		cb->SetData(&trCb);
 		cb->BindData(Flag);
 	}
-	void RenderMgr::BindNoiseTexture()
+	void RenderManager::BindNoiseTexture()
 	{
 		std::shared_ptr<Texture> noise = ResourceMgr::Find<Texture>(strKey::Default::texture::noise_03);
 		noise->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::ALL);
@@ -183,7 +183,7 @@ namespace ehw
 		cb->SetData(&info);
 		cb->BindData(eShaderStageFlag::ALL);
 	}
-	void RenderMgr::CopyRenderTarget()
+	void RenderManager::CopyRenderTarget()
 	{
 		std::shared_ptr<Texture> renderTarget = ResourceMgr::Find<Texture>(strKey::Default::texture::RenderTarget);
 			
@@ -200,7 +200,7 @@ namespace ehw
 		mPostProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::PS);
 	}
 
-	void RenderMgr::ClearMultiRenderTargets()
+	void RenderManager::ClearMultiRenderTargets()
 	{
 		for (int i = 0; i < (int)eMRTType::END; ++i)
 		{
@@ -219,7 +219,7 @@ namespace ehw
 		}
 	}
 
-	void RenderMgr::UpdateGlobalCBuffer()
+	void RenderManager::UpdateGlobalCBuffer()
 	{
 		gGlobal.DeltaTime = TimeMgr::DeltaTime();
 		gGlobal.AccFramePrev = gGlobal.AccFrame;
@@ -230,7 +230,7 @@ namespace ehw
 		global->BindData();
 	}
 
-	bool RenderMgr::SetResolution(UINT _ResolutionX, UINT _ResolutionY)
+	bool RenderManager::SetResolution(UINT _ResolutionX, UINT _ResolutionY)
 	{
 		if (false == CreateMultiRenderTargets(_ResolutionX, _ResolutionY))
 		{
@@ -249,7 +249,7 @@ namespace ehw
 		return true;
 	}
 
-	bool RenderMgr::CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY)
+	bool RenderManager::CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY)
 	{
 		{
 			//Swapchain MRT
@@ -316,7 +316,7 @@ namespace ehw
 		return true;
 	}
 
-	void RenderMgr::SetTexturesToDefferedMaterials()
+	void RenderManager::SetTexturesToDefferedMaterials()
 	{
 		//Light
 		{
@@ -405,7 +405,7 @@ namespace ehw
 	}
 
 
-	void RenderMgr::LoadDefaultMesh()
+	void RenderManager::LoadDefaultMesh()
 	{
 		
 		
@@ -875,7 +875,7 @@ namespace ehw
 #pragma endregion
 	}
 
-	void RenderMgr::LoadDefaultShader()
+	void RenderManager::LoadDefaultShader()
 	{
 #pragma region 2D LAYOUT
 		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc2D;
@@ -1168,7 +1168,7 @@ namespace ehw
 #pragma endregion
 	}
 
-	void RenderMgr::CreateBuffer()
+	void RenderManager::CreateBuffer()
 	{
 #pragma region CONSTANT BUFFER
 		mConstBuffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>(eCBType::Global);
@@ -1222,7 +1222,7 @@ namespace ehw
 
 
 
-	void RenderMgr::LoadDefaultTexture()
+	void RenderManager::LoadDefaultTexture()
 	{
 #pragma region STATIC TEXTURE
 		using namespace strKey::Default;
@@ -1256,7 +1256,7 @@ namespace ehw
 	}
 
 
-	void RenderMgr::CreateSamplerStates()
+	void RenderManager::CreateSamplerStates()
 	{
 
 #pragma region sampler state
@@ -1300,7 +1300,7 @@ namespace ehw
 #pragma endregion
 	}
 
-	void RenderMgr::CreateRasterizerStates()
+	void RenderManager::CreateRasterizerStates()
 	{
 #pragma region Rasterizer state
 		D3D11_RASTERIZER_DESC rsDesc = {};
@@ -1332,7 +1332,7 @@ namespace ehw
 #pragma endregion
 	}
 
-	void RenderMgr::CreateBlendStates()
+	void RenderManager::CreateBlendStates()
 	{
 
 #pragma region Blend State
@@ -1368,7 +1368,7 @@ namespace ehw
 #pragma endregion
 	}
 
-	void RenderMgr::CreateDepthStencilStates()
+	void RenderManager::CreateDepthStencilStates()
 	{
 #pragma region Depth Stencil State
 		D3D11_DEPTH_STENCIL_DESC dsDesc = {};
@@ -1406,7 +1406,7 @@ namespace ehw
 	}
 
 
-	void RenderMgr::LoadDefaultMaterial()
+	void RenderManager::LoadDefaultMaterial()
 	{
 		using namespace strKey::Default;
 #pragma region DEFAULT

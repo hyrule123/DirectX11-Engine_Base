@@ -2,7 +2,7 @@
 
 #include "Animation2D.h"
 #include "TimeMgr.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 #include "ConstBuffer.h"
 #include "json-cpp\json.h"
@@ -188,7 +188,7 @@ namespace ehw
 	{
 		mAtlas->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::PS);
 
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::_2D;
@@ -213,7 +213,7 @@ namespace ehw
 		//Texture clear
 		Texture::ClearSRV(Register_t_AtlasTexture);
 
-		ConstBuffer* cb = RenderMgr::GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::NOT_SET;

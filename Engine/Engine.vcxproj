@@ -325,7 +325,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="iTransform.h" />
     <ClInclude Include="json-cpp\jsonSaveLoad.h" />
     <ClInclude Include="MultiRenderTarget.h" />
-    <ClInclude Include="RenderMgr.h" />
+    <ClInclude Include="RenderManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="iCollider.h" />
     <ClInclude Include="DefaultShaders.h" />
@@ -497,7 +497,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="GPUInitSetting.cpp" />
     <ClCompile Include="iTransform.cpp" />
     <ClCompile Include="MultiRenderTarget.cpp" />
-    <ClCompile Include="RenderMgr.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="iCollider.cpp" />
     <ClCompile Include="PCH_Engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

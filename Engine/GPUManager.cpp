@@ -6,7 +6,7 @@
 #include "Application.h"
 #include "ConstBuffer.h"
 #include "Mesh.h"
-#include "RenderMgr.h"
+#include "RenderManager.h"
 #include "ResourceMgr.h"
 #include "Texture.h"
 
@@ -48,7 +48,7 @@ namespace ehw
 		mResolutionX = _Desc.ResolutionX;
 		mResolutionY = _Desc.ResolutionY;
 
-		RenderMgr::Init();
+		RenderManager::Init();
 
 		if (false == SetResoulution(mResolutionX, mResolutionY))
 		{
@@ -126,7 +126,7 @@ namespace ehw
 		mDepthStencilBufferTexture = DSTex;
 
 		//4. RenderMgr에서 해상도에 영향을 받는 요소들 값 변경
-		if (false == RenderMgr::SetResolution(_ResolutionX, _ResolutionY))
+		if (false == RenderManager::SetResolution(_ResolutionX, _ResolutionY))
 		{
 			return false;
 		}

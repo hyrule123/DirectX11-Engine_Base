@@ -2,7 +2,7 @@
 
 #include "guiInspector.h"
 
-#include "RenderMgr.h"
+#include "RenderManager.h"
 
 #include "guiCom_Transform.h"
 #include "guiCom_Renderer.h"
@@ -59,7 +59,7 @@ namespace gui
 
 	void guiInspector::Update()
 	{
-		mTargetGameObject = ehw::RenderMgr::GetInspectorGameObject();
+		mTargetGameObject = ehw::RenderManager::GetInspectorGameObject();
 
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
