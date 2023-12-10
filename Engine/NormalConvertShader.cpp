@@ -61,7 +61,7 @@ namespace ehw
 			return false;
 		}
 		
-		mDestTex->SetKey(mSrcTex->GetKey());
+		mDestTex->SetStrKey(mSrcTex->GetStrKey());
 
 		//원본
 		mSrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::CS);

@@ -41,9 +41,9 @@ namespace gui
 		}
 		if (mbStem && m_Childs.empty())
 		{
-			SetKey("\t" + GetKey());
+			SetStrKey("\t" + GetStrKey());
 		}
-		if (ImGui::TreeNodeEx(GetKey().c_str(), flag))
+		if (ImGui::TreeNodeEx(GetStrKey().c_str(), flag))
 		{
 			if (!mbStem && ImGui::IsItemHovered(0) && ImGui::IsMouseClicked(0))
 			{
@@ -105,7 +105,7 @@ namespace gui
 	TreeWidget::tNode* TreeWidget::AddNode(tNode* parent, const std::string& name, ehw::tDataPtr data, bool isFrame)
 	{
 		tNode* node = new tNode;
-		node->SetKey(name);
+		node->SetStrKey(name);
 		node->SetData(data);
 		node->SetStem(isFrame);
 		node->mTreeWidget = this;

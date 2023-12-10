@@ -122,7 +122,7 @@ namespace ehw
 
 		std::shared_ptr<iComponent> pCom = std::make_shared<T>();
 		pCom->SetComTypeID(ComMgr::GetComTypeID<T>());
-		pCom->SetKey(ComMgr::GetComName<T>());
+		pCom->SetStrKey(ComMgr::GetComName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
 		return static_cast<T*>(AddComponent(pCom));

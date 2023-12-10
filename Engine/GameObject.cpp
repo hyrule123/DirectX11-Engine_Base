@@ -131,12 +131,12 @@ namespace ehw
 				if (m_Childs[i])
 				{
 					//자식의 Key가 존재하지 않을 경우 자신의 Key에 숫자를 붙여서 생성
-					std::string childStrKey = m_Childs[i]->GetKey();
+					std::string childStrKey = m_Childs[i]->GetStrKey();
 					if (childStrKey.empty())
 					{
-						childStrKey = GetKey() + "_";
+						childStrKey = GetStrKey() + "_";
 						childStrKey += std::to_string((int)i);
-						m_Childs[i]->SetKey(childStrKey);
+						m_Childs[i]->SetStrKey(childStrKey);
 					}
 
 					Prefab SavePrefab{};
@@ -336,7 +336,7 @@ namespace ehw
 
 		eComponentCategory ComType = _pCom->GetComCategory();
 
-		ASSERT(false == _pCom->GetKey().empty(), R"(
+		ASSERT(false == _pCom->GetStrKey().empty(), R"(
 컴포넌트에 String Key가 없습니다.
 AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 )");

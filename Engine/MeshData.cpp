@@ -115,7 +115,7 @@ namespace ehw
 		//Skeleton
 		if (mSkeleton)
 		{
-			result = mSkeleton->Save(mSkeleton->GetKey());
+			result = mSkeleton->Save(mSkeleton->GetStrKey());
 			if (eResultFail(result))
 				return result;
 		}
@@ -133,7 +133,7 @@ namespace ehw
 				return eResult::Fail_InValid;
 			}
 			//Mesh
-			result = mMeshContainers[i].pMesh->Save(mMeshContainers[i].pMesh->GetKey());
+			result = mMeshContainers[i].pMesh->Save(mMeshContainers[i].pMesh->GetStrKey());
 			if (eResultFail(result))
 			{
 				return result;
@@ -144,7 +144,7 @@ namespace ehw
 			//Material 저장
 			for (size_t j = 0; j < mMeshContainers[i].pMaterials.size(); ++j)
 			{
-				result = mMeshContainers[i].pMaterials[j]->Save(mMeshContainers[i].pMaterials[j]->GetKey());
+				result = mMeshContainers[i].pMaterials[j]->Save(mMeshContainers[i].pMaterials[j]->GetStrKey());
 				if (eResultFail(result))
 				{
 					return result;
@@ -156,7 +156,7 @@ namespace ehw
 				}
 				else
 				{
-					arrMtrl.append(mMeshContainers[i].pMaterials[j]->GetKey());
+					arrMtrl.append(mMeshContainers[i].pMaterials[j]->GetStrKey());
 				}
 
 			}
@@ -377,7 +377,7 @@ namespace ehw
 		{
 			std::fs::path skltStrKey = filePath;
 			skltStrKey.replace_extension(strKey::Ext_Skeleton);
-			mSkeleton->SetKey(skltStrKey.string());
+			mSkeleton->SetStrKey(skltStrKey.string());
 		}
 		result = mSkeleton->CreateFromFBX(&loader);
 
@@ -432,7 +432,7 @@ namespace ehw
 				//.msh로 확장자를 변경
 				strKey.replace_extension(strKey::Ext_Mesh);
 				//Key로 Mesh를 저장
-				meshCont.pMesh->SetKey(strKey.string());
+				meshCont.pMesh->SetStrKey(strKey.string());
 			}
 
 			// 메테리얼 가져오기
@@ -511,7 +511,7 @@ namespace ehw
 		std::fs::path strKey = _texDestDir.filename();
 		strKey /= _fbxMtrl->strMtrlName;
 		strKey.replace_extension(strKey::Ext_Material);
-		mtrl->SetKey(strKey.string());
+		mtrl->SetStrKey(strKey.string());
 
 		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
 
@@ -618,7 +618,7 @@ namespace ehw
 			std::shared_ptr<Texture> tex = _mtrl->GetTexture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey = tex->GetKey();
+				std::string texKey = tex->GetStrKey();
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -650,7 +650,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey = tex->GetKey();
+							std::string texKey = tex->GetStrKey();
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");
@@ -673,7 +673,7 @@ namespace ehw
 
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
-									newTex->SetKey(texKey.string());
+									newTex->SetStrKey(texKey.string());
 
 									newTex->Load(texKey);
 

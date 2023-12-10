@@ -645,7 +645,7 @@ namespace ehw
 				pMaterial = std::make_shared<Material>();
 
 				// 상대경로가 곧 키
-				pMaterial->SetKey(mContainers[i].vecMtrl[j].strMtrlName);
+				pMaterial->SetStrKey(mContainers[i].vecMtrl[j].strMtrlName);
 
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
@@ -701,7 +701,7 @@ namespace ehw
 					ERROR_MESSAGE_W(L"FBX 변환 에러: Material 저장 실패");
 				}
 
-				ResourceMgr::Insert(pMaterial->GetKey(), pMaterial);
+				ResourceMgr::Insert(pMaterial->GetStrKey(), pMaterial);
 				
 			}
 		}

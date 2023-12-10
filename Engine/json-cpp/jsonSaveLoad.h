@@ -59,7 +59,7 @@ namespace Json
 			)>* = nullptr>
 		static std::string ConvertWrite(const T& _srcT)
 		{
-			return _srcT->GetKey();
+			return _srcT->GetStrKey();
 		}
 
 		template <typename T, typename
@@ -130,7 +130,7 @@ namespace Json
 			jVal = "";
 			if (_srcT)
 			{
-				jVal = _srcT->GetKey();
+				jVal = _srcT->GetStrKey();
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace Json
 		}
 
 
-		//GetKey()가 있는 클래스 포인터 한정으로 사용가능
+		//GetStrKey()가 있는 클래스 포인터 한정으로 사용가능
 		template <typename T, typename std::enable_if_t<
 			(true == std::is_vector_v<T> ||
 				true == std::is_std_array_v<T>)
@@ -187,7 +187,7 @@ namespace Json
 			{
 				if (_srcT[i])
 				{
-					jVal.append(_srcT[i]->GetKey());
+					jVal.append(_srcT[i]->GetStrKey());
 				}
 				else
 				{

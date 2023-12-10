@@ -57,7 +57,7 @@ namespace gui
 		mTreeWidget->Clear();
 
 		ehw::iScene* scene = ehw::SceneMgr::GetActiveScene();
-		std::string sceneName = scene->GetKey();
+		std::string sceneName = scene->GetStrKey();
 
 		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);
 

@@ -43,11 +43,11 @@ namespace gui
 	void guiMaterialEditor::Init()
 	{
 		//쉐이더 파일 목록 업데이트
-		mShaderCombo.SetKey("Shader Lists");
+		mShaderCombo.SetStrKey("Shader Lists");
 		RefreshShaderSettingFiles();
 
 		//렌더링 모드 UI 생성
-		mRenderingModeCombo.SetKey("Rendering Mode");
+		mRenderingModeCombo.SetStrKey("Rendering Mode");
 		{
 			for (int i = 0; i < (int)ehw::eRenderingMode::END; ++i)
 			{
@@ -122,7 +122,7 @@ namespace gui
 			std::shared_ptr<ehw::GraphicsShader> curShader = mTargetMaterial->GetShader();
 			if (curShader)
 			{
-				strCurShader += curShader->GetKey();
+				strCurShader += curShader->GetStrKey();
 			}
 			else
 			{
@@ -152,7 +152,7 @@ namespace gui
 		std::shared_ptr<ehw::GraphicsShader> shader = mTargetMaterial->GetShader();
 		if (shader)
 		{
-			shaderKey += shader->GetKey();
+			shaderKey += shader->GetStrKey();
 		}
 		else
 		{
@@ -175,7 +175,7 @@ namespace gui
 			auto Tex = mTargetMaterial->GetTexture((ehw::eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->GetKey().c_str());
+				ImGui::Text(Tex->GetStrKey().c_str());
 			}
 			else
 			{
@@ -275,7 +275,7 @@ namespace gui
 			const auto& materials = ehw::ResourceMgr::GetResources<ehw::Material>();
 			for (auto& mtrl : materials)
 			{
-				mCurrentLoadedMtrl.AddItem(mtrl.second->GetKey());
+				mCurrentLoadedMtrl.AddItem(mtrl.second->GetStrKey());
 			}
 		}
 		LoadFromFile();
@@ -284,7 +284,7 @@ namespace gui
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->GetShader() || mTargetMaterial->GetShader()->GetKey().empty())
+		if (nullptr == mTargetMaterial->GetShader() || mTargetMaterial->GetShader()->GetStrKey().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
@@ -315,7 +315,7 @@ namespace gui
 		mTargetMaterial = std::shared_ptr<ehw::Material>(mTargetMaterial->Clone());
 
 		std::string strKey = outputPath.filename().string();
-		mTargetMaterial->SetKey(strKey);
+		mTargetMaterial->SetStrKey(strKey);
 		mTargetMaterial->Save(strKey);
 
 	}

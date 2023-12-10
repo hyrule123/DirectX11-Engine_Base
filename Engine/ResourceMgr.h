@@ -120,7 +120,7 @@ namespace ehw
 			return nullptr;
 
 
-		Insert(NewRes->GetKey(), NewRes);
+		Insert(NewRes->GetStrKey(), NewRes);
 
 		return NewRes;
 	}
@@ -180,7 +180,7 @@ namespace ehw
 
 		assert(nullptr == Find(ResType, _strKey));
 
-		_Res->SetKey(_strKey);
+		_Res->SetStrKey(_strKey);
 
 		mArrRes[(int)ResType].insert(std::make_pair(std::string(_strKey), _Res));
 	}

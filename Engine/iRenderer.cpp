@@ -62,7 +62,7 @@ namespace ehw
 		//포인터의 경우 키값을 저장
 		if (mMesh)
 		{
-			jVal[JSON_KEY(mMesh)] = mMesh->GetKey();
+			jVal[JSON_KEY(mMesh)] = mMesh->GetStrKey();
 		}
 
 		//TODO: FBX 로드를 위해 주석 처리

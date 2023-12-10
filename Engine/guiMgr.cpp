@@ -117,9 +117,9 @@ namespace gui
 	void guiMgr::Run()
 	{
 		if (
-			ehw::InputMgr::GetKey(ehw::eKeyCode::LCTRL)
+			ehw::InputMgr::GetKeyPress(ehw::eKeyCode::LCTRL)
 			&&
-			ehw::InputMgr::GetKey(ehw::eKeyCode::LSHIFT)
+			ehw::InputMgr::GetKeyPress(ehw::eKeyCode::LSHIFT)
 			&&
 			ehw::InputMgr::GetKeyDown(ehw::eKeyCode::E)
 			)
@@ -128,11 +128,11 @@ namespace gui
 		}
 
 
-		if (ehw::InputMgr::GetKey(ehw::eKeyCode::Z))
+		if (ehw::InputMgr::GetKeyPress(ehw::eKeyCode::Z))
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (ehw::InputMgr::GetKey(ehw::eKeyCode::X))
+		if (ehw::InputMgr::GetKeyPress(ehw::eKeyCode::X))
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
@@ -436,14 +436,14 @@ namespace gui
 	void guiMgr::AddGuiWindow(guiBase* _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
-		const std::string_view guiName = _pBase->GetKey();
+		const std::string_view guiName = _pBase->GetStrKey();
 		guiBase* findPtr = FindGuiWindow(guiName);
 		if (findPtr)
 		{
 			_pBase->MakeUniqueKeyByName();
 		}
 
-		mGuiWindows.insert(std::make_pair(_pBase->GetKey(), _pBase));
+		mGuiWindows.insert(std::make_pair(_pBase->GetStrKey(), _pBase));
 
 		if (mbInitialized)
 		{

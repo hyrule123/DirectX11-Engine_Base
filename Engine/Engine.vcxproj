@@ -359,7 +359,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="PathMgr.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="iRenderer.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="NormalConvertShader.h" />
     <ClInclude Include="ParticleShader.h" />
     <ClInclude Include="Com_Renderer_ParticleSystem.h" />

@@ -227,7 +227,7 @@ void CreateScriptKey()
     Desc.IncludeManagerHeader = "#include <EngineBase/Engine/ComMgr.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::Script::##T))";
+    Desc.Constructor_T_MacroDefine = R"(ComMgr::AddComConstructor<T>(strKey::script::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScript()";
     Desc.FilePath = DirPath / "UserContentsInitializer_Script.cpp";
 

@@ -17,29 +17,29 @@ namespace gui
 		virtual ehw::eResult SaveJson(Json::Value* _pJval) { return ehw::eResult::Success; }
 		virtual ehw::eResult LoadJson(const Json::Value* _pJval) { return ehw::eResult::Success; };
 
-		UINT32 GetID() const { return mID; }
+		UINT32 GetID() const { return m_ID; }
 
 		const std::string& GetName() const { return m_Name; }
 
-		void MakeUniqueKeyByName() { mStrKey += "##"; mStrKey += std::to_string(mID); }
-		void SetKey(const std::string_view _strKey) { mStrKey = _strKey; }
-		const std::string& GetKey() const { return mStrKey; }
+		void MakeUniqueKeyByName() { m_StrKey += "##"; m_StrKey += std::to_string(m_ID); }
+		void SetStrKey(const std::string_view _strKey) { m_StrKey = _strKey; }
+		const std::string& GetStrKey() const { return m_StrKey; }
 		
-		void SetSaveEnable(bool _bSaveEnable) { mbSaveEnable = _bSaveEnable; }
-		bool IsSaveEnable() const { return mbSaveEnable; }
+		void SetSaveEnable(bool _bSaveEnable) { m_bSaveEnable = _bSaveEnable; }
+		bool IsSaveEnable() const { return m_bSaveEnable; }
 
 	private:
-		static UINT32				gIDNext;
-		const UINT32				mID;
+		static UINT32				g_NextID;
+		const UINT32				m_ID;
 
 		//이름(중복 가능)
 		std::string					m_Name;
 		
 		//Key(중복 불가)
-		std::string					mStrKey;
+		std::string					m_StrKey;
 
 		//데이터를 저장할지 말지 결정(기본 Off)
-		bool						mbSaveEnable;
+		bool						m_bSaveEnable;
 	};
 
 	inline void HilightText(const char* _label, const ImVec2& _size = ImVec2(0.f, 0.f))

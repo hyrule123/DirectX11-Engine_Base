@@ -168,7 +168,7 @@ namespace ehw
 				return result;
 			}
 			
-			std::string animName = anim->GetKey();
+			std::string animName = anim->GetStrKey();
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정

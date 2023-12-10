@@ -55,23 +55,23 @@ namespace ehw
 		static __forceinline float2 GetMousePos() { return mMousePos; }
 		static __forceinline float2 GetMouseDir() { return mMouseDir; }
 
-		//GetKey()		키를 누르는 시간만큼 true를 반환
+		//GetKeyPress()		키를 누르는 시간만큼 true를 반환
 		//GetKeyDown()	키를 눌렀을 때, 딱 한번 true를 반환
 		//GetKeyUp()	키를 누르다 땠을 때, 딱 한번 true를 반환
 
-		static __forceinline bool GetKey(eKeyCode keyCode)
+		static __forceinline bool GetKeyPress(eKeyCode keyCode)
 		{
-			return mKeys[static_cast<uint>(keyCode)].eState == eKeyState::PRESSED;
+			return (eKeyState::PRESSED == mKeys[static_cast<uint>(keyCode)].eState);
 		}
 
 		static __forceinline bool GetKeyDown(eKeyCode keyCode)
 		{
-			return mKeys[static_cast<uint>(keyCode)].eState == eKeyState::DOWN;
+			return (eKeyState::DOWN == mKeys[static_cast<uint>(keyCode)].eState);
 		}
 
 		static __forceinline bool GetKeyUp(eKeyCode keyCode)
 		{
-			return mKeys[static_cast<uint>(keyCode)].eState == eKeyState::UP;
+			return (eKeyState::UP == mKeys[static_cast<uint>(keyCode)].eState);
 		}	
 
 	private:

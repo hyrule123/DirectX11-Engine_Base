@@ -37,7 +37,7 @@ namespace ehw
 
 		if (mAudioClip)
 		{
-			jVal[JSON_KEY(mAudioClip)] = mAudioClip->GetKey();
+			jVal[JSON_KEY(mAudioClip)] = mAudioClip->GetStrKey();
 		}
 
 		return eResult::Success;

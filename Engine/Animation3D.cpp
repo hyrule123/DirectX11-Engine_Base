@@ -32,7 +32,7 @@ namespace ehw
 #pragma region 저장 및 불러오기
     eResult Animation3D::Save(const std::fs::path& _filePath)
     {
-        SetKey(_filePath.string());
+        SetStrKey(_filePath.string());
 
         if (false == _filePath.has_parent_path())
         {
@@ -82,7 +82,7 @@ namespace ehw
 
     eResult Animation3D::Load(const std::fs::path& _filePath)
     {
-        SetKey(_filePath.string());
+        SetStrKey(_filePath.string());
 
         if (false == _filePath.has_parent_path())
         {
@@ -146,7 +146,7 @@ namespace ehw
 
         m_OwnerSkeleton = _skeleton;
 
-        SetKey(_clip->strName);
+        SetStrKey(_clip->strName);
 
         switch (_clip->TimeMode)
         {

@@ -191,7 +191,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ strKey::DXGI_FORMAT_String[i], });
 			}
 			mDXGIFormatCombo.SetItems(Items);
-			mDXGIFormatCombo.SetKey("DXGI Format");
+			mDXGIFormatCombo.SetStrKey("DXGI Format");
 		}
 
 		{
@@ -202,7 +202,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
 			}
 			mTopologyCombo.SetItems(Items);
-			mTopologyCombo.SetKey("Topology Type");
+			mTopologyCombo.SetStrKey("Topology Type");
 		}
 
 		{
@@ -213,7 +213,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eRSType[i],});
 			}
 			mRSTypeCombo.SetItems(Items);
-			mRSTypeCombo.SetKey("Rasterizer Type");
+			mRSTypeCombo.SetStrKey("Rasterizer Type");
 		}
 
 		{
@@ -224,7 +224,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eDSType[i], });
 			}
 			mDSTypeCombo.SetItems(Items);
-			mDSTypeCombo.SetKey("Depth-Stencil Type");
+			mDSTypeCombo.SetStrKey("Depth-Stencil Type");
 		}
 
 		{
@@ -235,7 +235,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eBSType[i], });
 			}
 			mBSTypeCombo.SetItems(Items);
-			mBSTypeCombo.SetKey("Blend State");
+			mBSTypeCombo.SetStrKey("Blend State");
 		}
 		LoadShaderSettingComboBox();
 
@@ -247,7 +247,7 @@ namespace gui
 				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::ArrGSPrefix[i] });
 			}
 			mStageTypeCombo.SetItems(Items);
-			mStageTypeCombo.SetKey("Shader Type");
+			mStageTypeCombo.SetStrKey("Shader Type");
 		}
 	}
 
@@ -452,7 +452,7 @@ namespace gui
 				Json::Value jVal;
 				{
 					ehw::GraphicsShader DummyGS;
-					DummyGS.SetKey(iter.first.string());
+					DummyGS.SetStrKey(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 
@@ -520,7 +520,7 @@ namespace gui
 		}
 
 		mLoadFileCombo.SetItems(Items);
-		mLoadFileCombo.SetKey("Shader Setting Files");
+		mLoadFileCombo.SetStrKey("Shader Setting Files");
 	}
 
 	void guiGraphicsShaderEditor::DXGISelectCallback(const guiComboBox::tComboItem& _item)
@@ -856,7 +856,7 @@ namespace gui
 			}
 		}
 
-		shader.SetKey(_filePath.string());
+		shader.SetStrKey(_filePath.string());
 		if (ehw::eResultSuccess(shader.Save(_filePath)))
 		{
 			LoadShaderSettingComboBox();

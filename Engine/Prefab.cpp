@@ -40,7 +40,7 @@ namespace ehw
 		{
 			std::fs::path strKey = _filePath;
 			strKey.replace_extension("");
-			mPrefab->SetKey(strKey.string());
+			mPrefab->SetStrKey(strKey.string());
 		}
 
 		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
@@ -74,7 +74,7 @@ namespace ehw
 			mPrefab = new GameObject;
 		}
 		//초기 상태의 GameObject가 아닐 경우에는 에러를 발생시킨다.
-		if (false == mPrefab->GetKey().empty())
+		if (false == mPrefab->GetStrKey().empty())
 		{
 			ERROR_MESSAGE_W(L"초기화되어있지 않은 Prefab에 데이터를 등록하려고 시도했습니다.");
 			return eResult::Fail;

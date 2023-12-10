@@ -33,8 +33,8 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJson);
 		virtual eResult LoadJson(const Json::Value* _pJson);
 
-		void SetKey(const std::string_view _strKey) { mStrKey = _strKey; }
-		const std::string& GetKey() const { return mStrKey; }
+		void SetStrKey(const std::string_view _strKey) { mStrKey = _strKey; }
+		const std::string& GetStrKey() const { return mStrKey; }
 		UINT32 GetID() const { return mID; }
 
 		template <typename T>

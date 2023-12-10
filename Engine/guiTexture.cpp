@@ -25,7 +25,7 @@ namespace gui
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		const std::string& key = targetTex->GetKey();
+		const std::string& key = targetTex->GetStrKey();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"

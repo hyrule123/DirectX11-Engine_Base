@@ -200,7 +200,7 @@ namespace gui
 
 	void guiFBXConverter::LoadProjMeshDataCombo()
 	{
-		mProjMeshDataCombo.SetKey("MeshData List");
+		mProjMeshDataCombo.SetStrKey("MeshData List");
 		const std::fs::path& meshPath = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::MeshData);
 		for (const auto& entry : std::fs::directory_iterator(meshPath))
 		{

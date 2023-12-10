@@ -55,9 +55,9 @@ namespace gui
 			return;
 
 		std::string meshName
-			= mMesh->GetKey();
+			= mMesh->GetStrKey();
 		std::string materialName
-			= mMaterial->GetKey();
+			= mMaterial->GetStrKey();
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()

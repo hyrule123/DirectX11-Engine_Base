@@ -17,7 +17,7 @@ namespace ehw
 		if (iter != mUmapComConstructor.end())
 		{
 			com = iter->second();
-			com->SetKey(iter->first);
+			com->SetStrKey(iter->first);
 		}
 		return com;
 	}

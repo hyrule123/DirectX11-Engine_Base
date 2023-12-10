@@ -27,7 +27,7 @@ namespace gui
 		if (IsIndexValid())
 			Preview = mItems[mCurrentSelected].strName;
 
-		return ImGui::BeginCombo(GetKey().c_str(), Preview.c_str(), mComboFlags);
+		return ImGui::BeginCombo(GetStrKey().c_str(), Preview.c_str(), mComboFlags);
 	}
 	void guiComboBox::UpdateUI()
 	{

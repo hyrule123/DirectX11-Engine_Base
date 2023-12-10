@@ -14,7 +14,7 @@ gui::guiChild::~guiChild()
 
 bool gui::guiChild::BeginUI()
 {
-	bool retVal = ImGui::BeginChild(GetKey().c_str(), mSize, mbBorder, GetImGuiWindowFlag());
+	bool retVal = ImGui::BeginChild(GetStrKey().c_str(), mSize, mbBorder, GetImGuiWindowFlag());
 	if (false == retVal)
 	{
 		ImGui::EndChild();

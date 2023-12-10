@@ -25,13 +25,13 @@ namespace ehw
 
 	eResult iResource::Save(const std::fs::path& _filePath)
 	{
-		SetKey(_filePath.string());
+		SetStrKey(_filePath.string());
 		return eResult::Success;
 	}
 
 	eResult iResource::Load(const std::fs::path& _filePath)
 	{
-		SetKey(_filePath.string());
+		SetStrKey(_filePath.string());
 		return eResult::Success;
 	}
 

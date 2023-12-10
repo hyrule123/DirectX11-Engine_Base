@@ -15,7 +15,7 @@ namespace gui
 	}
 	bool guiWindow::BeginUI()
 	{
-		bool retVal = ImGui::Begin(GetKey().c_str(), GetEnablePtr(), mWindowFlag);
+		bool retVal = ImGui::Begin(GetStrKey().c_str(), GetEnablePtr(), mWindowFlag);
 		if(false == retVal)
 		{
 			ImGui::End();

@@ -117,7 +117,7 @@ namespace ehw
         //포인터의 경우에는 포인터 자체를 저장하는게 아니라 Key를 저장
         if (mShader)
         {
-            jVal[JSON_KEY(mShader)] = mShader->GetKey();
+            jVal[JSON_KEY(mShader)] = mShader->GetStrKey();
         }
         Json::SaveLoad::SavePtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
 

@@ -28,7 +28,7 @@ namespace gui
 					continue;
 				else if (nullptr == widget.second->GetParent())
 				{
-					if (ImGui::MenuItem(widget.second->GetKey().c_str(), nullptr, widget.second->GetEnablePtr()))
+					if (ImGui::MenuItem(widget.second->GetStrKey().c_str(), nullptr, widget.second->GetEnablePtr()))
 					{
 					}
 				}

@@ -20,7 +20,7 @@ namespace gui
 
 	bool guiList::BeginUI()
 	{
-		bool retval = ImGui::BeginListBox(GetKey().c_str(), mSize);
+		bool retval = ImGui::BeginListBox(GetStrKey().c_str(), mSize);
 		if (retval)
 		{
 			ImGui::SetNextWindowFocus();
@@ -30,7 +30,7 @@ namespace gui
 
 	void guiList::UpdateUI()
 	{
-		ImGui::SetWindowFocus(GetKey().c_str());
+		ImGui::SetWindowFocus(GetStrKey().c_str());
 		for (size_t i = 0; i < mResourceList.size(); i++)
 		{
 			bool bselectable = (mListIndex == i);

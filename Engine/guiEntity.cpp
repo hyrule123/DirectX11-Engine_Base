@@ -4,13 +4,13 @@
 
 namespace gui
 {
-	UINT32 guiEntity::gIDNext{};
+	UINT32 guiEntity::g_NextID{};
 
 	guiEntity::guiEntity(const std::string_view _strName)
-		: mID(++gIDNext)
+		: m_ID(++g_NextID)
 		, m_Name(_strName)
-		, mStrKey(_strName)
-		, mbSaveEnable()	
+		, m_StrKey(_strName)
+		, m_bSaveEnable()	
 	{
 	}
 

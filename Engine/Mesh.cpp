@@ -55,7 +55,7 @@ namespace ehw
 		}
 		
 		//Key값 저장
-		Binary::SaveStr(ofs, GetKey());
+		Binary::SaveStr(ofs, GetStrKey());
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		//저장 필요 없음
@@ -112,7 +112,7 @@ namespace ehw
 		//Key값 가져오기
 		std::string strKey;
 		Binary::LoadStr(ifs, strKey);
-		SetKey(strKey);
+		SetStrKey(strKey);
 
 		//D3D11_BUFFER_DESC mVBDesc;
 		Binary::LoadValue(ifs, mVBDesc);
