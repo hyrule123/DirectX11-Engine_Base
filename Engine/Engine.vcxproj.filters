@@ -366,7 +366,7 @@
     <ClCompile Include="guiComponent.cpp">
       <Filter>GuiEditor\Instances\Inspector</Filter>
     </ClCompile>
-    <ClCompile Include="guiComboBox.cpp">
+    <ClCompile Include="EditorWidget_ComboBox.cpp">
       <Filter>GuiEditor\_Widget</Filter>
     </ClCompile>
     <ClCompile Include="guiList.cpp">
@@ -743,7 +743,7 @@
     <ClInclude Include="guiComponent.h">
       <Filter>GuiEditor\Instances\Inspector</Filter>
     </ClInclude>
-    <ClInclude Include="guiComboBox.h">
+    <ClInclude Include="EditorWidget_ComboBox.h">
       <Filter>GuiEditor\_Widget</Filter>
     </ClInclude>
     <ClInclude Include="guiList.h">

@@ -184,55 +184,55 @@ namespace editor
 	void guiGraphicsShaderEditor::Init()
 	{
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve(strKey::DXGI_FORMAT_StringSize);
 			for (size_t i = 0; i < strKey::DXGI_FORMAT_StringSize; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ strKey::DXGI_FORMAT_String[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::DXGI_FORMAT_String[i], });
 			}
 			mDXGIFormatCombo.SetItems(Items);
 			mDXGIFormatCombo.SetStrKey("DXGI Format");
 		}
 
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve(strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize);
 			for (size_t i = 0; i < strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
 			}
 			mTopologyCombo.SetItems(Items);
 			mTopologyCombo.SetStrKey("Topology Type");
 		}
 
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve((size_t)ehw::eRSType::END);
 			for (size_t i = 0; i < (size_t)ehw::eRSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eRSType[i],});
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ehw::strKey::eRSType[i],});
 			}
 			mRSTypeCombo.SetItems(Items);
 			mRSTypeCombo.SetStrKey("Rasterizer Type");
 		}
 
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve((size_t)ehw::eDSType::END);
 			for (size_t i = 0; i < (size_t)ehw::eDSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eDSType[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ehw::strKey::eDSType[i], });
 			}
 			mDSTypeCombo.SetItems(Items);
 			mDSTypeCombo.SetStrKey("Depth-Stencil Type");
 		}
 
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve((size_t)ehw::eBSType::END);
 			for (size_t i = 0; i < (size_t)ehw::eBSType::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::eBSType[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ehw::strKey::eBSType[i], });
 			}
 			mBSTypeCombo.SetItems(Items);
 			mBSTypeCombo.SetStrKey("Blend State");
@@ -240,11 +240,11 @@ namespace editor
 		LoadShaderSettingComboBox();
 
 		{
-			std::vector<guiComboBox::tComboItem> Items;
+			std::vector<EditorWidget_ComboBox::tComboItem> Items;
 			Items.reserve((int)ehw::eGSStage::END);
 			for (size_t i = 0; i < (int)ehw::eGSStage::END; ++i)
 			{
-				Items.push_back(guiComboBox::tComboItem{ ehw::strKey::ArrGSPrefix[i] });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ehw::strKey::ArrGSPrefix[i] });
 			}
 			mStageTypeCombo.SetItems(Items);
 			mStageTypeCombo.SetStrKey("Shader Type");
@@ -510,7 +510,7 @@ namespace editor
 			return;
 		}
 
-		std::vector<guiComboBox::tComboItem> Items;
+		std::vector<EditorWidget_ComboBox::tComboItem> Items;
 		for (const auto& entry : std::fs::directory_iterator(GSSettingsPath))
 		{
 			if (entry.is_directory())
@@ -523,7 +523,7 @@ namespace editor
 		mLoadFileCombo.SetStrKey("Shader Setting Files");
 	}
 
-	void guiGraphicsShaderEditor::DXGISelectCallback(const guiComboBox::tComboItem& _item)
+	void guiGraphicsShaderEditor::DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item)
 	{
 
 	}

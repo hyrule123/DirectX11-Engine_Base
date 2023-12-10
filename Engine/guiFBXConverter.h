@@ -1,6 +1,6 @@
 #pragma once
 #include "EditorWindow.h"
-#include "guiComboBox.h"
+#include "EditorWidget_ComboBox.h"
 #include <thread>
 #include <future>
 
@@ -39,7 +39,7 @@ namespace editor
 
 		std::future<ehw::eResult> mFutureConvertResult;
 
-		guiComboBox		mProjMeshDataCombo;
+		EditorWidget_ComboBox		mProjMeshDataCombo;
 	};
 }
 

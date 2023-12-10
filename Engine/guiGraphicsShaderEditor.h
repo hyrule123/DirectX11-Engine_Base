@@ -2,7 +2,7 @@
 
 #include "EditorWindow.h"
 #include "define_GPU.h"
-#include "guiComboBox.h"
+#include "EditorWidget_ComboBox.h"
 
 namespace ehw
 {
@@ -26,7 +26,7 @@ namespace editor
 	private:
 		void LoadShaderSettingComboBox();
 
-		void DXGISelectCallback(const guiComboBox::tComboItem& _item);
+		void DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item);
 
 		void InputElementEditModal();
 
@@ -47,24 +47,24 @@ namespace editor
 		D3D11_INPUT_ELEMENT_DESC mDescForEdit;
 
 
-		guiComboBox mDXGIFormatCombo;
+		EditorWidget_ComboBox mDXGIFormatCombo;
 
-		guiComboBox mTopologyCombo;
+		EditorWidget_ComboBox mTopologyCombo;
 
 		std::array<std::string, (int)ehw::eGSStage::END> mStageNames;
 
-		guiComboBox mRSTypeCombo;
-		guiComboBox mDSTypeCombo;
-		guiComboBox mBSTypeCombo;
+		EditorWidget_ComboBox mRSTypeCombo;
+		EditorWidget_ComboBox mDSTypeCombo;
+		EditorWidget_ComboBox mBSTypeCombo;
 
 		//std::unique_ptr<ehw::GraphicsShader> mEditTarget;
 
 		bool mbSaveModal;
-		guiComboBox mStageTypeCombo;
+		EditorWidget_ComboBox mStageTypeCombo;
 		std::string mSaveFileName;
 
 		bool mbLoadModal;
-		guiComboBox mLoadFileCombo;
+		EditorWidget_ComboBox mLoadFileCombo;
 	};
 }
 

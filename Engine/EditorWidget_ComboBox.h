@@ -4,7 +4,7 @@
 
 namespace editor
 {
-	class guiComboBox :
+	class EditorWidget_ComboBox :
 		public EditorBase
 	{
 	public:
@@ -21,8 +21,8 @@ namespace editor
 			{}
 		};
 
-		guiComboBox();
-		virtual ~guiComboBox();
+		EditorWidget_ComboBox();
+		virtual ~EditorWidget_ComboBox();
 
 		virtual bool BeginUI() override;
 		virtual void UpdateUI() override;
@@ -69,12 +69,12 @@ namespace editor
 		bool mbSelectionChanged;
 	};
 
-	inline bool guiComboBox::IsIndexValid() const
+	inline bool EditorWidget_ComboBox::IsIndexValid() const
 	{
 		return (0 <= mCurrentSelected && mCurrentSelected < mItems.size());
 	}
 
-	inline void guiComboBox::SetItems(const std::vector<std::string>& _strItems)
+	inline void EditorWidget_ComboBox::SetItems(const std::vector<std::string>& _strItems)
 	{
 		mItems.clear();
 		for (size_t i = 0; i < _strItems.size(); ++i)

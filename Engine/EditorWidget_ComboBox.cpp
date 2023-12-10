@@ -1,12 +1,12 @@
 #include "PCH_Engine.h"
-#include "guiComboBox.h"
+#include "EditorWidget_ComboBox.h"
 
 
 namespace editor
 {
-	const guiComboBox::tComboItem guiComboBox::gVoidItem{};
+	const EditorWidget_ComboBox::tComboItem EditorWidget_ComboBox::gVoidItem{};
 
-	guiComboBox::guiComboBox()
+	EditorWidget_ComboBox::EditorWidget_ComboBox()
 		: EditorBase("ComboBox")
 		, mItems()
 		, mCurrentSelected(-1)
@@ -16,10 +16,10 @@ namespace editor
 	{
 
 	}
-	guiComboBox::~guiComboBox()
+	EditorWidget_ComboBox::~EditorWidget_ComboBox()
 	{
 	}
-	bool guiComboBox::BeginUI()
+	bool EditorWidget_ComboBox::BeginUI()
 	{
 		mbSelectionChanged = false;
 
@@ -29,7 +29,7 @@ namespace editor
 
 		return ImGui::BeginCombo(GetStrKey().c_str(), Preview.c_str(), mComboFlags);
 	}
-	void guiComboBox::UpdateUI()
+	void EditorWidget_ComboBox::UpdateUI()
 	{
 		
 
@@ -53,12 +53,12 @@ namespace editor
 			}
 		}
 	}
-	void guiComboBox::EndUI()
+	void EditorWidget_ComboBox::EndUI()
 	{
 		ImGui::EndCombo();
 	}
 
-	void guiComboBox::SetCurrentSelected(const std::string& _SelectedName)
+	void EditorWidget_ComboBox::SetCurrentSelected(const std::string& _SelectedName)
 	{
 		size_t size = mItems.size();
 		for (size_t i = 0; i < size; i++)
@@ -73,7 +73,7 @@ namespace editor
 		mCurrentSelected = -1;
 	}
 
-	const guiComboBox::tComboItem& guiComboBox::GetCurrentSelected() const
+	const EditorWidget_ComboBox::tComboItem& EditorWidget_ComboBox::GetCurrentSelected() const
 	{
 		if (true == IsIndexValid())
 			return mItems[mCurrentSelected];

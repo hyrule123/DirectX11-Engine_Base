@@ -1,6 +1,6 @@
 #pragma once
 #include "EditorWindow.h"
-#include "guiComboBox.h"
+#include "EditorWidget_ComboBox.h"
 #include "define_Struct.h"
 
 //Material 전방선언
@@ -49,11 +49,11 @@ namespace editor
 		//기존의 재질을 수정중인지 신규 재질을 수정 중인지
 		bool							mbNewMaterial;
 
-		guiComboBox		mShaderCombo;
+		EditorWidget_ComboBox		mShaderCombo;
 
-		guiComboBox		mCurrentMaterialsCombo;
+		EditorWidget_ComboBox		mCurrentMaterialsCombo;
 
-		guiComboBox		mRenderingModeCombo;
+		EditorWidget_ComboBox		mRenderingModeCombo;
 
 		//현재 어떤 창을 띄우는 상태인지
 		eContext mCurContext;
@@ -62,7 +62,7 @@ namespace editor
 		std::string mSaveLoadFileName;
 
 		//현재 엔진에 로드되어있는 재질 목록 표시용
-		guiComboBox		mCurrentLoadedMtrl;
+		EditorWidget_ComboBox		mCurrentLoadedMtrl;
 	};
 }
 

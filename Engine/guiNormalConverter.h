@@ -1,6 +1,6 @@
 #pragma once
 #include "EditorWindow.h"
-#include "guiComboBox.h"
+#include "EditorWidget_ComboBox.h"
 
 #include "define_Struct.h"
 #include "DefaultShader/CommonStruct.hlsli"
