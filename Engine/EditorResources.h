@@ -7,11 +7,11 @@
 
 namespace editor
 {
-	class guiResources : public EditorWindow
+	class EditorResources : public EditorWindow
 	{
 	public:
-		guiResources();
-		virtual ~guiResources();
+		EditorResources();
+		virtual ~EditorResources();
 
 		virtual void Init() override;
 

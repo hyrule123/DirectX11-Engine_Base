@@ -22,7 +22,7 @@
 #include "guiInspector.h"
 #include "guiGame.h"
 #include "EditorBase.h"
-#include "guiResources.h"
+#include "EditorResources.h"
 #include "guiMainMenu.h"
 #include "guiConsole.h"
 #include "EditorWidget_List.h"
@@ -286,7 +286,7 @@ namespace editor
 
 		AddGuiWindow<guiTree_GameObject>();
 
-		AddGuiWindow<guiResources>();
+		AddGuiWindow<EditorResources>();
 
 		AddGuiWindow<guiGraphicsShaderEditor>();
 

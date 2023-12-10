@@ -375,7 +375,7 @@
     <ClCompile Include="EditorWidget_Tree.cpp">
       <Filter>GuiEditor\_Widget</Filter>
     </ClCompile>
-    <ClCompile Include="guiResources.cpp">
+    <ClCompile Include="EditorResources.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
     <ClCompile Include="EditorResource.cpp">
@@ -749,7 +749,7 @@
     <ClInclude Include="EditorWidget_Tree.h">
       <Filter>GuiEditor\_Widget</Filter>
     </ClInclude>
-    <ClInclude Include="guiResources.h">
+    <ClInclude Include="EditorResources.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
     <ClInclude Include="EditorResource.h">

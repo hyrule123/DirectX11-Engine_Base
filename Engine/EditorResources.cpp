@@ -1,7 +1,7 @@
 
 #include "PCH_Engine.h"
 
-#include "guiResources.h"
+#include "EditorResources.h"
 
 #include "Texture.h"
 #include "Material.h"
@@ -20,28 +20,28 @@ namespace editor
 {
 	using namespace ehw::math;
 
-	guiResources::guiResources()
+	EditorResources::EditorResources()
 		: EditorWindow(strKey::ResourceViewer)
 		, mTreeWidget(nullptr)
 	{
 		mTreeWidget = AddChild<EditorWidget_Tree>();
 
 		mTreeWidget->SetEvent(this
-			, std::bind(&guiResources::toInspector, this, std::placeholders::_1));
+			, std::bind(&EditorResources::toInspector, this, std::placeholders::_1));
 
 		mTreeWidget->SetDummyRoot(true);
 	}
 
-	guiResources::~guiResources()
+	EditorResources::~EditorResources()
 	{
 	}
 
-	void guiResources::Init()
+	void EditorResources::Init()
 	{
 		ResetContent();
 	}
 
-	void guiResources::ResetContent()
+	void EditorResources::ResetContent()
 	{
 		//mTreeWidget->Close();
 		mTreeWidget->Clear();
@@ -66,7 +66,7 @@ namespace editor
 		AddResources<ehw::GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void guiResources::toInspector(ehw::tDataPtr _data)
+	void EditorResources::toInspector(ehw::tDataPtr _data)
 	{
 		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
 
