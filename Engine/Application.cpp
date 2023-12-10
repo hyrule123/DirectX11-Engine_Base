@@ -6,7 +6,7 @@
 #include "ComponentInitializer.h"
 #include "RenderMgr.h"
 #include "TimeMgr.h"
-#include "InputMgr.h"
+#include "InputManager.h"
 #include "SceneMgr.h"
 #include "ResourceMgr.h"
 #include "CollisionManager.h"
@@ -60,7 +60,7 @@ namespace ehw
 		ComponentInitializer::Init();
 		
 		TimeMgr::Init();
-		InputMgr::Init();
+		InputManager::Init();
 
 		CollisionManager::Init();
 		
@@ -76,7 +76,7 @@ namespace ehw
 	void Application::Update()
 	{
 		TimeMgr::Update();
-		InputMgr::Update();
+		InputManager::Update();
 		CollisionManager::Update();
 		SceneMgr::Update();
 	}

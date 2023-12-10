@@ -5,7 +5,7 @@
 #include "Com_Renderer_Mesh.h"
 #include "StructBuffer.h"
 #include "ResourceMgr.h"
-#include "InputMgr.h"
+#include "InputManager.h"
 
 #include "Animation3DShader.h"
 #include "GameObject.h"

@@ -16,7 +16,7 @@
 #include "GridScript.h"
 #include "Application.h"
 #include "GPUManager.h"
-#include "InputMgr.h"
+#include "InputManager.h"
 #include "PathMgr.h"
 
 #include "guiInspector.h"
@@ -116,22 +116,22 @@ namespace gui
 	void guiMgr::Run()
 	{
 		if (
-			ehw::InputMgr::GetKeyPress(ehw::eKeyCode::LCTRL)
+			ehw::InputManager::GetKeyPress(ehw::eKeyCode::LCTRL)
 			&&
-			ehw::InputMgr::GetKeyPress(ehw::eKeyCode::LSHIFT)
+			ehw::InputManager::GetKeyPress(ehw::eKeyCode::LSHIFT)
 			&&
-			ehw::InputMgr::GetKeyDown(ehw::eKeyCode::E)
+			ehw::InputManager::GetKeyDown(ehw::eKeyCode::E)
 			)
 		{
 			gui::guiMgr::ToggleEnable();
 		}
 
 
-		if (ehw::InputMgr::GetKeyPress(ehw::eKeyCode::Z))
+		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::Z))
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (ehw::InputMgr::GetKeyPress(ehw::eKeyCode::X))
+		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::X))
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}

@@ -40,7 +40,7 @@ namespace ehw
 
 
 
-	class InputMgr
+	class InputManager
 	{
 		friend class Application;
 	public:

@@ -346,7 +346,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="define_GPU.h" />
     <ClInclude Include="GridScript.h" />
-    <ClInclude Include="InputMgr.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="iShader.h" />
     <ClInclude Include="SimpleMath.h" />
@@ -515,7 +515,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="FontWrapper.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GridScript.cpp" />
-    <ClCompile Include="InputMgr.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="json-cpp\jsoncpp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

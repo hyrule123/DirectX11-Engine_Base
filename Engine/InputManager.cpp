@@ -1,7 +1,7 @@
 
 #include "PCH_Engine.h"
 
-#include "InputMgr.h"
+#include "InputManager.h"
 #include "Application.h"
 #include "AtExit.h"
 
@@ -11,10 +11,10 @@ namespace ehw
 {
 	
 
-	std::vector<InputMgr::tKey> InputMgr::mKeys{};
-	float2 InputMgr::mMousePos{};
-	float2 InputMgr::mMousePosPrev{};
-	float2 InputMgr::mMouseDir{};
+	std::vector<InputManager::tKey> InputManager::mKeys{};
+	float2 InputManager::mMousePos{};
+	float2 InputManager::mMousePosPrev{};
+	float2 InputManager::mMouseDir{};
 	int ASCII[(uint)eKeyCode::END] =
 	{
 		//Alphabet
@@ -40,9 +40,9 @@ namespace ehw
 	
 
 
-	void InputMgr::Init()
+	void InputManager::Init()
 	{
-		AtExit::AddFunc(InputMgr::Release);
+		AtExit::AddFunc(InputManager::Release);
 
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
@@ -55,7 +55,7 @@ namespace ehw
 		}
 	}
 
-	void InputMgr::Update()
+	void InputManager::Update()
 	{
 		if (GetFocus())
 		{
@@ -110,7 +110,7 @@ namespace ehw
 			}
 		}
 	}
-	void InputMgr::Release()
+	void InputManager::Release()
 	{
 		mKeys.clear();
 		mMousePos = {};
