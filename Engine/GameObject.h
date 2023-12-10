@@ -9,7 +9,6 @@ namespace ehw
 	class GameObject : public Entity
 	{
 		friend class GameObject;
-		friend class EventMgr;
 
 	public:
 		GameObject();

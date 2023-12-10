@@ -15,7 +15,6 @@
 #include "PathMgr.h"
 #include "json-cpp/json.h"
 #include "Skeleton.h"
-#include "object.h"
 
 #include <regex>
 

@@ -435,7 +435,7 @@ AddComponent<T> 또는 ComMgr::GetNewComponent()를 통해서 생성하세요.
 			return;
 
 
-		//씬이 작동 중일 경우 EventMgr를 통해 람다함수를 등록
+		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
 		if (m_OwnerScene->IsAwaken())
 		{
 			m_OwnerScene->AddFrameEndJob(&GameObject::SetActiveRecursive, this, _bActive);

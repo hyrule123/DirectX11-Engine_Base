@@ -66,8 +66,6 @@ namespace ehw
 		
 		SceneMgr::Init();
 
-		//EventMgr::Init();
-
 		mbInitialized = true;
 
 		return TRUE;

@@ -14,7 +14,6 @@
 #include "Com_Transform.h"
 #include "Com_Renderer_Mesh.h"
 #include "GridScript.h"
-#include "Object.h"
 #include "Application.h"
 #include "GPUMgr.h"
 #include "InputMgr.h"
