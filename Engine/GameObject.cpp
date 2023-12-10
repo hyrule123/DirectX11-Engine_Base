@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "GameObject.h"
 
-#include "SceneMgr.h"
+#include "SceneManager.h"
 #include "Layer.h"
 
 #include "json-cpp/json.h"

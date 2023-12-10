@@ -3,7 +3,7 @@
 
 namespace ehw
 {
-	class SceneMgr
+	class SceneManager
 	{
 	public:
 		static void Init();
@@ -29,7 +29,7 @@ namespace ehw
 	};
 
 	template<typename T>
-	inline void SceneMgr::AddSceneConstructor(const std::string_view _strKey)
+	inline void SceneManager::AddSceneConstructor(const std::string_view _strKey)
 	{
 		static_assert(std::is_base_of_v<iScene, T>);
 		mUmapSceneConstructor.insert(std::make_pair(_strKey,

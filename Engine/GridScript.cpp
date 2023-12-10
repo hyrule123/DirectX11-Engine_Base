@@ -6,7 +6,7 @@
 #include "Application.h"
 #include "ConstBuffer.h"
 #include "RenderManager.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 
 extern ehw::Application gApplication;
 
@@ -29,7 +29,7 @@ namespace ehw
 
 	void GridScript::Awake()
 	{
-		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
 		mCamera = RenderManager::GetCamera(0);
 	}
 

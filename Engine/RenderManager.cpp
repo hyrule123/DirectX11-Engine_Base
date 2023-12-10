@@ -12,7 +12,7 @@
 #include "ParticleShader.h"
 #include "Animation3DShader.h"
 
-#include "SceneMgr.h"
+#include "SceneManager.h"
 
 #include "ResourceMgr.h"
 #include "TimeMgr.h"

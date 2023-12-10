@@ -253,10 +253,10 @@ void CreateSceneKey()
     Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
     Desc.ClassName = "UserContentsInitializer";
     Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
-    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneMgr.h>";
+    Desc.IncludeManagerHeader = "#include <EngineBase/Engine/SceneManager.h>";
     Desc.MasterNamespace = "namespace ehw";
     Desc.UsingNamespace = "";
-    Desc.Constructor_T_MacroDefine = R"(SceneMgr::AddSceneConstructor<T>(strKey::scene::##T))";
+    Desc.Constructor_T_MacroDefine = R"(SceneManager::AddSceneConstructor<T>(strKey::scene::##T))";
     Desc.UserClassMgr_InitFuncName = "InitScene()";
     Desc.FilePath = DirPath / "UserContentsInitializer_Scene.cpp";
 

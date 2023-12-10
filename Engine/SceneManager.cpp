@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 
 #include "Com_Camera.h"
 
@@ -19,53 +19,53 @@
 #include "AtExit.h"
 namespace ehw
 {
-	std::unique_ptr<iScene> SceneMgr::mActiveScene = nullptr;
+	std::unique_ptr<iScene> SceneManager::mActiveScene = nullptr;
 
-	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneMgr::mUmapSceneConstructor{};
+	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneManager::mUmapSceneConstructor{};
 
-	void SceneMgr::Init()
+	void SceneManager::Init()
 	{
 		AtExit::AddFunc(Release);
 	}
 
-	void SceneMgr::Update()
+	void SceneManager::Update()
 	{
 		if(mActiveScene)
 			mActiveScene->SceneUpdate();
 	}
 
-	void SceneMgr::InternalUpdate()
+	void SceneManager::InternalUpdate()
 	{
 		if (mActiveScene)
 			mActiveScene->SceneInternalUpdate();
 	}
 
-	void SceneMgr::Render()
+	void SceneManager::Render()
 	{
 		if (mActiveScene)
 			mActiveScene->SceneRender();
 	}
 	
-	void SceneMgr::Destroy()
+	void SceneManager::Destroy()
 	{
 		if (mActiveScene)
 			mActiveScene->SceneDestroy();
 	}
 
-	void SceneMgr::FrameEnd()
+	void SceneManager::FrameEnd()
 	{
 		if (mActiveScene)
 			mActiveScene->SceneFrameEnd();
 	}
 
-	void SceneMgr::Release()
+	void SceneManager::Release()
 	{
 		mActiveScene.reset();
 		mUmapSceneConstructor.clear();
 	}
 
 
-	void SceneMgr::LoadScene(const std::string_view _strKey)
+	void SceneManager::LoadScene(const std::string_view _strKey)
 	{
 		const auto& Func = mUmapSceneConstructor.find(_strKey);
 

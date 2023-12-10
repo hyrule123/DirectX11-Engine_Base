@@ -366,7 +366,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="iResource.h" />
     <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="iScene.h" />
-    <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="iScript.h" />
     <ClInclude Include="GraphicsShader.h" />
     <ClInclude Include="Com_Renderer_Sprite.h" />
@@ -537,7 +537,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="iResource.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
     <ClCompile Include="iScene.cpp" />
-    <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="iScript.cpp" />
     <ClCompile Include="GraphicsShader.cpp" />
     <ClCompile Include="Com_Renderer_Sprite.cpp" />

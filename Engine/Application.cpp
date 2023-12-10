@@ -7,7 +7,7 @@
 #include "RenderManager.h"
 #include "TimeMgr.h"
 #include "InputManager.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 #include "ResourceMgr.h"
 #include "CollisionManager.h"
 #include "AudioManager.h"
@@ -64,7 +64,7 @@ namespace ehw
 
 		CollisionManager::Init();
 		
-		SceneMgr::Init();
+		SceneManager::Init();
 
 		mbInitialized = true;
 
@@ -78,14 +78,14 @@ namespace ehw
 		TimeMgr::Update();
 		InputManager::Update();
 		CollisionManager::Update();
-		SceneMgr::Update();
+		SceneManager::Update();
 	}
 
 	// GPU update
 	void Application::InternalUpdate()
 	{
 		CollisionManager::InternalUpdate();
-		SceneMgr::InternalUpdate();
+		SceneManager::InternalUpdate();
 	}
 
 	void Application::Render()
@@ -100,9 +100,9 @@ namespace ehw
 
 	void Application::FrameEnd()
 	{		
-		SceneMgr::Destroy();
+		SceneManager::Destroy();
 
-		SceneMgr::FrameEnd();
+		SceneManager::FrameEnd();
 	}
 
 	// Running main engine loop

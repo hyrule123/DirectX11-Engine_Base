@@ -7,10 +7,10 @@
 #include "Application.h"
 #include "RenderManager.h"
 #include "iScene.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 #include "Material.h"
 #include "iRenderer.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 #include "ResourceMgr.h"
 #include "Com_Light3D.h"
 
@@ -248,7 +248,7 @@ namespace ehw
 
 	void Com_Camera::RegisterCameraInRenderer()
 	{
-		//eSceneType type = SceneMgr::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
 		RenderManager::RegisterCamera(this);
 	}
 
@@ -291,7 +291,7 @@ namespace ehw
 		mTransparentGameObjects.clear();
 		mPostProcessGameObjects.clear();
 
-		iScene* scene = SceneMgr::GetActiveScene();
+		iScene* scene = SceneManager::GetActiveScene();
 		for (int index = 0; index < (uint)eLayerType::END; index++)
 		{
 			if (mLayerMasks[index] == true)

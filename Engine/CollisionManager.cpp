@@ -2,7 +2,7 @@
 #include "CollisionManager.h"
 
 #include "iScene.h"
-#include "SceneMgr.h"
+#include "SceneManager.h"
 
 #include "AtExit.h"
 
@@ -28,7 +28,7 @@ namespace ehw
 	}
 	void CollisionManager::Update()
 	{
-		iScene* scene = SceneMgr::GetActiveScene();
+		iScene* scene = SceneManager::GetActiveScene();
 		for (uint row = 0; row < (uint)eLayerType::END; row++)
 		{
 			for (uint column = 0; column < (uint)eLayerType::END; column++)
