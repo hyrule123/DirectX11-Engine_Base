@@ -1,7 +1,7 @@
 #pragma once
 #include "EditorChild.h"
 #include "GameObject.h"
-#include "guiComponent.h"
+#include "EditorComponent.h"
 #include "guiResource.h"
 
 namespace editor
@@ -30,7 +30,7 @@ namespace editor
 		ehw::GameObject* mTargetGameObject;
 		ehw::iResource* mTargetResource;
 
-		std::vector<editor::guiComponent*> mGuiComponents;
+		std::vector<editor::EditorComponent*> mGuiComponents;
 		std::vector<editor::guiResource*> mGuiResources;
 	};
 }

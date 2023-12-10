@@ -7,7 +7,7 @@
 namespace editor
 {
 	EditorCom_Transform::EditorCom_Transform()
-		: guiComponent(ehw::eComponentCategory::Transform)
+		: EditorComponent(ehw::eComponentCategory::Transform)
 	{
 		//SetSize(ImVec2(200.0f, 120.0f));
 	}

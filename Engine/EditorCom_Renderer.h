@@ -1,11 +1,11 @@
 #pragma once
-#include "guiComponent.h"
+#include "EditorComponent.h"
 #include "Material.h"
 #include "Mesh.h"
 
 namespace editor
 {
-	class EditorCom_Renderer : public guiComponent
+	class EditorCom_Renderer : public EditorComponent
 	{
 	public:
 		EditorCom_Renderer();

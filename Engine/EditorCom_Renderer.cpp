@@ -17,7 +17,7 @@
 namespace editor
 {
 	EditorCom_Renderer::EditorCom_Renderer()
-		: guiComponent(ehw::eComponentCategory::Renderer)
+		: EditorComponent(ehw::eComponentCategory::Renderer)
 		, mMesh{}
 		, mMaterial{}
 	{

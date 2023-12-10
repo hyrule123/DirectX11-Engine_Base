@@ -1,10 +1,10 @@
 #pragma once
-#include "guiComponent.h"
+#include "EditorComponent.h"
 
 namespace editor
 {
 	class guiInspector;
-	class EditorCom_Transform : public guiComponent
+	class EditorCom_Transform : public EditorComponent
 	{
 	public:
 		EditorCom_Transform();

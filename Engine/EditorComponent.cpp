@@ -1,6 +1,6 @@
 #include "PCH_Engine.h"
 
-#include "guiComponent.h"
+#include "EditorComponent.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -8,14 +8,14 @@
 
 namespace editor
 {
-	guiComponent::guiComponent(ehw::eComponentCategory _type)
+	EditorComponent::EditorComponent(ehw::eComponentCategory _type)
 		: EditorChild(ehw::strKey::eComponentCategory_String[(int)_type])
 		, m_ComCategory(_type)
 		, mTarget(nullptr)
 	{
 	}
 
-	guiComponent::~guiComponent()
+	EditorComponent::~EditorComponent()
 	{
 
 	}

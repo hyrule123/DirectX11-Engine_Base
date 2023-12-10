@@ -5,11 +5,11 @@
 
 namespace editor
 {
-	class guiComponent : public EditorChild
+	class EditorComponent : public EditorChild
 	{
 	public:
-		guiComponent(ehw::eComponentCategory _type);
-		virtual ~guiComponent();
+		EditorComponent(ehw::eComponentCategory _type);
+		virtual ~EditorComponent();
 		
 		void SetTarget(ehw::GameObject* _target) { mTarget = _target; }
 		ehw::GameObject* GetTarget() { return mTarget; }
