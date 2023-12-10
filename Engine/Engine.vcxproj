@@ -284,8 +284,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiCom_Renderer.h" />
     <ClInclude Include="guiCom_Transform.h" />
     <ClInclude Include="guiConsole.h" />
-    <ClInclude Include="guiDebugObject.h" />
-    <ClInclude Include="guiEditorObject.h" />
+    <ClInclude Include="DebugObject.h" />
+    <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EditorEntity.h" />
     <ClInclude Include="guiFBXConverter.h" />
     <ClInclude Include="guiGame.h" />
@@ -416,8 +416,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiCom_Renderer.cpp" />
     <ClCompile Include="guiCom_Transform.cpp" />
     <ClCompile Include="guiConsole.cpp" />
-    <ClCompile Include="guiDebugObject.cpp" />
-    <ClCompile Include="guiEditorObject.cpp" />
+    <ClCompile Include="DebugObject.cpp" />
+    <ClCompile Include="EditorObject.cpp" />
     <ClCompile Include="EditorEntity.cpp" />
     <ClCompile Include="guiFBXConverter.cpp" />
     <ClCompile Include="guiGame.cpp" />

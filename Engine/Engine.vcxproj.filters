@@ -381,10 +381,10 @@
     <ClCompile Include="guiResource.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="guiDebugObject.cpp">
+    <ClCompile Include="DebugObject.cpp">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClCompile>
-    <ClCompile Include="guiEditorObject.cpp">
+    <ClCompile Include="EditorObject.cpp">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClCompile>
     <ClCompile Include="guiTexture.cpp">
@@ -758,10 +758,10 @@
     <ClInclude Include="guiResource.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="guiDebugObject.h">
+    <ClInclude Include="DebugObject.h">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClInclude>
-    <ClInclude Include="guiEditorObject.h">
+    <ClInclude Include="EditorObject.h">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClInclude>
     <ClInclude Include="guiTexture.h">

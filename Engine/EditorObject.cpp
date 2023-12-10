@@ -1,6 +1,6 @@
 #include "PCH_Engine.h"
 
-#include "guiEditorObject.h"
+#include "EditorObject.h"
 
 namespace editor
 {
