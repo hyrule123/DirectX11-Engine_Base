@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiUVCalculator.h"
+#include "EditorUVCalculator.h"
 
 #include "EditorTexture.h"
 
@@ -10,7 +10,7 @@
 
 namespace editor
 {
-	guiUVCalculator::guiUVCalculator()
+	EditorUVCalculator::EditorUVCalculator()
 		: EditorWindow("UV Calculator")
 		, mTexture()
 		, mCursorPos()
@@ -20,16 +20,16 @@ namespace editor
 	{
 	}
 
-	guiUVCalculator::~guiUVCalculator()
+	EditorUVCalculator::~EditorUVCalculator()
 	{
 	}
 
-	void guiUVCalculator::Init()
+	void EditorUVCalculator::Init()
 	{
 		SetFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 	}
 
-	void guiUVCalculator::UpdateUI()
+	void EditorUVCalculator::UpdateUI()
 	{
 		UpdateLoadButton();
 
@@ -38,7 +38,7 @@ namespace editor
 		UpdateUVIndicator();
 	}
 
-	void guiUVCalculator::UpdateLoadButton()
+	void EditorUVCalculator::UpdateLoadButton()
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
@@ -77,7 +77,7 @@ namespace editor
 			mTexture = nullptr;
 		}
 	}
-	void guiUVCalculator::UpdateTexture()
+	void EditorUVCalculator::UpdateTexture()
 	{
 		if (mTexture)
 		{
@@ -119,7 +119,7 @@ namespace editor
 			SubFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 		}
 	}
-	void guiUVCalculator::UpdateUVIndicator()
+	void EditorUVCalculator::UpdateUVIndicator()
 	{
 		//UV 계산
 		if (mDragStartPos.x != 0.f

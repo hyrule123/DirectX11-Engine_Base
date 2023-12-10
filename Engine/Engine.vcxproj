@@ -301,7 +301,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="EditorTexture.h" />
     <ClInclude Include="EditorWidget_Tree.h" />
     <ClInclude Include="GameObjectEditor.h" />
-    <ClInclude Include="guiUVCalculator.h" />
+    <ClInclude Include="EditorUVCalculator.h" />
     <ClInclude Include="EditorWindow.h" />
     <ClInclude Include="iAnimation.h" />
     <ClInclude Include="iAnimator.h" />
@@ -433,7 +433,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="EditorTexture.cpp" />
     <ClCompile Include="EditorWidget_Tree.cpp" />
     <ClCompile Include="GameObjectEditor.cpp" />
-    <ClCompile Include="guiUVCalculator.cpp" />
+    <ClCompile Include="EditorUVCalculator.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
     <ClCompile Include="iAnimation.cpp" />
     <ClCompile Include="iAnimator.cpp" />

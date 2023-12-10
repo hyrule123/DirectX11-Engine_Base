@@ -33,7 +33,7 @@
 #include "EditorObject.h"
 #include "EditorMaterial.h"
 #include "EditorNormalConverter.h"
-#include "guiUVCalculator.h"
+#include "EditorUVCalculator.h"
 
 #include "Com_Renderer_Mesh.h"
 
@@ -296,7 +296,7 @@ namespace editor
 
 		AddGuiWindow<EditorNormalConverter>();
 
-		AddGuiWindow<guiUVCalculator>();
+		AddGuiWindow<EditorUVCalculator>();
 	}
 
 	void EditorManager::ImGuiInitialize()

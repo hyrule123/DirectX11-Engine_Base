@@ -9,12 +9,12 @@ namespace ehw
 
 namespace editor
 {
-    class guiUVCalculator :
+    class EditorUVCalculator :
         public EditorWindow
     {
     public:
-        guiUVCalculator();
-        virtual ~guiUVCalculator();
+        EditorUVCalculator();
+        virtual ~EditorUVCalculator();
 
         virtual void Init() override;
         virtual void UpdateUI() override;

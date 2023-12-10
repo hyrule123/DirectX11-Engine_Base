@@ -486,7 +486,7 @@
     <ClCompile Include="ParticleShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="guiUVCalculator.cpp">
+    <ClCompile Include="EditorUVCalculator.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="ThreadPoolManager.cpp">
@@ -863,7 +863,7 @@
     <ClInclude Include="ParticleShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="guiUVCalculator.h">
+    <ClInclude Include="EditorUVCalculator.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="ThreadPoolManager.h">
