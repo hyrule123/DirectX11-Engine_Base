@@ -1,11 +1,11 @@
 #include "PCH_Engine.h"
-#include "guiList.h"
+#include "EditorWidget_List.h"
 
 #include "define_Util.h"
 
 namespace editor
 {
-	guiList::guiList()
+	EditorWidget_List::EditorWidget_List()
 		: EditorBase(strKey::ListBox)
 		, mListIndex(-1)
 		, mSize(200.f, 200.f)
@@ -14,11 +14,11 @@ namespace editor
 		//SetState(eState::Paused);
 	}
 
-	guiList::~guiList()
+	EditorWidget_List::~EditorWidget_List()
 	{
 	}
 
-	bool guiList::BeginUI()
+	bool EditorWidget_List::BeginUI()
 	{
 		bool retval = ImGui::BeginListBox(GetStrKey().c_str(), mSize);
 		if (retval)
@@ -28,7 +28,7 @@ namespace editor
 		return retval;
 	}
 
-	void guiList::UpdateUI()
+	void EditorWidget_List::UpdateUI()
 	{
 		ImGui::SetWindowFocus(GetStrKey().c_str());
 		for (size_t i = 0; i < mResourceList.size(); i++)
@@ -60,12 +60,12 @@ namespace editor
 		
 	}
 
-	void guiList::EndUI()
+	void EditorWidget_List::EndUI()
 	{
 		ImGui::EndListBox();
 	}
 
-	void guiList::SetItemList(const std::vector<std::wstring>& _vecItem)
+	void EditorWidget_List::SetItemList(const std::vector<std::wstring>& _vecItem)
 	{
 		for (const auto& wName : _vecItem)
 		{
@@ -74,7 +74,7 @@ namespace editor
 		}
 	}
 
-	void guiList::SetItemList(const std::vector<std::string>& _vecItem)
+	void EditorWidget_List::SetItemList(const std::vector<std::string>& _vecItem)
 	{
 		mResourceList = _vecItem;
 	}

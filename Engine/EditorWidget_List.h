@@ -5,11 +5,11 @@
 namespace editor
 {
 	class EditorBase;
-	class guiList : public EditorBase
+	class EditorWidget_List : public EditorBase
 	{
 	public:
-		guiList();
-		virtual ~guiList();
+		EditorWidget_List();
+		virtual ~EditorWidget_List();
 
 		virtual bool BeginUI() final;
 		virtual void UpdateUI() override;

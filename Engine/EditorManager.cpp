@@ -25,7 +25,7 @@
 #include "guiResources.h"
 #include "guiMainMenu.h"
 #include "guiConsole.h"
-#include "guiList.h"
+#include "EditorWidget_List.h"
 #include "guiTree_GameObject.h"
 #include "guiFBXConverter.h"
 #include "guiGraphicsShaderEditor.h"

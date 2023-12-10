@@ -369,7 +369,7 @@
     <ClCompile Include="EditorWidget_ComboBox.cpp">
       <Filter>GuiEditor\_Widget</Filter>
     </ClCompile>
-    <ClCompile Include="guiList.cpp">
+    <ClCompile Include="EditorWidget_List.cpp">
       <Filter>GuiEditor\_Widget</Filter>
     </ClCompile>
     <ClCompile Include="guiTreeWidget.cpp">
@@ -746,7 +746,7 @@
     <ClInclude Include="EditorWidget_ComboBox.h">
       <Filter>GuiEditor\_Widget</Filter>
     </ClInclude>
-    <ClInclude Include="guiList.h">
+    <ClInclude Include="EditorWidget_List.h">
       <Filter>GuiEditor\_Widget</Filter>
     </ClInclude>
     <ClInclude Include="guiTreeWidget.h">
