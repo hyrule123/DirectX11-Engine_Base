@@ -8,7 +8,7 @@
 #include "guiCom_Renderer.h"
 #include "guiTexture.h"
 
-namespace gui
+namespace editor
 {
 	guiInspector::guiInspector()
 		: guiWindow(strKey::Inspector)

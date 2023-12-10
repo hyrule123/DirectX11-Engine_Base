@@ -9,7 +9,7 @@
 #include "define_Util.h"
 
 
-namespace gui
+namespace editor
 {
 	STRKEY eRenderingMode_String[(int)ehw::eRenderingMode::END] =
 	{

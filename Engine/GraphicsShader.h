@@ -3,7 +3,7 @@
 #include "define_GPU.h"
 #include <unordered_set>
 
-namespace gui
+namespace editor
 {
 	class guiGraphicsShaderEditor;
 }
@@ -18,7 +18,7 @@ namespace ehw
 
 	class GraphicsShader : public iShader
 	{
-		friend class gui::guiGraphicsShaderEditor;
+		friend class editor::guiGraphicsShaderEditor;
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();

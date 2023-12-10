@@ -2,6 +2,6 @@
 
 #include "guiConsole.h"
 
-namespace gui
+namespace editor
 {
 }

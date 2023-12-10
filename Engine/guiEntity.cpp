@@ -2,7 +2,7 @@
 #include "guiEntity.h"
 #include "json-cpp/json.h"
 
-namespace gui
+namespace editor
 {
 	UINT32 guiEntity::g_NextID{};
 

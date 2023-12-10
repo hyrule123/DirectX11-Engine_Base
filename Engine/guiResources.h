@@ -5,7 +5,7 @@
 #include "iResource.h"
 #include "ResourceManager.h"
 
-namespace gui
+namespace editor
 {
 	class guiResources : public guiWindow
 	{

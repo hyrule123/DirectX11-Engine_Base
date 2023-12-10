@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 
-namespace gui
+namespace editor
 {
 	class DebugObject : public ehw::GameObject
 	{

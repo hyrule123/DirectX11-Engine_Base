@@ -9,7 +9,7 @@ namespace ehw
 	class GraphicsShader;
 }
 
-namespace gui
+namespace editor
 {
 	class guiGraphicsShaderEditor
 		: public guiWindow

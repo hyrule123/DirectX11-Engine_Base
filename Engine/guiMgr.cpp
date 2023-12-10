@@ -42,7 +42,7 @@
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-namespace gui
+namespace editor
 {
 	constexpr const char* imguiSaveINI = "imgui.ini";
 	constexpr const char* imguiSaveJSON = "imgui.json";
@@ -123,7 +123,7 @@ namespace gui
 			ehw::InputManager::GetKeyDown(ehw::eKeyCode::E)
 			)
 		{
-			gui::guiMgr::ToggleEnable();
+			editor::guiMgr::ToggleEnable();
 		}
 
 

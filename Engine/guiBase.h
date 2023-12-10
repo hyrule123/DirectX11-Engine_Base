@@ -2,7 +2,7 @@
 #include "guiEntity.h"
 #include "strKey_gui.h"
 
-namespace gui
+namespace editor
 {
 	class guiBase 
 		: public guiEntity

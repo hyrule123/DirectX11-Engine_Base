@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "guiTreeWidget.h"
 
-namespace gui
+namespace editor
 {
 	TreeWidget::tNode::tNode()
 		: guiEntity("")

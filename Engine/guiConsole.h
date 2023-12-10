@@ -2,7 +2,7 @@
 #include "guiBase.h"
 
 
-namespace gui
+namespace editor
 {
 	class Console
 	{

@@ -2,7 +2,7 @@
 #include "guiBase.h"
 #include "define_Struct.h"
 
-namespace gui
+namespace editor
 {
 	class guiComboBox :
 		public guiBase

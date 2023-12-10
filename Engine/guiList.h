@@ -2,7 +2,7 @@
 #include "guiBase.h"
 #include <functional>
 
-namespace gui
+namespace editor
 {
 	class guiBase;
 	class guiList : public guiBase

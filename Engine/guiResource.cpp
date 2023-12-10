@@ -2,7 +2,7 @@
 
 #include "guiResource.h"
 
-namespace gui
+namespace editor
 {
 	guiResource::guiResource(ehw::eResourceType _resType)
 		: guiChild(ehw::strKey::ArrResName[(int)_resType])

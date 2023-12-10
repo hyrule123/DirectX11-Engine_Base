@@ -13,7 +13,7 @@
 
 #include "Application.h"
 
-namespace gui
+namespace editor
 {
 	guiTree_GameObject::guiTree_GameObject()
 		: guiWindow(strKey::GameObjects)

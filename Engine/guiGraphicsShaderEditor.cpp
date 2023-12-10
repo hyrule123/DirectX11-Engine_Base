@@ -7,7 +7,7 @@
 #include "json-cpp/json.h"
 
 
-namespace gui
+namespace editor
 {
 	namespace strKey
 	{

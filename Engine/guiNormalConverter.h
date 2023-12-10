@@ -10,7 +10,7 @@ namespace ehw
     class Texture;
 }
 
-namespace gui
+namespace editor
 {
     class guiNormalConverter :
         public guiWindow

@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "GPUManager.h"
 
-namespace gui
+namespace editor
 {
 	guiGame::guiGame()
 		: guiWindow(strKey::GameViewer)

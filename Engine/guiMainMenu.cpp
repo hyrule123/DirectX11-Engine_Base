@@ -4,7 +4,7 @@
 #include "Application.h"
 #include "guiMgr.h"
 
-namespace gui
+namespace editor
 {
 	guiMainMenu::guiMainMenu()
 		: guiBase(strKey::MainMenu)

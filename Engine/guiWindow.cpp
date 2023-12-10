@@ -2,7 +2,7 @@
 #include "guiWIndow.h"
 
 
-namespace gui
+namespace editor
 {
 	guiWindow::guiWindow(const std::string_view _strName)
 		: guiBase(_strName)

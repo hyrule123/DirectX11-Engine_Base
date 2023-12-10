@@ -1,18 +1,18 @@
 #include "PCH_Engine.h"
 #include "guiChild.h"
 
-gui::guiChild::guiChild(const std::string_view _strName)
+editor::guiChild::guiChild(const std::string_view _strName)
     : guiWindow(_strName)
     , mbBorder(true)
 	, mSize{}
 {
 }
 
-gui::guiChild::~guiChild()
+editor::guiChild::~guiChild()
 {
 }
 
-bool gui::guiChild::BeginUI()
+bool editor::guiChild::BeginUI()
 {
 	bool retVal = ImGui::BeginChild(GetStrKey().c_str(), mSize, mbBorder, GetImGuiWindowFlag());
 	if (false == retVal)
@@ -24,7 +24,7 @@ bool gui::guiChild::BeginUI()
 }
 
 
-void gui::guiChild::EndUI()
+void editor::guiChild::EndUI()
 {
     ImGui::EndChild();
 }

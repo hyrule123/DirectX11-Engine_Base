@@ -4,7 +4,7 @@
 #include "Com_Transform.h"
 #include "guiInspector.h"
 
-namespace gui
+namespace editor
 {
 	guiCom_Transform::guiCom_Transform()
 		: guiComponent(ehw::eComponentCategory::Transform)

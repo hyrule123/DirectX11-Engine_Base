@@ -2,7 +2,7 @@
 #include "guiChild.h"
 #include "iResource.h"
 
-namespace gui
+namespace editor
 {
 	class guiResource : public guiChild
 	{

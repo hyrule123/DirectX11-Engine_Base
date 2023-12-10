@@ -113,7 +113,7 @@ namespace ehw
 		Render();
 		FrameEnd();
 
-		gui::guiMgr::Run();
+		editor::guiMgr::Run();
 		
 		return mbInitialized;
 	}

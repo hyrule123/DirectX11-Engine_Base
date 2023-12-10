@@ -1,7 +1,7 @@
 #pragma once
 #include "guiBase.h"
 
-namespace gui
+namespace editor
 {
 	class guiWindow :
 		public guiBase

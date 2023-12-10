@@ -8,7 +8,7 @@ namespace ehw
 	class GameObject;
 }
 
-namespace gui
+namespace editor
 {
 	class guiTree_GameObject : public guiWindow
 	{

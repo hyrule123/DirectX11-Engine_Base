@@ -7,7 +7,7 @@
 #include "RenderManager.h"
 
 //에디터 전방선언
-namespace gui
+namespace editor
 {
 	class guiMaterialEditor;
 }
@@ -16,7 +16,7 @@ namespace ehw
 {
 	class Material : public iResource
 	{
-		friend class gui::guiMaterialEditor;
+		friend class editor::guiMaterialEditor;
 	public:
 		Material();
 

@@ -3,7 +3,7 @@
 #include "guiTexture.h"
 #include "Texture.h"
 
-namespace gui
+namespace editor
 {
 	guiTexture::guiTexture()
 		: guiResource(ehw::eResourceType::Texture)

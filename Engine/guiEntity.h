@@ -6,7 +6,7 @@
 #include "define_Enum.h"
 
 
-namespace gui
+namespace editor
 {
 	class guiEntity
 	{

@@ -3,7 +3,7 @@
 #include <functional>
 #include "define_Struct.h"
 
-namespace gui
+namespace editor
 {
 	class TreeWidget : public guiChild
 	{

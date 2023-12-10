@@ -4,7 +4,7 @@
 #include "guiComponent.h"
 #include "guiResource.h"
 
-namespace gui
+namespace editor
 {
 	class guiInspector : public guiWindow
 	{
@@ -30,7 +30,7 @@ namespace gui
 		ehw::GameObject* mTargetGameObject;
 		ehw::iResource* mTargetResource;
 
-		std::vector<gui::guiComponent*> mGuiComponents;
-		std::vector<gui::guiResource*> mGuiResources;
+		std::vector<editor::guiComponent*> mGuiComponents;
+		std::vector<editor::guiResource*> mGuiResources;
 	};
 }

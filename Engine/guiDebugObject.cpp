@@ -3,7 +3,7 @@
 #include "guiDebugObject.h"
 
 
-namespace gui
+namespace editor
 {
 	DebugObject::DebugObject()
 	{

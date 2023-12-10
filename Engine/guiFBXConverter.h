@@ -11,7 +11,7 @@ namespace ehw
 }
 
 
-namespace gui
+namespace editor
 {
 
 	class guiFBXConverter :

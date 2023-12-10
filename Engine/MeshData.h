@@ -3,7 +3,7 @@
 #include "define_Struct.h"
 #include "define_GPU.h"
 
-namespace gui
+namespace editor
 {
 	class guiFBXConverter;
 }
@@ -26,7 +26,7 @@ namespace ehw
     class MeshData :
         public iResource
     {
-		friend class gui::guiFBXConverter;
+		friend class editor::guiFBXConverter;
 		
 	public:
 		MeshData();

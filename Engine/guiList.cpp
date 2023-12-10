@@ -3,7 +3,7 @@
 
 #include "define_Util.h"
 
-namespace gui
+namespace editor
 {
 	guiList::guiList()
 		: guiBase(strKey::ListBox)

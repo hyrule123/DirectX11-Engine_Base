@@ -9,7 +9,7 @@ namespace ehw
 	class Material;
 }
 
-namespace gui
+namespace editor
 {
 	class guiMaterialEditor
 		: public guiWindow

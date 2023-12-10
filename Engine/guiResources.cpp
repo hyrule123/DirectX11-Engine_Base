@@ -16,7 +16,7 @@
 
 #include "Application.h"
 
-namespace gui
+namespace editor
 {
 	using namespace ehw::math;
 

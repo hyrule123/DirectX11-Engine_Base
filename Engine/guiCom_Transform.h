@@ -1,7 +1,7 @@
 #pragma once
 #include "guiComponent.h"
 
-namespace gui
+namespace editor
 {
 	class guiInspector;
 	class guiCom_Transform : public guiComponent

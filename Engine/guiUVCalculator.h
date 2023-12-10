@@ -7,7 +7,7 @@ namespace ehw
     class Texture;
 }
 
-namespace gui
+namespace editor
 {
     class guiUVCalculator :
         public guiWindow

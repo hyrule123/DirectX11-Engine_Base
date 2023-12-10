@@ -8,7 +8,7 @@
 #include "NormalConvertShader.h"
 #include "DefaultShader/NormalConverter.hlsli"
 
-namespace gui
+namespace editor
 {
 	guiNormalConverter::guiNormalConverter()
 		: guiWindow("Normal Converter")

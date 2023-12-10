@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-namespace gui
+namespace editor
 {
 	class EditorObject : public ehw::GameObject
 	{

@@ -5,7 +5,7 @@
 
 #include "json-cpp/json.h"
 
-namespace gui
+namespace editor
 {
 	guiBase::guiBase(const std::string_view _strName)
 		: guiEntity(_strName)

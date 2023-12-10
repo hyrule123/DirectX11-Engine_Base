@@ -7,7 +7,7 @@
 #include "json-cpp/json-forwards.h"
 #include "ImGuizmo.h"
 
-namespace gui
+namespace editor
 {
 	class EditorObject;
 	class DebugObject;
@@ -91,7 +91,7 @@ namespace gui
 	{
 		static_assert(std::is_base_of_v<guiBase, T>);
 
-		//gui Child는 무조건 child로 들어가기위한 용도이므로 assert
+		//editor Child는 무조건 child로 들어가기위한 용도이므로 assert
 		static_assert(false == std::is_base_of_v<guiChild, T>);
 
 		T* retPtr = new T;

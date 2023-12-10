@@ -2,7 +2,7 @@
 #include "guiComboBox.h"
 
 
-namespace gui
+namespace editor
 {
 	const guiComboBox::tComboItem guiComboBox::gVoidItem{};
 

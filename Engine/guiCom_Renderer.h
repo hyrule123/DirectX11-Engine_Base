@@ -3,7 +3,7 @@
 #include "Material.h"
 #include "Mesh.h"
 
-namespace gui
+namespace editor
 {
 	class guiCom_Renderer : public guiComponent
 	{

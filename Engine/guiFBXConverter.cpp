@@ -7,7 +7,7 @@
 #include "TimeManager.h"
 #include "ThreadPoolManager.h"
 
-namespace gui
+namespace editor
 {
 	guiFBXConverter::guiFBXConverter()
 		: guiWindow("FBX Converter")

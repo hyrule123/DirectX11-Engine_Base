@@ -2,7 +2,7 @@
 
 #include "define_Macro.h"
 
-namespace gui::strKey
+namespace editor::strKey
 {
 	STRKEY_DECLARE(MainMenu);
 	STRKEY guiGraphicsShaderEditor = "Graphics Shader Editor";

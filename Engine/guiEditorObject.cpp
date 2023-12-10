@@ -2,7 +2,7 @@
 
 #include "guiEditorObject.h"
 
-namespace gui
+namespace editor
 {
 	EditorObject::EditorObject()
 		: GameObject()

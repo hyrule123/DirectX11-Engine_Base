@@ -8,7 +8,7 @@
 #include "define_Util.h"
 #include "PathManager.h"
 
-namespace gui
+namespace editor
 {
 	guiUVCalculator::guiUVCalculator()
 		: guiWindow("UV Calculator")

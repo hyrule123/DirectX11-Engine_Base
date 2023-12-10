@@ -13,7 +13,7 @@
 #include "guiInspector.h"
 
 
-namespace gui
+namespace editor
 {
 	guiCom_Renderer::guiCom_Renderer()
 		: guiComponent(ehw::eComponentCategory::Renderer)
