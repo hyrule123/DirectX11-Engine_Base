@@ -1,10 +1,10 @@
 #include "PCH_Engine.h"
 
-#include "guiResource.h"
+#include "EditorResource.h"
 
 namespace editor
 {
-	guiResource::guiResource(ehw::eResourceType _resType)
+	EditorResource::EditorResource(ehw::eResourceType _resType)
 		: EditorChild(ehw::strKey::ArrResName[(int)_resType])
 		, mResType(_resType)
 		, mTarget()
@@ -12,12 +12,12 @@ namespace editor
 
 	}
 
-	guiResource::~guiResource()
+	EditorResource::~EditorResource()
 	{
 
 	}
 
-	void guiResource::UpdateUI()
+	void EditorResource::UpdateUI()
 	{
 		if (mTarget == nullptr)
 			return;

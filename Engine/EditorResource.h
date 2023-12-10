@@ -4,11 +4,11 @@
 
 namespace editor
 {
-	class guiResource : public EditorChild
+	class EditorResource : public EditorChild
 	{
 	public:
-		guiResource(ehw::eResourceType _resType);
-		virtual ~guiResource();
+		EditorResource(ehw::eResourceType _resType);
+		virtual ~EditorResource();
 
 		void UpdateUI() override;
 		

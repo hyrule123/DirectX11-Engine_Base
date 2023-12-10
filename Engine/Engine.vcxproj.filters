@@ -378,7 +378,7 @@
     <ClCompile Include="guiResources.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="guiResource.cpp">
+    <ClCompile Include="EditorResource.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
     <ClCompile Include="DebugObject.cpp">
@@ -752,7 +752,7 @@
     <ClInclude Include="guiResources.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="guiResource.h">
+    <ClInclude Include="EditorResource.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
     <ClInclude Include="DebugObject.h">

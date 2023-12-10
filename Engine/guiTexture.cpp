@@ -6,7 +6,7 @@
 namespace editor
 {
 	guiTexture::guiTexture()
-		: guiResource(ehw::eResourceType::Texture)
+		: EditorResource(ehw::eResourceType::Texture)
 	{
 
 	}

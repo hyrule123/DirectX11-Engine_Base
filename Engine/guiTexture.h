@@ -1,9 +1,9 @@
 #pragma once
-#include "guiResource.h"
+#include "EditorResource.h"
 
 namespace editor
 {
-	class guiTexture : public editor::guiResource
+	class guiTexture : public editor::EditorResource
 	{
 	public:
 		guiTexture();

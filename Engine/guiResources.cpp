@@ -10,7 +10,7 @@
 #include "ResourceManager.h"
 
 #include "guiInspector.h"
-#include "guiResource.h"
+#include "EditorResource.h"
 
 #include "EditorManager.h"
 

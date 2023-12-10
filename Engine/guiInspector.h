@@ -2,7 +2,7 @@
 #include "EditorChild.h"
 #include "GameObject.h"
 #include "EditorComponent.h"
-#include "guiResource.h"
+#include "EditorResource.h"
 
 namespace editor
 {
@@ -31,6 +31,6 @@ namespace editor
 		ehw::iResource* mTargetResource;
 
 		std::vector<editor::EditorComponent*> mGuiComponents;
-		std::vector<editor::guiResource*> mGuiResources;
+		std::vector<editor::EditorResource*> mGuiResources;
 	};
 }
