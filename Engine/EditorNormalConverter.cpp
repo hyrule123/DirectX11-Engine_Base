@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiNormalConverter.h"
+#include "EditorNormalConverter.h"
 
 #include "PathManager.h"
 #include "ResourceManager.h"
@@ -10,21 +10,21 @@
 
 namespace editor
 {
-	guiNormalConverter::guiNormalConverter()
+	EditorNormalConverter::EditorNormalConverter()
 		: EditorWindow("Normal Converter")
 		, mTextureSrc{}
 		, mTextureDestDir{}
 	{
 	}
-	guiNormalConverter::~guiNormalConverter()
+	EditorNormalConverter::~EditorNormalConverter()
 	{
 	}
 
-	void guiNormalConverter::Init()
+	void EditorNormalConverter::Init()
 	{
 	}
 
-	void guiNormalConverter::UpdateUI()
+	void EditorNormalConverter::UpdateUI()
 	{
 		SrcTextureUpdate();
 
@@ -46,7 +46,7 @@ namespace editor
 		}
 	}
 
-	void guiNormalConverter::SrcTextureUpdate()
+	void EditorNormalConverter::SrcTextureUpdate()
 	{
 		HilightText("Source Texture");
 
@@ -88,7 +88,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 	}
 
-	void guiNormalConverter::DestTextureUpdate()
+	void EditorNormalConverter::DestTextureUpdate()
 	{
 		HilightText("Dest Texture Save Directory");
 		{
@@ -135,7 +135,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		}
 	}
 
-	void guiNormalConverter::CopyTextureUpdate()
+	void EditorNormalConverter::CopyTextureUpdate()
 	{
 		if (ImGui::Button("Convert Normal Map Texture", ImVec2(0.f, 35.f)))
 		{
@@ -185,7 +185,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		}
 	}
 
-	void guiNormalConverter::Reset()
+	void EditorNormalConverter::Reset()
 	{
 		mTextureSrc = nullptr;
 		mTextureDestDir.clear();

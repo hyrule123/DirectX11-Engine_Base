@@ -32,7 +32,7 @@
 #include "DebugObject.h"
 #include "EditorObject.h"
 #include "EditorMaterial.h"
-#include "guiNormalConverter.h"
+#include "EditorNormalConverter.h"
 #include "guiUVCalculator.h"
 
 #include "Com_Renderer_Mesh.h"
@@ -294,7 +294,7 @@ namespace editor
 
 		AddGuiWindow<EditorMaterial>();
 
-		AddGuiWindow<guiNormalConverter>();
+		AddGuiWindow<EditorNormalConverter>();
 
 		AddGuiWindow<guiUVCalculator>();
 	}

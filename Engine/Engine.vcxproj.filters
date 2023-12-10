@@ -471,7 +471,7 @@
     <ClCompile Include="NormalConvertShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="guiNormalConverter.cpp">
+    <ClCompile Include="EditorNormalConverter.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="EditorFBXConverter.cpp">
@@ -848,7 +848,7 @@
     <ClInclude Include="NormalConvertShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="guiNormalConverter.h">
+    <ClInclude Include="EditorNormalConverter.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="EditorFBXConverter.h">

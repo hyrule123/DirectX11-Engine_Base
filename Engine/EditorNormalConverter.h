@@ -12,12 +12,12 @@ namespace ehw
 
 namespace editor
 {
-    class guiNormalConverter :
+    class EditorNormalConverter :
         public EditorWindow
     {
     public:
-        guiNormalConverter();
-        virtual ~guiNormalConverter();
+        EditorNormalConverter();
+        virtual ~EditorNormalConverter();
 
         virtual void Init() override;
         virtual void UpdateUI() override;
