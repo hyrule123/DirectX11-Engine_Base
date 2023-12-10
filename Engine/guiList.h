@@ -1,11 +1,11 @@
 #pragma once
-#include "guiBase.h"
+#include "EditorBase.h"
 #include <functional>
 
 namespace editor
 {
-	class guiBase;
-	class guiList : public guiBase
+	class EditorBase;
+	class guiList : public EditorBase
 	{
 	public:
 		guiList();
@@ -15,7 +15,7 @@ namespace editor
 		virtual void UpdateUI() override;
 		virtual void EndUI() final;
 
-		void SetEvent(guiBase* widget, std::function<void(const std::string& key)> event)
+		void SetEvent(EditorBase* widget, std::function<void(const std::string& key)> event)
 		{
 			mEventGUI = widget;
 			mEvent = std::move(event);
@@ -30,7 +30,7 @@ namespace editor
 
 		ImVec2 mSize;
 
-		guiBase* mEventGUI;
+		EditorBase* mEventGUI;
 		std::function<void(std::string key)> mEvent;
 	};
 }

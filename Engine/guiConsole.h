@@ -1,5 +1,5 @@
 #pragma once
-#include "guiBase.h"
+#include "EditorBase.h"
 
 
 namespace editor

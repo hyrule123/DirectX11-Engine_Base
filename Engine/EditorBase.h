@@ -1,15 +1,15 @@
 #pragma once
-#include "guiEntity.h"
+#include "EditorEntity.h"
 #include "strKey_gui.h"
 
 namespace editor
 {
-	class guiBase 
-		: public guiEntity
+	class EditorBase 
+		: public EditorEntity
 	{
 	public:
-		guiBase(const std::string_view _strName);
-		virtual ~guiBase();
+		EditorBase(const std::string_view _strName);
+		virtual ~EditorBase();
 
 		virtual ehw::eResult SaveJson(Json::Value* _pJval) override;
 		virtual ehw::eResult LoadJson(const Json::Value* _pJval) override;
@@ -33,11 +33,11 @@ namespace editor
 		virtual void EndUI() = 0;
 
 
-		guiBase* GetParent() { return m_Parent; }
+		EditorBase* GetParent() { return m_Parent; }
 
 		template <typename T>
 		T* AddChild();
-		void AddChild(guiBase* _pChild);
+		void AddChild(EditorBase* _pChild);
 
 		void ReserveChildsVector(size_t _size) { m_Childs.reserve(_size); }
 
@@ -52,23 +52,23 @@ namespace editor
 		//void LoadRecursive(Json::Value& _Node);
 
 		void SetNoChild(bool _bNoChild) { mbNoChild = _bNoChild; }
-		void SetParent(guiBase* _Parent) { m_Parent = _Parent; }
-		const std::vector<guiBase*>& GetChilds() { return m_Childs; }
-		void RemoveChild(guiBase* _pChild);
+		void SetParent(EditorBase* _Parent) { m_Parent = _Parent; }
+		const std::vector<EditorBase*>& GetChilds() { return m_Childs; }
+		void RemoveChild(EditorBase* _pChild);
 
 
 	private:
-		guiBase* m_Parent;
-		std::vector<guiBase*>		m_Childs;		// 자식 guiBase 목록
+		EditorBase* m_Parent;
+		std::vector<EditorBase*>		m_Childs;		// 자식 EditorBase 목록
 		bool						mbNoChild;		// 자식 노드가 들어갈 수 없는 노드로 설정
 
 		bool						mbEnable;
 	};
 
 	template<typename T>
-	inline T* guiBase::AddChild()
+	inline T* EditorBase::AddChild()
 	{
-		static_assert(std::is_base_of_v<guiBase, T>);
+		static_assert(std::is_base_of_v<EditorBase, T>);
 
 		T* retVal = nullptr;
 		if(false == mbNoChild)

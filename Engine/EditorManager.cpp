@@ -21,7 +21,7 @@
 
 #include "guiInspector.h"
 #include "guiGame.h"
-#include "guiBase.h"
+#include "EditorBase.h"
 #include "guiResources.h"
 #include "guiMainMenu.h"
 #include "guiConsole.h"
@@ -48,8 +48,8 @@ namespace editor
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
-	//std::vector<guiBase*> EditorManager::mGuiWindows{};
+	std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	//std::vector<EditorBase*> EditorManager::mGuiWindows{};
 	std::vector<EditorObject*> EditorManager::mEditorObjects{};
 	std::vector<DebugObject*> EditorManager::mDebugObjects{};
 
@@ -432,11 +432,11 @@ namespace editor
 		}
 	}
 
-	void EditorManager::AddGuiWindow(guiBase* _pBase)
+	void EditorManager::AddGuiWindow(EditorBase* _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
 		const std::string_view guiName = _pBase->GetStrKey();
-		guiBase* findPtr = FindGuiWindow(guiName);
+		EditorBase* findPtr = FindGuiWindow(guiName);
 		if (findPtr)
 		{
 			_pBase->MakeUniqueKeyByName();
@@ -560,9 +560,9 @@ namespace editor
 	}
 
 
-	guiBase* EditorManager::FindGuiWindow(const std::string_view _strKey)
+	EditorBase* EditorManager::FindGuiWindow(const std::string_view _strKey)
 	{
-		guiBase* pui = nullptr;
+		EditorBase* pui = nullptr;
 
 		const auto& iter = mGuiWindows.find(_strKey);
 		if (iter != mGuiWindows.end())

@@ -21,12 +21,12 @@ namespace editor
 		static inline bool GetEnable() { return mbEnable; }
 		static inline void ToggleEnable() { SetEnable(!mbEnable); }
 
-		static guiBase* FindGuiWindow(const std::string_view _strKey);
+		static EditorBase* FindGuiWindow(const std::string_view _strKey);
 
 		template <typename T>
 		static T* AddGuiWindow();
 
-		static const std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
@@ -51,12 +51,12 @@ namespace editor
 		static void ImGuiNewFrame();
 		static void ImGuiRender();
 		
-		static void AddGuiWindow(guiBase* _pBase);
+		static void AddGuiWindow(EditorBase* _pBase);
 
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
 
 		static std::vector<EditorObject*> mEditorObjects;
 		static std::vector<DebugObject*> mDebugObjects;
@@ -89,7 +89,7 @@ namespace editor
 	template<typename T>
 	inline T* EditorManager::AddGuiWindow()
 	{
-		static_assert(std::is_base_of_v<guiBase, T>);
+		static_assert(std::is_base_of_v<EditorBase, T>);
 
 		//editor Child는 무조건 child로 들어가기위한 용도이므로 assert
 		static_assert(false == std::is_base_of_v<guiChild, T>);
@@ -102,7 +102,7 @@ namespace editor
 			retPtr->LoadJson(pJval);
 		}
 
-		AddGuiWindow(static_cast<guiBase*>(retPtr));
+		AddGuiWindow(static_cast<EditorBase*>(retPtr));
 		return retPtr;
 	}
 

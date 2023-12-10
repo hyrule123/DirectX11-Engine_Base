@@ -1,10 +1,10 @@
 #pragma once
 
-#include "guiBase.h"
+#include "EditorBase.h"
 
 namespace editor
 {
-	class guiMainMenu : public guiBase
+	class guiMainMenu : public EditorBase
 	{
 	public:
 		guiMainMenu();

@@ -8,7 +8,7 @@ namespace editor
 	class TreeWidget : public guiChild
 	{
 	public:
-		struct tNode : public guiEntity
+		struct tNode : public EditorEntity
 		{
 			tNode();
 			virtual ~tNode();
@@ -42,7 +42,7 @@ namespace editor
 		void SetDummyRoot(bool enable) { mbDummyRootUse = enable; }
 		void SetSelectedNode(tNode* node);
 
-		void SetEvent(guiBase* widget, std::function<void(ehw::tDataPtr)> func)
+		void SetEvent(EditorBase* widget, std::function<void(ehw::tDataPtr)> func)
 		{
 			mEventGUI = widget;
 			mEvent = func;
@@ -55,7 +55,7 @@ namespace editor
 		bool mbDummyRootUse;
 		tNode* mSelectedNode;
 
-		guiBase* mEventGUI;
+		EditorBase* mEventGUI;
 		std::function<void(ehw::tDataPtr data)> mEvent;
 	};
 }

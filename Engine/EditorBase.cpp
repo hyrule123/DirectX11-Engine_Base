@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiBase.h"
+#include "EditorBase.h"
 
 #include "define_Macro.h"
 
@@ -7,8 +7,8 @@
 
 namespace editor
 {
-	guiBase::guiBase(const std::string_view _strName)
-		: guiEntity(_strName)
+	EditorBase::EditorBase(const std::string_view _strName)
+		: EditorEntity(_strName)
 		, m_Parent()
 		, m_Childs{}
 		, mbNoChild()
@@ -16,7 +16,7 @@ namespace editor
 	{
 	}
 
-	guiBase::~guiBase()
+	EditorBase::~EditorBase()
 	{
 		for (size_t i = 0; i < m_Childs.size(); ++i)
 		{
@@ -24,12 +24,12 @@ namespace editor
 				delete m_Childs[i];
 		}
 	}
-	ehw::eResult guiBase::SaveJson(Json::Value* _pJval)
+	ehw::eResult EditorBase::SaveJson(Json::Value* _pJval)
 	{
 		if (nullptr == _pJval)
 			return ehw::eResult::Fail_Nullptr;
 
-		ehw::eResult result = guiEntity::SaveJson(_pJval);
+		ehw::eResult result = EditorEntity::SaveJson(_pJval);
 		if (eResultFail(result))
 			return result;
 
@@ -43,12 +43,12 @@ namespace editor
 
 		return ehw::eResult::Success;
 	}
-	ehw::eResult guiBase::LoadJson(const Json::Value* _pJval)
+	ehw::eResult EditorBase::LoadJson(const Json::Value* _pJval)
 	{
 		if (nullptr == _pJval)
 			return ehw::eResult::Fail_Nullptr;
 
-		ehw::eResult result = guiEntity::LoadJson(_pJval);
+		ehw::eResult result = EditorEntity::LoadJson(_pJval);
 		if (eResultFail(result))
 			return result;
 
@@ -62,7 +62,7 @@ namespace editor
 
 		return ehw::eResult::Success;
 	}
-	void guiBase::InitRecursive()
+	void EditorBase::InitRecursive()
 	{
 		Init();
 		for (size_t i = 0; i < m_Childs.size(); ++i)
@@ -70,7 +70,7 @@ namespace editor
 			m_Childs[i]->InitRecursive();
 		}
 	}
-	void guiBase::InternalUpdate()
+	void EditorBase::InternalUpdate()
 	{
 		if (false == GetEnable())
 			return;
@@ -90,7 +90,7 @@ namespace editor
 		}
 	}
 
-	void guiBase::AddChild(guiBase* _pChild)
+	void EditorBase::AddChild(EditorBase* _pChild)
 	{
 		if (_pChild)
 		{
@@ -101,7 +101,7 @@ namespace editor
 	}
 
 
-	void guiBase::RemoveChild(guiBase* _pChild)
+	void EditorBase::RemoveChild(EditorBase* _pChild)
 	{
 		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
 		{

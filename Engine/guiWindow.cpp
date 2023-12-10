@@ -5,7 +5,7 @@
 namespace editor
 {
 	guiWindow::guiWindow(const std::string_view _strName)
-		: guiBase(_strName)
+		: EditorBase(_strName)
 		, mWindowFlag()
 	{
 		SetSaveEnable(true);

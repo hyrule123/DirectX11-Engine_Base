@@ -277,7 +277,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
     <ClInclude Include="GPUManager.h" />
-    <ClInclude Include="guiBase.h" />
+    <ClInclude Include="EditorBase.h" />
     <ClInclude Include="guiChild.h" />
     <ClInclude Include="guiComboBox.h" />
     <ClInclude Include="guiComponent.h" />
@@ -286,7 +286,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiConsole.h" />
     <ClInclude Include="guiDebugObject.h" />
     <ClInclude Include="guiEditorObject.h" />
-    <ClInclude Include="guiEntity.h" />
+    <ClInclude Include="EditorEntity.h" />
     <ClInclude Include="guiFBXConverter.h" />
     <ClInclude Include="guiGame.h" />
     <ClInclude Include="guiGraphicsShaderEditor.h" />
@@ -409,7 +409,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
     <ClCompile Include="GPUManager.cpp" />
-    <ClCompile Include="guiBase.cpp" />
+    <ClCompile Include="EditorBase.cpp" />
     <ClCompile Include="guiChild.cpp" />
     <ClCompile Include="guiComboBox.cpp" />
     <ClCompile Include="guiComponent.cpp" />
@@ -418,7 +418,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiConsole.cpp" />
     <ClCompile Include="guiDebugObject.cpp" />
     <ClCompile Include="guiEditorObject.cpp" />
-    <ClCompile Include="guiEntity.cpp" />
+    <ClCompile Include="EditorEntity.cpp" />
     <ClCompile Include="guiFBXConverter.cpp" />
     <ClCompile Include="guiGame.cpp" />
     <ClCompile Include="guiGraphicsShaderEditor.cpp" />

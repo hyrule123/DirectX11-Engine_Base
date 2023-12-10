@@ -7,7 +7,7 @@
 namespace editor
 {
 	guiMainMenu::guiMainMenu()
-		: guiBase(strKey::MainMenu)
+		: EditorBase(strKey::MainMenu)
 	{
         //SetSize(ImVec2(100.0f, 100.0f));
 	}

@@ -1,11 +1,11 @@
 #pragma once
-#include "guiBase.h"
+#include "EditorBase.h"
 #include "define_Struct.h"
 
 namespace editor
 {
 	class guiComboBox :
-		public guiBase
+		public EditorBase
 	{
 	public:
 		struct tComboItem

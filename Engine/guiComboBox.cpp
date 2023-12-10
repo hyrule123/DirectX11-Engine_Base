@@ -7,7 +7,7 @@ namespace editor
 	const guiComboBox::tComboItem guiComboBox::gVoidItem{};
 
 	guiComboBox::guiComboBox()
-		: guiBase("ComboBox")
+		: EditorBase("ComboBox")
 		, mItems()
 		, mCurrentSelected(-1)
 		, mComboFlags()

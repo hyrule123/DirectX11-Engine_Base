@@ -8,11 +8,11 @@
 
 namespace editor
 {
-	class guiEntity
+	class EditorEntity
 	{
 	public:
-		guiEntity(const std::string_view _strName);
-		virtual ~guiEntity();
+		EditorEntity(const std::string_view _strName);
+		virtual ~EditorEntity();
 
 		virtual ehw::eResult SaveJson(Json::Value* _pJval) { return ehw::eResult::Success; }
 		virtual ehw::eResult LoadJson(const Json::Value* _pJval) { return ehw::eResult::Success; };

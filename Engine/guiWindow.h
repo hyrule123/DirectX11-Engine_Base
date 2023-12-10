@@ -1,11 +1,12 @@
 #pragma once
-#include "guiBase.h"
+#include "EditorBase.h"
 
 namespace editor
 {
 	class guiWindow :
-		public guiBase
+		public EditorBase
 	{
+
 	public:
 		guiWindow(const std::string_view _strName);
 		virtual ~guiWindow();

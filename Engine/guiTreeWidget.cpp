@@ -4,7 +4,7 @@
 namespace editor
 {
 	TreeWidget::tNode::tNode()
-		: guiEntity("")
+		: EditorEntity("")
 		, mTreeWidget(nullptr)
 		, mData{}
 		, m_Parent(nullptr)

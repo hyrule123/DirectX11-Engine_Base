@@ -6,7 +6,7 @@
 namespace editor
 {
 	guiList::guiList()
-		: guiBase(strKey::ListBox)
+		: EditorBase(strKey::ListBox)
 		, mListIndex(-1)
 		, mSize(200.f, 200.f)
 		, mEventGUI()

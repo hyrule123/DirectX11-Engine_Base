@@ -348,7 +348,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="guiBase.cpp">
+    <ClCompile Include="EditorBase.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
     <ClCompile Include="guiChild.cpp">
@@ -396,7 +396,7 @@
     <ClCompile Include="guiMaterialEditor.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="guiEntity.cpp">
+    <ClCompile Include="EditorEntity.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
     <ClCompile Include="GameMainWindow.cpp">
@@ -722,7 +722,7 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="guiBase.h">
+    <ClInclude Include="EditorBase.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="guiChild.h">
@@ -773,7 +773,7 @@
     <ClInclude Include="guiMaterialEditor.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="guiEntity.h">
+    <ClInclude Include="EditorEntity.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="GameMainWindow.h">
