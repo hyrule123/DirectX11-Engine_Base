@@ -340,7 +340,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="PCH_Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="define_Enum.h" />
-    <ClInclude Include="AudioMgr.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="FontWrapper.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GPUMgr.h" />
@@ -510,7 +510,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="iComputeShader.cpp" />
     <ClCompile Include="ConstBuffer.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="AudioMgr.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="FontWrapper.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GPUMgr.cpp" />

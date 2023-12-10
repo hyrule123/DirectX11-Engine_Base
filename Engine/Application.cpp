@@ -10,7 +10,7 @@
 #include "SceneMgr.h"
 #include "ResourceMgr.h"
 #include "CollisionMgr.h"
-#include "AudioMgr.h"
+#include "AudioManager.h"
 #include "FontWrapper.h"
 #include "PathMgr.h"
 #include "guiMgr.h"
@@ -53,7 +53,7 @@ namespace ehw
 		}
 
 		ResourceMgr::Init();
-		AudioMgr::Init();
+		AudioManager::Init();
 		FontWrapper::Init();
 
 

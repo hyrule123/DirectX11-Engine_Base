@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "AudioMgr.h"
+#include "AudioManager.h"
 
 
 #include <Fmod/fmod.hpp>
@@ -26,10 +26,10 @@ namespace ehw
 {
 	
 
-	FMOD::Studio::System* AudioMgr::mSystem = nullptr;
-	FMOD::System* AudioMgr::mCoreSystem = nullptr;
+	FMOD::Studio::System* AudioManager::mSystem = nullptr;
+	FMOD::System* AudioManager::mCoreSystem = nullptr;
 
-	void AudioMgr::Init()
+	void AudioManager::Init()
 	{
 		AtExit::AddFunc(Release);
 
@@ -44,13 +44,13 @@ namespace ehw
 		mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
 	}
 
-	void AudioMgr::Release()
+	void AudioManager::Release()
 	{
 		mSystem->release();
 		mSystem = nullptr;
 	}
 
-	bool AudioMgr::CreateSound(const std::filesystem::path& _fullPath,  FMOD::Sound** sound)
+	bool AudioManager::CreateSound(const std::filesystem::path& _fullPath,  FMOD::Sound** sound)
 	{
 		bool bResult = false;
 		if (FMOD_OK == mCoreSystem->createSound(_fullPath.string().c_str(), FMOD_3D, 0, sound))
@@ -61,12 +61,12 @@ namespace ehw
 		return bResult;
 	}
 
-	void AudioMgr::SoundPlay(FMOD::Sound* sound, FMOD::Channel** channel)
+	void AudioManager::SoundPlay(FMOD::Sound* sound, FMOD::Channel** channel)
 	{
 		mCoreSystem->playSound(sound, 0, false, channel);
 	}
 
-	void AudioMgr::Set3DListenerAttributes(const float3* _position, const float3* _velocity,
+	void AudioManager::Set3DListenerAttributes(const float3* _position, const float3* _velocity,
 									   const float3* _forward, const float3* _up)
 	{
 		FMOD_VECTOR fmodPosition(_position->x, _position->y, _position->z);

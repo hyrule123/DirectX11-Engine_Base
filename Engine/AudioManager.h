@@ -16,7 +16,7 @@ namespace FMOD
 
 namespace ehw
 {
-	class AudioMgr
+	class AudioManager
 	{
 		friend class Application;
 	public:

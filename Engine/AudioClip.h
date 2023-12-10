@@ -1,6 +1,6 @@
 #pragma once
 #include "iResource.h"
-#include "AudioMgr.h"
+#include "AudioManager.h"
 
 
 

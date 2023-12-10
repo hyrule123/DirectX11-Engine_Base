@@ -3,7 +3,7 @@
 #include "Com_AudioListener.h"
 #include "Com_Transform.h"
 #include "GameObject.h"
-#include "AudioMgr.h"
+#include "AudioManager.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -43,7 +43,7 @@ namespace ehw
 		float3 up = tr->Up();
 
 		float3 vel = { 0.0f, 0.0f, 0.0f };
-		AudioMgr::Set3DListenerAttributes(&pos, &vel, &foward, &up);
+		AudioManager::Set3DListenerAttributes(&pos, &vel, &foward, &up);
 	}
 
 }
