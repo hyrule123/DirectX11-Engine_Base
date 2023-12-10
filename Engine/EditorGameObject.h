@@ -10,11 +10,11 @@ namespace ehw
 
 namespace editor
 {
-	class GameObjectEditor : public EditorWindow
+	class EditorGameObject : public EditorWindow
 	{
 	public:
-		GameObjectEditor();
-		virtual ~GameObjectEditor();
+		EditorGameObject();
+		virtual ~EditorGameObject();
 
 		virtual void Update() override;
 

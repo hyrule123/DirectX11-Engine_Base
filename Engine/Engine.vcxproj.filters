@@ -429,7 +429,7 @@
     <ClCompile Include="Com_DummyAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectEditor.cpp">
+    <ClCompile Include="EditorGameObject.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="EditorMainMenu.cpp">
@@ -806,9 +806,6 @@
     <ClInclude Include="Com_DummyAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectEditor.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
     <ClInclude Include="EditorMainMenu.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
@@ -891,6 +888,7 @@
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="EditorCom_Renderer.h" />
+    <ClInclude Include="EditorGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

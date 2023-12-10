@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "GameObjectEditor.h"
+#include "EditorGameObject.h"
 
 #include "Application.h"
 #include "iScene.h"
@@ -15,7 +15,7 @@
 
 namespace editor
 {
-	GameObjectEditor::GameObjectEditor()
+	EditorGameObject::EditorGameObject()
 		: EditorWindow(strKey::GameObjects)
 		, mTreeWidget(nullptr)
 	{
@@ -26,33 +26,33 @@ namespace editor
 		
 
 		mTreeWidget->SetEvent(this
-			, std::bind(&GameObjectEditor::GameobjectSelectCallback, this, std::placeholders::_1));
+			, std::bind(&EditorGameObject::GameobjectSelectCallback, this, std::placeholders::_1));
 
 		mTreeWidget->SetDummyRoot(true);
 
 		InitializeScene();
 	}
 
-	GameObjectEditor::~GameObjectEditor()
+	EditorGameObject::~EditorGameObject()
 	{
 	}
 
 
-	void GameObjectEditor::Update()
+	void EditorGameObject::Update()
 	{
 		
 	}
 
 
 
-	void GameObjectEditor::GameobjectSelectCallback(ehw::tDataPtr _data)
+	void EditorGameObject::GameobjectSelectCallback(ehw::tDataPtr _data)
 	{
 		ehw::RenderManager::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
 		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetGameObject(ehw::RenderManager::GetInspectorGameObject());
 	}
 
-	void GameObjectEditor::InitializeScene()
+	void EditorGameObject::InitializeScene()
 	{
 		mTreeWidget->Clear();
 
@@ -76,7 +76,7 @@ namespace editor
 		mTreeWidget->SetEnable(true);
 	}
 
-	void GameObjectEditor::AddGameObject(EditorWidget_Tree::tNode* parent, ehw::GameObject* gameObject)
+	void EditorGameObject::AddGameObject(EditorWidget_Tree::tNode* parent, ehw::GameObject* gameObject)
 	{
 		std::string name(gameObject->GetName());
 		if (name.empty())
