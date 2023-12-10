@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiMgr.h"
+#include "EditorManager.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
@@ -48,23 +48,23 @@ namespace editor
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> guiMgr::mGuiWindows{};
-	//std::vector<guiBase*> guiMgr::mGuiWindows{};
-	std::vector<EditorObject*> guiMgr::mEditorObjects{};
-	std::vector<DebugObject*> guiMgr::mDebugObjects{};
+	std::unordered_map<std::string, guiBase*, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	//std::vector<guiBase*> EditorManager::mGuiWindows{};
+	std::vector<EditorObject*> EditorManager::mEditorObjects{};
+	std::vector<DebugObject*> EditorManager::mDebugObjects{};
 
-	bool guiMgr::mbEnable{};
-	bool guiMgr::mbInitialized{};
+	bool EditorManager::mbEnable{};
+	bool EditorManager::mbInitialized{};
 
-	std::unique_ptr<Json::Value> guiMgr::mJsonUIData{};
+	std::unique_ptr<Json::Value> EditorManager::mJsonUIData{};
 
-	ImGuizmo::OPERATION guiMgr::mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	ImGuizmo::OPERATION EditorManager::mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 
 	using namespace ehw::math;
 	
-	void guiMgr::Init()
+	void EditorManager::Init()
 	{
-		AtExit::AddFunc(guiMgr::Release);
+		AtExit::AddFunc(EditorManager::Release);
 
 		::GameMainWindow::RegisterImGuiWndProc(ImGui_ImplWin32_WndProcHandler);
 
@@ -113,7 +113,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::Run()
+	void EditorManager::Run()
 	{
 		if (
 			ehw::InputManager::GetKeyPress(ehw::eKeyCode::LCTRL)
@@ -123,7 +123,7 @@ namespace editor
 			ehw::InputManager::GetKeyDown(ehw::eKeyCode::E)
 			)
 		{
-			editor::guiMgr::ToggleEnable();
+			editor::EditorManager::ToggleEnable();
 		}
 
 
@@ -146,7 +146,7 @@ namespace editor
 	}
 
 
-	void guiMgr::Update()
+	void EditorManager::Update()
 	{
 		ImGuiNewFrame();
 
@@ -156,7 +156,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::InternalUpdate()
+	void EditorManager::InternalUpdate()
 	{
 		for (EditorObject* obj : mEditorObjects)
 		{
@@ -169,7 +169,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::Render()
+	void EditorManager::Render()
 	{
 		for (EditorObject* obj : mEditorObjects)
 		{
@@ -186,7 +186,7 @@ namespace editor
 		ImGuiRender();
 	}
 
-	void guiMgr::Release()
+	void EditorManager::Release()
 	{
 		if (false == mbInitialized)
 			return;
@@ -239,7 +239,7 @@ namespace editor
 		ImGuiRelease();
 	}
 
-	void guiMgr::DebugRender(ehw::tDebugMesh& mesh)
+	void EditorManager::DebugRender(ehw::tDebugMesh& mesh)
 	{
 		DebugObject* debugObj = mDebugObjects[(UINT)mesh.type];
 		
@@ -266,7 +266,7 @@ namespace editor
 		debugObj->Render();
 	}
 
-	Json::Value* guiMgr::CheckJsonSaved(const std::string& _strKey)
+	Json::Value* EditorManager::CheckJsonSaved(const std::string& _strKey)
 	{
 		Json::Value* retJson = nullptr;
 
@@ -278,7 +278,7 @@ namespace editor
 		return retJson;
 	}
 
-	void guiMgr::InitGuiWindows()
+	void EditorManager::InitGuiWindows()
 	{
 		AddGuiWindow<guiMainMenu>();
 
@@ -299,7 +299,7 @@ namespace editor
 		AddGuiWindow<guiUVCalculator>();
 	}
 
-	void guiMgr::ImGuiInitialize()
+	void EditorManager::ImGuiInitialize()
 	{
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
@@ -399,7 +399,7 @@ namespace editor
 
 	}
 
-	void guiMgr::ImGuiNewFrame()
+	void EditorManager::ImGuiNewFrame()
 	{
 		// Start the Dear ImGui frame
 		ImGui_ImplDX11_NewFrame();
@@ -411,7 +411,7 @@ namespace editor
 		ImGuiIO io = ImGui::GetIO();
 	}
 
-	void guiMgr::ImGuiRender()
+	void EditorManager::ImGuiRender()
 	{
 		bool show_demo_window = false;
 		bool show_another_window = false;
@@ -432,7 +432,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::AddGuiWindow(guiBase* _pBase)
+	void EditorManager::AddGuiWindow(guiBase* _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
 		const std::string_view guiName = _pBase->GetStrKey();
@@ -450,7 +450,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::RenderGuizmo()
+	void EditorManager::RenderGuizmo()
 	{
 		ehw::GameObject* targetgameobject = ehw::RenderManager::GetInspectorGameObject();
 
@@ -551,7 +551,7 @@ namespace editor
 		}
 	}
 
-	void guiMgr::ImGuiRelease()
+	void EditorManager::ImGuiRelease()
 	{
 		// Cleanup
 		ImGui_ImplDX11_Shutdown();
@@ -560,7 +560,7 @@ namespace editor
 	}
 
 
-	guiBase* guiMgr::FindGuiWindow(const std::string_view _strKey)
+	guiBase* EditorManager::FindGuiWindow(const std::string_view _strKey)
 	{
 		guiBase* pui = nullptr;
 

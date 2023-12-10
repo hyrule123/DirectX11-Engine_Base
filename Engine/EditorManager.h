@@ -11,7 +11,7 @@ namespace editor
 {
 	class EditorObject;
 	class DebugObject;
-	class guiMgr
+	class EditorManager
 	{
 		friend class GameEngineWindow;
 	public:
@@ -74,20 +74,20 @@ namespace editor
 		static void RenderGuizmo();
 	};
 
-	inline void guiMgr::SetEnable(bool _bEnable)
+	inline void EditorManager::SetEnable(bool _bEnable)
 	{
 		mbEnable = _bEnable;
 
 		if (mbEnable && (false == mbInitialized))
 		{
-			guiMgr::Init();
+			EditorManager::Init();
 			mbInitialized = true;
 		}
 	}
 
 
 	template<typename T>
-	inline T* guiMgr::AddGuiWindow()
+	inline T* EditorManager::AddGuiWindow()
 	{
 		static_assert(std::is_base_of_v<guiBase, T>);
 
@@ -106,7 +106,7 @@ namespace editor
 		return retPtr;
 	}
 
-	inline std::string guiMgr::CreateUniqueImGuiKey(const std::string_view _str, int i)
+	inline std::string EditorManager::CreateUniqueImGuiKey(const std::string_view _str, int i)
 	{
 		std::string uniqStr;
 		uniqStr.reserve(_str.size() + 5);

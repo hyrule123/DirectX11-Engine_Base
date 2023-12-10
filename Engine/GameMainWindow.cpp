@@ -7,7 +7,7 @@
          
 #include "Application.h"
 
-#include "guiMgr.h"
+#include "EditorManager.h"
 
 HINSTANCE GameMainWindow::mInstance{};
 HWND GameMainWindow::mHwnd{};

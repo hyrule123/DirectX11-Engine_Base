@@ -2,7 +2,7 @@
 
 #include "guiMainMenu.h"
 #include "Application.h"
-#include "guiMgr.h"
+#include "EditorManager.h"
 
 namespace editor
 {
@@ -21,7 +21,7 @@ namespace editor
 	{
 		if (ImGui::BeginMenu("UI Menu"))
 		{
-			const auto& guis = guiMgr::GetGUIs();
+			const auto& guis = EditorManager::GetGUIs();
 			for (const auto& widget : guis)
 			{
 				if (this == widget.second)

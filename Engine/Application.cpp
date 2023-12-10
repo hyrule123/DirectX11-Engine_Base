@@ -13,7 +13,7 @@
 #include "AudioManager.h"
 #include "FontWrapper.h"
 #include "PathManager.h"
-#include "guiMgr.h"
+#include "EditorManager.h"
 #include "ThreadPoolManager.h"
 
 #include "define_Global.h"
@@ -113,7 +113,7 @@ namespace ehw
 		Render();
 		FrameEnd();
 
-		editor::guiMgr::Run();
+		editor::EditorManager::Run();
 		
 		return mbInitialized;
 	}

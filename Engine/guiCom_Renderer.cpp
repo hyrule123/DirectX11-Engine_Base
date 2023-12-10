@@ -8,7 +8,7 @@
 #include "GameObject.h"
 
 #include "guiCom_Renderer.h"
-#include "guiMgr.h"
+#include "EditorManager.h"
 #include "guiList.h"
 #include "guiInspector.h"
 
@@ -65,7 +65,7 @@ namespace editor
 		ImGui::SameLine();
 		if (ImGui::Button("##MeshBtn", ImVec2(15.0f, 15.0f)))
 		{
-			guiList* listUI = static_cast<guiList*>(guiMgr::FindGuiWindow("ListWidget"));
+			guiList* listUI = static_cast<guiList*>(EditorManager::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			
 
@@ -92,7 +92,7 @@ namespace editor
 		ImGui::SameLine();
 		if (ImGui::Button("##MaterialBtn", ImVec2(15.0f, 15.0f)))
 		{
-			guiList* listUI = static_cast<guiList*>(guiMgr::FindGuiWindow("ListWidget"));
+			guiList* listUI = static_cast<guiList*>(EditorManager::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
@@ -115,7 +115,7 @@ namespace editor
 	{
 		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager::Find<ehw::Mesh>(_strKey);
 
-		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
+		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
 	}
 
@@ -123,7 +123,7 @@ namespace editor
 	{
 		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(_strKey);
 
-		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow("guiInspector"));
+		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow("guiInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);
 	}
 }

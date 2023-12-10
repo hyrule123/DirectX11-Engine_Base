@@ -12,7 +12,7 @@
 #include "guiInspector.h"
 #include "guiResource.h"
 
-#include "guiMgr.h"
+#include "EditorManager.h"
 
 #include "Application.h"
 
@@ -70,7 +70,7 @@ namespace editor
 	{
 		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
 
-		guiInspector* inspector = static_cast<guiInspector*>(guiMgr::FindGuiWindow(strKey::Inspector));
+		guiInspector* inspector = static_cast<guiInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);
 		//inspector->InitializeTargetResource();
 	}

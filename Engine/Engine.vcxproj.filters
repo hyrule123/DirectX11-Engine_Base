@@ -348,9 +348,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="guiMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="guiBase.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
@@ -508,6 +505,9 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="GPUManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
@@ -722,9 +722,6 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="guiMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="guiBase.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
@@ -891,6 +888,9 @@
       <Filter>Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="GPUManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
