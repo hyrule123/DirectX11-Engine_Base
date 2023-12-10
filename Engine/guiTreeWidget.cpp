@@ -67,7 +67,7 @@ namespace editor
 
 	// Tree
 	TreeWidget::TreeWidget()
-		: guiChild(strKey::TreeWidget)
+		: EditorChild(strKey::TreeWidget)
 		, mRoot(nullptr)
 		, mbDummyRootUse{}
 		, mSelectedNode{}

@@ -9,7 +9,7 @@
 namespace editor
 {
 	guiComponent::guiComponent(ehw::eComponentCategory _type)
-		: guiChild(ehw::strKey::eComponentCategory_String[(int)_type])
+		: EditorChild(ehw::strKey::eComponentCategory_String[(int)_type])
 		, m_ComCategory(_type)
 		, mTarget(nullptr)
 	{

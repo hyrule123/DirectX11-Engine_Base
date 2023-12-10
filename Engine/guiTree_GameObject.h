@@ -1,5 +1,5 @@
 #pragma once
-#include "guiChild.h"
+#include "EditorChild.h"
 
 #include "guiTreeWidget.h"
 

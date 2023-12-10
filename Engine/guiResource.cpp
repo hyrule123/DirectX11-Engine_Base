@@ -5,7 +5,7 @@
 namespace editor
 {
 	guiResource::guiResource(ehw::eResourceType _resType)
-		: guiChild(ehw::strKey::ArrResName[(int)_resType])
+		: EditorChild(ehw::strKey::ArrResName[(int)_resType])
 		, mResType(_resType)
 		, mTarget()
 	{

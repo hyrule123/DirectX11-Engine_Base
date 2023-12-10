@@ -1,5 +1,5 @@
 #pragma once
-#include "guiChild.h"
+#include "EditorChild.h"
 #include "define_GPU.h"
 #include "define_Struct.h"
 #include "define_Macro.h"
@@ -92,7 +92,7 @@ namespace editor
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
 		//editor Child는 무조건 child로 들어가기위한 용도이므로 assert
-		static_assert(false == std::is_base_of_v<guiChild, T>);
+		static_assert(false == std::is_base_of_v<EditorChild, T>);
 
 		T* retPtr = new T;
 

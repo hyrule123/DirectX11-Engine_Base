@@ -351,7 +351,7 @@
     <ClCompile Include="EditorBase.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
-    <ClCompile Include="guiChild.cpp">
+    <ClCompile Include="EditorChild.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindow.cpp">
@@ -725,7 +725,7 @@
     <ClInclude Include="EditorBase.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
-    <ClInclude Include="guiChild.h">
+    <ClInclude Include="EditorChild.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindow.h">

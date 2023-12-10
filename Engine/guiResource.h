@@ -1,10 +1,10 @@
 #pragma once
-#include "guiChild.h"
+#include "EditorChild.h"
 #include "iResource.h"
 
 namespace editor
 {
-	class guiResource : public guiChild
+	class guiResource : public EditorChild
 	{
 	public:
 		guiResource(ehw::eResourceType _resType);

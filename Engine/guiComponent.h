@@ -1,11 +1,11 @@
 #pragma once
-#include "guiChild.h"
+#include "EditorChild.h"
 #include "GameObject.h"
 
 
 namespace editor
 {
-	class guiComponent : public guiChild
+	class guiComponent : public EditorChild
 	{
 	public:
 		guiComponent(ehw::eComponentCategory _type);

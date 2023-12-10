@@ -278,7 +278,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="GameMainWindow.h" />
     <ClInclude Include="GPUManager.h" />
     <ClInclude Include="EditorBase.h" />
-    <ClInclude Include="guiChild.h" />
+    <ClInclude Include="EditorChild.h" />
     <ClInclude Include="guiComboBox.h" />
     <ClInclude Include="guiComponent.h" />
     <ClInclude Include="guiCom_Renderer.h" />
@@ -410,7 +410,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="GameMainWindow.cpp" />
     <ClCompile Include="GPUManager.cpp" />
     <ClCompile Include="EditorBase.cpp" />
-    <ClCompile Include="guiChild.cpp" />
+    <ClCompile Include="EditorChild.cpp" />
     <ClCompile Include="guiComboBox.cpp" />
     <ClCompile Include="guiComponent.cpp" />
     <ClCompile Include="guiCom_Renderer.cpp" />

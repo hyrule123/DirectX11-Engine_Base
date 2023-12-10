@@ -1,11 +1,11 @@
 #pragma once
-#include "guiChild.h"
+#include "EditorChild.h"
 #include <functional>
 #include "define_Struct.h"
 
 namespace editor
 {
-	class TreeWidget : public guiChild
+	class TreeWidget : public EditorChild
 	{
 	public:
 		struct tNode : public EditorEntity

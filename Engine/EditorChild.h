@@ -3,12 +3,12 @@
 
 namespace editor
 {
-	class guiChild :
+	class EditorChild :
 		public EditorWindow
 	{
 	public:
-		guiChild(const std::string_view _strName);
-		virtual ~guiChild();
+		EditorChild(const std::string_view _strName);
+		virtual ~EditorChild();
 
 		virtual bool BeginUI() override;
 		virtual void UpdateUI() override {};
