@@ -2,7 +2,7 @@
 
 namespace ehw
 {
-	class TimeMgr
+	class TimeManager
 	{
 		friend class Application;
 	public:

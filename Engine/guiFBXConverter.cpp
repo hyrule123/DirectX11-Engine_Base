@@ -4,7 +4,7 @@
 #include "PathManager.h"
 #include "define_Util.h"
 #include "MeshData.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 #include "ThreadPoolManager.h"
 
 namespace gui
@@ -84,7 +84,7 @@ namespace gui
 			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
-			waitDot += ehw::TimeMgr::DeltaTime();
+			waitDot += ehw::TimeManager::DeltaTime();
 			if (1.f < waitDot)
 			{
 				waitDot = 0.f;

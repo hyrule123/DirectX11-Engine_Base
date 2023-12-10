@@ -5,7 +5,7 @@
 
 #include "ComponentInitializer.h"
 #include "RenderManager.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "ResourceMgr.h"
@@ -59,7 +59,7 @@ namespace ehw
 
 		ComponentInitializer::Init();
 		
-		TimeMgr::Init();
+		TimeManager::Init();
 		InputManager::Init();
 
 		CollisionManager::Init();
@@ -75,7 +75,7 @@ namespace ehw
 	// CPU UPDATE
 	void Application::Update()
 	{
-		TimeMgr::Update();
+		TimeManager::Update();
 		InputManager::Update();
 		CollisionManager::Update();
 		SceneManager::Update();
@@ -90,7 +90,7 @@ namespace ehw
 
 	void Application::Render()
 	{
-		TimeMgr::Render(mHdc);
+		TimeManager::Render(mHdc);
 
 		//최종 렌더타겟 Clear
 		GPUManager::ClearRenderTarget();

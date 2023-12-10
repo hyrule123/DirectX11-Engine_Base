@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 
 #include "AtExit.h"
 #include "Application.h"
@@ -10,13 +10,13 @@ namespace ehw
 {
     
 
-    float	            TimeMgr::mDeltaTime{};
-    LARGE_INTEGER	    TimeMgr::mCpuFrequency{};
-    LARGE_INTEGER       TimeMgr::mPrevFrequency{};
-    LARGE_INTEGER	    TimeMgr::mCurFrequency{};
-    float			    TimeMgr::mOneSecond{};
+    float	            TimeManager::mDeltaTime{};
+    LARGE_INTEGER	    TimeManager::mCpuFrequency{};
+    LARGE_INTEGER       TimeManager::mPrevFrequency{};
+    LARGE_INTEGER	    TimeManager::mCurFrequency{};
+    float			    TimeManager::mOneSecond{};
 
-    void TimeMgr::Init()
+    void TimeManager::Init()
     {
         AtExit::AddFunc(Release);
 
@@ -28,7 +28,7 @@ namespace ehw
     }
 
 
-    void TimeMgr::Release()
+    void TimeManager::Release()
     {
         mDeltaTime = {};
         mCpuFrequency = {};
@@ -38,7 +38,7 @@ namespace ehw
     }
 
 
-    void TimeMgr::Update()
+    void TimeManager::Update()
     {
         QueryPerformanceCounter(&mCurFrequency);
 
@@ -49,7 +49,7 @@ namespace ehw
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;
     }
 
-    void TimeMgr::Render(HDC _hdc)
+    void TimeManager::Render(HDC _hdc)
     {
         static int iCount = 0;
         ++iCount;

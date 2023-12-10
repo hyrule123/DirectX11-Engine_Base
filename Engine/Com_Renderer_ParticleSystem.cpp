@@ -8,7 +8,7 @@
 #include "Com_Transform.h"
 #include "GameObject.h"
 #include "Texture.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 
 #include "ConstBuffer.h"
 
@@ -197,7 +197,7 @@ namespace ehw
 		float aliveTime = 1.0f / mFrequency;
 
 		//누적시간
-		mTime += TimeMgr::DeltaTime();
+		mTime += TimeManager::DeltaTime();
 		if (aliveTime < mTime)
 		{
 			float f = (mTime / aliveTime);
@@ -223,8 +223,8 @@ namespace ehw
 		mCBData.startSize = mStartSize;
 		mCBData.startColor = mStartColor;
 		mCBData.startLifeTime = mStartLifeTime;
-		mCBData.deltaTime = TimeMgr::DeltaTime();
-		mCBData.elapsedTime += TimeMgr::DeltaTime();
+		mCBData.deltaTime = TimeManager::DeltaTime();
+		mCBData.elapsedTime += TimeManager::DeltaTime();
 
 		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::ParticleSystem);
 		cb->SetData(&mCBData);

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "Com_Animator3D.h"
 
-#include "TimeMgr.h"
+#include "TimeManager.h"
 #include "Com_Renderer_Mesh.h"
 #include "StructBuffer.h"
 #include "ResourceMgr.h"
@@ -76,7 +76,7 @@ namespace ehw
 		bool bChangeEnd = false;
 		if (m_Anim3DCBuffer.bChangingAnim)
 		{
-			m_fChangeTimeAccumulate += TimeMgr::DeltaTime();
+			m_fChangeTimeAccumulate += TimeManager::DeltaTime();
 
 			if (m_fChangeTimeLength < m_fChangeTimeAccumulate)
 			{
@@ -90,7 +90,7 @@ namespace ehw
 		{
 			double curTime = 0.f;
 			// 현재 재생중인 Clip 의 시간을 진행한다.
-			m_fClipUpdateTime += TimeMgr::DeltaTime();
+			m_fClipUpdateTime += TimeManager::DeltaTime();
 
 			//애니메이션 재생이 끝났으면 -> 첫 프레임으로
 			//m_fClipUpdateTime = 애니메이션 시작 이후 누적 시간

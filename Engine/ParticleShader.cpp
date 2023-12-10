@@ -3,7 +3,7 @@
 #include "ParticleShader.h"
 #include "RenderManager.h"
 #include "ConstBuffer.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 
 namespace ehw
 {

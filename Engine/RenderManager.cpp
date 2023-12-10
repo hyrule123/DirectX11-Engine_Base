@@ -15,7 +15,7 @@
 #include "SceneManager.h"
 
 #include "ResourceMgr.h"
-#include "TimeMgr.h"
+#include "TimeManager.h"
 
 #include "MultiRenderTarget.h"
 #include "Application.h"
@@ -176,7 +176,7 @@ namespace ehw
 		info.NoiseSize.y = (float)noise->GetHeight();
 
 		static float noiseTime = 10.f;
-		noiseTime -= TimeMgr::DeltaTime();
+		noiseTime -= TimeManager::DeltaTime();
 		info.NoiseTime = noiseTime;
 
 		ConstBuffer* cb = mConstBuffers[(uint)eCBType::Noise].get();
@@ -221,7 +221,7 @@ namespace ehw
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{
-		gGlobal.DeltaTime = TimeMgr::DeltaTime();
+		gGlobal.DeltaTime = TimeManager::DeltaTime();
 		gGlobal.AccFramePrev = gGlobal.AccFrame;
 		gGlobal.AccFrame += 1u;
 		

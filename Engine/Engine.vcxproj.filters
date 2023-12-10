@@ -273,7 +273,7 @@
     <ClCompile Include="ResourceMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="TimeMgr.cpp">
+    <ClCompile Include="TimeManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="PathManager.cpp">
@@ -638,7 +638,7 @@
     <ClInclude Include="ResourceMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="TimeMgr.h">
+    <ClInclude Include="TimeManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="PathManager.h">

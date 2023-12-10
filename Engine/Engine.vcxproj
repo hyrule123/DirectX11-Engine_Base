@@ -376,7 +376,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="StructBuffer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ThreadPoolManager.h" />
-    <ClInclude Include="TimeMgr.h" />
+    <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Com_Transform.h" />
     <ClInclude Include="define_Util.h" />
   </ItemGroup>
@@ -546,7 +546,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="StructBuffer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ThreadPoolManager.cpp" />
-    <ClCompile Include="TimeMgr.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Com_Transform.cpp" />
     <ClCompile Include="define_Util.cpp" />
   </ItemGroup>
