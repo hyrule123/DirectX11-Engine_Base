@@ -9,7 +9,7 @@
 #include "InputMgr.h"
 #include "SceneMgr.h"
 #include "ResourceMgr.h"
-#include "CollisionMgr.h"
+#include "CollisionManager.h"
 #include "AudioManager.h"
 #include "FontWrapper.h"
 #include "PathMgr.h"
@@ -62,7 +62,7 @@ namespace ehw
 		TimeMgr::Init();
 		InputMgr::Init();
 
-		CollisionMgr::Init();
+		CollisionManager::Init();
 		
 		SceneMgr::Init();
 
@@ -77,14 +77,14 @@ namespace ehw
 	{
 		TimeMgr::Update();
 		InputMgr::Update();
-		CollisionMgr::Update();
+		CollisionManager::Update();
 		SceneMgr::Update();
 	}
 
 	// GPU update
 	void Application::InternalUpdate()
 	{
-		CollisionMgr::InternalUpdate();
+		CollisionManager::InternalUpdate();
 		SceneMgr::InternalUpdate();
 	}
 

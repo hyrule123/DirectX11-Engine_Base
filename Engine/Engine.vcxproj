@@ -306,7 +306,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="iAnimator.h" />
     <ClInclude Include="iCollider3D.h" />
     <ClInclude Include="iCollider2D.h" />
-    <ClInclude Include="CollisionMgr.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="iLight.h" />
     <ClInclude Include="ImGuizmo.h" />
@@ -438,7 +438,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="iAnimator.cpp" />
     <ClCompile Include="iCollider3D.cpp" />
     <ClCompile Include="iCollider2D.cpp" />
-    <ClCompile Include="CollisionMgr.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="iLight.cpp" />
     <ClCompile Include="ImGuizmo.cpp">

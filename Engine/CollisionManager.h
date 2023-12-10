@@ -15,7 +15,7 @@ namespace ehw
 	};
 
 	//	class Scene;
-	class CollisionMgr
+	class CollisionManager
 	{
 		friend class Application;
 	public:

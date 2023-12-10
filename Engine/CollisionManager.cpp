@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "CollisionMgr.h"
+#include "CollisionManager.h"
 
 #include "iScene.h"
 #include "SceneMgr.h"
@@ -10,14 +10,14 @@
 
 namespace ehw
 {
-	std::bitset<(uint)eLayerType::END> CollisionMgr::mLayerCollisionMatrix[(uint)eLayerType::END] = {};
-	std::map<UINT64, bool> CollisionMgr::mCollisionMap;
+	std::bitset<(uint)eLayerType::END> CollisionManager::mLayerCollisionMatrix[(uint)eLayerType::END] = {};
+	std::map<UINT64, bool> CollisionManager::mCollisionMap;
 
-	void CollisionMgr::Init()
+	void CollisionManager::Init()
 	{
 		AtExit::AddFunc(Release);
 	}
-	void CollisionMgr::Release()
+	void CollisionManager::Release()
 	{
 		for (int i = 0; i < (int)eLayerType::END; ++i)
 		{
@@ -26,7 +26,7 @@ namespace ehw
 
 		mCollisionMap.clear();
 	}
-	void CollisionMgr::Update()
+	void CollisionManager::Update()
 	{
 		iScene* scene = SceneMgr::GetActiveScene();
 		for (uint row = 0; row < (uint)eLayerType::END; row++)
@@ -40,13 +40,13 @@ namespace ehw
 			}
 		}
 	}
-	void CollisionMgr::InternalUpdate()
+	void CollisionManager::InternalUpdate()
 	{
 	}
-	void CollisionMgr::Render()
+	void CollisionManager::Render()
 	{
 	}
-	void CollisionMgr::CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable)
+	void CollisionManager::CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable)
 	{
 		int row = 0;
 		int column = 0;
@@ -64,7 +64,7 @@ namespace ehw
 
 		mLayerCollisionMatrix[row][column] = _enable;
 	}
-	void CollisionMgr::LayerCollision(iScene* _scene, eLayerType _left, eLayerType _right)
+	void CollisionManager::LayerCollision(iScene* _scene, eLayerType _left, eLayerType _right)
 	{
 		const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
 		const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
@@ -94,7 +94,7 @@ namespace ehw
 
 	}
 
-	void CollisionMgr::ColliderCollision(iCollider2D* _left, iCollider2D* _right)
+	void CollisionManager::ColliderCollision(iCollider2D* _left, iCollider2D* _right)
 	{
 		// 두 충돌체 레이어로 구성된 ID 확인
 		union_ColliderID colliderID;
@@ -162,7 +162,7 @@ namespace ehw
 		}
 	}
 
-	bool CollisionMgr::Intersect(iCollider2D* _left, iCollider2D* _right)
+	bool CollisionManager::Intersect(iCollider2D* _left, iCollider2D* _right)
 	{
 		// Rect vs Rect 
 		// 0 --- 1
