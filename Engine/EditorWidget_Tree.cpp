@@ -1,9 +1,9 @@
 #include "PCH_Engine.h"
-#include "guiTreeWidget.h"
+#include "EditorWidget_Tree.h"
 
 namespace editor
 {
-	TreeWidget::tNode::tNode()
+	EditorWidget_Tree::tNode::tNode()
 		: EditorEntity("")
 		, mTreeWidget(nullptr)
 		, mData{}
@@ -12,7 +12,7 @@ namespace editor
 		, mbStem(false)
 	{
 	}
-	TreeWidget::tNode::~tNode()
+	EditorWidget_Tree::tNode::~tNode()
 	{
 		for (tNode* child : m_Childs)
 		{
@@ -21,7 +21,7 @@ namespace editor
 		}
 	}
 	// Node
-	void TreeWidget::tNode::UpdateUI()
+	void EditorWidget_Tree::tNode::UpdateUI()
 	{
 		//ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Framed;
 
@@ -59,15 +59,15 @@ namespace editor
 		}
 	}
 
-	void TreeWidget::tNode::AddNode(tNode* node)
+	void EditorWidget_Tree::tNode::AddNode(tNode* node)
 	{
 		node->m_Parent = this;
 		m_Childs.push_back(node);
 	}
 
 	// Tree
-	TreeWidget::TreeWidget()
-		: EditorChild(strKey::TreeWidget)
+	EditorWidget_Tree::EditorWidget_Tree()
+		: EditorChild(strKey::EditorWidget_Tree)
 		, mRoot(nullptr)
 		, mbDummyRootUse{}
 		, mSelectedNode{}
@@ -76,12 +76,12 @@ namespace editor
 	{
 	}
 
-	TreeWidget::~TreeWidget()
+	EditorWidget_Tree::~EditorWidget_Tree()
 	{
 	}
 
 
-	void TreeWidget::UpdateUI()
+	void EditorWidget_Tree::UpdateUI()
 	{
 		if (mRoot == nullptr)
 		{
@@ -102,7 +102,7 @@ namespace editor
 		}
 	}
 
-	TreeWidget::tNode* TreeWidget::AddNode(tNode* parent, const std::string& name, ehw::tDataPtr data, bool isFrame)
+	EditorWidget_Tree::tNode* EditorWidget_Tree::AddNode(tNode* parent, const std::string& name, ehw::tDataPtr data, bool isFrame)
 	{
 		tNode* node = new tNode;
 		node->SetStrKey(name);
@@ -122,11 +122,11 @@ namespace editor
 		return node;
 	}
 
-	void TreeWidget::Clear()
+	void EditorWidget_Tree::Clear()
 	{
 		mRoot.reset();
 	}
-	void TreeWidget::SetSelectedNode(tNode* node)
+	void EditorWidget_Tree::SetSelectedNode(tNode* node)
 	{
 		if (nullptr != mSelectedNode)
 		{

@@ -5,7 +5,7 @@
 
 namespace editor
 {
-	class TreeWidget : public EditorChild
+	class EditorWidget_Tree : public EditorChild
 	{
 	public:
 		struct tNode : public EditorEntity
@@ -22,7 +22,7 @@ namespace editor
 			void AddNode(tNode* node);
 			const std::vector<tNode*>& GetChilds() { return m_Childs; }
 
-			TreeWidget* mTreeWidget;
+			EditorWidget_Tree* mTreeWidget;
 			ehw::tDataPtr mData;
 
 			tNode* m_Parent;
@@ -32,8 +32,8 @@ namespace editor
 			bool mbSelected;
 		};
 
-		TreeWidget();
-		virtual ~TreeWidget();
+		EditorWidget_Tree();
+		virtual ~EditorWidget_Tree();
 
 		virtual void UpdateUI() override;
 

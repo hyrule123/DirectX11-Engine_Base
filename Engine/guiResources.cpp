@@ -24,7 +24,7 @@ namespace editor
 		: EditorWindow(strKey::ResourceViewer)
 		, mTreeWidget(nullptr)
 	{
-		mTreeWidget = AddChild<TreeWidget>();
+		mTreeWidget = AddChild<EditorWidget_Tree>();
 
 		mTreeWidget->SetEvent(this
 			, std::bind(&guiResources::toInspector, this, std::placeholders::_1));
@@ -46,7 +46,7 @@ namespace editor
 		//mTreeWidget->Close();
 		mTreeWidget->Clear();
 
-		TreeWidget::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);
+		EditorWidget_Tree::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);
 
 		//enum class eResourceType
 		//{

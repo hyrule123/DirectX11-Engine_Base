@@ -1,6 +1,6 @@
 #pragma once
 #include "EditorChild.h"
-#include "guiTreeWidget.h"
+#include "EditorWidget_Tree.h"
 
 #include "iResource.h"
 #include "ResourceManager.h"
@@ -19,12 +19,12 @@ namespace editor
 
 	private:
 		template <typename T>
-		void AddResources(TreeWidget::tNode* rootNode, const char* name)
+		void AddResources(EditorWidget_Tree::tNode* rootNode, const char* name)
 		{
 			const std::unordered_map<std::string, std::shared_ptr<ehw::iResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
 				= ehw::ResourceManager::GetResources<T>();
 
-			TreeWidget::tNode* stemNode
+			EditorWidget_Tree::tNode* stemNode
 				= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);
 
 			for (const auto& resource : resources)
@@ -37,6 +37,6 @@ namespace editor
 
 		void toInspector(ehw::tDataPtr _data);
 
-		TreeWidget* mTreeWidget;
+		EditorWidget_Tree* mTreeWidget;
 	};
 }

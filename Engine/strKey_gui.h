@@ -11,5 +11,5 @@ namespace editor::strKey
 	STRKEY ResourceViewer = "Resource Viewer";
 	STRKEY GameObjects = "GameObject Viewer";
 	STRKEY ListBox = "List Box";
-	STRKEY TreeWidget = "Tree Widget";
+	STRKEY EditorWidget_Tree = "Tree Widget";
 }

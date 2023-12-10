@@ -22,7 +22,7 @@ namespace editor
 		int2 winSize = ehw::Application::GetWindowSize();
 		//SetSize(ImVec2((float)(winSize.x / 2), (float)(winSize.y / 2)));
 
-		mTreeWidget = AddChild<TreeWidget>();
+		mTreeWidget = AddChild<EditorWidget_Tree>();
 		
 
 		mTreeWidget->SetEvent(this
@@ -59,7 +59,7 @@ namespace editor
 		ehw::iScene* scene = ehw::SceneManager::GetActiveScene();
 		std::string sceneName = scene->GetStrKey();
 
-		TreeWidget::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);
+		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);
 
 		for (size_t i = 0; i < (UINT)ehw::eLayerType::END; i++)
 		{
@@ -76,7 +76,7 @@ namespace editor
 		mTreeWidget->SetEnable(true);
 	}
 
-	void guiTree_GameObject::AddGameObject(TreeWidget::tNode* parent, ehw::GameObject* gameObject)
+	void guiTree_GameObject::AddGameObject(EditorWidget_Tree::tNode* parent, ehw::GameObject* gameObject)
 	{
 		std::string name(gameObject->GetName());
 		if (name.empty())
@@ -87,7 +87,7 @@ namespace editor
 		ehw::tDataPtr data{};
 		data.SetDataPtr(gameObject);
 
-		TreeWidget::tNode* node = mTreeWidget->AddNode(parent, name, data);
+		EditorWidget_Tree::tNode* node = mTreeWidget->AddNode(parent, name, data);
 	}
 
 }

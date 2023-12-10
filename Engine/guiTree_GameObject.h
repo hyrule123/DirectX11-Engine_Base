@@ -1,7 +1,7 @@
 #pragma once
 #include "EditorChild.h"
 
-#include "guiTreeWidget.h"
+#include "EditorWidget_Tree.h"
 
 namespace ehw
 {
@@ -20,9 +20,9 @@ namespace editor
 
 		void GameobjectSelectCallback(ehw::tDataPtr _data);
 		void InitializeScene();
-		void AddGameObject(TreeWidget::tNode* parent, ehw::GameObject* gameObject);
+		void AddGameObject(EditorWidget_Tree::tNode* parent, ehw::GameObject* gameObject);
 
 	private:
-		TreeWidget* mTreeWidget;
+		EditorWidget_Tree* mTreeWidget;
 	};
 }
