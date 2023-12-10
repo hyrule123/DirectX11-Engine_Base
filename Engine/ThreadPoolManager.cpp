@@ -1,18 +1,18 @@
 #include "PCH_Engine.h"
-#include "ThreadPoolMgr.h"
+#include "ThreadPoolManager.h"
 #include "AtExit.h"
 
 namespace ehw
 {
-    size_t                                  ThreadPoolMgr::mNumThread{};
-    std::vector<std::thread>                ThreadPoolMgr::mWorkerThreads{};
-    std::queue<std::function<void()>>       ThreadPoolMgr::mJobs{};
-    std::condition_variable                 ThreadPoolMgr::mCVJobqueue{};
-    std::mutex                              ThreadPoolMgr::mMtxJobQueue{};
-    bool                                    ThreadPoolMgr::mStopAll{};
+    size_t                                  ThreadPoolManager::mNumThread{};
+    std::vector<std::thread>                ThreadPoolManager::mWorkerThreads{};
+    std::queue<std::function<void()>>       ThreadPoolManager::mJobs{};
+    std::condition_variable                 ThreadPoolManager::mCVJobqueue{};
+    std::mutex                              ThreadPoolManager::mMtxJobQueue{};
+    bool                                    ThreadPoolManager::mStopAll{};
 
 
-    void ThreadPoolMgr::Init(size_t _numThread)
+    void ThreadPoolManager::Init(size_t _numThread)
     {
         AtExit::AddFunc(Release);
 
@@ -41,7 +41,7 @@ namespace ehw
         }
     }
 
-    void ThreadPoolMgr::Release()
+    void ThreadPoolManager::Release()
     {
         mStopAll = true;
         mCVJobqueue.notify_all();
@@ -59,7 +59,7 @@ namespace ehw
         }
     }
 
-    void ThreadPoolMgr::WorkerThread() 
+    void ThreadPoolManager::WorkerThread() 
     {
         while (true) 
         {

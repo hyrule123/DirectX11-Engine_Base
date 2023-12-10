@@ -11,7 +11,7 @@
 
 namespace ehw
 {
-    class ThreadPoolMgr 
+    class ThreadPoolManager 
     {
         friend class Application;
     public:
@@ -44,17 +44,17 @@ namespace ehw
 
 
     private:
-        ThreadPoolMgr() = delete;
-        ~ThreadPoolMgr() = delete;
+        ThreadPoolManager() = delete;
+        ~ThreadPoolManager() = delete;
     };
 
 
     template <class F, class... Args>
     std::future<typename std::invoke_result<F, Args...>::type>
-        ThreadPoolMgr::EnqueueJob(F&& f, Args&&... args)
+        ThreadPoolManager::EnqueueJob(F&& f, Args&&... args)
     {
         if (mStopAll) {
-            throw std::runtime_error("ThreadPoolMgr 사용 중지됨");
+            throw std::runtime_error("ThreadPoolManager 사용 중지됨");
         }
 
         using return_type = std::invoke_result<F, Args...>::type;

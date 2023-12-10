@@ -5,7 +5,7 @@
 #include "define_Util.h"
 #include "MeshData.h"
 #include "TimeMgr.h"
-#include "ThreadPoolMgr.h"
+#include "ThreadPoolManager.h"
 
 namespace gui
 {
@@ -152,7 +152,7 @@ namespace gui
 				return;
 			}
 			
-			mFutureConvertResult = ehw::ThreadPoolMgr::EnqueueJob(
+			mFutureConvertResult = ehw::ThreadPoolManager::EnqueueJob(
 				[this]()->ehw::eResult
 				{
 					std::shared_ptr<ehw::MeshData> meshData = std::make_unique<ehw::MeshData>();

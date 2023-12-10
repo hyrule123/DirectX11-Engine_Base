@@ -14,7 +14,7 @@
 #include "FontWrapper.h"
 #include "PathManager.h"
 #include "guiMgr.h"
-#include "ThreadPoolMgr.h"
+#include "ThreadPoolManager.h"
 
 #include "define_Global.h"
 
@@ -38,7 +38,7 @@ namespace ehw
 		SetWindowSize(_AppDesc.Width, _AppDesc.Height);
 
 
-		ThreadPoolMgr::Init((size_t)std::thread::hardware_concurrency());
+		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
 
 
 

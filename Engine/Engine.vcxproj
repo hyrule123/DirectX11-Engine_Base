@@ -375,7 +375,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="strKey_gui.h" />
     <ClInclude Include="StructBuffer.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="ThreadPoolMgr.h" />
+    <ClInclude Include="ThreadPoolManager.h" />
     <ClInclude Include="TimeMgr.h" />
     <ClInclude Include="Com_Transform.h" />
     <ClInclude Include="define_Util.h" />
@@ -545,7 +545,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="StructBuffer.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="ThreadPoolMgr.cpp" />
+    <ClCompile Include="ThreadPoolManager.cpp" />
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="Com_Transform.cpp" />
     <ClCompile Include="define_Util.cpp" />

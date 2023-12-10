@@ -492,7 +492,7 @@
     <ClCompile Include="guiUVCalculator.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadPoolMgr.cpp">
+    <ClCompile Include="ThreadPoolManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Animation3D.cpp">
@@ -872,7 +872,7 @@
     <ClInclude Include="guiUVCalculator.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadPoolMgr.h">
+    <ClInclude Include="ThreadPoolManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="ComponentInitializer.h">
