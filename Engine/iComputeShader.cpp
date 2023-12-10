@@ -3,7 +3,7 @@
 #include "PathMgr.h"
 
 #include "iComputeShader.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 #include "RenderMgr.h"
 #include "ConstBuffer.h"
 
@@ -142,8 +142,8 @@ namespace ehw
 		pCB->BindData();
 
 		//쉐이더 바인딩
-		GPUMgr::Context()->CSSetShader(m_CS.Get(), nullptr, 0);
-		GPUMgr::Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
+		GPUManager::Context()->CSSetShader(m_CS.Get(), nullptr, 0);
+		GPUManager::Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
 
 		//데이터 정리
 		UnBindData();
@@ -158,7 +158,7 @@ namespace ehw
 	{
 		eResult result = eResult::Fail_Create;
 
-		if (SUCCEEDED(GPUMgr::Device()->CreateComputeShader(
+		if (SUCCEEDED(GPUManager::Device()->CreateComputeShader(
 			_pByteCode,
 			_ByteCodeSize,
 			nullptr,

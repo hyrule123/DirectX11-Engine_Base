@@ -23,7 +23,7 @@ namespace ehw
 	class RenderMgr
 	{
 		friend class Application;
-		friend class GPUMgr;
+		friend class GPUManager;
 	public:
 		static void Render();
 

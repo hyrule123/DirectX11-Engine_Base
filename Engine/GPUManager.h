@@ -4,7 +4,7 @@
 namespace ehw
 {
 	class Texture;
-	class GPUMgr 
+	class GPUManager 
 	{
 		friend class Application;
 
@@ -64,18 +64,18 @@ namespace ehw
 		static D3D11_VIEWPORT mViewPort;
 	};
 
-	inline void GPUMgr::Present(bool _bVSync)
+	inline void GPUManager::Present(bool _bVSync)
 	{
 		int VSync = _bVSync ? 1 : 0;
 		mSwapChain->Present(VSync, 0u);
 	}
 
-	inline std::shared_ptr<ehw::Texture> GPUMgr::GetRenderTargetTex()
+	inline std::shared_ptr<ehw::Texture> GPUManager::GetRenderTargetTex()
 	{
 		return mRenderTargetTexture;
 	}
 
-	inline std::shared_ptr<ehw::Texture> GPUMgr::GetDepthStencilBufferTex()
+	inline std::shared_ptr<ehw::Texture> GPUManager::GetDepthStencilBufferTex()
 	{
 		return mDepthStencilBufferTexture;
 	}

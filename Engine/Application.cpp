@@ -45,7 +45,7 @@ namespace ehw
 		PathMgr::Init();
 
 		//RenderMgr은 GPUMgr에서
-		if (false == GPUMgr::Init(_AppDesc.GPUDesc))
+		if (false == GPUManager::Init(_AppDesc.GPUDesc))
 		{
 			mHdc = GetDC(_AppDesc.Hwnd);
 			ERROR_MESSAGE_W(L"Graphics Device 초기화 실패");
@@ -93,7 +93,7 @@ namespace ehw
 		TimeMgr::Render(mHdc);
 
 		//최종 렌더타겟 Clear
-		GPUMgr::ClearRenderTarget();
+		GPUManager::ClearRenderTarget();
 
 		RenderMgr::Render();
 	}
@@ -120,7 +120,7 @@ namespace ehw
 
 	void Application::Present()
 	{
-		GPUMgr::Present(true);
+		GPUManager::Present(true);
 	}
 
 	void Application::Release()

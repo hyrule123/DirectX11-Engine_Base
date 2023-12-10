@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 
 #include "GraphicsShader.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 #include "RenderMgr.h"
 
 #include "PathMgr.h"
@@ -381,7 +381,7 @@ namespace ehw
 			return eResult::Fail_Create;
 		}
 
-		if (FAILED(GPUMgr::Device()->CreateInputLayout(
+		if (FAILED(GPUManager::Device()->CreateInputLayout(
 			mInputLayoutDescs.data(),
 			(uint)mInputLayoutDescs.size(),
 			VSBlobData->GetBufferPointer(),
@@ -399,7 +399,7 @@ namespace ehw
 
 	void GraphicsShader::BindData()
 	{
-		auto pContext = GPUMgr::Context();
+		auto pContext = GPUManager::Context();
 
 		pContext->IASetPrimitiveTopology(mTopology);
 		pContext->IASetInputLayout(mInputLayout.Get());
@@ -426,7 +426,7 @@ namespace ehw
 		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
 		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");
 
-		auto pDevice = GPUMgr::Device();
+		auto pDevice = GPUManager::Device();
 		switch (_stage)
 		{
 		case eGSStage::VS:

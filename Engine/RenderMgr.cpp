@@ -190,12 +190,12 @@ namespace ehw
 		//renderTarget->UnBindData();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
-		//GPUMgr::Context()->PSSetShaderResources()(eShaderStage::PS, 60, &srv);
+		//GPUManager::Context()->PSSetShaderResources()(eShaderStage::PS, 60, &srv);
 
 		ID3D11Texture2D* dest = mPostProcessTexture->GetTexture().Get();
 		ID3D11Texture2D* source = renderTarget->GetTexture().Get();
 
-		GPUMgr::Context()->CopyResource(dest, source);
+		GPUManager::Context()->CopyResource(dest, source);
 
 		mPostProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::PS);
 	}
@@ -256,8 +256,8 @@ namespace ehw
 			std::shared_ptr<Texture> arrRTTex[8] = {};
 			std::shared_ptr<Texture> dsTex = nullptr;
 
-			arrRTTex[0] = GPUMgr::GetRenderTargetTex();
-			dsTex = GPUMgr::GetDepthStencilBufferTex();
+			arrRTTex[0] = GPUManager::GetRenderTargetTex();
+			dsTex = GPUManager::GetDepthStencilBufferTex();
 
 			mMultiRenderTargets[(UINT)eMRTType::Swapchain] = std::make_unique<MultiRenderTarget>();
 
@@ -283,7 +283,7 @@ namespace ehw
 			}
 			
 
-			dsTex = GPUMgr::GetDepthStencilBufferTex();
+			dsTex = GPUManager::GetDepthStencilBufferTex();
 
 			mMultiRenderTargets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
 			if(false == mMultiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
@@ -1251,7 +1251,7 @@ namespace ehw
 
 		//noise
 		std::shared_ptr<Texture> mNoiseTex = std::make_shared<Texture>();
-		mNoiseTex->Create(GPUMgr::GetResolutionX(), GPUMgr::GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+		mNoiseTex->Create(GPUManager::GetResolutionX(), GPUManager::GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 		mNoiseTex->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::PS);
 	}
 
@@ -1267,34 +1267,34 @@ namespace ehw
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
 
 
-		GPUMgr::Device()->CreateSamplerState
+		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
 			, mSamplerStates[(uint)eSamplerType::Point].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR;
-		GPUMgr::Device()->CreateSamplerState
+		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
 			, mSamplerStates[(uint)eSamplerType::Linear].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
-		GPUMgr::Device()->CreateSamplerState
+		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
 			, mSamplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf()
 		);
 
 
-		GPUMgr::Context()->PSSetSamplers((uint)eSamplerType::Point
+		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Point
 			, 1, mSamplerStates[(uint)eSamplerType::Point].GetAddressOf());
 
-		GPUMgr::Context()->PSSetSamplers((uint)eSamplerType::Linear
+		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Linear
 			, 1, mSamplerStates[(uint)eSamplerType::Linear].GetAddressOf());
 
-		GPUMgr::Context()->PSSetSamplers((uint)eSamplerType::Anisotropic
+		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Anisotropic
 			, 1, mSamplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf());
 
 #pragma endregion
@@ -1308,26 +1308,26 @@ namespace ehw
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 		rsDesc.DepthClipEnable = TRUE;
 
-		GPUMgr::Device()->CreateRasterizerState(&rsDesc
+		GPUManager::Device()->CreateRasterizerState(&rsDesc
 			, mRasterizerStates[(uint)eRSType::SolidBack].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
 		rsDesc.DepthClipEnable = TRUE;
 
-		GPUMgr::Device()->CreateRasterizerState(&rsDesc
+		GPUManager::Device()->CreateRasterizerState(&rsDesc
 			, mRasterizerStates[(uint)eRSType::SolidFront].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
-		GPUMgr::Device()->CreateRasterizerState(&rsDesc
+		GPUManager::Device()->CreateRasterizerState(&rsDesc
 			, mRasterizerStates[(uint)eRSType::SolidNone].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
-		GPUMgr::Device()->CreateRasterizerState(&rsDesc
+		GPUManager::Device()->CreateRasterizerState(&rsDesc
 			, mRasterizerStates[(uint)eRSType::WireframeNone].GetAddressOf());
 #pragma endregion
 	}
@@ -1352,7 +1352,7 @@ namespace ehw
 
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		GPUMgr::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::AlphaBlend].GetAddressOf());
+		GPUManager::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::AlphaBlend].GetAddressOf());
 
 		bsDesc.AlphaToCoverageEnable = false;
 		bsDesc.IndependentBlendEnable = false;
@@ -1363,7 +1363,7 @@ namespace ehw
 		bsDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		GPUMgr::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::OneOne].GetAddressOf());
+		GPUManager::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::OneOne].GetAddressOf());
 
 #pragma endregion
 	}
@@ -1376,7 +1376,7 @@ namespace ehw
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = false;
-		GPUMgr::Device()->CreateDepthStencilState(&dsDesc
+		GPUManager::Device()->CreateDepthStencilState(&dsDesc
 			, mDepthStencilStates[(uint)eDSType::Less].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
@@ -1384,7 +1384,7 @@ namespace ehw
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = false;
 
-		GPUMgr::Device()->CreateDepthStencilState(&dsDesc
+		GPUManager::Device()->CreateDepthStencilState(&dsDesc
 			, mDepthStencilStates[(uint)eDSType::Greater].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
@@ -1392,7 +1392,7 @@ namespace ehw
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
 		dsDesc.StencilEnable = false;
 
-		GPUMgr::Device()->CreateDepthStencilState(&dsDesc
+		GPUManager::Device()->CreateDepthStencilState(&dsDesc
 			, mDepthStencilStates[(uint)eDSType::NoWrite].GetAddressOf());
 
 		dsDesc.DepthEnable = false;
@@ -1400,7 +1400,7 @@ namespace ehw
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
 		dsDesc.StencilEnable = false;
 
-		GPUMgr::Device()->CreateDepthStencilState(&dsDesc
+		GPUManager::Device()->CreateDepthStencilState(&dsDesc
 			, mDepthStencilStates[(uint)eDSType::None].GetAddressOf());
 #pragma endregion
 	}

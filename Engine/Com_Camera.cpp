@@ -197,7 +197,7 @@ namespace ehw
 
 	void Com_Camera::CreateProjectionMatrix()
 	{
-		uint2 resolution = GPUMgr::GetResolution();
+		uint2 resolution = GPUManager::GetResolution();
 		CreateProjectionMatrix(resolution.x, resolution.y);
 	}
 

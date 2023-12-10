@@ -3,7 +3,7 @@
 
 #include "define_Global.h"
 #include "RenderMgr.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 #include "FBXLoader.h"
 #include "StructBuffer.h"
 
@@ -225,7 +225,7 @@ namespace ehw
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = mVertexSysMem.data();
 
-		bool Result = SUCCEEDED(GPUMgr::Device()->CreateBuffer(&mVBDesc, &subData, mVertexBuffer.GetAddressOf()));
+		bool Result = SUCCEEDED(GPUManager::Device()->CreateBuffer(&mVBDesc, &subData, mVertexBuffer.GetAddressOf()));
 
 		if (false == Result)
 		{
@@ -277,7 +277,7 @@ namespace ehw
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = indexInfo.IdxSysMem.data();
 
-		result = SUCCEEDED(GPUMgr::Device()->CreateBuffer(&indexInfo.Val.tIBDesc, &subData, indexInfo.IndexBuffer.GetAddressOf()));
+		result = SUCCEEDED(GPUManager::Device()->CreateBuffer(&indexInfo.Val.tIBDesc, &subData, indexInfo.IndexBuffer.GetAddressOf()));
 
 		if (false == result)
 		{
@@ -306,26 +306,26 @@ namespace ehw
 
 		// Input Assembeler 단계에 버텍스버퍼 정보 지정
 		uint offset = 0;
-		GPUMgr::Context()->IASetVertexBuffers(0, 1, mVertexBuffer.GetAddressOf(), &mVertexByteStride, &offset);
-		GPUMgr::Context()->IASetIndexBuffer(mIndexInfos[_subSet].IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		GPUManager::Context()->IASetVertexBuffers(0, 1, mVertexBuffer.GetAddressOf(), &mVertexByteStride, &offset);
+		GPUManager::Context()->IASetIndexBuffer(mIndexInfos[_subSet].IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	}
 
 	void Mesh::Render(UINT _subSet) const
 	{
-		GPUMgr::Context()->DrawIndexed(mIndexInfos[_subSet].Val.IdxCount, 0, 0);
+		GPUManager::Context()->DrawIndexed(mIndexInfos[_subSet].Val.IdxCount, 0, 0);
 	}
 
 	void Mesh::RenderAllMeshes() const
 	{
 		for (size_t i = 0; i < mIndexInfos.size(); ++i)
 		{
-			GPUMgr::Context()->DrawIndexed(mIndexInfos[i].Val.IdxCount, 0, 0);
+			GPUManager::Context()->DrawIndexed(mIndexInfos[i].Val.IdxCount, 0, 0);
 		}
 	}
 	
 	void Mesh::RenderInstanced(UINT _subSet, UINT _instanceCount) const
 	{
-		GPUMgr::Context()->DrawIndexedInstanced(mIndexInfos[_subSet].Val.IdxCount, _instanceCount, 0, 0, 0);
+		GPUManager::Context()->DrawIndexedInstanced(mIndexInfos[_subSet].Val.IdxCount, _instanceCount, 0, 0, 0);
 	}
 
 

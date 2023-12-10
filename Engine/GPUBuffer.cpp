@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 
 #include "GPUBuffer.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 
 namespace ehw
 {

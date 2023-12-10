@@ -13,7 +13,7 @@
 #error "x64만 지원합니다"
 #endif _WIN64
 
-#include "GPUMgr.h"
+#include "GPUManager.h"
 
 #include "AtExit.h"
 
@@ -29,7 +29,7 @@ namespace ehw
 		if (FAILED(FW1CreateFactory(FW1_VERSION, &mFW1Factory)))
 			return false;
 
-		auto pDevice = GPUMgr::Device();
+		auto pDevice = GPUManager::Device();
 		if (FAILED(mFW1Factory->CreateFontWrapper(pDevice.Get(), L"Arial", &mFontWrapper)))
 			return false;
 
@@ -38,7 +38,7 @@ namespace ehw
 
 	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint _rgb)
 	{
-		auto context = GPUMgr::Context();
+		auto context = GPUManager::Context();
 		mFontWrapper->DrawString(context.Get(),
 								 _string, // String
 								 _size,// Font size

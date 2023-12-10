@@ -15,7 +15,7 @@
 #include "Com_Renderer_Mesh.h"
 #include "GridScript.h"
 #include "Application.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 #include "InputMgr.h"
 #include "PathMgr.h"
 
@@ -352,8 +352,8 @@ namespace gui
 
 		// Setup Platform/Renderer backends
 		ImGui_ImplWin32_Init(ehw::Application::GetHwnd());
-		ImGui_ImplDX11_Init(ehw::GPUMgr::Device().Get()
-			, ehw::GPUMgr::Context().Get());
+		ImGui_ImplDX11_Init(ehw::GPUManager::Device().Get()
+			, ehw::GPUManager::Context().Get());
 
 
 

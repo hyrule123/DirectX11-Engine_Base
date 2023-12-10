@@ -300,9 +300,6 @@
     <ClCompile Include="RenderMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="GPUMgr.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -510,6 +507,9 @@
     <ClCompile Include="ComponentInitializer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="GPUManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -663,9 +663,6 @@
       <Filter>Resource\Audio</Filter>
     </ClInclude>
     <ClInclude Include="RenderMgr.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="GPUMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="AudioManager.h">
@@ -892,6 +889,9 @@
     </ClInclude>
     <ClInclude Include="GridScript.h">
       <Filter>Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="GPUManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 
 #include "ConstBuffer.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 
 namespace ehw
 {
@@ -32,7 +32,7 @@ namespace ehw
 		mBufferDesc.MiscFlags = 0;
 		mBufferDesc.StructureByteStride = 0;
 
-		bool bResult = SUCCEEDED(GPUMgr::Device()->CreateBuffer(&mBufferDesc, nullptr, mBuffer.GetAddressOf()));
+		bool bResult = SUCCEEDED(GPUManager::Device()->CreateBuffer(&mBufferDesc, nullptr, mBuffer.GetAddressOf()));
 			
 		if (false == bResult)
 		{
@@ -49,7 +49,7 @@ namespace ehw
 		ASSERT(_dataCount <= mDataCount, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
 	
 
-		auto pContext = GPUMgr::Context();
+		auto pContext = GPUManager::Context();
 		D3D11_MAPPED_SUBRESOURCE tSubRes{};
 
 		if (SUCCEEDED(pContext->Map(mBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
@@ -66,7 +66,7 @@ namespace ehw
 			_stageFlag = mPresetTargetStage;
 		}
 
-		auto pContext = GPUMgr::Context();
+		auto pContext = GPUManager::Context();
 		if (eShaderStageFlag::VS & _stageFlag)
 		{
 			pContext->VSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());

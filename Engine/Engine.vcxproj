@@ -275,6 +275,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="define_Global.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
+    <ClInclude Include="GPUManager.h" />
     <ClInclude Include="guiBase.h" />
     <ClInclude Include="guiChild.h" />
     <ClInclude Include="guiComboBox.h" />
@@ -343,7 +344,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="FontWrapper.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GPUMgr.h" />
     <ClInclude Include="define_GPU.h" />
     <ClInclude Include="GridScript.h" />
     <ClInclude Include="InputMgr.h" />
@@ -407,6 +407,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="define_Global.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
+    <ClCompile Include="GPUManager.cpp" />
     <ClCompile Include="guiBase.cpp" />
     <ClCompile Include="guiChild.cpp" />
     <ClCompile Include="guiComboBox.cpp" />
@@ -513,7 +514,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="FontWrapper.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GPUMgr.cpp" />
     <ClCompile Include="GridScript.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="json-cpp\jsoncpp.cpp">

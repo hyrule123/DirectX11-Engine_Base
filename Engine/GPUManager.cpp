@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "GPUMgr.h"
+#include "GPUManager.h"
 
 #include "AtExit.h"
 
@@ -15,24 +15,24 @@
 namespace ehw
 {
 
-	UINT GPUMgr::mResolutionX{};
-	UINT GPUMgr::mResolutionY{};
-	UINT GPUMgr::mRefreshRate{};
+	UINT GPUManager::mResolutionX{};
+	UINT GPUManager::mResolutionY{};
+	UINT GPUManager::mRefreshRate{};
 
-	ComPtr<ID3D11Device>			GPUMgr::mDevice{};
-	ComPtr<ID3D11DeviceContext>		GPUMgr::mContext{};
+	ComPtr<ID3D11Device>			GPUManager::mDevice{};
+	ComPtr<ID3D11DeviceContext>		GPUManager::mContext{};
 
-	ComPtr<IDXGISwapChain>			GPUMgr::mSwapChain{};
+	ComPtr<IDXGISwapChain>			GPUManager::mSwapChain{};
 
-	std::shared_ptr<ehw::Texture>	GPUMgr::mRenderTargetTexture{};
-	std::shared_ptr<ehw::Texture>	GPUMgr::mDepthStencilBufferTexture{};
+	std::shared_ptr<ehw::Texture>	GPUManager::mRenderTargetTexture{};
+	std::shared_ptr<ehw::Texture>	GPUManager::mDepthStencilBufferTexture{};
 
-	D3D11_VIEWPORT GPUMgr::mViewPort{};
+	D3D11_VIEWPORT GPUManager::mViewPort{};
 
 
-	bool GPUMgr::Init(const tDesc_GPUMgr& _Desc)
+	bool GPUManager::Init(const tDesc_GPUMgr& _Desc)
 	{
-		AtExit::AddFunc(GPUMgr::Release);
+		AtExit::AddFunc(GPUManager::Release);
 
 		/// 1. Device 와 SwapChain 생성한다.
 		/// 2. 백버퍼에 실제로 렌더링할 렌더타겟 뷰를 생성해야한다.
@@ -63,12 +63,12 @@ namespace ehw
 		return true;
 	}
 
-	void GPUMgr::Release()
+	void GPUManager::Release()
 	{
 		Reset();
 	}
 
-	void GPUMgr::Reset()
+	void GPUManager::Reset()
 	{
 		mViewPort = D3D11_VIEWPORT{};
 		mDepthStencilBufferTexture = nullptr;
@@ -78,7 +78,7 @@ namespace ehw
 		mDevice = nullptr;
 	}
 
-	bool GPUMgr::CreateDevice(ID3D11Device** _ppDevice, ID3D11DeviceContext** _ppContext)
+	bool GPUManager::CreateDevice(ID3D11Device** _ppDevice, ID3D11DeviceContext** _ppContext)
 	{
 		bool Result = false;
 		// Device, Device Context
@@ -104,7 +104,7 @@ namespace ehw
 		return Result;
 	}
 
-	bool GPUMgr::SetResoulution(UINT _ResolutionX, UINT _ResolutionY)
+	bool GPUManager::SetResoulution(UINT _ResolutionX, UINT _ResolutionY)
 	{
 		bool bResult = false;
 		//1. 스왑체인 및 최종 렌더타겟 생성
@@ -137,7 +137,7 @@ namespace ehw
 		return true;
 	}
 
-	std::shared_ptr<Texture> GPUMgr::CreateSwapChain(UINT _ResolutionX, UINT _ResolutionY, UINT _RefreshRate)
+	std::shared_ptr<Texture> GPUManager::CreateSwapChain(UINT _ResolutionX, UINT _ResolutionY, UINT _RefreshRate)
 	{
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 
@@ -208,7 +208,7 @@ namespace ehw
 	}
 
 
-	std::shared_ptr<Texture> GPUMgr::CreateDepthStencil(UINT _Width, UINT _Height)
+	std::shared_ptr<Texture> GPUManager::CreateDepthStencil(UINT _Width, UINT _Height)
 	{
 		std::shared_ptr<Texture> DSTex = std::make_shared<ehw::Texture>();
 		
@@ -221,7 +221,7 @@ namespace ehw
 		return DSTex;
 	}
 
-	void GPUMgr::CreateMainViewPort()
+	void GPUManager::CreateMainViewPort()
 	{
 		//창 속에서의 상대적인 좌표이므로 0부터 시작하면 됨
 		mViewPort.TopLeftX = (FLOAT)0.f;
@@ -239,7 +239,7 @@ namespace ehw
 
 
 
-	void GPUMgr::ClearRenderTarget()
+	void GPUManager::ClearRenderTarget()
 	{
 		constexpr FLOAT backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 		mContext->ClearRenderTargetView(mRenderTargetTexture->GetRTV().Get(), backgroundColor);
