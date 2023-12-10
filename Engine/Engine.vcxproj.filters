@@ -387,7 +387,7 @@
     <ClCompile Include="EditorObject.cpp">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClCompile>
-    <ClCompile Include="guiTexture.cpp">
+    <ClCompile Include="EditorTexture.cpp">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClCompile>
     <ClCompile Include="EditorMesh.cpp">
@@ -761,7 +761,7 @@
     <ClInclude Include="EditorObject.h">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
     </ClInclude>
-    <ClInclude Include="guiTexture.h">
+    <ClInclude Include="EditorTexture.h">
       <Filter>GuiEditor\Instances\Resource</Filter>
     </ClInclude>
     <ClInclude Include="EditorMesh.h">

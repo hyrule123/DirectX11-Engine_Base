@@ -298,7 +298,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="guiNormalConverter.h" />
     <ClInclude Include="EditorResource.h" />
     <ClInclude Include="EditorResources.h" />
-    <ClInclude Include="guiTexture.h" />
+    <ClInclude Include="EditorTexture.h" />
     <ClInclude Include="EditorWidget_Tree.h" />
     <ClInclude Include="guiTree_GameObject.h" />
     <ClInclude Include="guiUVCalculator.h" />
@@ -430,7 +430,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="guiNormalConverter.cpp" />
     <ClCompile Include="EditorResource.cpp" />
     <ClCompile Include="EditorResources.cpp" />
-    <ClCompile Include="guiTexture.cpp" />
+    <ClCompile Include="EditorTexture.cpp" />
     <ClCompile Include="EditorWidget_Tree.cpp" />
     <ClCompile Include="guiTree_GameObject.cpp" />
     <ClCompile Include="guiUVCalculator.cpp" />

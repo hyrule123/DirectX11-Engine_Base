@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "guiUVCalculator.h"
 
-#include "guiTexture.h"
+#include "EditorTexture.h"
 
 #include "ResourceManager.h"
 

@@ -3,11 +3,11 @@
 
 namespace editor
 {
-	class guiTexture : public editor::EditorResource
+	class EditorTexture : public EditorResource
 	{
 	public:
-		guiTexture();
-		virtual ~guiTexture();
+		EditorTexture();
+		virtual ~EditorTexture();
 
 		virtual void UpdateUI() override;
 	};

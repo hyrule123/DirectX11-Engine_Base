@@ -1,22 +1,22 @@
 #include "PCH_Engine.h"
 
-#include "guiTexture.h"
+#include "EditorTexture.h"
 #include "Texture.h"
 
 namespace editor
 {
-	guiTexture::guiTexture()
+	EditorTexture::EditorTexture()
 		: EditorResource(ehw::eResourceType::Texture)
 	{
 
 	}
 
-	guiTexture::~guiTexture()
+	EditorTexture::~EditorTexture()
 	{
 
 	}
 
-	void guiTexture::UpdateUI()
+	void EditorTexture::UpdateUI()
 	{
 		if (false == IsValid())
 			return;
