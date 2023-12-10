@@ -2,7 +2,7 @@
 #include "MeshData.h"
 
 #include "define_Util.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "ResourceMgr.h"
 #include "FBXLoader.h"
 #include "GameObject.h"
@@ -12,7 +12,7 @@
 #include "Com_Animator3D.h"
 #include "define_Util.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "json-cpp/json.h"
 #include "Skeleton.h"
 
@@ -41,10 +41,10 @@ namespace ehw
 		fileName = fileName / fileName;		
 		fileName.replace_extension(strKey::Ext_MeshData);
 
-		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
+		const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
 		iResource::Save(fileName);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(fileName, GetResType());
 
 		std::ofstream ofs(fullPath);
 		if (false == ofs.is_open())
@@ -73,10 +73,10 @@ namespace ehw
 		fileName /= fileName;
 		fileName.replace_extension(strKey::Ext_MeshData);
 
-		const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
+		const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
 		iResource::Load(fileName);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(fileName, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(fileName, GetResType());
 
 		Json::Value jVal;
 		fullPath.replace_extension(strKey::Ext_MeshData);
@@ -514,7 +514,7 @@ namespace ehw
 
 		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
 
-		std::fs::path texDir = PathMgr::GetContentPathRelative(eResourceType::Texture);
+		std::fs::path texDir = PathManager::GetContentPathRelative(eResourceType::Texture);
 		texDir /= _texDestDir;
 
 		//media directory(텍스처같은 파일들) 옮겨졌는지 여부 저장 변수

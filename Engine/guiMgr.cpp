@@ -17,7 +17,7 @@
 #include "Application.h"
 #include "GPUManager.h"
 #include "InputManager.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 #include "guiInspector.h"
 #include "guiGame.h"
@@ -192,7 +192,7 @@ namespace gui
 			return;
 
 		//IMGUI 내부 세팅 저장
-		const std::fs::path& saveDir = ehw::PathMgr::GetResPathRelative();
+		const std::fs::path& saveDir = ehw::PathManager::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		ImGui::SaveIniSettingsToDisk(savePath.string().c_str());
 
@@ -330,7 +330,7 @@ namespace gui
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = ehw::PathMgr::GetResPathRelative();
+		const std::fs::path& saveDir = ehw::PathManager::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{
@@ -359,7 +359,7 @@ namespace gui
 
 		//설정 파일들 로드
 		//TODO: 여기
-		//std::filesystem::path origDir = ehw::PathMgr::GetInst()->GetPathRel_Content();
+		//std::filesystem::path origDir = ehw::PathManager::GetInst()->GetPathRel_Content();
 
 		//origDir /= DIRECTORY_NAME::SAVED_SETTING;
 		//std::filesystem::path fullPath = origDir / "imgui.ini";

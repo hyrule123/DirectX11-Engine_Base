@@ -10,7 +10,7 @@ namespace std
 
 namespace ehw
 {
-	class PathMgr
+	class PathManager
 	{
 		friend class Application;
 	public:
@@ -43,12 +43,12 @@ namespace ehw
 		static std::filesystem::path mRelativePath_ShaderCSO;
 	};
 
-	inline std::filesystem::path PathMgr::GetContentPathAbsolute(eResourceType _eResType)
+	inline std::filesystem::path PathManager::GetContentPathAbsolute(eResourceType _eResType)
 	{
 		return mAbsoluteResPath / strKey::ArrResName[(int)_eResType];
 	}
 
-	inline std::filesystem::path PathMgr::CreateFullPathToContent(const std::filesystem::path& _filePath, eResourceType _resType)
+	inline std::filesystem::path PathManager::CreateFullPathToContent(const std::filesystem::path& _filePath, eResourceType _resType)
 	{
 		ASSERT(eResourceType::UNKNOWN != _resType, "리소스 타입을 알 수 없습니다.");
 
@@ -69,7 +69,7 @@ namespace ehw
 
 		return fullPath;
 	}
-	inline std::fs::path PathMgr::MakePathStrKey(const std::fs::path& _fullPath)
+	inline std::fs::path PathManager::MakePathStrKey(const std::fs::path& _fullPath)
 	{
 		std::fs::path strKeyPath{};
 		std::fs::path newPath = _fullPath.lexically_relative(mAbsoluteResPath);

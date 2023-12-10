@@ -4,7 +4,7 @@
 #include "GPUManager.h"
 #include "RenderMgr.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "json-cpp/jsonSaveLoad.h"
 
 namespace ehw
@@ -199,7 +199,7 @@ namespace ehw
 	{
 		iResource::Save(_filePath);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(strKey::Ext_ShaderSetting);
 
 		//파일 열고
@@ -229,7 +229,7 @@ namespace ehw
 	{
 		iResource::Load(_filePath);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
 		fullPath.replace_extension(strKey::Ext_ShaderSetting);
 
 		
@@ -317,7 +317,7 @@ namespace ehw
 	eResult GraphicsShader::CreateByCSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathMgr::GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		if (false == std::fs::exists(shaderBinPath))

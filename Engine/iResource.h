@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "define_Res.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "json-cpp/json-forwards.h"
 
 namespace ehw

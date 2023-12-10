@@ -276,7 +276,7 @@
     <ClCompile Include="TimeMgr.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="PathMgr.cpp">
+    <ClCompile Include="PathManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Com_Renderer_ParticleSystem.cpp">
@@ -641,7 +641,7 @@
     <ClInclude Include="TimeMgr.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="PathMgr.h">
+    <ClInclude Include="PathManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Com_Renderer_ParticleSystem.h">

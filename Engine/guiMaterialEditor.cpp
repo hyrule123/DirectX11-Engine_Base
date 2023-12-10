@@ -2,7 +2,7 @@
 #include "guiMaterialEditor.h"
 
 #include "Material.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "ResourceMgr.h"
 #include "GraphicsShader.h"
 #include "Application.h"
@@ -98,7 +98,7 @@ namespace gui
 	void guiMaterialEditor::RefreshShaderSettingFiles()
 	{
 		const std::fs::path& shaderPath = 
-			ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+			ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -188,7 +188,7 @@ namespace gui
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture);
+				const std::fs::path& texPath = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture);
 				
 				std::vector<std::fs::path> vecExt{};
 				for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
@@ -198,7 +198,7 @@ namespace gui
 				std::fs::path receivedPath = ehw::WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey =  ehw::PathMgr::MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey =  ehw::PathManager::MakePathStrKey(receivedPath);
 
 					std::shared_ptr<ehw::Texture> tex = ehw::ResourceMgr::Load<ehw::Texture>(PathstrKey);
 					if (tex)
@@ -301,7 +301,7 @@ namespace gui
 	}
 	void guiMaterialEditor::SaveToFile()
 	{
-		std::fs::path outputPath = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Material);
+		std::fs::path outputPath = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Material);
 		outputPath /= mSaveLoadFileName;
 		outputPath = ehw::WinAPI::FileDialog(outputPath, ehw::strKey::Ext_Material);
 
@@ -374,10 +374,10 @@ namespace gui
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Material);
+					const std::fs::path& mtrlDir = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Material);
 
 					//Res 폴더
-					const std::fs::path& resDir = ehw::PathMgr::GetResPathAbsolute();
+					const std::fs::path& resDir = ehw::PathManager::GetResPathAbsolute();
 
 					std::fs::path filePath = ehw::WinAPI::FileDialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))

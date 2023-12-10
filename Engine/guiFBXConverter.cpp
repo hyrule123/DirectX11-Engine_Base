@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "guiFBXConverter.h"
 #include "Application.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "define_Util.h"
 #include "MeshData.h"
 #include "TimeMgr.h"
@@ -201,7 +201,7 @@ namespace gui
 	void guiFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetStrKey("MeshData List");
-		const std::fs::path& meshPath = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::MeshData);
+		const std::fs::path& meshPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::MeshData);
 		for (const auto& entry : std::fs::directory_iterator(meshPath))
 		{
 			if (std::fs::is_directory(entry.path()))

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "iResource.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 
 #include "json-cpp/json.h"
 

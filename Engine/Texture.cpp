@@ -15,7 +15,7 @@
 
 
 #include "define_Util.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 
 
@@ -179,7 +179,7 @@ namespace ehw
 	{
 		iResource::Load(_filePath);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
 
 		if (false == std::fs::exists(fullPath))
 		{

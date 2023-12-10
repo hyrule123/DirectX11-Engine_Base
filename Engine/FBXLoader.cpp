@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "FBXLoader.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "ResourceMgr.h"
 #include "Texture.h"
 #include "Material.h"
@@ -528,7 +528,7 @@ namespace ehw
 					if (std::fs::exists(fullPath))
 					{
 						retStr = fullPath.string();
-						//static std::fs::path resPath = PathMgr::GetContentPathAbsolute(eResourceType::MeshData);
+						//static std::fs::path resPath = PathManager::GetContentPathAbsolute(eResourceType::MeshData);
 
 						//fullPath = fullPath.lexically_relative(resPath);
 
@@ -544,8 +544,8 @@ namespace ehw
 	void FBXLoader::LoadTexture()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
-		const std::fs::path& fbxPath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
-		const std::fs::path& texPath = PathMgr::GetContentPathRelative(eResourceType::Texture);
+		const std::fs::path& fbxPath = PathManager::GetContentPathRelative(eResourceType::MeshData);
+		const std::fs::path& texPath = PathManager::GetContentPathRelative(eResourceType::Texture);
 
 		//텍스처 폴더 발견 시 최초 한번 Texture 폴더로 이동시키기 위한 코드
 		std::fs::path srcPathToDelete{};

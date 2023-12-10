@@ -5,7 +5,7 @@
 
 #include "json-cpp/json.h"
 #include "ResourceMgr.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 #include "json-cpp/json.h"
 
@@ -39,7 +39,7 @@ namespace ehw
     eResult Material::Save(const std::fs::path& _filePath)
     {
         iResource::Save(_filePath);
-        std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
 
 
@@ -65,7 +65,7 @@ namespace ehw
     eResult Material::Load(const std::fs::path& _filePath)
     {
         iResource::Load(_filePath);
-        std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
         fullPath.replace_extension(strKey::Ext_Material);
         if (false == std::fs::exists(fullPath))
         {

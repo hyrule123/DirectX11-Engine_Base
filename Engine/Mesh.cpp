@@ -9,7 +9,7 @@
 
 //Save/Load 관련
 #include "define_Util.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 //#include "json-cpp/json.h"
 
 #ifdef max
@@ -45,7 +45,7 @@ namespace ehw
 	{
 		iResource::Save(_filePath);
 
-		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath =PathManager::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);
 
 		std::ofstream ofs(fullPath, std::ios::binary);
@@ -95,7 +95,7 @@ namespace ehw
 	{
 		iResource::Load(_filePath);
 
-		std::fs::path fullPath =PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath =PathManager::CreateFullPathToContent(_filePath, GetResType());
 		fullPath.replace_extension(strKey::Ext_Mesh);
 
 		if (false == std::fs::exists(fullPath))

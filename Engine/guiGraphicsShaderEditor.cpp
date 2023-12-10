@@ -2,7 +2,7 @@
 
 #include "guiGraphicsShaderEditor.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "GraphicsShader.h"
 #include "json-cpp/json.h"
 
@@ -391,7 +391,7 @@ namespace gui
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
-		std::fs::path shaderPath = ehw::PathMgr::GetShaderCSOPath();
+		std::fs::path shaderPath = ehw::PathManager::GetShaderCSOPath();
 
 		//쉐이더 바이트코드 경로 확인
 		if (false == std::fs::exists(shaderPath))
@@ -428,7 +428,7 @@ namespace gui
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<std::string> vecNewShaderGroup;
-		std::fs::path ShaderSettingDir = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+		std::fs::path ShaderSettingDir = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -501,7 +501,7 @@ namespace gui
 
 	void guiGraphicsShaderEditor::LoadShaderSettingComboBox()
 	{
-		std::fs::path GSSettingsPath = ehw::PathMgr::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+		std::fs::path GSSettingsPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{

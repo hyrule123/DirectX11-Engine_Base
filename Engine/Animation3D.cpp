@@ -3,7 +3,7 @@
 #include "FBXLoader.h"
 #include "StructBuffer.h"
 #include "Skeleton.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 namespace ehw
 {
@@ -40,7 +40,7 @@ namespace ehw
             return eResult::Fail_InValid;
         }
 
-        std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::MeshData);
+        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
 
         {
             std::fs::path checkDir = fullPath.parent_path();
@@ -89,7 +89,7 @@ namespace ehw
             ERROR_MESSAGE_W(L"Animation은 반드시 상위 폴더가 있어야 합니다.");
             return eResult::Fail_InValid;
         }
-        std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::MeshData);
+        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
         fullPath.replace_extension(strKey::Ext_Anim3D);
 
         if (false == std::fs::exists(fullPath))

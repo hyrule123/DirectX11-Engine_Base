@@ -1,6 +1,6 @@
 #include "PCH_Engine.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 
 #include "iComputeShader.h"
 #include "GPUManager.h"
@@ -31,7 +31,7 @@ namespace ehw
 
 	eResult iComputeShader::Load(const std::filesystem::path& _filePath)
 	{
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::ComputeShader);
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::ComputeShader);
 		return CreateByCSO(fullPath);
 	}
 
@@ -91,7 +91,7 @@ namespace ehw
 	eResult iComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathMgr::GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.(뒤에서부터)

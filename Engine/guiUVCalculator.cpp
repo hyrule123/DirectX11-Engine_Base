@@ -6,7 +6,7 @@
 #include "ResourceMgr.h"
 
 #include "define_Util.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 namespace gui
 {
@@ -47,10 +47,10 @@ namespace gui
 			{
 				extensions[i] = ehw::strKey::Ext_Tex[i];
 			}
-			std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture), extensions);
+			std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture), extensions);
 
 
-			texPath = ehw::PathMgr::MakePathStrKey(texPath);
+			texPath = ehw::PathManager::MakePathStrKey(texPath);
 
 			mTexture = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
 

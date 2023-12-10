@@ -1,17 +1,17 @@
 #include "PCH_Engine.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "AtExit.h"
 
 namespace ehw
 {
-	std::filesystem::path PathMgr::mAbsoluteResPath{};
-	std::filesystem::path PathMgr::mRelativeResPath{};
-	std::filesystem::path PathMgr::mRelativePathContent[(int)eResourceType::END]{};
-	std::filesystem::path PathMgr::mRelativePath_ShaderCSO{};
+	std::filesystem::path PathManager::mAbsoluteResPath{};
+	std::filesystem::path PathManager::mRelativeResPath{};
+	std::filesystem::path PathManager::mRelativePathContent[(int)eResourceType::END]{};
+	std::filesystem::path PathManager::mRelativePath_ShaderCSO{};
 
-	void PathMgr::Init()
+	void PathManager::Init()
 	{
-		AtExit::AddFunc(PathMgr::Release);
+		AtExit::AddFunc(PathManager::Release);
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		mAbsoluteResPath = std::filesystem::current_path().parent_path().parent_path().parent_path();
@@ -49,7 +49,7 @@ namespace ehw
 	}
 
 
-	void PathMgr::Release()
+	void PathManager::Release()
 	{
 		mAbsoluteResPath.clear();
 		mRelativeResPath.clear();

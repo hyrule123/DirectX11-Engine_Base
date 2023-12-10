@@ -356,7 +356,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Com_Light3D.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="PathMgr.h" />
+    <ClInclude Include="PathManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="iRenderer.h" />
     <ClInclude Include="NormalConvertShader.h" />
@@ -526,7 +526,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Com_Light3D.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MeshData.cpp" />
-    <ClCompile Include="PathMgr.cpp" />
+    <ClCompile Include="PathManager.cpp" />
     <ClCompile Include="iShader.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="iRenderer.cpp" />

@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "guiNormalConverter.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "ResourceMgr.h"
 #include "define_Util.h"
 
@@ -72,9 +72,9 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 		vecExt.push_back(ehw::strKey::Ext_Tex[i]);
 	}
 
-	std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture), vecExt);
+	std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture), vecExt);
 
-	texPath = ehw::PathMgr::MakePathStrKey(texPath);
+	texPath = ehw::PathManager::MakePathStrKey(texPath);
 
 	mTextureSrc = ehw::ResourceMgr::Load<ehw::Texture>(texPath);
 }
@@ -116,7 +116,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				vecExt.push_back(ehw::strKey::Ext_Tex[i]);
 			}
 
-			std::fs::path texFile = ehw::PathMgr::GetContentPathAbsolute(ehw::eResourceType::Texture);
+			std::fs::path texFile = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture);
 
 			if (mTextureSrc)
 			{

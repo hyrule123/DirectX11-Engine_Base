@@ -12,7 +12,7 @@
 #include "CollisionManager.h"
 #include "AudioManager.h"
 #include "FontWrapper.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "guiMgr.h"
 #include "ThreadPoolMgr.h"
 
@@ -42,7 +42,7 @@ namespace ehw
 
 
 
-		PathMgr::Init();
+		PathManager::Init();
 
 		//RenderMgr은 GPUMgr에서
 		if (false == GPUManager::Init(_AppDesc.GPUDesc))

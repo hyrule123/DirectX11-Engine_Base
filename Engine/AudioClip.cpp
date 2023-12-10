@@ -2,7 +2,7 @@
 #include "AudioClip.h"
 
 #include "Com_Transform.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -33,7 +33,7 @@ namespace ehw
 	{
 		iResource::Save(_filePath);
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");

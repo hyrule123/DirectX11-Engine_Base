@@ -5,7 +5,7 @@
 #include "DefaultShader/Resource.hlsli"
 #include "StructBuffer.h"
 #include "FBXLoader.h"
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "Animation3D.h"
 #include <cctype>
 
@@ -31,10 +31,10 @@ namespace ehw
 			return eResult::Fail_InValid;
 		}
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::MeshData);
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
 		if (fullPath.empty())
 		{
-			fullPath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
+			fullPath = PathManager::GetContentPathRelative(eResourceType::MeshData);
 		}
 
 		fullPath.replace_extension(strKey::Ext_Skeleton);
@@ -78,7 +78,7 @@ namespace ehw
 			return eResult::Fail_InValid;
 		}
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, eResourceType::MeshData);
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
 		fullPath.replace_extension(strKey::Ext_Skeleton);
 		if (false == std::fs::exists(fullPath))
 		{
@@ -119,7 +119,7 @@ namespace ehw
 				std::unique_ptr<Animation3D> anim3d = std::make_unique<Animation3D>();
 				anim3d->SetSkeleton(this);
 
-				const std::fs::path& basePath = PathMgr::GetContentPathRelative(eResourceType::MeshData);
+				const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
 				eResult result = anim3d->Load(entry.path().lexically_relative(basePath));
 				if (eResultFail(result))
 				{

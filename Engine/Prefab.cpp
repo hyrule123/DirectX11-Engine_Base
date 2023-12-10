@@ -1,7 +1,7 @@
 #include "PCH_Engine.h"
 #include "Prefab.h"
 
-#include "PathMgr.h"
+#include "PathManager.h"
 #include "json-cpp\json.h"
 #include "GameObject.h"
 
@@ -43,7 +43,7 @@ namespace ehw
 			mPrefab->SetStrKey(strKey.string());
 		}
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
 
 		std::ofstream saveFile(fullPath);
 		if (false == saveFile.is_open())
@@ -80,7 +80,7 @@ namespace ehw
 			return eResult::Fail;
 		}
 
-		std::fs::path fullPath = PathMgr::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
