@@ -429,7 +429,7 @@
     <ClCompile Include="Com_DummyAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="guiTree_GameObject.cpp">
+    <ClCompile Include="GameObjectEditor.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="EditorMainMenu.cpp">
@@ -806,7 +806,7 @@
     <ClInclude Include="Com_DummyAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="guiTree_GameObject.h">
+    <ClInclude Include="GameObjectEditor.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="EditorMainMenu.h">
