@@ -731,7 +731,7 @@
     <ClInclude Include="EditorWindow.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
-    <ClInclude Include="strKey_gui.h">
+    <ClInclude Include="strKey_Editor.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="guiCom_Transform.h">

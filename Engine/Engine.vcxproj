@@ -372,7 +372,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Com_Renderer_Sprite.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="strKey_Component.h" />
-    <ClInclude Include="strKey_gui.h" />
+    <ClInclude Include="strKey_Editor.h" />
     <ClInclude Include="StructBuffer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ThreadPoolManager.h" />

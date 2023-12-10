@@ -1,6 +1,6 @@
 #pragma once
 #include "EditorEntity.h"
-#include "strKey_gui.h"
+#include "strKey_Editor.h"
 
 namespace editor
 {
