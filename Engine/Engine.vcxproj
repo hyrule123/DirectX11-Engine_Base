@@ -289,7 +289,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="EditorEntity.h" />
     <ClInclude Include="EditorFBXConverter.h" />
     <ClInclude Include="EditorGame.h" />
-    <ClInclude Include="guiGraphicsShaderEditor.h" />
+    <ClInclude Include="EditorGraphicsShader.h" />
     <ClInclude Include="guiInspector.h" />
     <ClInclude Include="EditorWidget_List.h" />
     <ClInclude Include="guiMainMenu.h" />
@@ -421,7 +421,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="EditorEntity.cpp" />
     <ClCompile Include="EditorFBXConverter.cpp" />
     <ClCompile Include="EditorGame.cpp" />
-    <ClCompile Include="guiGraphicsShaderEditor.cpp" />
+    <ClCompile Include="EditorGraphicsShader.cpp" />
     <ClCompile Include="guiInspector.cpp" />
     <ClCompile Include="EditorWidget_List.cpp" />
     <ClCompile Include="guiMainMenu.cpp" />

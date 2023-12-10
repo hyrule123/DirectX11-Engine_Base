@@ -1,6 +1,6 @@
 #include "PCH_Engine.h"
 
-#include "guiGraphicsShaderEditor.h"
+#include "EditorGraphicsShader.h"
 
 #include "PathManager.h"
 #include "GraphicsShader.h"
@@ -158,8 +158,8 @@ namespace editor
 	}
 
 
-	guiGraphicsShaderEditor::guiGraphicsShaderEditor()
-		: EditorWindow(strKey::guiGraphicsShaderEditor)
+	EditorGraphicsShader::EditorGraphicsShader()
+		: EditorWindow(strKey::EditorGraphicsShader)
 		, mDescForEdit()
 		, mSemanticEditIdx(-1)
 		, mSemanticName{}
@@ -177,11 +177,11 @@ namespace editor
 		, mLoadFileCombo()
 	{	
 	}
-	guiGraphicsShaderEditor::~guiGraphicsShaderEditor()
+	EditorGraphicsShader::~EditorGraphicsShader()
 	{
 	}
 
-	void guiGraphicsShaderEditor::Init()
+	void EditorGraphicsShader::Init()
 	{
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
@@ -251,7 +251,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::UpdateUI()
+	void EditorGraphicsShader::UpdateUI()
 	{
 		constexpr const char* cEdit = "Edit##";
 		constexpr const char* cDelete = "Delete##";
@@ -383,7 +383,7 @@ namespace editor
 
 
 
-	bool guiGraphicsShaderEditor::CreateDefaultShaders()
+	bool EditorGraphicsShader::CreateDefaultShaders()
 	{
 		struct tShaderGroup
 		{
@@ -499,7 +499,7 @@ namespace editor
 	}
 
 
-	void guiGraphicsShaderEditor::LoadShaderSettingComboBox()
+	void EditorGraphicsShader::LoadShaderSettingComboBox()
 	{
 		std::fs::path GSSettingsPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
 
@@ -523,14 +523,14 @@ namespace editor
 		mLoadFileCombo.SetStrKey("Shader Setting Files");
 	}
 
-	void guiGraphicsShaderEditor::DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item)
+	void EditorGraphicsShader::DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item)
 	{
 
 	}
 
 
 
-	void guiGraphicsShaderEditor::InputElementEditModal()
+	void EditorGraphicsShader::InputElementEditModal()
 	{
 		bool bSemanticEditMode = (0 <= mSemanticEditIdx);
 		if (bSemanticEditMode)
@@ -611,7 +611,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::CreateSTDInputLayout(ehw::eDimensionType _dimType)
+	void EditorGraphicsShader::CreateSTDInputLayout(ehw::eDimensionType _dimType)
 	{
 		mInputLayoutDescs.clear();
 
@@ -684,7 +684,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::SaveModal()
+	void EditorGraphicsShader::SaveModal()
 	{
 		if (mbSaveModal)
 		{
@@ -729,7 +729,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::LoadModal()
+	void EditorGraphicsShader::LoadModal()
 	{
 		if (mbLoadModal)
 		{
@@ -769,7 +769,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::SaveToJson(const std::filesystem::path& _filePath)
+	void EditorGraphicsShader::SaveToJson(const std::filesystem::path& _filePath)
 	{
 		ehw::GraphicsShader shader{};
 
@@ -867,7 +867,7 @@ namespace editor
 		}
 	}
 
-	void guiGraphicsShaderEditor::LoadFromJson(const std::filesystem::path& _filePath)
+	void EditorGraphicsShader::LoadFromJson(const std::filesystem::path& _filePath)
 	{
 		ehw::GraphicsShader shader{};
 		shader.SetEditMode(true);

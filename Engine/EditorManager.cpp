@@ -24,11 +24,11 @@
 #include "EditorBase.h"
 #include "EditorResources.h"
 #include "guiMainMenu.h"
-#include "guiConsole.h"
+#include "EditorConsole.h"
 #include "EditorWidget_List.h"
 #include "guiTree_GameObject.h"
 #include "EditorFBXConverter.h"
-#include "guiGraphicsShaderEditor.h"
+#include "EditorGraphicsShader.h"
 #include "DebugObject.h"
 #include "EditorObject.h"
 #include "EditorMaterial.h"
@@ -288,7 +288,7 @@ namespace editor
 
 		AddGuiWindow<EditorResources>();
 
-		AddGuiWindow<guiGraphicsShaderEditor>();
+		AddGuiWindow<EditorGraphicsShader>();
 
 		AddGuiWindow<EditorFBXConverter>();
 

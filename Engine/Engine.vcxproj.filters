@@ -438,7 +438,7 @@
     <ClCompile Include="guiInspector.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="guiGraphicsShaderEditor.cpp">
+    <ClCompile Include="EditorGraphicsShader.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="EditorGame.cpp">
@@ -815,7 +815,7 @@
     <ClInclude Include="guiInspector.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="guiGraphicsShaderEditor.h">
+    <ClInclude Include="EditorGraphicsShader.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="EditorGame.h">

@@ -5,7 +5,7 @@
 
 namespace editor
 {
-	class guiGraphicsShaderEditor;
+	class EditorGraphicsShader;
 }
 
 namespace ehw
@@ -18,7 +18,7 @@ namespace ehw
 
 	class GraphicsShader : public iShader
 	{
-		friend class editor::guiGraphicsShaderEditor;
+		friend class editor::EditorGraphicsShader;
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();

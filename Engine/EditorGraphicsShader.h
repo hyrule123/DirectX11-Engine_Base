@@ -11,12 +11,12 @@ namespace ehw
 
 namespace editor
 {
-	class guiGraphicsShaderEditor
+	class EditorGraphicsShader
 		: public EditorWindow
 	{
 	public:
-		guiGraphicsShaderEditor();
-		virtual ~guiGraphicsShaderEditor();
+		EditorGraphicsShader();
+		virtual ~EditorGraphicsShader();
 
 		virtual void Init() override;
 		virtual void UpdateUI() override;
