@@ -3,11 +3,11 @@
 
 namespace editor
 {
-	class guiGame : public EditorWindow
+	class EditorGame : public EditorWindow
 	{
 	public:
-		guiGame();
-		virtual ~guiGame();
+		EditorGame();
+		virtual ~EditorGame();
 
 
 		virtual void UpdateUI() override;

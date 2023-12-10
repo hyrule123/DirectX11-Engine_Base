@@ -20,7 +20,7 @@
 #include "PathManager.h"
 
 #include "guiInspector.h"
-#include "guiGame.h"
+#include "EditorGame.h"
 #include "EditorBase.h"
 #include "EditorResources.h"
 #include "guiMainMenu.h"

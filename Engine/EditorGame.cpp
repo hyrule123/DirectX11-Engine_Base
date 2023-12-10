@@ -1,6 +1,6 @@
 
 #include "PCH_Engine.h"
-#include "guiGame.h"
+#include "EditorGame.h"
 
 #include "ResourceManager.h"
 #include "Texture.h"
@@ -8,16 +8,16 @@
 
 namespace editor
 {
-	guiGame::guiGame()
+	EditorGame::EditorGame()
 		: EditorWindow(strKey::GameViewer)
 	{
 	}
 
-	guiGame::~guiGame()
+	EditorGame::~EditorGame()
 	{
 	}
 
-	void guiGame::UpdateUI()
+	void EditorGame::UpdateUI()
 	{
 		std::shared_ptr<ehw::Texture> renderTarget
 			= ehw::GPUManager::GetRenderTargetTex();
