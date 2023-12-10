@@ -4,7 +4,7 @@
 
 #include "RenderManager.h"
 
-#include "guiCom_Transform.h"
+#include "EditorCom_Transform.h"
 #include "EditorCom_Renderer.h"
 #include "guiTexture.h"
 
@@ -18,7 +18,7 @@ namespace editor
 		mGuiComponents.resize((int)ehw::eComponentCategory::END);
 		mGuiResources.resize((int)ehw::eResourceType::END);
 
-		mGuiComponents[(int)ehw::eComponentCategory::Transform] = new guiCom_Transform;
+		mGuiComponents[(int)ehw::eComponentCategory::Transform] = new EditorCom_Transform;
 		mGuiComponents[(int)ehw::eComponentCategory::Transform]->SetSize(ImVec2(0.f, 100.f));
 
 		mGuiComponents[(int)ehw::eComponentCategory::Renderer] = new EditorCom_Renderer;

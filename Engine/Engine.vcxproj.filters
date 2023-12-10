@@ -357,7 +357,7 @@
     <ClCompile Include="EditorWindow.cpp">
       <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
-    <ClCompile Include="guiCom_Transform.cpp">
+    <ClCompile Include="EditorCom_Transform.cpp">
       <Filter>GuiEditor\Instances\Inspector</Filter>
     </ClCompile>
     <ClCompile Include="EditorCom_Renderer.cpp">
@@ -734,7 +734,7 @@
     <ClInclude Include="strKey_Editor.h">
       <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
-    <ClInclude Include="guiCom_Transform.h">
+    <ClInclude Include="EditorCom_Transform.h">
       <Filter>GuiEditor\Instances\Inspector</Filter>
     </ClInclude>
     <ClInclude Include="guiComponent.h">

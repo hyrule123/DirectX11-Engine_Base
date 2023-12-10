@@ -4,11 +4,11 @@
 namespace editor
 {
 	class guiInspector;
-	class guiCom_Transform : public guiComponent
+	class EditorCom_Transform : public guiComponent
 	{
 	public:
-		guiCom_Transform();
-		virtual ~guiCom_Transform();
+		EditorCom_Transform();
+		virtual ~EditorCom_Transform();
 
 		virtual void Update() override;
 		virtual void UpdateUI() override;
