@@ -1,5 +1,5 @@
 #include "PCH_Engine.h"
-#include "guiFBXConverter.h"
+#include "EditorFBXConverter.h"
 #include "Application.h"
 #include "PathManager.h"
 #include "define_Util.h"
@@ -9,7 +9,7 @@
 
 namespace editor
 {
-	guiFBXConverter::guiFBXConverter()
+	EditorFBXConverter::EditorFBXConverter()
 		: EditorWindow("FBX Converter")
 		, mFBXPath()
 		, mOutputDirName()
@@ -17,17 +17,17 @@ namespace editor
 	{
 	}
 
-	guiFBXConverter::~guiFBXConverter()
+	EditorFBXConverter::~EditorFBXConverter()
 	{
 	}
 
-	void guiFBXConverter::Init()
+	void EditorFBXConverter::Init()
 	{
 		LoadProjMeshDataCombo();
 	}
 
 
-	void guiFBXConverter::UpdateUI()
+	void EditorFBXConverter::UpdateUI()
 	{
 
 		if (CheckThread())
@@ -76,7 +76,7 @@ namespace editor
 
 		AddAnimationFromSameModeling();
 	}
-	bool guiFBXConverter::CheckThread()
+	bool EditorFBXConverter::CheckThread()
 	{
 		bool working = false;
 		if (mFutureConvertResult.valid())
@@ -123,7 +123,7 @@ namespace editor
 		}
 		return working;
 	}
-	void guiFBXConverter::ChooseFBXButton()
+	void EditorFBXConverter::ChooseFBXButton()
 	{
 		if (ImGui::Button("Choose FBX File", ImVec2(0.f, 35.f)))
 		{
@@ -137,7 +137,7 @@ namespace editor
 	}
 
 
-	void guiFBXConverter::ConvertFBXButton()
+	void EditorFBXConverter::ConvertFBXButton()
 	{
 		if (ImGui::Button("Convert FBX File", ImVec2(0.f, 35.f)))
 		{
@@ -168,7 +168,7 @@ namespace editor
 		}
 	}
 
-	void guiFBXConverter::AddAnimationFromSameModeling()
+	void EditorFBXConverter::AddAnimationFromSameModeling()
 	{
 		HilightText("Add Animation to Project MeshData");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
@@ -198,7 +198,7 @@ namespace editor
 		}
 	}
 
-	void guiFBXConverter::LoadProjMeshDataCombo()
+	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetStrKey("MeshData List");
 		const std::fs::path& meshPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::MeshData);

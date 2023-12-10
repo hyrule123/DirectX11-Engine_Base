@@ -283,11 +283,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="EditorComponent.h" />
     <ClInclude Include="EditorCom_Renderer.h" />
     <ClInclude Include="EditorCom_Transform.h" />
-    <ClInclude Include="guiConsole.h" />
+    <ClInclude Include="EditorConsole.h" />
     <ClInclude Include="DebugObject.h" />
     <ClInclude Include="EditorObject.h" />
     <ClInclude Include="EditorEntity.h" />
-    <ClInclude Include="guiFBXConverter.h" />
+    <ClInclude Include="EditorFBXConverter.h" />
     <ClInclude Include="guiGame.h" />
     <ClInclude Include="guiGraphicsShaderEditor.h" />
     <ClInclude Include="guiInspector.h" />
@@ -415,11 +415,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="EditorComponent.cpp" />
     <ClCompile Include="EditorCom_Renderer.cpp" />
     <ClCompile Include="EditorCom_Transform.cpp" />
-    <ClCompile Include="guiConsole.cpp" />
+    <ClCompile Include="EditorConsole.cpp" />
     <ClCompile Include="DebugObject.cpp" />
     <ClCompile Include="EditorObject.cpp" />
     <ClCompile Include="EditorEntity.cpp" />
-    <ClCompile Include="guiFBXConverter.cpp" />
+    <ClCompile Include="EditorFBXConverter.cpp" />
     <ClCompile Include="guiGame.cpp" />
     <ClCompile Include="guiGraphicsShaderEditor.cpp" />
     <ClCompile Include="guiInspector.cpp" />

@@ -27,7 +27,7 @@
 #include "guiConsole.h"
 #include "EditorWidget_List.h"
 #include "guiTree_GameObject.h"
-#include "guiFBXConverter.h"
+#include "EditorFBXConverter.h"
 #include "guiGraphicsShaderEditor.h"
 #include "DebugObject.h"
 #include "EditorObject.h"
@@ -290,7 +290,7 @@ namespace editor
 
 		AddGuiWindow<guiGraphicsShaderEditor>();
 
-		AddGuiWindow<guiFBXConverter>();
+		AddGuiWindow<EditorFBXConverter>();
 
 		AddGuiWindow<EditorMaterial>();
 

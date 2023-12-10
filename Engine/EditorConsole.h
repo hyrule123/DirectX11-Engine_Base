@@ -4,7 +4,7 @@
 
 namespace editor
 {
-	class Console
+	class EditorConsole
 	{
 
 	};

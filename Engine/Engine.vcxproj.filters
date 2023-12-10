@@ -444,7 +444,7 @@
     <ClCompile Include="guiGame.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="guiConsole.cpp">
+    <ClCompile Include="EditorConsole.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="Animation2D.cpp">
@@ -474,7 +474,7 @@
     <ClCompile Include="guiNormalConverter.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
-    <ClCompile Include="guiFBXConverter.cpp">
+    <ClCompile Include="EditorFBXConverter.cpp">
       <Filter>GuiEditor\Instances</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
@@ -821,7 +821,7 @@
     <ClInclude Include="guiGame.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="guiConsole.h">
+    <ClInclude Include="EditorConsole.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="Animation2D.h">
@@ -851,7 +851,7 @@
     <ClInclude Include="guiNormalConverter.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
-    <ClInclude Include="guiFBXConverter.h">
+    <ClInclude Include="EditorFBXConverter.h">
       <Filter>GuiEditor\Instances</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">

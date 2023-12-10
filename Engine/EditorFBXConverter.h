@@ -14,12 +14,12 @@ namespace ehw
 namespace editor
 {
 
-	class guiFBXConverter :
+	class EditorFBXConverter :
 		public EditorWindow
 	{
 	public:
-		guiFBXConverter();
-		virtual ~guiFBXConverter();
+		EditorFBXConverter();
+		virtual ~EditorFBXConverter();
 
 		virtual void Init() override;
 		virtual void UpdateUI() override;

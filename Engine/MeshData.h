@@ -5,7 +5,7 @@
 
 namespace editor
 {
-	class guiFBXConverter;
+	class EditorFBXConverter;
 }
 
 namespace ehw
@@ -26,7 +26,7 @@ namespace ehw
     class MeshData :
         public iResource
     {
-		friend class editor::guiFBXConverter;
+		friend class editor::EditorFBXConverter;
 		
 	public:
 		MeshData();
