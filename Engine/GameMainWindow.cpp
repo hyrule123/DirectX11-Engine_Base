@@ -39,19 +39,9 @@ BOOL GameMainWindow::Init(const tDesc_GameMainWindow& _Desc)
     AddMsgHandleFunc(WM_PAINT, Wm_Paint);
     AddMsgHandleFunc(WM_DESTROY, Wm_Destroy);
 
+    ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
+    ASSERT(InitInstance(_Desc), "창 생성 실패");
 
-    if (false == RegisterClientClass(_Desc))
-    {
-        ERROR_MESSAGE_W(L"창 생성 실패");
-        std::abort();
-        return false;
-    }
-    else if (FALSE == InitInstance(_Desc))
-    {
-        ERROR_MESSAGE_W(L"창 생성 실패");
-        std::abort();
-        return false;
-    }
     ShowWindow(mHwnd, SW_HIDE);
     UpdateWindow(mHwnd);
 
@@ -110,7 +100,7 @@ BOOL GameMainWindow::Loop()
 
 ATOM GameMainWindow::RegisterClientClass(const tDesc_GameMainWindow& _Desc)
 {
-    WNDCLASSEX WinClass;
+    WNDCLASSEX WinClass{};
 
     WinClass.cbSize = sizeof(WNDCLASSEX);
 

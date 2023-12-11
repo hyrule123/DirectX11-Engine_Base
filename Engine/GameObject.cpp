@@ -15,7 +15,6 @@ namespace ehw
 		{
 			STRKEY_DECLARE(m_Components);
 			STRKEY_DECLARE(m_Childs);
-			//STRKEY_DECLARE(mScripts);
 		}
 	}
 
@@ -336,10 +335,8 @@ namespace ehw
 
 		eComponentCategory ComType = _pCom->GetComCategory();
 
-		//ASSERT(false == _pCom->GetStrKey().empty(), R"(
-//컴포넌트에 String Key가 없습니다.
-//AddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.
-//)");
+		ASSERT(false == _pCom->GetStrKey().empty(),
+			"컴포넌트에 String Key가 없습니다.\nAddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.", nullptr);
 
 		if (eComponentCategory::Scripts == ComType)
 		{
