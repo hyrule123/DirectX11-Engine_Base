@@ -24,7 +24,7 @@ namespace ehw
 		Entity();
 
 		Entity(const Entity& _other);
-		virtual Entity* Clone() { ASSERT(false, L"Entity 클래스는 Clone할수 없습니다."); return nullptr; }
+		virtual Entity* Clone() { ASSERT(false, "Entity 클래스는 Clone할수 없습니다."); return nullptr; }
 
 		Entity(Entity&& _move);
 

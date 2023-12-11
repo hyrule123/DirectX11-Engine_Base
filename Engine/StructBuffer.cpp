@@ -9,20 +9,19 @@ namespace ehw
 {
 	
 
-	//StructBuffer::StructBuffer()
-	//	: GPUBuffer(eBufferType::Struct)
-	//	, mSBufferDesc()
-	//	, mbSBufferDescSet()
-	//	, mElementStride()
-	//	, mElementCount()
-	//	, mElementCapacity()
-	//	, mSRV()
-	//	, mUAV()
-	//	, mStagingBuffer()
-	//	, mCurBoundRegister(-1)
-	//	, mCurBoundView()
-	//{
-	//}
+	StructBuffer::StructBuffer()
+		: GPUBuffer(eBufferType::Struct)
+		, mSBufferDesc()
+		, mElementStride()
+		, mElementCount()
+		, mElementCapacity()
+		, mSRV()
+		, mUAV()
+		, mStagingBuffer()
+		, mCurBoundView()
+		, mCurBoundRegister(-1)
+	{
+	}
 
 	StructBuffer::StructBuffer(const Desc& _tDesc)
 		: GPUBuffer(eBufferType::Struct)

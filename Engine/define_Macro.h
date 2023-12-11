@@ -4,17 +4,34 @@
 
 #ifdef _DEBUG
 
-#define ASSERT(_expression, _message) if (!(_expression)) { assert(!_message); }
+#define ASSERT(_expression, _message) if (!(_expression)) \
+{ _wassert(L ## #_expression##"\nMessage: "##_message, _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
+
+#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) { \
+	bool bAssertion = !(_expression); \
+	if (bAssertion) \
+	{ \
+		_wassert(L ## #_expression##"\nMessage: "##_message, _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); \
+		return _returnVal; \
+	} \
+}
+
+//#define ASSERT(_expression, _message) if (!(_expression)) { assert(!_message); }
 //#define ASSERT(expr, msg) assert(( (void)(msg), (expr) ))
 #define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)
 
 #else
 #define ASSERT(_expression, _message) if(!(_expression)) { \
-		MessageBoxW(nullptr, L##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		MessageBoxW(nullptr, L## #_expression##"\nMessage: "##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
 		__debugbreak();\
 	}
-#define ASSERT(_expression, _messageW) 0
-#endif _DEBUG	
+#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) if(!(_expression)) { \
+		MessageBoxW(nullptr, L## #_expression##"\nMessage: "##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		__debugbreak();\
+		return _returnVal;\
+	}
+#define ASSERT_DEBUG(_expression, _messageW) 0
+#endif _DEBUG
 
 #define ERROR_MESSAGE_W(_message) MessageBoxW(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)
 #define ERROR_MESSAGE_A(_message) MessageBoxA(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)

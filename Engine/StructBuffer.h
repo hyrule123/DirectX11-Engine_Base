@@ -50,7 +50,7 @@ namespace ehw
 
 
     public:
-
+        StructBuffer();
         StructBuffer(const Desc& _tDesc);
 
         StructBuffer(const StructBuffer& _other);
@@ -59,6 +59,8 @@ namespace ehw
         virtual ~StructBuffer();
 
     public:
+        void SetDesc(const Desc& _tDesc);
+
         //Setter Getter Adder
         void SetPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV = _StageFlag; }
         void AddPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV |= _StageFlag; }
@@ -92,7 +94,7 @@ namespace ehw
         void UnBindData();
 
     private:
-        void SetDesc(const Desc& _tDesc);
+        
         void SetDefaultDesc();
 
         bool CreateStagingBuffer();
