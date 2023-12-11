@@ -149,7 +149,7 @@ namespace ehw
 	{
 		mLightsBuffer->SetData(mLightAttributes.data(), mLightAttributes.size());
 
-		eShaderStageFlag_ Flag = eShaderStageFlag::VS | eShaderStageFlag::PS;
+		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 
 		mLightsBuffer->BindDataSRV(Register_t_lightAttributes, Flag);
 
@@ -190,14 +190,14 @@ namespace ehw
 		//renderTarget->UnBindData();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
-		//GPUManager::Context()->PSSetShaderResources()(eShaderStage::PS, 60, &srv);
+		//GPUManager::Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
 
 		ID3D11Texture2D* dest = mPostProcessTexture->GetTexture().Get();
 		ID3D11Texture2D* source = renderTarget->GetTexture().Get();
 
 		GPUManager::Context()->CopyResource(dest, source);
 
-		mPostProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::PS);
+		mPostProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
 	void RenderManager::ClearMultiRenderTargets()
@@ -905,8 +905,8 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> TriangleShader = std::make_shared<GraphicsShader>();
 			TriangleShader->SetEngineDefaultRes(true);
-			TriangleShader->CreateByHeader(eGSStage::VS, VS_Triangle, sizeof(VS_Triangle));
-			TriangleShader->CreateByHeader(eGSStage::PS, PS_Triangle, sizeof(PS_Triangle));
+			TriangleShader->CreateByHeader(eGSStage::Vertex, VS_Triangle, sizeof(VS_Triangle));
+			TriangleShader->CreateByHeader(eGSStage::Pixel, PS_Triangle, sizeof(PS_Triangle));
 			TriangleShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			TriangleShader->CreateInputLayout();
 
@@ -917,8 +917,8 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> spriteShader = std::make_shared<GraphicsShader>();
 			spriteShader->SetEngineDefaultRes(true);
-			spriteShader->CreateByHeader(eGSStage::VS, VS_Sprite, sizeof(VS_Sprite));
-			spriteShader->CreateByHeader(eGSStage::PS, PS_Sprite, sizeof(PS_Sprite));
+			spriteShader->CreateByHeader(eGSStage::Vertex, VS_Sprite, sizeof(VS_Sprite));
+			spriteShader->CreateByHeader(eGSStage::Pixel, PS_Sprite, sizeof(PS_Sprite));
 			spriteShader->SetRSState(eRSType::SolidNone);
 			spriteShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			spriteShader->CreateInputLayout();
@@ -932,8 +932,8 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> uiShader = std::make_shared<GraphicsShader>();
 			uiShader->SetEngineDefaultRes(true);
-			uiShader->CreateByHeader(eGSStage::VS, VS_UserInterface, sizeof(VS_UserInterface));
-			uiShader->CreateByHeader(eGSStage::PS, PS_UserInterface, sizeof(PS_UserInterface));
+			uiShader->CreateByHeader(eGSStage::Vertex, VS_UserInterface, sizeof(VS_UserInterface));
+			uiShader->CreateByHeader(eGSStage::Pixel, PS_UserInterface, sizeof(PS_UserInterface));
 			uiShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			uiShader->CreateInputLayout();
 
@@ -946,8 +946,8 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> gridShader = std::make_shared<GraphicsShader>();
 			gridShader->SetEngineDefaultRes(true);
-			gridShader->CreateByHeader(eGSStage::VS, VS_Grid, sizeof(VS_Grid));
-			gridShader->CreateByHeader(eGSStage::PS, PS_Grid, sizeof(PS_Grid));
+			gridShader->CreateByHeader(eGSStage::Vertex, VS_Grid, sizeof(VS_Grid));
+			gridShader->CreateByHeader(eGSStage::Pixel, PS_Grid, sizeof(PS_Grid));
 			gridShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			gridShader->CreateInputLayout();
 
@@ -963,13 +963,13 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> debugShader = std::make_shared<GraphicsShader>();
 			debugShader->SetEngineDefaultRes(true);
-			debugShader->CreateByHeader(eGSStage::VS, VS_Debug, sizeof(VS_Debug));
-			debugShader->CreateByHeader(eGSStage::PS, PS_Debug, sizeof(PS_Debug));
+			debugShader->CreateByHeader(eGSStage::Vertex, VS_Debug, sizeof(VS_Debug));
+			debugShader->CreateByHeader(eGSStage::Pixel, PS_Debug, sizeof(PS_Debug));
 			debugShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			debugShader->CreateInputLayout();
 
-			//debugShader->Create(eShaderStage::VS, "DebugVS.hlsl", "main");
-			//debugShader->Create(eShaderStage::PS, "DebugPS.hlsl", "main");
+			//debugShader->Create(eShaderStage::Vertex, "DebugVS.hlsl", "main");
+			//debugShader->Create(eShaderStage::Pixel, "DebugPS.hlsl", "main");
 			debugShader->SetRSState(eRSType::SolidNone);
 			debugShader->SetDSState(eDSType::NoWrite);
 			debugShader->SetBSState(eBSType::AlphaBlend);
@@ -986,9 +986,9 @@ namespace ehw
 			std::shared_ptr<GraphicsShader> particleShader = std::make_shared<GraphicsShader>();
 			particleShader->SetEngineDefaultRes(true);
 
-			particleShader->CreateByHeader(eGSStage::VS, VS_Particle, sizeof(VS_Particle));
-			particleShader->CreateByHeader(eGSStage::GS, GS_Particle, sizeof(GS_Particle));
-			particleShader->CreateByHeader(eGSStage::PS, PS_Particle, sizeof(PS_Particle));
+			particleShader->CreateByHeader(eGSStage::Vertex, VS_Particle, sizeof(VS_Particle));
+			particleShader->CreateByHeader(eGSStage::Geometry, GS_Particle, sizeof(GS_Particle));
+			particleShader->CreateByHeader(eGSStage::Pixel, PS_Particle, sizeof(PS_Particle));
 			particleShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			particleShader->CreateInputLayout();
 
@@ -1009,8 +1009,8 @@ namespace ehw
 		{
 			std::shared_ptr<GraphicsShader> postProcessShader = std::make_shared<GraphicsShader>();
 			postProcessShader->SetEngineDefaultRes(true);
-			postProcessShader->CreateByHeader(eGSStage::VS, VS_PostProcess, sizeof(VS_PostProcess));
-			postProcessShader->CreateByHeader(eGSStage::PS, PS_PostProcess, sizeof(PS_PostProcess));
+			postProcessShader->CreateByHeader(eGSStage::Vertex, VS_PostProcess, sizeof(VS_PostProcess));
+			postProcessShader->CreateByHeader(eGSStage::Pixel, PS_PostProcess, sizeof(PS_PostProcess));
 			postProcessShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			postProcessShader->CreateInputLayout();
 
@@ -1075,8 +1075,8 @@ namespace ehw
 			std::shared_ptr<GraphicsShader> basic3DShader = std::make_shared<GraphicsShader>();
 			basic3DShader->SetEngineDefaultRes(true);
 
-			basic3DShader->CreateByHeader(eGSStage::VS, VS_Basic3D, sizeof(VS_Basic3D));
-			basic3DShader->CreateByHeader(eGSStage::PS, PS_Basic3D, sizeof(PS_Basic3D));
+			basic3DShader->CreateByHeader(eGSStage::Vertex, VS_Basic3D, sizeof(VS_Basic3D));
+			basic3DShader->CreateByHeader(eGSStage::Pixel, PS_Basic3D, sizeof(PS_Basic3D));
 			basic3DShader->SetInputLayoutDesc(vecLayoutDesc3D);
 			basic3DShader->CreateInputLayout();
 
@@ -1088,8 +1088,8 @@ namespace ehw
 		std::shared_ptr<GraphicsShader> defferedShader = std::make_shared<GraphicsShader>();
 		defferedShader->SetEngineDefaultRes(true);
 
-		defferedShader->CreateByHeader(eGSStage::VS, VS_Deffered, sizeof(VS_Deffered));
-		defferedShader->CreateByHeader(eGSStage::PS, PS_Deffered, sizeof(PS_Deffered));
+		defferedShader->CreateByHeader(eGSStage::Vertex, VS_Deffered, sizeof(VS_Deffered));
+		defferedShader->CreateByHeader(eGSStage::Pixel, PS_Deffered, sizeof(PS_Deffered));
 
 		defferedShader->SetInputLayoutDesc(vecLayoutDesc3D);
 		defferedShader->CreateInputLayout();
@@ -1103,8 +1103,8 @@ namespace ehw
 #pragma region LIGHT
 		{
 			std::shared_ptr<GraphicsShader> lightShader = std::make_shared<GraphicsShader>();
-			lightShader->CreateByHeader(eGSStage::VS, VS_LightDir, sizeof(VS_LightDir));
-			lightShader->CreateByHeader(eGSStage::PS, PS_LightDir, sizeof(PS_LightDir));
+			lightShader->CreateByHeader(eGSStage::Vertex, VS_LightDir, sizeof(VS_LightDir));
+			lightShader->CreateByHeader(eGSStage::Pixel, PS_LightDir, sizeof(PS_LightDir));
 
 			lightShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			lightShader->CreateInputLayout();
@@ -1118,8 +1118,8 @@ namespace ehw
 
 		{
 			std::shared_ptr<GraphicsShader> lightShader = std::make_shared<GraphicsShader>();
-			lightShader->CreateByHeader(eGSStage::VS, VS_LightPoint, sizeof(VS_LightPoint));
-			lightShader->CreateByHeader(eGSStage::PS, PS_LightPoint, sizeof(PS_LightPoint));
+			lightShader->CreateByHeader(eGSStage::Vertex, VS_LightPoint, sizeof(VS_LightPoint));
+			lightShader->CreateByHeader(eGSStage::Pixel, PS_LightPoint, sizeof(PS_LightPoint));
 
 			lightShader->SetInputLayoutDesc(vecLayoutDesc3D);
 			lightShader->CreateInputLayout();
@@ -1144,8 +1144,8 @@ namespace ehw
 
 			std::shared_ptr<GraphicsShader> MergeShader = std::make_shared<GraphicsShader>();
 			MergeShader->SetEngineDefaultRes(true);
-			MergeShader->CreateByHeader(eGSStage::VS, VS_Merge, sizeof(VS_Merge));
-			MergeShader->CreateByHeader(eGSStage::PS, PS_Merge, sizeof(PS_Merge));
+			MergeShader->CreateByHeader(eGSStage::Vertex, VS_Merge, sizeof(VS_Merge));
+			MergeShader->CreateByHeader(eGSStage::Pixel, PS_Merge, sizeof(PS_Merge));
 
 			MergeShader->AddInputLayoutDesc(LayoutDesc);
 			MergeShader->CreateInputLayout();
@@ -1182,7 +1182,7 @@ namespace ehw
 
 		mConstBuffers[(uint)eCBType::ComputeShader] = std::make_unique<ConstBuffer>(eCBType::ComputeShader);
 		mConstBuffers[(uint)eCBType::ComputeShader]->Create<tCB_ComputeShader>(1u);
-		mConstBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::CS);
+		mConstBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::Compute);
 
 		mConstBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>(eCBType::Material);
 		mConstBuffers[(uint)eCBType::Material]->Create(sizeof(tCB_MaterialData));
@@ -1252,7 +1252,7 @@ namespace ehw
 		//noise
 		std::shared_ptr<Texture> mNoiseTex = std::make_shared<Texture>();
 		mNoiseTex->Create(GPUManager::GetResolutionX(), GPUManager::GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
-		mNoiseTex->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::PS);
+		mNoiseTex->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::Pixel);
 	}
 
 

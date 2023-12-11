@@ -241,7 +241,7 @@ namespace ehw
 			return;
 		
 		GetOwner()->GetComponent<Com_Transform>()->BindData();
-		mBuffer->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::GS);
+		mBuffer->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->BindData();
 		GetMesh()->RenderInstanced(0u, mMaxParticles);

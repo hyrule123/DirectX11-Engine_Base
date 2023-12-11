@@ -33,7 +33,7 @@ namespace editor
 		pContext->CopyResource(gameTex->GetTexture().Get()
 			, renderTarget->GetTexture().Get());
 
-		gameTex->BindDataSRV(Register_t_guiGameTexture, ehw::eShaderStageFlag::PS);
+		gameTex->BindDataSRV(Register_t_guiGameTexture, ehw::eShaderStageFlag::Pixel);
 
 		ImGuiIO io = ImGui::GetIO();
 		ImVec2 panelSize = ImGui::GetWindowSize();

@@ -29,16 +29,16 @@ namespace ehw
 			return false;
 
 		// 구조화버퍼 전달
-		mDesc.CurrentAnimKeyFrameBuffer->BindDataSRV(Register_t_g_FrameTransArray, eShaderStageFlag::CS);// t16;
+		mDesc.CurrentAnimKeyFrameBuffer->BindDataSRV(Register_t_g_FrameTransArray, eShaderStageFlag::Compute);// t16;
 
 		//다음 애니메이션 정보가 있는 경우 바인드
 		if (mDesc.NextAnimKeyFrameBuffer)
 		{
-			mDesc.NextAnimKeyFrameBuffer->BindDataSRV(Register_t_g_ChangeFrameTransArray, eShaderStageFlag::CS);//t17
+			mDesc.NextAnimKeyFrameBuffer->BindDataSRV(Register_t_g_ChangeFrameTransArray, eShaderStageFlag::Compute);//t17
 		}
 
 		//본의 오프셋 행렬 버퍼 바인드
-		mDesc.BoneOffsetMatrixBuffer->BindDataSRV(Register_t_g_BoneOffsetArray, eShaderStageFlag::CS);// t18
+		mDesc.BoneOffsetMatrixBuffer->BindDataSRV(Register_t_g_BoneOffsetArray, eShaderStageFlag::Compute);// t18
 
 		//본의 최종 행렬정보를 저장할 UAV 바인드
 		mDesc.FinalBoneTranslationMatrixBuffer->BindDataUAV(Register_u_g_FinalBoneMatrixArrayRW); // u0

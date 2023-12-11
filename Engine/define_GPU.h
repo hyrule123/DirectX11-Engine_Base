@@ -37,11 +37,11 @@ namespace ehw
 
 	enum class eGSStage
 	{
-		VS,
-		HS,
-		DS,
-		GS,
-		PS,
+		Vertex,
+		Hull,
+		Domain,
+		Geometry,
+		Pixel,
 		END
 	};
 
@@ -73,12 +73,12 @@ namespace ehw
 
 	enum class eShaderStage
 	{
-		VS,
-		HS,
-		DS,
-		GS,
-		PS,
-		CS,
+		Vertex,
+		Hull,
+		Domain,
+		Geometry,
+		Pixel,
+		Compute,
 		ALL,
 		END
 	};
@@ -88,20 +88,20 @@ namespace ehw
 		enum Flag
 		{
 			NONE = 0,
-			VS = BIT_MASK(0),
-			HS = BIT_MASK(1),
-			DS = BIT_MASK(2),
-			GS = BIT_MASK(3),
-			PS = BIT_MASK(4),
-			CS = BIT_MASK(5),
-			ALL = VS | HS | DS | GS | PS | CS,
+			Vertex = BIT_MASK(0),
+			Hull = BIT_MASK(1),
+			Domain = BIT_MASK(2),
+			Geometry = BIT_MASK(3),
+			Pixel = BIT_MASK(4),
+			Compute = BIT_MASK(5),
+			ALL = Vertex | Hull | Domain | Geometry | Pixel | Compute,
 		};
 	}
 	using eShaderStageFlag_ = int;
 
 	namespace SHADER_VERSION
 	{
-		constexpr const char* GS[(int)eShaderStage::END]
+		constexpr const char* Graphics[(int)eShaderStage::END]
 			= {
 			"vs_5_0",
 			"hs_5_0",
@@ -109,7 +109,7 @@ namespace ehw
 			"gs_5_0",
 			"ps_5_0"
 		};
-		constexpr const char* CS = "cs_5_0";
+		constexpr const char* Compute = "cs_5_0";
 	}
 
 	enum class eSamplerType

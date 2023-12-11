@@ -29,7 +29,7 @@ namespace ehw
 	{
 		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::CustomData);
 		cb->SetData(&mUIData);
-		cb->BindData(eShaderStageFlag::VS | eShaderStageFlag::PS);
+		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 		Com_Renderer_Mesh::Render();
 	}

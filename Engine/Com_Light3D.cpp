@@ -166,7 +166,7 @@ namespace ehw
 		data.indexOfLight = mIndex;
 
 		cb->SetData(&data);
-		cb->BindData(eShaderStageFlag::VS | eShaderStageFlag::PS);
+		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 		mVolumeMesh->BindBuffer();
 		mLightMaterial->BindData();

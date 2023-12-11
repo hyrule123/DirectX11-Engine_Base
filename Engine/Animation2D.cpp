@@ -186,7 +186,7 @@ namespace ehw
 
 	void Animation2D::BindData()
 	{
-		mAtlas->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::PS);
+		mAtlas->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::Pixel);
 
 		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::Animation2D);
 
@@ -198,7 +198,7 @@ namespace ehw
 		info.atlasSize = mSpriteSheet[mIndex].AtlasSize;
 
 		cb->SetData(&info);
-		cb->BindData(eShaderStageFlag::PS);
+		cb->BindData(eShaderStageFlag::Pixel);
 	}
 
 	void Animation2D::Reset()
@@ -219,7 +219,7 @@ namespace ehw
 		info.animationType = (uint)eDimensionType::NOT_SET;
 
 		cb->SetData(&info);
-		cb->BindData(eShaderStageFlag::PS);
+		cb->BindData(eShaderStageFlag::Pixel);
 	}
 
 

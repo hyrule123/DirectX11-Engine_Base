@@ -64,7 +64,7 @@ namespace ehw
 		mDestTex->SetStrKey(mSrcTex->GetStrKey());
 
 		//원본
-		mSrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::CS);
+		mSrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
 		mDestTex->BindDataUAV(Register_u_DestNormalTex);

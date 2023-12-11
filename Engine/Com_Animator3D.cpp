@@ -60,7 +60,7 @@ namespace ehw
 	{
 		StructBuffer::Desc desc{};
 		desc.REGISLOT_t_SRV = Register_t_g_FinalBoneMatrixArray;
-		desc.TargetStageSRV = eShaderStageFlag::VS;
+		desc.TargetStageSRV = eShaderStageFlag::Vertex;
 		desc.REGISLOT_u_UAV = Register_u_g_FinalBoneMatrixArrayRW;
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
 		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>(desc);
@@ -269,7 +269,7 @@ namespace ehw
 		}
 
 		// t19 레지스터에 최종행렬 데이터(구조버퍼) 바인딩	
-		m_pBoneFinalMatBuffer->BindDataSRV();// Register_t_g_arrBoneMat, eShaderStageFlag::VS);
+		m_pBoneFinalMatBuffer->BindDataSRV();// Register_t_g_arrBoneMat, eShaderStageFlag::Vertex);
 	}
 
 

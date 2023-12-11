@@ -283,27 +283,27 @@ namespace ehw
 		mCurBoundView = eBufferViewType::SRV;
 
 		auto pContext = GPUManager::Context();
-		if (eShaderStageFlag::VS & _stageFlag)
+		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
-		if (eShaderStageFlag::HS & _stageFlag)
+		if (eShaderStageFlag::Hull & _stageFlag)
 		{
 			pContext->HSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
-		if (eShaderStageFlag::DS & _stageFlag)
+		if (eShaderStageFlag::Domain & _stageFlag)
 		{
 			pContext->DSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
-		if (eShaderStageFlag::GS & _stageFlag)
+		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
 			pContext->GSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
-		if (eShaderStageFlag::PS & _stageFlag)
+		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
 			pContext->PSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
-		if (eShaderStageFlag::CS & _stageFlag)
+		if (eShaderStageFlag::Compute & _stageFlag)
 		{
 			pContext->CSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
 		}
@@ -335,27 +335,27 @@ namespace ehw
 
 			auto pContext = GPUManager::Context();
 
-			if (eShaderStageFlag::VS & mCurBoundStage)
+			if (eShaderStageFlag::Vertex & mCurBoundStage)
 			{
 				pContext->VSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}
-			if (eShaderStageFlag::HS & mCurBoundStage)
+			if (eShaderStageFlag::Hull & mCurBoundStage)
 			{
 				pContext->HSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}
-			if (eShaderStageFlag::DS & mCurBoundStage)
+			if (eShaderStageFlag::Domain & mCurBoundStage)
 			{
 				pContext->DSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}
-			if (eShaderStageFlag::GS & mCurBoundStage)
+			if (eShaderStageFlag::Geometry & mCurBoundStage)
 			{
 				pContext->GSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}
-			if (eShaderStageFlag::PS & mCurBoundStage)
+			if (eShaderStageFlag::Pixel & mCurBoundStage)
 			{
 				pContext->PSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}
-			if (eShaderStageFlag::CS & mCurBoundStage)
+			if (eShaderStageFlag::Compute & mCurBoundStage)
 			{
 				pContext->CSSetShaderResources(mCurBoundRegister, 1u, &srv);
 			}

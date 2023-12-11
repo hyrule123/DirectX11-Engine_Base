@@ -171,7 +171,7 @@ namespace ehw
         {
             if (mTextures[slotIndex])
             {
-                mTextures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::PS);
+                mTextures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace ehw
         static ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
         CB->SetData(&mCB);
 
-        eShaderStageFlag_ flag = eShaderStageFlag::VS | eShaderStageFlag::GS | eShaderStageFlag::PS;
+        eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
         CB->BindData(flag);
 
         mShader->BindData();

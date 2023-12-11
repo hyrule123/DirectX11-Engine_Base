@@ -62,7 +62,7 @@ namespace ehw
 		data.resolution = resolution;
 		
 		CB->SetData(&data);
-		CB->BindData(eShaderStageFlag::VS | eShaderStageFlag::PS);
+		CB->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 
 

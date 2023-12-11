@@ -44,7 +44,7 @@ namespace ehw
 			nullptr, 
 			D3D_COMPILE_STANDARD_FILE_INCLUDE, 
 			std::string(_funcName).c_str(), 
-			ehw::SHADER_VERSION::CS, 
+			ehw::SHADER_VERSION::Compute, 
 			0, 
 			0, 
 			m_CSBlob.GetAddressOf(), 

@@ -303,32 +303,32 @@ namespace ehw
 
 
 		auto pContext = GPUManager::Context();
-		if (eShaderStageFlag::VS & _stageFlag)
+		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
 
-		if (eShaderStageFlag::HS & _stageFlag)
+		if (eShaderStageFlag::Hull & _stageFlag)
 		{
 			pContext->HSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
 
-		if (eShaderStageFlag::DS & _stageFlag)
+		if (eShaderStageFlag::Domain & _stageFlag)
 		{
 			pContext->DSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
 
-		if (eShaderStageFlag::GS & _stageFlag)
+		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
 			pContext->GSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
 
-		if (eShaderStageFlag::PS & _stageFlag)
+		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
 			pContext->PSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
 
-		if (eShaderStageFlag::CS & _stageFlag)
+		if (eShaderStageFlag::Compute & _stageFlag)
 		{
 			pContext->CSSetShaderResources(_SRVSlot, 1, mSRV.GetAddressOf());
 		}
@@ -381,7 +381,7 @@ namespace ehw
 			mBufferDesc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 
 			//READ_WRITE로 사용하겠다는 건 컴퓨트쉐이더를 사용하겠다는 의미 -> 실수 방지를 위해 플래그에 컴퓨트쉐이더 추가
-			mSBufferDesc.TargetStageSRV |= eShaderStageFlag::CS;
+			mSBufferDesc.TargetStageSRV |= eShaderStageFlag::Compute;
 
 			break;
 		default:
@@ -460,32 +460,32 @@ namespace ehw
 			auto pContext = GPUManager::Context();
 
 			ID3D11ShaderResourceView* pView = nullptr;
-			if (eShaderStageFlag::VS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Vertex & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->VSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}
 
-			if (eShaderStageFlag::HS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Hull & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->HSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}
 
-			if (eShaderStageFlag::DS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Domain & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->DSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}
 
-			if (eShaderStageFlag::GS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Geometry & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->GSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}
 
-			if (eShaderStageFlag::PS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Pixel & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->PSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}
 
-			if (eShaderStageFlag::CS & mSBufferDesc.TargetStageSRV)
+			if (eShaderStageFlag::Compute & mSBufferDesc.TargetStageSRV)
 			{
 				pContext->CSSetShaderResources(mCurBoundRegister, 1, &pView);
 			}

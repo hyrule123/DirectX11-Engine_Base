@@ -67,27 +67,27 @@ namespace ehw
 		}
 
 		auto pContext = GPUManager::Context();
-		if (eShaderStageFlag::VS & _stageFlag)
+		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
-		if (eShaderStageFlag::HS & _stageFlag)
+		if (eShaderStageFlag::Hull & _stageFlag)
 		{
 			pContext->HSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
-		if (eShaderStageFlag::DS & _stageFlag)
+		if (eShaderStageFlag::Domain & _stageFlag)
 		{
 			pContext->DSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
-		if (eShaderStageFlag::GS & _stageFlag)
+		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
 			pContext->GSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
-		if (eShaderStageFlag::PS & _stageFlag)
+		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
 			pContext->PSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}
-		if (eShaderStageFlag::CS & _stageFlag)
+		if (eShaderStageFlag::Compute & _stageFlag)
 		{
 			pContext->CSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
 		}

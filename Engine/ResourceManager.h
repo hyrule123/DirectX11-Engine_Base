@@ -17,6 +17,7 @@
 
 #include "iScript.h"
 
+#define LOAD_COMPUTESHADER(_computeShaderName) ResourceManager::Load<_computeShaderName>(#_computeShaderName)
 
 namespace ehw
 {

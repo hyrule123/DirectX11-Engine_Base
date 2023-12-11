@@ -312,7 +312,7 @@ namespace ehw
         StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.REGISLOT_t_SRV = Register_t_g_FrameTransArray;
-        desc.TargetStageSRV = eShaderStageFlag::CS;
+        desc.TargetStageSRV = eShaderStageFlag::Compute;
         m_SBufferKeyFrame = std::make_unique<StructBuffer>(desc);
 
         if (FAILED(m_SBufferKeyFrame->Create<tAnimKeyframeTranslation>

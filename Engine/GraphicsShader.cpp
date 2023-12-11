@@ -177,7 +177,7 @@ namespace ehw
 
 		}
 
-		//RS, DS, BS
+		//RS, Domain, BS
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRSType));
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mDSType));
 		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mBSType));
@@ -263,7 +263,7 @@ namespace ehw
 			nullptr,
 			D3D_COMPILE_STANDARD_FILE_INCLUDE,
 			std::string(_funcName).c_str(),
-			SHADER_VERSION::GS[(int)_stage],
+			SHADER_VERSION::Graphics[(int)_stage],
 			0u,
 			0u,
 			mArrShaderCode[(int)_stage].blob.ReleaseAndGetAddressOf(),
@@ -368,7 +368,7 @@ namespace ehw
 
 	eResult GraphicsShader::CreateInputLayout()
 	{
-		ID3DBlob* VSBlobData = mArrShaderCode[(int)eGSStage::VS].blob.Get();
+		ID3DBlob* VSBlobData = mArrShaderCode[(int)eGSStage::Vertex].blob.Get();
 
 		if (nullptr == VSBlobData)
 		{
@@ -429,7 +429,7 @@ namespace ehw
 		auto pDevice = GPUManager::Device();
 		switch (_stage)
 		{
-		case eGSStage::VS:
+		case eGSStage::Vertex:
 		{
 			if (FAILED(pDevice->CreateVertexShader(_pByteCode, _ByteCodeSize, nullptr, mVS.ReleaseAndGetAddressOf())))
 			{
@@ -440,7 +440,7 @@ namespace ehw
 			break;
 		}
 
-		case eGSStage::HS:
+		case eGSStage::Hull:
 		{
 			if (FAILED(pDevice->CreateHullShader(_pByteCode, _ByteCodeSize, nullptr, mHS.ReleaseAndGetAddressOf())))
 			{
@@ -452,7 +452,7 @@ namespace ehw
 		}
 
 
-		case eGSStage::DS:
+		case eGSStage::Domain:
 		{
 			if (FAILED(pDevice->CreateDomainShader(_pByteCode, _ByteCodeSize, nullptr, mDS.ReleaseAndGetAddressOf())))
 			{
@@ -464,7 +464,7 @@ namespace ehw
 		}
 
 
-		case eGSStage::GS:
+		case eGSStage::Geometry:
 		{
 			if (FAILED(pDevice->CreateGeometryShader(_pByteCode, _ByteCodeSize, nullptr, mGS.ReleaseAndGetAddressOf())))
 			{
@@ -476,7 +476,7 @@ namespace ehw
 		}
 
 
-		case eGSStage::PS:
+		case eGSStage::Pixel:
 		{
 			if (FAILED(pDevice->CreatePixelShader(_pByteCode, _ByteCodeSize, nullptr, mPS.ReleaseAndGetAddressOf())))
 			{
