@@ -8,7 +8,7 @@
 #include "../Manager/RenderManager.h"
 
 #include "../GPU/ConstBuffer.h"
-#include "../GPU/define_GPU.h"
+#include "../GPU/CommonInclude_GPU.h"
 
 
 #include "define_Resource.h"

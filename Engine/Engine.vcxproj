@@ -261,13 +261,14 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GPU\CommonInclude_GPU.h" />
     <ClInclude Include="Resource\Animation\Animation2D.h" />
     <ClInclude Include="Resource\Animation\Animation3D.h" />
     <ClInclude Include="Resource\ComputeShaders\Animation3DShader.h" />
     <ClInclude Include="Util\base64.h" />
     <ClInclude Include="Manager\ComponentManager.h" />
     <ClInclude Include="Game\Component\Components.h" />
-    <ClInclude Include="Game\Component\Com_Animator2D.h" />
+    <ClInclude Include="Game\Component\TestDir\Com_Animator2D.h" />
     <ClInclude Include="Util\AtExit.h" />
     <ClInclude Include="Resource\AudioClip.h" />
     <ClInclude Include="Game\Component\Com_Animator3D.h" />
@@ -400,7 +401,7 @@
     </ClCompile>
     <ClCompile Include="Manager\ComponentManager.cpp" />
     <ClCompile Include="Game\Component\ComponentInitializer.cpp" />
-    <ClCompile Include="Game\Component\Com_Animator2D.cpp" />
+    <ClCompile Include="Game\Component\TestDir\Com_Animator2D.cpp" />
     <ClCompile Include="Util\AtExit.cpp" />
     <ClCompile Include="Resource\AudioClip.cpp" />
     <ClCompile Include="Game\Component\Com_Animator3D.cpp" />
@@ -772,10 +773,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Game\Component\ComponentInitializer.txt" />
-    <Text Include="Game\Component\strKey_Component.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,6 @@
 
 #include "PCH_CodeGenerator.h"
 #include "CodeWriter.h"
-#include "../Engine/define_GPU.h"
 
 
 struct tShaderGroup
@@ -27,21 +26,44 @@ private:
 	DirTreeNode(DirTreeNode* _pParent);
 	~DirTreeNode();
 
-public:
-	HRESULT SearchRecursive(stdfs::path const& _rootPath, stdfs::path const& _path, std::regex const& _regex);
-
-	//파일을 전부 가져오고, 이 파일이 이전에도 있었던 파일인지 여부를 확인한다.
-	HRESULT GetAllFiles(__out std::unordered_map<stdfs::path, ePrevFileStatus>& _filesList, bool _bAddRelativeDir);
-
-
-	//_prevFiles : 파일명/이전에 작성했었던 파일인지 여부
-	HRESULT WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFiles);
-
 private:
-	DirTreeNode* m_pParent;
-	std::vector<DirTreeNode*> m_vecChild;
+	//인자가 지속적으로 추가되어 수정 용이성을 위해 Desc 방식으로 변경하였음.
+	struct SearchDesc
+	{
+		const stdfs::path& rootDir;
+		const std::regex& regex;
+		std::unordered_map<stdfs::path, ePrevFileStatus>& prevFilesList;
 
-public:
+		SearchDesc(
+			const stdfs::path& _rootDir,
+			const std::regex& _regex,
+			std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
+			: rootDir(_rootDir)
+			, regex(_regex)
+			, prevFilesList(_prevFilesList)
+		{}
+	};
+
+	HRESULT SearchRecursive(SearchDesc _searchParam, stdfs::path const& _currentDir);
+
+	//찾은 파일명을 기반으로 String Key를 생성한다.
+	struct tStrKeyWriteDesc
+	{
+		CodeWriter& codeWriter;
+		const bool bEraseExtension;
+		const bool bWriteChildNamespace;
+		const bool bAddRelativeDirToString;
+
+		tStrKeyWriteDesc(CodeWriter& _codeWriter, bool _bEraseExtension, bool _bWriteChildNamespace, bool _bAddRelativeDirToString)
+			: codeWriter(_codeWriter)
+			, bEraseExtension(_bEraseExtension)
+			, bWriteChildNamespace(_bWriteChildNamespace)
+			, bAddRelativeDirToString(_bAddRelativeDirToString)
+		{}
+	};
+	HRESULT WriteStrKeyTree(tStrKeyWriteDesc _desc);
+
+
 	void SetParent(DirTreeNode* _pNode) { assert(_pNode); m_pParent = _pNode; }
 	void AddChild(DirTreeNode* _pNode) { assert(_pNode); m_vecChild.push_back(_pNode); }
 
@@ -50,6 +72,9 @@ public:
 	bool IsReady() const { return !m_DirName.empty(); }
 
 private:
+	DirTreeNode* m_pParent;
+	std::vector<DirTreeNode*> m_vecChild;
+
 	stdfs::path	  m_DirName;
 	std::vector<stdfs::path>	  m_vecFileName;
 

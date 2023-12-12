@@ -3,7 +3,7 @@
 
 
 
-#include "../GPU/define_GPU.h"
+#include "../GPU/CommonInclude_GPU.h"
 
 
 

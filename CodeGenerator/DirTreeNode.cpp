@@ -43,30 +43,51 @@ void DirTreeNode::Clear()
 	m_pParent = nullptr;
 }
 
-HRESULT DirTreeNode::SearchRecursive(stdfs::path const& _rootPath, stdfs::path const& _path, std::regex const& _regex)
+HRESULT DirTreeNode::SearchRecursive(SearchDesc _searchParam, const stdfs::path& _currentDir)
 {
 	//들어온 Path 자체가 폴더 경로가 아닐 경우에는 실패 반환
-	if (false == stdfs::is_directory(_path))
-		return E_INVALIDARG;
+	ASSERT(stdfs::is_directory(_searchParam.rootDir), "루트 디렉토리에는 파일명이 붙어있으면 안 됩니다.");
 
-	//디렉토리 이름을 등록
-	if(false == IsRoot())
-		m_DirName = _path.lexically_relative(_rootPath);
+	
+	//자식 노드일 경우 상대적 경로를 등록
+	if (false == IsRoot())
+	{
+		m_DirName = _currentDir.lexically_relative(_searchParam.rootDir);
+	}
+		
 
 	try
 	{
-		for (const auto& dirIter : stdfs::directory_iterator(_path))
+		for (const auto& dirIter : stdfs::directory_iterator(_currentDir))
 		{
 			//포함 항목 검사
 			
 			//파일명일 경우 - 확장자 및 파일명을 확인하고, 일치하는 경우에만 파일명을 등록
 			if (false == dirIter.is_directory())
 			{
-				stdfs::path const& filename = dirIter.path().filename();
-				//확장자의 경우 정확히 일치하는지 확인
-				if (std::regex_search(filename.string(), _regex))
+				const stdfs::path& filename = dirIter.path().filename();
+
+				//확장자의 경우 정확히 일치하는지 확인 -> 일치할 경우 찾은 것
+				if (std::regex_search(filename.string(), _searchParam.regex))
 				{
+					//일치할 경우 추가
 					m_vecFileName.push_back(filename);
+
+					//해당 파일명을 prevFilesList에서 찾아본다.(루트 경로로부터의 상대경로가 키값)
+					stdfs::path pathKey = dirIter.path().lexically_relative(_searchParam.rootDir);
+					auto iter = _searchParam.prevFilesList.find(pathKey);
+
+					//못찾았다 = 새로 발견
+					if (_searchParam.prevFilesList.end() == iter)
+					{
+						_searchParam.prevFilesList.insert(std::make_pair(pathKey, ePrevFileStatus::New));
+					}
+
+					//찾았다
+					else
+					{
+						iter->second = ePrevFileStatus::Found;
+					}
 				}
 			}
 
@@ -75,7 +96,7 @@ HRESULT DirTreeNode::SearchRecursive(stdfs::path const& _rootPath, stdfs::path c
 			{
 				//폴더를 발견했을 경우 새 노드를 생성 후 재귀호출
 				DirTreeNode* pNode = new DirTreeNode(this);
-				HRESULT hr = pNode->SearchRecursive(_rootPath, dirIter.path(), _regex);
+				HRESULT hr = pNode->SearchRecursive(_searchParam, dirIter.path());
 				
 				if (ERROR_EMPTY == hr)
 				{
@@ -108,50 +129,10 @@ HRESULT DirTreeNode::SearchRecursive(stdfs::path const& _rootPath, stdfs::path c
 }
 
 
-
-HRESULT DirTreeNode::GetAllFiles(__out std::unordered_map<stdfs::path, ePrevFileStatus>& _filesList, bool _bAddRelativeDir)
+HRESULT DirTreeNode::WriteStrKeyTree(tStrKeyWriteDesc _desc)
 {
-	for (size_t i = 0; i < m_vecFileName.size(); ++i)
-	{
-		stdfs::path fileName{};
-		if (IsRoot() || _bAddRelativeDir)
-		{
-			fileName = m_vecFileName[i];
-		}
-		else
-		{
-			fileName = m_DirName / m_vecFileName[i];
-		}
-
-		//이전에 작성했던 파일명이면 찾음 상태로 변경
-		auto iter = _filesList.find(fileName);
-		if (iter == _filesList.end())
-		{
-			_filesList.insert(std::make_pair(fileName, ePrevFileStatus::New));
-		}
-		else
-		{
-			iter->second = ePrevFileStatus::Found;
-		}
-	}
-
-	for (size_t i = 0; i < m_vecChild.size(); ++i)
-	{
-		HRESULT hr = m_vecChild[i]->GetAllFiles(_filesList, _bAddRelativeDir);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK;
-			return hr;
-		}
-	}
-
-	return S_OK;
-}
-
-
-HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtension, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFiles)
-{
-	if (false == IsRoot())
+	//자식 네임스페이스 작성이 true이고 + Root 네임스페이스가 아닐경우 -> 자식 네임스페이스 작성
+	if (_desc.bWriteChildNamespace && false == IsRoot())
 	{
 		std::string strCode = "namespace ";
 
@@ -159,12 +140,17 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 		//변수명에 사용할 수 없는 특수문자를 제외
 		strCode += std::regex_replace(DirName, define_Preset::Regex::g_VarForbiddenChars::A, "_");
 
-		_CodeWriter.WriteCode(0, strCode);
+		_desc.codeWriter.WriteCode(0, strCode);
 	}
 
-	//중괄호 열고 자신의 파일목록 작성
+	//자신의 파일목록 작성
 	{
-		_CodeWriter.OpenBracket(0);
+		//자식 네임스페이스를 작성했거나 루트 네임스페이스일 경우 중괄호를 열어준다
+		if (_desc.bWriteChildNamespace || IsRoot())
+		{
+			_desc.codeWriter.OpenBracket(0);
+		}
+		
 
 		size_t size = m_vecFileName.size();
 		for (size_t i = 0; i < size; ++i)
@@ -173,10 +159,15 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 			{
 				std::string varName;
 				
-				if (_bEraseExtension)
+				if (_desc.bEraseExtension)
+				{
 					varName = m_vecFileName[i].filename().replace_extension("").string();
+				}
 				else
+				{
 					varName = m_vecFileName[i].filename().string();
+				}
+					
 
 				//변수명에 사용할 수 없는 특수문자를 제외
 				strCode += std::regex_replace(varName, define_Preset::Regex::g_VarForbiddenChars::A, "_");
@@ -188,7 +179,7 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 
 			strCode += " = \"";
 
-			if (false == IsRoot())
+			if (false == IsRoot() && true ==  _desc.bAddRelativeDirToString)
 			{
 				std::string tempstring = m_DirName.string();
 				std::replace(tempstring.begin(), tempstring.end(), '\\', '/');
@@ -198,29 +189,24 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 
 			{
 				stdfs::path fileName{};
-				if (_bEraseExtension)
+				if (_desc.bEraseExtension)
+				{
 					fileName += m_vecFileName[i].replace_extension("");
+				}
 				else
+				{
 					fileName += m_vecFileName[i];
+				}
 
 				strCode += fileName.string();
-
-				//이전에 작성했던 파일명이면 찾음 상태로 변경
-				auto iter = _prevFiles.find(fileName);
-				if (iter == _prevFiles.end())
-				{
-					_prevFiles.insert(std::make_pair(fileName, ePrevFileStatus::New));
-				}
-				else
-				{
-					iter->second = ePrevFileStatus::Found;
-				}
 			}
 
 
 
 			strCode += "\";";
-			_CodeWriter.WriteCode(0, strCode);
+
+
+			_desc.codeWriter.WriteCode(0, strCode);
 		}
 	}
 
@@ -229,7 +215,7 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 		size_t size = m_vecChild.size();
 		for (size_t i = 0; i < size; ++i)
 		{
-			HRESULT hr = m_vecChild[i]->WriteStrKeyTree(_CodeWriter, _bEraseExtension, _prevFiles);
+			HRESULT hr = m_vecChild[i]->WriteStrKeyTree(_desc);
 			if (FAILED(hr))
 			{
 				return E_FAIL;
@@ -237,8 +223,13 @@ HRESULT DirTreeNode::WriteStrKeyTree(CodeWriter& _CodeWriter, bool _bEraseExtens
 		}
 	}
 
-	_CodeWriter.CloseBracket(0);
-	_CodeWriter.WriteCode(0);
+
+	//자식 네임스페이스를 작성했거나 루트 네임스페이스일 경우 중괄호를 닫아준다
+	if (_desc.bWriteChildNamespace || IsRoot())
+	{
+		_desc.codeWriter.CloseBracket(0);
+		_desc.codeWriter.WriteCode(0);
+	}
 
 	return S_OK;
 }

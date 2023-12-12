@@ -1,17 +1,23 @@
 #include "PCH_CodeGenerator.h"
 #include "DirTree.h"
 
+
+
+#include "../Engine/Resource/define_Resource.h"
+#include "../Engine/Resource/GraphicsShader.h"
+#include "../Engine/Resource/iComputeShader.h"
+
+
 #include "define_Util.h"
 #include "json-cpp/json.h"
 #include "CodeWriter.h"
 #include "DirTreeNode.h"
 
-#include "../Engine/define_Res.h"
-#include "../Engine/GraphicsShader.h"
-#include "../Engine/iComputeShader.h"
-
 DirTree::DirTree()
 	: m_RootDir()
+	, m_PrevFiles()
+	, m_PrevFilesSavePath()
+	, m_bModified()
 {
 }
 
@@ -19,16 +25,48 @@ DirTree::~DirTree()
 {
 }
 
-HRESULT DirTree::SearchRecursive(stdfs::path const& _RootPath, std::regex const& _regex)
+HRESULT DirTree::SearchRecursive(const tSearchDesc& _desc)
 {
-	m_RootDir.Clear();
+	HRESULT hr{};
 
-	return m_RootDir.SearchRecursive( _RootPath, _RootPath, _regex);
+	Reset();
+
+	m_PrevFilesSavePath = _desc.rootPath / _desc.prevTextFileName;
+	m_PrevFilesSavePath.replace_extension("txt");
+	//이전 파일 목록을 읽은뒤
+	m_PrevFiles = ReadPrevFilesList(m_PrevFilesSavePath);
+
+	//desc를 작성한 후
+	DirTreeNode::SearchDesc searchSetting(_desc.rootPath, _desc.regex, m_PrevFiles);
+
+	//실제로 폴더를 재귀형태로 탐색
+	hr = m_RootDir.SearchRecursive(searchSetting, _desc.rootPath);
+
+	//실패시 리턴
+	if (FAILED(hr))
+	{
+		ClearPrevFilesList(m_PrevFilesSavePath);
+		return hr;
+	}
+
+	//완료 되었으면 이전 검사결과와 변경점을 확인
+	m_bModified = CheckDiff();
+
+	//이전 파일 목록을 갱신
+	WritePrevFilesList(m_PrevFilesSavePath);
+
+	return hr;
 }
 
 
-HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path const& _RootNamespace, bool _bEraseExtension)
+HRESULT DirTree::CreateStrKeyHeader(const tStrKeyWriteDesc& _desc)
 {
+	//변경점이 없으면 작성하지 않는다.
+	if (false == m_bModified)
+	{
+		return S_OK;
+	}
+
 	CodeWriter Writer;
 
 	Writer.WriteCode(0, define_Preset::Keyword::PragmaOnce::A);
@@ -41,33 +79,22 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 	Writer.WriteCode(0);
 
 	std::string strCode = "namespace ehw::strKey::";
-	strCode += _RootNamespace.string();
+	strCode += _desc.rootNamespace;
 	Writer.WriteCode(0, strCode);
 
-	//이전에 작성했던 파일 리스트가 있는지 확인 및 리스트 로드
-	std::unordered_map<stdfs::path, ePrevFileStatus> prevFiles = ReadPrevFilesList(_FilePath);
+	DirTreeNode::tStrKeyWriteDesc desc(Writer, _desc.bEraseExtension, _desc.bWriteChildNamespace, _desc.bAddRelativeDirToString);
 
-	HRESULT hr = m_RootDir.WriteStrKeyTree(Writer, _bEraseExtension, prevFiles);
+	HRESULT hr = m_RootDir.WriteStrKeyTree(desc);
 	if (FAILED(hr))
 		return hr;
 
-	////////////////////////////////////////////////////////
-	//찾은 파일 리스트 저장 및 새로운 파일 발견여부 확인
-	bool bModified = CheckDiffAndWritePrevFiles(_FilePath, prevFiles);
-	////////////////////////////////////////////////////
-
-
-	//새 파일 발견되었을 경우 저장
-	hr = S_OK;
-	if (bModified)
+	hr = Writer.SaveAll<char>(_desc.filePath);
+	if (FAILED(hr))
 	{
-		hr = Writer.SaveAll<char>(_FilePath);
-		if (FAILED(hr))
-		{
-			//저장 실패 시 txt 파일 내용도 제거
-			ClearPrevFilesList(_FilePath);
-		}
+		//저장 실패 시 txt 파일 내용도 제거
+		ClearPrevFilesList(m_PrevFilesSavePath);
 	}
+
 	return hr;
 }
 
@@ -76,6 +103,12 @@ HRESULT DirTree::CreateStrKeyHeader(stdfs::path const& _FilePath, stdfs::path co
 
 HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 {
+	if (false == m_bModified)
+	{
+		return S_OK;
+	}
+
+
 	CodeWriter Writer;
 
 	Writer.WriteCode(0, define_Preset::Keyword::Head::A);
@@ -127,31 +160,18 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 
 		Writer.WriteCode(1, strCode);
 		Writer.OpenBracket(1);
-		//Writer.WriteCode("cUserClassMgr* pMgr = cUserClassMgr::GetInst();", 1);
 	}
-
-	auto prevFiles = ReadPrevFilesList(_Desc.FilePath);
-	//노드를 순회돌면서 이름을 정리시킨다.
-	m_RootDir.GetAllFiles(prevFiles, false);
-
-	//새 파일 발견했는지 여부 확인. 없을 경우 return
-	bool bNewFileDetected = CheckDiffAndWritePrevFiles(_Desc.FilePath, prevFiles);
-	if (false == bNewFileDetected)
-		return S_OK;
-	
 	
 	//순회를 돌면서 각 버퍼에 코드 작성
 	//0번 버퍼: include
 	//1번 버퍼: 클래스 생성
-	for (const auto& iter : prevFiles)
+	for (const auto& iter : m_PrevFiles)
 	{
 		//0번 버퍼에 include 작성
 		{
-			const std::string& FileName = iter.first.filename().string();
-
 			std::string strCode;
 			strCode += define_Preset::Keyword::IncludeBegin::A;
-			strCode += FileName + ".h";
+			strCode += iter.first.string();
 			strCode += "\"";
 			Writer.WriteCode(0, strCode);
 		}
@@ -192,22 +212,13 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 
 HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 {
-	CodeWriter Writer;
-
-	auto prevFiles = ReadPrevFilesList(_FilePath);
-	
-	HRESULT hr = m_RootDir.GetAllFiles(prevFiles, false);
-	if (FAILED(hr))
-	{
-		DEBUG_BREAK;
-		return hr;
-	}
-
-	//갱신된 파일이 없을 경우 return
-	if (false == CheckDiffAndWritePrevFiles(_FilePath, prevFiles))
+	if (false == m_bModified)
 	{
 		return S_OK;
 	}
+
+
+	CodeWriter Writer;
 
 	std::unordered_map<stdfs::path, tShaderGroup> umapGSGroup;
 	std::vector<stdfs::path> vecCS;
@@ -216,7 +227,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 
 
 	//파일 순회돌면서 그래픽 쉐이더 파일 정리
-	for(const auto& iter: prevFiles)
+	for(const auto& iter: m_PrevFiles)
 	{
 		//std::string으로 변경
 		std::string strFileName = iter.first.string();
@@ -321,7 +332,7 @@ std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 {
 	std::unordered_map<stdfs::path, ePrevFileStatus> prevFiles{};
 
-	std::ifstream ifs(stdfs::path(_filePath).replace_extension(".txt"));
+	std::ifstream ifs(_filePath);
 	if (ifs.is_open())
 	{
 		std::string fileName;
@@ -337,69 +348,71 @@ std::unordered_map<stdfs::path, ePrevFileStatus> DirTree::ReadPrevFilesList(cons
 	return prevFiles;
 }
 
-bool DirTree::CheckDiffAndWritePrevFiles(const stdfs::path& _filePath, std::unordered_map<stdfs::path, ePrevFileStatus>& _prevFilesList)
+bool DirTree::CheckDiff()
 {
 	bool bModified = false;
 
-	stdfs::path txtPath = stdfs::path(_filePath).replace_extension(".txt");
-
-	//타겟 파일 또는 txt 파일이 존재하지 않을 경우 무조건 생성
-	if (false == stdfs::exists(_filePath) || false == stdfs::exists(txtPath))
+	//비어있을 경우에는 무조건 작성
+	//비어있을 경우에는 텍스트파일도 비어있음 -> 비어있을 경우에는 코드 작성이 안 되어있는 상태더라도 새로 작성하지 않음
+	//->에러 발생
+	if (m_PrevFiles.empty())
 	{
 		bModified = true;
 	}
 
-	std::ofstream ofs(txtPath);
+	else
+	{
+		for (auto iter = m_PrevFiles.begin(); iter != m_PrevFiles.end();)
+		{
+			switch (iter->second)
+			{
+			case ePrevFileStatus::NotFound:
+			{
+				bModified = true;
+				iter = m_PrevFiles.erase(iter);
+				continue;
+			}
+
+			case ePrevFileStatus::Found:
+			{
+				++iter;
+				continue;
+			}
+
+			case ePrevFileStatus::New:
+			{
+				bModified = true;
+				++iter;
+				continue;
+			}
+
+			default:
+				ASSERT(false, "이상한 값이 들어왔습니다");
+				break;
+			}
+		}
+	}
+
+	return bModified;
+}
+
+void DirTree::WritePrevFilesList(const stdfs::path& _filePath)
+{
+	std::ofstream ofs(_filePath);
 	ASSERT(ofs.is_open(), "txt 파일 쓰기 모드로 열기 실패.");
 
 	//이전 파일 리스트가 비어있을 경우에는 무조건 새로 작성한다.
 	//이전 파일 리스트가 없고, 새로 발견된 파일이 없으면 갱신을 안하는 경우가 있음.
 	//그런데 이 때 코드 파일에는 지웠던 파일들이 있는 경우가 있음 -> 에러 발생
-	if (_prevFilesList.empty())
+	for (const auto& iter : m_PrevFiles)
 	{
-		bModified = true;
+		ofs << iter.first.string() << std::endl;
 	}
-	else
-	{
-		for (auto iter = _prevFilesList.begin(); iter != _prevFilesList.end();)
-		{
-			switch (iter->second)
-			{
-			//이전에 있었는데 현재 없을 경우 -> 변경된 것임
-			case ePrevFileStatus::NotFound:
-			{
-				iter = _prevFilesList.erase(iter);
-				bModified = true;
-			}
-			break;
 
-			case ePrevFileStatus::Found:
-			{
-				ofs << iter->first.string() << std::endl;
-				++iter;
-			}
-			break;
-
-			case ePrevFileStatus::New:
-			{
-				//새 파일을 발견했는지 확인(하나라도 New == 새 파일 발견)
-				bModified = true;
-
-				ofs << iter->first.string() << std::endl;
-				++iter;
-			}
-			break;
-
-			default:
-				assert(false);
-				break;
-			}
-		}
-	}
 	ofs.close();
-
-	return bModified;
 }
+
+
 
 
 

@@ -13,6 +13,18 @@ namespace stdfs = std::filesystem;
 #endif
 #endif
 
+//Release 모드에서도 작동
+#ifdef _DEBUG
+#define ASSERT(_expression, _message) \
+	if (!(_expression)) \
+		{ _wassert(L ## #_expression##"\n"##_message , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
+#else
+#define ASSERT(_expression, _message) if(!(_expression)) { \
+		MessageBoxW(nullptr, L## #_expression##"\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		std::abort();\
+	}
+#endif
+
 
 //#define PRESET constexpr const char*
 
@@ -29,6 +41,7 @@ namespace define_Preset
 	{
 		PRESET(ContentsProj, "./Project/UserContents");
 		PRESET(EngineProj, "./Project/EngineBase/Engine");
+		PRESET(EngineComponent, "./Project/EngineBase/Engine/Game/Component");
 		PRESET(Shader_Proj, "./Project/UserShader");
 
 
@@ -37,13 +50,13 @@ namespace define_Preset
 #else
 		PRESET(Resources, "./Output/Release/Res");
 #endif
-
-		
-
 	}
 	
 	namespace Keyword
 	{
+		PRESET(EngineMasterNamespace, "namespace ehw");
+
+
 
 		PRESET(arrNumThreads, "arrNumThreads");
 		
@@ -52,6 +65,7 @@ namespace define_Preset
 		PRESET(IncludeBegin, "#include \"");
 
 		PRESET(NameSpace, "namespace ");
+
 		PRESET(ConstexprInlineConstChar, "PRESET(");
 		PRESET(EqualDoubleQuotation, ", \"");
 		PRESET(EnumClass, "enum class ");
@@ -79,6 +93,9 @@ R"(#ifndef STRKEY
 		PRESET(Constructor_T, "CONSTRUCTOR_T(");
 	}
 
+
+
+
 	namespace Regex
 	{
 
@@ -100,8 +117,9 @@ R"(#ifndef STRKEY
 
 		PRESET(AllShader, R"(\w+\.hlsl$)");
 		PRESET(CShaderRegex, R"(CS_\w+\.hlsl$)");
-		PRESET(ScriptRegex, R"(Script_.+\.h)");
-		PRESET(ComponentRegex, R"(Com_.+\.h)");
+		PRESET(ScriptRegex, R"(Script_\w+\.h)");
+		PRESET(ComponentRegex, R"(^Com_\w+\.h)");
+		PRESET(SceneRegex, R"(Scene_\w+\.h)");
 		
 		//[   numthreads   ( %d, %d, %d )   ]
 		//[ ] 안에 둘러싸여 있고, 공백 갯수에 상관없이 숫자 3개를 추출
@@ -110,7 +128,7 @@ R"(#ifndef STRKEY
 }
 
 
-#include "../Engine/define_GPU.h"
+#include "../Engine/GPU/define_GPU.h"
 namespace define_ShaderGen
 {
 	struct tShaderSetting

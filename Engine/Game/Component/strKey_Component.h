@@ -15,7 +15,6 @@
 
 namespace ehw::strKey::component
 {
-	STRKEY Com_Animator2D = "Com_Animator2D";
 	STRKEY Com_Animator3D = "Com_Animator3D";
 	STRKEY Com_AudioListener = "Com_AudioListener";
 	STRKEY Com_AudioSource = "Com_AudioSource";
@@ -30,4 +29,5 @@ namespace ehw::strKey::component
 	STRKEY Com_Renderer_Sprite = "Com_Renderer_Sprite";
 	STRKEY Com_Renderer_UIBase = "Com_Renderer_UIBase";
 	STRKEY Com_Transform = "Com_Transform";
+	STRKEY Com_Animator2D = "Com_Animator2D";
 }

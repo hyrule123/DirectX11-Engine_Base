@@ -71,4 +71,16 @@ namespace ehw
 		} Values{};
 	};
 
+	struct tDebugMesh
+	{
+		eColliderType type;
+		float3 position;
+		float3 rotatation;
+		float3 scale;
+
+		float radius;
+		float duration;
+		float time;
+	};
+
 }

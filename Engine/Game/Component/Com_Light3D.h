@@ -2,7 +2,7 @@
 #include "iLight.h"
 
 
-#include "../../GPU/define_GPU.h"
+#include "../../GPU/CommonInclude_GPU.h"
 #include "../../DefaultShader/Light/Func_Light.hlsli"
 
 namespace ehw

@@ -3,28 +3,6 @@
 #include "../define_Macro.h"
 
 
-#include "../DefaultShader/ConstBuffer.hlsli"
-#include "../DefaultShader/Resource.hlsli"
-
-
-#include "../define_Enum.h"
-#include "../define_Macro.h"
-
-
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "d3dcompiler.lib")
-
-#include <wrl.h>
-using Microsoft::WRL::ComPtr;
-namespace Microsoft::WRL
-{
-	template <class T> struct is_ComPtr : std::false_type {};
-	template <class T> struct is_ComPtr<Microsoft::WRL::ComPtr<T>> : std::true_type {};
-	template <class T> inline constexpr bool is_ComPtr_v = is_ComPtr<T>::value;
-}
-
 
 namespace ehw
 {
@@ -222,43 +200,6 @@ namespace ehw
 		END,
 	};
 
-	enum class eTextureSlot
-	{
-		Tex_0,
-		Tex_1,
-		Tex_2,
-		Tex_3,
-		Tex_4,
-		Tex_5,
-		Tex_6,
-		Tex_7,
-
-
-		Albedo = Register_t_AlbedoTexture,
-		Normal = Register_t_NormalTexture,
-		Specular = Register_t_SpecularTexture,
-		Emissive = Register_t_EmissiveTexture,
-		RoughnessAndMetalic = Register_t_RoughnessMetalicTexture,
-
-		AlbedoTarget = Register_t_AlbedoTarget,
-		NormalTarget = Register_t_NormalTarget,
-		SpecularTarget = Register_t_SpecularTarget,
-		EmissiveTarget = Register_t_EmissiveTarget,
-		RoughnessAndMetalicTarget = Register_t_RoughnessMetalicTarget,
-		PositionTarget = Register_t_PositionTarget,
-		
-		DiffuseLightTarget = Register_t_DiffuseLightTarget,
-		SpecularLightTarget = Register_t_SpecularLightTarget,
-
-		//CubeT8,
-		//CubeT9,
-
-		//Array2DT10,
-		//Array2DT11,
-
-		END = 8,
-	};
-
 	enum class eMRT_Deffered
 	{
 		AlbedoTarget,
@@ -305,48 +246,4 @@ namespace ehw
 		RTV,
 		DSV,
 	};
-
-	struct tDebugMesh
-	{
-		eColliderType type;
-		float3 position;
-		float3 rotatation;
-		float3 scale;
-
-		float radius;
-		float duration;
-		float time;
-	};
-
-	//struct tLightAttribute
-	//{
-	//	float4 diffuse;
-	//	float4 specular;
-	//	float4 ambient;
-
-	//	float4 position;
-	//	float4 direction;
-
-	//	eLightType type;
-	//	float radius;
-	//	float angle;
-	//	int padding;
-	//};
-
-	//struct tParticle
-	//{
-	//	float4 position;
-	//	float4 direction;
-
-	//	float lifeTime;
-	//	float time;
-	//	float speed;
-	//	uint active;
-	//};
-	//struct tParticleShared
-	//{
-	//	uint activeCount;
-	//};
-
-
 }

@@ -228,7 +228,7 @@
     <ClCompile Include="Game\Component\iCollider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Animator2D.cpp">
+    <ClCompile Include="Game\Component\TestDir\Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Resource\iComputeShader.cpp">
@@ -514,7 +514,7 @@
     <ClInclude Include="Game\Component\iCollider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Animator2D.h">
+    <ClInclude Include="Game\Component\TestDir\Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Resource\iComputeShader.h">
@@ -787,6 +787,7 @@
     <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
     <ClInclude Include="Editor\Base\EditorWindow.h" />
     <ClInclude Include="Editor\strKey_Editor.h" />
+    <ClInclude Include="GPU\CommonInclude_GPU.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -949,13 +950,5 @@
     <ResourceCompile Include="Engine.rc">
       <Filter>Common\WindowResource</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Game\Component\ComponentInitializer.txt">
-      <Filter>Component</Filter>
-    </Text>
-    <Text Include="Game\Component\strKey_Component.txt">
-      <Filter>Component</Filter>
-    </Text>
   </ItemGroup>
 </Project>

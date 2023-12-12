@@ -3,7 +3,7 @@
 
 
 #include "../../define_Struct.h"
-#include "../../GPU/define_GPU.h"
+#include "../../GPU/CommonInclude_GPU.h"
 
 namespace editor
 {

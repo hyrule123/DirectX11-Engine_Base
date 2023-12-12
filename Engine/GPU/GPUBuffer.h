@@ -3,7 +3,7 @@
 
 
 
-#include "define_GPU.h"
+#include "CommonInclude_GPU.h"
 
 namespace ehw
 {

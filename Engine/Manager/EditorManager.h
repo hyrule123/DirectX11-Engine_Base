@@ -7,7 +7,7 @@
 
 #include "../Editor/Base/EditorChild.h"
 
-#include "../GPU/define_GPU.h"
+#include "../GPU/CommonInclude_GPU.h"
 
 #include "../json-cpp/json-forwards.h"
 
