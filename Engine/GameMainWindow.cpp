@@ -3,11 +3,11 @@
 #include "resource.h"
 
 #include "define_Macro.h"
-#include "AtExit.h"
+#include "Util/AtExit.h"
          
 #include "Application.h"
 
-#include "EditorManager.h"
+#include "Manager/EditorManager.h"
 
 HINSTANCE GameMainWindow::mInstance{};
 HWND GameMainWindow::mHwnd{};

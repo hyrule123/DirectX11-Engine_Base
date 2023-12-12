@@ -186,70 +186,70 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
+    <ClCompile Include="Game\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
+    <ClCompile Include="Resource\Mesh.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
+    <ClCompile Include="Resource\Material.cpp">
       <Filter>Resource\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="Resource\Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="iScript.cpp">
+    <ClCompile Include="Game\Component\iScript.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="iRenderer.cpp">
+    <ClCompile Include="Game\Component\iRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Camera.cpp">
+    <ClCompile Include="Game\Component\Com_Camera.cpp">
       <Filter>Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Renderer_Sprite.cpp">
+    <ClCompile Include="Game\Component\Com_Renderer_Sprite.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Layer.cpp">
+    <ClCompile Include="Game\Layer.cpp">
       <Filter>Scene\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="iScene.cpp">
+    <ClCompile Include="Game\iScene.cpp">
       <Filter>Scene\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Prefab.cpp">
+    <ClCompile Include="Resource\Prefab.cpp">
       <Filter>Resource\Prefab</Filter>
     </ClCompile>
-    <ClCompile Include="iCollider2D.cpp">
+    <ClCompile Include="Game\Component\iCollider2D.cpp">
       <Filter>Component\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="iCollider3D.cpp">
+    <ClCompile Include="Game\Component\iCollider3D.cpp">
       <Filter>Component\Collider\3D</Filter>
     </ClCompile>
-    <ClCompile Include="iCollider.cpp">
+    <ClCompile Include="Game\Component\iCollider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Animator2D.cpp">
+    <ClCompile Include="Game\Component\Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="iComputeShader.cpp">
+    <ClCompile Include="Resource\iComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Light3D.cpp">
+    <ClCompile Include="Game\Component\Com_Light3D.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="ConstBuffer.cpp">
+    <ClCompile Include="GPU\ConstBuffer.cpp">
       <Filter>GPU\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="StructBuffer.cpp">
+    <ClCompile Include="GPU\StructBuffer.cpp">
       <Filter>GPU\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Com_AudioListener.cpp">
+    <ClCompile Include="Game\Component\Com_AudioListener.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="FontWrapper.cpp">
+    <ClCompile Include="Manager\FontWrapper.cpp">
       <Filter>FontWrapper</Filter>
     </ClCompile>
-    <ClCompile Include="GPUBuffer.cpp">
+    <ClCompile Include="GPU\GPUBuffer.cpp">
       <Filter>GPU\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="PCH_Engine.cpp">
@@ -258,258 +258,206 @@
     <ClCompile Include="json-cpp\jsoncpp.cpp">
       <Filter>JsonCPP</Filter>
     </ClCompile>
-    <ClCompile Include="AtExit.cpp">
+    <ClCompile Include="Util\AtExit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="iShader.cpp">
+    <ClCompile Include="Resource\iShader.cpp">
       <Filter>Resource\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsShader.cpp">
+    <ClCompile Include="Resource\GraphicsShader.cpp">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="iComponent.cpp">
+    <ClCompile Include="Game\Component\iComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
+    <ClCompile Include="Manager\ResourceManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
+    <ClCompile Include="Manager\TimeManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="PathManager.cpp">
+    <ClCompile Include="Manager\PathManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Renderer_ParticleSystem.cpp">
+    <ClCompile Include="Game\Component\Com_Renderer_ParticleSystem.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="iResource.cpp">
+    <ClCompile Include="Resource\iResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentManager.cpp">
+    <ClCompile Include="Manager\ComponentManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Transform.cpp">
+    <ClCompile Include="Game\Component\Com_Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Com_AudioSource.cpp">
+    <ClCompile Include="Game\Component\Com_AudioSource.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="AudioClip.cpp">
+    <ClCompile Include="Resource\AudioClip.cpp">
       <Filter>Resource\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="RenderManager.cpp">
+    <ClCompile Include="Manager\RenderManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
+    <ClCompile Include="Manager\AudioManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="MultiRenderTarget.cpp">
+    <ClCompile Include="GPU\MultiRenderTarget.cpp">
       <Filter>GPU</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
+    <ClCompile Include="Manager\CollisionManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
+    <ClCompile Include="Manager\InputManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="define_Util.cpp">
+    <ClCompile Include="Util\define_Util.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleMath.cpp">
+    <ClCompile Include="Util\SimpleMath.cpp">
       <Filter>Common\Math</Filter>
     </ClCompile>
-    <ClCompile Include="MeshData.cpp">
+    <ClCompile Include="Resource\Modeling\MeshData.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="Manager\SceneManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
+    <ClCompile Include="Editor\imgui\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
+    <ClCompile Include="Editor\imgui\imgui_demo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
+    <ClCompile Include="Editor\imgui\imgui_draw.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_dx11.cpp">
+    <ClCompile Include="Editor\imgui\imgui_impl_dx11.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+    <ClCompile Include="Editor\imgui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_stdlib.cpp">
+    <ClCompile Include="Editor\imgui\imgui_stdlib.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_tables.cpp">
+    <ClCompile Include="Editor\imgui\imgui_tables.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
+    <ClCompile Include="Editor\imgui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="EditorBase.cpp">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorChild.cpp">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWindow.cpp">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorCom_Transform.cpp">
-      <Filter>GuiEditor\Instances\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorCom_Renderer.cpp">
-      <Filter>GuiEditor\Instances\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorComponent.cpp">
-      <Filter>GuiEditor\Instances\Inspector</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWidget_ComboBox.cpp">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWidget_List.cpp">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorWidget_Tree.cpp">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorResources.cpp">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorResource.cpp">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugObject.cpp">
+    <ClCompile Include="Editor\DebugObject\DebugObject.cpp">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorObject.cpp">
-      <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorTexture.cpp">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorMesh.cpp">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorMaterial.cpp">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorEntity.cpp">
-      <Filter>GuiEditor\_Base</Filter>
     </ClCompile>
     <ClCompile Include="GameMainWindow.cpp">
       <Filter>High Level Interface</Filter>
     </ClCompile>
-    <ClCompile Include="base64.cpp">
+    <ClCompile Include="Util\base64.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="iAnimator.cpp">
+    <ClCompile Include="Game\Component\iAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Animator3D.cpp">
+    <ClCompile Include="Game\Component\Com_Animator3D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Animation3DShader.cpp">
+    <ClCompile Include="Resource\ComputeShaders\Animation3DShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="iTransform.cpp">
+    <ClCompile Include="Game\Component\iTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Renderer_Mesh.cpp">
+    <ClCompile Include="Game\Component\Com_Renderer_Mesh.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Com_DummyTransform.cpp">
+    <ClCompile Include="Game\Component\Com_DummyTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Renderer_3DAnimMesh.cpp">
+    <ClCompile Include="Game\Component\Com_Renderer_3DAnimMesh.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Com_DummyAnimator.cpp">
+    <ClCompile Include="Game\Component\Com_DummyAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="EditorGameObject.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorMainMenu.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorInspector.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorGraphicsShader.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorGame.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorConsole.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation2D.cpp">
+    <ClCompile Include="Resource\Animation\Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Com_Renderer_UIBase.cpp">
+    <ClCompile Include="Game\Component\Com_Renderer_UIBase.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuizmo.cpp">
+    <ClCompile Include="Editor\imgui\ImGuizmo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Com_BehaviorTree.cpp">
+    <ClCompile Include="Game\Component\Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="iLight.cpp">
+    <ClCompile Include="Game\Component\iLight.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="GPUInitSetting.cpp">
+    <ClCompile Include="Resource\ComputeShaders\GPUInitSetting.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="define_Global.cpp">
+    <ClCompile Include="define_GlobalVar.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
-    <ClCompile Include="NormalConvertShader.cpp">
+    <ClCompile Include="Resource\ComputeShaders\NormalConvertShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="EditorNormalConverter.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorFBXConverter.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
+    <ClCompile Include="Resource\Modeling\FBXLoader.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
+    <ClCompile Include="Resource\Modeling\Skeleton.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleShader.cpp">
+    <ClCompile Include="Resource\ComputeShaders\ParticleShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="EditorUVCalculator.cpp">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadPoolManager.cpp">
+    <ClCompile Include="Manager\ThreadPoolManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Animation3D.cpp">
+    <ClCompile Include="Resource\Animation\Animation3D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="iAnimation.cpp">
+    <ClCompile Include="Resource\Animation\iAnimation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="GridScript.cpp">
+    <ClCompile Include="Game\Component\GridScript.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentInitializer.cpp">
+    <ClCompile Include="Game\Component\ComponentInitializer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="GPUManager.cpp">
+    <ClCompile Include="Manager\GPUManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="EditorManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
+    <ClCompile Include="Editor\Base\EditorBase.cpp" />
+    <ClCompile Include="Editor\Base\EditorChild.cpp" />
+    <ClCompile Include="Editor\Inspector\EditorCom_Renderer.cpp" />
+    <ClCompile Include="Editor\Inspector\EditorCom_Transform.cpp" />
+    <ClCompile Include="Editor\Inspector\EditorComponent.cpp" />
+    <ClCompile Include="Editor\DebugObject\EditorConsole.cpp" />
+    <ClCompile Include="Editor\Base\EditorEntity.cpp" />
+    <ClCompile Include="Editor\Resource\EditorFBXConverter.cpp" />
+    <ClCompile Include="Editor\DebugObject\EditorGame.cpp" />
+    <ClCompile Include="Editor\DebugObject\EditorGameObject.cpp" />
+    <ClCompile Include="Editor\Resource\EditorGraphicsShader.cpp" />
+    <ClCompile Include="Editor\Inspector\EditorInspector.cpp" />
+    <ClCompile Include="Editor\Base\EditorMainMenu.cpp" />
+    <ClCompile Include="Manager\EditorManager.cpp" />
+    <ClCompile Include="Editor\Resource\EditorMaterial.cpp" />
+    <ClCompile Include="Editor\Resource\EditorMesh.cpp" />
+    <ClCompile Include="Editor\Resource\EditorNormalConverter.cpp" />
+    <ClCompile Include="Editor\DebugObject\EditorObject.cpp" />
+    <ClCompile Include="Editor\Resource\EditorResource.cpp" />
+    <ClCompile Include="Editor\Resource\EditorResources.cpp" />
+    <ClCompile Include="Editor\Resource\EditorTexture.cpp" />
+    <ClCompile Include="Editor\Resource\EditorUVCalculator.cpp" />
+    <ClCompile Include="Editor\Widget\EditorWidget_ComboBox.cpp" />
+    <ClCompile Include="Editor\Widget\EditorWidget_List.cpp" />
+    <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
+    <ClCompile Include="Editor\Base\EditorWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -521,73 +469,73 @@
     <ClInclude Include="PCH_Engine.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="Game\GameObject.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
+    <ClInclude Include="Resource\Mesh.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="iComponent.h">
+    <ClInclude Include="Game\Component\iComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
+    <ClInclude Include="Resource\Material.h">
       <Filter>Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Resource\Texture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="iScript.h">
+    <ClInclude Include="Game\Component\iScript.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="iRenderer.h">
+    <ClInclude Include="Game\Component\iRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Camera.h">
+    <ClInclude Include="Game\Component\Com_Camera.h">
       <Filter>Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Renderer_Sprite.h">
+    <ClInclude Include="Game\Component\Com_Renderer_Sprite.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Layer.h">
+    <ClInclude Include="Game\Layer.h">
       <Filter>Scene\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="iScene.h">
+    <ClInclude Include="Game\iScene.h">
       <Filter>Scene\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Prefab.h">
+    <ClInclude Include="Resource\Prefab.h">
       <Filter>Resource\Prefab</Filter>
     </ClInclude>
-    <ClInclude Include="iCollider2D.h">
+    <ClInclude Include="Game\Component\iCollider2D.h">
       <Filter>Component\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="iCollider3D.h">
+    <ClInclude Include="Game\Component\iCollider3D.h">
       <Filter>Component\Collider\3D</Filter>
     </ClInclude>
-    <ClInclude Include="iCollider.h">
+    <ClInclude Include="Game\Component\iCollider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Animator2D.h">
+    <ClInclude Include="Game\Component\Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="iComputeShader.h">
+    <ClInclude Include="Resource\iComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Light3D.h">
+    <ClInclude Include="Game\Component\Com_Light3D.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="ConstBuffer.h">
+    <ClInclude Include="GPU\ConstBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="StructBuffer.h">
+    <ClInclude Include="GPU\StructBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Com_AudioListener.h">
+    <ClInclude Include="Game\Component\Com_AudioListener.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="FontWrapper.h">
+    <ClInclude Include="Manager\FontWrapper.h">
       <Filter>FontWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="GPUBuffer.h">
+    <ClInclude Include="GPU\GPUBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="json-cpp\json.h">
@@ -596,22 +544,22 @@
     <ClInclude Include="json-cpp\json-forwards.h">
       <Filter>JsonCPP</Filter>
     </ClInclude>
-    <ClInclude Include="AtExit.h">
+    <ClInclude Include="Util\AtExit.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
+    <ClInclude Include="Util\Singleton.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultShaders.h">
+    <ClInclude Include="CompiledShaderHeader\DefaultShaders.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="iShader.h">
+    <ClInclude Include="Resource\iShader.h">
       <Filter>Resource\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsShader.h">
+    <ClInclude Include="Resource\GraphicsShader.h">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="define_Res.h">
+    <ClInclude Include="Resource\define_Resource.h">
       <Filter>Common\define</Filter>
     </ClInclude>
     <ClInclude Include="define_Macro.h">
@@ -623,155 +571,107 @@
     <ClInclude Include="define_Enum.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="EnumFlags.h">
+    <ClInclude Include="Util\EnumFlags.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="define_Component.h">
+    <ClInclude Include="Game\Component\define_Component.h">
       <Filter>Common\define</Filter>
     </ClInclude>
     <ClInclude Include="defines.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="Components.h">
+    <ClInclude Include="Game\Component\Components.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
+    <ClInclude Include="Manager\ResourceManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManager.h">
+    <ClInclude Include="Manager\TimeManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="PathManager.h">
+    <ClInclude Include="Manager\PathManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Renderer_ParticleSystem.h">
+    <ClInclude Include="Game\Component\Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="iResource.h">
+    <ClInclude Include="Resource\iResource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentManager.h">
+    <ClInclude Include="Manager\ComponentManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Transform.h">
+    <ClInclude Include="Game\Component\Com_Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Com_AudioSource.h">
+    <ClInclude Include="Game\Component\Com_AudioSource.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="AudioClip.h">
+    <ClInclude Include="Resource\AudioClip.h">
       <Filter>Resource\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="RenderManager.h">
+    <ClInclude Include="Manager\RenderManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="AudioManager.h">
+    <ClInclude Include="Manager\AudioManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="define_GPU.h">
+    <ClInclude Include="GPU\define_GPU.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="MultiRenderTarget.h">
+    <ClInclude Include="GPU\MultiRenderTarget.h">
       <Filter>GPU</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
+    <ClInclude Include="Manager\CollisionManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
+    <ClInclude Include="Manager\InputManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="json-cpp\jsonSaveLoad.h">
       <Filter>JsonCPP</Filter>
     </ClInclude>
-    <ClInclude Include="define_Util.h">
+    <ClInclude Include="Util\define_Util.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleMath.h">
+    <ClInclude Include="Util\SimpleMath.h">
       <Filter>Common\Math</Filter>
     </ClInclude>
-    <ClInclude Include="MeshData.h">
+    <ClInclude Include="Resource\Modeling\MeshData.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
+    <ClInclude Include="Manager\SceneManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
+    <ClInclude Include="Editor\imgui\imconfig.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
+    <ClInclude Include="Editor\imgui\imgui.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_dx11.h">
+    <ClInclude Include="Editor\imgui\imgui_impl_dx11.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_win32.h">
+    <ClInclude Include="Editor\imgui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
+    <ClInclude Include="Editor\imgui\imgui_internal.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imgui_stdlib.h">
+    <ClInclude Include="Editor\imgui\imgui_stdlib.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imstb_rectpack.h">
+    <ClInclude Include="Editor\imgui\imstb_rectpack.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imstb_textedit.h">
+    <ClInclude Include="Editor\imgui\imstb_textedit.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imstb_truetype.h">
+    <ClInclude Include="Editor\imgui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="EditorBase.h">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorChild.h">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWindow.h">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="strKey_Editor.h">
-      <Filter>GuiEditor\_Base</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorCom_Transform.h">
-      <Filter>GuiEditor\Instances\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorComponent.h">
-      <Filter>GuiEditor\Instances\Inspector</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWidget_ComboBox.h">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWidget_List.h">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorWidget_Tree.h">
-      <Filter>GuiEditor\_Widget</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorResources.h">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorResource.h">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugObject.h">
+    <ClInclude Include="Editor\DebugObject\DebugObject.h">
       <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorObject.h">
-      <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorTexture.h">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorMesh.h">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorMaterial.h">
-      <Filter>GuiEditor\Instances\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorEntity.h">
-      <Filter>GuiEditor\_Base</Filter>
     </ClInclude>
     <ClInclude Include="GameMainWindow.h">
       <Filter>High Level Interface</Filter>
@@ -779,116 +679,114 @@
     <ClInclude Include="resource.h">
       <Filter>Common\WindowResource</Filter>
     </ClInclude>
-    <ClInclude Include="base64.h">
+    <ClInclude Include="Util\base64.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="iAnimator.h">
+    <ClInclude Include="Game\Component\iAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Animator3D.h">
+    <ClInclude Include="Game\Component\Com_Animator3D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Animation3DShader.h">
+    <ClInclude Include="Resource\ComputeShaders\Animation3DShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="iTransform.h">
+    <ClInclude Include="Game\Component\iTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Renderer_Mesh.h">
+    <ClInclude Include="Game\Component\Com_Renderer_Mesh.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Com_DummyTransform.h">
+    <ClInclude Include="Game\Component\Com_DummyTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Renderer_3DAnimMesh.h">
+    <ClInclude Include="Game\Component\Com_Renderer_3DAnimMesh.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Com_DummyAnimator.h">
+    <ClInclude Include="Game\Component\Com_DummyAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="EditorMainMenu.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorInspector.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorGraphicsShader.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorGame.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorConsole.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation2D.h">
+    <ClInclude Include="Resource\Animation\Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Com_Renderer_UIBase.h">
+    <ClInclude Include="Game\Component\Com_Renderer_UIBase.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuizmo.h">
+    <ClInclude Include="Editor\imgui\ImGuizmo.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Com_BehaviorTree.h">
+    <ClInclude Include="Game\Component\Com_BehaviorTree.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="iLight.h">
+    <ClInclude Include="Game\Component\iLight.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="GPUInitSetting.h">
+    <ClInclude Include="Resource\ComputeShaders\GPUInitSetting.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="define_Global.h">
+    <ClInclude Include="define_GlobalVar.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="NormalConvertShader.h">
+    <ClInclude Include="Resource\ComputeShaders\NormalConvertShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="EditorNormalConverter.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorFBXConverter.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXLoader.h">
+    <ClInclude Include="Resource\Modeling\FBXLoader.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Skeleton.h">
+    <ClInclude Include="Resource\Modeling\Skeleton.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleShader.h">
+    <ClInclude Include="Resource\ComputeShaders\ParticleShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="EditorUVCalculator.h">
-      <Filter>GuiEditor\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadPoolManager.h">
+    <ClInclude Include="Manager\ThreadPoolManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentInitializer.h">
+    <ClInclude Include="Game\Component\ComponentInitializer.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="strKey_Component.h">
+    <ClInclude Include="Game\Component\strKey_Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Animation3D.h">
+    <ClInclude Include="Resource\Animation\Animation3D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="iAnimation.h">
+    <ClInclude Include="Resource\Animation\iAnimation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="GridScript.h">
+    <ClInclude Include="Game\Component\GridScript.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="GPUManager.h">
+    <ClInclude Include="Manager\GPUManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="EditorManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorCom_Renderer.h" />
-    <ClInclude Include="EditorGameObject.h" />
+    <ClInclude Include="Editor\Base\EditorBase.h" />
+    <ClInclude Include="Editor\Base\EditorChild.h" />
+    <ClInclude Include="Editor\Inspector\EditorCom_Renderer.h" />
+    <ClInclude Include="Editor\Inspector\EditorCom_Transform.h" />
+    <ClInclude Include="Editor\Inspector\EditorComponent.h" />
+    <ClInclude Include="Editor\DebugObject\EditorConsole.h" />
+    <ClInclude Include="Editor\Base\EditorEntity.h" />
+    <ClInclude Include="Editor\Resource\EditorFBXConverter.h" />
+    <ClInclude Include="Editor\DebugObject\EditorGame.h" />
+    <ClInclude Include="Editor\DebugObject\EditorGameObject.h" />
+    <ClInclude Include="Editor\Resource\EditorGraphicsShader.h" />
+    <ClInclude Include="Editor\Inspector\EditorInspector.h" />
+    <ClInclude Include="Editor\Base\EditorMainMenu.h" />
+    <ClInclude Include="Manager\EditorManager.h" />
+    <ClInclude Include="Editor\Resource\EditorMaterial.h" />
+    <ClInclude Include="Editor\Resource\EditorMesh.h" />
+    <ClInclude Include="Editor\Resource\EditorNormalConverter.h" />
+    <ClInclude Include="Editor\DebugObject\EditorObject.h" />
+    <ClInclude Include="Editor\Resource\EditorResource.h" />
+    <ClInclude Include="Editor\Resource\EditorResources.h" />
+    <ClInclude Include="Editor\Resource\EditorTexture.h" />
+    <ClInclude Include="Editor\Resource\EditorUVCalculator.h" />
+    <ClInclude Include="Editor\Widget\EditorWidget_ComboBox.h" />
+    <ClInclude Include="Editor\Widget\EditorWidget_List.h" />
+    <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
+    <ClInclude Include="Editor\Base\EditorWindow.h" />
+    <ClInclude Include="Editor\strKey_Editor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -915,19 +813,19 @@
     <None Include="DefaultShader\Sampler.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Grid.hlsli">
+    <None Include="DefaultShader\Debug\Grid.hlsli">
       <Filter>_DefaultShader\Grid</Filter>
     </None>
-    <None Include="DefaultShader\Func_Light.hlsli">
+    <None Include="DefaultShader\Light\Func_Light.hlsli">
       <Filter>_DefaultShader\Light</Filter>
     </None>
-    <None Include="DefaultShader\PostProcess.hlsli">
+    <None Include="DefaultShader\PostProcess\PostProcess.hlsli">
       <Filter>_DefaultShader\PostProcess</Filter>
     </None>
-    <None Include="DefaultShader\Particle.hlsli">
+    <None Include="DefaultShader\Particle\Particle.hlsli">
       <Filter>_DefaultShader\Particle</Filter>
     </None>
-    <None Include="SimpleMath.inl">
+    <None Include="Util\SimpleMath.inl">
       <Filter>Common\Math</Filter>
     </None>
     <None Include="DefaultShader\CommonStruct.hlsli">
@@ -936,22 +834,22 @@
     <None Include="DefaultShader\Functions.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Func_Animation3D.hlsli">
+    <None Include="DefaultShader\Animation\Func_Animation3D.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Animation2D.hlsli">
+    <None Include="DefaultShader\Animation\Animation2D.hlsli">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </None>
-    <None Include="DefaultShader\UserInterface.hlsli">
+    <None Include="DefaultShader\UI\UserInterface.hlsli">
       <Filter>_DefaultShader\UI</Filter>
     </None>
-    <None Include="DefaultShader\NormalConverter.hlsli">
+    <None Include="DefaultShader\NormalConverter\NormalConverter.hlsli">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </None>
-    <None Include="DefaultShader\Light.hlsli">
+    <None Include="DefaultShader\Light\Light.hlsli">
       <Filter>_DefaultShader\Light</Filter>
     </None>
-    <None Include="DefaultShader\_3D.hlsli">
+    <None Include="DefaultShader\Basic\_3D.hlsli">
       <Filter>_DefaultShader\3D</Filter>
     </None>
     <None Include="DefaultShader\Func_Bitwise.hlsli">
@@ -959,91 +857,91 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DefaultShader\VS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\Basic\VS_Basic3D.hlsl">
       <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\Debug\VS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Deffered.hlsl">
+    <FxCompile Include="DefaultShader\Deffered\VS_Deffered.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\Debug\VS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\Light\VS_LightDir.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\Light\VS_LightPoint.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Merge.hlsl">
+    <FxCompile Include="DefaultShader\Deffered\VS_Merge.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\Particle\VS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\PostProcess\VS_PostProcess.hlsl">
       <Filter>_DefaultShader\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\Basic\VS_Triangle.hlsl">
       <Filter>_DefaultShader\Triangle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_UserInterface.hlsl">
+    <FxCompile Include="DefaultShader\UI\VS_UserInterface.hlsl">
       <Filter>_DefaultShader\UI</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\GS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\Particle\GS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Basic3D.hlsl">
+    <FxCompile Include="DefaultShader\Basic\PS_Basic3D.hlsl">
       <Filter>_DefaultShader\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Debug.hlsl">
+    <FxCompile Include="DefaultShader\Debug\PS_Debug.hlsl">
       <Filter>_DefaultShader\Debug</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Deffered.hlsl">
+    <FxCompile Include="DefaultShader\Deffered\PS_Deffered.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Grid.hlsl">
+    <FxCompile Include="DefaultShader\Debug\PS_Grid.hlsl">
       <Filter>_DefaultShader\Grid</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_LightDir.hlsl">
+    <FxCompile Include="DefaultShader\Light\PS_LightDir.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_LightPoint.hlsl">
+    <FxCompile Include="DefaultShader\Light\PS_LightPoint.hlsl">
       <Filter>_DefaultShader\Light</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Merge.hlsl">
+    <FxCompile Include="DefaultShader\Deffered\PS_Merge.hlsl">
       <Filter>_DefaultShader\3D\Deffered</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\Particle\PS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_PostProcess.hlsl">
+    <FxCompile Include="DefaultShader\PostProcess\PS_PostProcess.hlsl">
       <Filter>_DefaultShader\PostProcess</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Triangle.hlsl">
+    <FxCompile Include="DefaultShader\Basic\PS_Triangle.hlsl">
       <Filter>_DefaultShader\Triangle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_UserInterface.hlsl">
+    <FxCompile Include="DefaultShader\UI\PS_UserInterface.hlsl">
       <Filter>_DefaultShader\UI</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_Particle.hlsl">
+    <FxCompile Include="DefaultShader\Particle\CS_Particle.hlsl">
       <Filter>_DefaultShader\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\PS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\Animation\PS_Sprite.hlsl">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\VS_Sprite.hlsl">
+    <FxCompile Include="DefaultShader\Animation\VS_Sprite.hlsl">
       <Filter>_DefaultShader\Animation\2D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_Animation3D.hlsl">
+    <FxCompile Include="DefaultShader\Animation\CS_Animation3D.hlsl">
       <Filter>_DefaultShader\Animation\3D</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_NormalConverter.hlsl">
+    <FxCompile Include="DefaultShader\NormalConverter\CS_NormalConverter.hlsl">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\CS_GPUInitSetting.hlsl">
+    <FxCompile Include="DefaultShader\Initialize\CS_GPUInitSetting.hlsl">
       <Filter>_DefaultShader\GPUInitSetting</Filter>
     </FxCompile>
   </ItemGroup>
@@ -1053,10 +951,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ComponentInitializer.txt">
+    <Text Include="Game\Component\ComponentInitializer.txt">
       <Filter>Component</Filter>
     </Text>
-    <Text Include="strKey_Component.txt">
+    <Text Include="Game\Component\strKey_Component.txt">
       <Filter>Component</Filter>
     </Text>
   </ItemGroup>

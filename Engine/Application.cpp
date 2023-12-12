@@ -1,22 +1,23 @@
 #include "PCH_Engine.h"
 #include "Application.h"
 
-#include "AtExit.h"
+#include "Util/AtExit.h"
 
-#include "ComponentInitializer.h"
-#include "RenderManager.h"
-#include "TimeManager.h"
-#include "InputManager.h"
-#include "SceneManager.h"
-#include "ResourceManager.h"
-#include "CollisionManager.h"
-#include "AudioManager.h"
-#include "FontWrapper.h"
-#include "PathManager.h"
-#include "EditorManager.h"
-#include "ThreadPoolManager.h"
+#include "Game/Component/ComponentInitializer.h"
 
-#include "define_Global.h"
+#include "Manager/RenderManager.h"
+#include "Manager/TimeManager.h"
+#include "Manager/InputManager.h"
+#include "Manager/SceneManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/CollisionManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/FontWrapper.h"
+#include "Manager/PathManager.h"
+#include "Manager/EditorManager.h"
+#include "Manager/ThreadPoolManager.h"
+
+#include "define_GlobalVar.h"
 
 namespace ehw
 {

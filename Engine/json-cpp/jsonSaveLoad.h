@@ -3,8 +3,12 @@
 #ifndef JSON_AMALGAMATED_H_INCLUDED
 #include "json.h"
 #endif
-#include "../define_Util.h"
+
+#include "../Util/define_Util.h"
+
 #include "../define_Enum.h"
+
+
 #include <wrl.h>
 #include <utility>
 

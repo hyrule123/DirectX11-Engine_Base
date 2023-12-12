@@ -9,7 +9,7 @@
 
 //C++
 #ifdef __cplusplus
-#include "Simplemath.h"
+#include "../Util/Simplemath.h"
 
 using float2 = ehw::math::Vector2;
 using float3 = ehw::math::Vector3;

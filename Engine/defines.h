@@ -1,10 +1,10 @@
 #pragma once
 
-#include "define_Component.h"
+#include "Game/Component/define_Component.h"
 #include "define_Enum.h"
-#include "define_Global.h"
-#include "define_GPU.h"
+#include "define_GlobalVar.h"
+#include "GPU/define_GPU.h"
 #include "define_Macro.h"
-#include "define_Res.h"
+#include "Resource/define_Resource.h"
 #include "define_Struct.h"
-#include "define_Util.h"
+#include "Util/define_Util.h"

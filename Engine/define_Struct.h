@@ -4,11 +4,11 @@
 #include <Windows.h>
 
 #include "DefaultShader/CommonStruct.hlsli"
-#include "SimpleMath.h"
+#include "Util/SimpleMath.h"
 
 #include <fbxsdk/core/base/fbxtime.h>
 
-//C++ 전용 '구조체' 모음
+//C++ 전용. 1개 이상의 클래스에서 사용되는 "공용" 구조체 모음
 namespace ehw
 {
 	struct tDesc_GPUMgr
