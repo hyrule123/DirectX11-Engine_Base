@@ -390,7 +390,8 @@ Res/
 
 
 # Exclude Shader header
-CompiledShaderHeader/
+Engine/CompiledShaderHeader/*
+!Engine/CompiledShaderHeader/DefaultShaders.h
 
 # 3D Modeling
 *.fbx
