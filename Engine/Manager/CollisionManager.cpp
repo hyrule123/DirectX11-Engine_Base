@@ -1,11 +1,11 @@
-#include "../PCH_Engine.h"
+
 #include "CollisionManager.h"
 
 
 
 #include "../Game/iScene.h"
-#include "../Game/Component/Com_Transform.h"
-#include "../Game/Component/iCollider2D.h"
+#include "../Game/Component/Transform/Com_Transform.h"
+#include "../Game/Component/Collider/iCollider2D.h"
 
 #include "../Util/AtExit.h"
 

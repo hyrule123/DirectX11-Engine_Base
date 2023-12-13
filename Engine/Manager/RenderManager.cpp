@@ -1,4 +1,4 @@
-#include "../PCH_Engine.h"
+
 #include "RenderManager.h"
 
 
@@ -9,21 +9,21 @@
 
 #include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
-#include "../Resource/ComputeShaders/NormalConvertShader.h"
-#include "../Resource/ComputeShaders/ParticleShader.h"
-#include "../Resource/ComputeShaders/Animation3DShader.h"
+#include "../Resource/Shader/ComputeShaders/NormalConvertShader.h"
+#include "../Resource/Shader/ComputeShaders/ParticleShader.h"
+#include "../Resource/Shader/ComputeShaders/Animation3DShader.h"
 
 #include "../GPU/ConstBuffer.h"
 #include "../GPU/MultiRenderTarget.h"
 
-#include "../Game/Component/Com_Light3D.h"
+#include "../Game/Component/Light/Com_Light3D.h"
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
 #include "../CompiledShaderHeader/DefaultShaders.h"
 
-#include "../Resource/ComputeShaders/GPUInitSetting.h"
+#include "../Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
-#include "../define_GlobalVar.h"
+#include "../CommonGlobalVar.h"
 
 
 #include "ResourceManager.h"

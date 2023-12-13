@@ -2,7 +2,7 @@
 #include "../../Editor/Base/EditorWindow.h"
 
 #include "../../Editor/Widget/EditorWidget_ComboBox.h"
-#include "../../define_Struct.h"
+#include "../../CommonStruct.h"
 
 //Material 전방선언
 namespace ehw

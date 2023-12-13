@@ -3,7 +3,7 @@
 
 
 #include "../../Editor/Widget/EditorWidget_ComboBox.h"
-#include "../../GPU/CommonInclude_GPU.h"
+#include "../../GPU/CommonGPU.h"
 
 namespace ehw
 {

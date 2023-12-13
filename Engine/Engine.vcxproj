@@ -134,8 +134,8 @@
       <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -176,8 +176,8 @@
       <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -201,8 +201,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -243,8 +243,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>cd $(SolutionDir)
+start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -261,27 +261,27 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GPU\CommonInclude_GPU.h" />
+    <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Resource\Animation\Animation2D.h" />
     <ClInclude Include="Resource\Animation\Animation3D.h" />
-    <ClInclude Include="Resource\ComputeShaders\Animation3DShader.h" />
+    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h" />
     <ClInclude Include="Util\base64.h" />
     <ClInclude Include="Manager\ComponentManager.h" />
-    <ClInclude Include="Game\Component\Components.h" />
-    <ClInclude Include="Game\Component\TestDir\Com_Animator2D.h" />
+    <ClInclude Include="Game\Component\BaseComponents.h" />
+    <ClInclude Include="Game\Component\Animator\Com_Animator2D.h" />
     <ClInclude Include="Util\AtExit.h" />
     <ClInclude Include="Resource\AudioClip.h" />
-    <ClInclude Include="Game\Component\Com_Animator3D.h" />
-    <ClInclude Include="Game\Component\Com_AudioListener.h" />
-    <ClInclude Include="Game\Component\Com_AudioSource.h" />
-    <ClInclude Include="Game\Component\Com_BehaviorTree.h" />
-    <ClInclude Include="Game\Component\Com_DummyTransform.h" />
-    <ClInclude Include="Game\Component\Com_Renderer_3DAnimMesh.h" />
-    <ClInclude Include="Game\Component\Com_DummyAnimator.h" />
-    <ClInclude Include="Game\Component\Com_Renderer_Mesh.h" />
-    <ClInclude Include="Game\Component\Com_Renderer_UIBase.h" />
+    <ClInclude Include="Game\Component\Animator\Com_Animator3D.h" />
+    <ClInclude Include="Game\Component\Audio\Com_AudioListener.h" />
+    <ClInclude Include="Game\Component\Audio\Com_AudioSource.h" />
+    <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h" />
+    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
+    <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
     <ClInclude Include="Game\Component\ComponentInitializer.h" />
-    <ClInclude Include="define_GlobalVar.h" />
+    <ClInclude Include="CommonGlobalVar.h" />
     <ClInclude Include="Editor\Base\EditorBase.h" />
     <ClInclude Include="Editor\Base\EditorChild.h" />
     <ClInclude Include="Editor\Inspector\EditorComponent.h" />
@@ -314,12 +314,12 @@
     <ClInclude Include="Manager\GPUManager.h" />
     <ClInclude Include="Editor\DebugObject\DebugObject.h" />
     <ClInclude Include="Resource\Animation\iAnimation.h" />
-    <ClInclude Include="Game\Component\iAnimator.h" />
-    <ClInclude Include="Game\Component\iCollider3D.h" />
-    <ClInclude Include="Game\Component\iCollider2D.h" />
+    <ClInclude Include="Game\Component\Animator\iAnimator.h" />
+    <ClInclude Include="Game\Component\Collider\iCollider3D.h" />
+    <ClInclude Include="Game\Component\Collider\iCollider2D.h" />
     <ClInclude Include="Manager\CollisionManager.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="Game\Component\iLight.h" />
+    <ClInclude Include="Game\Component\Light\iLight.h" />
     <ClInclude Include="Editor\imgui\ImGuizmo.h" />
     <ClInclude Include="Editor\imgui\imconfig.h" />
     <ClInclude Include="Editor\imgui\imgui.h" />
@@ -330,23 +330,23 @@
     <ClInclude Include="Editor\imgui\imstb_rectpack.h" />
     <ClInclude Include="Editor\imgui\imstb_textedit.h" />
     <ClInclude Include="Editor\imgui\imstb_truetype.h" />
-    <ClInclude Include="Game\Component\Com_Camera.h" />
-    <ClInclude Include="Resource\ComputeShaders\GPUInitSetting.h" />
-    <ClInclude Include="Game\Component\iTransform.h" />
+    <ClInclude Include="Game\Component\Camera\Com_Camera.h" />
+    <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h" />
+    <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="json-cpp\jsonSaveLoad.h" />
     <ClInclude Include="GPU\MultiRenderTarget.h" />
     <ClInclude Include="Manager\RenderManager.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Game\Component\iCollider.h" />
+    <ClInclude Include="Game\Component\Collider\iCollider.h" />
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="Game\Component\define_Component.h" />
     <ClInclude Include="define_Macro.h" />
     <ClInclude Include="Resource\define_Resource.h" />
-    <ClInclude Include="define_Struct.h" />
+    <ClInclude Include="CommonStruct.h" />
     <ClInclude Include="GPU\GPUBuffer.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
-    <ClInclude Include="Resource\iComputeShader.h" />
+    <ClInclude Include="Resource\Shader\iComputeShader.h" />
     <ClInclude Include="GPU\ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
     <ClInclude Include="Entity.h" />
@@ -355,44 +355,44 @@
     <ClInclude Include="Manager\FontWrapper.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="GPU\define_GPU.h" />
-    <ClInclude Include="Game\Component\GridScript.h" />
+    <ClInclude Include="Game\Component\Script\GridScript.h" />
     <ClInclude Include="Manager\InputManager.h" />
     <ClInclude Include="Resource\Modeling\MeshData.h" />
-    <ClInclude Include="Resource\iShader.h" />
+    <ClInclude Include="Resource\Shader\iShader.h" />
     <ClInclude Include="Util\SimpleMath.h" />
     <ClInclude Include="Util\Singleton.h" />
     <ClInclude Include="json-cpp\json-forwards.h" />
     <ClInclude Include="json-cpp\json.h" />
     <ClInclude Include="Game\Layer.h" />
-    <ClInclude Include="Game\Component\Com_Light3D.h" />
+    <ClInclude Include="Game\Component\Light\Com_Light3D.h" />
     <ClInclude Include="Resource\Material.h" />
     <ClInclude Include="Manager\PathManager.h" />
     <ClInclude Include="Resource\Mesh.h" />
-    <ClInclude Include="Game\Component\iRenderer.h" />
-    <ClInclude Include="Resource\ComputeShaders\NormalConvertShader.h" />
-    <ClInclude Include="Resource\ComputeShaders\ParticleShader.h" />
-    <ClInclude Include="Game\Component\Com_Renderer_ParticleSystem.h" />
+    <ClInclude Include="Game\Component\Renderer\iRenderer.h" />
+    <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h" />
+    <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Resource\Prefab.h" />
     <ClInclude Include="Resource\iResource.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Game\iScene.h" />
     <ClInclude Include="Manager\SceneManager.h" />
-    <ClInclude Include="Game\Component\iScript.h" />
-    <ClInclude Include="Resource\GraphicsShader.h" />
-    <ClInclude Include="Game\Component\Com_Renderer_Sprite.h" />
+    <ClInclude Include="Game\Component\Script\iScript.h" />
+    <ClInclude Include="Resource\Shader\GraphicsShader.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Sprite.h" />
     <ClInclude Include="Resource\Modeling\Skeleton.h" />
     <ClInclude Include="Game\Component\strKey_Component.h" />
     <ClInclude Include="GPU\StructBuffer.h" />
     <ClInclude Include="Resource\Texture.h" />
     <ClInclude Include="Manager\ThreadPoolManager.h" />
     <ClInclude Include="Manager\TimeManager.h" />
-    <ClInclude Include="Game\Component\Com_Transform.h" />
+    <ClInclude Include="Game\Component\Transform\Com_Transform.h" />
     <ClInclude Include="Util\define_Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Resource\Animation\Animation2D.cpp" />
     <ClCompile Include="Resource\Animation\Animation3D.cpp" />
-    <ClCompile Include="Resource\ComputeShaders\Animation3DShader.cpp" />
+    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp" />
     <ClCompile Include="Util\base64.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -401,19 +401,19 @@
     </ClCompile>
     <ClCompile Include="Manager\ComponentManager.cpp" />
     <ClCompile Include="Game\Component\ComponentInitializer.cpp" />
-    <ClCompile Include="Game\Component\TestDir\Com_Animator2D.cpp" />
+    <ClCompile Include="Game\Component\Animator\Com_Animator2D.cpp" />
     <ClCompile Include="Util\AtExit.cpp" />
     <ClCompile Include="Resource\AudioClip.cpp" />
-    <ClCompile Include="Game\Component\Com_Animator3D.cpp" />
-    <ClCompile Include="Game\Component\Com_AudioListener.cpp" />
-    <ClCompile Include="Game\Component\Com_AudioSource.cpp" />
-    <ClCompile Include="Game\Component\Com_BehaviorTree.cpp" />
-    <ClCompile Include="Game\Component\Com_DummyTransform.cpp" />
-    <ClCompile Include="Game\Component\Com_Renderer_3DAnimMesh.cpp" />
-    <ClCompile Include="Game\Component\Com_DummyAnimator.cpp" />
-    <ClCompile Include="Game\Component\Com_Renderer_Mesh.cpp" />
-    <ClCompile Include="Game\Component\Com_Renderer_UIBase.cpp" />
-    <ClCompile Include="define_GlobalVar.cpp" />
+    <ClCompile Include="Game\Component\Animator\Com_Animator3D.cpp" />
+    <ClCompile Include="Game\Component\Audio\Com_AudioListener.cpp" />
+    <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp" />
+    <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp" />
+    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
+    <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
+    <ClCompile Include="CommonGlobalVar.cpp" />
     <ClCompile Include="Editor\Base\EditorBase.cpp" />
     <ClCompile Include="Editor\Base\EditorChild.cpp" />
     <ClCompile Include="Editor\Inspector\EditorComponent.cpp" />
@@ -445,12 +445,12 @@
     <ClCompile Include="Manager\GPUManager.cpp" />
     <ClCompile Include="Editor\DebugObject\DebugObject.cpp" />
     <ClCompile Include="Resource\Animation\iAnimation.cpp" />
-    <ClCompile Include="Game\Component\iAnimator.cpp" />
-    <ClCompile Include="Game\Component\iCollider3D.cpp" />
-    <ClCompile Include="Game\Component\iCollider2D.cpp" />
+    <ClCompile Include="Game\Component\Animator\iAnimator.cpp" />
+    <ClCompile Include="Game\Component\Collider\iCollider3D.cpp" />
+    <ClCompile Include="Game\Component\Collider\iCollider2D.cpp" />
     <ClCompile Include="Manager\CollisionManager.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Game\Component\iLight.cpp" />
+    <ClCompile Include="Game\Component\Light\iLight.cpp" />
     <ClCompile Include="Editor\imgui\ImGuizmo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -502,12 +502,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Camera.cpp" />
-    <ClCompile Include="Resource\ComputeShaders\GPUInitSetting.cpp" />
-    <ClCompile Include="Game\Component\iTransform.cpp" />
+    <ClCompile Include="Game\Component\Camera\Com_Camera.cpp" />
+    <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp" />
+    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="GPU\MultiRenderTarget.cpp" />
     <ClCompile Include="Manager\RenderManager.cpp" />
-    <ClCompile Include="Game\Component\iCollider.cpp" />
+    <ClCompile Include="Game\Component\Collider\iCollider.cpp" />
     <ClCompile Include="PCH_Engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -521,13 +521,13 @@
     <ClInclude Include="Util\EnumFlags.h" />
     <ClCompile Include="GPU\GPUBuffer.cpp" />
     <ClCompile Include="Game\Component\iComponent.cpp" />
-    <ClCompile Include="Resource\iComputeShader.cpp" />
+    <ClCompile Include="Resource\Shader\iComputeShader.cpp" />
     <ClCompile Include="GPU\ConstBuffer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Manager\FontWrapper.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
-    <ClCompile Include="Game\Component\GridScript.cpp" />
+    <ClCompile Include="Game\Component\Script\GridScript.cpp" />
     <ClCompile Include="Manager\InputManager.cpp" />
     <ClCompile Include="json-cpp\jsoncpp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -536,31 +536,31 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Game\Layer.cpp" />
-    <ClCompile Include="Game\Component\Com_Light3D.cpp" />
+    <ClCompile Include="Game\Component\Light\Com_Light3D.cpp" />
     <ClCompile Include="Resource\Material.cpp" />
     <ClCompile Include="Resource\Modeling\MeshData.cpp" />
     <ClCompile Include="Manager\PathManager.cpp" />
-    <ClCompile Include="Resource\iShader.cpp" />
+    <ClCompile Include="Resource\Shader\iShader.cpp" />
     <ClCompile Include="Resource\Mesh.cpp" />
-    <ClCompile Include="Game\Component\iRenderer.cpp" />
-    <ClCompile Include="Resource\ComputeShaders\NormalConvertShader.cpp" />
-    <ClCompile Include="Resource\ComputeShaders\ParticleShader.cpp" />
-    <ClCompile Include="Game\Component\Com_Renderer_ParticleSystem.cpp" />
+    <ClCompile Include="Game\Component\Renderer\iRenderer.cpp" />
+    <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp" />
+    <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Resource\Prefab.cpp" />
     <ClCompile Include="Resource\iResource.cpp" />
     <ClCompile Include="Manager\ResourceManager.cpp" />
     <ClCompile Include="Game\iScene.cpp" />
     <ClCompile Include="Manager\SceneManager.cpp" />
-    <ClCompile Include="Game\Component\iScript.cpp" />
-    <ClCompile Include="Resource\GraphicsShader.cpp" />
-    <ClCompile Include="Game\Component\Com_Renderer_Sprite.cpp" />
+    <ClCompile Include="Game\Component\Script\iScript.cpp" />
+    <ClCompile Include="Resource\Shader\GraphicsShader.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Sprite.cpp" />
     <ClCompile Include="Util\SimpleMath.cpp" />
     <ClCompile Include="Resource\Modeling\Skeleton.cpp" />
     <ClCompile Include="GPU\StructBuffer.cpp" />
     <ClCompile Include="Resource\Texture.cpp" />
     <ClCompile Include="Manager\ThreadPoolManager.cpp" />
     <ClCompile Include="Manager\TimeManager.cpp" />
-    <ClCompile Include="Game\Component\Com_Transform.cpp" />
+    <ClCompile Include="Game\Component\Transform\Com_Transform.cpp" />
     <ClCompile Include="Util\define_Util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -773,6 +773,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Game\Component\FoundEngineComponents.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

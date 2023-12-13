@@ -3,7 +3,7 @@
 
 
 
-#include "../../define_Struct.h"
+#include "../../CommonStruct.h"
 #include "../../Resource/Animation/Animation3D.h"
 
 //MeshData에 종속된 클래스

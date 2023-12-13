@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "MeshData.h"
 
 
@@ -11,10 +11,10 @@
 #include "../../Manager/PathManager.h"
 
 #include "../../Game/GameObject.h"
-#include "../../Game/Component/Com_DummyTransform.h"
-#include "../../Game/Component/Com_DummyAnimator.h"
-#include "../../Game/Component/Com_Renderer_3DAnimMesh.h"
-#include "../../Game/Component/Com_Animator3D.h"
+#include "../../Game/Component/Transform/Com_DummyTransform.h"
+#include "../../Game/Component/Animator/Com_DummyAnimator.h"
+#include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "../../Game/Component/Animator/Com_Animator3D.h"
 
 #include "../../json-cpp/json.h"
 

@@ -33,6 +33,8 @@
 #include <combaseapi.h>
 #include "Util/EnumFlags.h"
 
+#include "Util/SimpleMath.h"
+
 #include <PhysX/PxPhysicsAPI.h>
 
 #ifdef _WIN64

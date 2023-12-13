@@ -17,7 +17,7 @@
 #include "Manager/EditorManager.h"
 #include "Manager/ThreadPoolManager.h"
 
-#include "define_GlobalVar.h"
+#include "CommonGlobalVar.h"
 
 namespace ehw
 {

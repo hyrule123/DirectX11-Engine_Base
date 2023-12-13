@@ -2,9 +2,9 @@
 
 #include "Game/Component/define_Component.h"
 #include "define_Enum.h"
-#include "define_GlobalVar.h"
-#include "GPU/CommonInclude_GPU.h"
+#include "CommonGlobalVar.h"
+#include "GPU/CommonGPU.h"
 #include "define_Macro.h"
 #include "Resource/define_Resource.h"
-#include "define_Struct.h"
+#include "CommonStruct.h"
 #include "Util/define_Util.h"

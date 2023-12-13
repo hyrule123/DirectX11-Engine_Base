@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorChild.h"
 
 editor::EditorChild::EditorChild(const std::string_view _strName)

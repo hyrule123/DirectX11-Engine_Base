@@ -2,7 +2,7 @@
 #include "../../Editor/Base/EditorBase.h"
 
 
-#include "../../define_Struct.h"
+#include "../../CommonStruct.h"
 
 namespace editor
 {

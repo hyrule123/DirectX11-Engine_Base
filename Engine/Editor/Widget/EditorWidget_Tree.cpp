@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorWidget_Tree.h"
 
 namespace editor

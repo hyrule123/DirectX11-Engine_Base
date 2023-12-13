@@ -4,8 +4,8 @@
 
 
 #include "../Engine/Resource/define_Resource.h"
-#include "../Engine/Resource/GraphicsShader.h"
-#include "../Engine/Resource/iComputeShader.h"
+#include "../Engine/Resource/Shader/GraphicsShader.h"
+#include "../Engine/Resource/Shader/iComputeShader.h"
 
 
 #include "define_Util.h"
@@ -221,9 +221,10 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	CodeWriter Writer;
 
 	std::unordered_map<stdfs::path, tShaderGroup> umapGSGroup;
-	std::vector<stdfs::path> vecCS;
 
+	std::vector<stdfs::path> vecCS;
 	std::regex CSRegex(define_Preset::Regex::CShaderRegex::A);
+	
 
 
 	//파일 순회돌면서 그래픽 쉐이더 파일 정리
@@ -255,6 +256,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 		}
 
 		//그래픽 쉐이더가 아닐 경우 컴퓨트쉐이더인지 검사
+		
 		if (false == bIsGS)
 		{
 			//컴퓨트쉐이더일 경우 컴퓨트쉐이더 벡터에 값을 추가

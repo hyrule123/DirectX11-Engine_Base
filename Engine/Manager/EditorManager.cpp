@@ -1,4 +1,4 @@
-#include "../PCH_Engine.h"
+
 #include "EditorManager.h"
 
 
@@ -12,10 +12,10 @@
 #include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
 
-#include "../Game/Component/Com_Transform.h"
-#include "../Game/Component/Com_Renderer_Mesh.h"
-#include "../Game/Component/GridScript.h"
-#include "../Game/Component/Com_Renderer_Mesh.h"
+#include "../Game/Component/Transform/Com_Transform.h"
+#include "../Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "../Game/Component/Script/GridScript.h"
+#include "../Game/Component/Renderer/Com_Renderer_Mesh.h"
 
 #include "../json-cpp/json.h"
 

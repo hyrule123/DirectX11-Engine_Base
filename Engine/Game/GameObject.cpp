@@ -1,4 +1,3 @@
-#include "../PCH_Engine.h"
 #include "GameObject.h"
 
 
@@ -8,6 +7,8 @@
 #include "../json-cpp/json.h"
 
 #include "../Resource/Prefab.h"
+
+#include "Component/Renderer/iRenderer.h"
 
 
 #include "Layer.h"

@@ -2,9 +2,9 @@
 
 
 
-#include "../define_Struct.h"
-#include "../Game/Component/define_Component.h"
-#include "../Game/Component/Components.h"
+#include "../CommonStruct.h"
+
+#include "../Game/Component/BaseComponents.h"
 
 
 #include <unordered_map>

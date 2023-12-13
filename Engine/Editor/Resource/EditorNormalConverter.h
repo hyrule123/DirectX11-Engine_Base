@@ -4,7 +4,7 @@
 
 #include "../../Editor/Widget/EditorWidget_ComboBox.h"
 
-#include "../../define_Struct.h"
+#include "../../CommonStruct.h"
 
 #include "../../DefaultShader/CommonStruct.hlsli"
 

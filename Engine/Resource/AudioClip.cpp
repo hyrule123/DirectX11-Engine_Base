@@ -1,9 +1,7 @@
-#include "../PCH_Engine.h"
 #include "AudioClip.h"
 
 
-
-#include "../Game/Component/Com_Transform.h"
+#include "../Game/Component/Transform/Com_Transform.h"
 
 #include "../Manager/PathManager.h"
 

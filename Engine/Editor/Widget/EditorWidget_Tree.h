@@ -2,7 +2,7 @@
 #include "../../Editor/Base/EditorChild.h"
 
 
-#include "../../define_Struct.h"
+#include "../../CommonStruct.h"
 
 #include <functional>
 

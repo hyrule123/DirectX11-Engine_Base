@@ -1,4 +1,4 @@
-#include "../PCH_Engine.h"
+
 #include "GPUManager.h"
 
 
@@ -7,7 +7,7 @@
 
 #include "../Resource/Mesh.h"
 #include "../Resource/Texture.h"
-#include "../Resource/ComputeShaders/GPUInitSetting.h"
+#include "../Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
 #include "../Util/AtExit.h"
 

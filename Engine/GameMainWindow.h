@@ -4,7 +4,7 @@
 #include <vector>
 #include <functional>
 
-#include "define_Struct.h"
+#include "CommonStruct.h"
 
 struct tDesc_GameMainWindow
 {

@@ -4,7 +4,7 @@
 #include <windows.h>
 
 #include "Util/SimpleMath.h"
-#include "define_Struct.h"
+#include "CommonStruct.h"
 
 namespace ehw
 {

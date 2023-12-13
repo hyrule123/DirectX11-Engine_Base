@@ -1,7 +1,7 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorCom_Transform.h"
 
-#include "../../Game/Component/Com_Transform.h"
+#include "../../Game/Component/Transform/Com_Transform.h"
 #include "../../Editor/Inspector/EditorInspector.h"
 
 namespace editor

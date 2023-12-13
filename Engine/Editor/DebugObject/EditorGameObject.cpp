@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorGameObject.h"
 
 #include "../../Application.h"

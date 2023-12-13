@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorMaterial.h"
 
 
@@ -8,7 +8,9 @@
 #include "../../Manager/ResourceManager.h"
 
 #include "../../Resource/Material.h"
-#include "../../Resource/GraphicsShader.h"
+#include "../../Resource/Shader/GraphicsShader.h"
+
+#include "../../GPU/CommonGPU.h"
 
 #include "../../Util/define_Util.h"
 

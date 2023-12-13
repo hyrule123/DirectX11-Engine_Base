@@ -5,10 +5,13 @@
 
 #include "../Manager/ComponentManager.h"
 
+#include <span>
+
 namespace ehw
 {
 	class iScene;
 	class Layer;
+	class iScript;
 	class GameObject : public Entity
 	{
 		friend class GameObject;

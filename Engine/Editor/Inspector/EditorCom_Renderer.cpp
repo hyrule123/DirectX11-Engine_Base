@@ -1,11 +1,11 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorCom_Renderer.h"
 
 #include "../../Manager/ResourceManager.h"
 
 #include "../../Game/GameObject.h"
-#include "../../Game/Component/Com_Renderer_Mesh.h"
-#include "../../Game/Component/Com_Renderer_Sprite.h"
+#include "../../Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "../../Game/Component/Renderer/Com_Renderer_Sprite.h"
 
 #include "../../Resource/iResource.h"
 

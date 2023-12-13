@@ -1,20 +1,19 @@
 #pragma once
 #include "../Resource/define_Resource.h"
 
+#include "../CommonStruct.h"
 
-#include "../define_Struct.h"
 #include "../Resource/iResource.h"
-
 #include "../Resource/Mesh.h"
 #include "../Resource/Modeling/MeshData.h"
 #include "../Resource/Texture.h"
 #include "../Resource/Material.h"
 #include "../Resource/AudioClip.h"
 #include "../Resource/Prefab.h"
-#include "../Resource/GraphicsShader.h"
-#include "../Resource/iComputeShader.h"
+#include "../Resource/Shader/GraphicsShader.h"
+#include "../Resource/Shader/iComputeShader.h"
 
-#include "../Game/Component/iScript.h"
+#include "../Game/Component/Script/iScript.h"
 
 #define LOAD_COMPUTESHADER(_computeShaderName) ResourceManager::Load<_computeShaderName>(#_computeShaderName)
 

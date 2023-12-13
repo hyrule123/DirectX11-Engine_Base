@@ -1,9 +1,9 @@
-#include "../PCH_Engine.h"
+
 #include "Mesh.h"
 
 
 
-#include "../define_GlobalVar.h"
+#include "../CommonGlobalVar.h"
 
 #include "../GPU/StructBuffer.h"
 

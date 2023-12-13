@@ -2,12 +2,12 @@
 
 
 
-#include "../define_Struct.h"
+#include "../CommonStruct.h"
 #include "../define_Macro.h"
 
 #include "../Editor/Base/EditorChild.h"
 
-#include "../GPU/CommonInclude_GPU.h"
+#include "../GPU/CommonGPU.h"
 
 #include "../json-cpp/json-forwards.h"
 

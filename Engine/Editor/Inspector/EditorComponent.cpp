@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorComponent.h"
 
 #include "../../Editor/imgui/imgui.h"

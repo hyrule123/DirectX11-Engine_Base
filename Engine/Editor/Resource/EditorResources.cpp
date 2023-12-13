@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorResources.h"
 
 
@@ -10,7 +10,7 @@
 #include "../../Resource/Texture.h"
 #include "../../Resource/Material.h"
 #include "../../Resource/Mesh.h"
-#include "../../Resource/GraphicsShader.h"
+#include "../../Resource/Shader/GraphicsShader.h"
 
 #include "../../Editor/Inspector/EditorInspector.h"
 #include "../../Editor/Resource/EditorResource.h"

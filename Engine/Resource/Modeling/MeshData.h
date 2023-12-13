@@ -2,8 +2,8 @@
 #include "../../Resource/iResource.h"
 
 
-#include "../../define_Struct.h"
-#include "../../GPU/CommonInclude_GPU.h"
+#include "../../CommonStruct.h"
+#include "../../GPU/CommonGPU.h"
 
 namespace editor
 {

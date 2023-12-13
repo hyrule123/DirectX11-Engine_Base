@@ -8,6 +8,7 @@
 #include <DirectXPackedVector.h>
 #include <DirectXCollision.h>
 #endif
+#include <windef.h>
 
 using namespace DirectX;
 using namespace DirectX::PackedVector;

@@ -2,8 +2,8 @@
 
 
 
-#include "../GPU/CommonInclude_GPU.h"
-#include "../define_Struct.h"
+#include "../GPU/CommonGPU.h"
+#include "../CommonStruct.h"
 #include "../Util/SimpleMath.h"
 
 

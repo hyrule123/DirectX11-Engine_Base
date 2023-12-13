@@ -198,16 +198,16 @@
     <ClCompile Include="Resource\Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iScript.cpp">
+    <ClCompile Include="Game\Component\Script\iScript.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iRenderer.cpp">
+    <ClCompile Include="Game\Component\Renderer\iRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Camera.cpp">
+    <ClCompile Include="Game\Component\Camera\Com_Camera.cpp">
       <Filter>Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Renderer_Sprite.cpp">
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Sprite.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Game\Layer.cpp">
@@ -219,22 +219,22 @@
     <ClCompile Include="Resource\Prefab.cpp">
       <Filter>Resource\Prefab</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iCollider2D.cpp">
+    <ClCompile Include="Game\Component\Collider\iCollider2D.cpp">
       <Filter>Component\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iCollider3D.cpp">
+    <ClCompile Include="Game\Component\Collider\iCollider3D.cpp">
       <Filter>Component\Collider\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iCollider.cpp">
+    <ClCompile Include="Game\Component\Collider\iCollider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\TestDir\Com_Animator2D.cpp">
+    <ClCompile Include="Game\Component\Animator\Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\iComputeShader.cpp">
+    <ClCompile Include="Resource\Shader\iComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Light3D.cpp">
+    <ClCompile Include="Game\Component\Light\Com_Light3D.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="GPU\ConstBuffer.cpp">
@@ -243,7 +243,7 @@
     <ClCompile Include="GPU\StructBuffer.cpp">
       <Filter>GPU\Buffer</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_AudioListener.cpp">
+    <ClCompile Include="Game\Component\Audio\Com_AudioListener.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Manager\FontWrapper.cpp">
@@ -261,10 +261,10 @@
     <ClCompile Include="Util\AtExit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\iShader.cpp">
+    <ClCompile Include="Resource\Shader\iShader.cpp">
       <Filter>Resource\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\GraphicsShader.cpp">
+    <ClCompile Include="Resource\Shader\GraphicsShader.cpp">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\iComponent.cpp">
@@ -279,7 +279,7 @@
     <ClCompile Include="Manager\PathManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Renderer_ParticleSystem.cpp">
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Resource\iResource.cpp">
@@ -288,10 +288,10 @@
     <ClCompile Include="Manager\ComponentManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Transform.cpp">
+    <ClCompile Include="Game\Component\Transform\Com_Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_AudioSource.cpp">
+    <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp">
       <Filter>Component\Audio</Filter>
     </ClCompile>
     <ClCompile Include="Resource\AudioClip.cpp">
@@ -357,52 +357,52 @@
     <ClCompile Include="Util\base64.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iAnimator.cpp">
+    <ClCompile Include="Game\Component\Animator\iAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Animator3D.cpp">
+    <ClCompile Include="Game\Component\Animator\Com_Animator3D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ComputeShaders\Animation3DShader.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iTransform.cpp">
+    <ClCompile Include="Game\Component\Transform\iTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Renderer_Mesh.cpp">
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_DummyTransform.cpp">
+    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Renderer_3DAnimMesh.cpp">
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_DummyAnimator.cpp">
+    <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Animation\Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Renderer_UIBase.cpp">
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Editor\imgui\ImGuizmo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_BehaviorTree.cpp">
+    <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\iLight.cpp">
+    <ClCompile Include="Game\Component\Light\iLight.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ComputeShaders\GPUInitSetting.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="define_GlobalVar.cpp">
+    <ClCompile Include="CommonGlobalVar.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ComputeShaders\NormalConvertShader.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Modeling\FBXLoader.cpp">
@@ -411,7 +411,7 @@
     <ClCompile Include="Resource\Modeling\Skeleton.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ComputeShaders\ParticleShader.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
     <ClCompile Include="Manager\ThreadPoolManager.cpp">
@@ -423,7 +423,7 @@
     <ClCompile Include="Resource\Animation\iAnimation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\GridScript.cpp">
+    <ClCompile Include="Game\Component\Script\GridScript.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\ComponentInitializer.cpp">
@@ -484,16 +484,16 @@
     <ClInclude Include="Resource\Texture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iScript.h">
+    <ClInclude Include="Game\Component\Script\iScript.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iRenderer.h">
+    <ClInclude Include="Game\Component\Renderer\iRenderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Camera.h">
+    <ClInclude Include="Game\Component\Camera\Com_Camera.h">
       <Filter>Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Renderer_Sprite.h">
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Sprite.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Game\Layer.h">
@@ -505,22 +505,22 @@
     <ClInclude Include="Resource\Prefab.h">
       <Filter>Resource\Prefab</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iCollider2D.h">
+    <ClInclude Include="Game\Component\Collider\iCollider2D.h">
       <Filter>Component\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iCollider3D.h">
+    <ClInclude Include="Game\Component\Collider\iCollider3D.h">
       <Filter>Component\Collider\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iCollider.h">
+    <ClInclude Include="Game\Component\Collider\iCollider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\TestDir\Com_Animator2D.h">
+    <ClInclude Include="Game\Component\Animator\Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\iComputeShader.h">
+    <ClInclude Include="Resource\Shader\iComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Light3D.h">
+    <ClInclude Include="Game\Component\Light\Com_Light3D.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="GPU\ConstBuffer.h">
@@ -529,7 +529,7 @@
     <ClInclude Include="GPU\StructBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_AudioListener.h">
+    <ClInclude Include="Game\Component\Audio\Com_AudioListener.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Manager\FontWrapper.h">
@@ -553,10 +553,10 @@
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\iShader.h">
+    <ClInclude Include="Resource\Shader\iShader.h">
       <Filter>Resource\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\GraphicsShader.h">
+    <ClInclude Include="Resource\Shader\GraphicsShader.h">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Resource\define_Resource.h">
@@ -565,7 +565,7 @@
     <ClInclude Include="define_Macro.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="define_Struct.h">
+    <ClInclude Include="CommonStruct.h">
       <Filter>Common\define</Filter>
     </ClInclude>
     <ClInclude Include="define_Enum.h">
@@ -580,7 +580,7 @@
     <ClInclude Include="defines.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Components.h">
+    <ClInclude Include="Game\Component\BaseComponents.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Manager\ResourceManager.h">
@@ -592,7 +592,7 @@
     <ClInclude Include="Manager\PathManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Renderer_ParticleSystem.h">
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resource\iResource.h">
@@ -601,10 +601,10 @@
     <ClInclude Include="Manager\ComponentManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Transform.h">
+    <ClInclude Include="Game\Component\Transform\Com_Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_AudioSource.h">
+    <ClInclude Include="Game\Component\Audio\Com_AudioSource.h">
       <Filter>Component\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Resource\AudioClip.h">
@@ -682,52 +682,52 @@
     <ClInclude Include="Util\base64.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iAnimator.h">
+    <ClInclude Include="Game\Component\Animator\iAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Animator3D.h">
+    <ClInclude Include="Game\Component\Animator\Com_Animator3D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ComputeShaders\Animation3DShader.h">
+    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iTransform.h">
+    <ClInclude Include="Game\Component\Transform\iTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Renderer_Mesh.h">
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_DummyTransform.h">
+    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Renderer_3DAnimMesh.h">
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_DummyAnimator.h">
+    <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Animation\Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Renderer_UIBase.h">
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Editor\imgui\ImGuizmo.h">
       <Filter>ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_BehaviorTree.h">
+    <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\iLight.h">
+    <ClInclude Include="Game\Component\Light\iLight.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ComputeShaders\GPUInitSetting.h">
+    <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="define_GlobalVar.h">
+    <ClInclude Include="CommonGlobalVar.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ComputeShaders\NormalConvertShader.h">
+    <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Modeling\FBXLoader.h">
@@ -736,7 +736,7 @@
     <ClInclude Include="Resource\Modeling\Skeleton.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ComputeShaders\ParticleShader.h">
+    <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
     <ClInclude Include="Manager\ThreadPoolManager.h">
@@ -754,7 +754,7 @@
     <ClInclude Include="Resource\Animation\iAnimation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\GridScript.h">
+    <ClInclude Include="Game\Component\Script\GridScript.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="Manager\GPUManager.h">
@@ -787,7 +787,7 @@
     <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
     <ClInclude Include="Editor\Base\EditorWindow.h" />
     <ClInclude Include="Editor\strKey_Editor.h" />
-    <ClInclude Include="GPU\CommonInclude_GPU.h" />
+    <ClInclude Include="GPU\CommonGPU.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -950,5 +950,8 @@
     <ResourceCompile Include="Engine.rc">
       <Filter>Common\WindowResource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Game\Component\FoundEngineComponents.txt" />
   </ItemGroup>
 </Project>

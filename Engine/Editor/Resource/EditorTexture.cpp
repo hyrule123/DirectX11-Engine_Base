@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorTexture.h"
 
 #include "../../Resource/Texture.h"

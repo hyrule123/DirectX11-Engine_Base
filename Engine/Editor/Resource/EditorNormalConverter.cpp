@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorNormalConverter.h"
 
 
@@ -7,7 +7,7 @@
 
 #include "../../Util/define_Util.h"
 
-#include "../../Resource/ComputeShaders/NormalConvertShader.h"
+#include "../../Resource/Shader/ComputeShaders/NormalConvertShader.h"
 
 #include "../../DefaultShader/NormalConverter/NormalConverter.hlsli"
 

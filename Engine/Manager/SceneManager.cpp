@@ -1,13 +1,5 @@
-#include "../PCH_Engine.h"
 #include "SceneManager.h"
 
-
-
-#include "../Game/Component/Com_Camera.h"
-#include "../Game/Component/GridScript.h"
-#include "../Game/Component/Com_Renderer_Mesh.h"
-#include "../Game/Component/Com_Renderer_Sprite.h"
-#include "../Game/Component/Com_Transform.h"
 
 #include "../Resource/Texture.h"
 

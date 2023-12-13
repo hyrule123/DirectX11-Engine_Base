@@ -1,4 +1,4 @@
-#include "../../PCH_Engine.h"
+
 #include "EditorUVCalculator.h"
 
 #include "../../Manager/ResourceManager.h"

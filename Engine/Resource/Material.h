@@ -8,7 +8,7 @@
 
 
 #include "iResource.h"
-#include "GraphicsShader.h"
+#include "Shader/GraphicsShader.h"
 #include "Texture.h"
 
 //에디터 전방선언
