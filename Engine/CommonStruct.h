@@ -11,6 +11,7 @@
 #include <vector>
 #include <Windows.h>
 
+
 //C++ 전용. 1개 이상의 클래스에서 사용되는 "공용" 구조체 모음
 namespace ehw
 {

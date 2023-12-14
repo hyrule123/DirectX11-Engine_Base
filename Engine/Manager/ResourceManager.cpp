@@ -5,6 +5,12 @@
 
 #include "../Util/AtExit.h"
 
+
+
+
+#include "../tResourceManager.h"
+#include "../Resource/Texture.h"
+
 namespace ehw
 {
 	std::unordered_map<std::string, std::shared_ptr<iResource>, tHashFunc_StringView, std::equal_to<>> ResourceManager::mArrRes[(int)eResourceType::END]{};
@@ -12,6 +18,8 @@ namespace ehw
 	void ResourceManager::Init()
 	{
 		AtExit::AddFunc(Release);
+
+		tResourceManager<Texture>::Load("test");
 	}
 
 	void ResourceManager::Release()

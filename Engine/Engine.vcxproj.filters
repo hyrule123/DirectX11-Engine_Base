@@ -458,6 +458,7 @@
     <ClCompile Include="Editor\Widget\EditorWidget_List.cpp" />
     <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
+    <ClCompile Include="ResourceManagers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -788,6 +789,8 @@
     <ClInclude Include="Editor\Base\EditorWindow.h" />
     <ClInclude Include="Editor\strKey_Editor.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
+    <ClInclude Include="tResourceManager.h" />
+    <ClInclude Include="ResourceManagers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
