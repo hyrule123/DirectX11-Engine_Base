@@ -19,7 +19,9 @@ namespace ehw
 	{
 		AtExit::AddFunc(Release);
 
-		tResourceManager<Texture>::Load("test");
+		tResourceManager<Texture>::Load("DefaultSprite.png");
+		ResourceManagers::CleanUnusedResources();
+		
 	}
 
 	void ResourceManager::Release()

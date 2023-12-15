@@ -10,9 +10,10 @@ namespace ehw
 	{
 		friend class Application;
 
-		static void CleanResources();
+	public:
+		static void CleanUnusedResources();
 
-		static inline void AddCleanFunc(std::function<void()>&& _func);
+		static inline void AddUnusedResourceCleanFunc(std::function<void()>&& _func);
 		
 	private:
 		static void Init();
@@ -20,13 +21,13 @@ namespace ehw
 
 		
 
-		static std::vector<std::function<void()>> m_CleanFunctions;
+		static std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
 	};
 
-	inline void ResourceManagers::AddCleanFunc(std::function<void()>&& _func)
+	inline void ResourceManagers::AddUnusedResourceCleanFunc(std::function<void()>&& _func)
 	{
-		ASSERT_DEBUG(nullptr != _func, "인자로 들어온 함수가 nullptr입니다.")
-		m_CleanFunctions.emplace_back(_func);
+		ASSERT_DEBUG(nullptr != _func, "인자로 들어온 함수가 nullptr입니다.");
+		m_CleanUnusedResourcesFunction.emplace_back(_func);
 	}
 }
 

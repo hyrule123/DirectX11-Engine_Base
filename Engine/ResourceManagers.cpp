@@ -5,13 +5,13 @@
 
 namespace ehw
 {
-	std::vector<std::function<void()>> ResourceManagers::m_CleanFunctions{};
+	std::vector<std::function<void()>> ResourceManagers::m_CleanUnusedResourcesFunction{};
 
-	void ResourceManagers::CleanResources()
+	void ResourceManagers::CleanUnusedResources()
 	{
-		for (size_t i = 0; i < m_CleanFunctions.size(); ++i)
+		for (size_t i = 0; i < m_CleanUnusedResourcesFunction.size(); ++i)
 		{
-			m_CleanFunctions[i]();
+			m_CleanUnusedResourcesFunction[i]();
 		}
 	}
 

@@ -104,6 +104,25 @@ namespace ehw
 	{
 		m_bInitialized = true;
 
+		ResourceManagers::AddUnusedResourceCleanFunc(
+			[]()
+			{
+				using pairType = decltype(m_Resources)::value_type;
+				std::erase_if(m_Resources,
+				[](const pairType& pair)->bool
+					{
+						bool needErase = false;
+						if ((long)1 == pair.second.use_count())
+						{
+							needErase = true;
+						}
+						return needErase;
+					}
+				);
+			}
+
+		);
+
 		AtExit::AddFunc(Release);
 	}
 
