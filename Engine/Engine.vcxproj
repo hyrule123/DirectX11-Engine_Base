@@ -262,11 +262,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GPU\CommonGPU.h" />
-    <ClInclude Include="ResourceManagers.h" />
+    <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Resource\Animation\Animation2D.h" />
     <ClInclude Include="Resource\Animation\Animation3D.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h" />
-    <ClInclude Include="tResourceManager.h" />
+    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Util\base64.h" />
     <ClInclude Include="Manager\ComponentManager.h" />
     <ClInclude Include="Game\Component\BaseComponents.h" />
@@ -376,7 +376,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Resource\Prefab.h" />
     <ClInclude Include="Resource\iResource.h" />
-    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Game\iScene.h" />
     <ClInclude Include="Manager\SceneManager.h" />
     <ClInclude Include="Game\Component\Script\iScript.h" />
@@ -392,7 +391,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\define_Util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ResourceManagers.cpp" />
+    <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation\Animation2D.cpp" />
     <ClCompile Include="Resource\Animation\Animation3D.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp" />
@@ -551,7 +550,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Resource\Prefab.cpp" />
     <ClCompile Include="Resource\iResource.cpp" />
-    <ClCompile Include="Manager\ResourceManager.cpp" />
     <ClCompile Include="Game\iScene.cpp" />
     <ClCompile Include="Manager\SceneManager.cpp" />
     <ClCompile Include="Game\Component\Script\iScript.cpp" />
