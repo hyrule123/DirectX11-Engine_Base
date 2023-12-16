@@ -9,7 +9,7 @@
 #include "Manager/TimeManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/SceneManager.h"
-#include "Manager/ResourceManager.h"
+#include "Manager/ResourceManagers.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/AudioManager.h"
 #include "Manager/FontWrapper.h"
@@ -53,7 +53,8 @@ namespace ehw
 			return FALSE;
 		}
 
-		ResourceManager::Init();
+		ResourceManagers::Init();
+
 		AudioManager::Init();
 		FontWrapper::Init();
 

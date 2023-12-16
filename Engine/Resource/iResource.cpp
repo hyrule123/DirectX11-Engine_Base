@@ -16,17 +16,9 @@ namespace ehw
 
 	
 
-	iResource::iResource(eResourceType _type)
-		: m_ComCategory(_type)
-		, mbEngineDefaultRes()
-		, m_ResourceTypeInfo(typeid(iResource))
-	{
-	}
-
 
 	iResource::iResource(const std::type_info& _info)
-		: m_ComCategory(eResourceType::UNKNOWN)
-		, mbEngineDefaultRes()
+		: mbEngineDefaultRes()
 		, m_ResourceTypeInfo(typeid(iResource))
 	{
 	}

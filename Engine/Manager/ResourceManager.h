@@ -63,7 +63,7 @@ namespace ehw
 	{
 		static_assert(std::is_base_of_v<BaseResType, DerivedResType>);
 
-		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출해주세요.");
+		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
 		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_filePath.string());
 
