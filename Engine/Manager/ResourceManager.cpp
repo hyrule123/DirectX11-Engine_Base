@@ -10,6 +10,9 @@
 
 #include "../tResourceManager.h"
 #include "../Resource/Texture.h"
+#include "../Resource/Texture.h"
+#include "../Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include "../Resource/Shader/ComputeShaders/NormalConvertShader.h"
 
 namespace ehw
 {
@@ -19,11 +22,19 @@ namespace ehw
 	{
 		AtExit::AddFunc(Release);
 
+		tResourceManager<Texture>::Init("");
 		tResourceManager<Texture>::Load("DefaultSprite.png");
 		ResourceManagers::CleanUnusedResources();
-		
-	}
 
+		tResourceManager<iComputeShader>::Init("");
+
+		auto particle = tResourceManager<iComputeShader>::Load<GPUInitSetting>("GPUInitSetting");
+
+		tResourceManager<iComputeShader>::Load<NormalConvertShader>("NormalConvertShader");
+
+		tResourceManager<iComputeShader>::CleanUnusedResources();
+	}
+	
 	void ResourceManager::Release()
 	{
 		for (int i = 0; i < (int)eResourceType::END; ++i)

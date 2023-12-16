@@ -34,7 +34,6 @@ namespace ehw
 
 		ASSERT(eResultSuccess(result), "GPU 초기화 작업 실패");
 
-
 		return result;
 	}
 

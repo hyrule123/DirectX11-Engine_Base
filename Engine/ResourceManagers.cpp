@@ -22,6 +22,7 @@ namespace ehw
 
 	void ResourceManagers::Release()
 	{
+		m_CleanUnusedResourcesFunction.clear();
 	}
 
 }

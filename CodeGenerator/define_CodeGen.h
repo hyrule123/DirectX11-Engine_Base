@@ -2,6 +2,7 @@
 
 #include <regex>
 #include <filesystem>
+#include "define_CodeGen.h"
 
 namespace stdfs = std::filesystem;
 
@@ -11,18 +12,6 @@ namespace stdfs = std::filesystem;
 #else
 #define DEBUG_BREAK
 #endif
-#endif
-
-//Release 모드에서도 작동
-#ifdef _DEBUG
-#define ASSERT(_expression, _message) \
-	if (!(_expression)) \
-		{ _wassert(L ## #_expression##"\n"##_message , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
-#else
-#define ASSERT(_expression, _message) if(!(_expression)) { \
-		MessageBoxW(nullptr, L## #_expression##"\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
-		std::abort();\
-	}
 #endif
 
 

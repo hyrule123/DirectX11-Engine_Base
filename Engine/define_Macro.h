@@ -7,7 +7,7 @@
 //Release 모드에서도 작동
 #define ASSERT(_expression, _message) \
 	if (!(_expression)) \
-		{ _wassert(L ## #_expression##"\n"##_message , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
+	{ _wassert(L ## #_expression##"\n\n"##_message , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
 
 //return 코드가 필요한 경우 사용(Release 모드에서도 작동)
 //#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) \
@@ -26,7 +26,7 @@
 
 #else
 #define ASSERT(_expression, _message) if(!(_expression)) { \
-		MessageBoxW(nullptr, L## #_expression##"\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		MessageBoxW(nullptr, L## #_expression##"\n\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
 		std::abort();\
 	}
 //#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) if(!(_expression)) { \
