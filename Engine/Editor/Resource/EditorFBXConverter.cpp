@@ -7,9 +7,10 @@
 #include "../../Manager/TimeManager.h"
 #include "../../Manager/ThreadPoolManager.h"
 #include "../../Manager/PathManager.h"
+#include "../../Manager/ResourceManager.h"
 
 #include "../../Util/define_Util.h"
-#include "../../Resource/Modeling/MeshData.h"
+#include "../../Resource/Model3D/Model3D.h"
 
 namespace editor
 {
@@ -159,7 +160,7 @@ namespace editor
 			mFutureConvertResult = ehw::ThreadPoolManager::EnqueueJob(
 				[this]()->ehw::eResult
 				{
-					std::shared_ptr<ehw::MeshData> meshData = std::make_unique<ehw::MeshData>();
+					std::shared_ptr<ehw::Model3D> meshData = std::make_unique<ehw::Model3D>();
 					ehw::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
 					if (ehw::eResultSuccess(result))
 					{
@@ -174,7 +175,7 @@ namespace editor
 
 	void EditorFBXConverter::AddAnimationFromSameModeling()
 	{
-		HilightText("Add Animation to Project MeshData");
+		HilightText("Add Animation to Project Model3D");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
 
 		mProjMeshDataCombo.InternalUpdate();
@@ -197,15 +198,16 @@ namespace editor
 			}
 			else
 			{
-				ehw::MeshData::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
+				ehw::Model3D::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
 			}
 		}
 	}
 
 	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
-		mProjMeshDataCombo.SetStrKey("MeshData List");
-		const std::fs::path& meshPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::MeshData);
+		mProjMeshDataCombo.SetStrKey("Model3D List");
+		const std::fs::path& meshPath = ehw::ResourceManager<ehw::Model3D>::GetBaseDir();
+
 		for (const auto& entry : std::fs::directory_iterator(meshPath))
 		{
 			if (std::fs::is_directory(entry.path()))

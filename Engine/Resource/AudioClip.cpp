@@ -3,8 +3,7 @@
 
 #include "../Game/Component/Transform/Com_Transform.h"
 
-#include "../Manager/PathManager.h"
-
+#include "../Manager/ResourceManager.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -14,7 +13,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: iResource(eResourceType::AudioClip)
+		: iResource(typeid(AudioClip))
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)
@@ -31,11 +30,11 @@ namespace ehw
 	}
 
 
-	eResult AudioClip::Load(const std::fs::path& _filePath)
+	eResult AudioClip::Load(const std::fs::path& _pathFromBaseDir)
 	{
-		iResource::Save(_filePath);
+		iResource::Save(_pathFromBaseDir);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = ResourceManager<AudioClip>::GetBaseDir() / _pathFromBaseDir;
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");

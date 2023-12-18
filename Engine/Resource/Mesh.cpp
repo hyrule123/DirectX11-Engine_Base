@@ -7,6 +7,7 @@
 
 #include "../GPU/StructBuffer.h"
 
+#include "../Manager/ResourceManager.h"
 #include "../Manager/RenderManager.h"
 #include "../Manager/GPUManager.h"
 #include "../Manager/PathManager.h"
@@ -14,7 +15,7 @@
 #include "../Util/define_Util.h"
 
 
-#include "Modeling/FBXLoader.h"
+#include "Model3D/FBXLoader.h"
 
 
 #ifdef max
@@ -24,7 +25,7 @@
 namespace ehw
 {
 	Mesh::Mesh()
-		: iResource(eResourceType::Mesh)
+		: iResource(typeid(Mesh))
 		, mVertexBuffer{}
 		, mVBDesc{}
 		, mVertexByteStride{}
@@ -46,12 +47,12 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::Save(const std::fs::path& _filePath)
+	eResult Mesh::Save(const std::fs::path& _pathFromBaseDir)
 	{
-		iResource::Save(_filePath);
+		iResource::Save(_pathFromBaseDir);
 
-		std::fs::path fullPath =PathManager::CreateFullPathToContent(_filePath, GetResType());
-		fullPath.replace_extension(strKey::Ext_Mesh);
+		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::Mesh);
 
 		std::ofstream ofs(fullPath, std::ios::binary);
 		if (false == ofs.is_open())
@@ -96,12 +97,12 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Mesh::Load(const std::fs::path& _filePath)
+	eResult Mesh::Load(const std::fs::path& _pathFromBaseDir)
 	{
-		iResource::Load(_filePath);
+		iResource::Load(_pathFromBaseDir);
 
-		std::fs::path fullPath =PathManager::CreateFullPathToContent(_filePath, GetResType());
-		fullPath.replace_extension(strKey::Ext_Mesh);
+		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::Mesh);
 
 		if (false == std::fs::exists(fullPath))
 		{

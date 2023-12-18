@@ -7,6 +7,7 @@
 
 
 #include <unordered_set>
+#include <array>
 
 namespace editor
 {
@@ -21,7 +22,7 @@ namespace ehw
 		std::string strKey;
 	};
 
-	class GraphicsShader : public iShader
+	class GraphicsShader final : public iShader
 	{
 		friend class editor::EditorGraphicsShader;
 	public:
@@ -32,8 +33,8 @@ namespace ehw
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
-		virtual eResult Save(const std::fs::path& _filePath) override;																					
-		virtual eResult Load(const std::fs::path& _filePath) override;
+		virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;																					
+		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
 
 		eResult CreateByCompile(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);

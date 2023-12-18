@@ -8,8 +8,8 @@
 #include "../../../GPU/StructBuffer.h"
 
 #include "../../../Resource/Shader/ComputeShaders/Animation3DShader.h"
-#include "../../../Resource/Modeling/Skeleton.h"
-#include "../../../Resource/Animation/Animation3D.h"
+#include "../../../Resource/Model3D/Skeleton.h"
+#include "../../../Resource/Model3D/Animation3D.h"
 
 #include "../../GameObject.h"
 
@@ -243,7 +243,7 @@ namespace ehw
 		if (false == m_bFinalMatUpdate)
 		{
 			// Animation3D Update Compute Shader
-			static std::shared_ptr<Animation3DShader> pUpdateShader = ResourceManager::Load<Animation3DShader>(strKey::Default::shader::compute::Animation3D);
+			static std::shared_ptr<Animation3DShader> pUpdateShader = LOAD_COMPUTESHADER(Animation3DShader);
 
 
 			//구조화 버퍼가 정상적으로 생성되었는지 확인한다.

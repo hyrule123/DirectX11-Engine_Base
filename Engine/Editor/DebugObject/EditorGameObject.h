@@ -23,6 +23,6 @@ namespace editor
 		void AddGameObject(EditorWidget_Tree::tNode* parent, ehw::GameObject* gameObject);
 
 	private:
-		EditorWidget_Tree* mTreeWidget;
+		std::shared_ptr<EditorWidget_Tree> mTreeWidget;
 	};
 }

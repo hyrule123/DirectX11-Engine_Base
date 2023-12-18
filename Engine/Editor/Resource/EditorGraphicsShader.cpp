@@ -3,6 +3,7 @@
 #include "EditorGraphicsShader.h"
 
 #include "../../Manager/PathManager.h"
+#include "../../Manager/ResourceManager.h"
 #include "../../Resource/Shader/GraphicsShader.h"
 #include "../../json-cpp/json.h"
 
@@ -415,7 +416,7 @@ namespace editor
 				size_t pos = fileName.find(ehw::strKey::ArrGSPrefix[i]);
 				if (std::string::npos != pos)
 				{
-					std::string baseFileName = entry.path().filename().replace_extension(ehw::strKey::Ext_ShaderSetting).string();
+					std::string baseFileName = entry.path().filename().replace_extension(ehw::strKey::path::extension::ShaderSetting).string();
 					baseFileName.erase(pos, std::strlen(ehw::strKey::ArrGSPrefix[i]));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
@@ -428,7 +429,7 @@ namespace editor
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<std::string> vecNewShaderGroup;
-		std::fs::path ShaderSettingDir = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+		std::fs::path ShaderSettingDir = ehw::ResourceManager<ehw::GraphicsShader>::GetBaseDir();
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -437,7 +438,7 @@ namespace editor
 		//map을 순회 돌아주면서
 		for (const auto& iter : umapGSGroup)
 		{
-			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(ehw::strKey::Ext_ShaderSetting);
+			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(ehw::strKey::path::extension::ShaderSetting);
 
 			//파일이 존재하지 않으면 json 파일 초기화 및 생성을 해준다.
 			if (false == std::fs::exists(ShaderFilePath))
@@ -501,7 +502,7 @@ namespace editor
 
 	void EditorGraphicsShader::LoadShaderSettingComboBox()
 	{
-		std::fs::path GSSettingsPath = ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+		std::fs::path GSSettingsPath = ehw::ResourceManager<ehw::GraphicsShader>::GetBaseDir();
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{

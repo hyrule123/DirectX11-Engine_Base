@@ -61,7 +61,7 @@ namespace ehw
 
 	StructBuffer::~StructBuffer()
 	{
-		UnBindData();
+		//UnBindData();
 	}
 
 

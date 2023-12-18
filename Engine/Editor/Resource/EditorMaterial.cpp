@@ -69,7 +69,7 @@ namespace editor
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<ehw::GraphicsShader> gs = ehw::ResourceManager::Load<ehw::GraphicsShader>(shaderName);
+				std::shared_ptr<ehw::GraphicsShader> gs = ehw::ResourceManager<ehw::GraphicsShader>::Load(shaderName);
 			}
 		}
 	}
@@ -103,8 +103,7 @@ namespace editor
 	}
 	void EditorMaterial::RefreshShaderSettingFiles()
 	{
-		const std::fs::path& shaderPath = 
-			ehw::PathManager::GetContentPathRelative(ehw::eResourceType::GraphicsShader);
+		const std::fs::path& shaderPath = ehw::ResourceManager<ehw::GraphicsShader>::GetBaseDir();
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -149,7 +148,7 @@ namespace editor
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<ehw::GraphicsShader> GS = ehw::ResourceManager::Load<ehw::GraphicsShader>(shaderKey);
+				std::shared_ptr<ehw::GraphicsShader> GS = ehw::ResourceManager<ehw::GraphicsShader>::Load(shaderKey);
 				mTargetMaterial->SetShader(GS);
 			}
 		}
@@ -194,19 +193,19 @@ namespace editor
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture);
+				const std::fs::path& texPath = ehw::ResourceManager<ehw::Texture>::GetBaseDir();
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
+				for (size_t i = 0; i < ehw::strKey::path::extension::Texture_ArrSize; ++i)
 				{
-					vecExt.push_back(ehw::strKey::Ext_Tex[i]);
+					vecExt.push_back(ehw::strKey::path::extension::Texture[i]);
 				}
 				std::fs::path receivedPath = ehw::WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey =  ehw::PathManager::MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey = ehw::PathManager::MakePathStrKey(receivedPath);
 
-					std::shared_ptr<ehw::Texture> tex = ehw::ResourceManager::Load<ehw::Texture>(PathstrKey);
+					std::shared_ptr<ehw::Texture> tex = ehw::ResourceManager<ehw::Texture>::Load(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->SetTexture((ehw::eTextureSlot)i, tex);
@@ -278,7 +277,7 @@ namespace editor
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = ehw::ResourceManager::GetResources<ehw::Material>();
+			const auto& materials = ehw::ResourceManager<ehw::Material>::GetResources();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->GetStrKey());
@@ -307,9 +306,10 @@ namespace editor
 	}
 	void EditorMaterial::SaveToFile()
 	{
-		std::fs::path outputPath = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Material);
+		std::fs::path outputPath = std::fs::absolute(ehw::ResourceManager<ehw::Material>::GetBaseDir());
+			
 		outputPath /= mSaveLoadFileName;
-		outputPath = ehw::WinAPI::FileDialog(outputPath, ehw::strKey::Ext_Material);
+		outputPath = ehw::WinAPI::FileDialog(outputPath, ehw::strKey::path::extension::Material);
 
 		if (outputPath.empty())
 		{
@@ -346,7 +346,7 @@ namespace editor
 					}
 					else
 					{
-						std::shared_ptr<ehw::Material> mtrl = ehw::ResourceManager::Find<ehw::Material>(mtrlKey);
+						std::shared_ptr<ehw::Material> mtrl = ehw::ResourceManager<ehw::Material>::Find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
@@ -380,7 +380,7 @@ namespace editor
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Material);
+					const std::fs::path& mtrlDir = std::fs::absolute(ehw::ResourceManager<ehw::Material>::GetBaseDir());
 
 					//Res 폴더
 					const std::fs::path& resDir = ehw::PathManager::GetResPathAbsolute();

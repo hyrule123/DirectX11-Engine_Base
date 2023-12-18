@@ -9,9 +9,10 @@
 
 #include "../../GPU/StructBuffer.h"
 
-#include "../../Manager/PathManager.h"
+#include "../../Manager/ResourceManager.h"
 
-#include "../../Resource/Animation/Animation3D.h"
+
+#include "Model3D.h"
 
 
 #include "FBXLoader.h"
@@ -33,21 +34,17 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::Save(const std::fs::path& _filePath)
+	eResult Skeleton::Save(const std::fs::path& _pathFromBaseDir)
 	{
-		if (false == _filePath.has_parent_path())
+		if (false == _pathFromBaseDir.has_parent_path())
 		{
 			ERROR_MESSAGE_W(L"스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
 			return eResult::Fail_InValid;
 		}
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
-		if (fullPath.empty())
-		{
-			fullPath = PathManager::GetContentPathRelative(eResourceType::MeshData);
-		}
+		std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
 
-		fullPath.replace_extension(strKey::Ext_Skeleton);
+		fullPath.replace_extension(strKey::path::extension::Skeleton);
 
 		std::ofstream ofs(fullPath, std::ios::binary);
 		if (false == ofs.is_open())
@@ -66,7 +63,7 @@ namespace ehw
 		//Binary::SaveValue(ofs, mMapAnimations.size());
 		for (auto& iter : mMapAnimations)
 		{
-			std::fs::path animName = _filePath.filename();
+			std::fs::path animName = _pathFromBaseDir.filename();
 			animName.replace_extension();
 			animName /= iter.first;
 
@@ -80,16 +77,16 @@ namespace ehw
 
 		return eResult::Success;
 	}
-	eResult Skeleton::Load(const std::fs::path& _filePath)
+	eResult Skeleton::Load(const std::fs::path& _pathFromBaseDir)
 	{
-		if (false == _filePath.has_parent_path())
+		if (false == _pathFromBaseDir.has_parent_path())
 		{
 			ERROR_MESSAGE_W(L"스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
 			return eResult::Fail_InValid;
 		}
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
-		fullPath.replace_extension(strKey::Ext_Skeleton);
+		std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::Skeleton);
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");
@@ -124,12 +121,12 @@ namespace ehw
 				continue;
 
 			//경로 내부의 ".a3d" 파일을 싹 긁어와서 로드한다.
-			if (entry.path().extension() == strKey::Ext_Anim3D)
+			if (entry.path().extension() == strKey::path::extension::Anim3D)
 			{
 				std::unique_ptr<Animation3D> anim3d = std::make_unique<Animation3D>();
 				anim3d->SetSkeleton(this);
 
-				const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
+				const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
 				eResult result = anim3d->Load(entry.path().lexically_relative(basePath));
 				if (eResultFail(result))
 				{

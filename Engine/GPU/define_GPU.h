@@ -36,8 +36,6 @@ namespace ehw
 			"PS_",
 		};
 		STRKEY CSPrefix = "CS_";
-
-		STRKEY Ext_ShaderSetting = ".json";
 	}
 
 

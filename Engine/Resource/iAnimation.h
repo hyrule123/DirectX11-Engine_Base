@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Resource/iResource.h"
+#include "../Resource/iResource.h"
 
 namespace ehw
 {
@@ -7,7 +7,7 @@ namespace ehw
         public iResource
     {
     protected:
-        iAnimation();
+        iAnimation(const std::type_info& _typeInfo);
         virtual ~iAnimation();
     };
 }

@@ -3,6 +3,8 @@
 
 #include "../../../define_Enum.h"
 
+#include <bitset>
+
 namespace  ehw
 {
 	

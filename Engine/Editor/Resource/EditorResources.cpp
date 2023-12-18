@@ -24,9 +24,15 @@ namespace editor
 
 	EditorResources::EditorResources()
 		: EditorWindow(strKey::ResourceViewer)
-		, mTreeWidget(nullptr)
+		, m_textureTree()
+		, m_materialTree()
+		, m_meshTree()
 	{
-		mTreeWidget = AddChild<EditorWidget_Tree>();
+		m_textureTree = AddChild<EditorWidget_Tree>();
+		m_materialTree = AddChild<EditorWidget_Tree>();
+		m_meshTree = AddChild<EditorWidget_Tree>();
+
+		m_textureTree 
 
 		mTreeWidget->SetEvent(this
 			, std::bind(&EditorResources::toInspector, this, std::placeholders::_1));
@@ -41,11 +47,11 @@ namespace editor
 	void EditorResources::Init()
 	{
 		ResetContent();
+		
 	}
 
 	void EditorResources::ResetContent()
 	{
-		//mTreeWidget->Close();
 		mTreeWidget->Clear();
 
 		EditorWidget_Tree::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);
@@ -57,7 +63,7 @@ namespace editor
 		//	Material,
 		//	Sound,
 		//	Prefab,
-		//	MeshData,
+		//	Model3D,
 		//	GraphicsShader,
 		//	iComputeShader,
 		//	End,

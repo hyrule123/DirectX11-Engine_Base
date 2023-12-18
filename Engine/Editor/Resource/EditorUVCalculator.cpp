@@ -8,6 +8,7 @@
 #include "../../Manager/PathManager.h"
 
 #include "EditorTexture.h"
+#include "../../Resource/Texture.h"
 
 namespace editor
 {
@@ -43,17 +44,20 @@ namespace editor
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
-			std::vector<std::fs::path> extensions(ehw::strKey::Ext_Tex_Size);
-			for (size_t i = 0; i < ehw::strKey::Ext_Tex_Size; ++i)
+			std::vector<std::fs::path> extensions(ehw::strKey::path::extension::Texture_ArrSize);
+			for (size_t i = 0; i < ehw::strKey::path::extension::Texture_ArrSize; ++i)
 			{
-				extensions[i] = ehw::strKey::Ext_Tex[i];
+				extensions[i] = ehw::strKey::path::extension::Texture[i];
 			}
-			std::fs::path texPath = ehw::WinAPI::FileDialog(ehw::PathManager::GetContentPathAbsolute(ehw::eResourceType::Texture), extensions);
+
+			const std::fs::path& absTexPath = std::fs::absolute(ehw::ResourceManager<ehw::Texture>::GetBaseDir());
+
+			std::fs::path texPath = ehw::WinAPI::FileDialog(absTexPath, extensions);
 
 
 			texPath = ehw::PathManager::MakePathStrKey(texPath);
 
-			mTexture = ehw::ResourceManager::Load<ehw::Texture>(texPath);
+			mTexture = ehw::ResourceManager<ehw::Texture>::Load(texPath);
 
 			if (mTexture)
 			{

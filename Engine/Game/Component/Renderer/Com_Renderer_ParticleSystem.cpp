@@ -158,17 +158,17 @@ namespace ehw
 
 	void Com_Renderer_ParticleSystem::Init()
 	{
-		using namespace strKey::Default;
-		mCS = ResourceManager::Find<ParticleShader>(shader::compute::ParticleCS);
+		using namespace strKey::defaultRes;
+		mCS = LOAD_COMPUTESHADER(ParticleShader);
 
-		std::shared_ptr<Mesh> point = ResourceManager::Find<Mesh>(mesh::PointMesh);
+		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::Find(mesh::PointMesh);
 		SetMesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceManager::Find<Material>(material::ParticleMaterial);
+		std::shared_ptr<Material> material = ResourceManager<Material>::Find(material::ParticleMaterial);
 		SetMaterial(material, 0);
 
-		std::shared_ptr<Texture> tex = ResourceManager::Find<Texture>(texture::CartoonSmoke);
+		std::shared_ptr<Texture> tex = ResourceManager<Texture>::Find(texture::CartoonSmoke);
 		material->SetTexture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};

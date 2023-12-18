@@ -14,7 +14,7 @@ namespace ehw
     using namespace ehw;
 
     Material::Material()
-        : iResource(eResourceType::Material)
+        : iResource(typeid(Material))
         , mCB{}
         , mMode(eRenderingMode::Opaque)
         , mShader{}
@@ -39,8 +39,8 @@ namespace ehw
     eResult Material::Save(const std::fs::path& _filePath)
     {
         iResource::Save(_filePath);
-        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
-        fullPath.replace_extension(strKey::Ext_Material);
+        std::fs::path fullPath = ResourceManager<Material>::GetBaseDir() / _filePath;
+        fullPath.replace_extension(strKey::path::extension::Material);
 
 
         std::ofstream ofs(fullPath);
@@ -65,8 +65,8 @@ namespace ehw
     eResult Material::Load(const std::fs::path& _filePath)
     {
         iResource::Load(_filePath);
-        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
-        fullPath.replace_extension(strKey::Ext_Material);
+        std::fs::path fullPath = ResourceManager<Material>::GetBaseDir() / _filePath;
+        fullPath.replace_extension(strKey::path::extension::Material);
         if (false == std::fs::exists(fullPath))
         {
             return eResult::Fail_Open;
@@ -149,7 +149,7 @@ namespace ehw
         if (false == shaderStrKey.empty())
         {
             //쉐이더는 Base Path를 사용하지 않는다
-            SetShader(ResourceManager::Load<GraphicsShader>(shaderStrKey));
+            SetShader(ResourceManager<GraphicsShader>::Load(shaderStrKey));
         }
         
         //포인터 배열은 MH::LoadPtrStrKeyVector 함수를 통해서 Key값을 싹 받아올 수 있음.
@@ -158,7 +158,7 @@ namespace ehw
         {
             if (false == vecLoad[i].empty())
             {
-                SetTexture((eTextureSlot)i, ResourceManager::Load<Texture>(vecLoad[i]));
+                SetTexture((eTextureSlot)i, ResourceManager<Texture>::Load(vecLoad[i]));
             }
         }
         return eResult::Success;

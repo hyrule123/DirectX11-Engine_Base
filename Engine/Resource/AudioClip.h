@@ -9,13 +9,13 @@ namespace ehw
 {
 	
 
-	class AudioClip : public iResource
+	class AudioClip final : public iResource
 	{
 	public:
 		AudioClip();
 		virtual ~AudioClip();
 
-		virtual eResult Load(const std::fs::path& _filePath) override;
+		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
 		
 		void Play();
 		void Stop();

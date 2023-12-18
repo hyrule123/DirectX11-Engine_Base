@@ -28,7 +28,7 @@ namespace ehw
 		//Load 함수와 BindData, UnBindData 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
-		virtual eResult Load(const std::filesystem::path& _filePath) override;
+		virtual eResult Load(const std::filesystem::path& _pathFromBaseDir) override;
 
 		eResult CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize);
@@ -38,9 +38,6 @@ namespace ehw
 
 		void OnExcute();
 
-		const std::type_info& GetLeafTypeID() const { return m_LeafTypeID; }
-
-
 	protected:
 		virtual bool BindData() = 0;
 		virtual void UnBindData() = 0;
@@ -49,8 +46,6 @@ namespace ehw
 		eResult CreateShader(const void* _pByteCode, size_t _ByteCodeSize);
 
 	private:
-		const std::type_info& m_LeafTypeID;
-
 		Microsoft::WRL::ComPtr<ID3DBlob> m_CSBlob;
 		Microsoft::WRL::ComPtr<ID3D11ComputeShader> m_CS;
 

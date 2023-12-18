@@ -1,4 +1,6 @@
 #pragma once
+#include "../../CommonStruct.h"
+
 #include "../../Editor/imgui/imgui.h"
 #include "../../Editor/imgui/imgui_stdlib.h"
 
@@ -10,6 +12,7 @@
 namespace editor
 {
 	class EditorEntity
+		: public std::enable_shared_from_this<EditorEntity>
 	{
 	public:
 		EditorEntity(const std::string_view _strName);

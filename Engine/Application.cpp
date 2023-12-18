@@ -41,9 +41,8 @@ namespace ehw
 
 		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
 
-
-
 		PathManager::Init();
+		ResourceManagers::Init();
 
 		//RenderMgr은 GPUMgr에서
 		if (false == GPUManager::Init(_AppDesc.GPUDesc))
@@ -53,7 +52,7 @@ namespace ehw
 			return FALSE;
 		}
 
-		ResourceManagers::Init();
+		
 
 		AudioManager::Init();
 		FontWrapper::Init();

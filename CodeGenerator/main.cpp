@@ -107,7 +107,7 @@ void CreateTextureKey()
     {
         DirTree::tSearchDesc desc{};
         desc.rootPath = define_Preset::Path::Resources::A;
-        desc.rootPath /= ehw::strKey::GetResName(ehw::eResourceType::Texture);
+        desc.rootPath /= ehw::strKey::path::directory::resource::Texture;
         desc.regex = reg;
         desc.prevTextFileName = "FoundTextures";
 

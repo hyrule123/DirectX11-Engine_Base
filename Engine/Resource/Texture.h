@@ -10,10 +10,9 @@
 
 namespace ehw
 {
-	
 	using Microsoft::WRL::ComPtr;
 
-	class Texture : public iResource
+	class Texture final : public iResource
 	{
 	public:
 		Texture();
@@ -28,8 +27,8 @@ namespace ehw
 		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult Save(const std::filesystem::path& _filePath) override;
-		virtual eResult Load(const std::filesystem::path& _filePath) override;
+		virtual eResult Save(const std::filesystem::path& _pathFromBaseDir) override;
+		virtual eResult Load(const std::filesystem::path& _pathFromBaseDir) override;
 		void InitializeResource();
 
 
@@ -75,5 +74,4 @@ namespace ehw
 		int										mCurBoundRegister;
 		eShaderStageFlag_						mCurBoundStage;
 	};
-
 }

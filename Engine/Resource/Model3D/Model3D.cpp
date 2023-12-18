@@ -1,12 +1,9 @@
-
-#include "MeshData.h"
-
+#include "Model3D.h"
 
 
 #include "../../Util/define_Util.h"
 #include "../../Util/define_Util.h"
 
-#include "../../Manager/PathManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/PathManager.h"
 
@@ -27,31 +24,32 @@
 
 namespace ehw
 {
-	MeshData::MeshData()
-		: iResource(eResourceType::MeshData)
+	Model3D::Model3D()
+		: iResource(typeid(Model3D))
 	{
 	}
 
-	MeshData::~MeshData()
+	Model3D::~Model3D()
 	{
 	}
 
-	eResult MeshData::Save(const std::fs::path& _filePath)
+	eResult Model3D::Save(const std::fs::path& _pathFromBaseDir)
 	{
 		eResult result = eResult::Fail;
 
-		//MeshData는 다른 클래스와 저장 / 로드 방식이 약간 다름
+		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path fileName = _filePath;
+		std::fs::path fileName = _pathFromBaseDir;
 		fileName.replace_extension();
 		fileName = fileName / fileName;		
-		fileName.replace_extension(strKey::Ext_MeshData);
+		fileName.replace_extension(strKey::path::extension::Model3D);
+		
 
-		const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
+		const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
 		iResource::Save(fileName);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(fileName, GetResType());
+		std::fs::path fullPath = basePath / fileName;
 
 		std::ofstream ofs(fullPath);
 		if (false == ofs.is_open())
@@ -68,25 +66,25 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult MeshData::Load(const std::fs::path& _filePath)
+	eResult Model3D::Load(const std::fs::path& _pathFromBaseDir)
 	{
 		eResult result = eResult::Fail;
 
-		//MeshData는 다른 클래스와 저장 / 로드 방식이 약간 다름
+		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path fileName = _filePath;
+		std::fs::path fileName = _pathFromBaseDir;
 		fileName.replace_extension();
 		fileName /= fileName;
-		fileName.replace_extension(strKey::Ext_MeshData);
+		fileName.replace_extension(strKey::path::extension::Model3D);
 
-		const std::fs::path& basePath = PathManager::GetContentPathRelative(eResourceType::MeshData);
+		const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
 		iResource::Load(fileName);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(fileName, GetResType());
+		std::fs::path fullPath = basePath / fileName;
 
 		Json::Value jVal;
-		fullPath.replace_extension(strKey::Ext_MeshData);
+		fullPath.replace_extension(strKey::path::extension::Model3D);
 		std::ifstream ifs(fullPath);
 		if (false == ifs.is_open())
 		{
@@ -103,7 +101,7 @@ namespace ehw
 	}
 
 
-	eResult MeshData::SaveJson(Json::Value* _pJson)
+	eResult Model3D::SaveJson(Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
@@ -112,57 +110,57 @@ namespace ehw
 			return result;
 
 		//비어있을 경우 저장 불가
-		if (mMeshContainers.empty())
+		if (m_meshContainers.empty())
 		{
 			return eResult::Fail_InValid;
 		}
 
 
 		//Skeleton
-		if (mSkeleton)
+		if (m_skeleton)
 		{
-			result = mSkeleton->Save(mSkeleton->GetStrKey());
+			result = m_skeleton->Save(m_skeleton->GetStrKey());
 			if (eResultFail(result))
 				return result;
 		}
-		Json::SaveLoad::SavePtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
+		Json::SaveLoad::SavePtrStrKey(_pJson, JSON_KEY_PAIR(m_skeleton));
 
 
 
 		//순회 돌아주면서 array 형태의 json에 append 해준다
-		Json::Value& arrMeshCont = (*_pJson)[JSON_KEY(mMeshContainers)];
-		for (size_t i = 0; i < mMeshContainers.size(); ++i)
+		Json::Value& arrMeshCont = (*_pJson)[JSON_KEY(m_meshContainers)];
+		for (size_t i = 0; i < m_meshContainers.size(); ++i)
 		{
 			Json::Value meshCont{};
-			if (nullptr == mMeshContainers[i].pMesh || mMeshContainers[i].pMaterials.empty())
+			if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
 			{
 				return eResult::Fail_InValid;
 			}
 			//Mesh
-			result = mMeshContainers[i].pMesh->Save(mMeshContainers[i].pMesh->GetStrKey());
+			result = m_meshContainers[i].mesh->Save(m_meshContainers[i].mesh->GetStrKey());
 			if (eResultFail(result))
 			{
 				return result;
 			}
-			Json::SaveLoad::SavePtrStrKey(&meshCont, JSON_KEY(pMesh), mMeshContainers[i].pMesh);
+			Json::SaveLoad::SavePtrStrKey(&meshCont, JSON_KEY(mesh), m_meshContainers[i].mesh);
 
-			Json::Value& arrMtrl = meshCont[JSON_KEY(pMaterials)];
+			Json::Value& arrMtrl = meshCont[JSON_KEY(materials)];
 			//Material 저장
-			for (size_t j = 0; j < mMeshContainers[i].pMaterials.size(); ++j)
+			for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
 			{
-				result = mMeshContainers[i].pMaterials[j]->Save(mMeshContainers[i].pMaterials[j]->GetStrKey());
+				result = m_meshContainers[i].materials[j]->Save(m_meshContainers[i].materials[j]->GetStrKey());
 				if (eResultFail(result))
 				{
 					return result;
 				}
 
-				if (nullptr == mMeshContainers[i].pMaterials[j])
+				if (nullptr == m_meshContainers[i].materials[j])
 				{
 					return eResult::Fail_Nullptr;
 				}
 				else
 				{
-					arrMtrl.append(mMeshContainers[i].pMaterials[j]->GetStrKey());
+					arrMtrl.append(m_meshContainers[i].materials[j]->GetStrKey());
 				}
 
 			}
@@ -174,7 +172,7 @@ namespace ehw
 	}
 
 
-	eResult MeshData::LoadJson(const Json::Value* _pJson)
+	eResult Model3D::LoadJson(const Json::Value* _pJson)
 	{
 		if (nullptr == _pJson)
 			return eResult::Fail_Nullptr;
@@ -182,10 +180,10 @@ namespace ehw
 		if (eResultFail(result))
 			return result;
 		
-		mMeshContainers.clear();
+		m_meshContainers.clear();
 
 		//mesh container 순회 돌아주면서 하나씩 Load
-		const Json::Value& jsonMeshCont = (*_pJson)[JSON_KEY(mMeshContainers)];
+		const Json::Value& jsonMeshCont = (*_pJson)[JSON_KEY(m_meshContainers)];
 		for (Json::ValueConstIterator iter = jsonMeshCont.begin();
 			iter != jsonMeshCont.end();
 			++iter)
@@ -193,39 +191,44 @@ namespace ehw
 			tMeshContainer cont{};
 
 			//Mesh
-			std::string meshStrKey = Json::SaveLoad::LoadPtrStrKey(&(*iter), JSON_KEY(pMesh), cont.pMesh);
-			cont.pMesh = ResourceManager::Load<Mesh>(meshStrKey);
-			if (nullptr == cont.pMesh)
+			std::string meshStrKey = Json::SaveLoad::LoadPtrStrKey(&(*iter), JSON_KEY(mesh), cont.mesh);
+			cont.mesh = std::make_shared<Mesh>();
+			result = cont.mesh->Load(meshStrKey);
+			if (eResultFail(result))
+			{
 				return eResult::Fail_Empty;
+			}
+				
 
 			//Materials
-			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(pMaterials), cont.pMaterials);
+			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(materials), cont.materials);
+			cont.materials.resize(materialsStrKey.size());
 			for (size_t i = 0; i < materialsStrKey.size(); ++i)
 			{
-				std::shared_ptr<Material> mtrl = ResourceManager::Load<Material>(materialsStrKey[i]);
-				cont.pMaterials.push_back(mtrl);
+				cont.materials[i] = std::make_shared<Material>();
+				cont.materials[i]->Load(materialsStrKey[i]);
 			}
 
 
-			mMeshContainers.push_back(cont);
+			m_meshContainers.push_back(cont);
 		}
 
-		const std::string& skeletonKey = Json::SaveLoad::LoadPtrStrKey(_pJson, JSON_KEY_PAIR(mSkeleton));
+		const std::string& skeletonKey = Json::SaveLoad::LoadPtrStrKey(_pJson, JSON_KEY_PAIR(m_skeleton));
 		if (false == skeletonKey.empty())
 		{
-			mSkeleton = std::make_shared<Skeleton>();
-			result = mSkeleton->Load(skeletonKey);
+			m_skeleton = std::make_shared<Skeleton>();
+			result = m_skeleton->Load(skeletonKey);
 			if (eResultFail(result))
 				return result;
 		}
 
-		if (mSkeleton)
+		if (m_skeleton)
 		{
-			for (size_t i = 0; i < mMeshContainers.size(); ++i)
+			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				if (mMeshContainers[i].pMesh)
+				if (m_meshContainers[i].mesh)
 				{
-					mMeshContainers[i].pMesh->SetSkeleton(mSkeleton);
+					m_meshContainers[i].mesh->SetSkeleton(m_skeleton);
 				}
 			}
 		}
@@ -234,10 +237,10 @@ namespace ehw
 	}
 
 
-	std::shared_ptr<GameObject> MeshData::Instantiate()
+	std::shared_ptr<GameObject> Model3D::Instantiate()
 	{
 		std::shared_ptr<GameObject> rootObj{}; 
-		if (mMeshContainers.empty())
+		if (m_meshContainers.empty())
 		{
 			return rootObj;
 		}
@@ -252,7 +255,7 @@ namespace ehw
 		return rootObj;
 	}
 
-	eResult MeshData::Instantiate(GameObject* _emptyRootObj)
+	eResult Model3D::Instantiate(GameObject* _emptyRootObj)
 	{
 		if (nullptr == _emptyRootObj)
 		{
@@ -265,15 +268,15 @@ namespace ehw
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		Com_Animator3D* animator = nullptr;
-		if (mSkeleton)
+		if (m_skeleton)
 		{
 			animator = _emptyRootObj->AddComponent<Com_Animator3D>();
 			ASSERT(animator, "애니메이터 컴포넌트 생성 실패");
-			animator->SetSkeleton(mSkeleton);
+			animator->SetSkeleton(m_skeleton);
 		}
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
-		if (1u == (UINT)mMeshContainers.size())
+		if (1u == (UINT)m_meshContainers.size())
 		{
 			Com_Renderer_Mesh* renderer = nullptr;
 			if (animator)
@@ -293,7 +296,7 @@ namespace ehw
 		//여러 개의 container를 가지고 있을 경우: 하나의 부모 object에 여러개의 child를 생성해서 각각 Meshrenderer에 할당
 		else
 		{
-			for (size_t i = 0; i < mMeshContainers.size(); ++i)
+			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
 				std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
 				_emptyRootObj->AddChild(child);
@@ -323,7 +326,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult MeshData::ConvertFBX(
+	eResult Model3D::ConvertFBX(
 		const std::fs::path& _fbxPath, bool _bStatic,
 		const std::fs::path& _dirAndFileName
 	)
@@ -342,14 +345,14 @@ namespace ehw
 		result = Save(_dirAndFileName);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"MeshData 저장에 실패했습니다.");
+			ERROR_MESSAGE_W(L"Model3D 저장에 실패했습니다.");
 			return result;
 		}
 
 		return eResult::Success;
 	}
 
-	eResult MeshData::LoadFromFBX(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dirAndFileName)
+	eResult Model3D::LoadFromFBX(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dirAndFileName)
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
@@ -370,27 +373,27 @@ namespace ehw
 			return result;
 		}
 
-		//Res/MeshData/Player
+		//Res/Model3D/Player
 		std::fs::path filePath = _dirAndFileName;
 		filePath.replace_extension();
-		//Res/MeshData/Player/Player
+		//Res/Model3D/Player/Player
 		filePath = filePath / filePath;
 
 		//Bone 정보 로드
-		mSkeleton = std::make_shared<Skeleton>();
+		m_skeleton = std::make_shared<Skeleton>();
 
 		//Key 설정
 		{
 			std::fs::path skltStrKey = filePath;
-			skltStrKey.replace_extension(strKey::Ext_Skeleton);
-			mSkeleton->SetStrKey(skltStrKey.string());
+			skltStrKey.replace_extension(strKey::path::extension::Skeleton);
+			m_skeleton->SetStrKey(skltStrKey.string());
 		}
-		result = mSkeleton->CreateFromFBX(&loader);
+		result = m_skeleton->CreateFromFBX(&loader);
 
 		//애니메이션 정보가 없을 경우에는 도로 제거
 		if (eResult::Fail_Empty == result)
 		{
-			mSkeleton = nullptr;
+			m_skeleton = nullptr;
 		}
 		//그 외의 이유로 실패했을 경우에는 에러
 		else if (eResultFail(result))
@@ -405,9 +408,9 @@ namespace ehw
 			tMeshContainer meshCont{};
 
 			//가져올 메쉬를 생성
-			meshCont.pMesh = std::make_shared<Mesh>();
+			meshCont.mesh = std::make_shared<Mesh>();
 
-			result = meshCont.pMesh->CreateFromContainer(&(containers[i]));
+			result = meshCont.mesh->CreateFromContainer(&(containers[i]));
 			if (eResultFail(result))
 			{
 				ERROR_MESSAGE_W(L"FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
@@ -415,9 +418,9 @@ namespace ehw
 			}
 
 			//스켈레톤 주소를 지정
-			meshCont.pMesh->SetSkeleton(mSkeleton);
+			meshCont.mesh->SetSkeleton(m_skeleton);
 
-			if (nullptr != meshCont.pMesh)
+			if (nullptr != meshCont.mesh)
 			{
 				//기본적으로는 컨테이너 이름을 사용
 				//비어있을 경우 이름을 만들어준다
@@ -436,9 +439,9 @@ namespace ehw
 				}
 
 				//.msh로 확장자를 변경
-				strKey.replace_extension(strKey::Ext_Mesh);
+				strKey.replace_extension(strKey::path::extension::Mesh);
 				//Key로 Mesh를 저장
-				meshCont.pMesh->SetStrKey(strKey.string());
+				meshCont.mesh->SetStrKey(strKey.string());
 			}
 
 			// 메테리얼 가져오기
@@ -453,15 +456,15 @@ namespace ehw
 					return eResult::Fail_InValid;
 				}
 
-				meshCont.pMaterials.push_back(mtrl);
+				meshCont.materials.push_back(mtrl);
 			}
-			mMeshContainers.push_back(meshCont);
+			m_meshContainers.push_back(meshCont);
 		}
 
 		return eResult::Success;
 	}
 
-	eResult MeshData::AddAnimationFromFBX(const std::fs::path& _fbxPath, const std::fs::path& _meshDataName)
+	eResult Model3D::AddAnimationFromFBX(const std::fs::path& _fbxPath, const std::fs::path& _meshDataName)
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
@@ -505,7 +508,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	std::shared_ptr<Material> MeshData::ConvertMaterial(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
+	std::shared_ptr<Material> Model3D::ConvertMaterial(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _fbxMtrl || _texDestDir.empty())
 		{
@@ -516,12 +519,12 @@ namespace ehw
 
 		std::fs::path strKey = _texDestDir.filename();
 		strKey /= _fbxMtrl->strMtrlName;
-		strKey.replace_extension(strKey::Ext_Material);
+		strKey.replace_extension(strKey::path::extension::Material);
 		mtrl->SetStrKey(strKey.string());
 
 		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
 
-		std::fs::path texDir = PathManager::GetContentPathRelative(eResourceType::Texture);
+		std::fs::path texDir = ResourceManager<Texture>::GetBaseDir();
 		texDir /= _texDestDir;
 
 		//media directory(텍스처같은 파일들) 옮겨졌는지 여부 저장 변수
@@ -577,7 +580,7 @@ namespace ehw
 		mtrl->SetTexture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->SetTexture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader);
+		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::Find(strKey::defaultRes::shader::graphics::DefferedShader);
 		mtrl->SetShader(defferedShader);
 
 		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);
@@ -587,7 +590,7 @@ namespace ehw
 		return mtrl;
 	}
 
-	void MeshData::CheckMHMaterial(std::shared_ptr<Material> _mtrl, const std::fs::path& _texDestDir)
+	void Model3D::CheckMHMaterial(std::shared_ptr<Material> _mtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _mtrl)
 			return;
@@ -693,20 +696,20 @@ namespace ehw
 		}
 	}
 
-	bool MeshData::SetRenderer(Com_Renderer_Mesh* _renderer, UINT _idx)
+	bool Model3D::SetRenderer(Com_Renderer_Mesh* _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;
 
-		else if (_idx >= (UINT)mMeshContainers.size())
+		else if (_idx >= (UINT)m_meshContainers.size())
 			return false;
 
 		//Mesh 또는 Material은 없을 리가 없음(생성할 때 예외처리 함)
-		_renderer->SetMesh(mMeshContainers[_idx].pMesh);
+		_renderer->SetMesh(m_meshContainers[_idx].mesh);
 
-		for (size_t i = 0; i < mMeshContainers[_idx].pMaterials.size(); ++i)
+		for (size_t i = 0; i < m_meshContainers[_idx].materials.size(); ++i)
 		{
-			_renderer->SetMaterial(mMeshContainers[_idx].pMaterials[i], (UINT)i);
+			_renderer->SetMaterial(m_meshContainers[_idx].materials[i], (UINT)i);
 		}
 
 		return true;

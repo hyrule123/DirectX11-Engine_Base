@@ -1,5 +1,5 @@
 #pragma once
-#include "iAnimation.h"
+#include "../iAnimation.h"
 
 
 
@@ -27,7 +27,7 @@ namespace ehw
     struct tFBXAnimClip;
     class StructBuffer;
     class Skeleton;
-	class Animation3D :
+	class Animation3D final:
 		public iAnimation
 	{
         friend class Skeleton;
@@ -42,8 +42,8 @@ namespace ehw
         void BindData();
         void UnBindData();
 
-        eResult Save(const std::fs::path& _filePath);
-        eResult Load(const std::fs::path& _filePath);
+        eResult Save(const std::fs::path& _pathFromBaseDir);
+        eResult Load(const std::fs::path& _pathFromBaseDir);
 
         eResult LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip);
 

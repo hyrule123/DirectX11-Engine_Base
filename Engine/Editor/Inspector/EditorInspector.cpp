@@ -16,7 +16,7 @@ namespace editor
 	{
 		//컴포넌트의 경우 수동 관리
 		mGuiComponents.resize((int)ehw::eComponentCategory::END);
-		mGuiResources.resize((int)ehw::eResourceType::END);
+		//mGuiResources.resize((int)ehw::eResourceType::END);
 
 		mGuiComponents[(int)ehw::eComponentCategory::Transform] = new EditorCom_Transform;
 		mGuiComponents[(int)ehw::eComponentCategory::Transform]->SetSize(ImVec2(0.f, 100.f));
@@ -24,7 +24,7 @@ namespace editor
 		mGuiComponents[(int)ehw::eComponentCategory::Renderer] = new EditorCom_Renderer;
 		mGuiComponents[(int)ehw::eComponentCategory::Renderer]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiResources[(int)ehw::eResourceType::Texture] = new EditorTexture;
+		//mGuiResources[(int)ehw::eResourceType::Texture] = new EditorTexture;
 	}
 
 	EditorInspector::~EditorInspector()
@@ -102,7 +102,7 @@ namespace editor
 
 		for (size_t i = 0; i < mGuiResources.size(); ++i)
 		{
-			IndicatorButton(ehw::strKey::ArrResName[i]);
+			//IndicatorButton(ehw::strKey::ArrResName[i]);
 
 			if (mTargetResource && mGuiResources[i])
 				mGuiResources[i]->InternalUpdate();

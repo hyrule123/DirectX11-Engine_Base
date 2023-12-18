@@ -26,7 +26,7 @@ namespace editor
 			{
 				if (this == widget.second)
 					continue;
-				else if (nullptr == widget.second->GetParent())
+				else if (widget.second->GetParent().expired())
 				{
 					if (ImGui::MenuItem(widget.second->GetStrKey().c_str(), nullptr, widget.second->GetEnablePtr()))
 					{

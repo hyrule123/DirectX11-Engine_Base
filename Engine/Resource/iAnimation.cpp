@@ -1,11 +1,10 @@
-
 #include "iAnimation.h"
 
 
 namespace ehw
 {
-	iAnimation::iAnimation()
-		:iResource(eResourceType::Animation)
+	iAnimation::iAnimation(const std::type_info& _typeInfo)
+		:iResource(_typeInfo)
 	{
 	}
 

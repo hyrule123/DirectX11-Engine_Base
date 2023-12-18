@@ -4,7 +4,7 @@
 
 #include "../Util/define_Util.h"
 
-#include "../Manager/PathManager.h"
+#include "../Manager/ResourceManager.h"
 
 
 #ifdef _WIN64
@@ -22,7 +22,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: iResource(eResourceType::Texture)
+		: iResource(typeid(Texture))
 		, mDesc()
 		, mTexture()
 		, mImage()
@@ -163,22 +163,23 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::Save(const std::filesystem::path& _filePath)
+	eResult Texture::Save(const std::filesystem::path& _pathFromBaseDir)
 	{
-		std::fs::path checkPath = _filePath.parent_path();
+		std::fs::path checkPath = (ResourceManager<Texture>::GetBaseDir() / _pathFromBaseDir).parent_path();
+
 		if (false == std::fs::exists(checkPath))
 		{
 			std::fs::create_directories(checkPath);
 		}
 
-		return SaveFile(_filePath);
+		return SaveFile(_pathFromBaseDir);
 	}
 
-	eResult Texture::Load(const std::filesystem::path& _filePath)
+	eResult Texture::Load(const std::filesystem::path& _pathFromBaseDir)
 	{
-		iResource::Load(_filePath);
+		iResource::Load(_pathFromBaseDir);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = ResourceManager<Texture>::GetBaseDir() / _pathFromBaseDir;
 
 		if (false == std::fs::exists(fullPath))
 		{

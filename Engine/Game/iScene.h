@@ -10,6 +10,10 @@
 
 #include "GameObject.h"
 
+
+#include <queue>
+#include <future>
+
 namespace ehw
 {
 	class iScene 

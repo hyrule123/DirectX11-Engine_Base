@@ -263,8 +263,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   <ItemGroup>
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
-    <ClInclude Include="Resource\Animation\Animation2D.h" />
-    <ClInclude Include="Resource\Animation\Animation3D.h" />
+    <ClInclude Include="Resource\Animation2D.h" />
+    <ClInclude Include="Resource\Model3D\Animation3D.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Util\base64.h" />
@@ -311,11 +311,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
     <ClInclude Include="Editor\Base\EditorWindow.h" />
     <ClInclude Include="Editor\strKey_Editor.h" />
-    <ClInclude Include="Resource\Modeling\FBXLoader.h" />
+    <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
     <ClInclude Include="Manager\GPUManager.h" />
     <ClInclude Include="Editor\DebugObject\DebugObject.h" />
-    <ClInclude Include="Resource\Animation\iAnimation.h" />
+    <ClInclude Include="Resource\iAnimation.h" />
     <ClInclude Include="Game\Component\Animator\iAnimator.h" />
     <ClInclude Include="Game\Component\Collider\iCollider3D.h" />
     <ClInclude Include="Game\Component\Collider\iCollider2D.h" />
@@ -359,7 +359,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="GPU\define_GPU.h" />
     <ClInclude Include="Game\Component\Script\GridScript.h" />
     <ClInclude Include="Manager\InputManager.h" />
-    <ClInclude Include="Resource\Modeling\MeshData.h" />
+    <ClInclude Include="Resource\Model3D\Model3D.h" />
     <ClInclude Include="Resource\Shader\iShader.h" />
     <ClInclude Include="Util\SimpleMath.h" />
     <ClInclude Include="Util\Singleton.h" />
@@ -381,7 +381,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Script\iScript.h" />
     <ClInclude Include="Resource\Shader\GraphicsShader.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Sprite.h" />
-    <ClInclude Include="Resource\Modeling\Skeleton.h" />
+    <ClInclude Include="Resource\Model3D\Skeleton.h" />
     <ClInclude Include="Game\Component\strKey_Component.h" />
     <ClInclude Include="GPU\StructBuffer.h" />
     <ClInclude Include="Resource\Texture.h" />
@@ -392,8 +392,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Manager\ResourceManagers.cpp" />
-    <ClCompile Include="Resource\Animation\Animation2D.cpp" />
-    <ClCompile Include="Resource\Animation\Animation3D.cpp" />
+    <ClCompile Include="Resource\Animation2D.cpp" />
+    <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp" />
     <ClCompile Include="Util\base64.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -442,11 +442,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Editor\Widget\EditorWidget_List.cpp" />
     <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
-    <ClCompile Include="Resource\Modeling\FBXLoader.cpp" />
+    <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
     <ClCompile Include="Manager\GPUManager.cpp" />
     <ClCompile Include="Editor\DebugObject\DebugObject.cpp" />
-    <ClCompile Include="Resource\Animation\iAnimation.cpp" />
+    <ClCompile Include="Resource\iAnimation.cpp" />
     <ClCompile Include="Game\Component\Animator\iAnimator.cpp" />
     <ClCompile Include="Game\Component\Collider\iCollider3D.cpp" />
     <ClCompile Include="Game\Component\Collider\iCollider2D.cpp" />
@@ -540,7 +540,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Layer.cpp" />
     <ClCompile Include="Game\Component\Light\Com_Light3D.cpp" />
     <ClCompile Include="Resource\Material.cpp" />
-    <ClCompile Include="Resource\Modeling\MeshData.cpp" />
+    <ClCompile Include="Resource\Model3D\Model3D.cpp" />
     <ClCompile Include="Manager\PathManager.cpp" />
     <ClCompile Include="Resource\Shader\iShader.cpp" />
     <ClCompile Include="Resource\Mesh.cpp" />
@@ -556,7 +556,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Resource\Shader\GraphicsShader.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Sprite.cpp" />
     <ClCompile Include="Util\SimpleMath.cpp" />
-    <ClCompile Include="Resource\Modeling\Skeleton.cpp" />
+    <ClCompile Include="Resource\Model3D\Skeleton.cpp" />
     <ClCompile Include="GPU\StructBuffer.cpp" />
     <ClCompile Include="Resource\Texture.cpp" />
     <ClCompile Include="Manager\ThreadPoolManager.cpp" />

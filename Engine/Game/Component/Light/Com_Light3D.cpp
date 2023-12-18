@@ -185,13 +185,13 @@ namespace ehw
 		mAttribute.lightType = (int)type;
 		if (mAttribute.lightType == (int)eLightType::Directional)
 		{
-			mVolumeMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::RectMesh);
-			mLightMaterial = ResourceManager::Find<Material>(strKey::Default::material::LightDirMaterial);
+			mVolumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
+			mLightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightDirMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Point)
 		{
-			mVolumeMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::SphereMesh);
-			mLightMaterial = ResourceManager::Find<Material>(strKey::Default::material::LightPointMaterial);
+			mVolumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::SphereMesh);
+			mLightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightPointMaterial);
 		}
 		else if (mAttribute.lightType == (int)eLightType::Spot)
 		{

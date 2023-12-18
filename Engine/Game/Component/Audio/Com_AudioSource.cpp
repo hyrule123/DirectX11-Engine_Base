@@ -59,7 +59,7 @@ namespace ehw
 		if (jVal.isMember(JSON_KEY(mAudioClip)))
 		{
 			std::string strKey = jVal[JSON_KEY(mAudilClip)].asString();
-			mAudioClip = ResourceManager::Load<AudioClip>(strKey);
+			mAudioClip = ResourceManager<AudioClip>::Load(strKey);
 		}
 
 		return eResult::Success;

@@ -35,24 +35,24 @@
 
 #include "Util/SimpleMath.h"
 
-#include <PhysX/PxPhysicsAPI.h>
+//#include <PhysX/PxPhysicsAPI.h>
 
 #ifdef _WIN64
 
 #ifdef _DEBUG
 #pragma comment(lib, "fbxsdk/x64/Debug/libfbxsdk-md.lib")
-
-#pragma comment(lib, "PhysX/x64/Debug/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXPvdSDK_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXVehicle_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXCooking_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PVDRuntime_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/SceneQuery_static_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysX_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXCommon_64.lib")
-#pragma comment(lib, "PhysX/x64/Debug/PhysXFoundation_64.lib")
+//
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXExtensions_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXPvdSDK_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXVehicle_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXVehicle2_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXCharacterKinematic_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXCooking_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PVDRuntime_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/SceneQuery_static_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysX_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXCommon_64.lib")
+//#pragma comment(lib, "PhysX/x64/Debug/PhysXFoundation_64.lib")
 
 
 #else _DEBUG

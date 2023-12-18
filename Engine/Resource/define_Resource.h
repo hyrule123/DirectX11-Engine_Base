@@ -7,69 +7,82 @@
 
 namespace ehw
 {
-	enum class eResourceType
-	{
-		UNKNOWN = -1,
-		Mesh,
-		MeshData,
+	//enum class eResourceType
+	//{
+	//	UNKNOWN = -1,
+	//	Mesh,
+	//	Model3D,
 
-		Texture,
-		Material,
-		//Sound,
-		/*Font,*/
-		Animation,
+	//	Texture,
+	//	Material,
+	//	//Sound,
+	//	/*Font,*/
+	//	Animation,
 
-		AudioClip,
-		Prefab,
-		
-		GraphicsShader,
-		ComputeShader,
-		END,
+	//	AudioClip,
+	//	Prefab,
+	//	
+	//	GraphicsShader,
+	//	ComputeShader,
+	//	END,
 
-	};
+	//};
 
 	namespace strKey
 	{
-		STRKEY DirName_Resource = "Res";
-		//리소스 이름 겸 Res 폴더 내의 폴더명으로 사용
-		STRKEY ArrResName[(int)eResourceType::END] =
+		namespace path
 		{
-			"Mesh",
-			"MeshData",
+			namespace directory
+			{
+				namespace resource
+				{
+					STRKEY Resource = "Res";
 
-			"Texture",
-			"Material",
-			//"Sound",
-			//"Font,",
-			"Animation2D",
+					STRKEY Texture = "Texture";
+					STRKEY Mesh = "Mesh";
 
-			"AudioClip",
-			"Prefab",
+					STRKEY Material = "Material";
 
-			"Shader/Graphics",
-			"Shader/Compute",
-		};
-		inline STRKEY GetResName(eResourceType _type) { return ArrResName[(int)_type]; }
+					STRKEY Animation2D = "Animation2D";
 
-		STRKEY DirName_CompiledShader = "Shader";
-		STRKEY Ext_CompiledShader = ".cso";
-		STRKEY Ext_Mesh = ".mesh";
-		STRKEY Ext_MeshData = ".json";
-		STRKEY Ext_Material = ".json";
-		STRKEY Ext_Skeleton = ".bone";
-		STRKEY Ext_Anim3D = ".a3d";
-		STRKEY Ext_Tex[] =
-		{
-			
-			".png",
-			".dds",
-			".tga",
-			".bmp",
-			".jpg",
-		};
-		constexpr size_t Ext_Tex_Size = sizeof(Ext_Tex) / sizeof(const char*);
+					//모델링 설정에 따라 애니메이션을 사용할수도 안할수도 있음
+					STRKEY Model3D = "Model3D";
 
-		namespace Default
+					STRKEY AudioClip = "AudioClip";
+
+					STRKEY GraphicsShader = "Shader/Graphics";
+					STRKEY ComputeShader = "Shader/Compute";
+				}
+
+
+				STRKEY CompiledShader = "Shader";
+			}
+
+			namespace extension
+			{
+				STRKEY CompiledShader = ".cso";
+				STRKEY Mesh = ".mesh";
+				STRKEY Model3D = ".json";
+				STRKEY Material = ".json";
+				STRKEY Skeleton = ".bone";
+				STRKEY Anim3D = ".a3d";
+				STRKEY ShaderSetting = ".json";
+				STRKEY Texture[] =
+				{
+					".png",
+					".dds",
+					".tga",
+					".bmp",
+					".jpg",
+				};
+				constexpr size_t Texture_ArrSize = sizeof(Texture) / sizeof(const char*);
+			}
+		}
+
+		
+
+
+		namespace defaultRes
 		{
 			namespace mesh
 			{

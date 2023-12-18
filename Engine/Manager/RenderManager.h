@@ -22,6 +22,7 @@ namespace ehw
 	
 
 	class MultiRenderTarget;
+
 	class RenderManager
 	{
 		friend class Application;
@@ -94,16 +95,16 @@ namespace ehw
 		static Com_Camera* mMainCamera;
 		static GameObject* mInspectorGameObject;
 
-		static std::unique_ptr<ConstBuffer>		mConstBuffers[(uint)eCBType::END];
-		static ComPtr<ID3D11SamplerState>		mSamplerStates[(uint)eSamplerType::END];
-		static ComPtr<ID3D11RasterizerState>	mRasterizerStates[(uint)eRSType::END];
-		static ComPtr<ID3D11DepthStencilState>	mDepthStencilStates[(uint)eDSType::END];
-		static ComPtr<ID3D11BlendState>			mBlendStates[(uint)eBSType::END];
+		static std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		mConstBuffers;
+		static std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	mSamplerStates;
+		static std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		mRasterizerStates;
+		static std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	mDepthStencilStates;
+		static std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			mBlendStates;
 		
 		static std::vector<Com_Camera*>					mCameras;
 		static std::vector<tDebugMesh>			mDebugMeshes;
 
-		static std::unique_ptr<MultiRenderTarget> mMultiRenderTargets[(uint)eMRTType::END];
+		static std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> mMultiRenderTargets;
 
 		static std::vector<Com_Light3D*>			mLights;
 		static std::vector<tLightAttribute>			mLightAttributes;

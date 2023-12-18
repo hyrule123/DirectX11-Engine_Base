@@ -9,7 +9,7 @@
 
 namespace ehw
 {
-	class MeshData;
+	class Model3D;
 }
 
 

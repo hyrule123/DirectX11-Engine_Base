@@ -1,7 +1,7 @@
 #include "iComputeShader.h"
 
 
-
+#include "../../Manager/ResourceManager.h"
 #include "../../Manager/PathManager.h"
 #include "../../Manager/GPUManager.h"
 #include "../../Manager/RenderManager.h"
@@ -17,8 +17,7 @@
 namespace ehw
 {
 	iComputeShader::iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
-		: iShader(eResourceType::ComputeShader)
-		, m_LeafTypeID(_typeID)
+		: iShader(_typeID)
 		, m_CSBlob(nullptr)
 		, m_CS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }
@@ -31,9 +30,10 @@ namespace ehw
 	{
 	}
 
-	eResult iComputeShader::Load(const std::filesystem::path& _filePath)
+	eResult iComputeShader::Load(const std::filesystem::path& _pathFromBaseDir)
 	{
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::ComputeShader);
+		std::fs::path fullPath = ResourceManager<iComputeShader>::GetBaseDir() / _pathFromBaseDir;
+
 		return CreateByCSO(fullPath);
 	}
 

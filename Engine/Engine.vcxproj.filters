@@ -315,7 +315,7 @@
     <ClCompile Include="Util\SimpleMath.cpp">
       <Filter>Common\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Modeling\MeshData.cpp">
+    <ClCompile Include="Resource\Model3D\Model3D.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Manager\SceneManager.cpp">
@@ -378,7 +378,7 @@
     <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Animation\Animation2D.cpp">
+    <ClCompile Include="Resource\Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp">
@@ -402,10 +402,10 @@
     <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Modeling\FBXLoader.cpp">
+    <ClCompile Include="Resource\Model3D\FBXLoader.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Modeling\Skeleton.cpp">
+    <ClCompile Include="Resource\Model3D\Skeleton.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp">
@@ -414,10 +414,10 @@
     <ClCompile Include="Manager\ThreadPoolManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Animation\Animation3D.cpp">
+    <ClCompile Include="Resource\Model3D\Animation3D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Animation\iAnimation.cpp">
+    <ClCompile Include="Resource\iAnimation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Script\GridScript.cpp">
@@ -632,7 +632,7 @@
     <ClInclude Include="Util\SimpleMath.h">
       <Filter>Common\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Modeling\MeshData.h">
+    <ClInclude Include="Resource\Model3D\Model3D.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Manager\SceneManager.h">
@@ -701,7 +701,7 @@
     <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Animation\Animation2D.h">
+    <ClInclude Include="Resource\Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h">
@@ -725,10 +725,10 @@
     <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Modeling\FBXLoader.h">
+    <ClInclude Include="Resource\Model3D\FBXLoader.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Modeling\Skeleton.h">
+    <ClInclude Include="Resource\Model3D\Skeleton.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h">
@@ -743,10 +743,10 @@
     <ClInclude Include="Game\Component\strKey_Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Animation\Animation3D.h">
+    <ClInclude Include="Resource\Model3D\Animation3D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Animation\iAnimation.h">
+    <ClInclude Include="Resource\iAnimation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Script\GridScript.h">

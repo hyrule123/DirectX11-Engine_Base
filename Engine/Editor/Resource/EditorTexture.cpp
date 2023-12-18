@@ -6,7 +6,7 @@
 namespace editor
 {
 	EditorTexture::EditorTexture()
-		: EditorResource(ehw::eResourceType::Texture)
+		: EditorResource(ehw::strKey::path::directory::resource::Texture)
 	{
 
 	}

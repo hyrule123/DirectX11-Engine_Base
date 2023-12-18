@@ -47,7 +47,7 @@ namespace ehw
 	class StructBuffer;
 	class Skeleton;
 	struct tFBXContainer;
-	class Mesh : public iResource 
+	class Mesh final : public iResource 
 	{
 	public:
 		Mesh();
@@ -55,8 +55,8 @@ namespace ehw
 
 		eResult CreateFromContainer(const tFBXContainer* _fbxContainer);
 
-		virtual eResult Save(const std::fs::path& _filePath) override;										
-		virtual eResult Load(const std::fs::path& _filePath) override;
+		virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;										
+		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
 
 		template <typename Vertex>
 		inline bool Create(const std::vector<Vertex>& _vecVtx, const std::vector<uint>& _vecIdx);

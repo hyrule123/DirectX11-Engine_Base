@@ -1,19 +1,21 @@
-
 #include "Animation3D.h"
 
 
-
-#include "../../Resource/Modeling/FBXLoader.h"
-#include "../../Resource/Modeling/Skeleton.h"
-
 #include "../../GPU/StructBuffer.h"
 
-#include "../../Manager/PathManager.h"
+#include "../../Manager/ResourceManager.h"
+
+
+#include "FBXLoader.h"
+#include "Model3D.h"
+#include "Skeleton.h"
+
 
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : mValues{}
+        : iAnimation(typeid(Animation3D))
+        , mValues{}
         , m_OwnerSkeleton{}
         , m_KeyFramesPerBone{}
         , m_SBufferKeyFrame{}
@@ -35,17 +37,17 @@ namespace ehw
     }
 
 #pragma region 저장 및 불러오기
-    eResult Animation3D::Save(const std::fs::path& _filePath)
+    eResult Animation3D::Save(const std::fs::path& _pathFromBaseDir)
     {
-        SetStrKey(_filePath.string());
+        SetStrKey(_pathFromBaseDir.string());
 
-        if (false == _filePath.has_parent_path())
+        if (false == _pathFromBaseDir.has_parent_path())
         {
             ERROR_MESSAGE_W(L"Animation은 반드시 상위 폴더가 있어야 합니다.");
             return eResult::Fail_InValid;
         }
 
-        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
+        std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
 
         {
             std::fs::path checkDir = fullPath.parent_path();
@@ -55,7 +57,7 @@ namespace ehw
             }
         }
 
-        fullPath.replace_extension(strKey::Ext_Anim3D);
+        fullPath.replace_extension(strKey::path::extension::Anim3D);
 
         std::ofstream ofs(fullPath, std::ios::binary);
         if (false == ofs.is_open())
@@ -85,17 +87,17 @@ namespace ehw
         return eResult::Success;
     }
 
-    eResult Animation3D::Load(const std::fs::path& _filePath)
+    eResult Animation3D::Load(const std::fs::path& _pathFromBaseDir)
     {
-        SetStrKey(_filePath.string());
+        SetStrKey(_pathFromBaseDir.string());
 
-        if (false == _filePath.has_parent_path())
+        if (false == _pathFromBaseDir.has_parent_path())
         {
             ERROR_MESSAGE_W(L"Animation은 반드시 상위 폴더가 있어야 합니다.");
             return eResult::Fail_InValid;
         }
-        std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::MeshData);
-        fullPath.replace_extension(strKey::Ext_Anim3D);
+        std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
+        fullPath.replace_extension(strKey::path::extension::Anim3D);
 
         if (false == std::fs::exists(fullPath))
         {

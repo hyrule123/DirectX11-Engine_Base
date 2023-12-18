@@ -2,26 +2,26 @@
 
 
 
-#include "../../Manager/TimeManager.h"
-#include "../../Manager/RenderManager.h"
+#include "../Manager/TimeManager.h"
+#include "../Manager/RenderManager.h"
 
-#include "../../GPU/ConstBuffer.h"
+#include "../GPU/ConstBuffer.h"
 
-#include "../../json-cpp/json.h"
+#include "../json-cpp/json.h"
 
-#include "../../DefaultShader/Animation/Animation2D.hlsli"
+#include "../DefaultShader/Animation/Animation2D.hlsli"
 
 namespace ehw
 {
 	Animation2D::Animation2D()
-		: mAnimator(nullptr)
+		: iAnimation(typeid(iAnimation))
+		, mAnimator(nullptr)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}
 		, mIndex(-1)
 		, mTime(0.0f)
 		, mbComplete(false)
 	{
-
 	}
 
 	Animation2D::Animation2D(const Animation2D& _other)

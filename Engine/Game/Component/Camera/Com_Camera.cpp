@@ -92,8 +92,8 @@ namespace ehw
 
 
 		//// defferd + swapchain merge
-		std::shared_ptr<Material> mergeMaterial = ResourceManager::Find<Material>(strKey::Default::material::MergeMaterial);
-		std::shared_ptr<Mesh> rectMesh = ResourceManager::Find<Mesh>(strKey::Default::mesh::RectMesh);
+		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::MergeMaterial);
+		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
 		rectMesh->BindBuffer();
 		mergeMaterial->BindData();
 		rectMesh->Render();

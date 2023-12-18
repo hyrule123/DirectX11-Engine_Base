@@ -4,7 +4,7 @@
 
 
 #include "../../CommonStruct.h"
-#include "../../Resource/Animation/Animation3D.h"
+#include "Animation3D.h"
 
 //MeshData에 종속된 클래스
 namespace ehw
@@ -18,8 +18,8 @@ namespace ehw
 		Skeleton();
 		virtual ~Skeleton();
 
-		eResult Save(const std::fs::path& _filePath);
-		eResult Load(const std::fs::path& _filePath);
+		eResult Save(const std::fs::path& _pathFromBaseDir);
+		eResult Load(const std::fs::path& _pathFromBaseDir);
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);
 
 	public:

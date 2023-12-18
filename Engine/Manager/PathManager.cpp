@@ -7,62 +7,61 @@
 
 namespace ehw
 {
-	std::filesystem::path PathManager::mAbsoluteResPath{};
-	std::filesystem::path PathManager::mRelativeResPath{};
-	std::filesystem::path PathManager::mRelativePathContent[(int)eResourceType::END]{};
-	std::filesystem::path PathManager::mRelativePath_ShaderCSO{};
+	std::filesystem::path PathManager::m_absoluteResourceDir{};
+	std::filesystem::path PathManager::m_relativeResourceDir{};
+	std::filesystem::path PathManager::m_relativeDir_ShaderCSO{};
 
 	void PathManager::Init()
 	{
 		AtExit::AddFunc(PathManager::Release);
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
-		mAbsoluteResPath = std::filesystem::current_path().parent_path().parent_path().parent_path();
-		mAbsoluteResPath /= strKey::DirName_Resource;
-		if (false == std::fs::exists(mAbsoluteResPath))
+		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
+		m_absoluteResourceDir /= strKey::path::directory::resource::Resource;
+		if (false == std::fs::exists(m_absoluteResourceDir))
 		{
-			std::fs::create_directories(mAbsoluteResPath);
+			std::fs::create_directories(m_absoluteResourceDir);
 		}
 
-		mRelativeResPath = "../../../";
-		mRelativeResPath /= ehw::strKey::DirName_Resource;
-		if (false == std::fs::exists(mRelativeResPath))
+		m_relativeResourceDir = "../../../";
+		m_relativeResourceDir /= strKey::path::directory::resource::Resource;
+		ASSERT(std::fs::exists(m_relativeResourceDir), "절대경로와 상대경로가 일치하지 않습니다.")
+
+		m_relativeDir_ShaderCSO = ".";
+		m_relativeDir_ShaderCSO /= ehw::strKey::path::directory::CompiledShader;
+		if (false == std::fs::exists(m_relativeDir_ShaderCSO))
 		{
-			std::fs::create_directories(mRelativeResPath);
+			std::fs::create_directories(m_relativeDir_ShaderCSO);
 		}
-
-		mRelativePath_ShaderCSO = ".";
-		mRelativePath_ShaderCSO /= ehw::strKey::DirName_CompiledShader;
-		if (false == std::fs::exists(mRelativePath_ShaderCSO))
-		{
-			std::fs::create_directories(mRelativePath_ShaderCSO);
-		}
-
-		for (int i = 0; i < (int)eResourceType::END; ++i)
-		{
-			mRelativePathContent[i] = mRelativeResPath;
-			mRelativePathContent[i] /= ehw::strKey::ArrResName[i];
-
-			if (false == std::fs::exists(mRelativePathContent[i]))
-			{
-				std::fs::create_directories(mRelativePathContent[i]);
-			}
-		}
-
 	}
 
 
 	void PathManager::Release()
 	{
-		mAbsoluteResPath.clear();
-		mRelativeResPath.clear();
-		for (int i = 0; i < (int)eResourceType::END; ++i)
-		{
-			mRelativePathContent[i].clear();
-		}
+		m_absoluteResourceDir.clear();
+		m_relativeResourceDir.clear();
 
-		mRelativePath_ShaderCSO.clear();
+		m_relativeDir_ShaderCSO.clear();
 	}
 
+	std::fs::path PathManager::MakePathStrKey(const std::fs::path& _fullPath)
+	{
+		std::fs::path strKeyPath{};
+		std::fs::path newPath = _fullPath.lexically_relative(m_absoluteResourceDir);
+
+		//비어있거나, Res 바깥의 폴더(../)이면 안됨
+		if (newPath.empty() || (*newPath.begin()) == "..")
+		{
+			NOTIFICATION_W(L"리소스 파일은 반드시 Res 폴더의 안쪽에 있어야 합니다.");
+		}
+		else
+		{
+			for (auto iter = ++newPath.begin(); iter != newPath.end(); ++iter)
+			{
+				strKeyPath /= *iter;
+			}
+		}
+		return strKeyPath;
+	}
 }
 

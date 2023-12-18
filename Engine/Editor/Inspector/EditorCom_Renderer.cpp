@@ -73,7 +73,7 @@ namespace editor
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= ehw::ResourceManager::GetResources<ehw::Mesh>();
+				= ehw::ResourceManager<ehw::Mesh>::GetResources();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -98,7 +98,7 @@ namespace editor
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ehw::ResourceManager::GetResources<ehw::Material>();
+				= ehw::ResourceManager<ehw::Material>::GetResources();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -115,7 +115,7 @@ namespace editor
 
 	void EditorCom_Renderer::SetMesh(const std::string& _strKey)
 	{
-		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager::Find<ehw::Mesh>(_strKey);
+		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager<ehw::Mesh>::Find(_strKey);
 
 		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
@@ -123,7 +123,7 @@ namespace editor
 
 	void EditorCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
-		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(_strKey);
+		std::shared_ptr<ehw::Material> material = ehw::ResourceManager<ehw::Material>::Find(_strKey);
 
 		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
 		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);

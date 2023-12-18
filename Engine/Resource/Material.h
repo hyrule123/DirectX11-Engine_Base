@@ -11,6 +11,9 @@
 #include "Shader/GraphicsShader.h"
 #include "Texture.h"
 
+
+#include <array>
+
 //에디터 전방선언
 namespace editor
 {
@@ -19,7 +22,7 @@ namespace editor
 
 namespace ehw
 {
-	class Material : public iResource
+	class Material final : public iResource
 	{
 		friend class editor::EditorMaterial;
 	public:

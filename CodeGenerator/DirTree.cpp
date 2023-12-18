@@ -4,8 +4,8 @@
 
 
 #include "../Engine/Resource/define_Resource.h"
-#include "../Engine/Resource/Shader/GraphicsShader.h"
-#include "../Engine/Resource/Shader/iComputeShader.h"
+//#include "../Engine/Resource/Shader/GraphicsShader.h"
+//#include "../Engine/Resource/Shader/iComputeShader.h"
 
 
 #include "define_Util.h"
@@ -244,7 +244,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 
 				//파일의 확장자를 json으로 변경하고, 키값으로 사용.
 				stdfs::path ShaderGroupName = strFileName;
-				ShaderGroupName.replace_extension(ehw::strKey::Ext_ShaderSetting);
+				ShaderGroupName.replace_extension(ehw::strKey::path::extension::ShaderSetting);
 
 				//쉐이더 그룹명에 각 쉐이더 파이프라인의 데이터를 담은 파일의 이름을 추가한다.
 				umapGSGroup[ShaderGroupName].FileName[j] = iter.first;

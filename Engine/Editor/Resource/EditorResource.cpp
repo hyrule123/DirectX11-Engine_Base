@@ -4,12 +4,10 @@
 
 namespace editor
 {
-	EditorResource::EditorResource(ehw::eResourceType _resType)
-		: EditorChild(ehw::strKey::ArrResName[(int)_resType])
-		, mResType(_resType)
+	EditorResource::EditorResource(const std::string_view _resTypeName)
+		: EditorChild(_resTypeName)
 		, mTarget()
 	{
-
 	}
 
 	EditorResource::~EditorResource()
@@ -27,7 +25,7 @@ namespace editor
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 
-		ImGui::Button(ehw::strKey::ArrResName[(UINT)mTarget->GetResType()]);
+		//ImGui::Button(ehw::strKey::ArrResName[(UINT)mTarget->GetResType()]);
 		ImGui::PopStyleColor(3);
 		ImGui::PopID();
 	}

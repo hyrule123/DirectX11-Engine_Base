@@ -21,10 +21,10 @@ namespace editor
 
 	private:
 		template <typename T>
-		void AddResources(EditorWidget_Tree::tNode* rootNode, const char* name)
+		void AddResources(const char* name)
 		{
-			const std::unordered_map<std::string, std::shared_ptr<ehw::iResource>, ehw::tHashFunc_StringView, std::equal_to<>>& resources
-				= ehw::ResourceManager::GetResources<T>();
+			const std::vector<std::shared_ptr<ehw::iResource>>& resources
+				= ehw::ResourceManager<T>::GetResourcesVector();
 
 			EditorWidget_Tree::tNode* stemNode
 				= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);
@@ -33,12 +33,15 @@ namespace editor
 			{
 				ehw::tDataPtr data{};
 				data.SetDataPtr(resource.second.get());
-				mTreeWidget->AddNode(stemNode, resource.first, data);
+				mTreeWidget->AddNode(stemNode, resource, data);
 			}
 		}
 
 		void toInspector(ehw::tDataPtr _data);
 
-		EditorWidget_Tree* mTreeWidget;
+
+		std::shared_ptr<EditorWidget_Tree> m_textureTree;
+		std::shared_ptr<EditorWidget_Tree> m_materialTree;
+		std::shared_ptr<EditorWidget_Tree> m_meshTree;
 	};
 }

@@ -2,12 +2,11 @@
 #include "Prefab.h"
 
 
-
-#include "../Manager/PathManager.h"
-
 #include "../json-cpp/json.h"
 
 #include "../Game/GameObject.h"
+
+#include "../Manager/ResourceManager.h"
 
 namespace ehw
 {
@@ -19,7 +18,7 @@ namespace ehw
 	
 
 	Prefab::Prefab()
-		: iResource(eResourceType::Prefab)
+		: iResource(typeid(Prefab))
 		, mPrefab()
 		, mbDontDelete()
 	{
@@ -32,26 +31,23 @@ namespace ehw
 			SAFE_DELETE(mPrefab);
 		}
 	}
-	eResult Prefab::Save(const std::fs::path& _filePath)
+	eResult Prefab::Save(const std::fs::path& _pathFromBaseDir)
 	{
 		if (nullptr == mPrefab)
 		{
-			ERROR_MESSAGE_W(L"저장할 프리팹이 지정되지 않았습니다.");
+			ASSERT_DEBUG(nullptr, "저장할 프리팹이 지정되지 않았습니다.");
 			return eResult::Fail_InValid;
 		}
 
-		//키 값을 json을 제외한 파일명으로 설정
-		{
-			std::fs::path strKey = _filePath;
-			strKey.replace_extension("");
-			mPrefab->SetStrKey(strKey.string());
-		}
+		iResource::Save(_pathFromBaseDir);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
+
+		std::fs::path fullPath = ResourceManager<Prefab>::GetBaseDir() / _pathFromBaseDir;
 
 		std::ofstream saveFile(fullPath);
 		if (false == saveFile.is_open())
 		{
+			ASSERT_DEBUG(false, "파일 열기 실패");
 			return eResult::Fail_Open;
 		}
 
@@ -71,7 +67,7 @@ namespace ehw
 
 		return eResult::Success;
 	}
-	eResult Prefab::Load(const std::fs::path& _filePath)
+	eResult Prefab::Load(const std::fs::path& _pathFromBaseDir)
 	{
 		if (nullptr == mPrefab)
 		{
@@ -84,7 +80,7 @@ namespace ehw
 			return eResult::Fail;
 		}
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, GetResType());
+		std::fs::path fullPath = ResourceManager<Prefab>::GetBaseDir() / _pathFromBaseDir;
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE_W(L"파일이 없습니다.");

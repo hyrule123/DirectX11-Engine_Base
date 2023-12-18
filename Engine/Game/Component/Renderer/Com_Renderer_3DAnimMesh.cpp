@@ -2,7 +2,7 @@
 
 
 #include "../../../Game/GameObject.h"
-#include "../../../Resource/Modeling/Skeleton.h"
+#include "../../../Resource/Model3D/Skeleton.h"
 
 
 #include "../Animator/Com_Animator3D.h"

@@ -8,7 +8,7 @@ namespace ehw
 		public iResource
 	{
 	public:
-		iShader(eResourceType _ResType);
+		iShader(const std::type_info& _typeInfo);
 		virtual ~iShader();
 
 

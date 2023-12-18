@@ -17,11 +17,6 @@ namespace editor
 
 	EditorBase::~EditorBase()
 	{
-		for (size_t i = 0; i < m_Childs.size(); ++i)
-		{
-			if (m_Childs[i])
-				delete m_Childs[i];
-		}
 	}
 	ehw::eResult EditorBase::SaveJson(Json::Value* _pJval)
 	{
@@ -89,18 +84,29 @@ namespace editor
 		}
 	}
 
-	void EditorBase::AddChild(EditorBase* _pChild)
+	std::shared_ptr<EditorBase> EditorBase::AddChild(const std::shared_ptr<EditorBase>& _pChild)
 	{
+		std::shared_ptr<EditorBase> ret = nullptr;
+
 		if (_pChild)
 		{
 			_pChild->MakeUniqueKeyByName();
-			_pChild->SetParent(this);
+			_pChild->SetParent(std::static_pointer_cast<EditorBase>(shared_from_this()));
 			m_Childs.push_back(_pChild);
+
+			ret = _pChild;
 		}
+
+		return ret;
+	}
+
+	void EditorBase::ClearChild()
+	{
+		m_Childs.clear();
 	}
 
 
-	void EditorBase::RemoveChild(EditorBase* _pChild)
+	void EditorBase::RemoveChild(const std::shared_ptr<EditorBase>& _pChild)
 	{
 		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
 		{

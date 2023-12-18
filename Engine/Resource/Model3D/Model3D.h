@@ -21,21 +21,21 @@ namespace ehw
 
 	struct tMeshContainer
 	{
-		std::shared_ptr<Mesh>					pMesh;
-		std::vector<std::shared_ptr<Material>>	pMaterials;
+		std::shared_ptr<Mesh>					mesh;
+		std::vector<std::shared_ptr<Material>>	materials;
 	};
 
-    class MeshData :
+    class Model3D :
         public iResource
     {
 		friend class editor::EditorFBXConverter;
 		
 	public:
-		MeshData();
-		virtual ~MeshData();
+		Model3D();
+		virtual ~Model3D();
 
-		virtual eResult Save(const std::fs::path& _filePath) override;
-		virtual eResult Load(const std::fs::path& _filePath) override;
+		virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;
+		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
 		
 
 		virtual eResult SaveJson(Json::Value* _pJson) override;
@@ -68,10 +68,10 @@ namespace ehw
 		bool SetRenderer(Com_Renderer_Mesh* _renderer, UINT _idx);
 
 		
-
+		//리소스는 독자적으로 관리(ResourceManager에 등록하지 않음 - 이름이 겹칠 수 있기 떄문)
 	private:
-		std::vector<tMeshContainer> mMeshContainers;
-		std::shared_ptr<Skeleton> mSkeleton;
+		std::vector<tMeshContainer> m_meshContainers;
+		std::shared_ptr<Skeleton> m_skeleton;
     };
 
 }

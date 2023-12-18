@@ -34,11 +34,12 @@ namespace editor
 		virtual void EndUI() = 0;
 
 
-		EditorBase* GetParent() { return m_Parent; }
+		const std::weak_ptr<EditorBase>& GetParent() { return m_Parent; }
 
 		template <typename T>
-		T* AddChild();
-		void AddChild(EditorBase* _pChild);
+		std::shared_ptr<T> AddChild();
+		std::shared_ptr<EditorBase> AddChild(const std::shared_ptr<EditorBase>& _pChild);
+		void ClearChild();
 
 		void ReserveChildsVector(size_t _size) { m_Childs.reserve(_size); }
 
@@ -53,29 +54,34 @@ namespace editor
 		//void LoadRecursive(Json::Value& _Node);
 
 		void SetNoChild(bool _bNoChild) { mbNoChild = _bNoChild; }
-		void SetParent(EditorBase* _Parent) { m_Parent = _Parent; }
-		const std::vector<EditorBase*>& GetChilds() { return m_Childs; }
-		void RemoveChild(EditorBase* _pChild);
+		void SetParent(const std::shared_ptr<EditorBase>& _Parent) { m_Parent = _Parent; }
+		const std::vector<std::shared_ptr<EditorBase>>& GetChilds() { return m_Childs; }
+		void RemoveChild(const std::shared_ptr<EditorBase>& _pChild);
 
 
 	private:
-		EditorBase* m_Parent;
-		std::vector<EditorBase*>		m_Childs;		// 자식 EditorBase 목록
+		std::weak_ptr<EditorBase> m_Parent;
+		std::vector<std::shared_ptr<EditorBase>>		m_Childs;		// 자식 EditorBase 목록
 		bool						mbNoChild;		// 자식 노드가 들어갈 수 없는 노드로 설정
 
 		bool						mbEnable;
 	};
 
 	template<typename T>
-	inline T* EditorBase::AddChild()
+	inline std::shared_ptr<T> EditorBase::AddChild()
 	{
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
-		T* retVal = nullptr;
+		std::shared_ptr<T> retVal = nullptr;
 		if(false == mbNoChild)
 		{
-			retVal = new T;
-			AddChild(retVal);
+			retVal = std::make_shared<T>();
+			const std::shared_ptr<EditorBase>& result = AddChild(std::static_pointer_cast<EditorBase>(retVal));
+			
+			if (nullptr == result)
+			{
+				retVal = nullptr;
+			}
 		}
 
 		return retVal;

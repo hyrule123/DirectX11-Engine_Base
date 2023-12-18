@@ -75,8 +75,8 @@ namespace editor
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		mDebugObjects.resize((UINT)ehw::eColliderType::END);
 
-		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceManager::Find<ehw::Mesh>(ehw::strKey::Default::mesh::DebugRectMesh);
-		std::shared_ptr<ehw::Material> material = ehw::ResourceManager::Find<ehw::Material>(ehw::strKey::Default::material::DebugMaterial);
+		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceManager<ehw::Mesh>::Find(ehw::strKey::defaultRes::mesh::DebugRectMesh);
+		std::shared_ptr<ehw::Material> material = ehw::ResourceManager<ehw::Material>::Find(ehw::strKey::defaultRes::material::DebugMaterial);
 
 		mDebugObjects[(UINT)ehw::eColliderType::Rect] = new DebugObject();
 		ehw::Com_Renderer_Mesh* renderer
@@ -85,7 +85,7 @@ namespace editor
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
-		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceManager::Find<ehw::Mesh>("CircleMesh");
+		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceManager<ehw::Mesh>::Find("CircleMesh");
 
 		mDebugObjects[(UINT)ehw::eColliderType::Circle] = new DebugObject();
 		renderer
@@ -100,7 +100,7 @@ namespace editor
 		//EditorObject* gridObject = new EditorObject();
 		//ehw::Com_Renderer_Mesh* gridMr = gridObject->AddComponent<ehw::Com_Renderer_Mesh>();
 		//gridMr->SetMesh(ehw::ResourceManager::Find<ehw::Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(ehw::ResourceManager::Find<Material>(L"GridMaterial"));
+		//gridMr->SetMaterial(ehw::ResourceManager<Material>::Find(L"GridMaterial"));
 		//ehw::GridScript* gridScript = gridObject->AddComponent<ehw::GridScript>();
 		//gridScript->SetCamera(gMainCamera);
 

@@ -3,6 +3,7 @@
 
 
 #include "../../Manager/GPUManager.h"
+#include "../../Manager/ResourceManager.h"
 #include "../../Manager/RenderManager.h"
 #include "../../Manager/PathManager.h"
 
@@ -24,7 +25,7 @@ namespace ehw
 
 
 	GraphicsShader::GraphicsShader()
-		: iShader(eResourceType::GraphicsShader)
+		: iShader(typeid(GraphicsShader))
 		, mArrShaderCode{}
 		, mTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, mRSType(eRSType::SolidBack)
@@ -196,12 +197,12 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GraphicsShader::Save(const std::fs::path& _filePath)
+	eResult GraphicsShader::Save(const std::fs::path& _pathFromBaseDir)
 	{
-		iResource::Save(_filePath);
+		iResource::Save(_pathFromBaseDir);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
-		fullPath.replace_extension(strKey::Ext_ShaderSetting);
+		std::fs::path fullPath = ResourceManager<GraphicsShader>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::ShaderSetting);
 
 		//파일 열고
 		std::ofstream ofs(fullPath);
@@ -226,13 +227,13 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GraphicsShader::Load(const std::fs::path& _filePath)
+	eResult GraphicsShader::Load(const std::fs::path& _pathFromBaseDir)
 	{
-		iResource::Load(_filePath);
+		iResource::Load(_pathFromBaseDir);
 
-		std::fs::path fullPath = PathManager::CreateFullPathToContent(_filePath, eResourceType::GraphicsShader);
-		fullPath.replace_extension(strKey::Ext_ShaderSetting);
-
+		std::fs::path fullPath = ResourceManager<GraphicsShader>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::ShaderSetting);
+		
 		
 		if (false == std::fs::exists(fullPath))
 		{

@@ -20,8 +20,8 @@ namespace ehw
 		virtual ~iResource();
 
 		//BasePath를 저장
-		virtual eResult Save(const std::fs::path& _filePath);
-		virtual eResult Load(const std::fs::path& _filePath);
+		virtual eResult Save(const std::fs::path& _pathFromBaseDir);
+		virtual eResult Load(const std::fs::path& _pathFromBaseDir);
 
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;

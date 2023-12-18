@@ -8,7 +8,7 @@
 #include "../../../Game/GameObject.h"
 #include "../../../json-cpp/json.h"
 #include "../../../Manager/ResourceManager.h"
-#include "../../../Resource/Modeling/Skeleton.h"
+#include "../../../Resource/Model3D/Skeleton.h"
 
 
 #include "../Transform/Com_Transform.h"
@@ -92,7 +92,7 @@ namespace ehw
 
 		if (jVal.isMember(JSON_KEY(mMesh)))
 		{
-			mMesh = ResourceManager::Load<Mesh>(jVal[JSON_KEY(mMesh)].asString());
+			mMesh = ResourceManager<Mesh>::Load(jVal[JSON_KEY(mMesh)].asString());
 		}
 
 		//TODO: FBX 로드를 위해 주석 처리

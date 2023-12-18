@@ -3,13 +3,13 @@
 
 
 
-#include "../../Resource/Texture.h"
+#include "Texture.h"
 
 namespace ehw
 {
 	using ehw::Texture;
 
-	class Animation2D 
+	class Animation2D final
 		: public iAnimation
 	{
 	public:
@@ -39,7 +39,7 @@ namespace ehw
 
 		virtual ~Animation2D();
 
-		virtual eResult Load(const std::filesystem::path& _filePath) override { return eResult::Fail_NotImplemented; }
+		virtual eResult Load(const std::filesystem::path& _pathFromBaseDir) override { return eResult::Fail_NotImplemented; }
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 

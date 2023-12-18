@@ -5,23 +5,23 @@
 
 #include "ResourceManagers.h"
 
-#include <filesystem>
-namespace stdfs = std::filesystem;
+#define LOAD_COMPUTESHADER(_type) ResourceManager<iComputeShader>::Load<_type>(#_type)
 
 namespace ehw
 {
 	template <typename BaseResType>
-	class tResourceManager
+	class ResourceManager
 	{
-		static_assert(std::is_base_of_v<iResource, BaseResType>);
+		static_assert(std::is_base_of_v<iResource, BaseResType>, "iResource를 상속받은 클래스만 이 템플릿 사용 가능.");
 
 	public:
-		static void Init(const stdfs::path& _baseDir);
+		static void Init(const std::fs::path& _baseDir);
 
 		template <typename DerivedResType = BaseResType>
-		static std::shared_ptr<DerivedResType> Load(const stdfs::path& _filePath);
+		static std::shared_ptr<DerivedResType> Load(const std::fs::path& _filePath);
 
-		static void Insert(const std::string_view _strKey, std::shared_ptr<BaseResType> _Res);
+		template <typename DerivedResType = BaseResType>
+		static void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
 
 		template <typename DerivedResType = BaseResType>
 		static std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
@@ -29,37 +29,39 @@ namespace ehw
 		static const std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
+		static std::vector<std::shared_ptr<iResource>> GetResourcesVector();
+
 		static void CleanUnusedResources();
 
-		static void SetBaseDir(const stdfs::path& _baseDir) { m_BaseDir = _baseDir; }
-		static const stdfs::path& GetBaseDir() { return m_BaseDir; }
+		static void SetBaseDir(const std::fs::path& _baseDir) { m_BaseDir = _baseDir; }
+		static const std::fs::path& GetBaseDir() { return m_BaseDir; }
 
 	private:
 		static void Release();
 
 	private:
 		static bool m_bInitialized;
-		static stdfs::path m_BaseDir;
+		static std::fs::path m_BaseDir;
 
 		static std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>> m_Resources;
 
 	private:
-		tResourceManager() = delete;
-		~tResourceManager() = delete;
+		ResourceManager() = delete;
+		~ResourceManager() = delete;
 	};
 
 	template <typename BaseResType>
-	bool tResourceManager<BaseResType>::m_bInitialized = false;
+	bool ResourceManager<BaseResType>::m_bInitialized = false;
 
 	template <typename BaseResType>
-	stdfs::path tResourceManager<BaseResType>::m_BaseDir{};
+	std::fs::path ResourceManager<BaseResType>::m_BaseDir{};
 
 	template <typename BaseResType>
-	std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>> tResourceManager<BaseResType>::m_Resources{};
+	std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>> ResourceManager<BaseResType>::m_Resources{};
 
 	template<typename BaseResType>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> tResourceManager<BaseResType>::Load(const std::filesystem::path& _filePath)
+	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _filePath)
 	{
 		static_assert(std::is_base_of_v<BaseResType, DerivedResType>);
 
@@ -90,7 +92,7 @@ namespace ehw
 
 	template<typename BaseResType>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> tResourceManager<BaseResType>::Find(const std::string_view _strKey)
+	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Find(const std::string_view _strKey)
 	{
 		std::shared_ptr<DerivedResType> returnRes = nullptr;
 
@@ -122,16 +124,19 @@ namespace ehw
 	}
 
 	template<typename BaseResType>
-	inline void tResourceManager<BaseResType>::Insert(const std::string_view _strKey, std::shared_ptr<BaseResType> _Res)
+	template <typename DerivedResType>
+	inline void ResourceManager<BaseResType>::Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res)
 	{
+		static_assert(std::is_base_of_v<BaseResType, DerivedResType>, "넣으려는 리소스 타입이 BaseResType의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == Find(_strKey), "이미 동일한 키값을 가진 리소스가 있습니다.");
 
 		_Res->SetStrKey(_strKey);
-		m_Resources.insert(std::make_pair(_strKey, _Res));
+
+		m_Resources.insert(std::make_pair(std::string(_strKey), std::static_pointer_cast<BaseResType>(_Res)));
 	}
 
 	template<typename BaseResType>
-	inline void tResourceManager<BaseResType>::Init(const stdfs::path& _baseDir)
+	inline void ResourceManager<BaseResType>::Init(const std::fs::path& _baseDir)
 	{
 		m_bInitialized = true;
 
@@ -143,7 +148,7 @@ namespace ehw
 	}
 
 	template<typename BaseResType>
-	inline void tResourceManager<BaseResType>::Release()
+	inline void ResourceManager<BaseResType>::Release()
 	{
 		m_bInitialized = false;
 		m_BaseDir.clear();
@@ -151,7 +156,20 @@ namespace ehw
 	}
 
 	template<typename BaseResType>
-	inline void tResourceManager<BaseResType>::CleanUnusedResources()
+	inline std::vector<std::shared_ptr<iResource>> ResourceManager<BaseResType>::GetResourcesVector()
+	{
+		std::vector<std::shared_ptr<iResource>> retVec{};
+
+		for (const auto& iter : m_Resources)
+		{
+			retVec.emplace_back(std::static_pointer_cast<iResource>(iter.second));
+		}
+
+		return retVec;
+	}
+
+	template<typename BaseResType>
+	inline void ResourceManager<BaseResType>::CleanUnusedResources()
 	{
 		using pairType = decltype(m_Resources)::value_type;
 		std::erase_if(m_Resources,

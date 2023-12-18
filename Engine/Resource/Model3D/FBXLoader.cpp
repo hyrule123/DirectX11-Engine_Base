@@ -6,8 +6,11 @@
 
 #include "../../Resource/Texture.h"
 #include "../../Resource/Material.h"
+#include "../../Resource/Model3D/Model3D.h"
 
 #include "../../Util/define_Util.h"
+
+
 
 
 namespace ehw
@@ -530,7 +533,7 @@ namespace ehw
 					if (std::fs::exists(fullPath))
 					{
 						retStr = fullPath.string();
-						//static std::fs::path resPath = PathManager::GetContentPathAbsolute(eResourceType::MeshData);
+						//static std::fs::path resPath = PathManager::GetContentPathAbsolute(eResourceType::Model3D);
 
 						//fullPath = fullPath.lexically_relative(resPath);
 
@@ -546,8 +549,8 @@ namespace ehw
 	void FBXLoader::LoadTexture()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
-		const std::fs::path& fbxPath = PathManager::GetContentPathRelative(eResourceType::MeshData);
-		const std::fs::path& texPath = PathManager::GetContentPathRelative(eResourceType::Texture);
+		const std::fs::path& fbxPath = ResourceManager<Model3D>::GetBaseDir();
+		const std::fs::path& texPath = ResourceManager<Texture>::GetBaseDir();
 
 		//텍스처 폴더 발견 시 최초 한번 Texture 폴더로 이동시키기 위한 코드
 		std::fs::path srcPathToDelete{};
@@ -577,7 +580,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager::Load<Texture>(_TextureRelativePath))
+				if (nullptr == ResourceManager<Texture>::Load(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -629,7 +632,7 @@ namespace ehw
 				}
 				
 				//.json 확장자 붙여 줌
-				strMtrlKey.replace_extension(strKey::Ext_Material);
+				strMtrlKey.replace_extension(strKey::path::extension::Material);
 
 				//strPath = "material\\";
 				//strPath += strMtrlKey + ".mtrl";
@@ -640,7 +643,7 @@ namespace ehw
 				//std::string strName = strPath;
 
 				// 이미 로딩된 재질이면 로딩된 것을 사용
-				std::shared_ptr<Material> pMaterial = ResourceManager::Find<Material>(mContainers[i].vecMtrl[j].strMtrlName);
+				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::Find(mContainers[i].vecMtrl[j].strMtrlName);
 				if (nullptr != pMaterial)
 					continue;
 
@@ -652,11 +655,11 @@ namespace ehw
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 				pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
-				pMaterial->SetShader(ResourceManager::Find<GraphicsShader>(strKey::Default::shader::graphics::DefferedShader));
+				pMaterial->SetShader(ResourceManager<GraphicsShader>::Find(strKey::defaultRes::shader::graphics::DefferedShader));
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::Load(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Albedo, pTex);
@@ -665,7 +668,7 @@ namespace ehw
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::Load(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Normal, pTex);
@@ -673,7 +676,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager::Load<Texture>(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::Load(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Specular, pTex);
@@ -681,7 +684,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager::Find<Texture>(mContainers[i].vecMtrl[j].strEmissiveTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::Find(mContainers[i].vecMtrl[j].strEmissiveTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->SetTexture(eTextureSlot::Emissive, pTex);
@@ -703,7 +706,7 @@ namespace ehw
 					ERROR_MESSAGE_W(L"FBX 변환 에러: Material 저장 실패");
 				}
 
-				ResourceManager::Insert(pMaterial->GetStrKey(), pMaterial);
+				ResourceManager<Material>::Insert(pMaterial->GetStrKey(), pMaterial);
 				
 			}
 		}
