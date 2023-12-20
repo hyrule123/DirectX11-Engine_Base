@@ -2,4 +2,10 @@
 
 namespace ehw
 {
+    Com_BehaviorTree::Com_BehaviorTree()
+    {
+    }
+    Com_BehaviorTree::~Com_BehaviorTree()
+    {
+    }
 }

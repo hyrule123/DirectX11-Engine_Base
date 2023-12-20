@@ -262,6 +262,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GPU\CommonGPU.h" />
+    <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Resource\Animation2D.h" />
     <ClInclude Include="Resource\Model3D\Animation3D.h" />
@@ -391,6 +392,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\define_Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />

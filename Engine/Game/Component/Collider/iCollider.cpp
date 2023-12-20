@@ -3,8 +3,7 @@
 namespace ehw
 {
 	iCollider::iCollider(eColliderType _Type)
-		: iComponent(eComponentCategory::Collider)
-		, m_ComCategory(_Type)
+		: m_ComCategory(_Type)
 	{
 	}
 

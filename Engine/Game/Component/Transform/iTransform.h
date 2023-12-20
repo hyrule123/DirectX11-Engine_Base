@@ -4,7 +4,7 @@
 namespace ehw
 {
 	class iTransform :
-		public iComponent
+		public Component<iTransform, eComponentCategory::Transform>
 	{
 	public:
 		iTransform();

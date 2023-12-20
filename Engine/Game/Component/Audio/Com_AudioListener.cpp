@@ -18,7 +18,6 @@ namespace ehw
 	
 
 	Com_AudioListener::Com_AudioListener()
-		: iComponent(eComponentCategory::AudioListener)
 	{
 
 	}

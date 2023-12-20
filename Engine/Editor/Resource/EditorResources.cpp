@@ -32,12 +32,21 @@ namespace editor
 		m_materialTree = AddChild<EditorWidget_Tree>();
 		m_meshTree = AddChild<EditorWidget_Tree>();
 
-		m_textureTree 
 
-		mTreeWidget->SetEvent(this
-			, std::bind(&EditorResources::toInspector, this, std::placeholders::_1));
+		m_textureTree->SetEvent(this
+			, std::bind(&EditorResources::ToInspectorTexture, this, std::placeholders::_1));
+		//m_textureTree->SetDummyRoot(true);
 
-		mTreeWidget->SetDummyRoot(true);
+
+		m_materialTree->SetEvent(this
+			, std::bind(&EditorResources::ToInspectorMaterial, this, std::placeholders::_1));
+		//m_materialTree->SetDummyRoot(true);
+
+
+		m_meshTree->SetEvent(this
+			, std::bind(&EditorResources::ToInspectorMesh, this, std::placeholders::_1));
+		//m_meshTree->SetDummyRoot(true);
+		
 	}
 
 	EditorResources::~EditorResources()
@@ -47,34 +56,28 @@ namespace editor
 	void EditorResources::Init()
 	{
 		ResetContent();
-		
 	}
 
 	void EditorResources::ResetContent()
 	{
-		mTreeWidget->Clear();
+		//m_textureTree->Clear();
+		//m_textureTree->SEt
 
-		EditorWidget_Tree::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);
+		//m_materialTree->Clear();
+		//m_meshTree->Clear();
 
-		//enum class eResourceType
-		//{
-		//	Mesh,
-		//	Texture,
-		//	Material,
-		//	Sound,
-		//	Prefab,
-		//	Model3D,
-		//	GraphicsShader,
-		//	iComputeShader,
-		//	End,
-		//};
-		AddResources<ehw::Mesh>(pRootNode, "Mesh");
-		AddResources<ehw::Texture>(pRootNode, "Texture");
-		AddResources<ehw::Material>(pRootNode, "Materials");
-		AddResources<ehw::GraphicsShader>(pRootNode, "Shaders");
+
+		///*EditorWidget_Tree::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", ehw::tDataPtr{}, true);*/
+
+
+
+		//AddResources<ehw::Mesh>(pRootNode, "Mesh");
+		//AddResources<ehw::Texture>(pRootNode, "Texture");
+		//AddResources<ehw::Material>(pRootNode, "Materials");
+		//AddResources<ehw::GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void EditorResources::toInspector(ehw::tDataPtr _data)
+	void EditorResources::ToInspectorTexture(ehw::tDataPtr _data)
 	{
 		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
 
@@ -82,5 +85,14 @@ namespace editor
 		inspector->SetTargetResource(resource);
 		//inspector->InitializeTargetResource();
 	}
+
+	void EditorResources::ToInspectorMaterial(ehw::tDataPtr _data)
+	{
+	}
+
+	void EditorResources::ToInspectorMesh(ehw::tDataPtr _data)
+	{
+	}
+
 
 }

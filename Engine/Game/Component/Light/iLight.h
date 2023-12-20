@@ -4,7 +4,7 @@
 namespace ehw
 {
     class iLight :
-        public iComponent
+        public Component<iLight, eComponentCategory::Light>
     {
     public:
         iLight(eDimensionType _dimensionType);

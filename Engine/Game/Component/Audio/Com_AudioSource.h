@@ -4,7 +4,8 @@
 namespace ehw
 {
 	class AudioClip;
-	class Com_AudioSource : public iComponent
+	class Com_AudioSource 
+		: public Component<Com_AudioSource, eComponentCategory::AudioSource>
 	{
 	public:
 		Com_AudioSource();

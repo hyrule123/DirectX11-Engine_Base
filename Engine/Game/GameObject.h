@@ -7,6 +7,7 @@
 
 #include <span>
 
+
 namespace ehw
 {
 	class iScene;
@@ -120,13 +121,13 @@ namespace ehw
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
-		eComponentCategory order = ComponentManager::GetComponentCategory<T>();
+		eComponentCategory order = T::GetComponentCategoryStatic();
 
 		if (eComponentCategory::UNKNOWN == order)
 			return nullptr;
 
 		std::shared_ptr<iComponent> pCom = std::make_shared<T>();
-		pCom->SetComponentTypeID(ComponentManager::GetComponentTypeID<T>());
+		pCom->SetComponentTypeID(iComponent::GetComponentTypeID<T>());
 		pCom->SetStrKey(ComponentManager::GetComponentName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
@@ -149,11 +150,12 @@ namespace ehw
 	template <typename T>
 	T* GameObject::GetComponent()
 	{
-		T* pCom{};
+		T* pCom = nullptr;
+
 
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
-			UINT32 comTypeID = ComponentManager::GetComponentTypeID<T>();
+			UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
 			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_Components.size(); ++i)
 			{
 				if (comTypeID == m_Components[i]->GetComponentTypeID())
@@ -165,9 +167,9 @@ namespace ehw
 		}
 
 		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
-		else if constexpr (ComponentManager::IsBaseComponent<T>())
+		else if constexpr (T::template IsBaseComponentType<T>())
 		{
-			eComponentCategory comCategory = ComponentManager::GetComponentCategory<T>();
+			eComponentCategory comCategory = T::GetComponentCategoryStatic();
 
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
 			pCom = static_cast<T*>(m_Components[(int)comCategory].get());
@@ -176,10 +178,10 @@ namespace ehw
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
 		else //constexpr
 		{
-			eComponentCategory comCategory = ComponentManager::GetComponentCategory<T>();
+			eComponentCategory comCategory = T::GetComponentCategoryStatic();
 			if (
 				m_Components[(int)comCategory] &&
-				m_Components[(int)comCategory]->GetComponentTypeID() == ComponentManager::GetComponentTypeID<T>()
+				m_Components[(int)comCategory]->GetComponentTypeID() == iComponent::GetComponentTypeID<T>()
 				)
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast

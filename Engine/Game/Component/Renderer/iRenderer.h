@@ -23,7 +23,8 @@ namespace ehw
 		eMaterialMode MaterialMode;
 	};
 
-	class iRenderer : public iComponent
+	class iRenderer 
+		: public Component<iRenderer, eComponentCategory::Renderer>
 	{
 	public:
 		iRenderer();

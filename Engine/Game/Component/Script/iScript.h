@@ -7,7 +7,8 @@
 
 namespace ehw
 {
-	class iScript : public iComponent
+	class iScript 
+		: public Component<iScript, eComponentCategory::Scripts>
 	{
 	public:
 		iScript();

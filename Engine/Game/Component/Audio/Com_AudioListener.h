@@ -3,7 +3,8 @@
 
 namespace ehw
 {
-	class Com_AudioListener : public iComponent
+	class Com_AudioListener 
+		: public Component<Com_AudioListener, eComponentCategory::AudioListener>
 	{
 	public:
 		Com_AudioListener();

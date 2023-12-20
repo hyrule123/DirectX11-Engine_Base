@@ -23,21 +23,25 @@ namespace editor
 		template <typename T>
 		void AddResources(const char* name)
 		{
-			const std::vector<std::shared_ptr<ehw::iResource>>& resources
-				= ehw::ResourceManager<T>::GetResourcesVector();
+			//const std::vector<std::shared_ptr<ehw::iResource>>& resources
+			//	= ehw::ResourceManager<T>::GetResourcesVector();
 
-			EditorWidget_Tree::tNode* stemNode
-				= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);
+			//EditorWidget_Tree::tNode* stemNode
+			//	= mTreeWidget->AddNode(rootNode, name, ehw::tDataPtr{}, true);
 
-			for (const auto& resource : resources)
-			{
-				ehw::tDataPtr data{};
-				data.SetDataPtr(resource.second.get());
-				mTreeWidget->AddNode(stemNode, resource, data);
-			}
+			//for (const auto& resource : resources)
+			//{
+			//	ehw::tDataPtr data{};
+			//	data.SetDataPtr(resource.second.get());
+			//	mTreeWidget->AddNode(stemNode, resource, data);
+			//}
 		}
 
-		void toInspector(ehw::tDataPtr _data);
+
+
+		void ToInspectorTexture(ehw::tDataPtr _data);
+		void ToInspectorMaterial(ehw::tDataPtr _data);
+		void ToInspectorMesh(ehw::tDataPtr _data);
 
 
 		std::shared_ptr<EditorWidget_Tree> m_textureTree;

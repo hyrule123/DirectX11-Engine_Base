@@ -18,8 +18,7 @@
 namespace ehw
 {
 	iRenderer::iRenderer()
-		: iComponent(eComponentCategory::Renderer)
-		, mMesh(nullptr)
+		: mMesh(nullptr)
 		, mMaterials(1)
 		, mbCullingEnable(true)
 	{
@@ -30,7 +29,7 @@ namespace ehw
 	}
 
 	iRenderer::iRenderer(const iRenderer& _other)
-		: iComponent(_other)
+		: Component(_other)
 		, mMesh(_other.mMesh)
 		, mMaterials{}
 		, mbCullingEnable(_other.mbCullingEnable)

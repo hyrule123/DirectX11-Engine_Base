@@ -10,7 +10,7 @@ namespace ehw
 {
 	class iAnimation;
 	class iAnimator :
-		public iComponent
+		public Component<iAnimator, eComponentCategory::Animator>
 	{
 	public:
 		struct tEvent

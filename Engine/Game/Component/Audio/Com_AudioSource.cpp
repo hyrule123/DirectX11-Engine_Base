@@ -16,8 +16,7 @@
 namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
-		: iComponent(eComponentCategory::AudioSource)
-		, mAudioClip(nullptr)
+		: mAudioClip(nullptr)
 	{
 
 	}

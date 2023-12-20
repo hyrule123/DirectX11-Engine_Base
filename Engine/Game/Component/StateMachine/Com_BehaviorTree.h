@@ -1,13 +1,14 @@
 #pragma once
-#include "../iComponent.h"
+#include "iStateMachine.h"
 
 namespace ehw
 {
-	class Com_BehaviorTree : public iComponent
+	class Com_BehaviorTree 
+		: public iStateMachine
 	{
 	public:
-		Com_BehaviorTree() : iComponent(eComponentCategory::BehaviorTree){};
-		virtual ~Com_BehaviorTree() {};
+		Com_BehaviorTree();
+		virtual ~Com_BehaviorTree();
 
 		virtual void InternalUpdate() override {}
 	};

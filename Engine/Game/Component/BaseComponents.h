@@ -9,6 +9,6 @@
 #include "Light/iLight.h"
 #include "Collider/iCollider.h"
 #include "Renderer/iRenderer.h"
-#include "StateMachine/Com_BehaviorTree.h"
+#include "StateMachine/iStateMachine.h"
 #include "Script/iScript.h"
 

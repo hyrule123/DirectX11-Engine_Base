@@ -3,8 +3,7 @@
 namespace ehw
 {
 	iLight::iLight(eDimensionType _dimensionType)
-		: iComponent(eComponentCategory::Light)
-		, mDimension(_dimensionType)
+		: mDimension(_dimensionType)
 	{
 	}
 

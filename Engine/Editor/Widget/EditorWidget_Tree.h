@@ -22,7 +22,7 @@ namespace editor
 
 			void SetStem(bool bEnable) { mbStem = bEnable; }
 
-			void AddNode(tNode* node);
+			tNode* AddNode();
 			const std::vector<tNode*>& GetChilds() { return m_Childs; }
 
 			EditorWidget_Tree* mTreeWidget;

@@ -339,7 +339,7 @@ namespace ehw
 		if (nullptr == _pCom)
 			return nullptr;
 
-		eComponentCategory ComType = _pCom->GetComCategory();
+		eComponentCategory ComType = _pCom->GetComponentCategory();
 
 		ASSERT(false == _pCom->GetStrKey().empty(),
 			"컴포넌트에 String Key가 없습니다.\nAddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.");

@@ -8,7 +8,8 @@
 namespace  ehw
 {
 	
-	class Com_Camera : public iComponent
+	class Com_Camera 
+		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
 		class CullingAgent;
 	public:

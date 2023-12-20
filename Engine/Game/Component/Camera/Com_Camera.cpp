@@ -29,8 +29,7 @@ namespace ehw
 	MATRIX Com_Camera::gProjection = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: iComponent(eComponentCategory::Camera)
-		, mView()
+		: mView()
 		, mViewInverse()
 		, mProjection()
 		, mProjType(eProjectionType::None)

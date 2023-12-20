@@ -5,7 +5,7 @@
 namespace ehw
 {
 	class iCollider
-		: public iComponent
+		: public Component<iCollider, eComponentCategory::Collider>
 	{
 	public:
 		iCollider(eColliderType _Type);

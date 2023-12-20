@@ -456,6 +456,7 @@
     <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
+    <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -785,6 +786,7 @@
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
+    <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
