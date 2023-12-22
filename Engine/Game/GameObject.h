@@ -16,8 +16,10 @@ namespace ehw
 	class GameObject : public Entity
 	{
 		friend class GameObject;
-
 	public:
+		using BaseComponents = std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>;
+		using Scripts = std::vector<std::shared_ptr<iScript>>;
+
 		GameObject();
 		GameObject(const GameObject& _other);
 		CLONE(GameObject);
@@ -44,15 +46,15 @@ namespace ehw
 		template <typename T>
 		inline T* GetComponent();
 
-		inline iComponent* GetComponent(eComponentCategory _type) { return m_Components[(int)_type].get(); }
+		inline iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type].get(); }
 
 
 
-		const std::vector<std::shared_ptr<iComponent>>& GetComponents() { return m_Components; }
-		inline const std::span<std::shared_ptr<iScript>> GetScripts();
+		const BaseComponents& GetComponents() { return m_baseComponents; }
+		const Scripts& GetScripts() { return m_scripts; }
 
-		void SetName(const std::string_view _Name) { m_Name = _Name; }
-		const std::string& GetName() const { return m_Name; }
+		void SetName(const std::string_view _Name) { m_name = _Name; }
+		const std::string& GetName() const { return m_name; }
 		
 		void SetActive(bool _bActive);
 		bool IsActive() const { return eState::Active == m_State; }
@@ -63,14 +65,14 @@ namespace ehw
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		iScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
-		bool IsInScene() const { return (nullptr != m_OwnerScene); }
+		iScene* GetOwnerScene() const { return m_ownerScene; }
+		void SetOwnerScene(iScene* _scene) { m_ownerScene = _scene; }
+		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
-		eLayerType GetLayerType() const { return m_LayerType; }
+		eLayerType GetLayerType() const { return m_layerType; }
 
 		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
-		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
+		void SetLayerType(eLayerType _type) { m_layerType = _type; }
 
 		//특정 게임오브젝트를 자녀로 추가. Scene에 등록해주지는 않으므로 유의
 		GameObject* AddChild(const std::shared_ptr<GameObject>& _pObj);
@@ -78,11 +80,11 @@ namespace ehw
 
 		std::vector<std::shared_ptr<GameObject>> GetGameObjectsInHierarchy();
 
-		bool IsMaster() const { return m_Parent.expired(); }
-		GameObject* GetParent() { return m_Parent.lock().get(); }
-		const std::vector<std::shared_ptr<GameObject>>& GetChilds() const { return m_Childs; }
+		bool IsMaster() const { return m_parent.expired(); }
+		GameObject* GetParent() { return m_parent.lock().get(); }
+		const std::vector<std::shared_ptr<GameObject>>& GetChilds() const { return m_childs; }
 
-		void SetParent(const std::shared_ptr<GameObject>& _pObj) { m_Parent = _pObj; }
+		void SetParent(const std::shared_ptr<GameObject>& _pObj) { m_parent = _pObj; }
 		void RemoveChild(GameObject* _pObj);
 
 		bool IsAwaken() const { return m_bAwake; }
@@ -94,16 +96,17 @@ namespace ehw
 		
 
 	private:
-		std::string m_Name;
+		std::string m_name;
 
-		iScene* m_OwnerScene;
-		eLayerType m_LayerType;
+		iScene* m_ownerScene;
+		eLayerType m_layerType;
 
-		std::vector<std::shared_ptr<iComponent>>	m_Components;
+		BaseComponents	m_baseComponents;
+		std::vector<std::shared_ptr<iScript>> m_scripts;
 
-		std::weak_ptr<GameObject> m_Parent;
-		std::vector<std::shared_ptr<GameObject>> m_Childs;
-
+		std::weak_ptr<GameObject> m_parent;
+		std::vector<std::shared_ptr<GameObject>> m_childs;
+		
 		enum class eState
 		{
 			InActive,
@@ -156,11 +159,11 @@ namespace ehw
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
 			UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
-			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_Components.size(); ++i)
+			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_baseComponents.size(); ++i)
 			{
-				if (comTypeID == m_Components[i]->GetComponentTypeID())
+				if (comTypeID == m_baseComponents[i]->GetComponentTypeID())
 				{
-					pCom = static_cast<T*>(m_Components[i].get());
+					pCom = static_cast<T*>(m_baseComponents[i].get());
 					break;
 				}
 			}
@@ -172,7 +175,7 @@ namespace ehw
 			eComponentCategory comCategory = T::GetComponentCategoryStatic();
 
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_Components[(int)comCategory].get());
+			pCom = static_cast<T*>(m_baseComponents[(int)comCategory].get());
 		}
 
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
@@ -180,34 +183,16 @@ namespace ehw
 		{
 			eComponentCategory comCategory = T::GetComponentCategoryStatic();
 			if (
-				m_Components[(int)comCategory] &&
-				m_Components[(int)comCategory]->GetComponentTypeID() == iComponent::GetComponentTypeID<T>()
+				m_baseComponents[(int)comCategory] &&
+				m_baseComponents[(int)comCategory]->GetComponentTypeID() == iComponent::GetComponentTypeID<T>()
 				)
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast
-				pCom = static_cast<T*>(m_Components[(int)comCategory].get());
+				pCom = static_cast<T*>(m_baseComponents[(int)comCategory].get());
 			}
 		}
 
 		return pCom;
-	}
-
-
-
-
-
-	inline const std::span<std::shared_ptr<iScript>> GameObject::GetScripts()
-	{
-		std::span<std::shared_ptr<iScript>> scriptSpan{};
-
-		int ScriptSize = (int)m_Components.size() - (int)eComponentCategory::Scripts;
-		if (0 < ScriptSize)
-		{
-			scriptSpan =
-				std::span<std::shared_ptr<iScript>>((std::shared_ptr<iScript>*)m_Components.data() + (size_t)eComponentCategory::Scripts, (size_t)ScriptSize);
-		}
-
-		return scriptSpan;
 	}
 }
 

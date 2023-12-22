@@ -24,6 +24,9 @@ namespace ehw
 		AudioListener,
 
 		BehaviorTree,
+
+		BaseComponentEnd,
+
 		Scripts,
 
 		END

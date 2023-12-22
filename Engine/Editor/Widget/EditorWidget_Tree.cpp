@@ -59,11 +59,14 @@ namespace editor
 		}
 	}
 
-	void EditorWidget_Tree::tNode::AddNode(tNode* node)
+	EditorWidget_Tree::tNode* EditorWidget_Tree::tNode::AddNode()
 	{
-		node->m_Parent = this;
-		m_Childs.push_back(node);
+		m_Childs.push_back(new tNode);
+		m_Childs.back()->m_Parent = this;
+		return m_Childs.back();
 	}
+
+
 
 	// Tree
 	EditorWidget_Tree::EditorWidget_Tree()
@@ -104,22 +107,24 @@ namespace editor
 
 	EditorWidget_Tree::tNode* EditorWidget_Tree::AddNode(tNode* parent, const std::string& name, ehw::tDataPtr data, bool isFrame)
 	{
-		tNode* node = new tNode;
-		node->SetStrKey(name);
-		node->SetData(data);
-		node->SetStem(isFrame);
-		node->mTreeWidget = this;
+		tNode* retNode = nullptr;
 
 		if (nullptr == parent)
 		{
-			mRoot = std::unique_ptr<tNode>(node);
+			mRoot = std::make_unique<tNode>();
+			retNode = mRoot.get();
 		}
 		else
 		{
-			parent->AddNode(node);
+			retNode = parent->AddNode();
 		}
 
-		return node;
+		retNode->SetStrKey(name);
+		retNode->SetData(data);
+		retNode->SetStem(isFrame);
+		retNode->mTreeWidget = this;
+
+		return retNode;
 	}
 
 	void EditorWidget_Tree::Clear()
