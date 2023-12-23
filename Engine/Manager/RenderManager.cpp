@@ -38,7 +38,6 @@ namespace ehw
 {
 	std::shared_ptr<Com_Camera> RenderManager::mMainCamera{};
 
-
 	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::mConstBuffers{};
 	std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>		RenderManager::mSamplerStates{};
 	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::mRasterizerStates{};
@@ -49,7 +48,7 @@ namespace ehw
 
 	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::mMultiRenderTargets{};
 
-	std::vector<Com_Light3D*> RenderManager::mLights{};
+	std::vector<std::weak_ptr<Com_Light3D>>  RenderManager::mLights{};
 	std::vector<tLightAttribute>		RenderManager::mLightAttributes{};
 	std::unique_ptr<StructBuffer>		RenderManager::mLightsBuffer{};
 	std::shared_ptr<Texture>			RenderManager::mPostProcessTexture{};
@@ -135,11 +134,11 @@ namespace ehw
 	}
 
 
-	void RenderManager::RemoveLight(Com_Light3D* _pComLight)
+	void RenderManager::RemoveLight(const std::shared_ptr<Com_Light3D>& _pComLight)
 	{
 		for (auto iter = mLights.begin(); iter != mLights.end(); ++iter)
 		{
-			if (_pComLight == *iter)
+			if (_pComLight == (*iter).lock())
 			{
 				mLights.erase(iter);
 				break;
@@ -159,12 +158,28 @@ namespace ehw
 		tCB_NumberOfLight trCb = {};
 		trCb.numberOfLight = (uint)mLightAttributes.size();
 
+
+		//expire된 light 포인터 제거
+		std::erase_if(mLights,
+			[](const std::weak_ptr<Com_Light3D>& iter)->bool
+			{
+				return iter.expired();
+			}
+		);
+		
+
+		//light index 지정
 		for (size_t i = 0; i < mLights.size(); i++)
 		{
-			mLights[i]->SetIndex((uint)i);
+			if (false == mLights[i].expired())
+			{
+				mLights[i].lock()->SetIndex((uint)i);
+			}
 		}
+		
 
-		ConstBuffer* cb = mConstBuffers[(uint)eCBType::numberOfLight].get();
+
+		const auto& cb = mConstBuffers[(uint)eCBType::numberOfLight];
 		cb->SetData(&trCb);
 		cb->BindData(Flag);
 	}

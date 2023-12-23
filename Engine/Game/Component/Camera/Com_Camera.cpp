@@ -46,6 +46,11 @@ namespace ehw
 	{
 	}
 
+	void Com_Camera::OnEnable()
+	{
+
+	}
+
 	void Com_Camera::Awake()
 	{
 	}
@@ -83,7 +88,10 @@ namespace ehw
 		const auto& Lights = RenderManager::GetLights();
 		for (size_t i = 0; i < Lights.size(); ++i)
 		{
-			Lights[i]->Render();
+			if (false == Lights[i].expired())
+			{
+				Lights[i].lock()->Render();
+			}
 		}
 
 		// Forward render
@@ -252,7 +260,7 @@ namespace ehw
 	void Com_Camera::RegisterCameraInRenderer()
 	{
 		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
-		RenderManager::RegisterCamera(this);
+		RenderManager::RegisterCamera(shared_from_this_T<Com_Camera>());
 	}
 
 	void Com_Camera::TurnLayerMask(eLayerType _layer, bool _enable)

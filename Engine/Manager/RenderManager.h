@@ -17,6 +17,7 @@ namespace ehw
 	
 	class Com_Camera;
 
+	class iLight;
 	class Com_Light3D;
 	class GameObject;
 	
@@ -51,10 +52,11 @@ namespace ehw
 
 		//Renderer
 		static void PushLightAttribute(const tLightAttribute& lightAttribute) { mLightAttributes.push_back(lightAttribute); }
-		static void AddLight(Com_Light3D* _pComLight) { if (_pComLight) mLights.push_back(_pComLight); }
-		static void RemoveLight(Com_Light3D* _pComLight);
+		static void AddLight(const std::shared_ptr<Com_Light3D>& _pComLight) { 
+			if (_pComLight) mLights.push_back(_pComLight); }
+		static void RemoveLight(const std::shared_ptr<Com_Light3D>& _pComLight);
 
-		static const std::vector<Com_Light3D*>& GetLights() { return mLights; }
+		static const std::vector<std::weak_ptr<Com_Light3D>>& GetLights() { return mLights; }
 
 
 		static void BindLights();
@@ -103,7 +105,7 @@ namespace ehw
 		static std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> mMultiRenderTargets;
 
 		//생성자-소멸자에서 여기에 등록하기 떄문에 raw pointer를 사용해야 함
-		static std::vector<Com_Light3D*> mLights;
+		static std::vector<std::weak_ptr<Com_Light3D>> mLights;
 		static std::vector<tLightAttribute>			mLightAttributes;
 		static std::unique_ptr<StructBuffer>		mLightsBuffer;
 

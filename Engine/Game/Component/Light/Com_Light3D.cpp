@@ -25,7 +25,6 @@ namespace ehw
 		, mLightMaterial()
 		, mIndex()
 	{
-		RenderManager::AddLight(this);
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
@@ -35,12 +34,10 @@ namespace ehw
 		, mVolumeMesh(_other.mVolumeMesh)
 		, mLightMaterial(_other.mLightMaterial)
 	{
-		RenderManager::AddLight(this);
 	}
 
 	Com_Light3D::~Com_Light3D()
 	{
-		RenderManager::RemoveLight(this);
 	}
 
 	eResult Com_Light3D::SaveJson(Json::Value* _pJVal)
@@ -92,6 +89,11 @@ namespace ehw
 		return eResult::Success;
 	}
 
+
+	void Com_Light3D::OnEnable()
+	{
+		RenderManager::AddLight(shared_from_this_T<Com_Light3D>());
+	}
 
 	void Com_Light3D::Update()
 	{

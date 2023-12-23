@@ -21,9 +21,7 @@ namespace editor
 			return;
 		}
 
-		const auto& res = GetTarget().lock();
-
-		ehw::Texture* targetTex = static_cast<ehw::Texture*>();
+		const auto& targetTex = GetTarget().lock();
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
