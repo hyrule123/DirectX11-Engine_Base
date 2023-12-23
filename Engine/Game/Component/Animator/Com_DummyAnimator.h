@@ -20,7 +20,7 @@ namespace ehw
 		virtual bool IsPlaying() const override;
 
 	private:
-		Com_Animator3D* mParentAnimator;
+		std::shared_ptr<Com_Animator3D> mParentAnimator;
 	};
 }
 

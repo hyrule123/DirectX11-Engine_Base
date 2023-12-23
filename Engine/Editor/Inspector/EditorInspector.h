@@ -21,21 +21,21 @@ namespace editor
 		virtual void Update() override;
 		virtual void UpdateUI() override;
 
-		void SetTargetGameObject(ehw::GameObject* _targetObj) { mTargetGameObject = _targetObj; }
-		ehw::GameObject* GetTargetGameObject() const { return mTargetGameObject; }
+		void SetTargetGameObject(const std::shared_ptr<ehw::GameObject>& _targetObj) { mTargetGameObject = _targetObj; }
+		const std::weak_ptr<ehw::GameObject>& GetTargetGameObject() const { return mTargetGameObject; }
 
-		void SetTargetResource(ehw::iResource* _targetRes) { mTargetResource = _targetRes; }
-		ehw::iResource* GetTargetResource() const { return mTargetResource; }
+		void SetTargetResource(const std::weak_ptr<ehw::iResource>& _targetRes) { mTargetResource = _targetRes; }
+		const std::weak_ptr<ehw::iResource>& GetTargetResource() const { return mTargetResource; }
 
 
 	private:
 		void IndicatorButton(const char* _strButtonName);
 
 	private:
-		ehw::GameObject* mTargetGameObject;
-		ehw::iResource* mTargetResource;
+		std::weak_ptr<ehw::GameObject> mTargetGameObject;
+		std::weak_ptr<ehw::iResource> mTargetResource;
 
 		std::vector<editor::EditorComponent*> mGuiComponents;
-		std::vector<editor::EditorResource*> mGuiResources;
+		//std::vector<editor::EditorResource*> mGuiResources;
 	};
 }

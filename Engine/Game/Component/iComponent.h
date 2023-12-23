@@ -63,8 +63,9 @@ namespace ehw
 
 		const eComponentCategory m_ComCategory;
 		UINT32 m_ComTypeID;
-		GameObject* m_Owner;
 		iScene* m_OwnerScene;
+		GameObject* m_Owner;
+		
 
 
 		bool m_bStart;

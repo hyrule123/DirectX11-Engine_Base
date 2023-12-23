@@ -24,7 +24,7 @@ namespace editor
 			const auto& guis = EditorManager::GetGUIs();
 			for (const auto& widget : guis)
 			{
-				if (this == widget.second)
+				if (this == widget.second.get())
 					continue;
 				else if (widget.second->GetParent().expired())
 				{

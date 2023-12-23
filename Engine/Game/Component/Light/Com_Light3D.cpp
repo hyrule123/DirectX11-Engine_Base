@@ -26,7 +26,6 @@ namespace ehw
 		, mIndex()
 	{
 		RenderManager::AddLight(this);
-
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
@@ -96,7 +95,8 @@ namespace ehw
 
 	void Com_Light3D::Update()
 	{
-		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
+		
+		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 			return;
 
@@ -122,7 +122,7 @@ namespace ehw
 
 	void Com_Light3D::InternalUpdate()
 	{
-		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 		{
 			return;
@@ -159,7 +159,7 @@ namespace ehw
 		}
 
 		//Transform
-		iTransform* tr = static_cast<iTransform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
+		auto tr = GetOwner()->GetComponent<iTransform>();
 		if (nullptr == tr)
 			return;
 		tr->BindData();

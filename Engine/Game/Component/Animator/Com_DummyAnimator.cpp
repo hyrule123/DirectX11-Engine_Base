@@ -21,7 +21,7 @@ namespace ehw
 
 	void Com_DummyAnimator::Init()
 	{
-		GameObject* parent = GetOwner()->GetParent();
+		const auto& parent = GetOwner()->GetParent();
 		if (parent)
 		{
 			mParentAnimator = parent->GetComponent<Com_Animator3D>();

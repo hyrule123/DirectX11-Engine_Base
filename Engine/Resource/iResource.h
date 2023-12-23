@@ -31,9 +31,18 @@ namespace ehw
 		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
+		template <class ResourceType>
+		inline bool Is();
+
 	private:
 		const std::type_info& m_ResourceTypeInfo;
 		bool mbEngineDefaultRes;
 	};
+
+	template<class ResourceType>
+	inline bool iResource::Is()
+	{
+		return (m_ResourceTypeInfo == typeid(ResourceType));
+	}
 
 }

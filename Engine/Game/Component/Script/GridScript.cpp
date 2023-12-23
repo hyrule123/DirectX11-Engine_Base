@@ -44,7 +44,7 @@ namespace ehw
 		}
 
 		GameObject* gameObj = mCamera->GetOwner();
-		Com_Transform* TR = gameObj->GetComponent<Com_Transform>();
+		const auto& TR = gameObj->GetComponent<Com_Transform>();
 		
 		float3 cameraPosition = TR->GetRelativePos();
 		float4 position = float4(cameraPosition.x, cameraPosition.y, cameraPosition.z, 1.0f);

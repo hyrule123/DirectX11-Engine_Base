@@ -72,7 +72,7 @@ namespace ehw
 
 	void Com_AudioSource::InternalUpdate()
 	{
-		Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
+		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetRelativePos();
 		float3 foward = tr->Forward();
 

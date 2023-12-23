@@ -38,15 +38,20 @@ namespace ehw
 	public:
 
 		template <typename T>
-		inline T* AddComponent();
+		inline std::shared_ptr<T> AddComponent();
 		
-		iComponent* AddComponent(const std::shared_ptr<iComponent>& _pCom);
-		inline iComponent* AddComponent(const std::string_view _strKey);
+		std::shared_ptr<iComponent> AddComponent(const std::shared_ptr<iComponent>& _pCom);
+		inline std::shared_ptr<iComponent> AddComponent(const std::string_view _strKey);
 
 		template <typename T>
-		inline T* GetComponent();
+		inline std::shared_ptr<T> GetComponent();
 
-		inline iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type].get(); }
+		template <typename T>
+		inline std::shared_ptr<T> GetScript();
+
+		std::shared_ptr<iScript> GetScript(const std::string_view _strKey);
+
+		inline const std::shared_ptr<iComponent>& GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 
 
 
@@ -75,13 +80,13 @@ namespace ehw
 		void SetLayerType(eLayerType _type) { m_layerType = _type; }
 
 		//특정 게임오브젝트를 자녀로 추가. Scene에 등록해주지는 않으므로 유의
-		GameObject* AddChild(const std::shared_ptr<GameObject>& _pObj);
+		const std::shared_ptr<GameObject>& AddChild(const std::shared_ptr<GameObject>& _pObj);
 
 
 		std::vector<std::shared_ptr<GameObject>> GetGameObjectsInHierarchy();
 
 		bool IsMaster() const { return m_parent.expired(); }
-		GameObject* GetParent() { return m_parent.lock().get(); }
+		std::shared_ptr<GameObject> GetParent() { return m_parent.lock(); }
 		const std::vector<std::shared_ptr<GameObject>>& GetChilds() const { return m_childs; }
 
 		void SetParent(const std::shared_ptr<GameObject>& _pObj) { m_parent = _pObj; }
@@ -122,7 +127,7 @@ namespace ehw
 
 
 	template <typename T>
-	T* GameObject::AddComponent()
+	std::shared_ptr<T> GameObject::AddComponent()
 	{
 		eComponentCategory order = T::GetComponentCategoryStatic();
 
@@ -134,10 +139,10 @@ namespace ehw
 		pCom->SetStrKey(ComponentManager::GetComponentName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return static_cast<T*>(AddComponent(pCom));
+		return std::static_pointer_cast<T>(AddComponent(pCom));
 	}
 
-	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
+	inline std::shared_ptr<iComponent> GameObject::AddComponent(const std::string_view _strKey)
 	{
 		std::shared_ptr<iComponent> pCom = ComponentManager::GetNewComponent(_strKey);
 
@@ -150,20 +155,21 @@ namespace ehw
 	}
 
 
-	template <typename T>
-	T* GameObject::GetComponent()
-	{
-		T* pCom = nullptr;
 
+
+	template <typename T>
+	std::shared_ptr<T> GameObject::GetComponent()
+	{
+		std::shared_ptr<T> pCom = nullptr;
 
 		if constexpr (std::is_base_of_v<iScript, T>)
 		{
 			UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
-			for (size_t i = (size_t)eComponentCategory::Scripts; i < m_baseComponents.size(); ++i)
+			for (size_t i = 0; i < m_scripts.size(); ++i)
 			{
-				if (comTypeID == m_baseComponents[i]->GetComponentTypeID())
+				if (comTypeID == m_scripts[i]->GetComponentTypeID())
 				{
-					pCom = static_cast<T*>(m_baseComponents[i].get());
+					pCom = static_pointer_cast<T>(m_scripts[i]);
 					break;
 				}
 			}
@@ -175,7 +181,7 @@ namespace ehw
 			eComponentCategory comCategory = T::GetComponentCategoryStatic();
 
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_baseComponents[(int)comCategory].get());
+			pCom = static_pointer_cast<T>(m_baseComponents[(int)comCategory]);
 		}
 
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
@@ -188,11 +194,27 @@ namespace ehw
 				)
 			{
 				//일단 ID값으로 비교 후 일치 시 static_cast
-				pCom = static_cast<T*>(m_baseComponents[(int)comCategory].get());
+				pCom = std::static_pointer_cast<T>(m_baseComponents[(int)comCategory]);
 			}
 		}
 
 		return pCom;
+	}
+	template<typename T>
+	inline std::shared_ptr<T> GameObject::GetScript()
+	{
+		std::shared_ptr<T> ret = nullptr;
+		UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (comTypeID == m_scripts[i]->GetComponentTypeID())
+			{
+				ret = std::static_pointer_cast<T>(m_scripts[i]);
+				break;
+			}
+		}
+
+		return ret;
 	}
 }
 

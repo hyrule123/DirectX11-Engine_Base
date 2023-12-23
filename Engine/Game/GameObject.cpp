@@ -352,8 +352,7 @@ namespace ehw
 	}
 
 
-
-	iComponent* GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
+	std::shared_ptr<iComponent> GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
 	{
 		if (nullptr == _pCom)
 			return nullptr;
@@ -384,10 +383,10 @@ namespace ehw
 			_pCom->Awake();
 		}
 
-		return _pCom.get();
+		return _pCom;
 	}
 
-	GameObject* GameObject::AddChild(const std::shared_ptr<GameObject>& _pChild)
+	const std::shared_ptr<GameObject>& GameObject::AddChild(const std::shared_ptr<GameObject>& _pChild)
 	{
 		//nullptr이나 자기 자신을 인자로 호출했을 경우 오류 발생			
 		ASSERT_DEBUG(_pChild, "child 포인터가 nullptr 입니다.");
@@ -395,7 +394,7 @@ namespace ehw
 		ASSERT_DEBUG(eLayerType::None == _pChild->GetLayerType(), "Scene에 생성되지 않은 GameObject 입니다.");
 
 		//부모 오브젝트가 있을 경우 기존의 부모 오브젝트에서 자신을 제거한 후 여기에 추가해야함
-		GameObject* parent = _pChild->GetParent();
+		std::shared_ptr<GameObject> parent = _pChild->GetParent();
 		if (parent)
 		{
 			parent->RemoveChild(_pChild.get());
@@ -414,7 +413,7 @@ namespace ehw
 			_pChild->Awake();
 		}
 
-		return _pChild.get();
+		return _pChild;
 	}
 
 	std::vector<std::shared_ptr<GameObject>> GameObject::GetGameObjectsInHierarchy()
@@ -553,5 +552,21 @@ namespace ehw
 				m_childs[i]->SetActiveRecursive(_bActive);
 			}
 		}
+	}
+
+	std::shared_ptr<iScript> GameObject::GetScript(const std::string_view _strKey)
+	{
+		std::shared_ptr<iScript> retScript = nullptr;
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (_strKey == m_scripts[i]->GetStrKey())
+			{
+				retScript = m_scripts[i];
+				break;
+			}
+		}
+
+		return retScript;
 	}
 }

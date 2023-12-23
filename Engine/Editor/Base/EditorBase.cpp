@@ -91,7 +91,9 @@ namespace editor
 		if (_pChild)
 		{
 			_pChild->MakeUniqueKeyByName();
-			_pChild->SetParent(std::static_pointer_cast<EditorBase>(shared_from_this()));
+
+			auto parent = shared_from_this();
+			_pChild->SetParent(std::static_pointer_cast<EditorBase>(parent));
 			m_Childs.push_back(_pChild);
 
 			ret = _pChild;

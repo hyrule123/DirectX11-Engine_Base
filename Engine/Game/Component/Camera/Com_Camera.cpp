@@ -107,7 +107,7 @@ namespace ehw
 	void Com_Camera::CreateViewMatrix()
 	{
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
-		Com_Transform* tr = static_cast<Com_Transform*>(GetOwner()->GetComponent(eComponentCategory::Transform));
+		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr || false == tr->IsUpdated())
 			return;
 
@@ -374,7 +374,7 @@ namespace ehw
 		if (nullptr == _gameObj || false == _gameObj->IsActive())
 			return;
 
-		iRenderer* renderer = _gameObj->GetComponent<iRenderer>();
+		const auto& renderer = _gameObj->GetComponent<iRenderer>();
 
 		if (nullptr == renderer)
 			return;

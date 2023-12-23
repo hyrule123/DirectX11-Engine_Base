@@ -95,7 +95,7 @@ namespace ehw
 
 		if (GetOwner() && nullptr == mTransform)
 		{
-			Com_Transform* ownerTransform = GetOwner()->GetComponent<Com_Transform>();
+			auto ownerTransform = GetOwner()->GetComponent<Com_Transform>();
 			if (ownerTransform)
 			{
 				mTransform = ownerTransform;
@@ -147,7 +147,7 @@ namespace ehw
 	}
 
 
-	void iCollider2D::OnCollisionEnter(iCollider2D* _collider)
+	void iCollider2D::OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)
@@ -156,7 +156,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider2D::OnCollisionStay(iCollider2D* _collider)
+	void iCollider2D::OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)
@@ -165,7 +165,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider2D::OnCollisionExit(iCollider2D* _collider)
+	void iCollider2D::OnCollisionExit(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)
@@ -174,7 +174,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider2D::OnTriggerEnter(iCollider2D* _collider)
+	void iCollider2D::OnTriggerEnter(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)
@@ -183,7 +183,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider2D::OnTriggerStay(iCollider2D* _collider)
+	void iCollider2D::OnTriggerStay(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)
@@ -192,7 +192,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider2D::OnTriggerExit(iCollider2D* _collider)
+	void iCollider2D::OnTriggerExit(const std::shared_ptr<iCollider2D>& _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 		for (const std::shared_ptr<iScript>& script : scripts)

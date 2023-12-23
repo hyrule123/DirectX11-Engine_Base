@@ -19,7 +19,7 @@ namespace ehw
         virtual void BindData() override;
 
     private:
-        Com_Transform* mParentTransform;
+        std::shared_ptr<Com_Transform> mParentTransform;
     };
 }
 

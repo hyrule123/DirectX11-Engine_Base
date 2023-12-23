@@ -29,8 +29,8 @@ namespace ehw
 
 		static void CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable = true);
 		static void LayerCollision(class iScene* _scene, eLayerType _left, eLayerType _right);
-		static void ColliderCollision(iCollider2D* _left, iCollider2D* _right);
-		static bool Intersect(iCollider2D* _left, iCollider2D* _right);
+		static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
+		static bool Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
 
 	private:
 		static void Init();

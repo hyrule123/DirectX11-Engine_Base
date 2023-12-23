@@ -263,11 +263,11 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		Com_Transform* tr = _emptyRootObj->AddComponent<Com_Transform>();
+		std::shared_ptr<Com_Transform> tr = _emptyRootObj->AddComponent<Com_Transform>();
 		ASSERT(tr, "트랜스폼 컴포넌트 생성 실패");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
-		Com_Animator3D* animator = nullptr;
+		std::shared_ptr<Com_Animator3D> animator = nullptr;
 		if (m_skeleton)
 		{
 			animator = _emptyRootObj->AddComponent<Com_Animator3D>();
@@ -278,12 +278,12 @@ namespace ehw
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
 		if (1u == (UINT)m_meshContainers.size())
 		{
-			Com_Renderer_Mesh* renderer = nullptr;
+			std::shared_ptr<Com_Renderer_Mesh> renderer = nullptr;
 			if (animator)
 			{
 				//수동으로 애니메이터를 설정
-				auto* renderer3D = _emptyRootObj->AddComponent<Com_Renderer_3DAnimMesh>();
-				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
+				std::shared_ptr<Com_Renderer_3DAnimMesh> renderer3D = _emptyRootObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 			}
 			else
 			{
@@ -305,12 +305,12 @@ namespace ehw
 				child->AddComponent<Com_DummyAnimator>();
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
-				Com_Renderer_Mesh* renderer = nullptr;
+				std::shared_ptr<Com_Renderer_Mesh> renderer = nullptr;
 				if (animator)
 				{
 					//수동으로 애니메이터를 설정
-					auto* renderer3D = child->AddComponent<Com_Renderer_3DAnimMesh>();
-					renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
+					auto renderer3D = child->AddComponent<Com_Renderer_3DAnimMesh>();
+					renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 				}
 				else
 				{
@@ -696,7 +696,7 @@ namespace ehw
 		}
 	}
 
-	bool Model3D::SetRenderer(Com_Renderer_Mesh* _renderer, UINT _idx)
+	bool Model3D::SetRenderer(const std::shared_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;

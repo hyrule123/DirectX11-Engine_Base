@@ -30,12 +30,12 @@ namespace editor
 		static inline bool GetEnable() { return mbEnable; }
 		static inline void ToggleEnable() { SetEnable(!mbEnable); }
 
-		static EditorBase* FindGuiWindow(const std::string_view _strKey);
+		static std::shared_ptr<EditorBase> FindGuiWindow(const std::string_view _strKey);
 
 		template <typename T>
-		static T* AddGuiWindow();
+		static std::shared_ptr<T> AddGuiWindow();
 
-		static const std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
@@ -60,15 +60,15 @@ namespace editor
 		static void ImGuiNewFrame();
 		static void ImGuiRender();
 		
-		static void AddGuiWindow(EditorBase* _pBase);
+		static void AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase);
 
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
 
-		static std::vector<EditorObject*> mEditorObjects;
-		static std::vector<DebugObject*> mDebugObjects;
+		static std::vector<std::shared_ptr<EditorObject>> mEditorObjects;
+		static std::vector<std::shared_ptr<DebugObject>> mDebugObjects;
 
 		//현재 GUI를 표시할지 여부
 		static bool mbEnable;
@@ -96,14 +96,14 @@ namespace editor
 
 
 	template<typename T>
-	inline T* EditorManager::AddGuiWindow()
+	inline std::shared_ptr<T> EditorManager::AddGuiWindow()
 	{
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
 		//editor Child는 무조건 child로 들어가기위한 용도이므로 assert
 		static_assert(false == std::is_base_of_v<EditorChild, T>);
 
-		T* retPtr = new T;
+		std::shared_ptr<T> retPtr = std::make_shared<T>();
 
 		Json::Value* pJval = CheckJsonSaved(retPtr->GetName());
 		if (pJval)
@@ -111,7 +111,7 @@ namespace editor
 			retPtr->LoadJson(pJval);
 		}
 
-		AddGuiWindow(static_cast<EditorBase*>(retPtr));
+		AddGuiWindow(std::static_pointer_cast<EditorBase>(retPtr));
 		return retPtr;
 	}
 

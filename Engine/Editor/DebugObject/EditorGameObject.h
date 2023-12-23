@@ -16,6 +16,7 @@ namespace editor
 		EditorGameObject();
 		virtual ~EditorGameObject();
 
+		virtual void Init() override;
 		virtual void Update() override;
 
 		void GameobjectSelectCallback(ehw::tDataPtr _data);

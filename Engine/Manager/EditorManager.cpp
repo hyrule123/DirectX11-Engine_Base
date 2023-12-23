@@ -52,10 +52,10 @@ namespace editor
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, EditorBase*, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
 	//std::vector<EditorBase*> EditorManager::mGuiWindows{};
-	std::vector<EditorObject*> EditorManager::mEditorObjects{};
-	std::vector<DebugObject*> EditorManager::mDebugObjects{};
+	std::vector<std::shared_ptr<EditorObject>> EditorManager::mEditorObjects{};
+	std::vector<std::shared_ptr<DebugObject>> EditorManager::mDebugObjects{};
 
 	bool EditorManager::mbEnable{};
 	bool EditorManager::mbInitialized{};
@@ -78,8 +78,8 @@ namespace editor
 		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceManager<ehw::Mesh>::Find(ehw::strKey::defaultRes::mesh::DebugRectMesh);
 		std::shared_ptr<ehw::Material> material = ehw::ResourceManager<ehw::Material>::Find(ehw::strKey::defaultRes::material::DebugMaterial);
 
-		mDebugObjects[(UINT)ehw::eColliderType::Rect] = new DebugObject();
-		ehw::Com_Renderer_Mesh* renderer
+		mDebugObjects[(UINT)ehw::eColliderType::Rect] = std::make_shared<DebugObject>();
+		auto renderer
 			= mDebugObjects[(UINT)ehw::eColliderType::Rect]->AddComponent<ehw::Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
@@ -87,7 +87,7 @@ namespace editor
 
 		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceManager<ehw::Mesh>::Find("CircleMesh");
 
-		mDebugObjects[(UINT)ehw::eColliderType::Circle] = new DebugObject();
+		mDebugObjects[(UINT)ehw::eColliderType::Circle] = std::make_shared<DebugObject>();
 		renderer
 			= mDebugObjects[(UINT)ehw::eColliderType::Circle]->AddComponent<ehw::Com_Renderer_Mesh>();
 
@@ -154,7 +154,7 @@ namespace editor
 	{
 		ImGuiNewFrame();
 
-		for (EditorObject* obj : mEditorObjects)
+		for (const auto& obj : mEditorObjects)
 		{
 			obj->Update();
 		}
@@ -162,7 +162,7 @@ namespace editor
 
 	void EditorManager::InternalUpdate()
 	{
-		for (EditorObject* obj : mEditorObjects)
+		for (const auto& obj : mEditorObjects)
 		{
 			obj->InternalUpdate();
 		}
@@ -175,7 +175,7 @@ namespace editor
 
 	void EditorManager::Render()
 	{
-		for (EditorObject* obj : mEditorObjects)
+		for (const auto& obj : mEditorObjects)
 		{
 			obj->Render();
 		}
@@ -213,7 +213,7 @@ namespace editor
 					Json::Value& saveVal = (*mJsonUIData.get())[guiPair.first];
 					guiPair.second->SaveJson(&saveVal);
 				}
-				delete guiPair.second;
+				//delete guiPair.second;
 			}
 		}
 		mGuiWindows.clear();
@@ -228,14 +228,7 @@ namespace editor
 		}
 		mJsonUIData.reset();
 
-		
-		for (auto& obj : mEditorObjects)
-		{
-			SAFE_DELETE(obj);
-		}
-
-		SAFE_DELETE(mDebugObjects[(UINT)ehw::eColliderType::Rect]);
-		SAFE_DELETE(mDebugObjects[(UINT)ehw::eColliderType::Circle]);
+		mEditorObjects.clear();
 
 		mEditorObjects.clear();
 		mDebugObjects.clear();
@@ -245,9 +238,9 @@ namespace editor
 
 	void EditorManager::DebugRender(ehw::tDebugMesh& mesh)
 	{
-		DebugObject* debugObj = mDebugObjects[(UINT)mesh.type];
+		const auto& debugObj = mDebugObjects[(UINT)mesh.type];
 		
-		ehw::Com_Transform* tr = debugObj->GetComponent<ehw::Com_Transform>();
+		const auto& tr = debugObj->GetComponent<ehw::Com_Transform>();
 		tr->SetRelativePos(mesh.position);
 		tr->SetRelativeRotXYZ(mesh.rotatation);
 		
@@ -258,8 +251,8 @@ namespace editor
 			tr->SetRelativeScale(Vector3(mesh.radius));
 
 
-		ehw::iRenderer* renderer = debugObj->GetComponent<ehw::iRenderer>();
-		ehw::Com_Camera* mainCam = ehw::RenderManager::GetMainCam();
+		const auto& renderer = debugObj->GetComponent<ehw::iRenderer>();
+		const auto& mainCam = ehw::RenderManager::GetMainCam();
 
 		tr->InternalUpdate();
 
@@ -436,12 +429,14 @@ namespace editor
 		}
 	}
 
-	void EditorManager::AddGuiWindow(EditorBase* _pBase)
+	void EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
 		const std::string_view guiName = _pBase->GetStrKey();
-		EditorBase* findPtr = FindGuiWindow(guiName);
-		if (findPtr)
+
+		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
+		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
+		if (foundPtr)
 		{
 			_pBase->MakeUniqueKeyByName();
 		}
@@ -456,14 +451,13 @@ namespace editor
 
 	void EditorManager::RenderGuizmo()
 	{
-		ehw::GameObject* targetgameobject = ehw::RenderManager::GetInspectorGameObject();
-
+		/*
 		if (!targetgameobject)
 		{
 			return;
 		}
 
-		ehw::Com_Camera* mainCam = ehw::RenderManager::GetMainCam();
+		const auto& mainCam = ehw::RenderManager::GetMainCam();
 
 		if (!mainCam)
 		{
@@ -473,7 +467,7 @@ namespace editor
 		//ImGuizmo::SetOrthographic(false);
 		//ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
 
-		ehw::Com_Transform* tr = targetgameobject->GetComponent<ehw::Com_Transform>();
+		const auto& tr = targetgameobject->GetComponent<ehw::Com_Transform>();
 		if (nullptr == tr)
 		{
 			return;
@@ -553,6 +547,7 @@ namespace editor
 				return;
 			}
 		}
+		*/
 	}
 
 	void EditorManager::ImGuiRelease()
@@ -564,9 +559,9 @@ namespace editor
 	}
 
 
-	EditorBase* EditorManager::FindGuiWindow(const std::string_view _strKey)
+	std::shared_ptr<EditorBase> EditorManager::FindGuiWindow(const std::string_view _strKey)
 	{
-		EditorBase* pui = nullptr;
+		std::shared_ptr<EditorBase> pui = nullptr;
 
 		const auto& iter = mGuiWindows.find(_strKey);
 		if (iter != mGuiWindows.end())

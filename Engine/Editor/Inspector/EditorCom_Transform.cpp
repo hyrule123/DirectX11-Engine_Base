@@ -6,6 +6,7 @@
 
 namespace editor
 {
+
 	EditorCom_Transform::EditorCom_Transform()
 		: EditorComponent(ehw::eComponentCategory::Transform)
 	{
@@ -19,7 +20,12 @@ namespace editor
 
 	void EditorCom_Transform::Update()
 	{
-		ehw::Com_Transform* tr = GetTarget()->GetComponent<ehw::Com_Transform>();
+		if (GetTarget().expired())
+		{
+			return;
+		}
+
+		const auto& tr = GetTarget().lock()->GetComponent<ehw::Com_Transform>();
 
 		mPosisition = tr->GetRelativePos();
 		mRotation = tr->GetRelativeRotXYZ();
@@ -32,9 +38,9 @@ namespace editor
 		ImGui::DragFloat3("Rotation", (float*)&mRotation);
 		ImGui::DragFloat3("Scale", (float*)&mScale);
 
-		if (GetTarget())
+		if (false == GetTarget().expired())
 		{
-			ehw::Com_Transform* tr = GetTarget()->GetComponent<ehw::Com_Transform>();
+			const auto& tr = GetTarget().lock()->GetComponent<ehw::Com_Transform>();
 
 			tr->SetRelativePos(mPosisition);
 			tr->SetRelativeRotXYZ(mRotation);

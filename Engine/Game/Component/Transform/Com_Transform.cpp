@@ -50,13 +50,13 @@ namespace ehw
 		}
 
 		//부모 트랜스폼이 갱신되었는지 확인하고, 갱신되었을 경우 자신의 행렬도 갱신
-		GameObject* parent = GetOwner()->GetParent();
+		const auto& parent = GetOwner()->GetParent();
 		if (parent)
 		{
-			Com_Transform* tf = parent->GetComponent<Com_Transform>();
-			if (tf && tf->IsUpdated())
+			const auto& tr = parent->GetComponent<Com_Transform>();
+			if (tr && tr->IsUpdated())
 			{
-				UpdateParentMatrix(tf);
+				UpdateParentMatrix(tr);
 				mbNeedMyUpdate = true;
 			}
 		}
@@ -251,7 +251,7 @@ namespace ehw
 	}
 
 
-	void Com_Transform::UpdateParentMatrix(const Com_Transform* _parentTransform)
+	void Com_Transform::UpdateParentMatrix(const std::shared_ptr<Com_Transform>& _parentTransform)
 	{
 		mMatParent = MATRIX::Identity;
 

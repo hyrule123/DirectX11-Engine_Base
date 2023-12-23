@@ -65,7 +65,7 @@ namespace ehw
 		//다행히도 이름이 통일되어 있어서 이를 활용하면 가능할 듯
 		void CheckMHMaterial(std::shared_ptr<Material> _mtrl, const std::fs::path& _texDestDir);
 
-		bool SetRenderer(Com_Renderer_Mesh* _renderer, UINT _idx);
+		bool SetRenderer(const std::shared_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx);
 
 		
 		//리소스는 독자적으로 관리(ResourceManager에 등록하지 않음 - 이름이 겹칠 수 있기 떄문)

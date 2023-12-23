@@ -27,7 +27,7 @@ namespace ehw
 
 		BaseComponentEnd,
 
-		Scripts,
+		Scripts = BaseComponentEnd,
 
 		END
 	};

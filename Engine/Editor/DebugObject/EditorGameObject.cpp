@@ -17,11 +17,18 @@ namespace editor
 		: EditorWindow(strKey::GameObjects)
 		, mTreeWidget(nullptr)
 	{
-		int2 winSize = ehw::Application::GetWindowSize();
-		//SetSize(ImVec2((float)(winSize.x / 2), (float)(winSize.y / 2)));
 
+	}
+
+	EditorGameObject::~EditorGameObject()
+	{
+	}
+
+
+	void EditorGameObject::Init()
+	{
 		mTreeWidget = AddChild<EditorWidget_Tree>();
-		
+
 
 		mTreeWidget->SetEvent(this
 			, std::bind(&EditorGameObject::GameobjectSelectCallback, this, std::placeholders::_1));
@@ -30,11 +37,6 @@ namespace editor
 
 		InitializeScene();
 	}
-
-	EditorGameObject::~EditorGameObject()
-	{
-	}
-
 
 	void EditorGameObject::Update()
 	{
@@ -45,9 +47,19 @@ namespace editor
 
 	void EditorGameObject::GameobjectSelectCallback(ehw::tDataPtr _data)
 	{
-		ehw::RenderManager::SetInspectorGameObject(static_cast<ehw::GameObject*>(_data.pData));
-		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
+		ASSERT(false, "미구현");
+
+		/*
+
+		auto gameObj = static_cast<ehw::GameObject*>(_data.pData)->shared_from_this_T<ehw::GameObject>();
+
+		
+		ehw::RenderManager::SetInspectorGameObject(gameObj);
+
+		std::shared_ptr<EditorInspector> inspector = std::static_pointer_cast<EditorInspector>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetGameObject(ehw::RenderManager::GetInspectorGameObject());
+
+		*/
 	}
 
 	void EditorGameObject::InitializeScene()

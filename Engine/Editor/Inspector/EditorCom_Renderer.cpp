@@ -31,23 +31,21 @@ namespace editor
 
 	void EditorCom_Renderer::Update()
 	{
-		if (GetTarget())
+		if (false == GetTarget().expired())
 		{
-			ehw::Com_Renderer_Mesh* meshRenderer
-				= GetTarget()->GetComponent<ehw::Com_Renderer_Mesh>();
+			const auto& meshRenderer
+				= GetTarget().lock()->GetComponent<ehw::Com_Renderer_Mesh>();
 
 			if (meshRenderer == nullptr)
 				return;
 
-			//ehw::SpriteRenderer* spriteRenderer
-			//	= GetTarget()->GetComponent<ehw::SpriteRenderer>();
-
-			//if (spriteRenderer == nullptr)
-			//	return;
-
-
 			mMaterial = meshRenderer->GetCurrentMaterial(0);
 			mMesh = meshRenderer->GetMesh().get();
+		}
+		else
+		{
+			mMaterial = nullptr;
+			mMesh = nullptr;
 		}
 	}
 
@@ -67,7 +65,7 @@ namespace editor
 		ImGui::SameLine();
 		if (ImGui::Button("##MeshBtn", ImVec2(15.0f, 15.0f)))
 		{
-			EditorWidget_List* listUI = static_cast<EditorWidget_List*>(EditorManager::FindGuiWindow("ListWidget"));
+			std::shared_ptr<EditorWidget_List> listUI = std::static_pointer_cast<EditorWidget_List>(EditorManager::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			
 
@@ -94,7 +92,8 @@ namespace editor
 		ImGui::SameLine();
 		if (ImGui::Button("##MaterialBtn", ImVec2(15.0f, 15.0f)))
 		{
-			EditorWidget_List* listUI = static_cast<EditorWidget_List*>(EditorManager::FindGuiWindow("ListWidget"));
+			
+			std::shared_ptr<EditorWidget_List> listUI = std::static_pointer_cast<EditorWidget_List>(EditorManager::FindGuiWindow("ListWidget"));
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
@@ -117,15 +116,32 @@ namespace editor
 	{
 		std::shared_ptr<ehw::Mesh> mesh = ehw::ResourceManager<ehw::Mesh>::Find(_strKey);
 
-		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
-		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
+		std::shared_ptr<EditorInspector> inspector = 
+			std::static_pointer_cast<EditorInspector>(EditorManager::FindGuiWindow("EditorInspector"));
+
+		ASSERT_DEBUG(nullptr == inspector, "inspector가 nullptr 입니다.");
+
+		const auto& targetObj = inspector->GetTargetGameObject();
+		
+		if (false == targetObj.expired())
+		{
+			targetObj.lock()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMesh(mesh);
+		}
 	}
 
 	void EditorCom_Renderer::SetMaterial(const std::string& _strKey)
 	{
 		std::shared_ptr<ehw::Material> material = ehw::ResourceManager<ehw::Material>::Find(_strKey);
 
-		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow("EditorInspector"));
-		inspector->GetTargetGameObject()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);
+		std::shared_ptr<EditorInspector> inspector = std::static_pointer_cast<EditorInspector>(EditorManager::FindGuiWindow("EditorInspector"));
+
+		ASSERT_DEBUG(nullptr == inspector, "inspector가 nullptr 입니다.");
+
+		const auto& targetObj = inspector->GetTargetGameObject();
+
+		if (false == targetObj.expired())
+		{
+			targetObj.lock()->GetComponent<ehw::Com_Renderer_Mesh>()->SetMaterial(material, 0);
+		}
 	}
 }

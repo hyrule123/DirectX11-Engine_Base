@@ -12,11 +12,11 @@ namespace editor
 		EditorComponent(ehw::eComponentCategory _type);
 		virtual ~EditorComponent();
 		
-		void SetTarget(ehw::GameObject* _target) { mTarget = _target; }
-		ehw::GameObject* GetTarget() { return mTarget; }
+		void SetTarget(const std::weak_ptr<ehw::GameObject>& _target) { mTarget = _target; }
+		const std::weak_ptr<ehw::GameObject>& GetTarget() { return mTarget; }
 
 	private:
 		ehw::eComponentCategory m_ComCategory;
-		ehw::GameObject* mTarget;
+		std::weak_ptr<ehw::GameObject> mTarget;
 	};
 }

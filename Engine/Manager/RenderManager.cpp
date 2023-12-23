@@ -36,8 +36,7 @@
 
 namespace ehw
 {
-	Com_Camera*							RenderManager::mMainCamera{};
-	GameObject*							RenderManager::mInspectorGameObject{};
+	std::shared_ptr<Com_Camera> RenderManager::mMainCamera{};
 
 
 	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::mConstBuffers{};
@@ -45,12 +44,12 @@ namespace ehw
 	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::mRasterizerStates{};
 	std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>		RenderManager::mDepthStencilStates{};
 	std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>				RenderManager::mBlendStates{};
-	std::vector<Com_Camera*>			RenderManager::mCameras{};
+	std::vector<std::shared_ptr<Com_Camera>>			RenderManager::mCameras{};
 	std::vector<tDebugMesh>				RenderManager::mDebugMeshes{};
 
 	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::mMultiRenderTargets{};
 
-	std::vector<Com_Light3D*>				RenderManager::mLights{};
+	std::vector<Com_Light3D*> RenderManager::mLights{};
 	std::vector<tLightAttribute>		RenderManager::mLightAttributes{};
 	std::unique_ptr<StructBuffer>		RenderManager::mLightsBuffer{};
 	std::shared_ptr<Texture>			RenderManager::mPostProcessTexture{};
@@ -79,7 +78,6 @@ namespace ehw
 	void RenderManager::Release()
 	{
 		mMainCamera = nullptr;
-		mInspectorGameObject = nullptr;
 		for (int i = 0; i < (int)eCBType::END; ++i)
 		{
 			mConstBuffers[i].reset();
@@ -101,10 +99,7 @@ namespace ehw
 			mBlendStates[i] = nullptr;
 		}
 
-		for (size_t i = 0; i < mCameras.size(); ++i)
-		{
-			SAFE_DELETE(mCameras[i]);
-		}
+		mCameras.clear();
 
 		mDebugMeshes.clear();
 		mLightAttributes.clear();
@@ -127,7 +122,7 @@ namespace ehw
 		BindNoiseTexture();
 		BindLights();
 
-		for (Com_Camera* cam : mCameras)
+		for (const auto& cam : mCameras)
 		{
 			if (cam == nullptr)
 				continue;
@@ -144,7 +139,7 @@ namespace ehw
 	{
 		for (auto iter = mLights.begin(); iter != mLights.end(); ++iter)
 		{
-			if (*iter == _pComLight)
+			if (_pComLight == *iter)
 			{
 				mLights.erase(iter);
 				break;
@@ -245,7 +240,7 @@ namespace ehw
 			return false;
 		}
 
-		for (auto* iter : mCameras)
+		for (const auto& iter : mCameras)
 		{
 			if (iter)
 			{

@@ -28,6 +28,14 @@ namespace editor
 		, m_materialTree()
 		, m_meshTree()
 	{
+	}
+
+	EditorResources::~EditorResources()
+	{
+	}
+
+	void EditorResources::Init()
+	{
 		m_textureTree = AddChild<EditorWidget_Tree>();
 		m_materialTree = AddChild<EditorWidget_Tree>();
 		m_meshTree = AddChild<EditorWidget_Tree>();
@@ -46,15 +54,7 @@ namespace editor
 		m_meshTree->SetEvent(this
 			, std::bind(&EditorResources::ToInspectorMesh, this, std::placeholders::_1));
 		//m_meshTree->SetDummyRoot(true);
-		
-	}
 
-	EditorResources::~EditorResources()
-	{
-	}
-
-	void EditorResources::Init()
-	{
 		ResetContent();
 	}
 
@@ -79,11 +79,12 @@ namespace editor
 
 	void EditorResources::ToInspectorTexture(ehw::tDataPtr _data)
 	{
-		ehw::iResource* resource = static_cast<ehw::iResource*>(_data.pData);
+		const auto& resource = static_cast<ehw::iResource*>(_data.pData)->shared_from_this_T<ehw::iResource>();
 
-		EditorInspector* inspector = static_cast<EditorInspector*>(EditorManager::FindGuiWindow(strKey::Inspector));
+		
+
+		std::shared_ptr<EditorInspector> inspector = std::static_pointer_cast<EditorInspector>(EditorManager::FindGuiWindow(strKey::Inspector));
 		inspector->SetTargetResource(resource);
-		//inspector->InitializeTargetResource();
 	}
 
 	void EditorResources::ToInspectorMaterial(ehw::tDataPtr _data)

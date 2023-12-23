@@ -22,6 +22,6 @@ namespace ehw
 		virtual void Render() override;
 
 	private:
-		Com_Animator2D* mAnimator;
+		std::shared_ptr<Com_Animator2D> mAnimator;
 	};
 }

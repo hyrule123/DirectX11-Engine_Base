@@ -115,7 +115,7 @@ namespace ehw
         void UpdateMyTransform();
 
         //부모의 트랜스폼 행렬을 받아서 최종적인 월드행렬을 업데이트 한다.
-        void UpdateParentMatrix(const Com_Transform* _parentTransform);
+        void UpdateParentMatrix(const std::shared_ptr<Com_Transform>& _parentTransform);
 
     private:
         float3    mSize;

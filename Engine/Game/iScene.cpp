@@ -93,13 +93,12 @@ namespace ehw
 		return m_Layers[(uint)_type].GetGameObjects();
 	}
 
-	GameObject* iScene::AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj)
-	{
-		GameObject* ret = _newGameObj.get();
 
-		ASSERT_DEBUG(ret, "GameObject가 nullptr이었습니다.");
+	const std::shared_ptr<GameObject>& iScene::AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj)
+	{
+		ASSERT_DEBUG(nullptr != _newGameObj, "GameObject가 nullptr이었습니다.");
 	
-		ret->SetLayerType(_type);
+		_newGameObj->SetLayerType(_type);
 
 		auto Func = [this, _type, newGameObj = _newGameObj]()->void
 			{
@@ -134,6 +133,6 @@ namespace ehw
 			AddFrameEndJob(Func);
 		}
 
-		return ret;
+		return _newGameObj;
 	}
 }

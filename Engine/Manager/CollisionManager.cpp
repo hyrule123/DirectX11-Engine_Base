@@ -98,7 +98,7 @@ namespace ehw
 
 	}
 
-	void CollisionManager::ColliderCollision(iCollider2D* _left, iCollider2D* _right)
+	void CollisionManager::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
 	{
 		// 두 충돌체 레이어로 구성된 ID 확인
 		union_ColliderID colliderID;
@@ -166,7 +166,7 @@ namespace ehw
 		}
 	}
 
-	bool CollisionManager::Intersect(iCollider2D* _left, iCollider2D* _right)
+	bool CollisionManager::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
 	{
 		// Rect vs Rect 
 		// 0 --- 1
@@ -180,8 +180,8 @@ namespace ehw
 			,float3{-0.5f, -0.5f, 0.0f}
 		};
 
-		Com_Transform* leftTr = _left->GetOwner()->GetComponent<Com_Transform>();
-		Com_Transform* rightTr = _right->GetOwner()->GetComponent<Com_Transform>();
+		const auto& leftTr = _left->GetOwner()->GetComponent<Com_Transform>();
+		const auto& rightTr = _right->GetOwner()->GetComponent<Com_Transform>();
 		if (false == (leftTr && rightTr))
 			return false;
 

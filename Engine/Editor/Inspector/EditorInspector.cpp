@@ -32,14 +32,18 @@ namespace editor
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
 			if (mGuiComponents[i])
+			{
 				delete mGuiComponents[i];
+			}
 		}
 
-		for (size_t i = 0; i < mGuiResources.size(); ++i)
-		{
-			if (mGuiResources[i])
-				delete mGuiResources[i];
-		}
+		//for (size_t i = 0; i < mGuiResources.size(); ++i)
+		//{
+		//	if (mGuiResources[i])
+		//	{
+		//		delete mGuiResources[i];
+		//	}
+		//}
 	}
 
 	void EditorInspector::Init()
@@ -50,22 +54,21 @@ namespace editor
 				mGuiComponents[i]->InitRecursive();
 		}
 
-		for (size_t i = 0; i < mGuiResources.size(); ++i)
-		{
-			if (mGuiResources[i])
-				mGuiResources[i]->InitRecursive();
-		}
+		//for (size_t i = 0; i < mGuiResources.size(); ++i)
+		//{
+		//	if (mGuiResources[i])
+		//		mGuiResources[i]->InitRecursive();
+		//}
 	}
 
 	void EditorInspector::Update()
 	{
-		mTargetGameObject = ehw::RenderManager::GetInspectorGameObject();
 
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
 			if (mGuiComponents[i])
 			{
-				if (mTargetGameObject)
+				if (false == mTargetGameObject.expired())
 				{
 					mGuiComponents[i]->SetTarget(mTargetGameObject);
 					mGuiComponents[i]->Update();
@@ -75,19 +78,19 @@ namespace editor
 		}
 
 		
-		for (size_t i = 0; i < mGuiResources.size(); ++i)
-		{
+		//for (size_t i = 0; i < mGuiResources.size(); ++i)
+		//{
 
-			if (mGuiResources[i])
-			{
-				if (mTargetResource)
-				{
-					mGuiResources[i]->SetTarget(mTargetResource);
-					mGuiResources[i]->Update();
-				}
-			}
-				
-		}
+		//	if (mGuiResources[i])
+		//	{
+		//		if (false == mTargetGameObject.expired())
+		//		{
+		//			mGuiResources[i]->SetTarget(mTargetResource);
+		//			mGuiResources[i]->Update();
+		//		}
+		//	}
+		//		
+		//}
 	}
 
 	void EditorInspector::UpdateUI()
@@ -96,17 +99,19 @@ namespace editor
 		{
 			IndicatorButton(ehw::strKey::eComponentCategory_String[(UINT)i]);
 
-			if (mTargetGameObject && mGuiComponents[i])
+			if (false == mTargetGameObject.expired() && mGuiComponents[i])
+			{
 				mGuiComponents[i]->InternalUpdate();
+			}
 		}
 
-		for (size_t i = 0; i < mGuiResources.size(); ++i)
-		{
-			//IndicatorButton(ehw::strKey::ArrResName[i]);
-
-			if (mTargetResource && mGuiResources[i])
-				mGuiResources[i]->InternalUpdate();
-		}
+		//for (size_t i = 0; i < mGuiResources.size(); ++i)
+		//{
+		//	if ((false == mTargetResource.expired()) && mGuiResources[i])
+		//	{
+		//		mGuiResources[i]->InternalUpdate();
+		//	}
+		//}
 	}
 
 	void EditorInspector::IndicatorButton(const char* _strButtonName)

@@ -23,13 +23,13 @@ namespace ehw
 		virtual void InternalUpdate() override;
 
 
-		virtual void OnCollisionEnter(iCollider2D* _collider);
-		virtual void OnCollisionStay(iCollider2D* _collider);
-		virtual void OnCollisionExit(iCollider2D* _collider);
+		virtual void OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider);
+		virtual void OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider);
+		virtual void OnCollisionExit(const std::shared_ptr<iCollider2D>& _collider);
 
-		virtual void OnTriggerEnter(iCollider2D* _collider);
-		virtual void OnTriggerStay(iCollider2D* _collider);
-		virtual void OnTriggerExit(iCollider2D* _collider);
+		virtual void OnTriggerEnter(const std::shared_ptr<iCollider2D>& _collider);
+		virtual void OnTriggerStay(const std::shared_ptr<iCollider2D>& _collider);
+		virtual void OnTriggerExit(const std::shared_ptr<iCollider2D>& _collider);
 
 		void SetType(eColliderType _type) { m_ComCategory = _type; }
 		void SetSize(float2 _size) { mSize = _size; }
@@ -44,7 +44,7 @@ namespace ehw
 		static uint gColliderNumber;
 		uint mID; 
 		eColliderType m_ComCategory;
-		Com_Transform* mTransform;
+		std::shared_ptr<Com_Transform> mTransform;
 
 		float2 mSize;
 		float2 mCenter;

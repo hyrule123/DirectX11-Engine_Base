@@ -1,7 +1,5 @@
-
 #include "EditorTexture.h"
 
-#include "../../Resource/Texture.h"
 
 namespace editor
 {
@@ -18,10 +16,14 @@ namespace editor
 
 	void EditorTexture::UpdateUI()
 	{
-		if (false == IsValid())
+		if (GetTarget().expired())
+		{
 			return;
+		}
 
-		ehw::Texture* targetTex = static_cast<ehw::Texture*>(GetTarget());
+		const auto& res = GetTarget().lock();
+
+		ehw::Texture* targetTex = static_cast<ehw::Texture*>();
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 

@@ -46,9 +46,9 @@ namespace ehw
 		bool	IsAwaken() const { return m_bAwake; }
 
 		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		GameObject* AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj);
-		inline GameObject* NewGameObject(const eLayerType _type);
-		inline GameObject* NewGameObject(const eLayerType _type, const std::string_view _name);
+		const std::shared_ptr<GameObject>& AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj);
+		inline std::shared_ptr<GameObject> NewGameObject(const eLayerType _type);
+		inline std::shared_ptr<GameObject> NewGameObject(const eLayerType _type, const std::string_view _name);
 
 		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
 		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayerType _type);
@@ -68,14 +68,14 @@ namespace ehw
 		std::queue<std::function<void()>> m_FrameEndJobs;
 	};
 
-	inline GameObject* iScene::NewGameObject(const eLayerType _type)
+	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayerType _type)
 	{
 		return AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
 	}
 
-	inline GameObject* iScene::NewGameObject(const eLayerType _type, const std::string_view _name)
+	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayerType _type, const std::string_view _name)
 	{
-		GameObject* retObj = AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
+		const std::shared_ptr<GameObject>& retObj = AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
 		retObj->SetName(_name);
 		return retObj;
 	}

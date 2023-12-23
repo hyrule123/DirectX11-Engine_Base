@@ -6,6 +6,7 @@
 
 namespace editor
 {
+	template <class ResourceType>
 	class EditorResource : public EditorChild
 	{
 	public:
@@ -14,15 +15,37 @@ namespace editor
 
 		void UpdateUI() override;
 		
-		//리소스가 지정되어 있는지 + 리소스 타입이 일치하는지를 확인 후 반환
-		bool IsValid() const { ASSERT(false, "미구현"); return false; }
-
-
-
-		void SetTarget(ehw::iResource* _target) { mTarget = _target; }
-		ehw::iResource* GetTarget() const { return mTarget; }
+		void SetTarget(const std::weak_ptr<ResourceType>& _target) { mTarget = _target; }
+		const std::weak_ptr<ResourceType>& GetTarget() const { return mTarget; }
 
 	private:
-		ehw::iResource* mTarget;
+		std::weak_ptr<ResourceType> mTarget;
 	};
+
+	template<class ResourceType>
+	inline EditorResource<ResourceType>::EditorResource(const std::string_view _resTypeName)
+		: EditorChild(_resTypeName)
+	{
+	}
+
+	template<class ResourceType>
+	inline EditorResource<ResourceType>::~EditorResource()
+	{
+	}
+
+	template<class ResourceType>
+	inline void EditorResource<ResourceType>::UpdateUI()
+	{
+		if (mTarget.expired())
+			return;
+
+		ImGui::PushID(0);
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+
+		//ImGui::Button(ehw::strKey::ArrResName[(UINT)mTarget->GetResType()]);
+		ImGui::PopStyleColor(3);
+		ImGui::PopID();
+	}
 }
