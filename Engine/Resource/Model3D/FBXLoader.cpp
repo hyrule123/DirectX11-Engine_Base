@@ -95,7 +95,7 @@ namespace ehw
 
 		if (false == importer->Initialize(_strPath.string().c_str(), -1, mManager->GetIOSettings()))
 		{
-			ERROR_MESSAGE_W(L"FBX 로더 초기화 실패");
+			ERROR_MESSAGE("FBX 로더 초기화 실패");
 			Reset();
 			if (importer)
 			{
@@ -106,7 +106,7 @@ namespace ehw
 
 		if (false == importer->Import(mScene))
 		{
-			ERROR_MESSAGE_W(L"임포트 실패.");
+			ERROR_MESSAGE("임포트 실패.");
 			return eResult::Fail;
 		}
 
@@ -703,7 +703,7 @@ namespace ehw
 
 				if (eResultFail(result))
 				{
-					ERROR_MESSAGE_W(L"FBX 변환 에러: Material 저장 실패");
+					ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 				}
 
 				ResourceManager<Material>::Insert(pMaterial->GetStrKey(), pMaterial);

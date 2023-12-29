@@ -197,7 +197,7 @@ namespace ehw
 		}
 		else if (mAttribute.lightType == (int)eLightType::Spot)
 		{
-			ERROR_MESSAGE_W(L"미구현");
+			ERROR_MESSAGE("미구현");
 		}
 	}
 	

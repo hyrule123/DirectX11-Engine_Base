@@ -37,7 +37,7 @@ namespace ehw
 		std::fs::path fullPath = ResourceManager<AudioClip>::GetBaseDir() / _pathFromBaseDir;
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일이 없습니다.");
+			ERROR_MESSAGE("파일이 없습니다.");
 			return eResult::Fail_Open;
 		}
 

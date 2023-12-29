@@ -44,7 +44,7 @@ namespace ehw
 			if (AnimClone->GetAnimationName().empty())
 			{
 				SAFE_DELETE(AnimClone);
-				ERROR_MESSAGE_W(L"애니메이션 이름이 존재하지 않습니다.");
+				ERROR_MESSAGE("애니메이션 이름이 존재하지 않습니다.");
 			}
 			else
 			{

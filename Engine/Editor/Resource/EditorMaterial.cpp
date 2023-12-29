@@ -212,7 +212,7 @@ namespace editor
 					}
 					else
 					{
-						ERROR_MESSAGE_W(L"텍스처 찾기 실패");
+						ERROR_MESSAGE("텍스처 찾기 실패");
 					}
 				}
 
@@ -313,7 +313,7 @@ namespace editor
 
 		if (outputPath.empty())
 		{
-			NOTIFICATION_W(L"경로를 설정하지 않았습니다.");
+			NOTIFICATION("경로를 설정하지 않았습니다.");
 		}
 
 		//저장할 때는 Key값을 바꿔야 하기 때문에 Clone 해서 저장해야 한다.
@@ -342,7 +342,7 @@ namespace editor
 					const std::string& mtrlKey = mCurrentLoadedMtrl.GetCurrentSelected().strName;
 					if (mtrlKey.empty())
 					{
-						NOTIFICATION_W(L"파일을 선택하세요.");
+						NOTIFICATION("파일을 선택하세요.");
 					}
 					else
 					{
@@ -358,7 +358,7 @@ namespace editor
 						mTargetMaterial = mtrl;
 						if (nullptr == mTargetMaterial)
 						{
-							NOTIFICATION_W(L"제대로 로드되지 않았습니다.");
+							NOTIFICATION("제대로 로드되지 않았습니다.");
 							mTargetMaterial = std::make_shared<ehw::Material>();
 						}
 
@@ -388,7 +388,7 @@ namespace editor
 					std::fs::path filePath = ehw::WinAPI::FileDialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
 					{
-						NOTIFICATION_W(L"파일을 찾지 못했습니다.");
+						NOTIFICATION("파일을 찾지 못했습니다.");
 					}
 					else
 					{

@@ -10,7 +10,7 @@
 #endif
 
 #define ERROR_MESSAGE_A(_aStrMessage) MessageBoxA(nullptr, _aStrMessage, NULL, MB_OK); DEBUG_BREAK
-#define ERROR_MESSAGE_W(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, NULL, MB_OK); DEBUG_BREAK
+#define ERROR_MESSAGE(_wStrMessage) MessageBoxW(nullptr, _wStrMessage, NULL, MB_OK); DEBUG_BREAK
 
 #define ASSERT(_Test) if(false == (_Test)) std::abort()
 
@@ -19,4 +19,4 @@
 #define SAFE_DELETE(_Ptr) if(_Ptr) delete _Ptr; _Ptr = nullptr
 
 #define CLONE(_type) virtual _type* Clone() override { return new _type(*this); }
-#define CLONE_DISABLE(_type) virtual _type* Clone() override { ERROR_MESSAGE_W(L"이 클래스는 Clone할수 없습니다."); return nullptr; }
+#define CLONE_DISABLE(_type) virtual _type* Clone() override { ERROR_MESSAGE("이 클래스는 Clone할수 없습니다."); return nullptr; }

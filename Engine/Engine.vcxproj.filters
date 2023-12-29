@@ -363,14 +363,8 @@
     <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Transform\iTransform.cpp">
-      <Filter>Component\Transform</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp">
       <Filter>Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp">
-      <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp">
       <Filter>Component\Renderer</Filter>
@@ -457,6 +451,8 @@
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
+    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
+    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -687,14 +683,8 @@
     <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Transform\iTransform.h">
-      <Filter>Component\Transform</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h">
       <Filter>Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h">
-      <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h">
       <Filter>Component\Renderer</Filter>
@@ -787,6 +777,8 @@
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
+    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
+    <ClInclude Include="Game\Component\Transform\iTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

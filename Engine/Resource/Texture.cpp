@@ -109,7 +109,7 @@ namespace ehw
 
 		if(false == bResult)
 		{
-			ERROR_MESSAGE_W(L"텍스처 생성에 실패 했습니다.");
+			ERROR_MESSAGE("텍스처 생성에 실패 했습니다.");
 			mDesc = {};
 			return false;
 		}
@@ -148,7 +148,7 @@ namespace ehw
 		Result = SUCCEEDED(GPUManager::Device()->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
 		if (false == Result)
 		{
-			ERROR_MESSAGE_W(L"텍스처 생성에 실패 했습니다.");
+			ERROR_MESSAGE("텍스처 생성에 실패 했습니다.");
 			mDesc = {};
 			return false;
 		}
@@ -229,7 +229,7 @@ namespace ehw
 		
 		if (FAILED(DirectX::CaptureTexture(GPUManager::Device().Get(), GPUManager::Context().Get(), mTexture.Get(), mImage)))
 		{
-			ERROR_MESSAGE_W(L"Texture를 Scratch Image로 가져오는 데 실패했습니다.");
+			ERROR_MESSAGE("Texture를 Scratch Image로 가져오는 데 실패했습니다.");
 			return eResult::Fail_Create;
 		}
 
@@ -405,7 +405,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateDepthStencilView(mTexture.Get(), nullptr, mDSV.GetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Depth Stencil View 생성에 실패 했습니다.");
+				ERROR_MESSAGE("Depth Stencil View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
@@ -414,7 +414,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateRenderTargetView(mTexture.Get(), nullptr, mRTV.GetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Render Target View 생성에 실패 했습니다.");
+				ERROR_MESSAGE("Render Target View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
@@ -429,7 +429,7 @@ namespace ehw
 
 			if (FAILED(pDevice->CreateShaderResourceView(mTexture.Get(), nullptr, mSRV.GetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Shader Resource View 생성에 실패 했습니다.");
+				ERROR_MESSAGE("Shader Resource View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
@@ -443,7 +443,7 @@ namespace ehw
 
 			if (FAILED(pDevice->CreateUnorderedAccessView(mTexture.Get(), nullptr, mUAV.GetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Unordered Access View 생성에 실패 했습니다.");
+				ERROR_MESSAGE("Unordered Access View 생성에 실패 했습니다.");
 				return false;
 			}
 		}

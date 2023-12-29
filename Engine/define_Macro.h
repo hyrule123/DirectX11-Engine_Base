@@ -2,48 +2,54 @@
 #include <string>
 #include <assert.h>
 
+
+
 #ifdef _DEBUG
 
 //Release 모드에서도 작동
-#define ASSERT(_expression, _message) \
+#define ASSERT(_expression, _c_str) \
 	if (!(_expression)) \
-	{ _wassert(L ## #_expression##"\n\n"##_message , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
+	{ _wassert(L ## #_expression##"\n\n"##_c_str , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
 
 //return 코드가 필요한 경우 사용(Release 모드에서도 작동)
-//#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) \
+//#define ASSERT_RETURN_IF_FAIL(_expression, _c_str, _returnVal) \
 //	if (!(_expression)) \
 //	{ \
-//		_wassert(L ## #_expression##"\n"##_message, _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); \
+//		_wassert(L ## #_expression##"\n"##_c_str, _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); \
 //		return _returnVal; \
 //	}
 
-//#define ASSERT(_expression, _message) if (!(_expression)) { assert(!_message); }
+//#define ASSERT(_expression, _c_str) if (!(_expression)) { assert(!_c_str); }
 //#define ASSERT(expr, msg) assert(( (void)(msg), (expr) ))
-#define ASSERT_DEBUG(_expression, _message) ASSERT(_expression, _message)
+#define ASSERT_DEBUG(_expression, _c_str) ASSERT(_expression, _c_str)
 
-#define ERROR_MESSAGE_W(_message) MessageBoxW(nullptr, _message, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
-#define ERROR_MESSAGE_A(_message) MessageBoxA(nullptr, _message, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
+#define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
+#define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
 
 #else
-#define ASSERT(_expression, _message) if(!(_expression)) { \
-		MessageBoxW(nullptr, L## #_expression##"\n\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+#define ASSERT(_expression, _c_str) if(!(_expression)) { \
+		MessageBoxW(nullptr, L## #_expression##"\n\n"##_c_str, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
 		std::abort();\
 	}
-//#define ASSERT_RETURN_IF_FAIL(_expression, _message, _returnVal) if(!(_expression)) { \
-//		MessageBoxW(nullptr, L## #_expression##"\n"##_message, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+//#define ASSERT_RETURN_IF_FAIL(_expression, _c_str, _returnVal) if(!(_expression)) { \
+//		MessageBoxW(nullptr, L## #_expression##"\n"##_c_str, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
 //		std::abort();\
 //		return _returnVal;\
 //	}
 #define ASSERT_DEBUG(_expression, _messageW) 0
 
-#define ERROR_MESSAGE_W(_message) MessageBoxW(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)
-#define ERROR_MESSAGE_A(_message) MessageBoxA(nullptr, _message, nullptr, MB_OK | MB_ICONERROR)
+#define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
+#define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
 
 #endif _DEBUG
 
 
-#define NOTIFICATION_W(_message) MessageBoxW(nullptr, _message, L"Notification", MB_OK)
-#define NOTIFICATION_A(_message) MessageBoxA(nullptr, _message, "Notification", MB_OK)
+#define NOTIFICATION_W(_c_str) MessageBoxW(nullptr, _c_str, L"Notification", MB_OK)
+#define NOTIFICATION_A(_c_str) MessageBoxA(nullptr, _c_str, "Notification", MB_OK)
+
+
+#define ERROR_MESSAGE(_literalString) ERROR_MESSAGE_W(L##_literalString)
+#define NOTIFICATION(_literalString) NOTIFICATION_W(L##_literalString)
 
 
 #define STRKEY constexpr const char*

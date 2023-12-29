@@ -46,7 +46,7 @@ namespace ehw
         std::ofstream ofs(fullPath);
         if (false == ofs.is_open())
         {
-            ERROR_MESSAGE_W(L"파일 열기에 실패했습니다.");
+            ERROR_MESSAGE("파일 열기에 실패했습니다.");
             return eResult::Fail_Open;
         }
             
@@ -75,7 +75,7 @@ namespace ehw
         std::ifstream ifs(fullPath);
         if (false == ifs.is_open())
         {
-            ERROR_MESSAGE_W(L"Material 파일이 없습니다.");
+            ERROR_MESSAGE("Material 파일이 없습니다.");
             return eResult::Fail_Open;
         }
 

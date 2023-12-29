@@ -133,7 +133,7 @@ namespace ehw
 				{
 					if (2 > iter->size())
 					{
-						NOTIFICATION_W(L"Input Layout Desc 정보가 누락되어 있습니다.");
+						NOTIFICATION("Input Layout Desc 정보가 누락되어 있습니다.");
 						return eResult::Fail_InValid;
 					}
 
@@ -208,7 +208,7 @@ namespace ehw
 		std::ofstream ofs(fullPath);
 		if (false == ofs.is_open())
 		{
-			ERROR_MESSAGE_W(L"파일을 열지 못했습니다.");
+			ERROR_MESSAGE("파일을 열지 못했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -237,7 +237,7 @@ namespace ehw
 		
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일이 없습니다.");
+			ERROR_MESSAGE("파일이 없습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -300,7 +300,7 @@ namespace ehw
 		HRESULT hr = D3DCreateBlob(_ByteCodeSize, code.blob.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
-			ERROR_MESSAGE_W(L"GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
+			ERROR_MESSAGE("GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
 			
 			return eResult::Fail_Create;
 		}
@@ -345,7 +345,7 @@ namespace ehw
 		//Blob 내부에 공간을 할당.
 		if (FAILED(D3DCreateBlob(sFile.tellg(), sCode.blob.GetAddressOf())))
 		{
-			ERROR_MESSAGE_W(L"쉐이더를 저장할 공간 할당에 실패했습니다.");
+			ERROR_MESSAGE("쉐이더를 저장할 공간 할당에 실패했습니다.");
 			return eResult::Fail_Create;
 		}
 
@@ -359,7 +359,7 @@ namespace ehw
 		eResult Result = CreateShader(_stage, sCode.blob->GetBufferPointer(), sCode.blob->GetBufferSize());
 		if (eResultFail(Result))
 		{
-			ERROR_MESSAGE_W(L"쉐이더 생성 실패.");
+			ERROR_MESSAGE("쉐이더 생성 실패.");
 			return Result;
 		}
 
@@ -374,12 +374,12 @@ namespace ehw
 
 		if (nullptr == VSBlobData)
 		{
-			ERROR_MESSAGE_W(L"정점 쉐이더가 준비되지 않아서 Input Layout을 생성할 수 없습니다.");
+			ERROR_MESSAGE("정점 쉐이더가 준비되지 않아서 Input Layout을 생성할 수 없습니다.");
 			return eResult::Fail_Create;
 		}
 		else if (mInputLayoutDescs.empty())
 		{
-			ERROR_MESSAGE_W(L"입력 레이아웃이 설정되어있지 않아 Input Layout을 생성할 수 없습니다.");
+			ERROR_MESSAGE("입력 레이아웃이 설정되어있지 않아 Input Layout을 생성할 수 없습니다.");
 			return eResult::Fail_Create;
 		}
 
@@ -391,7 +391,7 @@ namespace ehw
 			mInputLayout.ReleaseAndGetAddressOf()
 		)))
 		{
-			ERROR_MESSAGE_W(L"Input Layout 생성에 실패했습니다.");
+			ERROR_MESSAGE("Input Layout 생성에 실패했습니다.");
 			return eResult::Fail_Create;
 		}
 
@@ -435,7 +435,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateVertexShader(_pByteCode, _ByteCodeSize, nullptr, mVS.ReleaseAndGetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Vertex GraphicsShader 생성에 실패했습니다.");
+				ERROR_MESSAGE("Vertex GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
 			}
 
@@ -446,7 +446,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateHullShader(_pByteCode, _ByteCodeSize, nullptr, mHS.ReleaseAndGetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Hull GraphicsShader 생성에 실패했습니다.");
+				ERROR_MESSAGE("Hull GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
 			}
 
@@ -458,7 +458,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateDomainShader(_pByteCode, _ByteCodeSize, nullptr, mDS.ReleaseAndGetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Domain GraphicsShader 생성에 실패했습니다.");
+				ERROR_MESSAGE("Domain GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
 			}
 
@@ -470,7 +470,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreateGeometryShader(_pByteCode, _ByteCodeSize, nullptr, mGS.ReleaseAndGetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Geometry GraphicsShader 생성에 실패했습니다.");
+				ERROR_MESSAGE("Geometry GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
 			}
 
@@ -482,7 +482,7 @@ namespace ehw
 		{
 			if (FAILED(pDevice->CreatePixelShader(_pByteCode, _ByteCodeSize, nullptr, mPS.ReleaseAndGetAddressOf())))
 			{
-				ERROR_MESSAGE_W(L"Pixel GraphicsShader 생성에 실패했습니다.");
+				ERROR_MESSAGE("Pixel GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
 			}
 

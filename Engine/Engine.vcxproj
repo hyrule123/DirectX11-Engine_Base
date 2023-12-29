@@ -261,6 +261,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
+    <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
@@ -278,7 +280,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Audio\Com_AudioListener.h" />
     <ClInclude Include="Game\Component\Audio\Com_AudioSource.h" />
     <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h" />
-    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
     <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
@@ -335,7 +336,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Editor\imgui\imstb_truetype.h" />
     <ClInclude Include="Game\Component\Camera\Com_Camera.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h" />
-    <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="json-cpp\jsonSaveLoad.h" />
     <ClInclude Include="GPU\MultiRenderTarget.h" />
     <ClInclude Include="Manager\RenderManager.h" />
@@ -393,6 +393,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
+    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
+    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
@@ -412,7 +414,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Audio\Com_AudioListener.cpp" />
     <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp" />
     <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp" />
-    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
     <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
@@ -508,7 +509,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </ClCompile>
     <ClCompile Include="Game\Component\Camera\Com_Camera.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp" />
-    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="GPU\MultiRenderTarget.cpp" />
     <ClCompile Include="Manager\RenderManager.cpp" />
     <ClCompile Include="Game\Component\Collider\iCollider.cpp" />

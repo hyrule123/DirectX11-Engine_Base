@@ -251,7 +251,7 @@ namespace ehw
 	{
 		if (false == CreateMultiRenderTargets(_ResolutionX, _ResolutionY))
 		{
-			ERROR_MESSAGE_W(L"해상도 변경 실패");
+			ERROR_MESSAGE("해상도 변경 실패");
 			return false;
 		}
 
@@ -280,7 +280,7 @@ namespace ehw
 
 			if (false == mMultiRenderTargets[(UINT)eMRTType::Swapchain]->Create(arrRTTex, dsTex))
 			{
-				ERROR_MESSAGE_W(L"Multi Render Target 생성 실패.");
+				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
 			}
 		}
@@ -305,7 +305,7 @@ namespace ehw
 			mMultiRenderTargets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
 			if(false == mMultiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
 			{
-				ERROR_MESSAGE_W(L"Multi Render Target 생성 실패.");
+				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
 			}
 		}

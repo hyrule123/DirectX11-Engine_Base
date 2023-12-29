@@ -106,11 +106,11 @@ namespace editor
 				ehw::eResult result = mFutureConvertResult.get();
 				if (ehw::eResultSuccess(result))
 				{
-					NOTIFICATION_W(L"저장 성공");
+					NOTIFICATION("저장 성공");
 				}
 				else
 				{
-					NOTIFICATION_W(L"저장 실패");
+					NOTIFICATION("저장 실패");
 				}
 
 				//future 초기화해서 invalid로 만들어줌
@@ -190,11 +190,11 @@ namespace editor
 		{
 			if (mFBXPath.empty())
 			{
-				NOTIFICATION_W(L"FBX 경로를 설정하지 않았습니다.");
+				NOTIFICATION("FBX 경로를 설정하지 않았습니다.");
 			}
 			else if (mProjMeshDataCombo.GetCurrentSelected().strName.empty())
 			{
-				NOTIFICATION_W(L"목표 메쉬 데이터를 설정하지 않았습니다.");
+				NOTIFICATION("목표 메쉬 데이터를 설정하지 않았습니다.");
 			}
 			else
 			{

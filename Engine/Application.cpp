@@ -48,7 +48,7 @@ namespace ehw
 		if (false == GPUManager::Init(_AppDesc.GPUDesc))
 		{
 			mHdc = GetDC(_AppDesc.Hwnd);
-			ERROR_MESSAGE_W(L"Graphics Device 초기화 실패");
+			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
 		}
 

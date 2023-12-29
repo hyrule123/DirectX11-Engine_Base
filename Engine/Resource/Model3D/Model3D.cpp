@@ -8,7 +8,6 @@
 #include "../../Manager/PathManager.h"
 
 #include "../../Game/GameObject.h"
-#include "../../Game/Component/Transform/Com_DummyTransform.h"
 #include "../../Game/Component/Animator/Com_DummyAnimator.h"
 #include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "../../Game/Component/Animator/Com_Animator3D.h"
@@ -259,7 +258,7 @@ namespace ehw
 	{
 		if (nullptr == _emptyRootObj)
 		{
-			ERROR_MESSAGE_W(L"GameObject가 nullptr 입니다.");
+			ERROR_MESSAGE("GameObject가 nullptr 입니다.");
 			return eResult::Fail_Nullptr;
 		}
 
@@ -301,7 +300,7 @@ namespace ehw
 				std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
 				_emptyRootObj->AddChild(child);
 
-				child->AddComponent<Com_DummyTransform>();
+				child->AddComponent<Com_Transform>();
 				child->AddComponent<Com_DummyAnimator>();
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
@@ -334,7 +333,7 @@ namespace ehw
 		eResult result = LoadFromFBX(_fbxPath, _bStatic, _dirAndFileName);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"FBX로부터 로드 실패.");
+			ERROR_MESSAGE("FBX로부터 로드 실패.");
 			return result;
 		}
 
@@ -345,7 +344,7 @@ namespace ehw
 		result = Save(_dirAndFileName);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"Model3D 저장에 실패했습니다.");
+			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
 			return result;
 		}
 
@@ -356,12 +355,12 @@ namespace ehw
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
-			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
+			ERROR_MESSAGE("파일을 찾지 못했습니다.");
 			return eResult::Fail_Open;
 		}
 		else if (_dirAndFileName.empty())
 		{
-			ERROR_MESSAGE_W(L"파일명을 설정하지 않았습니다.");
+			ERROR_MESSAGE("파일명을 설정하지 않았습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -369,7 +368,7 @@ namespace ehw
 		eResult result = loader.LoadFbx(_fbxPath, _bStatic);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"FBX 불러오기 실패.");
+			ERROR_MESSAGE("FBX 불러오기 실패.");
 			return result;
 		}
 
@@ -398,7 +397,7 @@ namespace ehw
 		//그 외의 이유로 실패했을 경우에는 에러
 		else if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"Skeleton 로드 실패.");
+			ERROR_MESSAGE("Skeleton 로드 실패.");
 			return result;
 		}
 
@@ -413,7 +412,7 @@ namespace ehw
 			result = meshCont.mesh->CreateFromContainer(&(containers[i]));
 			if (eResultFail(result))
 			{
-				ERROR_MESSAGE_W(L"FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
+				ERROR_MESSAGE("FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
 				return eResult::Fail;
 			}
 
@@ -452,7 +451,7 @@ namespace ehw
 					ConvertMaterial(&(containers[i].vecMtrl[j]), _dirAndFileName);
 				if (nullptr == mtrl)
 				{
-					ERROR_MESSAGE_W(L"머티리얼 로드에 실패했습니다.");
+					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
 					return eResult::Fail_InValid;
 				}
 
@@ -468,7 +467,7 @@ namespace ehw
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
-			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
+			ERROR_MESSAGE("파일을 찾지 못했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -476,7 +475,7 @@ namespace ehw
 		eResult result = loader.LoadFbx(_fbxPath, false);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"FBX 불러오기 실패.");
+			ERROR_MESSAGE("FBX 불러오기 실패.");
 			return result;
 		}
 
@@ -484,7 +483,7 @@ namespace ehw
 		result = skeletonOfFBX->CreateFromFBX(&loader);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"FBX로부터 스켈레톤 로딩 실패.");
+			ERROR_MESSAGE("FBX로부터 스켈레톤 로딩 실패.");
 			return result;
 		}
 
@@ -495,13 +494,13 @@ namespace ehw
 		result = skeletonOfProj->Load(_meshDataName / _meshDataName);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"프로젝트 스켈레톤 불러오기 실패.");
+			ERROR_MESSAGE("프로젝트 스켈레톤 불러오기 실패.");
 			return result;
 		}
 
 		if (false == skeletonOfProj->CopyAnimationFromOther((*skeletonOfFBX), _meshDataName))
 		{
-			MessageBoxW(nullptr, L"스켈레톤 구조가 일치하지 않아 애니메이션을 추가할 수 없습니다.", nullptr, MB_OK);
+			ERROR_MESSAGE("스켈레톤 구조가 일치하지 않아 애니메이션을 추가할 수 없습니다.");
 			return eResult::Fail;
 		}
 

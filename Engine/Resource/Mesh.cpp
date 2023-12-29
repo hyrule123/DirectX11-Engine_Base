@@ -106,7 +106,7 @@ namespace ehw
 
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일을 찾지 못했습니다.");
+			ERROR_MESSAGE("파일을 찾지 못했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -141,7 +141,7 @@ namespace ehw
 		//버퍼 생성
 		if (false == CreateVertexBuffer())
 		{
-			ERROR_MESSAGE_W(L"버텍스 버퍼 로드 실패");
+			ERROR_MESSAGE("버텍스 버퍼 로드 실패");
 			return eResult::Fail;
 		}
 			
@@ -160,7 +160,7 @@ namespace ehw
 				mIndexInfos.push_back(info);
 				if (false == CreateIndexBuffer())
 				{
-					ERROR_MESSAGE_W(L"인덱스 버퍼 로드 실패");
+					ERROR_MESSAGE("인덱스 버퍼 로드 실패");
 					return eResult::Fail;
 				}
 			}

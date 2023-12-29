@@ -52,7 +52,7 @@ namespace ehw
 		//비어있거나, Res 바깥의 폴더(../)이면 안됨
 		if (newPath.empty() || (*newPath.begin()) == "..")
 		{
-			NOTIFICATION_W(L"리소스 파일은 반드시 Res 폴더의 안쪽에 있어야 합니다.");
+			NOTIFICATION("리소스 파일은 반드시 Res 폴더의 안쪽에 있어야 합니다.");
 		}
 		else
 		{

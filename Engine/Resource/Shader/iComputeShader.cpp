@@ -74,7 +74,7 @@ namespace ehw
 		HRESULT hr = D3DCreateBlob(_ByteCodeSize, m_CSBlob.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{
-			ERROR_MESSAGE_W(L"GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
+			ERROR_MESSAGE("GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
 
 			return eResult::Fail_Create;
 		}

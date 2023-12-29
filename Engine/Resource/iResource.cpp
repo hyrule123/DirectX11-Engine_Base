@@ -84,7 +84,7 @@ namespace ehw
 		//	std::string ResourceName = Jval[strKey::Json::iResource::m_ComCategory].asString();
 		//	if (strKey::ArrResName[(int)m_ComCategory] != ResourceName)
 		//	{
-		//		ERROR_MESSAGE_W(L"읽어들인 json 파일이 리소스 타입과 일치하지 않습니다.");
+		//		ERROR_MESSAGE("읽어들인 json 파일이 리소스 타입과 일치하지 않습니다.");
 		//		return eResult::Fail_InValid;
 		//	}
 		//}

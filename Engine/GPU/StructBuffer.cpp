@@ -412,7 +412,7 @@ namespace ehw
 
 		if(false == bResult)
 		{
-			ERROR_MESSAGE_W(L"구조화 버퍼의 데이터를 주고받을 스테이징 버퍼 생성에 실패했습니다.");
+			ERROR_MESSAGE("구조화 버퍼의 데이터를 주고받을 스테이징 버퍼 생성에 실패했습니다.");
 		}
 			
 		return bResult;
@@ -429,7 +429,7 @@ namespace ehw
 		
 		if (false == bResult)
 		{
-			ERROR_MESSAGE_W(L"구조화 버퍼의 Shader Resource View 생성에 실패했습니다.");
+			ERROR_MESSAGE("구조화 버퍼의 Shader Resource View 생성에 실패했습니다.");
 
 		}
 		return bResult;
@@ -445,7 +445,7 @@ namespace ehw
 		bool bResult = SUCCEEDED(GPUManager::Device()->CreateUnorderedAccessView(mBuffer.Get(), &UAVDesc, mUAV.ReleaseAndGetAddressOf()));
 		if (false == bResult)
 		{
-			ERROR_MESSAGE_W(L"구조화 버퍼의 Unordered Access View 생성에 실패했습니다.");
+			ERROR_MESSAGE("구조화 버퍼의 Unordered Access View 생성에 실패했습니다.");
 
 		}
 		return bResult;
@@ -505,7 +505,7 @@ namespace ehw
 		}
 
 		default:
-			ERROR_MESSAGE_W(L"알 수 없는 오류");
+			ERROR_MESSAGE("알 수 없는 오류");
 			break;
 		}
 

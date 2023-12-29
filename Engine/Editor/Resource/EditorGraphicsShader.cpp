@@ -446,7 +446,7 @@ namespace editor
 				std::ofstream ofs(ShaderFilePath);
 				if (false == ofs.is_open())
 				{
-					ERROR_MESSAGE_W(L"파일 생성에 실패했습니다.");
+					ERROR_MESSAGE("파일 생성에 실패했습니다.");
 					return false;
 				}
 
@@ -464,7 +464,7 @@ namespace editor
 
 					if (ehw::eResultFail(DummyGS.SaveJson(&jVal)))
 					{
-						ERROR_MESSAGE_W(L"json 파일 저장에 실패했습니다.");
+						ERROR_MESSAGE("json 파일 저장에 실패했습니다.");
 						return false;
 					}
 				}
@@ -796,7 +796,7 @@ namespace editor
 			}
 			else
 			{
-				NOTIFICATION_W(L"Topology가 설정되지 않았습니다.");
+				NOTIFICATION("Topology가 설정되지 않았습니다.");
 				return;
 			}
 		}
@@ -806,7 +806,7 @@ namespace editor
 			{
 				if (0 == i && mStageNames[i].empty())
 				{
-					NOTIFICATION_W(L"필수인 Vertex Shader가 설정되지 않았습니다.");
+					NOTIFICATION("필수인 Vertex Shader가 설정되지 않았습니다.");
 					return;
 				}
 				shader.SetShaderKey((ehw::eGSStage)i, mStageNames[i]);
@@ -823,7 +823,7 @@ namespace editor
 			}
 			else
 			{
-				NOTIFICATION_W(L"Rasterizer Type이 설정되지 않았습니다.");
+				NOTIFICATION("Rasterizer Type이 설정되지 않았습니다.");
 				return;
 			}
 		}
@@ -837,7 +837,7 @@ namespace editor
 			}
 			else
 			{
-				NOTIFICATION_W(L"Depth Stencil Type이 설정되지 않았습니다.");
+				NOTIFICATION("Depth Stencil Type이 설정되지 않았습니다.");
 				return;
 			}
 		}
@@ -852,7 +852,7 @@ namespace editor
 			}
 			else
 			{
-				NOTIFICATION_W(L"Blend State가 설정되지 않았습니다.");
+				NOTIFICATION("Blend State가 설정되지 않았습니다.");
 				return;
 			}
 		}
@@ -864,7 +864,7 @@ namespace editor
 		}
 		else
 		{
-			ERROR_MESSAGE_W(L"저장에 실패했습니다.");
+			ERROR_MESSAGE("저장에 실패했습니다.");
 		}
 	}
 
@@ -874,7 +874,7 @@ namespace editor
 		shader.SetEditMode(true);
 		if (ehw::eResultFail(shader.Load(_filePath)))
 		{
-			NOTIFICATION_W(L"로드 실패.");
+			NOTIFICATION("로드 실패.");
 			return;
 		}
 		

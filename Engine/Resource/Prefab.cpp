@@ -76,21 +76,21 @@ namespace ehw
 		//초기 상태의 GameObject가 아닐 경우에는 에러를 발생시킨다.
 		if (false == mPrefab->GetStrKey().empty())
 		{
-			ERROR_MESSAGE_W(L"초기화되어있지 않은 Prefab에 데이터를 등록하려고 시도했습니다.");
+			ERROR_MESSAGE("초기화되어있지 않은 Prefab에 데이터를 등록하려고 시도했습니다.");
 			return eResult::Fail;
 		}
 
 		std::fs::path fullPath = ResourceManager<Prefab>::GetBaseDir() / _pathFromBaseDir;
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일이 없습니다.");
+			ERROR_MESSAGE("파일이 없습니다.");
 			return eResult::Fail_Open;
 		}
 
 		std::ifstream LoadFile(fullPath);
 		if (false == LoadFile.is_open())
 		{
-			ERROR_MESSAGE_W(L"파일을 여는 데 실패했습니다.");
+			ERROR_MESSAGE("파일을 여는 데 실패했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -109,7 +109,7 @@ namespace ehw
 		//게임오브젝트 데이터를 로드한다.
 		if (false == LoadJVal.isMember(strKey::Json::Prefab::mPrefab))
 		{
-			ERROR_MESSAGE_W(L"Prefab Data를 찾지 못했습니다.");
+			ERROR_MESSAGE("Prefab Data를 찾지 못했습니다.");
 			return eResult::Fail_Read;
 		}
 
@@ -117,7 +117,7 @@ namespace ehw
 		result = mPrefab->LoadJson(&PrefabJVal);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE_W(L"프리팹을 불러오는 데 실패했습니다.");
+			ERROR_MESSAGE("프리팹을 불러오는 데 실패했습니다.");
 			SAFE_DELETE(mPrefab);
 			return eResult::Fail_Read;
 		}

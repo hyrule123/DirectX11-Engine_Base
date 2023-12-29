@@ -46,7 +46,7 @@ namespace ehw
 		/// 5. Swapchain을 이용하여 최종 디바이스(디스플레이)에 화면을 그려줘야한다.
 		if (false == CreateDevice(mDevice.GetAddressOf(), mContext.GetAddressOf()))
 		{
-			ERROR_MESSAGE_W(L"GPU 초기화 작업 실패");
+			ERROR_MESSAGE("GPU 초기화 작업 실패");
 			return false;
 		}
 
@@ -57,7 +57,7 @@ namespace ehw
 
 		if (false == SetResoulution(mResolutionX, mResolutionY))
 		{
-			ERROR_MESSAGE_W(L"GPU 초기화 작업 실패");
+			ERROR_MESSAGE("GPU 초기화 작업 실패");
 			return false;
 		}
 
@@ -99,7 +99,7 @@ namespace ehw
 		{
 			_ppDevice = nullptr;
 			_ppContext = nullptr;
-			ERROR_MESSAGE_W(L"Graphics Device 생성에 실패했습니다.");
+			ERROR_MESSAGE("Graphics Device 생성에 실패했습니다.");
 		}
 		else
 		{
@@ -116,7 +116,7 @@ namespace ehw
 		std::shared_ptr<Texture> RenderTex = CreateSwapChain(_ResolutionX, _ResolutionY, mRefreshRate);
 		if (nullptr == RenderTex)
 		{
-			ERROR_MESSAGE_W(L"렌더타겟 생성 실패");
+			ERROR_MESSAGE("렌더타겟 생성 실패");
 			return false;
 		}
 		mRenderTargetTexture = RenderTex;
@@ -125,7 +125,7 @@ namespace ehw
 		std::shared_ptr<Texture> DSTex = CreateDepthStencil(_ResolutionX, _ResolutionY);
 		if (nullptr == DSTex)
 		{
-			ERROR_MESSAGE_W(L"Depth-Stencil 텍스처 생성 실패");
+			ERROR_MESSAGE("Depth-Stencil 텍스처 생성 실패");
 			return false;
 		}
 		mDepthStencilBufferTexture = DSTex;
@@ -196,14 +196,14 @@ namespace ehw
 		// Get rendertarget for swapchain
 		if (FAILED(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)renderTarget.GetAddressOf())))
 		{
-			ERROR_MESSAGE_W(L"스왑체인으로부터 렌더타겟을 받아오는 데 실패했습니다.");
+			ERROR_MESSAGE("스왑체인으로부터 렌더타겟을 받아오는 데 실패했습니다.");
 			return nullptr;
 		}
 
 		//스왑체인으로 받아온 텍스처 버퍼를 가지고 렌더타겟 텍스처 뷰(RTV) 생성
 		if (false == ReturnTex->Create(renderTarget))
 		{
-			ERROR_MESSAGE_W(L"렌더타겟 텍스처 생성에 실패했습니다.");
+			ERROR_MESSAGE("렌더타겟 텍스처 생성에 실패했습니다.");
 			return nullptr;
 		}
 
@@ -219,7 +219,7 @@ namespace ehw
 		
 		if (false == DSTex->Create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
 		{
-			ERROR_MESSAGE_W(L"Depth Stencil 버퍼 생성에 실패했습니다.");
+			ERROR_MESSAGE("Depth Stencil 버퍼 생성에 실패했습니다.");
 			return nullptr;
 		}
 

@@ -43,7 +43,7 @@ namespace ehw
 
         if (false == _pathFromBaseDir.has_parent_path())
         {
-            ERROR_MESSAGE_W(L"Animation은 반드시 상위 폴더가 있어야 합니다.");
+            ERROR_MESSAGE("Animation은 반드시 상위 폴더가 있어야 합니다.");
             return eResult::Fail_InValid;
         }
 
@@ -63,13 +63,13 @@ namespace ehw
         if (false == ofs.is_open())
         {
             std::fs::path npt = std::fs::absolute(fullPath);
-            ERROR_MESSAGE_W(L"파일 오픈 실패");
+            ERROR_MESSAGE("파일 오픈 실패");
             return eResult::Fail_Open;
         }
 
         if (nullptr == m_OwnerSkeleton)
         {
-            ERROR_MESSAGE_W(L"본 정보가 존재하지 않습니다.");
+            ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
         }
         //Binary::SaveStr(ofs, m_OwnerSkeleton->GetKey());
@@ -93,7 +93,7 @@ namespace ehw
 
         if (false == _pathFromBaseDir.has_parent_path())
         {
-            ERROR_MESSAGE_W(L"Animation은 반드시 상위 폴더가 있어야 합니다.");
+            ERROR_MESSAGE("Animation은 반드시 상위 폴더가 있어야 합니다.");
             return eResult::Fail_InValid;
         }
         std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
@@ -101,7 +101,7 @@ namespace ehw
 
         if (false == std::fs::exists(fullPath))
         {
-            ERROR_MESSAGE_W(L"파일이 존재하지 않습니다.");
+            ERROR_MESSAGE("파일이 존재하지 않습니다.");
             return eResult::Fail_Open;
         }
 
@@ -109,7 +109,7 @@ namespace ehw
         std::ifstream ifs(fullPath, std::ios::binary);
         if (false == ifs.is_open())
         {
-            ERROR_MESSAGE_W(L"파일 오픈 실패");
+            ERROR_MESSAGE("파일 오픈 실패");
             return eResult::Fail_Open;
         }
 
@@ -136,7 +136,7 @@ namespace ehw
         
         if (false == CreateKeyFrameSBuffer(vecFrameTrans))
         {
-            ERROR_MESSAGE_W(L"키프레임 구조화 버퍼 생성 실패.");
+            ERROR_MESSAGE("키프레임 구조화 버퍼 생성 실패.");
             return eResult::Fail_Create;
         }
 

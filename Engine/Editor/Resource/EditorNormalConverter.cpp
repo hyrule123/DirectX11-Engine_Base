@@ -146,12 +146,12 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		{
 			if (nullptr == mTextureSrc)
 			{
-				NOTIFICATION_W(L"원본 텍스처가 등록되지 않았습니다.");
+				NOTIFICATION("원본 텍스처가 등록되지 않았습니다.");
 				return;
 			}
 			else if (mTextureDestDir.empty())
 			{
-				NOTIFICATION_W(L"텍스처파일 출력 경로가 등록되지 않았습니다.");
+				NOTIFICATION("텍스처파일 출력 경로가 등록되지 않았습니다.");
 				return;
 			}
 
@@ -167,25 +167,27 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 				if (std::fs::exists(savePath))
 				{
-					if (IDNO == MessageBoxW(nullptr, L"이미 파일이 있습니다. 덮어 쓰시겠습니까?", L"알림", MB_YESNO))
+					int response = MessageBoxW(nullptr, L"이미 파일이 있습니다. 덮어 쓰시겠습니까?", L"알림", MB_YESNO);
+
+					if (IDNO == response)
 					{
-						NOTIFICATION_W(L"저장을 취소했습니다.");
+						NOTIFICATION("저장을 취소했습니다.");
 						return;
 					}
 				}
 
 				if (eResultFail(convertedTex->Save(savePath)))
 				{
-					NOTIFICATION_W(L"변환에 실패했습니다.");
+					NOTIFICATION("변환에 실패했습니다.");
 				}
 				else
 				{
-					NOTIFICATION_W(L"변환 성공.");
+					NOTIFICATION("변환 성공.");
 				}
 			}
 			else
 			{
-				NOTIFICATION_W(L"변환 실패");
+				NOTIFICATION("변환 실패");
 			}
 		}
 	}

@@ -38,7 +38,7 @@ namespace ehw
 	{
 		if (false == _pathFromBaseDir.has_parent_path())
 		{
-			ERROR_MESSAGE_W(L"스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
+			ERROR_MESSAGE("스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
 			return eResult::Fail_InValid;
 		}
 
@@ -49,7 +49,7 @@ namespace ehw
 		std::ofstream ofs(fullPath, std::ios::binary);
 		if (false == ofs.is_open())
 		{
-			ERROR_MESSAGE_W(L"Bone 저장에 실패했습니다.");
+			ERROR_MESSAGE("Bone 저장에 실패했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -70,7 +70,7 @@ namespace ehw
 			eResult result = iter.second->Save(animName);
 			if (eResultFail(result))
 			{
-				ERROR_MESSAGE_W(L"애니메이션 저장 실패.");
+				ERROR_MESSAGE("애니메이션 저장 실패.");
 				return result;
 			}
 		}
@@ -81,7 +81,7 @@ namespace ehw
 	{
 		if (false == _pathFromBaseDir.has_parent_path())
 		{
-			ERROR_MESSAGE_W(L"스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
+			ERROR_MESSAGE("스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
 			return eResult::Fail_InValid;
 		}
 
@@ -89,14 +89,14 @@ namespace ehw
 		fullPath.replace_extension(strKey::path::extension::Skeleton);
 		if (false == std::fs::exists(fullPath))
 		{
-			ERROR_MESSAGE_W(L"파일이 없습니다.");
+			ERROR_MESSAGE("파일이 없습니다.");
 			return eResult::Fail_Open;
 		}
 
 		std::ifstream ifs(fullPath, std::ios::binary);
 		if (false == ifs.is_open())
 		{
-			ERROR_MESSAGE_W(L"Bone 저장에 실패했습니다.");
+			ERROR_MESSAGE("Bone 저장에 실패했습니다.");
 			return eResult::Fail_Open;
 		}
 
@@ -130,7 +130,7 @@ namespace ehw
 				eResult result = anim3d->Load(entry.path().lexically_relative(basePath));
 				if (eResultFail(result))
 				{
-					ERROR_MESSAGE_W(L"애니메이션 로드 실패.");
+					ERROR_MESSAGE("애니메이션 로드 실패.");
 					return eResult::Fail_InValid;
 				}
 
@@ -171,7 +171,7 @@ namespace ehw
 			eResult result = anim->LoadFromFBX(this, &animClip[i]);
 			if (eResultFail(result))
 			{
-				ERROR_MESSAGE_W(L"애니메이션 생성 실패");
+				ERROR_MESSAGE("애니메이션 생성 실패");
 				return result;
 			}
 			

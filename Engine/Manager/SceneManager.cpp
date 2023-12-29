@@ -63,14 +63,14 @@ namespace ehw
 
 		if (Func == mUmapSceneConstructor.end())
 		{
-			ERROR_MESSAGE_W(L"그런 이름의 씬이 없습니다.");
+			ERROR_MESSAGE("그런 이름의 씬이 없습니다.");
 			return;
 		}
 
 		std::unique_ptr<iScene> NewScene = std::unique_ptr<iScene>(Func->second());
 		if (nullptr == NewScene)
 		{
-			ERROR_MESSAGE_W(L"씬 생성 실패");
+			ERROR_MESSAGE("씬 생성 실패");
 			return;
 		}
 

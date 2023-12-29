@@ -27,8 +27,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (m_GameObjects[i]->IsMaster())
-				m_GameObjects[i]->Awake();
+			m_GameObjects[i]->Awake();
 		}
 	}
 
@@ -36,8 +35,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (m_GameObjects[i]->IsMaster())
-				m_GameObjects[i]->Update();
+			m_GameObjects[i]->Update();
 		}
 	}
 
@@ -45,8 +43,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
-			if (m_GameObjects[i]->IsMaster())
-				m_GameObjects[i]->InternalUpdate();
+			m_GameObjects[i]->InternalUpdate();
 		}
 
 		// sort z axis
@@ -59,7 +56,9 @@ namespace ehw
 		for (size_t i = 0; i < m_GameObjects.size(); ++i)
 		{
 			if (m_GameObjects[i]->IsActive())
+			{
 				m_GameObjects[i]->Render();
+			}
 		}
 	}
 
