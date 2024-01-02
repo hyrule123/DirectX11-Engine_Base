@@ -2,6 +2,7 @@
 #include "EditorWidget_List.h"
 
 #include "../../Util/define_Util.h"
+#include "../../Util/EngineString.h"
 
 namespace editor
 {
@@ -69,7 +70,7 @@ namespace editor
 	{
 		for (const auto& wName : _vecItem)
 		{
-			std::string name = StrConverter::ConvertUnicodeToUTF8(wName);
+			std::string name = EngineString::StaticConvertUnicodeToUTF8(wName);
 			mResourceList.push_back(name);
 		}
 	}

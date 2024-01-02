@@ -362,6 +362,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Manager\InputManager.h" />
     <ClInclude Include="Resource\Model3D\Model3D.h" />
     <ClInclude Include="Resource\Shader\iShader.h" />
+    <ClInclude Include="Util\EngineString.h" />
     <ClInclude Include="Util\SimpleMath.h" />
     <ClInclude Include="Util\Singleton.h" />
     <ClInclude Include="json-cpp\json-forwards.h" />
@@ -557,6 +558,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Script\iScript.cpp" />
     <ClCompile Include="Resource\Shader\GraphicsShader.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Sprite.cpp" />
+    <ClCompile Include="Util\EngineString.cpp" />
     <ClCompile Include="Util\SimpleMath.cpp" />
     <ClCompile Include="Resource\Model3D\Skeleton.cpp" />
     <ClCompile Include="GPU\StructBuffer.cpp" />
