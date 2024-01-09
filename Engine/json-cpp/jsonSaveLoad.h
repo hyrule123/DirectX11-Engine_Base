@@ -5,6 +5,7 @@
 #endif
 
 #include "../Util/define_Util.h"
+#include "../Util/StringConverter.h"
 
 #include "../define_Enum.h"
 
@@ -72,7 +73,7 @@ namespace Json
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == std::is_container_v<T>);
-			return StrConverter::Base64Encode(_srcT);
+			return StringConverter::Base64Encode(_srcT);
 		}
 
 
@@ -111,7 +112,7 @@ namespace Json
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == std::is_container_v<T>);
-			return StrConverter::Base64Decode<T>(_jVal.asString());
+			return StringConverter::Base64Decode<T>(_jVal.asString());
 		}
 
 
@@ -226,7 +227,7 @@ namespace Json
 				}
 				else
 				{
-					_destT = StrConverter::Base64Decode<T>(jVal.asString());
+					_destT = StringConverter::Base64Decode<T>(jVal.asString());
 					bResult = true;
 				}
 			}

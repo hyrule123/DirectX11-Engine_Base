@@ -3,6 +3,7 @@
 
 
 #include "../Util/define_Util.h"
+#include "../Util/StringConverter.h"
 
 #include "../Manager/ResourceManager.h"
 
@@ -202,7 +203,7 @@ namespace ehw
 	eResult Texture::LoadFile(const std::filesystem::path& _fullPath)
 	{
 		std::wstring Extension = _fullPath.extension().wstring();
-		StrConverter::UpperCase(Extension);
+		StringConverter::MakeUpperCase(Extension);
 
 		if (Extension == L".DDS")
 		{
@@ -233,7 +234,7 @@ namespace ehw
 			return eResult::Fail_Create;
 		}
 
-		StrConverter::UpperCase(Extension);
+		StringConverter::MakeUpperCase(Extension);
 		if (Extension == L".DDS")
 		{
 			if (FAILED(DirectX::SaveToDDSFile(mImage.GetImages(), mImage.GetImageCount(), mImage.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
