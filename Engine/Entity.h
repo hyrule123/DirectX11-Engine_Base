@@ -27,7 +27,7 @@ namespace ehw
 		Entity(const Entity& _other);
 		virtual Entity* Clone() { ASSERT(false, "Entity 클래스는 Clone할수 없습니다."); return nullptr; }
 
-		Entity(Entity&& _move);
+		Entity(Entity&& _move) noexcept;
 
 		virtual ~Entity();
 
@@ -35,15 +35,14 @@ namespace ehw
 		virtual eResult LoadJson(const Json::Value* _pJson);
 
 		void SetStrKey(const std::string_view _strKey) { mStrKey = _strKey; }
-		const std::string& GetStrKey() const { return mStrKey; }
+		EngineString const& GetStrKey() const { return mStrKey; }
 		UINT32 GetID() const { return mID; }
 
 		template <typename T>
 		inline std::shared_ptr<T> shared_from_this_T();
 
 	private:
-		std::string mStrKey;
-		
+		EngineString mStrKey;
 
 		static UINT32 gIDNext;
 		const UINT32 mID;

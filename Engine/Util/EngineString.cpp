@@ -24,9 +24,9 @@ void EngineString::operator=(const std::wstring& _wstr)
 	(*pStr) = StaticConvertUnicodeToUTF8(_wstr);
 }
 
-std::wstring EngineString::WString()
+std::wstring EngineString::WString() const
 {
-	std::string* pStr = static_cast<std::string*>(this);
+	const std::string* pStr = static_cast<const std::string*>(this);
 	return StaticConvertUTF8ToUnicode(*pStr);
 }
 

@@ -30,7 +30,7 @@ public:
 		
 #pragma region Multibyte
 	//자신의 string 부분을 반환
-	const std::string& String() { return *static_cast<std::string*>(this); }
+	std::string const& String() const { return *static_cast<const std::string*>(this); }
 
 
 	inline static std::string& StaticMakeUpperCase(std::string& _str);
@@ -50,7 +50,7 @@ public:
 	EngineString(const std::wstring& _wstr);
 	void operator=(const std::wstring& _wstr);
 
-	std::wstring WString();
+	std::wstring WString() const;
 
 	// ANSI <-> UniCode
 	static std::wstring StaticConvertANSIToUnicode(const std::string_view _src);

@@ -19,7 +19,7 @@ namespace ehw
 		, mStrKey(_other.mStrKey)
 	{
 	}
-	Entity::Entity(Entity&& _move)
+	Entity::Entity(Entity&& _move) noexcept
 		: mStrKey(_move.mStrKey)
 		, mID(_move.mID)
 	{
@@ -55,7 +55,7 @@ namespace ehw
 		if (JVal.isMember(strKey::Json::Entity::mStrKey))
 		{
 			//값이 있을 경우 값을 가져온다(string 타입이므로 string 형태로 가져옴)
-			mStrKey = JVal[strKey::Json::Entity::mStrKey].asString();
+			mStrKey = EngineString(JVal[strKey::Json::Entity::mStrKey].asString());
 		}
 		//가져오려는 변수가 없어도 될때는 값이 없어도 넘어가도 됨
 		//하지만 string key의 경우는 반드시 있어야 하므로 json에 값이 저장되어있지 않을 경우 에러를 반환

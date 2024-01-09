@@ -118,7 +118,7 @@ namespace ehw
 		//Skeleton
 		if (m_skeleton)
 		{
-			result = m_skeleton->Save(m_skeleton->GetStrKey());
+			result = m_skeleton->Save(m_skeleton->GetStrKey().String());
 			if (eResultFail(result))
 				return result;
 		}
@@ -133,10 +133,12 @@ namespace ehw
 			Json::Value meshCont{};
 			if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
 			{
+				ASSERT_DEBUG(nullptr == m_meshContainers[i].mesh, "메쉬 없음.");
+				ASSERT_DEBUG(false == m_meshContainers[i].materials.empty(), "머티리얼 없음.");
 				return eResult::Fail_InValid;
 			}
 			//Mesh
-			result = m_meshContainers[i].mesh->Save(m_meshContainers[i].mesh->GetStrKey());
+			result = m_meshContainers[i].mesh->Save(m_meshContainers[i].mesh->GetStrKey().String());
 			if (eResultFail(result))
 			{
 				return result;
@@ -147,7 +149,8 @@ namespace ehw
 			//Material 저장
 			for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
 			{
-				result = m_meshContainers[i].materials[j]->Save(m_meshContainers[i].materials[j]->GetStrKey());
+				result = m_meshContainers[i].materials[j]->Save(m_meshContainers[i].materials[j]->GetStrKey().String());
+
 				if (eResultFail(result))
 				{
 					return result;
