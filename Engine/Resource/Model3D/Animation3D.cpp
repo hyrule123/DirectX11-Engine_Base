@@ -1,7 +1,8 @@
 #include "Animation3D.h"
 
-
 #include "../../GPU/StructBuffer.h"
+
+#include "../../Util/Serializer.h"
 
 #include "../../Manager/ResourceManager.h"
 
@@ -15,8 +16,15 @@ namespace ehw
 {
 	Animation3D::Animation3D()
         : iAnimation(typeid(Animation3D))
-        , mValues{}
         , m_OwnerSkeleton{}
+        , m_StartFrame{}
+        , m_EndFrame{}
+        , m_FrameLength{}
+        , m_StartTime{}
+        , m_EndTime{}
+        , m_TimeLength{}
+        , m_UpdateTime{}
+        , m_FramePerSec{}
         , m_KeyFramesPerBone{}
         , m_SBufferKeyFrame{}
 	{
@@ -39,6 +47,12 @@ namespace ehw
 #pragma region 저장 및 불러오기
     eResult Animation3D::Save(const std::fs::path& _pathFromBaseDir)
     {
+        if (nullptr == m_OwnerSkeleton)
+        {
+            ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
+            return eResult::Fail_Nullptr;
+        }
+
         SetStrKey(_pathFromBaseDir.string());
 
         if (false == _pathFromBaseDir.has_parent_path())
@@ -49,6 +63,7 @@ namespace ehw
 
         std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
 
+        //디렉토리 존재여부 확인 및 없을 시 생성
         {
             std::fs::path checkDir = fullPath.parent_path();
             if (false == std::fs::exists(checkDir))
@@ -59,31 +74,27 @@ namespace ehw
 
         fullPath.replace_extension(strKey::path::extension::Anim3D);
 
-        std::ofstream ofs(fullPath, std::ios::binary);
-        if (false == ofs.is_open())
-        {
-            std::fs::path npt = std::fs::absolute(fullPath);
-            ERROR_MESSAGE("파일 오픈 실패");
-            return eResult::Fail_Open;
-        }
+        std::ofstream ofs("test");
 
-        if (nullptr == m_OwnerSkeleton)
-        {
-            ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
-            return eResult::Fail_Nullptr;
-        }
-        //Binary::SaveStr(ofs, m_OwnerSkeleton->GetKey());
+        BinarySerializer binSave{};
+        binSave << m_StartFrame;
+        binSave << m_EndFrame;
+        binSave << m_FrameLength;
+        binSave << m_StartTime;
+        binSave << m_EndTime;
+        binSave << m_TimeLength;
+        binSave << m_UpdateTime;
+        binSave << m_FramePerSec;
 
-        Binary::SaveValue(ofs, mValues);
-        
-        Binary::SaveValue(ofs, m_KeyFramesPerBone.size());
+        binSave << m_KeyFramesPerBone.size();
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
-            Binary::SaveValue(ofs, m_KeyFramesPerBone[i].BoneIndex);
-            Binary::SaveValueVector(ofs, m_KeyFramesPerBone[i].vecKeyFrame);
+            binSave << m_KeyFramesPerBone[i].BoneIndex;
+            binSave << m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
-        ofs.close();
+        binSave.Save(fullPath);
+
         return eResult::Success;
     }
 
@@ -105,30 +116,45 @@ namespace ehw
             return eResult::Fail_Open;
         }
 
-       
-        std::ifstream ifs(fullPath, std::ios::binary);
-        if (false == ifs.is_open())
+        BinarySerializer binLoad{};
+
+        if (false == binLoad.Load(fullPath))
         {
-            ERROR_MESSAGE("파일 오픈 실패");
             return eResult::Fail_Open;
         }
 
-        Binary::LoadValue(ifs, mValues);
+        binLoad >> m_StartFrame;
+        binLoad >> m_EndFrame;
+        binLoad >> m_FrameLength;
+        binLoad >> m_StartTime;
+        binLoad >> m_EndTime;
+        binLoad >> m_TimeLength;
+        binLoad >> m_UpdateTime;
+        binLoad >> m_FramePerSec;
+
+        size_t vecSize = 0;
+        binLoad >> vecSize;
+        m_KeyFramesPerBone.resize(vecSize);
+        for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
+        {
+            binLoad >> m_KeyFramesPerBone[i].BoneIndex;
+            binLoad >> m_KeyFramesPerBone[i].vecKeyFrame;
+        }
 
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;
-        vecFrameTrans.resize(m_OwnerSkeleton->GetBoneCount() * mValues.iFrameLength);
+        vecFrameTrans.resize(m_OwnerSkeleton->GetBoneCount() * m_FrameLength);
         {
-            size_t mKeyFramesPerBoneSize{};
-            Binary::LoadValue(ifs, mKeyFramesPerBoneSize);
-            m_KeyFramesPerBone.resize(mKeyFramesPerBoneSize);
+            size_t KeyFramesPerBoneSize{};
+            binLoad >> KeyFramesPerBoneSize;
+            m_KeyFramesPerBone.resize(KeyFramesPerBoneSize);
             for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
             {
-                Binary::LoadValue(ifs, m_KeyFramesPerBone[i].BoneIndex);
-                Binary::LoadValueVector(ifs, m_KeyFramesPerBone[i].vecKeyFrame);
+                binLoad >> m_KeyFramesPerBone[i].BoneIndex;
+                binLoad >> m_KeyFramesPerBone[i].vecKeyFrame;
 
                 for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
                 {
-                    size_t indexIn1DArray = mValues.iFrameLength * i + j;
+                    size_t indexIn1DArray = m_FrameLength * i + j;
                     vecFrameTrans[indexIn1DArray] = m_KeyFramesPerBone[i].vecKeyFrame[j].Trans;
                 }
             }
@@ -139,9 +165,6 @@ namespace ehw
             ERROR_MESSAGE("키프레임 구조화 버퍼 생성 실패.");
             return eResult::Fail_Create;
         }
-
-        ifs.close();
-
        
         return eResult::Success;
     }
@@ -158,22 +181,22 @@ namespace ehw
         switch (_clip->TimeMode)
         {
         case fbxsdk::FbxTime::eDefaultMode:
-            mValues.iFramePerSec = 30;
+            m_FramePerSec = 30;
             break;
         case fbxsdk::FbxTime::eFrames120:
-            mValues.iFramePerSec = 120;
+            m_FramePerSec = 120;
             break;
         case fbxsdk::FbxTime::eFrames100:
-            mValues.iFramePerSec = 100;
+            m_FramePerSec = 100;
             break;
         case fbxsdk::FbxTime::eFrames60:
-            mValues.iFramePerSec = 60;
+            m_FramePerSec = 60;
             break;
         case fbxsdk::FbxTime::eFrames50:
-            mValues.iFramePerSec = 50;
+            m_FramePerSec = 50;
             break;
         case fbxsdk::FbxTime::eFrames48:
-            mValues.iFramePerSec = 48;
+            m_FramePerSec = 48;
             break;
         case fbxsdk::FbxTime::eFrames30:
             [[fallthrough]];
@@ -182,48 +205,48 @@ namespace ehw
         case fbxsdk::FbxTime::eNTSCDropFrame:
             [[fallthrough]];
         case fbxsdk::FbxTime::eNTSCFullFrame:
-            mValues.iFramePerSec = 30;
+            m_FramePerSec = 30;
             break;
         case fbxsdk::FbxTime::ePAL:
-            mValues.iFramePerSec = 25;
+            m_FramePerSec = 25;
             break;
         case fbxsdk::FbxTime::eFrames24:
-            mValues.iFramePerSec = 24;
+            m_FramePerSec = 24;
             break;
         case fbxsdk::FbxTime::eFrames1000:
-            mValues.iFramePerSec = 1000;
+            m_FramePerSec = 1000;
             break;
         case fbxsdk::FbxTime::eCustom:
-            mValues.iFramePerSec = 30;
+            m_FramePerSec = 30;
             break;
         case fbxsdk::FbxTime::eFrames96:
-            mValues.iFramePerSec = 96;
+            m_FramePerSec = 96;
             break;
         case fbxsdk::FbxTime::eFrames72:
-            mValues.iFramePerSec = 72;
+            m_FramePerSec = 72;
             break;
         default:
-            mValues.iFramePerSec = 60;
+            m_FramePerSec = 60;
             break;
         }
 
-        mValues.dStartTime = _clip->StartTime.GetSecondDouble();
-        if (mValues.dStartTime < 0.0)
+        m_StartTime = _clip->StartTime.GetSecondDouble();
+        if (m_StartTime < 0.0)
         {
-            mValues.dStartTime = 0.0;
+            m_StartTime = 0.0;
         }
-        mValues.dEndTime = _clip->EndTime.GetSecondDouble();
-        mValues.dTimeLength = mValues.dEndTime - mValues.dStartTime;
+        m_EndTime = _clip->EndTime.GetSecondDouble();
+        m_TimeLength = m_EndTime - m_StartTime;
 
-        mValues.iStartFrame = (int)_clip->StartTime.GetFrameCount(_clip->TimeMode);
-        if (mValues.iStartFrame < 0)
+        m_StartFrame = (int)_clip->StartTime.GetFrameCount(_clip->TimeMode);
+        if (m_StartFrame < 0)
         {
-            mValues.iStartFrame = 0;
+            m_StartFrame = 0;
         }
-        mValues.iEndFrame = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
-        mValues.iFrameLength = (int)(mValues.iEndFrame - mValues.iStartFrame + 1);//+1 -> 0프레임부터 시작이므로
+        m_EndFrame = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
+        m_FrameLength = (int)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
 
-        ASSERT(mValues.iFrameLength >= 0, "3D 애니메이션의 프레임이 음수입니다.");
+        ASSERT(m_FrameLength >= 0, "3D 애니메이션의 프레임이 음수입니다.");
 
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
@@ -235,13 +258,13 @@ namespace ehw
         //그러므로 하나의 애니메이션은 본의 갯수 * 키프레임 갯수가 된다
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
         size_t boneCount = _clip->KeyFramesPerBone.size();
-        vecFrameTrans.resize(boneCount * mValues.iFrameLength);
+        vecFrameTrans.resize(boneCount * m_FrameLength);
         m_KeyFramesPerBone.resize(boneCount);//CPU
         for (size_t i = 0; i < boneCount; ++i)
         {
             m_KeyFramesPerBone[i].BoneIndex = _clip->KeyFramesPerBone[i].BoneIndex;
             
-            //m_KeyFramesPerBone[i].vecKeyFrame.resize(mValues.iFrameLength);
+            //m_KeyFramesPerBone[i].vecKeyFrame.resize(m_FrameLength);
 
             //GPU로 보낼 데이터 세팅
             //GPU는 이중 배열 같은걸 지원 안함
@@ -256,13 +279,13 @@ namespace ehw
             //애니메이션 전체 키프레임의 갯수와, 실제 애니메이션의 중 적은 쪽의 것을 사용해준다
             //이유: 키프레임이 0개일수도 있고, 등록된 키프레임 수보다 훨씬 많을수도 있음
             size_t resizeCount =
-                mValues.iFrameLength <= _clip->KeyFramesPerBone[i].vecKeyFrame.size() ?
-                mValues.iFrameLength : _clip->KeyFramesPerBone[i].vecKeyFrame.size();
+                m_FrameLength <= _clip->KeyFramesPerBone[i].vecKeyFrame.size() ?
+                m_FrameLength : _clip->KeyFramesPerBone[i].vecKeyFrame.size();
 
             m_KeyFramesPerBone[i].vecKeyFrame.resize(resizeCount);
             for(size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
             {
-                if ((int)j < mValues.iFrameLength)
+                if ((int)j < m_FrameLength)
                 {
                     //우리 포맷 키프레임
                     tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];
@@ -293,7 +316,7 @@ namespace ehw
 
 
                     //i번째 본의 j 키프레임 데이터
-                    size_t indexIn1DArray = mValues.iFrameLength * i + j;
+                    size_t indexIn1DArray = m_FrameLength * i + j;
                     vecFrameTrans[indexIn1DArray] = projKeyFrame.Trans;
                     //vecFrameTrans[indexIn1DArray].vTranslate =  float4(projKeyFrame.Pos, 1.f);
                     //vecFrameTrans[indexIn1DArray].Scale =      float4(projKeyFrame.Scale, 1.f);

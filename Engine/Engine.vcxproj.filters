@@ -454,6 +454,7 @@
     <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
     <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
+    <ClCompile Include="Util\Serializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -781,6 +782,9 @@
     <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
     <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="Util\StringConverter.h" />
+    <ClInclude Include="Util\type_traits_Ex.h" />
+    <ClInclude Include="Util\Serializer.h" />
+    <ClInclude Include="CommonType.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

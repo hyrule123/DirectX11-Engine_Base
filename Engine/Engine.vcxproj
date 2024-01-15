@@ -261,6 +261,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommonType.h" />
     <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
     <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
@@ -270,6 +271,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Model3D\Animation3D.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
+    <ClInclude Include="Util\Serializer.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\base64.h" />
     <ClInclude Include="Manager\ComponentManager.h" />
@@ -391,6 +393,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Manager\TimeManager.h" />
     <ClInclude Include="Game\Component\Transform\Com_Transform.h" />
     <ClInclude Include="Util\define_Util.h" />
+    <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
@@ -400,6 +403,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp" />
+    <ClCompile Include="Util\Serializer.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\base64.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>

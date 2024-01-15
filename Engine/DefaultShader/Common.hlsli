@@ -9,13 +9,15 @@
 
 //C++
 #ifdef __cplusplus
+#include <cstdint>
 #include "../Util/Simplemath.h"
+
 
 using float2 = ehw::math::Vector2;
 using float3 = ehw::math::Vector3;
 using float4 = ehw::math::Vector4;
 using MATRIX = ehw::math::Matrix;
-using uint = UINT32;
+using uint = std::uint32_t;
 
 //윈도우 쪽 헤더에 정의되어 있음
 #ifndef BOOL
@@ -23,23 +25,25 @@ using BOOL = int;
 #endif
 
 #ifndef TRUE
-constexpr const int TRUE = 1;
+#define TRUE 1
 #endif
 #ifndef FALSE
-constexpr const int FALSE = 0;
+#define FALSE 0
 #endif
 
 struct int2 { int x; int y; };
 struct int3 { int x; int y; int z; };
 struct int4 { int x; int y; int z; int w; };
 
-using uint = UINT32;
+using uint = std::uint32_t;
 struct uint2 { uint x; uint y; };
 struct uint3 { uint x; uint y; uint z; };
 struct uint4 { uint x; uint y; uint z; uint w; };
 
 struct uintx8 { uint u[8]; };
 struct uintx16 { uint u[16]; };
+
+
 
 #define SEMANTIC(_Type)
 

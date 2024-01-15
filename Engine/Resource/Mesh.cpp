@@ -13,6 +13,7 @@
 #include "../Manager/PathManager.h"
 
 #include "../Util/define_Util.h"
+#include "../Util/Serializer.h"
 
 
 #include "Model3D/FBXLoader.h"
@@ -60,16 +61,21 @@ namespace ehw
 			return eResult::Fail_Open;
 		}
 		
+		const std::string& str = "asdf";
+		using deref = std::remove_const_t<std::remove_reference_t<const std::string&>>;
 		//Key값 저장
-		Binary::SaveStr(ofs, GetStrKey());
+		BinarySerializer ser{};
+		ser << GetStrKey();
+		
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		//저장 필요 없음
 
 		//D3D11_BUFFER_DESC mVBDesc;
-		Binary::SaveValue(ofs, mVBDesc);
+		ser << mVBDesc;
 		
 		//UINT mVertexByteStride;
+		
 		Binary::SaveValue(ofs, mVertexByteStride);
 		//ofs << mVertexByteStride;
 

@@ -1,9 +1,10 @@
 #pragma once
 #include "define_Enum.h"
 #include "define_Macro.h"
+#include "CommonType.h"
 #include "json-cpp/json-forwards.h"
 
-#include "PCH_Engine.h"
+#include <string>
 
 namespace std
 {
@@ -12,6 +13,7 @@ namespace std
 
 
 namespace ehw
+
 {
 	namespace strKey::Json::Entity
 	{

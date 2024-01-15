@@ -6,6 +6,7 @@
 
 #include "../Util/define_Util.h"
 #include "../Util/StringConverter.h"
+#include "../Util/type_traits_Ex.h"
 
 #include "../define_Enum.h"
 
@@ -32,7 +33,7 @@ namespace Json
 	struct need_base64<T, std::enable_if_t<std::is_pointer_v<T>>> : std::false_type {};
 
 	template <typename T>
-	struct need_base64<T, std::enable_if_t<std::is_smart_ptr_v<T>>> : std::false_type {};
+	struct need_base64<T, std::enable_if_t<type_traits_Ex::is_smart_ptr_v<T>>> : std::false_type {};
 
 	template <typename T>
 	inline constexpr bool need_base64_v = need_base64<T>::value;
@@ -60,7 +61,7 @@ namespace Json
 
 		template <typename T, typename std::enable_if_t<(
 			false == need_base64_v<T> &&
-			(std::is_pointer_v<T> || std::is_smart_ptr_v<T>)
+			(std::is_pointer_v<T> || type_traits_Ex::is_smart_ptr_v<T>)
 			)>* = nullptr>
 		static std::string ConvertWrite(const T& _srcT)
 		{
@@ -72,7 +73,7 @@ namespace Json
 		static std::string ConvertWrite(const T& _srcT)
 		{
 			//컨테이너는 변환 불가
-			static_assert(false == std::is_container_v<T>);
+			static_assert(false == type_traits_Ex::is_container_v<T>);
 			return StringConverter::Base64Encode(_srcT);
 		}
 
@@ -98,7 +99,7 @@ namespace Json
 
 		template <typename T, typename std::enable_if_t<(
 			false == need_base64_v<T> &&
-			(std::is_pointer_v<T> || std::is_smart_ptr_v<T>)
+			(std::is_pointer_v<T> || type_traits_Ex::is_smart_ptr_v<T>)
 			)>* = nullptr>
 		static std::string ConvertRead(const Json::Value& _jVal)
 		{
@@ -111,7 +112,7 @@ namespace Json
 		static T ConvertRead(const Json::Value& _jVal)
 		{
 			//컨테이너는 변환 불가
-			static_assert(false == std::is_container_v<T>);
+			static_assert(false == type_traits_Ex::is_container_v<T>);
 			return StringConverter::Base64Decode<T>(_jVal.asString());
 		}
 
@@ -128,7 +129,7 @@ namespace Json
 		{
 			static_assert(
 				true == std::is_pointer_v<T> ||
-				true == std::is_smart_ptr_v<T>
+				true == type_traits_Ex::is_smart_ptr_v<T>
 				);
 
 			Json::Value& jVal = (*_pJson)[_strKey];
@@ -140,8 +141,8 @@ namespace Json
 		}
 
 		template <typename T, typename std::enable_if_t<
-			(true == std::is_vector_v<T> ||
-				true == std::is_std_array_v<T>)
+			(true == type_traits_Ex::is_vector_v<T> ||
+				true == type_traits_Ex::is_std_array_v<T>)
 			, int>* = nullptr>
 		static void SaveValueVector(Json::Value* _pJson, const char* _strKey, const T& _srcT)
 		{
@@ -150,7 +151,7 @@ namespace Json
 			//벡터(또는 배열) + 포인터 아닐것
 			static_assert(
 				false == std::is_pointer_v<valType> &&
-				false == std::is_smart_ptr_v<valType>
+				false == type_traits_Ex::is_smart_ptr_v<valType>
 				);
 
 			//Value가 들어있는 vector 저장하는법
@@ -169,8 +170,8 @@ namespace Json
 
 		//GetStrKey()가 있는 클래스 포인터 한정으로 사용가능
 		template <typename T, typename std::enable_if_t<
-			(true == std::is_vector_v<T> ||
-				true == std::is_std_array_v<T>)
+			(true == type_traits_Ex::is_vector_v<T> ||
+				true == type_traits_Ex::is_std_array_v<T>)
 			, int>* = nullptr>
 		static void SavePtrStrKeyVector(Json::Value* _pJson, const char* _strKey, const T& _srcT)
 		{
@@ -179,7 +180,7 @@ namespace Json
 			//벡터(또는 배열) + 포인터일것
 			static_assert(
 				true == std::is_pointer_v<valType> ||
-				true == std::is_smart_ptr_v<valType>
+				true == type_traits_Ex::is_smart_ptr_v<valType>
 				);
 
 			//Value가 들어있는 vector 저장하는법
@@ -247,7 +248,7 @@ namespace Json
 		}
 
 		template <typename T, typename std::enable_if_t<(
-			true == std::is_vector_v<T> ||
+			true == type_traits_Ex::is_vector_v<T> ||
 			true == std::is_array_v<T>
 			), bool>* = nullptr>
 		static T LoadValueVector(const Json::Value* _pJson, const char* _strKey, const T& _tSrc)
@@ -255,7 +256,7 @@ namespace Json
 			using valType = T::value_type;
 
 			//포인터에 대한 값은 추가할 수 없음.
-			static_assert(false == std::is_pointer_v<valType> || false == std::is_smart_ptr_v<valType>);
+			static_assert(false == std::is_pointer_v<valType> || false == type_traits_Ex::is_smart_ptr_v<valType>);
 
 			T vecT{};
 			if (_pJson->isMember(_strKey))
@@ -274,8 +275,8 @@ namespace Json
 
 
 		template <typename T, typename std::enable_if_t<(
-			true == std::is_vector_v<T> ||
-			true == std::is_std_array_v<T> ||
+			true == type_traits_Ex::is_vector_v<T> ||
+			true == type_traits_Ex::is_std_array_v<T> ||
 			true == std::is_array_v<T>
 			), bool>* = nullptr>
 		static std::vector<std::string> LoadPtrStrKeyVector(const Json::Value* _pJson, const char* _strKey, const T& _tSrc)
@@ -310,8 +311,8 @@ namespace Json
 	//{
 	//	using keyType = T::key_type;
 	//	using valType = T::mapped_type;
-	//	static_assert(false == std::is_pointer_v<keyType> || false == std::is_smart_ptr_v<keyType>);
-	//	static_assert(false == std::is_pointer_v<valType> || false == std::is_smart_ptr_v<valType>);
+	//	static_assert(false == std::is_pointer_v<keyType> || false == type_traits_Ex::is_smart_ptr_v<keyType>);
+	//	static_assert(false == std::is_pointer_v<valType> || false == type_traits_Ex::is_smart_ptr_v<valType>);
 
 	//	T vecT{};
 	//	if (_pJson->isMember(_strKey))

@@ -1,8 +1,6 @@
 #pragma once
 
-
-
-#include "../Util/SimpleMath.h"
+#include "../CommonType.h"
 
 //전방선언
 namespace FMOD

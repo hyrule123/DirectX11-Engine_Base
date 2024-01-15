@@ -47,14 +47,14 @@ namespace ehw
 
         eResult LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip);
 
-        int GetStartFrame() const { return mValues.iStartFrame; }
-        int GetEndFrame() const { return mValues.iEndFrame; }
-        int GetFrameLength() const { return mValues.iFrameLength; }
-        double GetStartTime() const { return mValues.dStartTime; }
-        double GetEndTIme() const { return mValues.dEndTime; }
-        double GetTimeLength() const { return mValues.dTimeLength; }
-        float GetUpdateTime() const { return mValues.fUpdateTime; }
-        int GetFPS() const { return mValues.iFramePerSec; }
+        int GetStartFrame() const { return m_StartFrame; }
+        int GetEndFrame() const { return m_EndFrame; }
+        int GetFrameLength() const { return m_FrameLength; }
+        double GetStartTime() const { return m_StartTime; }
+        double GetEndTIme() const { return m_EndTime; }
+        double GetTimeLength() const { return m_TimeLength; }
+        float GetUpdateTime() const { return m_UpdateTime; }
+        int GetFPS() const { return m_FramePerSec; }
         Skeleton* GetSkeleton() const { return m_OwnerSkeleton; }
         void SetSkeleton(Skeleton* _skeleton) { m_OwnerSkeleton = _skeleton; }
         StructBuffer* GetKeyFrameSBuffer() const { return m_SBufferKeyFrame.get(); }
@@ -65,19 +65,18 @@ namespace ehw
     private:
         Skeleton* m_OwnerSkeleton;
 
-        struct Value//저장을 위해서 별도의 struct 안에 넣어놓음
-        {
-            int				iStartFrame;
-            int				iEndFrame;
-            int				iFrameLength;
 
-            double			dStartTime;
-            double			dEndTime;
-            double			dTimeLength;
-            float			fUpdateTime; // 이거 안씀
+        int				m_StartFrame;
+        int				m_EndFrame;
+        int				m_FrameLength;
 
-            int         	iFramePerSec;
-        } mValues;
+        double			m_StartTime;
+        double			m_EndTime;
+        double			m_TimeLength;
+        float			m_UpdateTime; // 이거 안씀
+
+        int         	m_FramePerSec;
+
 
 
         //이중 배열 형태임
