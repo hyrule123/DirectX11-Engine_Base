@@ -12,12 +12,6 @@
 #include <string>
 
 
-class Serializable
-{
-public:
-	virtual bool Write() = 0;
-	virtual bool Read() = 0;
-};
 
 template <typename T>
 struct Remove_Const_Reference
@@ -28,9 +22,12 @@ template <typename T>
 using Remove_Const_Reference_t = Remove_Const_Reference<T>::type;
 
 template <typename T>
+concept PointerTypes = requires(T a) { *a; };
+
+template <typename T>
 concept AllowedTypes = 
 //* 연산자가 있을경우(포인터일경우) 저장 불가
-!requires (T a) { *a; } &&
+!PointerTypes<T> &&
 //string이 아니여야 함
 !(std::is_same_v<Remove_Const_Reference_t<T>, std::string> ||
 	std::is_same_v<Remove_Const_Reference_t<T>, std::wstring>);
@@ -40,47 +37,46 @@ concept StringTypes =
 std::is_same_v<T, std::string> ||
 std::is_same_v<T, std::wstring>;
 
-template <typename T>
-concept PointerTypes = requires(T a)
+
+class Serializer
 {
-	a->GetStrKey();
+protected:
+	Serializer() {};
+	virtual ~Serializer() {};
+public:
+	virtual bool SaveFile(std::filesystem::path const& _fullPath) = 0;
+	virtual bool LoadFile(std::filesystem::path const& _fullPath) = 0;
 };
 
-
-
-class BinarySerializer
+class Serializer_Binary : public Serializer
 {
 public:
-	BinarySerializer();
-	~BinarySerializer();
+	Serializer_Binary();
+	virtual ~Serializer_Binary();
 
-	bool Save(std::filesystem::path const& _savePath);
-	bool Save(std::ofstream& _saveFile);
+	virtual bool SaveFile(std::filesystem::path const& _fullPath) final;
+	virtual bool LoadFile(std::filesystem::path const& _fullPath) final;
 
-	bool Load(std::filesystem::path const& _loadPath);
-	bool Load(std::ifstream& _loadFile);
+	bool SaveFile(std::ofstream& _saveFile);
+	bool LoadFile(std::ifstream& _loadFile);
 
 	void Write(const unsigned char* _pSrc, size_t _size);
 	size_t Read(unsigned char* _pDest, size_t _size);
 
 	template <AllowedTypes T>
-	void operator<<(const T& _data) 
-	{ 
-		Write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T)); 
-	};
-
+	inline void operator <<(const T& _data);
 	template <StringTypes T>
-	void operator<<(const T& _data);
+	inline void operator <<(const T& _data);
 	template <AllowedTypes T>
-	void operator<<(const std::vector<T>& _data);
+	inline void operator <<(const std::vector<T>& _data);
+
 
 	template <AllowedTypes T>
-	void operator>>(T& _data);
+	inline void operator >>(T& _data);
 	template <StringTypes T>
-	void operator>>(T& _data);
-
+	inline void operator >>(T& _data);
 	template <AllowedTypes T>
-	void operator>>(std::vector<T>& _data);
+	inline void operator >>(std::vector<T>& _data);
 
 
 	size_t GetDataSize() const { return m_data.size(); }
@@ -90,7 +86,7 @@ public:
 	inline size_t SetReadOffset(size_t _offset);
 
 	size_t GetWriteOffset() const { return m_WriteOffset; }
-	inline size_t SetWriteOffsert(size_t _offset);
+	inline size_t SetWriteOffset(size_t _offset);
 
 	void Clear() { m_data.clear(); m_ReadOffset = (size_t)0; m_WriteOffset = (size_t)0; }
 private:
@@ -100,8 +96,15 @@ private:
 };
 
 
+
+template<AllowedTypes T >
+inline void Serializer_Binary::operator<<(const T& _data)
+{
+	Write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T));
+};
+
 template<StringTypes T>
-inline void BinarySerializer::operator<<(const T& _data)
+inline void Serializer_Binary::operator<<(const T& _data)
 {
 	const unsigned char* src = reinterpret_cast<const unsigned char*>(_data.data());
 	size_t BytesToRead = sizeof(T::value_type) * _data.size();
@@ -111,7 +114,7 @@ inline void BinarySerializer::operator<<(const T& _data)
 }
 
 template<AllowedTypes T>
-inline void BinarySerializer::operator<<(const std::vector<T>& _data)
+inline void Serializer_Binary::operator<<(const std::vector<T>& _data)
 {
 	(*this) << _data.size();
 	for (size_t i = 0; i < _data.size(); ++i)
@@ -123,13 +126,13 @@ inline void BinarySerializer::operator<<(const std::vector<T>& _data)
 
 
 template<AllowedTypes T>
-inline void BinarySerializer::operator>>(T& _data)
+inline void Serializer_Binary::operator>>(T& _data)
 {
 	Read(reinterpret_cast<unsigned char*>(&_data), sizeof(T));
 }
 
 template<StringTypes T>
-inline void BinarySerializer::operator>>(T& _data)
+inline void Serializer_Binary::operator>>(T& _data)
 {
 	size_t BytesToRead{};
 	(*this) >> BytesToRead;
@@ -141,7 +144,7 @@ inline void BinarySerializer::operator>>(T& _data)
 }
 
 template<AllowedTypes T>
-inline void BinarySerializer::operator>>(std::vector<T>& _data)
+inline void Serializer_Binary::operator>>(std::vector<T>& _data)
 {
 	size_t size = 0;
 	(*this) >> size;
@@ -153,7 +156,7 @@ inline void BinarySerializer::operator>>(std::vector<T>& _data)
 }
 
 
-inline size_t BinarySerializer::SetReadOffset(size_t _offset)
+inline size_t Serializer_Binary::SetReadOffset(size_t _offset)
 {
 	size_t ret = _offset;
 
@@ -166,7 +169,7 @@ inline size_t BinarySerializer::SetReadOffset(size_t _offset)
 	return ret;
 }
 
-inline size_t BinarySerializer::SetWriteOffsert(size_t _offset)
+inline size_t Serializer_Binary::SetWriteOffset(size_t _offset)
 {
 	size_t ret = _offset;
 
@@ -179,10 +182,59 @@ inline size_t BinarySerializer::SetWriteOffsert(size_t _offset)
 	return ret;
 }
 
-//#include "../json-cpp/json-forwards.h"
-//class JsonSerializer
-//{
-//
-//
-//
-//};
+
+class Serializer_Json : public Serializer
+{
+public:
+	Serializer_Json() {};
+	virtual ~Serializer_Json() {};
+
+	virtual bool SaveFile(std::filesystem::path const& _fullPath) override { return false; }
+	virtual bool LoadFile(std::filesystem::path const& _fullPath) override { return false; }
+};
+
+
+template <typename T> requires std::is_base_of_v<Serializer, T>
+class Serializable
+{
+protected:
+	Serializable() {};
+	virtual ~Serializable() {};
+
+public:
+	inline bool SaveFile(std::filesystem::path const& _fullPath);
+	inline bool LoadFile(std::filesystem::path const& _fullPath);
+
+	//필요한 Seri
+	virtual bool Serialize(T* _ser) = 0;
+	virtual bool DeSerialize(T* _ser) = 0;
+};
+
+
+template<typename T>
+inline bool Serializable<T>::SaveFile(std::filesystem::path const& _fullPath)
+{
+	T ser{};
+
+	bool result = Serialize(&ser);
+	if (false == result)
+	{
+		return false;
+	}
+
+	return ser.SaveFile(_fullPath);
+}
+
+template<typename T>
+inline bool Serializable<T>::LoadFile(std::filesystem::path const& _fullPath)
+{
+	T ser{};
+	bool result = ser.LoadFile(_fullPath);
+	
+	if (false == result)
+	{
+		return false;
+	}
+	
+	return ser.DeSerialize();
+}

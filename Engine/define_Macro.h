@@ -17,7 +17,7 @@
 #define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
 #define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
 
-#define DEBUG_MESSAGE_W(_c_str) MessageBoxW(nullptr, L ## _c_str, nullptr, MB_OK | MB_ICONINFORMATION); __debugbreak()
+#define DEBUG_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONINFORMATION); __debugbreak()
 #define DEBUG_MESSAGE_A(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONINFORMATION); __debugbreak()
 
 #define DEBUG_LOG(_c_str) OutputDebugStringW(L ## _c_str)

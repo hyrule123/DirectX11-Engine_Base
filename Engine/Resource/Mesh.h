@@ -34,11 +34,9 @@ namespace ehw
 	{
 		ComPtr<ID3D11Buffer>    IndexBuffer;
 
-		struct Value
-		{
-			D3D11_BUFFER_DESC       tIBDesc;
-			UINT				    IdxCount;
-		} Val;
+
+		D3D11_BUFFER_DESC       tIBDesc;
+		UINT				    IdxCount;
 
 		std::vector<UINT>		IdxSysMem;
 	};

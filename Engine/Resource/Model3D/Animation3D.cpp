@@ -76,7 +76,7 @@ namespace ehw
 
         std::ofstream ofs("test");
 
-        BinarySerializer binSave{};
+        Serializer_Binary binSave{};
         binSave << m_StartFrame;
         binSave << m_EndFrame;
         binSave << m_FrameLength;
@@ -116,7 +116,7 @@ namespace ehw
             return eResult::Fail_Open;
         }
 
-        BinarySerializer binLoad{};
+        Serializer_Binary binLoad{};
 
         if (false == binLoad.Load(fullPath))
         {

@@ -2,7 +2,6 @@
 #include "define_Enum.h"
 #include "define_Macro.h"
 #include "CommonType.h"
-#include "json-cpp/json-forwards.h"
 
 #include <string>
 
@@ -29,12 +28,9 @@ namespace ehw
 		Entity(const Entity& _other);
 		virtual Entity* Clone() { ASSERT(false, "Entity 클래스는 Clone할수 없습니다."); return nullptr; }
 
-		Entity(Entity&& _move);
+		Entity(Entity&& _move) noexcept;
 
 		virtual ~Entity();
-
-		virtual eResult SaveJson(Json::Value* _pJson);
-		virtual eResult LoadJson(const Json::Value* _pJson);
 
 		void SetStrKey(const std::string_view _strKey) { mStrKey = _strKey; }
 		const std::string& GetStrKey() const { return mStrKey; }
@@ -45,10 +41,9 @@ namespace ehw
 
 	private:
 		std::string mStrKey;
-		
+		const UINT32 mID;
 
 		static UINT32 gIDNext;
-		const UINT32 mID;
 	};
 
 	template<typename T>

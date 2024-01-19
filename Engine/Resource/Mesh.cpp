@@ -52,53 +52,49 @@ namespace ehw
 	{
 		iResource::Save(_pathFromBaseDir);
 
-		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
-		fullPath.replace_extension(strKey::path::extension::Mesh);
-
 		std::ofstream ofs(fullPath, std::ios::binary);
 		if (false == ofs.is_open())
 		{
 			return eResult::Fail_Open;
 		}
 		
-		const std::string& str = "asdf";
-		using deref = std::remove_const_t<std::remove_reference_t<const std::string&>>;
 		//Key값 저장
-		BinarySerializer ser{};
+		Serializer_Binary ser{};
 		ser << GetStrKey();
-		
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		//저장 필요 없음
 
 		//D3D11_BUFFER_DESC mVBDesc;
-		ser << mVBDesc;
-		
 		//UINT mVertexByteStride;
-		
-		Binary::SaveValue(ofs, mVertexByteStride);
-		//ofs << mVertexByteStride;
-
 		//UINT mVertexCount;
-		Binary::SaveValue(ofs, mVertexCount);
-		//ofs << mVertexCount;
-
-		//std::vector<unsigned char> mVertexSysMem;
-		Binary::SaveValueVector(ofs, mVertexSysMem);
+		//mVertexSysMem;
+		ser << mVBDesc;
+		ser << mVertexByteStride;
+		ser << mVertexCount;
+		ser << mVertexSysMem;
+		
 
 		//std::vector<tIndexInfo>		mIndexInfos;
-		Binary::SaveValue(ofs, mIndexInfos.size());
+		//이중 벡터 형태이므로 수동 저장
+		ser << mIndexInfos.size();
 		for (size_t i = 0; i < mIndexInfos.size(); ++i)
 		{
-			Binary::SaveValue(ofs, mIndexInfos[i].Val);
-			Binary::SaveValueVector(ofs, mIndexInfos[i].IdxSysMem);
+			//D3D11_BUFFER_DESC       tIBDesc;
+			//UINT				    IdxCount;
+			ser << mIndexInfos[i].tIBDesc;
+			ser << mIndexInfos[i].IdxCount;
+			
+			ser << mIndexInfos[i].IdxSysMem;
 		}
 		
+		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
+		fullPath.replace_extension(strKey::path::extension::Mesh);
+		ser.SaveFile(fullPath);
 
 		//StructBuffer* m_pBoneFrameData;   // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
 		//StructBuffer* m_pBoneOffset;	  // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
 		//저장 필요 X
-		ofs.close();
 
 		return eResult::Success;
 	}
