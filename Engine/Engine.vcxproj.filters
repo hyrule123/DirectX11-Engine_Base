@@ -255,7 +255,7 @@
     <ClCompile Include="PCH_Engine.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="json-cpp\jsoncpp.cpp">
+    <ClCompile Include="Util\Serialize\jsoncpp.cpp">
       <Filter>JsonCPP</Filter>
     </ClCompile>
     <ClCompile Include="Util\AtExit.cpp">
@@ -351,7 +351,7 @@
     <ClCompile Include="GameMainWindow.cpp">
       <Filter>High Level Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Util\base64.cpp">
+    <ClCompile Include="Util\Serialize\base64.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Animator\iAnimator.cpp">
@@ -454,7 +454,8 @@
     <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
     <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
-    <ClCompile Include="Util\Serializer.cpp" />
+    <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
+    <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -535,10 +536,10 @@
     <ClInclude Include="GPU\GPUBuffer.h">
       <Filter>GPU\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="json-cpp\json.h">
+    <ClInclude Include="Util\Serialize\json.h">
       <Filter>JsonCPP</Filter>
     </ClInclude>
-    <ClInclude Include="json-cpp\json-forwards.h">
+    <ClInclude Include="Util\Serialize\json-forwards.h">
       <Filter>JsonCPP</Filter>
     </ClInclude>
     <ClInclude Include="Util\AtExit.h">
@@ -622,7 +623,7 @@
     <ClInclude Include="Manager\InputManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="json-cpp\jsonSaveLoad.h">
+    <ClInclude Include="Util\Serialize\jsonSaveLoad.h">
       <Filter>JsonCPP</Filter>
     </ClInclude>
     <ClInclude Include="Util\define_Util.h">
@@ -673,7 +674,7 @@
     <ClInclude Include="resource.h">
       <Filter>Common\WindowResource</Filter>
     </ClInclude>
-    <ClInclude Include="Util\base64.h">
+    <ClInclude Include="Util\Serialize\base64.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Animator\iAnimator.h">
@@ -783,8 +784,10 @@
     <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
-    <ClInclude Include="Util\Serializer.h" />
+    <ClInclude Include="Util\Serialize\Serializer.h" />
     <ClInclude Include="CommonType.h" />
+    <ClInclude Include="Util\Serialize\BinarySerializer.h" />
+    <ClInclude Include="Util\Serialize\JsonSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

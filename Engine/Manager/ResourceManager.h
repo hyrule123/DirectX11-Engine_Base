@@ -5,15 +5,15 @@
 
 #include "ResourceManagers.h"
 
+#include <concepts>
+
 #define LOAD_COMPUTESHADER(_type) ResourceManager<iComputeShader>::Load<_type>(#_type)
 
 namespace ehw
 {
-	template <typename BaseResType>
+	template <typename BaseResType> requires std::is_base_of_v<iResource, BaseResType>
 	class ResourceManager
 	{
-		static_assert(std::is_base_of_v<iResource, BaseResType>, "iResource를 상속받은 클래스만 이 템플릿 사용 가능.");
-
 	public:
 		static void Init(const std::fs::path& _baseDir);
 

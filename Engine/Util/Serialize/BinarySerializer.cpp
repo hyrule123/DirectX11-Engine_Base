@@ -1,19 +1,19 @@
-#include "Serializer.h"
+#include "BinarySerializer.h"
 
-#include "../define_Macro.h"
+#include "../../define_Macro.h"
 
-Serializer_Binary::Serializer_Binary()
+BinarySerializer::BinarySerializer()
 	: m_data()
 	, m_ReadOffset()
 	, m_WriteOffset()
 {
 }
 
-Serializer_Binary::~Serializer_Binary()
+BinarySerializer::~BinarySerializer()
 {
 }
 
-bool Serializer_Binary::SaveFile(std::filesystem::path const& _savePath)
+bool BinarySerializer::SaveFile(std::filesystem::path const& _savePath)
 {
 	auto openMode = std::ios::binary;
 	std::ofstream openFile(_savePath, openMode);
@@ -22,7 +22,7 @@ bool Serializer_Binary::SaveFile(std::filesystem::path const& _savePath)
 }
 
 
-bool Serializer_Binary::LoadFile(std::filesystem::path const& _loadPath)
+bool BinarySerializer::LoadFile(std::filesystem::path const& _loadPath)
 {
 	auto openMode = std::ios::binary;
 	std::ifstream openFile(_loadPath, openMode);
@@ -31,7 +31,7 @@ bool Serializer_Binary::LoadFile(std::filesystem::path const& _loadPath)
 }
 
 
-bool Serializer_Binary::SaveFile(std::ofstream& _saveFile)
+bool BinarySerializer::SaveFile(std::ofstream& _saveFile)
 {
 	if (false == _saveFile.is_open())
 	{
@@ -49,7 +49,7 @@ bool Serializer_Binary::SaveFile(std::ofstream& _saveFile)
 	return true;
 }
 
-bool Serializer_Binary::LoadFile(std::ifstream& _loadFile)
+bool BinarySerializer::LoadFile(std::ifstream& _loadFile)
 {
 	if (false == _loadFile.is_open())
 	{
@@ -74,14 +74,14 @@ bool Serializer_Binary::LoadFile(std::ifstream& _loadFile)
 
 	//원래 위치로 복귀
 	_loadFile.seekg(origPos);
-	
+
 	char* readPos = reinterpret_cast<char*>(m_data.data() + origDataSize);
 	_loadFile.read(readPos, fileSize);
 
 	return true;
 }
 
-void Serializer_Binary::Write(const unsigned char* _pSrc, size_t _size)
+void BinarySerializer::Write(const unsigned char* _pSrc, size_t _size)
 {
 	if (nullptr == _pSrc || 0 == _size)
 	{
@@ -102,10 +102,9 @@ void Serializer_Binary::Write(const unsigned char* _pSrc, size_t _size)
 	unsigned char* dest = m_data.data() + m_WriteOffset;
 	memcpy_s(dest, m_data.size() - m_WriteOffset, _pSrc, _size);
 	m_WriteOffset = reqSize;
-
 }
 
-size_t Serializer_Binary::Read(unsigned char* _pDest, size_t _size)
+size_t BinarySerializer::Read(unsigned char* _pDest, size_t _size)
 {
 	if (nullptr == _pDest || 0 == _size)
 	{
@@ -128,4 +127,3 @@ size_t Serializer_Binary::Read(unsigned char* _pDest, size_t _size)
 
 	return _size;
 }
-
