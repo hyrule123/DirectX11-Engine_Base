@@ -971,13 +971,21 @@ bool Reader::decodeUnicodeEscapeSequence(Token& token, Location& current,
   return true;
 }
 
-bool Reader::addError(const String& message, Token& token, Location extra) {
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = extra;
-  errors_.push_back(info);
-  return false;
+//bool Reader::addError(const String& message, Token& token, Location extra) {
+//  ErrorInfo info;
+//  info.token_ = token;
+//  info.message_ = message;
+//  info.extra_ = extra;
+//  errors_.push_back(info);
+//  return false;
+//}
+bool Reader::addError(const String_View message, Token& token, Location extra) {
+    ErrorInfo info;
+    info.token_ = token;
+    info.message_ = message;
+    info.extra_ = extra;
+    errors_.push_back(info);
+    return false;
 }
 
 bool Reader::recoverFromError(TokenType skipUntilToken) {
@@ -993,10 +1001,15 @@ bool Reader::recoverFromError(TokenType skipUntilToken) {
   return false;
 }
 
-bool Reader::addErrorAndRecover(const String& message, Token& token,
-                                TokenType skipUntilToken) {
-  addError(message, token);
-  return recoverFromError(skipUntilToken);
+//bool Reader::addErrorAndRecover(const String& message, Token& token,
+//                                TokenType skipUntilToken) {
+//  addError(message, token);
+//  return recoverFromError(skipUntilToken);
+//}
+bool Reader::addErrorAndRecover(const String_View message, Token& token,
+    TokenType skipUntilToken) {
+    addError(message, token);
+    return recoverFromError(skipUntilToken);
 }
 
 Value& Reader::currentValue() { return *(nodes_.top()); }
@@ -1067,38 +1080,70 @@ std::vector<Reader::StructuredError> Reader::getStructuredErrors() const {
   return allErrors;
 }
 
-bool Reader::pushError(const Value& value, const String& message) {
-  ptrdiff_t const length = end_ - begin_;
-  if (value.getOffsetStart() > length || value.getOffsetLimit() > length)
-    return false;
-  Token token;
-  token.type_ = tokenError;
-  token.start_ = begin_ + value.getOffsetStart();
-  token.end_ = begin_ + value.getOffsetLimit();
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = nullptr;
-  errors_.push_back(info);
-  return true;
+//bool Reader::pushError(const Value& value, const String& message) {
+//  ptrdiff_t const length = end_ - begin_;
+//  if (value.getOffsetStart() > length || value.getOffsetLimit() > length)
+//    return false;
+//  Token token;
+//  token.type_ = tokenError;
+//  token.start_ = begin_ + value.getOffsetStart();
+//  token.end_ = begin_ + value.getOffsetLimit();
+//  ErrorInfo info;
+//  info.token_ = token;
+//  info.message_ = message;
+//  info.extra_ = nullptr;
+//  errors_.push_back(info);
+//  return true;
+//}
+bool Reader::pushError(const Value& value, const String_View message) {
+    ptrdiff_t const length = end_ - begin_;
+    if (value.getOffsetStart() > length || value.getOffsetLimit() > length)
+        return false;
+    Token token;
+    token.type_ = tokenError;
+    token.start_ = begin_ + value.getOffsetStart();
+    token.end_ = begin_ + value.getOffsetLimit();
+    ErrorInfo info;
+    info.token_ = token;
+    info.message_ = message;
+    info.extra_ = nullptr;
+    errors_.push_back(info);
+    return true;
 }
 
-bool Reader::pushError(const Value& value, const String& message,
-                       const Value& extra) {
-  ptrdiff_t const length = end_ - begin_;
-  if (value.getOffsetStart() > length || value.getOffsetLimit() > length ||
-      extra.getOffsetLimit() > length)
-    return false;
-  Token token;
-  token.type_ = tokenError;
-  token.start_ = begin_ + value.getOffsetStart();
-  token.end_ = begin_ + value.getOffsetLimit();
-  ErrorInfo info;
-  info.token_ = token;
-  info.message_ = message;
-  info.extra_ = begin_ + extra.getOffsetStart();
-  errors_.push_back(info);
-  return true;
+//bool Reader::pushError(const Value& value, const String& message,
+//                       const Value& extra) {
+//  ptrdiff_t const length = end_ - begin_;
+//  if (value.getOffsetStart() > length || value.getOffsetLimit() > length ||
+//      extra.getOffsetLimit() > length)
+//    return false;
+//  Token token;
+//  token.type_ = tokenError;
+//  token.start_ = begin_ + value.getOffsetStart();
+//  token.end_ = begin_ + value.getOffsetLimit();
+//  ErrorInfo info;
+//  info.token_ = token;
+//  info.message_ = message;
+//  info.extra_ = begin_ + extra.getOffsetStart();
+//  errors_.push_back(info);
+//  return true;
+//}
+bool Reader::pushError(const Value& value, const String_View message,
+    const Value& extra) {
+    ptrdiff_t const length = end_ - begin_;
+    if (value.getOffsetStart() > length || value.getOffsetLimit() > length ||
+        extra.getOffsetLimit() > length)
+        return false;
+    Token token;
+    token.type_ = tokenError;
+    token.start_ = begin_ + value.getOffsetStart();
+    token.end_ = begin_ + value.getOffsetLimit();
+    ErrorInfo info;
+    info.token_ = token;
+    info.message_ = message;
+    info.extra_ = begin_ + extra.getOffsetStart();
+    errors_.push_back(info);
+    return true;
 }
 
 bool Reader::good() const { return errors_.empty(); }
@@ -2181,9 +2226,13 @@ bool CharReaderBuilder::validate(Json::Value* invalid) const {
   return invalid ? invalid->empty() : true;
 }
 
-Value& CharReaderBuilder::operator[](const String& key) {
-  return settings_[key];
+//Value& CharReaderBuilder::operator[](const String& key) {
+//  return settings_[key];
+//}
+Value& CharReaderBuilder::operator[](const String_View key) {
+    return settings_[key];
 }
+
 // static
 void CharReaderBuilder::strictMode(Json::Value* settings) {
   //! [CharReaderBuilderStrictMode]
@@ -2846,6 +2895,12 @@ Value::Value(const String& value) {
   initBasic(stringValue, true);
   value_.string_ = duplicateAndPrefixStringValue(
       value.data(), static_cast<unsigned>(value.length()));
+}
+
+Value::Value(const String_View value) {
+    initBasic(stringValue, true);
+    value_.string_ = duplicateAndPrefixStringValue(
+        value.data(), static_cast<unsigned>(value.length()));
 }
 
 Value::Value(const StaticString& value) {
@@ -3534,19 +3589,28 @@ const Value& Value::operator[](const char* key) const {
     return nullSingleton();
   return *found;
 }
-Value const& Value::operator[](const String& key) const {
-  Value const* found = find(key.data(), key.data() + key.length());
-  if (!found)
-    return nullSingleton();
-  return *found;
+//Value const& Value::operator[](const String& key) const {
+//  Value const* found = find(key.data(), key.data() + key.length());
+//  if (!found)
+//    return nullSingleton();
+//  return *found;
+//}
+Value const& Value::operator[](const String_View key) const {
+    Value const* found = find(key.data(), key.data() + key.length());
+    if (!found)
+        return nullSingleton();
+    return *found;
 }
 
 Value& Value::operator[](const char* key) {
   return resolveReference(key, key + strlen(key));
 }
 
-Value& Value::operator[](const String& key) {
-  return resolveReference(key.data(), key.data() + key.length());
+//Value& Value::operator[](const String& key) {
+//  return resolveReference(key.data(), key.data() + key.length());
+//}
+Value& Value::operator[](const String_View key) {
+    return resolveReference(key.data(), key.data() + key.length());
 }
 
 Value& Value::operator[](const StaticString& key) {
@@ -3590,8 +3654,11 @@ Value Value::get(char const* begin, char const* end,
 Value Value::get(char const* key, Value const& defaultValue) const {
   return get(key, key + strlen(key), defaultValue);
 }
-Value Value::get(String const& key, Value const& defaultValue) const {
-  return get(key.data(), key.data() + key.length(), defaultValue);
+//Value Value::get(String const& key, Value const& defaultValue) const {
+//  return get(key.data(), key.data() + key.length(), defaultValue);
+//}
+Value Value::get(const String_View key, Value const& defaultValue) const {
+    return get(key.data(), key.data() + key.length(), defaultValue);
 }
 
 bool Value::removeMember(const char* begin, const char* end, Value* removed) {
@@ -3623,7 +3690,18 @@ void Value::removeMember(const char* key) {
   CZString actualKey(key, unsigned(strlen(key)), CZString::noDuplication);
   value_.map_->erase(actualKey);
 }
-void Value::removeMember(const String& key) { removeMember(key.c_str()); }
+//void Value::removeMember(const String& key) { removeMember(key.c_str()); }
+void Value::removeMember(const String_View key)
+{
+    JSON_ASSERT_MESSAGE(type() == nullValue || type() == objectValue,
+        "in Json::Value::removeMember(): requires objectValue");
+    if (type() == nullValue)
+        return;
+
+    CZString actualKey(key.data(), unsigned(key.length()), CZString::noDuplication);
+    value_.map_->erase(actualKey);
+}
+
 
 bool Value::removeIndex(ArrayIndex index, Value* removed) {
   if (type() != arrayValue) {
@@ -3656,8 +3734,11 @@ bool Value::isMember(char const* begin, char const* end) const {
 bool Value::isMember(char const* key) const {
   return isMember(key, key + strlen(key));
 }
-bool Value::isMember(String const& key) const {
-  return isMember(key.data(), key.data() + key.length());
+//bool Value::isMember(String const& key) const {
+//  return isMember(key.data(), key.data() + key.length());
+//}
+bool Value::isMember(const String_View  key) const {
+    return isMember(key.data(), key.data() + key.length());
 }
 
 Value::Members Value::getMemberNames() const {
@@ -3940,51 +4021,107 @@ PathArgument::PathArgument(String key) : key_(std::move(key)), kind_(kindKey) {}
 // class Path
 // //////////////////////////////////////////////////////////////////
 
-Path::Path(const String& path, const PathArgument& a1, const PathArgument& a2,
-           const PathArgument& a3, const PathArgument& a4,
-           const PathArgument& a5) {
-  InArgs in;
-  in.reserve(5);
-  in.push_back(&a1);
-  in.push_back(&a2);
-  in.push_back(&a3);
-  in.push_back(&a4);
-  in.push_back(&a5);
-  makePath(path, in);
+//Path::Path(const String& path, const PathArgument& a1, const PathArgument& a2,
+//           const PathArgument& a3, const PathArgument& a4,
+//           const PathArgument& a5) {
+//  InArgs in;
+//  in.reserve(5);
+//  in.push_back(&a1);
+//  in.push_back(&a2);
+//  in.push_back(&a3);
+//  in.push_back(&a4);
+//  in.push_back(&a5);
+//  makePath(path, in);
+//}
+Path::Path(const String_View path, const PathArgument& a1, const PathArgument& a2,
+    const PathArgument& a3, const PathArgument& a4,
+    const PathArgument& a5) {
+    InArgs in;
+    in.reserve(5);
+    in.push_back(&a1);
+    in.push_back(&a2);
+    in.push_back(&a3);
+    in.push_back(&a4);
+    in.push_back(&a5);
+    makePath(path, in);
 }
 
-void Path::makePath(const String& path, const InArgs& in) {
-  const char* current = path.c_str();
-  const char* end = current + path.length();
-  auto itInArg = in.begin();
-  while (current != end) {
-    if (*current == '[') {
-      ++current;
-      if (*current == '%')
-        addPathInArg(path, in, itInArg, PathArgument::kindIndex);
-      else {
-        ArrayIndex index = 0;
-        for (; current != end && *current >= '0' && *current <= '9'; ++current)
-          index = index * 10 + ArrayIndex(*current - '0');
-        args_.push_back(index);
-      }
-      if (current == end || *++current != ']')
-        invalidPath(path, int(current - path.c_str()));
-    } else if (*current == '%') {
-      addPathInArg(path, in, itInArg, PathArgument::kindKey);
-      ++current;
-    } else if (*current == '.' || *current == ']') {
-      ++current;
-    } else {
-      const char* beginName = current;
-      while (current != end && !strchr("[.", *current))
-        ++current;
-      args_.push_back(String(beginName, current));
+//void Path::makePath(const String& path, const InArgs& in) {
+//  const char* current = path.c_str();
+//  const char* end = current + path.length();
+//  auto itInArg = in.begin();
+//  while (current != end) {
+//    if (*current == '[') {
+//      ++current;
+//      if (*current == '%')
+//        addPathInArg(path, in, itInArg, PathArgument::kindIndex);
+//      else {
+//        ArrayIndex index = 0;
+//        for (; current != end && *current >= '0' && *current <= '9'; ++current)
+//          index = index * 10 + ArrayIndex(*current - '0');
+//        args_.push_back(index);
+//      }
+//      if (current == end || *++current != ']')
+//        invalidPath(path, int(current - path.c_str()));
+//    } else if (*current == '%') {
+//      addPathInArg(path, in, itInArg, PathArgument::kindKey);
+//      ++current;
+//    } else if (*current == '.' || *current == ']') {
+//      ++current;
+//    } else {
+//      const char* beginName = current;
+//      while (current != end && !strchr("[.", *current))
+//        ++current;
+//      args_.push_back(String(beginName, current));
+//    }
+//  }
+//}
+void Path::makePath(const String_View path, const InArgs& in) {
+    const char* current = path.data();
+    const char* end = current + path.length();
+    auto itInArg = in.begin();
+    while (current != end) {
+        if (*current == '[') {
+            ++current;
+            if (*current == '%')
+                addPathInArg(path, in, itInArg, PathArgument::kindIndex);
+            else {
+                ArrayIndex index = 0;
+                for (; current != end && *current >= '0' && *current <= '9'; ++current)
+                    index = index * 10 + ArrayIndex(*current - '0');
+                args_.push_back(index);
+            }
+            if (current == end || *++current != ']')
+                invalidPath(path, int(current - path.data()));
+        }
+        else if (*current == '%') {
+            addPathInArg(path, in, itInArg, PathArgument::kindKey);
+            ++current;
+        }
+        else if (*current == '.' || *current == ']') {
+            ++current;
+        }
+        else {
+            const char* beginName = current;
+            while (current != end && !strchr("[.", *current))
+                ++current;
+            args_.push_back(String(beginName, current));
+        }
     }
-  }
 }
 
-void Path::addPathInArg(const String& /*path*/, const InArgs& in,
+//void Path::addPathInArg(const String& /*path*/, const InArgs& in,
+//                        InArgs::const_iterator& itInArg,
+//                        PathArgument::Kind kind) {
+//  if (itInArg == in.end()) {
+//    // Error: missing argument %d
+//  } else if ((*itInArg)->kind_ != kind) {
+//    // Error: bad argument type
+//  } else {
+//    args_.push_back(**itInArg++);
+//  }
+//}
+void Path::addPathInArg(const String_View /*path*/, const InArgs& in,
                         InArgs::const_iterator& itInArg,
                         PathArgument::Kind kind) {
   if (itInArg == in.end()) {
@@ -3996,8 +4133,11 @@ void Path::addPathInArg(const String& /*path*/, const InArgs& in,
   }
 }
 
-void Path::invalidPath(const String& /*path*/, int /*location*/) {
-  // Error: invalid path.
+//void Path::invalidPath(const String& /*path*/, int /*location*/) {
+//  // Error: invalid path.
+//}
+void Path::invalidPath(const String_View /*path*/, int /*location*/) {
+    // Error: invalid path.
 }
 
 const Value& Path::resolve(const Value& root) const {
@@ -4655,11 +4795,17 @@ bool StyledWriter::isMultilineArray(const Value& value) {
   return isMultiLine;
 }
 
-void StyledWriter::pushValue(const String& value) {
-  if (addChildValues_)
-    childValues_.push_back(value);
-  else
-    document_ += value;
+//void StyledWriter::pushValue(const String& value) {
+//  if (addChildValues_)
+//    childValues_.push_back(value);
+//  else
+//    document_ += value;
+//}
+void StyledWriter::pushValue(const String_View value) {
+    if (addChildValues_)
+        childValues_.push_back(String(value));
+    else
+        document_ += value;
 }
 
 void StyledWriter::writeIndent() {
@@ -4673,9 +4819,13 @@ void StyledWriter::writeIndent() {
   document_ += indentString_;
 }
 
-void StyledWriter::writeWithIndent(const String& value) {
-  writeIndent();
-  document_ += value;
+//void StyledWriter::writeWithIndent(const String& value) {
+//  writeIndent();
+//  document_ += value;
+//}
+void StyledWriter::writeWithIndent(const String_View value) {
+    writeIndent();
+    document_ += value;
 }
 
 void StyledWriter::indent() { indentString_ += String(indentSize_, ' '); }
@@ -4876,11 +5026,17 @@ bool StyledStreamWriter::isMultilineArray(const Value& value) {
   return isMultiLine;
 }
 
-void StyledStreamWriter::pushValue(const String& value) {
-  if (addChildValues_)
-    childValues_.push_back(value);
-  else
-    *document_ << value;
+//void StyledStreamWriter::pushValue(const String& value) {
+//  if (addChildValues_)
+//    childValues_.push_back(value);
+//  else
+//    *document_ << value;
+//}
+void StyledStreamWriter::pushValue(const String_View value) {
+    if (addChildValues_)
+        childValues_.push_back(String(value));
+    else
+        *document_ << value;
 }
 
 void StyledStreamWriter::writeIndent() {
@@ -4891,12 +5047,19 @@ void StyledStreamWriter::writeIndent() {
   *document_ << '\n' << indentString_;
 }
 
-void StyledStreamWriter::writeWithIndent(const String& value) {
-  if (!indented_)
-    writeIndent();
-  *document_ << value;
-  indented_ = false;
+//void StyledStreamWriter::writeWithIndent(const String& value) {
+//  if (!indented_)
+//    writeIndent();
+//  *document_ << value;
+//  indented_ = false;
+//}
+void StyledStreamWriter::writeWithIndent(const String_View value) {
+    if (!indented_)
+        writeIndent();
+    *document_ << value;
+    indented_ = false;
 }
+
 
 void StyledStreamWriter::indent() { indentString_ += indentation_; }
 
@@ -5303,8 +5466,11 @@ bool StreamWriterBuilder::validate(Json::Value* invalid) const {
   return invalid ? invalid->empty() : true;
 }
 
-Value& StreamWriterBuilder::operator[](const String& key) {
-  return settings_[key];
+//Value& StreamWriterBuilder::operator[](const String& key) {
+//  return settings_[key];
+//}
+Value& StreamWriterBuilder::operator[](const String_View key) {
+    return settings_[key];
 }
 // static
 void StreamWriterBuilder::setDefaults(Json::Value* settings) {

@@ -359,6 +359,7 @@ using Allocator =
     typename std::conditional<JSONCPP_USING_SECURE_MEMORY, SecureAllocator<T>,
                               std::allocator<T>>::type;
 using String = std::basic_string<char, std::char_traits<char>, Allocator<char>>;
+using String_View = std::basic_string_view<char, std::char_traits<char>>;
 using IStringStream =
     std::basic_istringstream<String::value_type, String::traits_type,
                              String::allocator_type>;
@@ -868,6 +869,7 @@ public:
    */
   Value(const StaticString& value);
   Value(const String& value);
+  Value(const String_View value);
   Value(bool value);
   Value(std::nullptr_t ptr) = delete;
   Value(const Value& other);
@@ -1005,11 +1007,13 @@ public:
   const Value& operator[](const char* key) const;
   /// Access an object value by name, create a null member if it does not exist.
   /// \param key may contain embedded nulls.
-  Value& operator[](const String& key);
+  //Value& operator[](const String& key);
+  Value& operator[](const String_View key);
   /// Access an object value by name, returns null if there is no member with
   /// that name.
   /// \param key may contain embedded nulls.
-  const Value& operator[](const String& key) const;
+  //const Value& operator[](const String& key) const;
+  const Value& operator[](const String_View key) const;
   /** \brief Access an object value by name, create a null member if it does not
    * exist.
    *
@@ -1034,7 +1038,8 @@ public:
   /// Return the member named key if it exist, defaultValue otherwise.
   /// \note deep copy
   /// \param key may contain embedded nulls.
-  Value get(const String& key, const Value& defaultValue) const;
+  //Value get(const String& key, const Value& defaultValue) const;
+  Value get(const String_View key, const Value& defaultValue) const;
   /// Most general and efficient version of isMember()const, get()const,
   /// and operator[]const
   /// \note As stated elsewhere, behavior is undefined if (end-begin) >= 2^30
@@ -1051,7 +1056,8 @@ public:
   void removeMember(const char* key);
   /// Same as removeMember(const char*)
   /// \param key may contain embedded nulls.
-  void removeMember(const String& key);
+  //void removeMember(const String& key);
+  void removeMember(const String_View key);
   /// Same as removeMember(const char* begin, const char* end, Value* removed),
   /// but 'key' is null-terminated.
   bool removeMember(const char* key, Value* removed);
@@ -1077,7 +1083,8 @@ public:
   bool isMember(const char* key) const;
   /// Return true if the object has a member named key.
   /// \param key may contain embedded nulls.
-  bool isMember(const String& key) const;
+  //bool isMember(const String& key) const;
+  bool isMember(const String_View key) const;
   /// Same as isMember(String const& key)const
   bool isMember(const char* begin, const char* end) const;
 
@@ -1243,11 +1250,16 @@ private:
  */
 class JSON_API Path {
 public:
-  Path(const String& path, const PathArgument& a1 = PathArgument(),
-       const PathArgument& a2 = PathArgument(),
-       const PathArgument& a3 = PathArgument(),
-       const PathArgument& a4 = PathArgument(),
-       const PathArgument& a5 = PathArgument());
+  //Path(const String& path, const PathArgument& a1 = PathArgument(),
+  //     const PathArgument& a2 = PathArgument(),
+  //     const PathArgument& a3 = PathArgument(),
+  //     const PathArgument& a4 = PathArgument(),
+  //     const PathArgument& a5 = PathArgument());
+  Path(const String_View path, const PathArgument& a1 = PathArgument(),
+      const PathArgument& a2 = PathArgument(),
+      const PathArgument& a3 = PathArgument(),
+      const PathArgument& a4 = PathArgument(),
+      const PathArgument& a5 = PathArgument());
 
   const Value& resolve(const Value& root) const;
   Value resolve(const Value& root, const Value& defaultValue) const;
@@ -1259,10 +1271,15 @@ private:
   using InArgs = std::vector<const PathArgument*>;
   using Args = std::vector<PathArgument>;
 
-  void makePath(const String& path, const InArgs& in);
-  void addPathInArg(const String& path, const InArgs& in,
-                    InArgs::const_iterator& itInArg, PathArgument::Kind kind);
-  static void invalidPath(const String& path, int location);
+  //void makePath(const String& path, const InArgs& in);
+  void makePath(const String_View path, const InArgs& in);
+  //void addPathInArg(const String& path, const InArgs& in,
+  //                  InArgs::const_iterator& itInArg, PathArgument::Kind kind);
+  void addPathInArg(const String_View path, const InArgs& in,
+      InArgs::const_iterator& itInArg, PathArgument::Kind kind);
+
+  //static void invalidPath(const String& path, int location);
+  static void invalidPath(const String_View path, int location);
 
   Args args_;
 };
@@ -1612,7 +1629,8 @@ public:
    * \return \c true if the error was successfully added, \c false if the Value
    * offset exceeds the document size.
    */
-  bool pushError(const Value& value, const String& message);
+  //bool pushError(const Value& value, const String& message);
+  bool pushError(const Value& value, const String_View message);
 
   /** \brief Add a semantic error message with extra context.
    *
@@ -1622,7 +1640,8 @@ public:
    * \return \c true if the error was successfully added, \c false if either
    * Value offset exceeds the document size.
    */
-  bool pushError(const Value& value, const String& message, const Value& extra);
+  //bool pushError(const Value& value, const String& message, const Value& extra);
+  bool pushError(const Value& value, const String_View message, const Value& extra);
 
   /** \brief Return whether there are any errors.
    *
@@ -1686,10 +1705,13 @@ private:
                               unsigned int& unicode);
   bool decodeUnicodeEscapeSequence(Token& token, Location& current,
                                    Location end, unsigned int& unicode);
-  bool addError(const String& message, Token& token, Location extra = nullptr);
+  //bool addError(const String& message, Token& token, Location extra = nullptr);
+  bool addError(const String_View message, Token& token, Location extra = nullptr);
   bool recoverFromError(TokenType skipUntilToken);
-  bool addErrorAndRecover(const String& message, Token& token,
-                          TokenType skipUntilToken);
+  //bool addErrorAndRecover(const String& message, Token& token,
+  //                        TokenType skipUntilToken);
+  bool addErrorAndRecover(const String_View message, Token& token,
+      TokenType skipUntilToken);
   void skipUntilSpace();
   Value& currentValue();
   Char getNextChar();
@@ -1822,7 +1844,8 @@ public:
 
   /** A simple way to update a specific setting.
    */
-  Value& operator[](const String& key);
+  //Value& operator[](const String& key);
+  Value& operator[](const String_View key);
 
   /** Called by ctor, but you can use this to reset settings_.
    * \pre 'settings' != NULL (but Json::null is fine)
@@ -2031,7 +2054,8 @@ public:
   bool validate(Json::Value* invalid) const;
   /** A simple way to update a specific setting.
    */
-  Value& operator[](const String& key);
+  //Value& operator[](const String& key);
+  Value& operator[](const String_View key);
 
   /** Called by ctor, but you can use this to reset settings_.
    * \pre 'settings' != NULL (but Json::null is fine)
@@ -2141,9 +2165,11 @@ private:
   void writeValue(const Value& value);
   void writeArrayValue(const Value& value);
   bool isMultilineArray(const Value& value);
-  void pushValue(const String& value);
+  //void pushValue(const String& value);
+  void pushValue(const String_View value);
   void writeIndent();
-  void writeWithIndent(const String& value);
+  //void writeWithIndent(const String& value);
+  void writeWithIndent(const String_View value);
   void indent();
   void unindent();
   void writeCommentBeforeValue(const Value& root);
@@ -2215,9 +2241,11 @@ private:
   void writeValue(const Value& value);
   void writeArrayValue(const Value& value);
   bool isMultilineArray(const Value& value);
-  void pushValue(const String& value);
+  //void pushValue(const String& value);
+  void pushValue(const String_View value);
   void writeIndent();
-  void writeWithIndent(const String& value);
+  //void writeWithIndent(const String& value);
+  void writeWithIndent(const String_View value);
   void indent();
   void unindent();
   void writeCommentBeforeValue(const Value& root);
@@ -2343,9 +2371,5 @@ JSON_API OStream& operator<<(OStream&, const Value& root);
 // //////////////////////////////////////////////////////////////////////
 // End of content of file: include/json/assertions.h
 // //////////////////////////////////////////////////////////////////////
-
-
-//저장/불러오기 매크로 함수
-#include "jsonSaveLoad.h"
 
 #endif //ifndef JSON_AMALGAMATED_H_INCLUDED
