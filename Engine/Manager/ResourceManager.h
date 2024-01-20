@@ -11,7 +11,8 @@
 
 namespace ehw
 {
-	template <typename BaseResType> requires std::is_base_of_v<iResource, BaseResType>
+	template <typename BaseResType> 
+		requires std::is_base_of_v<iResource, BaseResType>
 	class ResourceManager
 	{
 	public:
@@ -61,23 +62,25 @@ namespace ehw
 
 	template<typename BaseResType>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _filePath)
+	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _pathFromBasePath)
 	{
 		static_assert(std::is_base_of_v<BaseResType, DerivedResType>);
 
 		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
-		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_filePath.string());
+		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_pathFromBasePath.string());
 
 		if(nullptr == returnPtr)
 		{
 			returnPtr = std::make_shared<DerivedResType>();
 
-			eResult result = returnPtr->Load(_filePath);
+			returnPtr->SetStrKey(_pathFromBasePath.string());
+
+			eResult result = returnPtr->Load(_pathFromBasePath);
 
 			if (eResultSuccess(result))
 			{
-				Insert(_filePath.string(), static_pointer_cast<BaseResType>(returnPtr));
+				Insert(_pathFromBasePath.string(), static_pointer_cast<BaseResType>(returnPtr));
 			}
 			else
 			{
