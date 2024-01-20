@@ -1,11 +1,23 @@
 #include "JsonSerializer.h"
 
-bool JsonSerializer::SaveFile(std::filesystem::path const& _fullPath)
+namespace ehw
 {
-	return false;
-}
+	eResult JsonSerializer::SaveFile(std::filesystem::path const& _fullPath)
+	{
+		return eResult::Fail_NotImplemented;
+	}
 
-bool JsonSerializer::LoadFile(std::filesystem::path const& _fullPath)
-{
-	return false;
+	eResult JsonSerializer::LoadFile(std::filesystem::path const& _fullPath)
+	{
+		std::string str = "123";
+		int a = 3;
+		auto pair = JsonPair("str", a);
+		(*this) << JsonPair{ "str", a };
+
+		std::vector<int> intvec = { 1, 2, 3 };
+		(*this) << JsonPair("str", intvec);
+
+		return eResult::Fail_NotImplemented;
+	}
+
 }

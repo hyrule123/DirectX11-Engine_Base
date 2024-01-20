@@ -542,7 +542,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Component\Script\GridScript.cpp" />
     <ClCompile Include="Manager\InputManager.cpp" />
-    <ClCompile Include="Util\Serialize\jsoncpp.cpp">
+    <ClCompile Include="Util\Serialize\json.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>

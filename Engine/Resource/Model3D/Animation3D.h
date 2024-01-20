@@ -4,7 +4,9 @@
 
 
 #include "../../Util/SimpleMath.h"
+#include "../../Util/Serialize/BinarySerializer.h"
 #include "../../defines.h"
+
 
 namespace ehw
 {
@@ -27,8 +29,9 @@ namespace ehw
     struct tFBXAnimClip;
     class StructBuffer;
     class Skeleton;
-	class Animation3D final:
-		public iAnimation
+	class Animation3D final
+        : public iAnimation
+        , public Serializable<BinarySerializer>
 	{
         friend class Skeleton;
 	public:
@@ -42,8 +45,8 @@ namespace ehw
         void BindData();
         void UnBindData();
 
-        eResult Save(const std::fs::path& _pathFromBaseDir);
-        eResult Load(const std::fs::path& _pathFromBaseDir);
+        eResult Serialize(BinarySerializer& _ser) override;
+        eResult DeSerialize(BinarySerializer& _ser) override;
 
         eResult LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip);
 

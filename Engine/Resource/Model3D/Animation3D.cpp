@@ -2,8 +2,6 @@
 
 #include "../../GPU/StructBuffer.h"
 
-#include "../../Util/Serializer.h"
-
 #include "../../Manager/ResourceManager.h"
 
 
@@ -44,113 +42,62 @@ namespace ehw
         m_SBufferKeyFrame->UnBindData();
     }
 
-#pragma region 저장 및 불러오기
-    eResult Animation3D::Save(const std::fs::path& _pathFromBaseDir)
+    eResult Animation3D::Serialize(BinarySerializer& _ser)
     {
         if (nullptr == m_OwnerSkeleton)
         {
             ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
         }
+        _ser << m_StartFrame;
+        _ser << m_EndFrame;
+        _ser << m_FrameLength;
+        _ser << m_StartTime;
+        _ser << m_EndTime;
+        _ser << m_TimeLength;
+        _ser << m_UpdateTime;
+        _ser << m_FramePerSec;
 
-        SetStrKey(_pathFromBaseDir.string());
-
-        if (false == _pathFromBaseDir.has_parent_path())
-        {
-            ERROR_MESSAGE("Animation은 반드시 상위 폴더가 있어야 합니다.");
-            return eResult::Fail_InValid;
-        }
-
-        std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
-
-        //디렉토리 존재여부 확인 및 없을 시 생성
-        {
-            std::fs::path checkDir = fullPath.parent_path();
-            if (false == std::fs::exists(checkDir))
-            {
-                std::fs::create_directories(checkDir);
-            }
-        }
-
-        fullPath.replace_extension(strKey::path::extension::Anim3D);
-
-        std::ofstream ofs("test");
-
-        Serializer_Binary binSave{};
-        binSave << m_StartFrame;
-        binSave << m_EndFrame;
-        binSave << m_FrameLength;
-        binSave << m_StartTime;
-        binSave << m_EndTime;
-        binSave << m_TimeLength;
-        binSave << m_UpdateTime;
-        binSave << m_FramePerSec;
-
-        binSave << m_KeyFramesPerBone.size();
+        _ser << m_KeyFramesPerBone.size();
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
-            binSave << m_KeyFramesPerBone[i].BoneIndex;
-            binSave << m_KeyFramesPerBone[i].vecKeyFrame;
+            _ser << m_KeyFramesPerBone[i].BoneIndex;
+            _ser << m_KeyFramesPerBone[i].vecKeyFrame;
         }
-
-        binSave.Save(fullPath);
 
         return eResult::Success;
     }
 
-    eResult Animation3D::Load(const std::fs::path& _pathFromBaseDir)
+    eResult Animation3D::DeSerialize(BinarySerializer& _ser)
     {
-        SetStrKey(_pathFromBaseDir.string());
-
-        if (false == _pathFromBaseDir.has_parent_path())
-        {
-            ERROR_MESSAGE("Animation은 반드시 상위 폴더가 있어야 합니다.");
-            return eResult::Fail_InValid;
-        }
-        std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
-        fullPath.replace_extension(strKey::path::extension::Anim3D);
-
-        if (false == std::fs::exists(fullPath))
-        {
-            ERROR_MESSAGE("파일이 존재하지 않습니다.");
-            return eResult::Fail_Open;
-        }
-
-        Serializer_Binary binLoad{};
-
-        if (false == binLoad.Load(fullPath))
-        {
-            return eResult::Fail_Open;
-        }
-
-        binLoad >> m_StartFrame;
-        binLoad >> m_EndFrame;
-        binLoad >> m_FrameLength;
-        binLoad >> m_StartTime;
-        binLoad >> m_EndTime;
-        binLoad >> m_TimeLength;
-        binLoad >> m_UpdateTime;
-        binLoad >> m_FramePerSec;
+        _ser >> m_StartFrame;
+        _ser >> m_EndFrame;
+        _ser >> m_FrameLength;
+        _ser >> m_StartTime;
+        _ser >> m_EndTime;
+        _ser >> m_TimeLength;
+        _ser >> m_UpdateTime;
+        _ser >> m_FramePerSec;
 
         size_t vecSize = 0;
-        binLoad >> vecSize;
+        _ser >> vecSize;
         m_KeyFramesPerBone.resize(vecSize);
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
-            binLoad >> m_KeyFramesPerBone[i].BoneIndex;
-            binLoad >> m_KeyFramesPerBone[i].vecKeyFrame;
+            _ser >> m_KeyFramesPerBone[i].BoneIndex;
+            _ser >> m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;
         vecFrameTrans.resize(m_OwnerSkeleton->GetBoneCount() * m_FrameLength);
         {
             size_t KeyFramesPerBoneSize{};
-            binLoad >> KeyFramesPerBoneSize;
+            _ser >> KeyFramesPerBoneSize;
             m_KeyFramesPerBone.resize(KeyFramesPerBoneSize);
             for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
             {
-                binLoad >> m_KeyFramesPerBone[i].BoneIndex;
-                binLoad >> m_KeyFramesPerBone[i].vecKeyFrame;
+                _ser >> m_KeyFramesPerBone[i].BoneIndex;
+                _ser >> m_KeyFramesPerBone[i].vecKeyFrame;
 
                 for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
                 {
@@ -159,15 +106,16 @@ namespace ehw
                 }
             }
         }
-        
+
         if (false == CreateKeyFrameSBuffer(vecFrameTrans))
         {
             ERROR_MESSAGE("키프레임 구조화 버퍼 생성 실패.");
             return eResult::Fail_Create;
         }
-       
+
         return eResult::Success;
     }
+
 
 	eResult Animation3D::LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip)
 	{

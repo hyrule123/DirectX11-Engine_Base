@@ -1,9 +1,8 @@
 #pragma once
 #include "iAnimation.h"
 
-
-
 #include "Texture.h"
+#include "../Util/Serialize/JsonSerializer.h"
 
 namespace ehw
 {
@@ -11,6 +10,7 @@ namespace ehw
 
 	class Animation2D final
 		: public iAnimation
+		, public Serializable<JsonSerializer>
 	{
 	public:
 		struct tSprite
@@ -40,6 +40,11 @@ namespace ehw
 		virtual ~Animation2D();
 
 		virtual eResult Load(const std::filesystem::path& _pathFromBaseDir) override { return eResult::Fail_NotImplemented; }
+
+		
+		virtual bool Serialize(JsonSerializer& _ser) override;
+		virtual bool DeSerialize(const JsonSerializer& _ser) override;
+
 		virtual eResult SaveJson(Json::Value* _pJVal) override;
 		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 

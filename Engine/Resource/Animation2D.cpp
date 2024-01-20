@@ -41,6 +41,18 @@ namespace ehw
 	}
 
 
+	bool Animation2D::Serialize(JsonSerializer& _ser)
+	{
+		_ser << MAKE_JSONPAIR(mSpriteSheet);
+
+		return false;
+	}
+
+	bool Animation2D::DeSerialize(const JsonSerializer& _ser)
+	{
+		return false;
+	}
+
 	eResult Animation2D::SaveJson(Json::Value* _pJVal)
 	{
 		if (nullptr == _pJVal)

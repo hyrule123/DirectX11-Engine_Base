@@ -255,7 +255,7 @@
     <ClCompile Include="PCH_Engine.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Serialize\jsoncpp.cpp">
+    <ClCompile Include="Util\Serialize\json.cpp">
       <Filter>JsonCPP</Filter>
     </ClCompile>
     <ClCompile Include="Util\AtExit.cpp">

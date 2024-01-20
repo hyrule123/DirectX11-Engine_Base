@@ -1,10 +1,6 @@
 #pragma once
 #include "../Entity.h"
 
-
-#include "../json-cpp/json-forwards.h"
-
-
 #include "define_Resource.h"
 
 namespace ehw
@@ -18,13 +14,6 @@ namespace ehw
 		iResource(const iResource& _other) = default;
 
 		virtual ~iResource();
-
-		//BasePath를 저장
-		virtual eResult Save(const std::fs::path& _pathFromBaseDir);
-		virtual eResult Load(const std::fs::path& _pathFromBaseDir);
-
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
 
 		const std::type_info& GetResourceType() { return m_ResourceTypeInfo; }
 
@@ -42,7 +31,7 @@ namespace ehw
 	template<class ResourceType>
 	inline bool iResource::Is()
 	{
-		return (m_ResourceTypeInfo == typeid(ResourceType));
+		return (typeid(ResourceType) == m_ResourceTypeInfo);
 	}
 
 }
