@@ -3,6 +3,7 @@
 namespace ehw
 {
 	JsonSerializer::JsonSerializer()
+		: m_jVal(Json::objectValue)
 	{
 	}
 
@@ -25,6 +26,11 @@ namespace ehw
 		(*this) << JsonPair("str", intvec);
 
 		return eResult::Fail_NotImplemented;
+	}
+
+	void JsonSerializer::operator<<(JsonPair&& _jPair) noexcept
+	{
+		m_jVal[_jPair.strKey] = std::move(_jPair.data);
 	}
 
 	bool JsonSerializer::CheckValid(const std::string_view _strKey, bool _bCheckValueExist)
