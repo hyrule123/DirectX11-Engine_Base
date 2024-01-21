@@ -20,9 +20,6 @@ namespace ehw
 
         virtual ~Com_Transform();
 
-        virtual eResult SaveJson(Json::Value* _pJson) override;
-        virtual eResult LoadJson(const Json::Value* _pJson) override;
-
     public:
         //virtual void Init() override;
         virtual void InternalUpdate() override;

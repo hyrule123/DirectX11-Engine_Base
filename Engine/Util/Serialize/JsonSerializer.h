@@ -5,6 +5,7 @@
 #include "../StringConverter.h"
 
 #define MAKE_JSONPAIR(_var) JsonSerializer::JsonPair(#_var, _var)
+#define JSON_KEY(_varName) #_varName
 
 namespace ehw
 {
@@ -14,16 +15,28 @@ namespace ehw
 	template <typename F> requires std::is_same_v<double, F>
 	union FtoI { double f; std::int64_t i; };
 
+	template <typename T>
+	concept JsonAllowedString =
+		(std::is_same_v<const char*, T> || std::is_same_v<std::string, T> || std::is_same_v<std::string_view, T>);
+
+	template <typename T>
+	concept JsonAllowedTypes =
+		(std::is_same_v<const char*, T> || NotPointerTypes<T>) &&
+		std::is_integral_v<T> &&
+		std::is_floating_point_v<T> &&
+		std::is_;
+
 	class JsonSerializer : public Serializer
 	{
 	public:
-		JsonSerializer() {};
-		virtual ~JsonSerializer() {};
+		JsonSerializer();
+		virtual ~JsonSerializer();
 
 		virtual eResult SaveFile(std::filesystem::path const& _fullPath) override;
 		virtual eResult LoadFile(std::filesystem::path const& _fullPath) override;
 
-		template <NotPointerTypes T>
+		
+		template <JsonAllowedTypes T>
 		struct JsonPair
 		{
 			JsonPair(const std::string_view _strKey, T& _data)
@@ -36,27 +49,27 @@ namespace ehw
 		};
 
 
-		template <NotPointerTypes T>
+		template <JsonAllowedTypes T>
 		static Json::Value Serialize(const T& _val);
 
-		template <NotPointerTypes T>
+		template <JsonAllowedTypes T>
 		static T DeSerialize(const Json::Value& _jVal);
 
-		template <NotPointerTypes T>
-		void operator << (const JsonPair<T>& _jPair);
+		template <JsonAllowedTypes T>
+		bool operator << (const JsonPair<T>& _jPair);
 
-		template <NotPointerTypes T>
-		void operator << (const JsonPair<std::vector<T>>& _jPair);
+		template <JsonAllowedTypes T>
+		bool operator << (const JsonPair<std::vector<T>>& _jPair);
 
-		template <NotPointerTypes T>
-		void operator >> (JsonPair<T>& _jPair);
+		template <JsonAllowedTypes T>
+		bool operator >> (JsonPair<T>& _jPair);
 
-		template <NotPointerTypes T>
-		void operator >> (JsonPair<std::vector<T>>& _jPair);
+		template <JsonAllowedTypes T>
+		bool operator >> (JsonPair<std::vector<T>>& _jPair);
+		
 
 	private:
-		inline bool CheckStringValid(const std::string_view _strKey);
-		inline bool CheckValueExists(const std::string_view _strKey);
+		inline bool CheckValid(const std::string_view _strKey, bool _bCheckValueExist);
 		
 
 	private:
@@ -64,25 +77,23 @@ namespace ehw
 	};
 
 
-	template<NotPointerTypes T>
-	inline void JsonSerializer::operator<<(const JsonPair<T>& _jPair)
+	template<JsonAllowedTypes T>
+	inline bool JsonSerializer::operator<<(const JsonPair<T>& _jPair)
 	{
-		if (false == CheckStringValid(_jPair.strKey))
+		if (false == CheckValid(_jPair.strKey, false))
 		{
 			return;
 		}
-
 		m_jVal[_jPair.strKey] = Serialize(_jPair.data);
 	}
 
-	template<NotPointerTypes T>
-	inline void JsonSerializer::operator<<(const JsonPair<std::vector<T>>& _jPair)
+	template<JsonAllowedTypes T>
+	inline bool JsonSerializer::operator<<(const JsonPair<std::vector<T>>& _jPair)
 	{
-		if (false == CheckStringValid(_jPair.strKey))
+		if (false == CheckValid(_jPair.strKey))
 		{
-			return;
+			return false;
 		}
-
 		Json::Value arrVal = Json::Value(Json::arrayValue);
 		for (size_t i = 0; i < _jPair.data.size(); ++i)
 		{
@@ -90,24 +101,25 @@ namespace ehw
 		}
 
 		m_jVal[_jPair.strKey] = std::move(arrVal);
+		return true;
 	}
 
-	template<NotPointerTypes T>
-	inline void JsonSerializer::operator>>(JsonPair<T>& _jPair)
+	template<JsonAllowedTypes T>
+	inline bool JsonSerializer::operator>>(JsonPair<T>& _jPair)
 	{
-		if (false == CheckStringValid(_jPair.strKey) || false == CheckValueExists(_jPair.strKey))
+		if (false == CheckValid(_jPair.strKey, true))
 		{
-			return;
+			return false;
 		}
 
 		
 		_jPair.data = DeSerialize<T>(m_jVal[_jPair.strKey]);
 	}
 
-	template<NotPointerTypes T>
-	inline void JsonSerializer::operator>>(JsonPair<std::vector<T>>& _jPair)
+	template<JsonAllowedTypes T>
+	inline bool JsonSerializer::operator>>(JsonPair<std::vector<T>>& _jPair)
 	{
-		if (false == CheckStringValid(_jPair.strKey) || false == CheckValueExists(_jPair.strKey))
+		if (false == CheckValid(_jPair.strKey, true))
 		{
 			return;
 		}
@@ -126,12 +138,13 @@ namespace ehw
 		}
 	}
 
-	template<NotPointerTypes T>
+	template<JsonAllowedTypes T>
 	inline Json::Value JsonSerializer::Serialize(const T& _val)
 	{
 		Json::Value retJval;
 
-		if constexpr (std::is_integral_v<T>)
+		if constexpr ()
+		else if constexpr (std::is_integral_v<T>)
 		{
 			retJval = _val;
 		}
@@ -146,7 +159,7 @@ namespace ehw
 			ftoi.f = _val;
 			retJval = ftoi.i;
 		}
-		else if constexpr (std::is_same_v<std::string, T>)
+		else if constexpr (JsonAllowedString<T>)
 		{
 			retJval = _val;
 		}
@@ -158,7 +171,7 @@ namespace ehw
 		return retJval;
 	}
 
-	template<NotPointerTypes T>
+	template<JsonAllowedTypes T>
 	inline T JsonSerializer::DeSerialize(const Json::Value& _jVal)
 	{
 		T retVal{};
@@ -178,7 +191,7 @@ namespace ehw
 			ftoi.i = _jVal.as<T>();
 			retVal = ftoi.f;
 		}
-		else if constexpr (std::is_same_v<std::string, T>)
+		else if constexpr (JsonAllowedString<T>)
 		{
 			retVal = _jVal.as<T>;
 		}
@@ -190,23 +203,4 @@ namespace ehw
 		return retVal;
 	}
 
-	inline bool JsonSerializer::CheckStringValid(const std::string_view _strKey)
-	{
-		bool ret = !_strKey.empty();
-		if (false == ret)
-		{
-			ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
-		}
-		return ret;
-	}
-
-	inline bool JsonSerializer::CheckValueExists(const std::string_view _strKey)
-	{
-		bool ret = m_jVal.isMember(_strKey);
-		if (false == ret)
-		{
-			ERROR_MESSAGE("스트링 키에 대응되는 값이 없습니다.");
-		}
-		return ret;
-	}
 }

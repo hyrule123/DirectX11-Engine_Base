@@ -4,6 +4,7 @@
 
 
 #include "../../GPU/CommonGPU.h"
+#include "../../Util/Serialize/JsonSerializer.h"
 
 
 #include <unordered_set>
@@ -22,19 +23,14 @@ namespace ehw
 		std::string strKey;
 	};
 
-	class GraphicsShader final : public iShader
+	class GraphicsShader final 
+		: public iShader
+		, public Serializable<JsonSerializer>
 	{
 		friend class editor::EditorGraphicsShader;
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();
-
-		//여기 수정할 경우 CodeGenerator의 함수도 수정해 줄것
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
-
-		virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;																					
-		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
 
 		eResult CreateByCompile(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
@@ -60,9 +56,10 @@ namespace ehw
 		void SetBSState(eBSType _state) { mBSType = _state; }
 		eBSType GetBSState() const { return mBSType; }
 
-
-
 		void BindData();
+
+		eResult Serialize(JsonSerializer& _ser) override;
+		eResult DeSerialize(JsonSerializer& _ser) override;
 
 		//에디터용
 		inline void SetEditMode(bool _bEditMode) { mbEditMode = _bEditMode; }

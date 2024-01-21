@@ -1,7 +1,6 @@
 #include "Com_AudioSource.h"
 
 #include "../../../Resource/AudioClip.h"
-#include "../../../json-cpp/json.h"
 #include "../../../Manager/ResourceManager.h"
 
 #include "../../GameObject.h"
@@ -21,48 +20,48 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioSource::SaveJson(Json::Value* _pJson)
-	{
-		if (nullptr == _pJson)
-		{
-			return eResult::Fail;
-		}
-		eResult result = iComponent::SaveJson(_pJson);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-		Json::Value& jVal = *_pJson;
+	//eResult Com_AudioSource::SaveJson(Json::Value* _pJson)
+	//{
+	//	if (nullptr == _pJson)
+	//	{
+	//		return eResult::Fail;
+	//	}
+	//	eResult result = iComponent::SaveJson(_pJson);
+	//	if (eResultFail(result))
+	//	{
+	//		return result;
+	//	}
+	//	Json::Value& jVal = *_pJson;
 
-		if (mAudioClip)
-		{
-			jVal[JSON_KEY(mAudioClip)] = mAudioClip->GetStrKey();
-		}
+	//	if (mAudioClip)
+	//	{
+	//		jVal[JSON_KEY(mAudioClip)] = mAudioClip->GetStrKey();
+	//	}
 
-		return eResult::Success;
-	}
+	//	return eResult::Success;
+	//}
 
-	eResult Com_AudioSource::LoadJson(const Json::Value* _pJson)
-	{
-		if (nullptr == _pJson)
-		{
-			return eResult::Fail;
-		}
-		eResult result = iComponent::LoadJson(_pJson);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-		const Json::Value& jVal = *_pJson;
+	//eResult Com_AudioSource::LoadJson(const Json::Value* _pJson)
+	//{
+	//	if (nullptr == _pJson)
+	//	{
+	//		return eResult::Fail;
+	//	}
+	//	eResult result = iComponent::LoadJson(_pJson);
+	//	if (eResultFail(result))
+	//	{
+	//		return result;
+	//	}
+	//	const Json::Value& jVal = *_pJson;
 
-		if (jVal.isMember(JSON_KEY(mAudioClip)))
-		{
-			std::string strKey = jVal[JSON_KEY(mAudilClip)].asString();
-			mAudioClip = ResourceManager<AudioClip>::Load(strKey);
-		}
+	//	if (jVal.isMember(JSON_KEY(mAudioClip)))
+	//	{
+	//		std::string strKey = jVal[JSON_KEY(mAudilClip)].asString();
+	//		mAudioClip = ResourceManager<AudioClip>::Load(strKey);
+	//	}
 
-		return eResult::Success;
-	}
+	//	return eResult::Success;
+	//}
 
 	Com_AudioSource::~Com_AudioSource()
 	{

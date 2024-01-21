@@ -29,36 +29,6 @@ namespace ehw
 	iComponent::~iComponent()
 	{
 	}
-	eResult iComponent::SaveJson(Json::Value* _pJson)
-	{
-		if (nullptr == _pJson)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = Entity::SaveJson(_pJson);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_ComCategory));
-
-		return eResult::Success;
-	}
-	eResult iComponent::LoadJson(const Json::Value* _pJson)
-	{
-		if (nullptr == _pJson)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = Entity::LoadJson(_pJson);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		return eResult::Success;
-	}
 
 	void iComponent::SetEnable(bool _bEnable)
 	{

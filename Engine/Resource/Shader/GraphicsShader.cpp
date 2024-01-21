@@ -7,7 +7,6 @@
 #include "../../Manager/RenderManager.h"
 #include "../../Manager/PathManager.h"
 
-#include "../../json-cpp/jsonSaveLoad.h"
 
 namespace ehw
 {
@@ -43,63 +42,7 @@ namespace ehw
 
 	eResult GraphicsShader::SaveJson(Json::Value* _pJVal)
 	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = iShader::SaveJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-		Json::Value& jVal = *_pJVal;
 
-		Json::Value& jsonInputLayouts = jVal[JSON_KEY(mInputLayoutDescs)];
-		//Input Layout Desc
-		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
-		{
-			Json::Value InputElement{};
-
-			std::string strSemanticName;
-			if (mInputLayoutDescs[i].SemanticName)
-			{
-				strSemanticName = mInputLayoutDescs[i].SemanticName;
-			}
-			InputElement.append(strSemanticName);
-
-			D3D11InputElementDescWithoutName desc{};
-			desc.SemanticIndex = mInputLayoutDescs[i].SemanticIndex;
-			desc.Format = mInputLayoutDescs[i].Format;
-			desc.InputSlot = mInputLayoutDescs[i].InputSlot;
-			desc.AlignedByteOffset = mInputLayoutDescs[i].AlignedByteOffset;
-			desc.InputSlotClass = mInputLayoutDescs[i].InputSlotClass;
-			desc.InstanceDataStepRate = mInputLayoutDescs[i].InstanceDataStepRate;
-
-			std::string converted = Json::SaveLoad::ConvertWrite(desc);
-
-			InputElement.append(converted);
-
-			jsonInputLayouts.append(InputElement);
-		}
-
-		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));
-
-		//토폴로지
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mTopology));
-
-		//쉐이더 파일명
-		{
-			Json::Value& ShaderFileName = jVal[JSON_KEY(mArrShaderCode)];
-			for (int i = 0; i < (int)eGSStage::END; ++i)
-			{
-				ShaderFileName.append(mArrShaderCode[i].strKey);
-			}
-		}
-
-		//래스터라이저 상태
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRSType));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mDSType));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mBSType));
 
 		return eResult::Success;
 	}
@@ -421,6 +364,62 @@ namespace ehw
 
 		constexpr float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
+	}
+
+	eResult GraphicsShader::Serialize(JsonSerializer& _ser)
+	{
+		//구조체 안에 const char* 타입이 있어서 수동으로 해줘야함
+		Json::Value& jsonInputLayouts = _ser[JSON_KEY(mInputLayoutDescs)];
+		//Input Layout Desc
+		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
+		{
+			Json::Value InputElement{};
+
+			std::string strSemanticName;
+			if (mInputLayoutDescs[i].SemanticName)
+			{
+				strSemanticName = mInputLayoutDescs[i].SemanticName;
+			}
+			InputElement.append(strSemanticName);
+
+			D3D11InputElementDescWithoutName desc{};
+			desc.SemanticIndex = mInputLayoutDescs[i].SemanticIndex;
+			desc.Format = mInputLayoutDescs[i].Format;
+			desc.InputSlot = mInputLayoutDescs[i].InputSlot;
+			desc.AlignedByteOffset = mInputLayoutDescs[i].AlignedByteOffset;
+			desc.InputSlotClass = mInputLayoutDescs[i].InputSlotClass;
+			desc.InstanceDataStepRate = mInputLayoutDescs[i].InstanceDataStepRate;
+
+			std::string converted = Json::SaveLoad::ConvertWrite(desc);
+
+			InputElement.append(converted);
+
+			jsonInputLayouts.append(InputElement);
+		}
+
+		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));
+
+		//토폴로지
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mTopology));
+
+		//쉐이더 파일명
+		{
+			Json::Value& ShaderFileName = jVal[JSON_KEY(mArrShaderCode)];
+			for (int i = 0; i < (int)eGSStage::END; ++i)
+			{
+				ShaderFileName.append(mArrShaderCode[i].strKey);
+			}
+		}
+
+		//래스터라이저 상태
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRSType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mDSType));
+		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mBSType));
+	}
+
+	eResult GraphicsShader::DeSerialize(JsonSerializer& _ser)
+	{
+		return eResult();
 	}
 
 	eResult GraphicsShader::CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize)

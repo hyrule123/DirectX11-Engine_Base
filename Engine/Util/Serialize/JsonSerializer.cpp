@@ -2,6 +2,13 @@
 
 namespace ehw
 {
+	JsonSerializer::JsonSerializer()
+	{
+	}
+
+	JsonSerializer::~JsonSerializer()
+	{
+	}
 	eResult JsonSerializer::SaveFile(std::filesystem::path const& _fullPath)
 	{
 		return eResult::Fail_NotImplemented;
@@ -20,6 +27,18 @@ namespace ehw
 		return eResult::Fail_NotImplemented;
 	}
 
-
-
+	bool JsonSerializer::CheckValid(const std::string_view _strKey, bool _bCheckValueExist)
+	{
+		if (_strKey.empty())
+		{
+			ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
+			return false;
+		}
+		else if (_bCheckValueExist && false == m_jVal.isMember(_strKey))
+		{
+			ERROR_MESSAGE("스트링 키에 대응되는 값이 존재하지 않습니다.");
+			return false;
+		}
+		return true;
+	}
 }

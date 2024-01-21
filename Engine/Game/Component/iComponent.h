@@ -25,9 +25,6 @@ namespace ehw
 
 		virtual ~iComponent();
 
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
-
 		virtual void Init() {};
 		virtual void Awake() {};
 		virtual void OnEnable() {};

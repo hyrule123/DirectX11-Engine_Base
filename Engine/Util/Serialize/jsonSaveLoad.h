@@ -329,8 +329,6 @@ namespace Json
 	//}
 }
 
-#define JSON_KEY(_varName) #_varName
 
-#define JSON_KEY_PAIR(_varName) #_varName, _varName
 
 

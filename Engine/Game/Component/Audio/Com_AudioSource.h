@@ -15,9 +15,6 @@ namespace ehw
 		Com_AudioSource(const Com_AudioSource& _other) = default;
 		CLONE(Com_AudioSource);
 
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
-
 		virtual ~Com_AudioSource();
 
 		virtual void InternalUpdate() override;

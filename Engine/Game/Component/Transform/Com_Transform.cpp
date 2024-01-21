@@ -8,8 +8,6 @@
 #include "../../../GPU/ConstBuffer.h"
 #include "../../../Application.h"
 
-#include "../../../json-cpp/json.h"
-
 
 #include "../Camera/Com_Camera.h"
 
@@ -79,153 +77,153 @@ namespace ehw
 		//Application::(std::bind(&Com_Transform::ClearUpdateState, this));
 	}
 
-	eResult Com_Transform::SaveJson(Json::Value* _pJson)
-	{
-		return eResult::Fail_NotImplemented;
+	//eResult Com_Transform::SaveJson(Json::Value* _pJson)
+	//{
+	//	return eResult::Fail_NotImplemented;
 
-		if (nullptr == _pJson)
-			return eResult::Fail_Nullptr;
+	//	if (nullptr == _pJson)
+	//		return eResult::Fail_Nullptr;
 
-		//Com_Transform 항목을 하나 만들어서 그 안에 저장
-		Json::Value& jVal = (*_pJson);
+	//	//Com_Transform 항목을 하나 만들어서 그 안에 저장
+	//	Json::Value& jVal = (*_pJson);
 
-		//{//사이즈 X, Y, Z 순서로 저장
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3Size);
-		//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
-		//	jVal[strKey].append(Pack_float_int(mSize.x).i);
-		//	jVal[strKey].append(Pack_float_int(mSize.y).i);
-		//	jVal[strKey].append(Pack_float_int(mSize.z).i);
-		//}
+	//	//{//사이즈 X, Y, Z 순서로 저장
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3Size);
+	//	//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
+	//	//	jVal[strKey].append(Pack_float_int(mSize.x).i);
+	//	//	jVal[strKey].append(Pack_float_int(mSize.y).i);
+	//	//	jVal[strKey].append(Pack_float_int(mSize.z).i);
+	//	//}
 
-		//{
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeScale);
-		//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
-		//	jVal[strKey].append(Pack_float_int(mScaleRelative.x).i);
-		//	jVal[strKey].append(Pack_float_int(mScaleRelative.y).i);
-		//	jVal[strKey].append(Pack_float_int(mScaleRelative.z).i);
-		//}
+	//	//{
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeScale);
+	//	//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
+	//	//	jVal[strKey].append(Pack_float_int(mScaleRelative.x).i);
+	//	//	jVal[strKey].append(Pack_float_int(mScaleRelative.y).i);
+	//	//	jVal[strKey].append(Pack_float_int(mScaleRelative.z).i);
+	//	//}
 
-		//{
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativePos);
-		//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.x).i);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.y).i);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.z).i);
-		//}
+	//	//{
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativePos);
+	//	//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.x).i);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.y).i);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativePos.z).i);
+	//	//}
 
-		//{
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeRot);
-		//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.x).i);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.y).i);
-		//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.z).i);
-		//}
+	//	//{
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeRot);
+	//	//	jVal[strKey] = Json::Value(Json::ValueType::arrayValue);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.x).i);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.y).i);
+	//	//	jVal[strKey].append(Pack_float_int(m_v3RelativeRot.z).i);
+	//	//}
 
-		//{
-		//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritRot)] = mbInheritRot;
-		//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritScale)] = mbInheritScale;
-		//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bLockRot)] = mbLockRotation;
-		//}
+	//	//{
+	//	//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritRot)] = mbInheritRot;
+	//	//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritScale)] = mbInheritScale;
+	//	//	jVal[std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bLockRot)] = mbLockRotation;
+	//	//}
 
-		return eResult::Success;
-	}
+	//	return eResult::Success;
+	//}
 
-	eResult Com_Transform::LoadJson(const Json::Value* _pJson)
-	{
-		return eResult::Fail_NotImplemented;
+	//eResult Com_Transform::LoadJson(const Json::Value* _pJson)
+	//{
+	//	return eResult::Fail_NotImplemented;
 
-		if (nullptr == _pJson)
-			return eResult::Fail_Nullptr;
+	//	if (nullptr == _pJson)
+	//		return eResult::Fail_Nullptr;
 
-		//Json::Value& jVal = (*_pJson);
+	//	//Json::Value& jVal = (*_pJson);
 
-		//auto ReadVec3FromJson = [](const Json::Value& _jVal, const std::string& _strKey, float3& _outVal)->bool
-		//	{
-		//		if (_jVal.isMember(_strKey))
-		//		{
-		//			if (_jVal[_strKey].size() != 3)
-		//				return false;
+	//	//auto ReadVec3FromJson = [](const Json::Value& _jVal, const std::string& _strKey, float3& _outVal)->bool
+	//	//	{
+	//	//		if (_jVal.isMember(_strKey))
+	//	//		{
+	//	//			if (_jVal[_strKey].size() != 3)
+	//	//				return false;
 
-		//			_outVal.x = Pack_float_int(_jVal[_strKey][0].asInt()).f;
-		//			_outVal.y = Pack_float_int(_jVal[_strKey][1].asInt()).f;
-		//			_outVal.z = Pack_float_int(_jVal[_strKey][2].asInt()).f;
+	//	//			_outVal.x = Pack_float_int(_jVal[_strKey][0].asInt()).f;
+	//	//			_outVal.y = Pack_float_int(_jVal[_strKey][1].asInt()).f;
+	//	//			_outVal.z = Pack_float_int(_jVal[_strKey][2].asInt()).f;
 
-		//			return true;
-		//		}
-		//		else
-		//			return false;
-		//	};
-
-
-
-		//{//RelativeSize
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3Size);
-		//	float3 size;
-		//	if (ReadVec3FromJson(jVal, strKey, size))
-		//	{
-		//		SetSize(size);
-		//	}
-		//	else
-		//		return false;
-		//}
+	//	//			return true;
+	//	//		}
+	//	//		else
+	//	//			return false;
+	//	//	};
 
 
-		//{//RelativeScale
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeScale);
-		//	float3 scale;
-		//	if (ReadVec3FromJson(jVal, strKey, scale))
-		//	{
-		//		SetRelativeScale(scale);
-		//	}
-		//	else
-		//		return false;
-		//}
 
-		//{//RelativePos
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativePos);
-		//	float3 pos;
-		//	if (ReadVec3FromJson(jVal, strKey, pos))
-		//	{
-		//		SetRelativePos(pos);
-		//	}
-		//	else
-		//		return false;
-		//}
-
-		//{//RelativeRot
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeRot);
-		//	float3 rot;
-		//	if (ReadVec3FromJson(jVal, strKey, rot))
-		//	{
-		//		SetRelativeRot(rot);
-		//	}
-		//	else
-		//		return false;
-		//}
+	//	//{//RelativeSize
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3Size);
+	//	//	float3 size;
+	//	//	if (ReadVec3FromJson(jVal, strKey, size))
+	//	//	{
+	//	//		SetSize(size);
+	//	//	}
+	//	//	else
+	//	//		return false;
+	//	//}
 
 
-		//{
-		//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritRot);
-		//	if (jVal.isMember(strKey))
-		//		mbInheritRot = jVal[strKey].asBool();
-		//	else return false;
+	//	//{//RelativeScale
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeScale);
+	//	//	float3 scale;
+	//	//	if (ReadVec3FromJson(jVal, strKey, scale))
+	//	//	{
+	//	//		SetRelativeScale(scale);
+	//	//	}
+	//	//	else
+	//	//		return false;
+	//	//}
 
-		//	strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritScale);
-		//	if (jVal.isMember(strKey))
-		//		mbInheritScale = jVal[strKey].asBool();
-		//	else return false;
+	//	//{//RelativePos
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativePos);
+	//	//	float3 pos;
+	//	//	if (ReadVec3FromJson(jVal, strKey, pos))
+	//	//	{
+	//	//		SetRelativePos(pos);
+	//	//	}
+	//	//	else
+	//	//		return false;
+	//	//}
 
-		//	strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bLockRot);
-		//	if (jVal.isMember(strKey))
-		//	{
-		//		mbLockRotation = jVal[strKey].asBool();
-		//	}
-		//	else return false;
-		//}
+	//	//{//RelativeRot
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::v3RelativeRot);
+	//	//	float3 rot;
+	//	//	if (ReadVec3FromJson(jVal, strKey, rot))
+	//	//	{
+	//	//		SetRelativeRot(rot);
+	//	//	}
+	//	//	else
+	//	//		return false;
+	//	//}
 
 
-		return eResult::Success;
-	}
+	//	//{
+	//	//	std::string strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritRot);
+	//	//	if (jVal.isMember(strKey))
+	//	//		mbInheritRot = jVal[strKey].asBool();
+	//	//	else return false;
+
+	//	//	strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bInheritScale);
+	//	//	if (jVal.isMember(strKey))
+	//	//		mbInheritScale = jVal[strKey].asBool();
+	//	//	else return false;
+
+	//	//	strKey = std::string(RES_INFO::PREFAB::COMPONENT::TRANSFORM::bLockRot);
+	//	//	if (jVal.isMember(strKey))
+	//	//	{
+	//	//		mbLockRotation = jVal[strKey].asBool();
+	//	//	}
+	//	//	else return false;
+	//	//}
+
+
+	//	return eResult::Success;
+	//}
 
 
 
