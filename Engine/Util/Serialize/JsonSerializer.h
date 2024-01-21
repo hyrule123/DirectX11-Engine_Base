@@ -14,8 +14,6 @@ namespace ehw
 	template <typename F> requires std::is_same_v<double, F>
 	union FtoI { double f; std::int64_t i; };
 
-
-
 	class JsonSerializer : public Serializer
 	{
 	public:
@@ -28,16 +26,12 @@ namespace ehw
 		template <NotPointerTypes T>
 		struct JsonPair
 		{
-			JsonPair(const char* _strKey, T& _data)
+			JsonPair(const std::string_view _strKey, T& _data)
 				: strKey(_strKey)
 				, data(_data)
 			{}
-			JsonPair(const std::string& _strKey, T& _data)
-				: strKey(_strKey.c_str())
-				, data(_data)
-			{}
 			
-			const char* strKey;
+			const std::string_view strKey;
 			T& data;
 		};
 
@@ -48,28 +42,22 @@ namespace ehw
 		template <NotPointerTypes T>
 		static T DeSerialize(const Json::Value& _jVal);
 
-		void AddJsonValue(const std::string& _strKey, const Json::Value& _jVal) { m_jVal[_strKey] = _jVal; }
-		void AddJsonValue(const std::string& _strKey, Json::Value&& _jVal) noexcept { m_jVal[_strKey] = std::move(_jVal); }
-
 		template <NotPointerTypes T>
 		void operator << (const JsonPair<T>& _jPair);
 
 		template <NotPointerTypes T>
 		void operator << (const JsonPair<std::vector<T>>& _jPair);
 
+		template <NotPointerTypes T>
+		void operator >> (JsonPair<T>& _jPair);
 
-		//template <NotPointerTypes T>
-		//void Write(const std::string& _strKey, const T& _val);
+		template <NotPointerTypes T>
+		void operator >> (JsonPair<std::vector<T>>& _jPair);
 
-		//template <NotPointerTypes T>
-		//void Write(const std::string& _strKey, const std::vector<T>& _vector);
-
-		//template <NotPointerTypes T>
-		//void Read(const std::string& _strKey, T& _val);
-
-		////TODO: 이거 작성
-		//template <NotPointerTypes T>
-		//void Write(const std::string& _strKey, const std::vector<T>& _vector);
+	private:
+		inline bool CheckStringValid(const std::string_view _strKey);
+		inline bool CheckValueExists(const std::string_view _strKey);
+		
 
 	private:
 		Json::Value m_jVal;
@@ -79,9 +67,8 @@ namespace ehw
 	template<NotPointerTypes T>
 	inline void JsonSerializer::operator<<(const JsonPair<T>& _jPair)
 	{
-		if (nullptr == _jPair.strKey)
+		if (false == CheckStringValid(_jPair.strKey))
 		{
-			ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
 			return;
 		}
 
@@ -91,65 +78,53 @@ namespace ehw
 	template<NotPointerTypes T>
 	inline void JsonSerializer::operator<<(const JsonPair<std::vector<T>>& _jPair)
 	{
-		if (nullptr == _jPair.strKey)
+		if (false == CheckStringValid(_jPair.strKey))
 		{
-			ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
+			return;
+		}
+
+		Json::Value arrVal = Json::Value(Json::arrayValue);
+		for (size_t i = 0; i < _jPair.data.size(); ++i)
+		{
+			arrVal.append(Serialize(_jPair.data[i]));
+		}
+
+		m_jVal[_jPair.strKey] = std::move(arrVal);
+	}
+
+	template<NotPointerTypes T>
+	inline void JsonSerializer::operator>>(JsonPair<T>& _jPair)
+	{
+		if (false == CheckStringValid(_jPair.strKey) || false == CheckValueExists(_jPair.strKey))
+		{
 			return;
 		}
 
 		
+		_jPair.data = DeSerialize<T>(m_jVal[_jPair.strKey]);
 	}
 
-	//template<NotPointerTypes T>
-	//inline void JsonSerializer::Write(const std::string& _strKey, const T& _val)
-	//{
-	//	
-	//
-	//	if (_strKey.empty())
-	//	{
-	//		ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
-	//		return;
-	//	}
-	//
-	//	m_jVal[_strKey] = GetNewJson(_val);
-	//}
-	//
-	//template<NotPointerTypes T>
-	//inline void JsonSerializer::Write(const std::string& _strKey, const std::vector<T>& _vector)
-	//{
-	//	if (_strKey.empty())
-	//	{
-	//		ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
-	//		return;
-	//	}
-	//
-	//	Json::Value vectorValue = Json::Value(Json::arrayValue);
-	//
-	//	for (size_t i = 0; i < _vector.size(); ++i)
-	//	{
-	//		vectorValue.append(GetNewJson(_vector[i]));
-	//	}
-	//
-	//	m_jVal[_strKey] = std::move(vectorValue);
-	//}
-	//
-	//template<NotPointerTypes T>
-	//inline void JsonSerializer::Read(const std::string& _strKey, T& _val)
-	//{
-	//	if (_strKey.empty())
-	//	{
-	//		ERROR_MESSAGE("StrKey가 존재하지 않습니다.");
-	//		return;
-	//	}
-	//	else if (false == m_jVal.isMember(_strKey))
-	//	{
-	//		ERROR_MESSAGE("지정한 StrKey에 대응하는 값을 찾을 수 없습니다.");
-	//		return;
-	//	}
-	//
-	//	_val = GetValueFromJson<T>(m_jVal[_strKey]);
-	//}
+	template<NotPointerTypes T>
+	inline void JsonSerializer::operator>>(JsonPair<std::vector<T>>& _jPair)
+	{
+		if (false == CheckStringValid(_jPair.strKey) || false == CheckValueExists(_jPair.strKey))
+		{
+			return;
+		}
 
+		const Json::Value& arrVal = m_jVal[_jPair.strKey];
+		if (false == arrVal.isArray())
+		{
+			ERROR_MESSAGE("키값에 대응되는 데이터가 배열 형식이 아닙니다.");
+			return;
+		}
+
+		auto iter = arrVal.begin();
+		for (iter; iter != arrVal.end(); ++iter)
+		{
+			_jPair.data.emplace_back(DeSerialize<T>((*iter)));
+		}
+	}
 
 	template<NotPointerTypes T>
 	inline Json::Value JsonSerializer::Serialize(const T& _val)
@@ -213,5 +188,25 @@ namespace ehw
 		}
 
 		return retVal;
+	}
+
+	inline bool JsonSerializer::CheckStringValid(const std::string_view _strKey)
+	{
+		bool ret = !_strKey.empty();
+		if (false == ret)
+		{
+			ERROR_MESSAGE("스트링 키가 존재하지 않습니다.");
+		}
+		return ret;
+	}
+
+	inline bool JsonSerializer::CheckValueExists(const std::string_view _strKey)
+	{
+		bool ret = m_jVal.isMember(_strKey);
+		if (false == ret)
+		{
+			ERROR_MESSAGE("스트링 키에 대응되는 값이 없습니다.");
+		}
+		return ret;
 	}
 }
