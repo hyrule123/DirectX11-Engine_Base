@@ -1,14 +1,37 @@
 #pragma once
 
 #include <type_traits>
+#include <concepts>
 #include <vector>
 #include <array>
 #include <memory>
-
+#include <string>
 
 //Custom Is_V
 namespace type_traits_Ex
 {
+	template <typename P>
+	concept PointerTypes = requires(P p) { { *p }; }&&
+		std::equality_comparable_with<std::nullptr_t, P>;
+
+	template <typename P>
+	concept NotPointerTypes = !PointerTypes<P>;
+
+	template <typename T>
+	concept AllowedTypes =
+		//* 연산자가 있을경우(포인터일경우) 저장 불가
+		!PointerTypes<T> &&
+		//string이 아니여야 함
+		!(std::is_same_v<std::decay<T>, std::string> ||
+			std::is_same_v<std::decay<T>, std::wstring>);
+
+	template <typename T>
+	concept StringTypes =
+		std::is_same_v<T, std::string> ||
+		std::is_same_v<T, std::wstring>;
+
+
+
 	template <class T> struct is_shared_ptr : std::false_type {};
 	template <class T> struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};
 	template <class T> inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;

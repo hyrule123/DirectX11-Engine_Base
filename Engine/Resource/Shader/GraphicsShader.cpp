@@ -368,33 +368,25 @@ namespace ehw
 
 	eResult GraphicsShader::Serialize(JsonSerializer& _ser)
 	{
+
 		//구조체 안에 const char* 타입이 있어서 수동으로 해줘야함
 		Json::Value& jsonInputLayouts = _ser[JSON_KEY(mInputLayoutDescs)];
+		jsonInputLayouts = Json::Value(Json::arrayValue);
+
 		//Input Layout Desc
 		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
 		{
-			Json::Value InputElement{};
+			Json::Value InputElement = jsonInputLayouts[(int)i];// .append(Json::arrayValue);
 
-			std::string strSemanticName;
-			if (mInputLayoutDescs[i].SemanticName)
-			{
-				strSemanticName = mInputLayoutDescs[i].SemanticName;
-			}
-			InputElement.append(strSemanticName);
+			InputElement << mInputLayoutDescs[i].SemanticName;
+			InputElement << mInputLayoutDescs[i].SemanticIndex;
+			InputElement << mInputLayoutDescs[i].Format;
+			InputElement << mInputLayoutDescs[i].InputSlot;
+			InputElement << mInputLayoutDescs[i].AlignedByteOffset;
+			InputElement << mInputLayoutDescs[i].InputSlotClass;
+			InputElement << mInputLayoutDescs[i].InstanceDataStepRate;
 
-			D3D11InputElementDescWithoutName desc{};
-			desc.SemanticIndex = mInputLayoutDescs[i].SemanticIndex;
-			desc.Format = mInputLayoutDescs[i].Format;
-			desc.InputSlot = mInputLayoutDescs[i].InputSlot;
-			desc.AlignedByteOffset = mInputLayoutDescs[i].AlignedByteOffset;
-			desc.InputSlotClass = mInputLayoutDescs[i].InputSlotClass;
-			desc.InstanceDataStepRate = mInputLayoutDescs[i].InstanceDataStepRate;
-
-			std::string converted = Json::SaveLoad::ConvertWrite(desc);
-
-			InputElement.append(converted);
-
-			jsonInputLayouts.append(InputElement);
+			jsonInputLayouts << InputElement;
 		}
 
 		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));

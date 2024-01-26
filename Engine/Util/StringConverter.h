@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base64.h"
+#include "Serialize/base64.h"
 
 #include <string>
 
@@ -32,8 +32,11 @@ public:
 	template <typename T>
 	inline static std::string Base64Encode(const T& _srcT);
 
+	template <>
+	inline static std::string Base64Encode(const std::wstring_view& _srcT);
+
 	template <typename T>
-	inline static T Base64Decode(const std::string& _srcStr);
+	inline static T Base64Decode(const std::string_view _srcStr);
 
 
 private:
@@ -103,13 +106,19 @@ inline std::string StringConverter::Base64Encode(const T& _srcT)
 	return base64_encode((const unsigned char*)&_srcT, sizeof(T));
 }
 
-template<typename T>
-inline T StringConverter::Base64Decode(const std::string& _srcStr)
+template<>
+inline std::string StringConverter::Base64Encode(const std::wstring_view& _srcT)
 {
-	T ReturnResult{};
-	std::string decoded = base64_decode(_srcStr);
-	memcpy_s((void*)&ReturnResult, sizeof(T), decoded.c_str(), decoded.size());
-
-	return ReturnResult;
+	return base64_encode(reinterpret_cast<const unsigned char*>(_srcT.data()), (unsigned int)_srcT.size() * 2u);
 }
 
+
+template<typename T>
+inline T StringConverter::Base64Decode(const std::string_view _srcStr)
+{
+	T returnResult{};
+
+	base64_decode(_srcStr, reinterpret_cast<unsigned char*>(&returnResult), sizeof(returnResult));
+
+	return returnResult;
+}
