@@ -40,105 +40,7 @@ namespace ehw
 
 	}
 
-	eResult GraphicsShader::SaveJson(Json::Value* _pJVal)
-	{
 
-
-		return eResult::Success;
-	}
-
-	eResult GraphicsShader::LoadJson(const Json::Value* _pJVal)
-	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = iShader::LoadJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-		const Json::Value& jVal = *_pJVal;
-
-		//Input Layout Desc
-		mInputLayoutDescs.clear();
-		if (jVal.isMember(JSON_KEY(mInputLayoutDescs)))
-		{
-			const Json::Value& jsonInputLayouts = jVal[JSON_KEY(mInputLayoutDescs)];
-
-			if (jsonInputLayouts.isArray())
-			{
-				for (
-					Json::ValueConstIterator iter = jsonInputLayouts.begin();
-					iter != jsonInputLayouts.end();
-					++iter
-					)
-				{
-					if (2 > iter->size())
-					{
-						NOTIFICATION("Input Layout Desc 정보가 누락되어 있습니다.");
-						return eResult::Fail_InValid;
-					}
-
-					const auto& pair = mSemanticNames.insert((*iter)[0].asString());
-
-					D3D11InputElementDescWithoutName descValue = Json::SaveLoad::ConvertRead<D3D11InputElementDescWithoutName>((*iter)[1]);
-
-					D3D11_INPUT_ELEMENT_DESC desc{};
-					desc.SemanticName = pair.first->c_str();
-					desc.SemanticIndex = descValue.SemanticIndex;
-					desc.Format = descValue.Format;
-					desc.InputSlot = descValue.InputSlot;
-					desc.AlignedByteOffset = descValue.AlignedByteOffset;
-					desc.InputSlotClass = descValue.InputSlotClass;
-					desc.InstanceDataStepRate = descValue.InstanceDataStepRate;
-
-					mInputLayoutDescs.push_back(desc);
-				}
-			}
-		}
-
-		//토폴로지
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mTopology));
-
-		//쉐이더
-		{
-			const std::vector<std::string>& vecStrKey = Json::SaveLoad::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mArrShaderCode));
-
-			//에딧 모드가 아닐 경우에만 로드
-			for (size_t i = 0; i < mArrShaderCode.size(); ++i)
-			{
-				if (false == mbEditMode && false == vecStrKey[i].empty())
-				{
-					CreateByCSO((eGSStage)i, vecStrKey[i]);
-					if ((size_t)eGSStage::END == i)
-						break;
-				}
-				else
-				{
-					mArrShaderCode[i].strKey = vecStrKey[i];
-				}
-			}
-
-		}
-
-		//RS, Domain, BS
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRSType));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mDSType));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mBSType));
-
-		if (false == mbEditMode)
-		{
-			result = CreateInputLayout();
-			if (eResultFail(result))
-			{
-				return result;
-			}
-		}
-
-
-		return eResult::Success;
-	}
 
 	eResult GraphicsShader::Save(const std::fs::path& _pathFromBaseDir)
 	{
@@ -376,27 +278,26 @@ namespace ehw
 		//Input Layout Desc
 		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
 		{
-			Json::Value InputElement = jsonInputLayouts[(int)i];// .append(Json::arrayValue);
+			Json::Value& InputElement = jsonInputLayouts.append(Json::arrayValue);
 
-			InputElement << mInputLayoutDescs[i].SemanticName;
-			InputElement << mInputLayoutDescs[i].SemanticIndex;
-			InputElement << mInputLayoutDescs[i].Format;
-			InputElement << mInputLayoutDescs[i].InputSlot;
-			InputElement << mInputLayoutDescs[i].AlignedByteOffset;
-			InputElement << mInputLayoutDescs[i].InputSlotClass;
-			InputElement << mInputLayoutDescs[i].InstanceDataStepRate;
-
-			jsonInputLayouts << InputElement;
+			InputElement[0] << mInputLayoutDescs[i].SemanticName;
+			InputElement[1] << mInputLayoutDescs[i].SemanticIndex;
+			InputElement[2] << mInputLayoutDescs[i].Format;
+			InputElement[3] << mInputLayoutDescs[i].InputSlot;
+			InputElement[4] << mInputLayoutDescs[i].AlignedByteOffset;
+			InputElement[5] << mInputLayoutDescs[i].InputSlotClass;
+			InputElement[6] << mInputLayoutDescs[i].InstanceDataStepRate;
 		}
 
 		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mInputLayoutDescs));
 
 		//토폴로지
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mTopology));
+		_ser[JSON_KEY(mTopology)] << mTopology;
+
 
 		//쉐이더 파일명
 		{
-			Json::Value& ShaderFileName = jVal[JSON_KEY(mArrShaderCode)];
+			Json::Value& ShaderFileName = _ser[JSON_KEY(mArrShaderCode)];
 			for (int i = 0; i < (int)eGSStage::END; ++i)
 			{
 				ShaderFileName.append(mArrShaderCode[i].strKey);
@@ -404,14 +305,102 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRSType));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mDSType));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mBSType));
+		_ser[JSON_KEY(mDSType)] << mRSType;
+		_ser[JSON_KEY(mDSType)] << mDSType;
+		_ser[JSON_KEY(mBSType)] << mBSType;
 	}
 
 	eResult GraphicsShader::DeSerialize(JsonSerializer& _ser)
 	{
-		return eResult();
+		if (nullptr == _pJVal)
+		{
+			return eResult::Fail_Nullptr;
+		}
+		eResult result = iShader::LoadJson(_pJVal);
+		if (eResultFail(result))
+		{
+			return result;
+		}
+		const Json::Value& jVal = *_pJVal;
+
+		//Input Layout Desc
+		mInputLayoutDescs.clear();
+		if (jVal.isMember(JSON_KEY(mInputLayoutDescs)))
+		{
+			const Json::Value& jsonInputLayouts = jVal[JSON_KEY(mInputLayoutDescs)];
+
+			if (jsonInputLayouts.isArray())
+			{
+				for (
+					Json::ValueConstIterator iter = jsonInputLayouts.begin();
+					iter != jsonInputLayouts.end();
+					++iter
+					)
+				{
+					if (2 > iter->size())
+					{
+						NOTIFICATION("Input Layout Desc 정보가 누락되어 있습니다.");
+						return eResult::Fail_InValid;
+					}
+
+					const auto& pair = mSemanticNames.insert((*iter)[0].asString());
+
+					D3D11InputElementDescWithoutName descValue = Json::SaveLoad::ConvertRead<D3D11InputElementDescWithoutName>((*iter)[1]);
+
+					D3D11_INPUT_ELEMENT_DESC desc{};
+					desc.SemanticName = pair.first->c_str();
+					desc.SemanticIndex = descValue.SemanticIndex;
+					desc.Format = descValue.Format;
+					desc.InputSlot = descValue.InputSlot;
+					desc.AlignedByteOffset = descValue.AlignedByteOffset;
+					desc.InputSlotClass = descValue.InputSlotClass;
+					desc.InstanceDataStepRate = descValue.InstanceDataStepRate;
+
+					mInputLayoutDescs.push_back(desc);
+				}
+			}
+		}
+
+		//토폴로지
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mTopology));
+
+		//쉐이더
+		{
+			const std::vector<std::string>& vecStrKey = Json::SaveLoad::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mArrShaderCode));
+
+			//에딧 모드가 아닐 경우에만 로드
+			for (size_t i = 0; i < mArrShaderCode.size(); ++i)
+			{
+				if (false == mbEditMode && false == vecStrKey[i].empty())
+				{
+					CreateByCSO((eGSStage)i, vecStrKey[i]);
+					if ((size_t)eGSStage::END == i)
+						break;
+				}
+				else
+				{
+					mArrShaderCode[i].strKey = vecStrKey[i];
+				}
+			}
+
+		}
+
+		//RS, Domain, BS
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRSType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mDSType));
+		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mBSType));
+
+		if (false == mbEditMode)
+		{
+			result = CreateInputLayout();
+			if (eResultFail(result))
+			{
+				return result;
+			}
+		}
+
+
+		return eResult::Success;
 	}
 
 	eResult GraphicsShader::CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize)

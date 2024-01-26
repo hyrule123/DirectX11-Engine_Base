@@ -1,9 +1,10 @@
 #pragma once
 #include "../../Resource/iResource.h"
 
-
 #include "../../CommonStruct.h"
 #include "../../GPU/CommonGPU.h"
+
+#include "../../Util/Serialize/JsonSerializer.h"
 
 namespace editor
 {
@@ -25,8 +26,9 @@ namespace ehw
 		std::vector<std::shared_ptr<Material>>	materials;
 	};
 
-    class Model3D :
-        public iResource
+    class Model3D final 
+		: public iResource
+		, public Serializable<JsonSerializer>
     {
 		friend class editor::EditorFBXConverter;
 		
@@ -34,12 +36,10 @@ namespace ehw
 		Model3D();
 		virtual ~Model3D();
 
-		virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;
-		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
+		virtual eResult Load(const std::fs::path& _fullPath) override;
 		
-
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(JsonSerializer& _ser) override;
 
 		//아예 새 게임오브젝트를 반환
 		std::shared_ptr<GameObject> Instantiate();

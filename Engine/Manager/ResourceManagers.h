@@ -19,8 +19,6 @@ namespace ehw
 		static void Init();
 		static void Release();
 
-		
-
 		static std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
 	};
 

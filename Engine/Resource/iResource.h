@@ -15,6 +15,8 @@ namespace ehw
 
 		virtual ~iResource();
 
+		virtual eResult Load(const std::fs::path& _fullPath) = 0;
+
 		const std::type_info& GetResourceType() { return m_ResourceTypeInfo; }
 
 		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }

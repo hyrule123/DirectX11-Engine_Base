@@ -12,8 +12,6 @@
 #include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "../../Game/Component/Animator/Com_Animator3D.h"
 
-#include "../../json-cpp/json.h"
-
 
 #include "Skeleton.h"
 #include "FBXLoader.h"
@@ -65,9 +63,11 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::Load(const std::fs::path& _pathFromBaseDir)
+	eResult Model3D::Load(const std::fs::path& _fullPath)
 	{
 		eResult result = eResult::Fail;
+
+		
 
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
@@ -97,6 +97,16 @@ namespace ehw
 			return result;
 
 		return eResult::Success;
+	}
+
+	eResult Model3D::Serialize(JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
+	eResult Model3D::DeSerialize(JsonSerializer& _ser)
+	{
+		return eResult();
 	}
 
 

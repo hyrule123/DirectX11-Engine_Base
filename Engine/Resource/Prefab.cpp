@@ -2,7 +2,7 @@
 #include "Prefab.h"
 
 
-#include "../json-cpp/json.h"
+#include "../Util/Serialize/json.h"
 
 #include "../Game/GameObject.h"
 
@@ -31,7 +31,7 @@ namespace ehw
 			SAFE_DELETE(mPrefab);
 		}
 	}
-	eResult Prefab::Save(const std::fs::path& _pathFromBaseDir)
+	eResult Prefab::Serialize(JsonSerializer& _ser)
 	{
 		if (nullptr == mPrefab)
 		{
@@ -39,17 +39,6 @@ namespace ehw
 			return eResult::Fail_InValid;
 		}
 
-		iResource::Save(_pathFromBaseDir);
-
-
-		std::fs::path fullPath = ResourceManager<Prefab>::GetBaseDir() / _pathFromBaseDir;
-
-		std::ofstream saveFile(fullPath);
-		if (false == saveFile.is_open())
-		{
-			ASSERT_DEBUG(false, "파일 열기 실패");
-			return eResult::Fail_Open;
-		}
 
 		//프리팹(GameObject)의 데이터 저장
 		Json::Value PrefabJVal{};
@@ -67,7 +56,7 @@ namespace ehw
 
 		return eResult::Success;
 	}
-	eResult Prefab::Load(const std::fs::path& _pathFromBaseDir)
+	eResult Prefab::DeSerialize(JsonSerializer& _ser)
 	{
 		if (nullptr == mPrefab)
 		{

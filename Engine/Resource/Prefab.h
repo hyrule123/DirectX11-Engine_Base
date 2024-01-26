@@ -1,18 +1,21 @@
 #pragma once
 #include "iResource.h"
 
+#include "../Util/Serialize/JsonSerializer.h"
+
 namespace ehw
 {
     class GameObject;
 	class Prefab final
 		: public iResource
+        , public Serializable<JsonSerializer>
 	{
     public:
         Prefab();
         virtual ~Prefab();
         
-        virtual eResult Save(const std::fs::path& _pathFromBaseDir) override;
-        virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
+        virtual eResult Serialize(JsonSerializer& _ser) override;
+        virtual eResult DeSerialize(JsonSerializer& _ser) override;
 
         //virtual eResult SaveJson(Json::Value* _pJVal) override;
         //virtual eResult LoadJson(const Json::Value* _pJVal) override;
