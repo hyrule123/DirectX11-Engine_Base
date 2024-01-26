@@ -17,20 +17,13 @@ namespace type_traits_Ex
 	template <typename P>
 	concept NotPointerTypes = !PointerTypes<P>;
 
-	template <typename T>
-	concept AllowedTypes =
-		//* 연산자가 있을경우(포인터일경우) 저장 불가
-		!PointerTypes<T> &&
-		//string이 아니여야 함
-		!(std::is_same_v<std::decay<T>, std::string> ||
-			std::is_same_v<std::decay<T>, std::wstring>);
+	template<typename T, typename CharType>
+	concept BasicStringLike = std::is_convertible_v<T, std::basic_string_view<CharType>>;
 
 	template <typename T>
-	concept StringTypes =
-		std::is_same_v<T, std::string> ||
-		std::is_same_v<T, std::wstring>;
-
-
+	concept StringLike = BasicStringLike<T, char>;
+	template <typename T>
+	concept WStringLike = BasicStringLike<T, wchar_t>;
 
 	template <class T> struct is_shared_ptr : std::false_type {};
 	template <class T> struct is_shared_ptr<std::shared_ptr<T>> : std::true_type {};

@@ -3,6 +3,27 @@
 
 namespace ehw
 {
+	//수동으로 처리해줘야 하는 타입들을 여기 추가할것.
+	template <typename T>
+	concept BinaryManualHandleTypes =
+		type_traits_Ex::StringLike<T> &&
+		type_traits_Ex::WStringLike<T>;
+
+	
+	template <typename T>
+	concept BinaryDefaultTypes =
+		!type_traits_Ex::PointerTypes<T> &&
+		!BinaryManualHandleTypes<T>;
+		
+	//만약 특정 타입에 대해 특수화가 필요하다면
+	//수동으로 처리해줘야 하는 타입을 BinaryManualHandleTypes에 추가하고
+	//아래 컨셉의 템플릿 함수를 특수화해주면 된다.
+	template <typename T>
+	concept NotBinaryDefaultTypes = 
+		!type_traits_Ex::PointerTypes<T> &&
+		BinaryManualHandleTypes<T>;
+
+
 	class BinarySerializer : public Serializer
 	{
 	public:
@@ -18,20 +39,23 @@ namespace ehw
 		void Write(const unsigned char* _pSrc, size_t _size);
 		size_t Read(unsigned char* _pDest, size_t _size);
 
-		template <AllowedTypes T>
+		template <BinaryDefaultTypes T>
 		inline void operator <<(const T& _data);
-		template <StringTypes T>
-		inline void operator <<(const T& _data);
-		template <AllowedTypes T>
+
+		template <BinaryDefaultTypes T>
 		inline void operator <<(const std::vector<T>& _data);
 
-
-		template <AllowedTypes T>
+		template <typename CharType>
+		inline void operator <<(const std::basic_string_view<CharType> _data);
+		
+		template <BinaryDefaultTypes T>
 		inline void operator >>(T& _data) const;
-		template <StringTypes T>
-		inline void operator >>(T& _data);
-		template <AllowedTypes T>
+
+		template <BinaryDefaultTypes T>
 		inline void operator >>(std::vector<T>& _data);
+
+		template <typename CharType>
+		inline void operator >>(std::basic_string<CharType>& _data);
 
 
 		size_t GetDataSize() const { return m_data.size(); }
@@ -51,24 +75,23 @@ namespace ehw
 	};
 
 
-
-	template<AllowedTypes T >
+	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator<<(const T& _data)
 	{
 		Write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T));
-	};
-
-	template<StringTypes T>
-	inline void BinarySerializer::operator<<(const T& _data)
-	{
-		const unsigned char* src = reinterpret_cast<const unsigned char*>(_data.data());
-		size_t BytesToRead = sizeof(T::value_type) * _data.size();
-
-		(*this) << BytesToRead;
-		Write(src, BytesToRead);
 	}
 
-	template<AllowedTypes T>
+
+	template<typename CharType>
+	inline void BinarySerializer::operator<<(const std::basic_string_view<CharType> _data)
+	{
+		size_t strByteSize = _data.size() * sizeof(CharType);
+		Write(&strByteSize, sizeof(strByteSize));
+		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
+	}
+	
+
+	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator<<(const std::vector<T>& _data)
 	{
 		(*this) << _data.size();
@@ -78,25 +101,14 @@ namespace ehw
 		}
 	}
 
-	template<AllowedTypes T>
+	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator>>(T& _data) const
 	{
 		Read(reinterpret_cast<unsigned char*>(&_data), sizeof(T));
 	}
 
-	template<StringTypes T>
-	inline void BinarySerializer::operator>>(T& _data)
-	{
-		size_t BytesToRead{};
-		(*this) >> BytesToRead;
-		_data.clear();
-		_data.resize(BytesToRead);
 
-		unsigned char* dest = reinterpret_cast<unsigned char*>(_data.data());
-		Read(dest, BytesToRead);
-	}
-
-	template<AllowedTypes T>
+	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator>>(std::vector<T>& _data)
 	{
 		size_t size = 0;
@@ -106,6 +118,18 @@ namespace ehw
 		{
 			(*this) >> _data[i];
 		}
+	}
+
+	template<typename CharType>
+	inline void BinarySerializer::operator>>(std::basic_string<CharType>& _data)
+	{
+		size_t bytesToRead{};
+		Read(&bytesToRead, sizeof(size_t));
+		_data.clear();
+		
+		_data.resize(bytesToRead / sizeof(CharType));
+
+		Read(reinterpret_cast<unsigned char*>(_data.data()), bytesToRead);
 	}
 
 
