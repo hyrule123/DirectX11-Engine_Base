@@ -1,9 +1,8 @@
 #pragma once
 #include "../../Entity.h"
 
-
-
 #include "../../CommonStruct.h"
+#include "../../Util/Serialize/BinarySerializer.h"
 #include "Animation3D.h"
 
 //MeshData에 종속된 클래스
@@ -11,15 +10,19 @@ namespace ehw
 {
 	class FBXLoader;
 	class StructBuffer;
-	class Skeleton :
-		public Entity
+	class Skeleton 
+		: public Entity
+		, public Serializable<BinarySerializer>
 	{
 	public:
 		Skeleton();
 		virtual ~Skeleton();
 
-		eResult Save(const std::fs::path& _pathFromBaseDir);
-		eResult Load(const std::fs::path& _pathFromBaseDir);
+		virtual eResult Serialize(BinarySerializer& _ser) override;
+		virtual eResult DeSerialize(BinarySerializer& _ser) override;
+
+		//eResult Save(const std::fs::path& _pathFromBaseDir);
+		//eResult Load(const std::fs::path& _pathFromBaseDir);
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);
 
 	public:
@@ -43,7 +46,7 @@ namespace ehw
 		void CreateBoneOffsetSBuffer();
 
 	private:
-		std::vector<tMTBone>					m_vecBones;
+		std::vector<tMTBone>							m_vecBones;
 		std::unique_ptr<StructBuffer>					m_pBoneOffset;	  // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
 
 		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>	mMapAnimations;

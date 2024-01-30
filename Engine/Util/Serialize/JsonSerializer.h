@@ -104,5 +104,3 @@ namespace ehw
 		_data = static_cast<T>(_jVal.as<std::underlying_type_t<T>>());
 	}
 }
-
-

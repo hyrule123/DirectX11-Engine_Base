@@ -30,6 +30,9 @@ namespace ehw
 		virtual ~Serializable() {};
 
 	public:
+		//여러 형태로 저장한 클래스의 경우(바이너리 + json) 명시적으로 호출해줘야 함
+		//Serializable<JsonSerializer>::SaveFile()
+		//Serializable<BinarySerializer>::SaveFile()
 		inline eResult SaveFile(std::filesystem::path const& _fullPath);
 		inline eResult LoadFile(std::filesystem::path const& _fullPath);
 
@@ -55,9 +58,15 @@ namespace ehw
 	template<typename T> requires std::is_base_of_v<Serializer, T>
 	inline eResult Serializable<T>::LoadFile(std::filesystem::path const& _fullPath)
 	{
+	
+		if (false == std::fs::exists(_fullPath))
+		{
+			return eResult::Fail_Open;
+		}
+
+
 		T ser{};
 		eResult result = ser.LoadFile(_fullPath);
-
 		if (eResultFail(result))
 		{
 			return result;
@@ -66,7 +75,3 @@ namespace ehw
 		return ser.DeSerialize();
 	}
 }
-
-
-
-

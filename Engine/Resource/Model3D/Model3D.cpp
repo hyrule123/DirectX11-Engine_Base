@@ -30,8 +30,44 @@ namespace ehw
 	{
 	}
 
-	eResult Model3D::Save(const std::fs::path& _pathFromBaseDir)
+
+
+	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
+		return this->Serializable<JsonSerializer>::LoadFile(_fullPath);
+	}
+	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	{
+		if (nullptr == m_skeleton)
+		{
+			ERROR_MESSAGE("스켈레톤 정보가 없습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		std::fs::path fileName = _strKeyPath / _strKeyPath;
+
+		//Skeleton 저장
+		eResult result = m_skeleton->SaveFile(_baseDir / fileName);
+		if (eResultFail(result))
+		{
+			ERROR_MESSAGE("Skeleton 저장 실패.");
+			return result;
+		}
+
+		for (size_t i = 0; i < m_meshContainers.size(); ++i)
+		{
+			m_meshContainers[i].mesh
+		}
+
+
+
+		std::fs::path resSavePath = _fullPath;
+
+		resSavePath.replace_extension(m_meshContainers)
+
+			resSavePath.replace_extension(strKey::path::extension::Skeleton);
+		m_skeleton->SaveFile(resSavePath);
+
 		eResult result = eResult::Fail;
 
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
@@ -39,9 +75,8 @@ namespace ehw
 		//Player/Player.json 형태로 저장한다.
 		std::fs::path fileName = _pathFromBaseDir;
 		fileName.replace_extension();
-		fileName = fileName / fileName;		
+		fileName = fileName / fileName;
 		fileName.replace_extension(strKey::path::extension::Model3D);
-		
 
 		const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
 		iResource::Save(fileName);
@@ -56,68 +91,17 @@ namespace ehw
 		result = SaveJson(&jVal);
 		if (eResultFail(result))
 			return result;
-		
+
 		ofs << jVal;
 		ofs.close();
 
 		return eResult::Success;
-	}
 
-	eResult Model3D::Load(const std::fs::path& _fullPath)
-	{
-		eResult result = eResult::Fail;
-
-		
-
-		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
-		//예를 들어 Player를 저장한다고 하면
-		//Player/Player.json 형태로 저장한다.
-		std::fs::path fileName = _pathFromBaseDir;
-		fileName.replace_extension();
-		fileName /= fileName;
-		fileName.replace_extension(strKey::path::extension::Model3D);
-
-		const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
-		iResource::Load(fileName);
-
-		std::fs::path fullPath = basePath / fileName;
-
-		Json::Value jVal;
-		fullPath.replace_extension(strKey::path::extension::Model3D);
-		std::ifstream ifs(fullPath);
-		if (false == ifs.is_open())
-		{
-			return eResult::Fail_Open;
-		}
-
-		ifs >> jVal;
-		ifs.close();
-		result = LoadJson(&jVal);
-		if (eResultFail(result))
-			return result;
-
-		return eResult::Success;
+		return eResult();
 	}
 
 	eResult Model3D::Serialize(JsonSerializer& _ser)
 	{
-		return eResult();
-	}
-
-	eResult Model3D::DeSerialize(JsonSerializer& _ser)
-	{
-		return eResult();
-	}
-
-
-	eResult Model3D::SaveJson(Json::Value* _pJson)
-	{
-		if (nullptr == _pJson)
-			return eResult::Fail_Nullptr;
-		eResult result = iResource::SaveJson(_pJson);
-		if (eResultFail(result))
-			return result;
-
 		//비어있을 경우 저장 불가
 		if (m_meshContainers.empty())
 		{
@@ -128,9 +112,11 @@ namespace ehw
 		//Skeleton
 		if (m_skeleton)
 		{
-			result = m_skeleton->Save(m_skeleton->GetStrKey());
+			eResult result = m_skeleton->SaveFile(m_skeleton->GetStrKey());
 			if (eResultFail(result))
+			{
 				return result;
+			}
 		}
 		Json::SaveLoad::SavePtrStrKey(_pJson, JSON_KEY_PAIR(m_skeleton));
 
@@ -180,19 +166,12 @@ namespace ehw
 		return eResult::Success;
 	}
 
-
-	eResult Model3D::LoadJson(const Json::Value* _pJson)
+	eResult Model3D::DeSerialize(JsonSerializer& _ser)
 	{
-		if (nullptr == _pJson)
-			return eResult::Fail_Nullptr;
-		eResult result = iResource::LoadJson(_pJson);
-		if (eResultFail(result))
-			return result;
-		
 		m_meshContainers.clear();
 
 		//mesh container 순회 돌아주면서 하나씩 Load
-		const Json::Value& jsonMeshCont = (*_pJson)[JSON_KEY(m_meshContainers)];
+		const Json::Value& jsonMeshCont = _ser[JSON_KEY(m_meshContainers)];
 		for (Json::ValueConstIterator iter = jsonMeshCont.begin();
 			iter != jsonMeshCont.end();
 			++iter)
@@ -207,7 +186,7 @@ namespace ehw
 			{
 				return eResult::Fail_Empty;
 			}
-				
+
 
 			//Materials
 			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(materials), cont.materials);
@@ -244,6 +223,7 @@ namespace ehw
 
 		return eResult::Success;
 	}
+
 
 
 	std::shared_ptr<GameObject> Model3D::Instantiate()
@@ -429,29 +409,28 @@ namespace ehw
 			//스켈레톤 주소를 지정
 			meshCont.mesh->SetSkeleton(m_skeleton);
 
-			if (nullptr != meshCont.mesh)
-			{
-				//기본적으로는 컨테이너 이름을 사용
-				//비어있을 경우 이름을 만들어준다
-				std::fs::path strKey{}; 
-				if (containers[i].Name.empty())
-				{
-					strKey = filePath;
-					strKey.replace_extension();
-					strKey += "_";
-					strKey += std::to_string(i);
-				}
-				else
-				{
-					strKey = _dirAndFileName;
-					strKey /= containers[i].Name;
-				}
 
-				//.msh로 확장자를 변경
-				strKey.replace_extension(strKey::path::extension::Mesh);
-				//Key로 Mesh를 저장
-				meshCont.mesh->SetStrKey(strKey.string());
+			//기본적으로는 컨테이너 이름을 사용
+			//비어있을 경우 이름을 만들어준다
+			std::fs::path strKey{}; 
+			if (containers[i].Name.empty())
+			{
+				strKey = filePath;
+				strKey.replace_extension();
+				strKey += "_";
+				strKey += std::to_string(i);
 			}
+			else
+			{
+				strKey = _dirAndFileName;
+				strKey /= containers[i].Name;
+			}
+
+			//.msh로 확장자를 변경
+			strKey.replace_extension(strKey::path::extension::Mesh);
+			//Key로 Mesh를 저장
+			meshCont.mesh->SetStrKey(strKey.string());
+
 
 			// 메테리얼 가져오기
 			for (UINT j = 0; j < containers[i].vecMtrl.size(); ++j)

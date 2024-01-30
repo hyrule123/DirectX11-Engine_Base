@@ -64,15 +64,11 @@ namespace ehw
 
 	struct tMTBone
 	{
-		std::string			strBoneName{};
-
-		struct Value//저장을 위해서 별도의 struct 안에 넣어놓음
-		{
-			int					iDepth;
-			int					iParentIndx;
-			MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
-			MATRIX				matBone;	// 이거 안씀
-		} Values{};
+		std::string			strBoneName;
+		int					iDepth;
+		int					iParentIndx;
+		MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
+		MATRIX				matBone;	// 이거 안씀
 	};
 
 	struct tDebugMesh

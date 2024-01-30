@@ -15,6 +15,6 @@ VSOut main(VSIn _in)
     _out.ViewBiNormal = vViewBiNormal.xyz;
 	_out.ViewNormal = vViewNormal.xyz;
 	_out.ViewPos = mul(_in.Position, CB_Transform.WorldView).xyz;
-
+	
     return _out;
 }

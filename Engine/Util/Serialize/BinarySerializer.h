@@ -6,7 +6,7 @@ namespace ehw
 	//수동으로 처리해줘야 하는 타입들을 여기 추가할것.
 	template <typename T>
 	concept BinaryManualHandleTypes =
-		type_traits_Ex::StringLike<T> &&
+		type_traits_Ex::StringLike<T> ||
 		type_traits_Ex::WStringLike<T>;
 
 	
@@ -45,8 +45,8 @@ namespace ehw
 		template <BinaryDefaultTypes T>
 		inline void operator <<(const std::vector<T>& _data);
 
-		template <typename CharType>
-		inline void operator <<(const std::basic_string_view<CharType> _data);
+		//template <typename CharType>
+		inline void operator <<(const std::string_view _data);
 		
 		template <BinaryDefaultTypes T>
 		inline void operator >>(T& _data) const;
@@ -81,6 +81,12 @@ namespace ehw
 		Write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T));
 	}
 
+	inline void BinarySerializer::operator<<(const std::string_view _data)
+	{
+		size_t strByteSize = _data.size();
+		Write(reinterpret_cast<const unsigned char*>(&strByteSize), sizeof(strByteSize));
+		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
+	}
 
 	template<typename CharType>
 	inline void BinarySerializer::operator<<(const std::basic_string_view<CharType> _data)

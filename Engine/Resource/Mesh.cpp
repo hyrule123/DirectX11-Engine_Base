@@ -13,8 +13,6 @@
 #include "../Manager/PathManager.h"
 
 #include "../Util/define_Util.h"
-#include "../Util/Serializer.h"
-
 
 #include "Model3D/FBXLoader.h"
 
@@ -27,16 +25,12 @@ namespace ehw
 {
 	Mesh::Mesh()
 		: iResource(typeid(Mesh))
-		, mVertexBuffer{}
-		, mVBDesc{}
-		, mVertexByteStride{}
-		, mVertexCount{}
-		, mVertexSysMem()
+		, m_vertexInfo{}
+		, m_indexInfos{}
+		, m_skeleton{}
 		, mBoundingBoxMinMax{}
 		, mBoundingSphereRadius()
 		//, mVertices{}
-		, mIndexInfos{}
-		, mSkeleton{}
 	{
 		
 		//최대값에는 초기값으로 부동소수점 최소값을, 최소값에는 초기값으로 부동소수점 최대값을 대입
@@ -48,126 +42,77 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::Save(const std::fs::path& _pathFromBaseDir)
+	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Save(_pathFromBaseDir);
-
-		std::ofstream ofs(fullPath, std::ios::binary);
-		if (false == ofs.is_open())
-		{
-			return eResult::Fail_Open;
-		}
-		
-		//Key값 저장
-		Serializer_Binary ser{};
-		ser << GetStrKey();
-
-		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
-		//저장 필요 없음
-
-		//D3D11_BUFFER_DESC mVBDesc;
-		//UINT mVertexByteStride;
-		//UINT mVertexCount;
-		//mVertexSysMem;
-		ser << mVBDesc;
-		ser << mVertexByteStride;
-		ser << mVertexCount;
-		ser << mVertexSysMem;
-		
-
-		//std::vector<tIndexInfo>		mIndexInfos;
-		//이중 벡터 형태이므로 수동 저장
-		ser << mIndexInfos.size();
-		for (size_t i = 0; i < mIndexInfos.size(); ++i)
-		{
-			//D3D11_BUFFER_DESC       tIBDesc;
-			//UINT				    IdxCount;
-			ser << mIndexInfos[i].tIBDesc;
-			ser << mIndexInfos[i].IdxCount;
-			
-			ser << mIndexInfos[i].IdxSysMem;
-		}
-		
-		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
-		fullPath.replace_extension(strKey::path::extension::Mesh);
-		ser.SaveFile(fullPath);
-
-		//StructBuffer* m_pBoneFrameData;   // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
-		//StructBuffer* m_pBoneOffset;	  // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
-		//저장 필요 X
-
-		return eResult::Success;
+		std::fs::path filePath = _baseDir / _strKeyPath;
+		filePath.replace_extension(strKey::path::extension::Mesh);
+		return SaveFile(filePath);
 	}
 
-	eResult Mesh::Load(const std::fs::path& _pathFromBaseDir)
+	eResult Mesh::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Load(_pathFromBaseDir);
+		std::fs::path filePath = _baseDir / _strKeyPath;
+		filePath.replace_extension(strKey::path::extension::Mesh);
+		SetStrKey(_strKeyPath.string());
+		return LoadFile(filePath);
+	}
 
-		std::fs::path fullPath = ResourceManager<Mesh>::GetBaseDir() / _pathFromBaseDir;
-		fullPath.replace_extension(strKey::path::extension::Mesh);
+	eResult Mesh::Serialize(BinarySerializer& _ser)
+	{
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		_ser << m_vertexInfo.ByteStride;
+		_ser << m_vertexInfo.Count;
+		_ser << m_vertexInfo.Desc;
+		_ser << m_vertexInfo.SysMem;
 
-		if (false == std::fs::exists(fullPath))
+
+		//m_indexInfos: m_vertexInfo와 같음. 대신 여긴 vector이므로 순회를 돌면서 저장한다.
+		_ser << m_indexInfos.size();
+		for (size_t i = 0; i < m_indexInfos.size(); ++i)
 		{
-			ERROR_MESSAGE("파일을 찾지 못했습니다.");
-			return eResult::Fail_Open;
+			_ser << m_indexInfos[i].Count;
+			_ser << m_indexInfos[i].Desc;
+			_ser << m_indexInfos[i].SysMem;
 		}
+	}
 
-
-		std::ifstream ifs(fullPath, std::ios::binary);
-		if (false == ifs.is_open())
-			return eResult::Fail_Open;
-
-		//Key값 가져오기
-		std::string strKey;
-		Binary::LoadStr(ifs, strKey);
-		SetStrKey(strKey);
-
-		//D3D11_BUFFER_DESC mVBDesc;
-		Binary::LoadValue(ifs, mVBDesc);
-
-		//UINT mVertexByteStride;
-		Binary::LoadValue(ifs, mVertexByteStride);
-		//ifs >> mVertexByteStride;
-
-		//UINT mVertexCount;
-		Binary::LoadValue(ifs, mVertexCount);
-		//ifs >> mVertexCount;
-
-		//std::vector<unsigned char> mVertexSysMem;
-		Binary::LoadValueVector(ifs, mVertexSysMem);
-
-		//Bounding Box 사이즈 계산		
-		
+	eResult Mesh::DeSerialize(BinarySerializer& _ser)
+	{
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		_ser >> m_vertexInfo.ByteStride;
+		_ser >> m_vertexInfo.Count;
+		_ser >> m_vertexInfo.Desc;
+		_ser >> m_vertexInfo.SysMem;
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
-		//버퍼 생성
-		if (false == CreateVertexBuffer())
+		if (false == CreateVertexBufferInternal())
 		{
 			ERROR_MESSAGE("버텍스 버퍼 로드 실패");
 			return eResult::Fail;
 		}
-			
-		//std::vector<tIndexInfo>		mIndexInfos;
-		{
-			size_t size{};
-			Binary::LoadValue(ifs, size);
 
-			//매번 생성해서 집어넣음
-			mIndexInfos.reserve(size);
-			for (size_t i = 0; i < size; ++i)
+
+		//m_indexInfos: m_vertexInfo와 같음. 대신 여긴 vector이므로 순회를 돌면서 저장한다.
+		size_t indexSize{};
+		_ser >> indexSize;
+
+		//resize 대신 reserve 하는 이유: CreateIndexInternal() 함수에서 back()을 사용함.
+		m_indexInfos.reserve(indexSize);
+		for (size_t i = 0; i < m_indexInfos.size(); ++i)
+		{
+			tIndexInfo& indexInfo = m_indexInfos.emplace_back();
+
+			_ser >> indexInfo.Count;
+			_ser >> indexInfo.Desc;
+			_ser >> indexInfo.SysMem;
+
+			if (false == CreateIndexBufferInternal())
 			{
-				tIndexInfo info{};
-				Binary::LoadValue(ifs, info.Val);
-				Binary::LoadValueVector(ifs, info.IdxSysMem);
-				mIndexInfos.push_back(info);
-				if (false == CreateIndexBuffer())
-				{
-					ERROR_MESSAGE("인덱스 버퍼 로드 실패");
-					return eResult::Fail;
-				}
+				m_indexInfos.clear();
+				ERROR_MESSAGE("인덱스 버퍼 생성 중 에러가 발생했습니다.");
+				return eResult::Fail_Create;
 			}
 		}
-
 
 		return eResult::Success;
 	}
@@ -176,71 +121,60 @@ namespace ehw
 	{
 		if (nullptr == _data)
 			return false;
-		else if (false == SetVertexBufferData(_data, _dataStride, _dataCount))
-			return false;
-		
 
-		return CreateVertexBuffer();
+		SetVertexBufferData(_data, _dataStride, _dataCount);
+
+		return CreateVertexBufferInternal();
 	}
 
-	bool Mesh::SetVertexBufferData(const void* _data, size_t _dataStride, size_t _dataCount)
+	void Mesh::SetVertexBufferData(const void* _data, size_t _dataStride, size_t _dataCount)
 	{
-		bool retVal = false;
-		mVertexByteStride = (uint)_dataStride;
-		mVertexCount = (uint)_dataCount;
+		m_vertexInfo.ByteStride = (uint)_dataStride;
+		m_vertexInfo.Count = (uint)_dataCount;
+
 
 		// 버텍스 버퍼
-		mVBDesc.ByteWidth = mVertexByteStride * mVertexCount;
-		mVBDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-		mVBDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
-		mVBDesc.CPUAccessFlags = 0;
+		m_vertexInfo.Desc.ByteWidth = m_vertexInfo.ByteStride * m_vertexInfo.Count;
+		m_vertexInfo.Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+		m_vertexInfo.Desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		m_vertexInfo.Desc.CPUAccessFlags = 0;
 
 		//정점 데이터를 memcpy를 통해서 복사
-		size_t byteSize = (size_t)mVBDesc.ByteWidth;
-		mVertexSysMem.resize(byteSize);
-		if (0 == memcpy_s(mVertexSysMem.data(), byteSize, _data, byteSize))
-			retVal = true;
-		
-		return retVal;
+		size_t byteSize = (size_t)m_vertexInfo.Desc.ByteWidth;
+		m_vertexInfo.SysMem.resize(byteSize);
+
+		memcpy(m_vertexInfo.SysMem.data(), _data, byteSize);
 	}
 
-	bool Mesh::SetIndexBufferData(const UINT* _data, size_t _dataCount)
+	void Mesh::SetIndexBufferData(const UINT* _data, size_t _dataCount)
 	{
-		bool result = false;
+		tIndexInfo& indexInfo = m_indexInfos.emplace_back(tIndexInfo{});
 
-		tIndexInfo indexInfo = {};
-		indexInfo.Val.IdxCount = (UINT)_dataCount;
-		indexInfo.Val.tIBDesc.ByteWidth = (UINT)(sizeof(UINT) * _dataCount);
-		indexInfo.Val.tIBDesc.CPUAccessFlags = 0;
-		indexInfo.Val.tIBDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
-		indexInfo.Val.tIBDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
-		indexInfo.Val.tIBDesc.MiscFlags = 0;
-		indexInfo.Val.tIBDesc.StructureByteStride = 0;
+		indexInfo.Count = (UINT)_dataCount;
+		indexInfo.Desc.ByteWidth = (UINT)(sizeof(UINT) * _dataCount);
+		indexInfo.Desc.CPUAccessFlags = 0;
+		indexInfo.Desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		indexInfo.Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+		indexInfo.Desc.MiscFlags = 0;
+		indexInfo.Desc.StructureByteStride = 0;
 
 		//인덱스 버퍼 복사
-		indexInfo.IdxSysMem.resize(_dataCount);
-		if (0 == memcpy_s(indexInfo.IdxSysMem.data(), indexInfo.Val.tIBDesc.ByteWidth, _data, indexInfo.Val.tIBDesc.ByteWidth))
-		{
-			result = true;
-			mIndexInfos.push_back(indexInfo);
-		}
-
-		return result;
+		indexInfo.SysMem.resize(_dataCount);
+		memcpy_s(indexInfo.SysMem.data(), indexInfo.Desc.ByteWidth, _data, indexInfo.Desc.ByteWidth);
 	}
 
-	bool Mesh::CreateVertexBuffer()
+	bool Mesh::CreateVertexBufferInternal()
 	{
 		D3D11_SUBRESOURCE_DATA subData = {};
-		subData.pSysMem = mVertexSysMem.data();
+		subData.pSysMem = m_vertexInfo.SysMem.data();
 
-		bool Result = SUCCEEDED(GPUManager::Device()->CreateBuffer(&mVBDesc, &subData, mVertexBuffer.GetAddressOf()));
-
-		if (false == Result)
+		if (
+			FAILED(GPUManager::Device()->CreateBuffer(&m_vertexInfo.Desc, &subData, m_vertexInfo.Buffer.GetAddressOf()))
+			)
 		{
-			mVertexBuffer = nullptr;
-			mVBDesc = {};
-			mVertexByteStride = 0u;
-			mVertexCount = 0u;
+			//실패시 내용 초기화
+			m_vertexInfo = tVertexInfo{};
+			return false;
 		}
 
 		float4 BoundingBoxMin = float4(FLT_MAX);
@@ -248,12 +182,12 @@ namespace ehw
 
 		//성공시 Bounding Sphere의 반지름을 구해준다.
 		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
-		for (size_t i = 0; i < mVertexSysMem.size(); i += mVertexByteStride)
+		for (size_t i = 0; i < m_vertexInfo.SysMem.size(); i += m_vertexInfo.ByteStride)
 		{
 			//최대 size를 넘어가면 에러 발생시킴
-			ASSERT(mVertexSysMem.size() > i + sizeof(VertexBase), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
+			ASSERT(m_vertexInfo.SysMem.size() > i + sizeof(VertexBase), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
 
-			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(mVertexSysMem[i]));
+			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(m_vertexInfo.SysMem[i]));
 
 			//Bounding Box 계산
 			BoundingBoxMin = float4::Min(BoundingBoxMin, vtx->Pos);
@@ -274,66 +208,69 @@ namespace ehw
 		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
 
 
-		return Result;
+		return true;
 	}
 
-	bool Mesh::CreateIndexBuffer()
+	bool Mesh::CreateIndexBufferInternal()
 	{
-		bool result = false;
-		tIndexInfo& indexInfo = mIndexInfos.back();
-
-		D3D11_SUBRESOURCE_DATA subData = {};
-		subData.pSysMem = indexInfo.IdxSysMem.data();
-
-		result = SUCCEEDED(GPUManager::Device()->CreateBuffer(&indexInfo.Val.tIBDesc, &subData, indexInfo.IndexBuffer.GetAddressOf()));
-
-		if (false == result)
+		tIndexInfo& indexInfo = m_indexInfos.back();
+		if (nullptr != indexInfo.Buffer)
 		{
-			mIndexInfos.pop_back();
+			ERROR_MESSAGE("이미 생성된 Index 버퍼입니다.");
+			return false;
 		}
 
-		return result;
+		D3D11_SUBRESOURCE_DATA subData = {};
+		subData.pSysMem = indexInfo.SysMem.data();
+
+		if (
+			FAILED(GPUManager::Device()->CreateBuffer(&indexInfo.Desc, &subData, indexInfo.Buffer.GetAddressOf()))
+			)
+		{
+			m_indexInfos.pop_back();
+			return false;
+		}
+
+		return true;
 	}
-
-
 
 	bool Mesh::CreateIndexBuffer(const UINT* _data, size_t _dataCount)
 	{
 		if (nullptr == _data)
 			return false;
-		else if (false == SetIndexBufferData(_data, _dataCount))
-			return false;
 
-		return CreateIndexBuffer();
+		SetIndexBufferData(_data, _dataCount);
+
+		return CreateIndexBufferInternal();
 	}
 
 	void Mesh::BindBuffer(UINT _subSet) const
 	{
-		if ((UINT)mIndexInfos.size() <= _subSet)
+		if ((UINT)m_indexInfos.size() <= _subSet)
 			return;
 
 		// Input Assembeler 단계에 버텍스버퍼 정보 지정
 		uint offset = 0;
-		GPUManager::Context()->IASetVertexBuffers(0, 1, mVertexBuffer.GetAddressOf(), &mVertexByteStride, &offset);
-		GPUManager::Context()->IASetIndexBuffer(mIndexInfos[_subSet].IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		GPUManager::Context()->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+		GPUManager::Context()->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	}
 
 	void Mesh::Render(UINT _subSet) const
 	{
-		GPUManager::Context()->DrawIndexed(mIndexInfos[_subSet].Val.IdxCount, 0, 0);
+		GPUManager::Context()->DrawIndexed(m_indexInfos[_subSet].Count, 0, 0);
 	}
 
 	void Mesh::RenderAllMeshes() const
 	{
-		for (size_t i = 0; i < mIndexInfos.size(); ++i)
+		for (size_t i = 0; i < m_indexInfos.size(); ++i)
 		{
-			GPUManager::Context()->DrawIndexed(mIndexInfos[i].Val.IdxCount, 0, 0);
+			GPUManager::Context()->DrawIndexed(m_indexInfos[i].Count, 0, 0);
 		}
 	}
 	
 	void Mesh::RenderInstanced(UINT _subSet, UINT _instanceCount) const
 	{
-		GPUManager::Context()->DrawIndexedInstanced(mIndexInfos[_subSet].Val.IdxCount, _instanceCount, 0, 0, 0);
+		GPUManager::Context()->DrawIndexedInstanced(m_indexInfos[_subSet].Count, _instanceCount, 0, 0, 0);
 	}
 
 

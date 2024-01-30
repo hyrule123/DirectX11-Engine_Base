@@ -34,30 +34,21 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::Save(const std::fs::path& _pathFromBaseDir)
+	eResult Skeleton::Serialize(BinarySerializer& _ser)
 	{
-		if (false == _pathFromBaseDir.has_parent_path())
-		{
-			ERROR_MESSAGE("스켈레톤 데이터는 반드시 부모 경로가 필요합니다.\nEx)Parent/Skeleton.sklt");
-			return eResult::Fail_InValid;
-		}
-
-		std::fs::path fullPath = ResourceManager<Model3D>::GetBaseDir() / _pathFromBaseDir;
-
-		fullPath.replace_extension(strKey::path::extension::Skeleton);
-
-		std::ofstream ofs(fullPath, std::ios::binary);
-		if (false == ofs.is_open())
-		{
-			ERROR_MESSAGE("Bone 저장에 실패했습니다.");
-			return eResult::Fail_Open;
-		}
-
-		Binary::SaveValue(ofs, m_vecBones.size());
+		_ser << m_vecBones.size();
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
-			Binary::SaveStr(ofs, m_vecBones[i].strBoneName);
-			Binary::SaveValue(ofs, m_vecBones[i].Values);
+			//std::string			strBoneName{};
+			//int					iDepth;
+			//int					iParentIndx;
+			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
+			//MATRIX				matBone;	// 이거 안씀
+			_ser << m_vecBones[i].strBoneName;
+			_ser << m_vecBones[i].iDepth;
+			_ser << m_vecBones[i].iParentIndx;
+			_ser << m_vecBones[i].matOffset;
+			_ser << m_vecBones[i].matBone;
 		}
 
 		//Binary::SaveValue(ofs, mMapAnimations.size());
@@ -76,6 +67,16 @@ namespace ehw
 		}
 
 		return eResult::Success;
+	}
+
+	eResult Skeleton::DeSerialize(BinarySerializer& _ser)
+	{
+		return eResult();
+	}
+
+	eResult Skeleton::Save(const std::fs::path& _pathFromBaseDir)
+	{
+
 	}
 	eResult Skeleton::Load(const std::fs::path& _pathFromBaseDir)
 	{

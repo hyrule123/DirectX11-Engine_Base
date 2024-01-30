@@ -76,7 +76,7 @@ namespace ehw
 
 			returnPtr->SetStrKey(_pathFromBasePath.string());
 
-			eResult result = returnPtr->Load(_pathFromBasePath);
+			eResult result = returnPtr->Load(m_BaseDir, _pathFromBasePath);
 
 			if (eResultSuccess(result))
 			{

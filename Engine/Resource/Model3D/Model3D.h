@@ -11,6 +11,8 @@ namespace editor
 	class EditorFBXConverter;
 }
 
+
+
 namespace ehw
 {
 	class Mesh;
@@ -36,7 +38,8 @@ namespace ehw
 		Model3D();
 		virtual ~Model3D();
 
-		virtual eResult Load(const std::fs::path& _fullPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		
 		virtual eResult Serialize(JsonSerializer& _ser) override;
 		virtual eResult DeSerialize(JsonSerializer& _ser) override;
@@ -73,7 +76,6 @@ namespace ehw
 		std::vector<tMeshContainer> m_meshContainers;
 		std::shared_ptr<Skeleton> m_skeleton;
     };
-
 }
 
 

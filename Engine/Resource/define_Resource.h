@@ -64,7 +64,7 @@ namespace ehw
 				STRKEY Mesh = ".mesh";
 				STRKEY Model3D = ".json";
 				STRKEY Material = ".json";
-				STRKEY Skeleton = ".bone";
+				STRKEY Skeleton = ".sklt";
 				STRKEY Anim3D = ".a3d";
 				STRKEY ShaderSetting = ".json";
 				STRKEY Texture[] =
