@@ -38,8 +38,8 @@ namespace ehw
 		Model3D();
 		virtual ~Model3D();
 
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		
 		virtual eResult Serialize(JsonSerializer& _ser) override;
 		virtual eResult DeSerialize(JsonSerializer& _ser) override;
@@ -73,8 +73,8 @@ namespace ehw
 		
 		//리소스는 독자적으로 관리(ResourceManager에 등록하지 않음 - 이름이 겹칠 수 있기 떄문)
 	private:
-		std::vector<tMeshContainer> m_meshContainers;
 		std::shared_ptr<Skeleton> m_skeleton;
+		std::vector<tMeshContainer> m_meshContainers;
     };
 }
 

@@ -16,23 +16,27 @@ namespace ehw
 	class ResourceManager
 	{
 	public:
-		static void Init(const std::fs::path& _baseDir);
+		static inline void Init(const std::fs::path& _baseDir);
+
+		static inline eResult Save(const std::string_view _strKey);
+		static inline eResult Save(const std::shared_ptr<BaseResType>& _resPtr);
+		static inline eResult Save(const std::shared_ptr<BaseResType>& _resPtr, const std::fs::path& _strKeyPath);
 
 		template <typename DerivedResType = BaseResType>
-		static std::shared_ptr<DerivedResType> Load(const std::fs::path& _filePath);
+		static inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _strKeyPath);
 
 		template <typename DerivedResType = BaseResType>
-		static void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
+		static inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
 
 		template <typename DerivedResType = BaseResType>
-		static std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
+		static inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
 
 		static const std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
-		static std::vector<std::shared_ptr<iResource>> GetResourcesVector();
+		static inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
 
-		static void CleanUnusedResources();
+		static inline void CleanUnusedResources();
 
 		static void SetBaseDir(const std::fs::path& _baseDir) { m_BaseDir = _baseDir; }
 		static const std::fs::path& GetBaseDir() { return m_BaseDir; }
@@ -62,25 +66,25 @@ namespace ehw
 
 	template<typename BaseResType>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _pathFromBasePath)
+	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _strKeyPath)
 	{
 		static_assert(std::is_base_of_v<BaseResType, DerivedResType>);
 
 		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
-		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_pathFromBasePath.string());
+		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_strKeyPath.string());
 
 		if(nullptr == returnPtr)
 		{
 			returnPtr = std::make_shared<DerivedResType>();
 
-			returnPtr->SetStrKey(_pathFromBasePath.string());
+			returnPtr->SetStrKey(_strKeyPath.string());
 
-			eResult result = returnPtr->Load(m_BaseDir, _pathFromBasePath);
+			eResult result = returnPtr->Load(m_BaseDir, _strKeyPath);
 
 			if (eResultSuccess(result))
 			{
-				Insert(_pathFromBasePath.string(), static_pointer_cast<BaseResType>(returnPtr));
+				Insert(_strKeyPath.string(), static_pointer_cast<BaseResType>(returnPtr));
 			}
 			else
 			{
@@ -148,6 +152,59 @@ namespace ehw
 		ResourceManagers::AddUnusedResourceCleanFunc(CleanUnusedResources);
 
 		AtExit::AddFunc(Release);
+	}
+
+	template<typename BaseResType>
+	inline eResult ResourceManager<BaseResType>::Save(const std::string_view _strKey)
+	{
+		const std::shared_ptr<BaseResType>& savedFile = Find(_strKey);
+		if (nullptr == savedFile)
+		{
+			return eResult::Fail_Nullptr;
+		}
+
+		
+		return savedFile->Save(m_BaseDir, _strKey);
+	}
+
+	template<typename BaseResType>
+	inline eResult ResourceManager<BaseResType>::Save(const std::shared_ptr<BaseResType>& _resPtr)
+	{
+		if (nullptr == _resPtr)
+		{
+			return eResult::Fail_Nullptr;
+		}
+		else if (_resPtr->GetStrKey().empty())
+		{
+			return eResult::Fail_InValid;
+		}
+
+		return _resPtr->Save(m_BaseDir, _resPtr->GetStrKey());
+	}
+
+	template<typename BaseResType>
+	inline eResult ResourceManager<BaseResType>::Save(const std::shared_ptr<BaseResType>& _resPtr, const std::fs::path& _strKeyPath)
+	{
+		if (nullptr == _resPtr)
+		{
+			return eResult::Fail_Nullptr;
+		}
+		else if (_strKeyPath.empty())
+		{
+			return eResult::Fail_InValid;
+		}
+
+		//기존 키값 임시 저장
+		std::string tempStr = _resPtr->GetStrKey();
+		_resPtr->SetStrKey(_strKeyPath);
+
+		//저장하고
+		eResult result = _resPtr->Save(m_BaseDir, _strKeyPath);
+
+		//원래 키값을 복원
+		_resPtr->SetStrKey(tempStr);
+
+		return result;
 	}
 
 	template<typename BaseResType>

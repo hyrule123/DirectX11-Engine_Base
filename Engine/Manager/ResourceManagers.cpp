@@ -9,6 +9,7 @@
 #include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
 #include "../Resource/Model3D/Model3D.h"
+#include "../Resource/Model3D/Skeleton.h"
 #include "../Resource/AudioClip.h"
 #include "../Resource/Animation2D.h"
 #include "../Resource/Shader/GraphicsShader.h"
@@ -47,6 +48,7 @@ namespace ehw
 		ResourceManager<Material>::Init(baseDir / strKey::path::directory::resource::Material);
 		ResourceManager<Animation2D>::Init(baseDir / strKey::path::directory::resource::Animation2D);
 		ResourceManager<Model3D>::Init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Skeleton>::Init(baseDir / strKey::path::directory::resource::Model3D);
 	}
 
 	void ResourceManagers::Release()

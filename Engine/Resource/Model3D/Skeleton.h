@@ -10,19 +10,21 @@ namespace ehw
 {
 	class FBXLoader;
 	class StructBuffer;
-	class Skeleton 
-		: public Entity
+	class Skeleton final
+		: public iResource
 		, public Serializable<BinarySerializer>
 	{
 	public:
 		Skeleton();
 		virtual ~Skeleton();
 
+		virtual eResult Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
 		virtual eResult Serialize(BinarySerializer& _ser) override;
+
+		virtual eResult Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
 		virtual eResult DeSerialize(BinarySerializer& _ser) override;
 
-		//eResult Save(const std::fs::path& _pathFromBaseDir);
-		//eResult Load(const std::fs::path& _pathFromBaseDir);
+
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);
 
 	public:

@@ -3,12 +3,6 @@
 #include "define_Macro.h"
 #include "CommonType.h"
 
-#include <string>
-
-namespace std
-{
-	namespace fs = filesystem;
-}
 
 
 namespace ehw

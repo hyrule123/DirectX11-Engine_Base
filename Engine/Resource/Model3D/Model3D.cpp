@@ -31,11 +31,15 @@ namespace ehw
 	}
 
 
-
 	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		return this->Serializable<JsonSerializer>::LoadFile(_fullPath);
+		std::fs::path fileName = _strKeyPath / _strKeyPath;
+
+		fileName.replace_extension(strKey::path::extension::Model3D);
+
+		return LoadFile(_baseDir / fileName);
 	}
+
 	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
 		if (nullptr == m_skeleton)
@@ -44,123 +48,79 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		std::fs::path fileName = _strKeyPath / _strKeyPath;
-
 		//Skeleton 저장
-		eResult result = m_skeleton->SaveFile(_baseDir / fileName);
+		eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
 		if (eResultFail(result))
 		{
-			ERROR_MESSAGE("Skeleton 저장 실패.");
+			ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 			return result;
 		}
 
 		for (size_t i = 0; i < m_meshContainers.size(); ++i)
 		{
-			m_meshContainers[i].mesh
+			result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
+			if (eResultFail(result))
+			{
+				ERROR_MESSAGE("메쉬 정보 저장 실패");
+				return result;
+			}
+
+			result = ResourceManager<Material>::Save(m_meshContainers[i].materials[i]);
+			if (eResultFail(result))
+			{
+				ERROR_MESSAGE("재질 정보 저장 실패");
+				return result;
+			}
 		}
-
-
-
-		std::fs::path resSavePath = _fullPath;
-
-		resSavePath.replace_extension(m_meshContainers)
-
-			resSavePath.replace_extension(strKey::path::extension::Skeleton);
-		m_skeleton->SaveFile(resSavePath);
-
-		eResult result = eResult::Fail;
 
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path fileName = _pathFromBaseDir;
-		fileName.replace_extension();
-		fileName = fileName / fileName;
-		fileName.replace_extension(strKey::path::extension::Model3D);
-
-		const std::fs::path& basePath = ResourceManager<Model3D>::GetBaseDir();
-		iResource::Save(fileName);
-
-		std::fs::path fullPath = basePath / fileName;
-
-		std::ofstream ofs(fullPath);
-		if (false == ofs.is_open())
-			return eResult::Fail_Open;
-
-		Json::Value jVal{};
-		result = SaveJson(&jVal);
+		std::fs::path fullPath = _baseDir / _strKeyPath / _strKeyPath;
+		fullPath.replace_extension(strKey::path::extension::Model3D);
+		result = SaveFile(fullPath);
 		if (eResultFail(result))
-			return result;
-
-		ofs << jVal;
-		ofs.close();
+		{
+			ERROR_MESSAGE("Model3D json 파일 저장 실패.");
+			return eResult::Fail;
+		}
 
 		return eResult::Success;
-
-		return eResult();
 	}
 
 	eResult Model3D::Serialize(JsonSerializer& _ser)
 	{
-		//비어있을 경우 저장 불가
-		if (m_meshContainers.empty())
-		{
-			return eResult::Fail_InValid;
-		}
+		eResult result = eResult::Fail;
+
+		//Skeleton의 strKey 저장
+		_ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
 
 
-		//Skeleton
-		if (m_skeleton)
-		{
-			eResult result = m_skeleton->SaveFile(m_skeleton->GetStrKey());
-			if (eResultFail(result))
-			{
-				return result;
-			}
-		}
-		Json::SaveLoad::SavePtrStrKey(_pJson, JSON_KEY_PAIR(m_skeleton));
-
-
-
-		//순회 돌아주면서 array 형태의 json에 append 해준다
-		Json::Value& arrMeshCont = (*_pJson)[JSON_KEY(m_meshContainers)];
+		//전부 포인터 형태이므로 StrKey를 등록해 준다.
+		Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
 		for (size_t i = 0; i < m_meshContainers.size(); ++i)
 		{
-			Json::Value meshCont{};
+			//nullptr check
 			if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
 			{
 				return eResult::Fail_InValid;
 			}
-			//Mesh
-			result = m_meshContainers[i].mesh->Save(m_meshContainers[i].mesh->GetStrKey());
-			if (eResultFail(result))
-			{
-				return result;
-			}
-			Json::SaveLoad::SavePtrStrKey(&meshCont, JSON_KEY(mesh), m_meshContainers[i].mesh);
+			Json::Value& meshContainer = arrMeshCont[i];
 
-			Json::Value& arrMtrl = meshCont[JSON_KEY(materials)];
-			//Material 저장
+			//Mesh
+			meshContainer["mesh"] << m_meshContainers[i].mesh->GetStrKey();
+
+			//Materials
+			Json::Value& materials = meshContainer["materials"];
 			for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
 			{
-				result = m_meshContainers[i].materials[j]->Save(m_meshContainers[i].materials[j]->GetStrKey());
-				if (eResultFail(result))
-				{
-					return result;
-				}
-
 				if (nullptr == m_meshContainers[i].materials[j])
 				{
 					return eResult::Fail_Nullptr;
 				}
-				else
-				{
-					arrMtrl.append(m_meshContainers[i].materials[j]->GetStrKey());
-				}
 
+				materials[j] << m_meshContainers[i].materials[j]->GetStrKey();
 			}
-
-			arrMeshCont.append(meshCont);
 		}
 
 		return eResult::Success;
@@ -168,55 +128,69 @@ namespace ehw
 
 	eResult Model3D::DeSerialize(JsonSerializer& _ser)
 	{
+		m_skeleton = nullptr;
 		m_meshContainers.clear();
 
-		//mesh container 순회 돌아주면서 하나씩 Load
-		const Json::Value& jsonMeshCont = _ser[JSON_KEY(m_meshContainers)];
-		for (Json::ValueConstIterator iter = jsonMeshCont.begin();
-			iter != jsonMeshCont.end();
-			++iter)
+		//Skeleton
 		{
-			tMeshContainer cont{};
-
-			//Mesh
-			std::string meshStrKey = Json::SaveLoad::LoadPtrStrKey(&(*iter), JSON_KEY(mesh), cont.mesh);
-			cont.mesh = std::make_shared<Mesh>();
-			result = cont.mesh->Load(meshStrKey);
-			if (eResultFail(result))
+			std::string skeletonStrkey{};
+			_ser[JSON_KEY(m_skeleton)] >> skeletonStrkey;
+			const std::shared_ptr<Skeleton>& skeletonPtr = ResourceManager<Skeleton>::Load(skeletonStrkey);
+			if (nullptr == skeletonPtr)
 			{
-				return eResult::Fail_Empty;
+				ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
+				return eResult::Fail_Nullptr;
 			}
-
-
-			//Materials
-			const auto& materialsStrKey = Json::SaveLoad::LoadPtrStrKeyVector(&(*iter), JSON_KEY(materials), cont.materials);
-			cont.materials.resize(materialsStrKey.size());
-			for (size_t i = 0; i < materialsStrKey.size(); ++i)
-			{
-				cont.materials[i] = std::make_shared<Material>();
-				cont.materials[i]->Load(materialsStrKey[i]);
-			}
-
-
-			m_meshContainers.push_back(cont);
 		}
 
-		const std::string& skeletonKey = Json::SaveLoad::LoadPtrStrKey(_pJson, JSON_KEY_PAIR(m_skeleton));
-		if (false == skeletonKey.empty())
+		//MeshContainers
 		{
-			m_skeleton = std::make_shared<Skeleton>();
-			result = m_skeleton->Load(skeletonKey);
-			if (eResultFail(result))
-				return result;
-		}
-
-		if (m_skeleton)
-		{
+			//전부 포인터 형태이므로 StrKey를 등록해 준다.
+			Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
+			size_t meshContSize = (size_t)arrMeshCont.size();
+			m_meshContainers.resize(meshContSize);
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				if (m_meshContainers[i].mesh)
+				Json::Value& meshContainer = arrMeshCont[i];
+				
+				//nullptr check
+				if (false == meshContainer.isMember("mesh"))
 				{
-					m_meshContainers[i].mesh->SetSkeleton(m_skeleton);
+					ERROR_MESSAGE("메쉬 정보가 없습니다.");
+					return eResult::Fail_InValid;
+				}
+				else if (false == meshContainer.isMember("materials"))
+				{
+					ERROR_MESSAGE("재질 정보가 없습니다.");
+					return eResult::Fail_InValid;
+				}
+				
+				
+				//Mesh
+				std::string meshStrkey{};
+				meshContainer["mesh"] >> meshStrkey;
+				m_meshContainers[i].mesh = ResourceManager<Mesh>::Load(meshStrkey);
+				if (nullptr == m_meshContainers[i].mesh)
+				{
+					ERROR_MESSAGE("메쉬 로드 실패");
+					return eResult::Fail_Open;
+				}
+
+				//Materials
+				Json::Value& materials = meshContainer["materials"];
+				size_t materialSize = materials.size();
+				m_meshContainers[i].materials.resize(materialSize);
+				for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
+				{
+					std::string materialStrKey{};
+					materials[j] >> materialStrKey;
+					m_meshContainers[i].materials[j] = ResourceManager<Material>::Load(materialStrKey);
+
+					if (nullptr == m_meshContainers[i].materials[j])
+					{
+						ERROR_MESSAGE("재질 로드 실패");
+						return eResult::Fail_Open;
+					}
 				}
 			}
 		}
@@ -328,10 +302,9 @@ namespace ehw
 		}
 
 
-
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = Save(_dirAndFileName);
+		result = ResourceManager<Model3D>::Save(shared_from_this_T<Model3D>(), _dirAndFileName);
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -477,10 +450,9 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = std::make_shared<Skeleton>();
+		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::Load(_meshDataName / _meshDataName);
 
-		//Skeleton의 실제 경로: Player/Player
-		result = skeletonOfProj->Load(_meshDataName / _meshDataName);
+		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("프로젝트 스켈레톤 불러오기 실패.");

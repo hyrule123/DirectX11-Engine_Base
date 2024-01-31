@@ -24,7 +24,8 @@ namespace ehw
 {
 	
 	Skeleton::Skeleton()
-		: m_vecBones{}
+		: iResource(typeid(Skeleton))
+		, m_vecBones{}
 		, m_pBoneOffset{}
 		, mMapAnimations{}
 	{
@@ -32,6 +33,11 @@ namespace ehw
 
 	Skeleton::~Skeleton()
 	{
+	}
+
+	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath)
+	{
+		return eResult();
 	}
 
 	eResult Skeleton::Serialize(BinarySerializer& _ser)
@@ -67,6 +73,11 @@ namespace ehw
 		}
 
 		return eResult::Success;
+	}
+
+	eResult Skeleton::Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath)
+	{
+		return eResult();
 	}
 
 	eResult Skeleton::DeSerialize(BinarySerializer& _ser)

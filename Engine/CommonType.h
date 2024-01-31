@@ -1,10 +1,16 @@
 #pragma once
-
 #include "Util/SimpleMath.h"
 
 //float2~4, int2~4, uint2~4, BOOL, TRUE, FALSE 등 정의
 #include "DefaultShader/Common.hlsli"
 
+#include <string>
+
+
+namespace std
+{
+	namespace fs = filesystem;
+}
 
 namespace ehw
 {
