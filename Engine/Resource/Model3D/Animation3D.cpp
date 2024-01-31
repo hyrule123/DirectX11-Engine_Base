@@ -28,6 +28,22 @@ namespace ehw
 	{
 	}
 
+    Animation3D::Animation3D(const Animation3D& _other)
+        : iAnimation(_other)
+        , m_OwnerSkeleton{ _other.m_OwnerSkeleton }
+        , m_StartFrame{ _other.m_StartFrame }
+        , m_EndFrame{ _other.m_EndFrame}
+        , m_FrameLength{ _other.m_FrameLength }
+        , m_StartTime{ _other.m_StartTime }
+        , m_EndTime{ _other.m_EndTime }
+        , m_TimeLength{ _other.m_TimeLength }
+        , m_UpdateTime{_other.m_UpdateTime}
+        , m_FramePerSec{_other.m_FramePerSec}
+        , m_KeyFramesPerBone{_other.m_KeyFramesPerBone}
+        , m_SBufferKeyFrame{_other.m_SBufferKeyFrame}
+    {
+    }
+
     Animation3D::~Animation3D()
 	{
 	}
@@ -42,9 +58,21 @@ namespace ehw
         m_SBufferKeyFrame->UnBindData();
     }
 
+    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    {
+        ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
+        return eResult::Fail_NotImplemented;
+    }
+
+    eResult Animation3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    {
+        ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
+        return eResult::Fail_NotImplemented;
+    }
+
     eResult Animation3D::Serialize(BinarySerializer& _ser)
     {
-        if (nullptr == m_OwnerSkeleton)
+        if (m_OwnerSkeleton.expired())
         {
             ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
@@ -88,26 +116,7 @@ namespace ehw
             _ser >> m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
-        std::vector<tAnimKeyframeTranslation>	vecFrameTrans;
-        vecFrameTrans.resize(m_OwnerSkeleton->GetBoneCount() * m_FrameLength);
-        {
-            size_t KeyFramesPerBoneSize{};
-            _ser >> KeyFramesPerBoneSize;
-            m_KeyFramesPerBone.resize(KeyFramesPerBoneSize);
-            for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
-            {
-                _ser >> m_KeyFramesPerBone[i].BoneIndex;
-                _ser >> m_KeyFramesPerBone[i].vecKeyFrame;
-
-                for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
-                {
-                    size_t indexIn1DArray = m_FrameLength * i + j;
-                    vecFrameTrans[indexIn1DArray] = m_KeyFramesPerBone[i].vecKeyFrame[j].Trans;
-                }
-            }
-        }
-
-        if (false == CreateKeyFrameSBuffer(vecFrameTrans))
+        if (false == CreateKeyFrameSBuffer())
         {
             ERROR_MESSAGE("키프레임 구조화 버퍼 생성 실패.");
             return eResult::Fail_Create;
@@ -117,7 +126,7 @@ namespace ehw
     }
 
 
-	eResult Animation3D::LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip)
+	eResult Animation3D::LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip)
 	{
 		if (nullptr == _skeleton || nullptr == _clip)
 			return eResult::Fail_Nullptr;
@@ -204,9 +213,7 @@ namespace ehw
         // 본1키0|본1키1|본1키2|본1키3|본1키4|
         // 본2키0|본2키1|본2키2|본2키3|본2키4
         //그러므로 하나의 애니메이션은 본의 갯수 * 키프레임 갯수가 된다
-        std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
         size_t boneCount = _clip->KeyFramesPerBone.size();
-        vecFrameTrans.resize(boneCount * m_FrameLength);
         m_KeyFramesPerBone.resize(boneCount);//CPU
         for (size_t i = 0; i < boneCount; ++i)
         {
@@ -260,21 +267,11 @@ namespace ehw
                     projKeyFrame.Trans.RotQuat.y = (float)fbxQuat.mData[1];
                     projKeyFrame.Trans.RotQuat.z = (float)fbxQuat.mData[2];
                     projKeyFrame.Trans.RotQuat.w = (float)fbxQuat.mData[3];
-
-
-
-                    //i번째 본의 j 키프레임 데이터
-                    size_t indexIn1DArray = m_FrameLength * i + j;
-                    vecFrameTrans[indexIn1DArray] = projKeyFrame.Trans;
-                    //vecFrameTrans[indexIn1DArray].vTranslate =  float4(projKeyFrame.Pos, 1.f);
-                    //vecFrameTrans[indexIn1DArray].Scale =      float4(projKeyFrame.Scale, 1.f);
-                    //vecFrameTrans[indexIn1DArray].RotQuat =        projKeyFrame.RotQuat;
-                } 
- 
+                }
             }
         }
 
-        if (false == CreateKeyFrameSBuffer(vecFrameTrans))
+        if (false == CreateKeyFrameSBuffer())
         {
             return eResult::Fail_InValid;
         }
@@ -283,18 +280,34 @@ namespace ehw
 	}
 #pragma endregion
 
-    bool Animation3D::CreateKeyFrameSBuffer(const std::vector<tAnimKeyframeTranslation>& _vecAnimFrameTranslations)
+    bool Animation3D::CreateKeyFrameSBuffer()
     {
-        ASSERT(false == _vecAnimFrameTranslations.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
+        ASSERT(false == m_KeyFramesPerBone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
+
+        std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
+
+        //Bone의 갯수 * Frame의 수가 전체 배열의 갯수가 된다.
+        vecFrameTrans.resize(m_KeyFramesPerBone.size() * m_FrameLength);
+
+        for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
+        {
+            for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
+            {
+                //i번째 본의 j 키프레임 데이터
+                size_t indexIn1DArray = m_FrameLength * i + j;
+                vecFrameTrans[indexIn1DArray] = m_KeyFramesPerBone[i].vecKeyFrame[j].Trans;
+            }
+        }
+
 
         StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.REGISLOT_t_SRV = Register_t_g_FrameTransArray;
         desc.TargetStageSRV = eShaderStageFlag::Compute;
-        m_SBufferKeyFrame = std::make_unique<StructBuffer>(desc);
+        m_SBufferKeyFrame = std::make_shared<StructBuffer>(desc);
 
         if (FAILED(m_SBufferKeyFrame->Create<tAnimKeyframeTranslation>
-            (_vecAnimFrameTranslations.size(), _vecAnimFrameTranslations.data(), _vecAnimFrameTranslations.size())))
+            (vecFrameTrans.size(), vecFrameTrans.data(), vecFrameTrans.size())))
         {
             return false;
         }

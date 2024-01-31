@@ -37,7 +37,8 @@ namespace ehw
 	public:
 		Animation3D();
 
-        Animation3D(const Animation3D& _other) = delete;
+        Animation3D(const Animation3D& _other);
+        CLONE(Animation3D);
 
         virtual ~Animation3D();
 
@@ -45,10 +46,13 @@ namespace ehw
         void BindData();
         void UnBindData();
 
+        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+        virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+
         eResult Serialize(BinarySerializer& _ser) override;
         eResult DeSerialize(BinarySerializer& _ser) override;
 
-        eResult LoadFromFBX(Skeleton* _skeleton, const tFBXAnimClip* _clip);
+        eResult LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
         int GetStartFrame() const { return m_StartFrame; }
         int GetEndFrame() const { return m_EndFrame; }
@@ -58,16 +62,15 @@ namespace ehw
         double GetTimeLength() const { return m_TimeLength; }
         float GetUpdateTime() const { return m_UpdateTime; }
         int GetFPS() const { return m_FramePerSec; }
-        Skeleton* GetSkeleton() const { return m_OwnerSkeleton; }
-        void SetSkeleton(Skeleton* _skeleton) { m_OwnerSkeleton = _skeleton; }
+        std::shared_ptr<Skeleton> GetSkeleton() const { return m_OwnerSkeleton.lock(); }
+        void SetSkeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
         StructBuffer* GetKeyFrameSBuffer() const { return m_SBufferKeyFrame.get(); }
 
     private:
-        bool CreateKeyFrameSBuffer(const std::vector<tAnimKeyframeTranslation>& _vecAnimFrameTranslations);
+        bool CreateKeyFrameSBuffer();
 
     private:
-        Skeleton* m_OwnerSkeleton;
-
+        std::weak_ptr<Skeleton> m_OwnerSkeleton;
 
         int				m_StartFrame;
         int				m_EndFrame;
@@ -84,7 +87,7 @@ namespace ehw
 
         //이중 배열 형태임
         std::vector<tKeyFramesPerBone>          m_KeyFramesPerBone;
-        std::unique_ptr<StructBuffer>			m_SBufferKeyFrame;
+        std::shared_ptr<StructBuffer>			m_SBufferKeyFrame;
 	};
 }
 

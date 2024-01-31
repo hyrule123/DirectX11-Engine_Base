@@ -38,6 +38,7 @@ namespace ehw
 		Model3D();
 		virtual ~Model3D();
 
+		//Model3D의 경로명 = 폴더명
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		

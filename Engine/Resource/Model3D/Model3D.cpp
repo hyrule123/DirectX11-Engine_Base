@@ -48,51 +48,26 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		//Skeleton 저장
-		eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
-		if (eResultFail(result))
-		{
-			ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
-			return result;
-		}
-
-		for (size_t i = 0; i < m_meshContainers.size(); ++i)
-		{
-			result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
-			if (eResultFail(result))
-			{
-				ERROR_MESSAGE("메쉬 정보 저장 실패");
-				return result;
-			}
-
-			result = ResourceManager<Material>::Save(m_meshContainers[i].materials[i]);
-			if (eResultFail(result))
-			{
-				ERROR_MESSAGE("재질 정보 저장 실패");
-				return result;
-			}
-		}
-
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
 		std::fs::path fullPath = _baseDir / _strKeyPath / _strKeyPath;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
-		result = SaveFile(fullPath);
-		if (eResultFail(result))
-		{
-			ERROR_MESSAGE("Model3D json 파일 저장 실패.");
-			return eResult::Fail;
-		}
-
-		return eResult::Success;
+		return SaveFile(fullPath);
 	}
 
 	eResult Model3D::Serialize(JsonSerializer& _ser)
 	{
 		eResult result = eResult::Fail;
 
-		//Skeleton의 strKey 저장
+
+		//Skeleton
+		eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
+		if (eResultFail(result))
+		{
+			ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
+			return result;
+		}
 		_ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
 
 
@@ -108,6 +83,12 @@ namespace ehw
 			Json::Value& meshContainer = arrMeshCont[i];
 
 			//Mesh
+			result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
+			if (eResultFail(result))
+			{
+				ERROR_MESSAGE("메쉬 정보 저장 실패");
+				return result;
+			}
 			meshContainer["mesh"] << m_meshContainers[i].mesh->GetStrKey();
 
 			//Materials
@@ -117,6 +98,12 @@ namespace ehw
 				if (nullptr == m_meshContainers[i].materials[j])
 				{
 					return eResult::Fail_Nullptr;
+				}
+				result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j]);
+				if (eResultFail(result))
+				{
+					ERROR_MESSAGE("재질 정보 저장 실패");
+					return result;
 				}
 
 				materials[j] << m_meshContainers[i].materials[j]->GetStrKey();

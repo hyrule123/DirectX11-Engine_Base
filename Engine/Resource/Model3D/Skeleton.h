@@ -19,9 +19,9 @@ namespace ehw
 		virtual ~Skeleton();
 
 		virtual eResult Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
-		virtual eResult Serialize(BinarySerializer& _ser) override;
-
 		virtual eResult Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
+
+		virtual eResult Serialize(BinarySerializer& _ser) override;
 		virtual eResult DeSerialize(BinarySerializer& _ser) override;
 
 
@@ -35,7 +35,7 @@ namespace ehw
 
 		//반환타입 변수길이가 좀 김
 		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>& 
-			GetAnimations() const { return mMapAnimations; }
+			GetAnimations() const { return m_animations; }
 
 		std::shared_ptr<Animation3D> FindAnimation(const std::string_view _strAnimName);
 
@@ -49,9 +49,11 @@ namespace ehw
 
 	private:
 		std::vector<tMTBone>							m_vecBones;
-		std::unique_ptr<StructBuffer>					m_pBoneOffset;	  // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
 
-		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>	mMapAnimations;
+		// 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
+		std::unique_ptr<StructBuffer>					m_pBoneOffset;	  
+
+		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>	m_animations;
 	};
 }
 

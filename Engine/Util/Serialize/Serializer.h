@@ -58,7 +58,6 @@ namespace ehw
 	template<typename T> requires std::is_base_of_v<Serializer, T>
 	inline eResult Serializable<T>::LoadFile(std::filesystem::path const& _fullPath)
 	{
-	
 		if (false == std::fs::exists(_fullPath))
 		{
 			return eResult::Fail_Open;
