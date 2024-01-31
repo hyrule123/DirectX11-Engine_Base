@@ -40,8 +40,9 @@ namespace ehw
         , m_UpdateTime{_other.m_UpdateTime}
         , m_FramePerSec{_other.m_FramePerSec}
         , m_KeyFramesPerBone{_other.m_KeyFramesPerBone}
-        , m_SBufferKeyFrame{_other.m_SBufferKeyFrame}
+        , m_SBufferKeyFrame{}
     {
+        m_SBufferKeyFrame = std::shared_ptr<StructBuffer>(_other.m_SBufferKeyFrame->Clone());
     }
 
     Animation3D::~Animation3D()

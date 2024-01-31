@@ -19,6 +19,9 @@ namespace ehw
 	{
 	public:
 		GPUBuffer(eBufferType _Type);
+
+		GPUBuffer(const GPUBuffer& _other);
+
 		virtual ~GPUBuffer() = default;
 
 	protected:

@@ -55,8 +55,14 @@ namespace ehw
 		, mCurBoundView()
 		, mCurBoundRegister(-1)
 	{
+		//SetDesc 함수를 통해 설정
 		SetDesc(_other.mSBufferDesc);
+
+		//버퍼 빈 상태 및 동일 조건으로 생성
 		Create(_other.mElementStride, _other.mElementCapacity, nullptr, 0u);
+
+		//리소스 내용 복사
+		GPUManager::Context()->CopyResource(mBuffer.Get(), _other.mBuffer.Get());
 	}
 
 	StructBuffer::~StructBuffer()
@@ -69,8 +75,7 @@ namespace ehw
 
 	HRESULT StructBuffer::Create(size_t _uElemStride, size_t _uElemCapacity, const void* _pInitialData, size_t _uElemCount)
 	{
-
-		//상수버퍼와 마찬가지로 16바이트 단위로 정렬되어 있어야 함.s
+		//상수버퍼와 마찬가지로 16바이트 단위로 정렬되어 있어야 함.
 		if (0 != _uElemStride % 16)
 		{
 			ERROR_MESSAGE_A("The byte size of the structured buffer must be a multiple of 16.");

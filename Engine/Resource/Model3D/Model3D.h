@@ -71,8 +71,6 @@ namespace ehw
 
 		bool SetRenderer(const std::shared_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx);
 
-		
-		//리소스는 독자적으로 관리(ResourceManager에 등록하지 않음 - 이름이 겹칠 수 있기 떄문)
 	private:
 		std::shared_ptr<Skeleton> m_skeleton;
 		std::vector<tMeshContainer> m_meshContainers;

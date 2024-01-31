@@ -3,7 +3,8 @@
 #include "define_Macro.h"
 #include "CommonType.h"
 
-
+#define CLONE(_type) virtual _type* Clone() override { return new _type(*this); }
+#define CLONE_DISABLE(_type) virtual _type* Clone() override { ERROR_MESSAGE_W(L"Clone할 수 없거나 Clone함수를 재정의하지 않은 클래스입니다."); return nullptr; }
 
 namespace ehw
 

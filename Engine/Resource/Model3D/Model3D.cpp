@@ -51,7 +51,7 @@ namespace ehw
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path fullPath = _baseDir / _strKeyPath / _strKeyPath;
+		std::fs::path fullPath = _baseDir / _strKeyPath;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
 		return SaveFile(fullPath);
 	}

@@ -8,9 +8,15 @@
 namespace ehw
 {
 	GPUBuffer::GPUBuffer(eBufferType _Type)
-		: mBuffer()
+		: mBuffer{}
 		, mBufferDesc{}
 		, mBufferType(_Type)
+	{
+	}
+	GPUBuffer::GPUBuffer(const GPUBuffer& _other)
+		: mBuffer()
+		, mBufferDesc{_other.mBufferDesc}
+		, mBufferType{_other.mBufferType}
 	{
 	}
 }

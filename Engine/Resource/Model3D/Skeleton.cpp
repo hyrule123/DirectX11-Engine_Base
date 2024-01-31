@@ -218,7 +218,7 @@ namespace ehw
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
 
-			eResult result = anim->LoadFromFBX(this, &animClip[i]);
+			eResult result = anim->LoadFromFBX(shared_from_this_T<Skeleton>(), &animClip[i]);
 			if (eResultFail(result))
 			{
 				ERROR_MESSAGE("애니메이션 생성 실패");
@@ -277,29 +277,12 @@ namespace ehw
 		for (const auto& otherAnim : _other.m_animations)
 		{
 			//일단 다른쪽의 애니메이션을 복사해온다.
-			std::shared_ptr<Animation3D> ourAnim = std::make_shared<Animation3D>(*(otherAnim.second));
+			std::shared_ptr<Animation3D> ourAnim = std::shared_ptr<Animation3D>(otherAnim.second->Clone());
+
+			//스켈레톤 주소를 자신의것으로 변경
 			ourAnim->SetSkeleton(shared_from_this_T<Skeleton>());
-			
-			//int				m_StartFrame;
-			//int				m_EndFrame;
-			//int				m_FrameLength;
 
-			//double			m_StartTime;
-			//double			m_EndTime;
-			//double			m_TimeLength;
-			//float			m_UpdateTime; // 이거 안씀
-
-			//int         	m_FramePerSec;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-			ourAnim->m_StartFrame = otherAnim.second->m_StartFrame;
-
-			ourAnim->mValues = otherAnim.second->mValues;
-			ourAnim->m_KeyFramesPerBone = otherAnim.second->m_KeyFramesPerBone;
-
+			//위에서 찾은 일치하는 Bone 번호 인덱스를 가져온다.
 			for (size_t i = 0; i < matchingIndices.size(); ++i)
 			{
 				//인덱스가 서로 다른 경우에 인덱스 번호를 바꿔준다
@@ -320,7 +303,7 @@ namespace ehw
 			std::fs::path filePath = _saveDir.filename();
 			filePath /= strKey;
 			
-			if (eResultFail(ourAnim->Save(filePath)))
+			if (eResultFail(ourAnim->SaveFile(filePath)))
 				return false;
 
 			//우리 애니메이션 쪽에 등록
@@ -337,9 +320,9 @@ namespace ehw
 			if (
 				m_vecBones[i].strBoneName == _other.strBoneName
 				&&
-				m_vecBones[i].Values.iDepth == _other.Values.iDepth
+				m_vecBones[i].iDepth == _other.iDepth
 				&&
-				m_vecBones[i].Values.iParentIndx == _other.Values.iParentIndx
+				m_vecBones[i].iParentIndx == _other.iParentIndx
 				)
 			{
 				return (int)i;

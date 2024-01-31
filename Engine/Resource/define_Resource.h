@@ -47,6 +47,7 @@ namespace ehw
 
 					//모델링 설정에 따라 애니메이션을 사용할수도 안할수도 있음
 					STRKEY Model3D = "Model3D";
+					STRKEY Skeleton = "Model3D/Skeleton";
 
 					STRKEY AudioClip = "AudioClip";
 
