@@ -1,4 +1,3 @@
-
 #include "ConstBuffer.h"
 
 
@@ -27,19 +26,18 @@ namespace ehw
 		mDataCount = _dataCount;
 
 		// 상수 버퍼
-		mBufferDesc.ByteWidth = mDataSize * _dataCount;
-		mBufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
-		mBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
-		mBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		mBufferDesc.MiscFlags = 0;
-		mBufferDesc.StructureByteStride = 0;
+		D3D11_BUFFER_DESC& bufferDesc = GetBufferDescRef();
+		bufferDesc.ByteWidth = mDataSize * _dataCount;
+		bufferDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
+		bufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bufferDesc.MiscFlags = 0;
+		bufferDesc.StructureByteStride = 0;
 
-		bool bResult = SUCCEEDED(GPUManager::Device()->CreateBuffer(&mBufferDesc, nullptr, mBuffer.GetAddressOf()));
-			
+		bool bResult = SUCCEEDED(GPUManager::Device()->CreateBuffer(&GetBufferDescRef(), nullptr, GetBufferRef().GetAddressOf()));
 		if (false == bResult)
 		{
-			mBufferDesc = {};
-			mBuffer = nullptr;
+			Clear();
 		}
 
 		return bResult;
@@ -54,10 +52,10 @@ namespace ehw
 		auto pContext = GPUManager::Context();
 		D3D11_MAPPED_SUBRESOURCE tSubRes{};
 
-		if (SUCCEEDED(pContext->Map(mBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
+		if (SUCCEEDED(pContext->Map(GetBufferRef().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
 		{
 			memcpy(tSubRes.pData, _data, mDataSize * _dataCount);
-			pContext->Unmap(mBuffer.Get(), 0);
+			pContext->Unmap(GetBufferRef().Get(), 0);
 		}
 	}
 
@@ -71,27 +69,27 @@ namespace ehw
 		auto pContext = GPUManager::Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
-			pContext->VSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->VSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Hull & _stageFlag)
 		{
-			pContext->HSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->HSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Domain & _stageFlag)
 		{
-			pContext->DSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->DSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
-			pContext->GSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->GSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
-			pContext->PSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->PSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Compute & _stageFlag)
 		{
-			pContext->CSSetConstantBuffers((uint)m_ComCategory, 1u, mBuffer.GetAddressOf());
+			pContext->CSSetConstantBuffers((uint)m_ComCategory, 1u, GetBufferRef().GetAddressOf());
 		}
 	}
 }

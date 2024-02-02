@@ -62,15 +62,15 @@ namespace ehw
         void SetDesc(const Desc& _tDesc);
 
         //Setter Getter Adder
-        void SetPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV = _StageFlag; }
-        void AddPipelineTarget(eShaderStageFlag_ _StageFlag) { mSBufferDesc.TargetStageSRV |= _StageFlag; }
+        void SetPipelineTarget(eShaderStageFlag_ _StageFlag) { m_SbufferDesc.TargetStageSRV = _StageFlag; }
+        void AddPipelineTarget(eShaderStageFlag_ _StageFlag) { m_SbufferDesc.TargetStageSRV |= _StageFlag; }
 
-        uint GetCapacity() const { return mElementCapacity; }
+        uint GetCapacity() const { return m_elementCapacity; }
 
         //글로벌 변수에 있는거 리턴해주면 될듯
-        uint GetElemCount() const { return mElementCount; }
+        uint GetElemCount() const { return m_elementCount; }
 
-        uint GetStride() const { return mElementStride; }
+        uint GetStride() const { return m_elementStride; }
 
         template <typename T>
         HRESULT Create(size_t _ElementCapacity, const void* _pInitialData, size_t _ElemCount);
@@ -104,26 +104,26 @@ namespace ehw
 
 
     private:
-        Desc                        mSBufferDesc;
+        Desc                        m_SbufferDesc;
 
-        uint                        mElementStride;   //구조체 하나 당 바이트 갯수
-        uint                        mElementCount;    //현재 등록한 구조체의 갯수
-        uint                        mElementCapacity; //현재 확보되어있는 구조체의 갯수
+        uint                        m_elementStride;   //구조체 하나 당 바이트 갯수
+        uint                        m_elementCount;    //현재 등록한 구조체의 갯수
+        uint                        m_elementCapacity; //현재 확보되어있는 구조체의 갯수
 
-        ComPtr<ID3D11ShaderResourceView> mSRV;
+        ComPtr<ID3D11ShaderResourceView> m_SRV;
 
         //RW 형태로 바인딩하고자 할때
-        ComPtr<ID3D11UnorderedAccessView> mUAV;
+        ComPtr<ID3D11UnorderedAccessView> m_UAV;
 
-        ComPtr<ID3D11Buffer>    mStagingBuffer;
+        ComPtr<ID3D11Buffer>    m_stagingBuffer;
 
-        int                     mCurBoundRegister;
-        eBufferViewType         mCurBoundView;
+        int                     m_curBoundRegister;
+        eBufferViewType         m_curBoundView;
 	};
 
     inline void StructBuffer::SetDesc(const Desc& _tDesc)
     {
-        mSBufferDesc = _tDesc;
+        m_SbufferDesc = _tDesc;
         SetDefaultDesc();
     }
 
