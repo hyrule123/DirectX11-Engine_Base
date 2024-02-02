@@ -37,7 +37,7 @@ namespace ehw
 		eResult LoadFile(std::ifstream& _loadFile);
 
 		void Write(const unsigned char* _pSrc, size_t _size);
-		size_t Read(unsigned char* _pDest, size_t _size);
+		size_t Read(unsigned char* _pDest, size_t _size) const;
 
 		template <BinaryDefaultTypes T>
 		inline void operator <<(const T& _data);
@@ -52,26 +52,26 @@ namespace ehw
 		inline void operator >>(T& _data) const;
 
 		template <BinaryDefaultTypes T>
-		inline void operator >>(std::vector<T>& _data);
+		inline void operator >>(std::vector<T>& _data) const;
 
 		template <typename CharType>
-		inline void operator >>(std::basic_string<CharType>& _data);
+		inline void operator >>(std::basic_string<CharType>& _data) const;
 
 
 		size_t GetDataSize() const { return m_data.size(); }
 		void ReserveDataSize(size_t _size) { m_data.reserve(_size); }
 
-		size_t GetReadOffset() const { return m_ReadOffset; }
+		size_t GetReadOffset() const { return m_readOffset; }
 		inline size_t SetReadOffset(size_t _offset);
 
-		size_t GetWriteOffset() const { return m_WriteOffset; }
+		size_t GetWriteOffset() const { return m_writeOffset; }
 		inline size_t SetWriteOffset(size_t _offset);
 
-		void Clear() { m_data.clear(); m_ReadOffset = (size_t)0; m_WriteOffset = (size_t)0; }
+		void Clear() { m_data.clear(); m_readOffset = (size_t)0; m_writeOffset = (size_t)0; }
 	private:
 		std::vector<unsigned char> m_data;
-		size_t m_ReadOffset;
-		size_t m_WriteOffset;
+		size_t m_writeOffset;
+		mutable size_t m_readOffset;
 	};
 
 
@@ -88,13 +88,13 @@ namespace ehw
 		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
 	}
 
-	template<typename CharType>
-	inline void BinarySerializer::operator<<(const std::basic_string_view<CharType> _data)
-	{
-		size_t strByteSize = _data.size() * sizeof(CharType);
-		Write(&strByteSize, sizeof(strByteSize));
-		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
-	}
+	//template<typename CharType>
+	//inline void BinarySerializer::operator<<(const std::basic_string_view<CharType> _data)
+	//{
+	//	size_t strByteSize = _data.size() * sizeof(CharType);
+	//	Write(&strByteSize, sizeof(strByteSize));
+	//	Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
+	//}
 	
 
 	template<BinaryDefaultTypes T>
@@ -115,7 +115,7 @@ namespace ehw
 
 
 	template<BinaryDefaultTypes T>
-	inline void BinarySerializer::operator>>(std::vector<T>& _data)
+	inline void BinarySerializer::operator>>(std::vector<T>& _data) const
 	{
 		size_t size = 0;
 		(*this) >> size;
@@ -127,7 +127,7 @@ namespace ehw
 	}
 
 	template<typename CharType>
-	inline void BinarySerializer::operator>>(std::basic_string<CharType>& _data)
+	inline void BinarySerializer::operator>>(std::basic_string<CharType>& _data) const
 	{
 		size_t bytesToRead{};
 		Read(&bytesToRead, sizeof(size_t));
@@ -147,7 +147,7 @@ namespace ehw
 		{
 			ret = m_data.size();
 		}
-		m_ReadOffset = ret;
+		m_readOffset = ret;
 
 		return ret;
 	}
@@ -160,7 +160,7 @@ namespace ehw
 		{
 			ret = m_data.size();
 		}
-		m_WriteOffset = ret;
+		m_writeOffset = ret;
 
 		return ret;
 	}

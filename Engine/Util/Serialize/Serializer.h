@@ -37,7 +37,7 @@ namespace ehw
 		inline eResult LoadFile(std::filesystem::path const& _fullPath);
 
 		virtual eResult Serialize(T& _ser) = 0;
-		virtual eResult DeSerialize(T& _ser) = 0;
+		virtual eResult DeSerialize(const T& _ser) = 0;
 	};
 
 

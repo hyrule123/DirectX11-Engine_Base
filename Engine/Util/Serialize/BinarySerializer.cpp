@@ -7,8 +7,8 @@ namespace ehw
 {
 	BinarySerializer::BinarySerializer()
 		: m_data()
-		, m_ReadOffset()
-		, m_WriteOffset()
+		, m_readOffset()
+		, m_writeOffset()
 	{
 	}
 
@@ -91,7 +91,7 @@ namespace ehw
 			return;
 		}
 
-		size_t reqSize = m_WriteOffset + _size;
+		size_t reqSize = m_writeOffset + _size;
 		if (m_data.size() < reqSize)
 		{
 			if (m_data.capacity() < reqSize)
@@ -102,31 +102,31 @@ namespace ehw
 			m_data.resize(reqSize);
 		}
 
-		unsigned char* dest = m_data.data() + m_WriteOffset;
-		memcpy_s(dest, m_data.size() - m_WriteOffset, _pSrc, _size);
-		m_WriteOffset = reqSize;
+		unsigned char* dest = m_data.data() + m_writeOffset;
+		memcpy_s(dest, m_data.size() - m_writeOffset, _pSrc, _size);
+		m_writeOffset = reqSize;
 	}
 
-	size_t BinarySerializer::Read(unsigned char* _pDest, size_t _size)
+	size_t BinarySerializer::Read(unsigned char* _pDest, size_t _size) const
 	{
 		if (nullptr == _pDest || 0 == _size)
 		{
 			return 0;
 		}
 		//이미 끝까지 읽은 경우
-		else if (m_data.size() <= m_ReadOffset)
+		else if (m_data.size() <= m_readOffset)
 		{
 			return 0;
 		}
 		//읽고자 하는 바이트 수가 최대 사이즈를 넘어설 경우 최대 사이즈까지만 읽음
-		else if (m_data.size() < m_ReadOffset + _size)
+		else if (m_data.size() < m_readOffset + _size)
 		{
-			_size = m_data.size() - m_ReadOffset;
+			_size = m_data.size() - m_readOffset;
 		}
 
-		unsigned char* src = m_data.data() + m_ReadOffset;
+		unsigned char* src = m_data.data() + m_readOffset;
 		memcpy_s(_pDest, _size, src, _size);
-		m_ReadOffset += _size;
+		m_readOffset += _size;
 
 		return _size;
 	}

@@ -19,6 +19,7 @@ namespace ehw
 		virtual eResult LoadFile(std::filesystem::path const& _fullPath) override;
 
 		Json::Value& operator[] (const std::string_view _strKey) { return m_jVal[_strKey]; }
+		const Json::Value& operator[] (const std::string_view _strKey) const { return m_jVal[_strKey]; }
 
 	private:
 		Json::Value m_jVal;

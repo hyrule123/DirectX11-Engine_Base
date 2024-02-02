@@ -43,7 +43,7 @@ namespace ehw
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		
 		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		//아예 새 게임오브젝트를 반환
 		std::shared_ptr<GameObject> Instantiate();

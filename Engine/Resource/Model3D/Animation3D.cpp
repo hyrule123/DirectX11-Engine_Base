@@ -97,7 +97,7 @@ namespace ehw
         return eResult::Success;
     }
 
-    eResult Animation3D::DeSerialize(BinarySerializer& _ser)
+    eResult Animation3D::DeSerialize(const BinarySerializer& _ser)
     {
         _ser >> m_StartFrame;
         _ser >> m_EndFrame;
@@ -107,6 +107,7 @@ namespace ehw
         _ser >> m_TimeLength;
         _ser >> m_UpdateTime;
         _ser >> m_FramePerSec;
+        
 
         size_t vecSize = 0;
         _ser >> vecSize;

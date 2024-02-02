@@ -113,7 +113,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::DeSerialize(JsonSerializer& _ser)
+	eResult Model3D::DeSerialize(const JsonSerializer& _ser)
 	{
 		m_skeleton = nullptr;
 		m_meshContainers.clear();
@@ -133,12 +133,12 @@ namespace ehw
 		//MeshContainers
 		{
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
-			Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
+			const Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
 			size_t meshContSize = (size_t)arrMeshCont.size();
 			m_meshContainers.resize(meshContSize);
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				Json::Value& meshContainer = arrMeshCont[i];
+				const Json::Value& meshContainer = arrMeshCont[i];
 				
 				//nullptr check
 				if (false == meshContainer.isMember("mesh"))
@@ -164,7 +164,7 @@ namespace ehw
 				}
 
 				//Materials
-				Json::Value& materials = meshContainer["materials"];
+				const Json::Value& materials = meshContainer["materials"];
 				size_t materialSize = materials.size();
 				m_meshContainers[i].materials.resize(materialSize);
 				for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
