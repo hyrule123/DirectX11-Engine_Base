@@ -23,7 +23,7 @@ namespace ehw
 
 		virtual eResult Serialize(BinarySerializer& _ser) override;
 		virtual eResult DeSerialize(BinarySerializer& _ser) override;
-
+		
 
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);
 

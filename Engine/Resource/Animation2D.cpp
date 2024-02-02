@@ -7,8 +7,6 @@
 
 #include "../GPU/ConstBuffer.h"
 
-#include "../json-cpp/json.h"
-
 #include "../DefaultShader/Animation/Animation2D.hlsli"
 
 namespace ehw
@@ -41,66 +39,14 @@ namespace ehw
 	}
 
 
-	bool Animation2D::Serialize(JsonSerializer& _ser)
+	eResult Animation2D::Serialize(JsonSerializer& _ser)
 	{
-		_ser << MAKE_JSONPAIR(mSpriteSheet);
-
-		return false;
+		return eResult::Fail_NotImplemented;
 	}
 
-	bool Animation2D::DeSerialize(const JsonSerializer& _ser)
+	eResult Animation2D::DeSerialize(JsonSerializer& _ser)
 	{
-		return false;
-	}
-
-	eResult Animation2D::SaveJson(Json::Value* _pJVal)
-	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = iResource::SaveJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		////Value가 들어있는 vector 저장하는법
-		////1. json의 타입을 array value로 만들어준다.
-		//(*_pJVal)[JSON_KEY(mSpriteSheet)] = Json::Value(Json::arrayValue);
-		////2. 만들어진 데이터 컨테이너를 레퍼런스로 받아온다.
-		//Json::Value& jVal = (*_pJVal)[JSON_KEY(mSpriteSheet)];
-		//for (size_t i = 0; i < mSpriteSheet.size(); ++i)
-		//{
-		//	//3. 순회돌면서 하나씩 추가한다.
-		//	jVal.append(Json::ConvertWrite(mSpriteSheet[i]));
-		//}
-		Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
-
-
-		return eResult::Success;
-	}
-
-	eResult Animation2D::LoadJson(const Json::Value* _pJVal)
-	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = iResource::LoadJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-		const Json::Value& jVal = (*_pJVal);
-
-		const auto& SpriteData = Json::SaveLoad::LoadValueVector(_pJVal, JSON_KEY_PAIR(mSpriteSheet));
-		mSpriteSheet = std::move(SpriteData);
-
-		
-
-
-		return eResult::Success;
+		return eResult::Fail_NotImplemented;
 	}
 
 	uint Animation2D::Update()

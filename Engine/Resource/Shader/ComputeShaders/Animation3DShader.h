@@ -12,8 +12,6 @@ namespace ehw
         public iComputeShader
     {
 	public:
-
-
 		Animation3DShader();
 		virtual ~Animation3DShader();
 

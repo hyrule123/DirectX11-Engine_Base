@@ -1,8 +1,6 @@
 #pragma once
 #include "../iComputeShader.h"
 
-
-
 #include "../../../CommonGlobalVar.h"
 
 
@@ -16,7 +14,7 @@ namespace ehw
 		GPUInitSetting();
 		virtual ~GPUInitSetting();
 
-		virtual eResult Load(const std::filesystem::path& _filePath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
 	protected:
 		virtual bool BindData() override;

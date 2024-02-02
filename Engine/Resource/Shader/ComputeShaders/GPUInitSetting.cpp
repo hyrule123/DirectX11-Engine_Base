@@ -26,10 +26,8 @@ namespace ehw
 	{
 	}
 
-	eResult GPUInitSetting::Load(const std::filesystem::path& _filePath)
+	eResult GPUInitSetting::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Load(_filePath);
-
 		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 
 		ASSERT(eResultSuccess(result), "GPU 초기화 작업 실패");

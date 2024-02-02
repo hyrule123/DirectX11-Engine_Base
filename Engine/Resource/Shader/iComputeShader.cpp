@@ -30,11 +30,9 @@ namespace ehw
 	{
 	}
 
-	eResult iComputeShader::Load(const std::filesystem::path& _pathFromBaseDir)
+	eResult iComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		std::fs::path fullPath = ResourceManager<iComputeShader>::GetBaseDir() / _pathFromBaseDir;
-
-		return CreateByCSO(fullPath);
+		return CreateByCSO(_baseDir / _strKeyPath);
 	}
 
 	eResult iComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)
