@@ -34,10 +34,8 @@ namespace ehw
 	{
 	}
 
-	eResult NormalConvertShader::Load(const std::fs::path& _filePath)
+	eResult NormalConvertShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Load(_filePath);
-
 		return iComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
 	}
 

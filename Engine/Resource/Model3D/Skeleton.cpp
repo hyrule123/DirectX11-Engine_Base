@@ -168,7 +168,7 @@ namespace ehw
 
 
 
-	eResult Skeleton::DeSerialize(BinarySerializer& _ser)
+	eResult Skeleton::DeSerialize(const BinarySerializer& _ser)
 	{
 		size_t size{};
 		_ser >> size;

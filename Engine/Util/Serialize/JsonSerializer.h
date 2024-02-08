@@ -1,16 +1,16 @@
 #pragma once
 #include "Serializer.h"
 
-#include "json.h"
+#include "../../CommonGlobalVar.h"
 #include "../StringConverter.h"
+#include "json.h"
+
 
 #define MAKE_JSONPAIR(_var) JsonSerializer::JsonPair(#_var, _var)
 #define JSON_KEY(_varName) #_varName
 
 namespace ehw
 {
-	
-
 	class JsonSerializer : public Serializer
 	{
 	public:
@@ -30,18 +30,17 @@ namespace ehw
 
 	//템플릿 특수화를 하고자 하는 타입은 여기 추가 후 특수화해주면 됨.
 	template <typename T>
-	concept JsonTypeSpecialization =
-		std::is_enum_v<T>;
+	concept JsonTypeSpecialization = 
+		type_traits_Ex::PointerTypes<T> ||
+		type_traits_Ex::is_enum_class_v<T>;
 
 	template <typename T>
 	concept JsonDefaultTypes =
-		!type_traits_Ex::PointerTypes<T> &&
 		!JsonTypeSpecialization<T> &&
 		requires (T t) { { Json::Value(t) }; };
 
 	template <typename T>
 	concept NotJsonDefaultTypes =
-		!type_traits_Ex::PointerTypes<T> &&
 		!JsonTypeSpecialization<T> &&
 		!requires (T t) { { Json::Value(t) }; };
 
@@ -50,6 +49,7 @@ namespace ehw
 	{
 		_jVal = _data;
 	}
+
 	template <JsonDefaultTypes T>
 	inline void operator <<(Json::Value& _jVal, T&& _data) noexcept
 	{
@@ -64,17 +64,20 @@ namespace ehw
 	{
 		_jVal = StringConverter::Base64Encode(_data);
 	}
-
-
-	inline void operator <<(Json::Value& _jVal, const char* _c_str)
+	
+	//c_str
+	template <JsonTypeSpecialization T> requires type_traits_Ex::PointerTypes<T>
+	inline void operator <<(Json::Value& _jVal, T _c_str)
 	{
+		static_assert(std::is_same_v(T, char), "c_str 문자열만 사용 가능");
 		if (nullptr != _c_str)
 		{
 			_jVal = Json::StaticString(_c_str);
 		}
 	}
 
-	template <typename T> requires std::is_enum_v<T>
+	//enum class
+	template <JsonTypeSpecialization T> requires type_traits_Ex::is_enum_class_v<T>
 	inline void operator <<(Json::Value& _jVal, T _data)
 	{
 		_jVal = static_cast<std::underlying_type_t<T>>(_data);
@@ -93,9 +96,17 @@ namespace ehw
 	}
 
 
-	template <typename T> requires std::is_enum_v<T>
+	template <JsonTypeSpecialization T> requires type_traits_Ex::is_enum_class_v<T>
 	inline void operator >>(const Json::Value& _jVal, T& _data)
 	{
 		_data = static_cast<T>(_jVal.as<std::underlying_type_t<T>>());
+	}
+
+	template <JsonTypeSpecialization T> requires type_traits_Ex::PointerTypes<T>
+	inline void operator >> (const Json::Value& _jVal, T _c_str)
+	{
+		static_assert(std::is_same_v<T, const char*>, "c_str 포인터(const char*)만 지원함.");
+		const auto& pair = g_cstrArchive.insert(_jVal.asString());
+		_c_str = pair.first->c_str();
 	}
 }

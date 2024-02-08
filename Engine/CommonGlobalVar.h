@@ -2,9 +2,15 @@
 
 #include "DefaultShader/CommonStruct.hlsli"
 
+#include <unordered_set>
+#include <string>
+
 namespace ehw
 {
 	extern tGPUInitSetting		gGPUInitSetting;
 	extern tCB_Global			gGlobal;
+	
+	//c_str 저장용 컨테이너
+	extern std::unordered_set<const std::string> g_cstrArchive;
 }
 

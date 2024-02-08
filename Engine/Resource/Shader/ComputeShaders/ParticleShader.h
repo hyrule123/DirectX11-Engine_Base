@@ -7,11 +7,12 @@
 
 namespace ehw
 {
-	class ParticleShader : public iComputeShader
+	class ParticleShader 
+		: public iComputeShader
 	{
 	public:
 		ParticleShader();
-		~ParticleShader();
+		virtual ~ParticleShader();
 
 		virtual bool BindData() override;
 		virtual void UnBindData() override;

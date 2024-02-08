@@ -17,6 +17,11 @@ namespace type_traits_Ex
 	template <typename P>
 	concept NotPointerTypes = !PointerTypes<P>;
 
+	template <typename T>
+	concept is_enum_class_v =
+		std::is_enum_v<T> &&
+		!std::is_convertible_v<T, std::underlying_type_t<T>>;
+
 	template<typename T, typename CharType>
 	concept BasicStringLike = std::is_convertible_v<T, std::basic_string_view<CharType>>;
 
