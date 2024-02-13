@@ -16,14 +16,14 @@ namespace ehw
         , m_constBufferData{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}
-        , mTextures{}
+        , m_textures{}
     {
     }
 
     Material::Material(const Material& _other)
         : iResource(_other)
         , m_shader(_other.m_shader)
-        , mTextures(_other.mTextures)
+        , m_textures(_other.m_textures)
         , m_constBufferData(_other.m_constBufferData)
         , m_renderingMode(_other.m_renderingMode)
     {
@@ -45,79 +45,95 @@ namespace ehw
 
     eResult Material::Serialize(JsonSerializer& _ser)
     {
-        _ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
-
-        Json::Value& cbData = _ser[JSON_KEY(m_constBufferData)];
-        Json::Value& bTexArr = cbData["bTexArr"];
-        bTexArr.resize((int)eTextureSlot::END);
-        for (int i = 0; i < (int)eTextureSlot::END; ++i)
+        try
         {
-            bTexArr[i] = true;
+            //shader
+            if (m_shader)
+            {
+                _ser[JSON_KEY(m_shader)] << m_shader->GetStrKey();
+            }
+            else
+            {
+                _ser[JSON_KEY(m_shader)] << Json::nullValue;
+            }
+
+            //textures
+            Json::Value& textures = _ser[JSON_KEY(m_textures)];
+            textures.resize(m_textures.size());
+            for (size_t i = 0; i < m_textures.size(); ++i)
+            {
+                if (m_textures[i])
+                {
+                    textures[i] << m_textures[i]->GetStrKey();
+                }
+                else
+                {
+                    textures[i] << Json::nullValue;
+                }
+            }
+
+            //renderingMode
+            _ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
+
+            //const buffer
+            Json::Value& cbData = _ser[JSON_KEY(m_constBufferData)];
+            cbData[JSON_KEY(m_constBufferData.Amb)] << m_constBufferData.Amb;
+            cbData[JSON_KEY(m_constBufferData.bAnim)] << m_constBufferData.bAnim;
+            cbData[JSON_KEY(m_constBufferData.BoneCount)] << m_constBufferData.BoneCount;
+            cbData[JSON_KEY(m_constBufferData.Diff)] << m_constBufferData.Diff;
+            cbData[JSON_KEY(m_constBufferData.Emv)] << m_constBufferData.Emv;
+            cbData[JSON_KEY(m_constBufferData.Spec)] << m_constBufferData.Spec;
+            //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
         }
-
-
-
-        Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(m_constBufferData));
-        Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(m_renderingMode));
-
-
-        //포인터의 경우에는 포인터 자체를 저장하는게 아니라 Key를 저장
-        if (m_shader)
+        catch (const Json::Exception& _err)
         {
-            jVal[JSON_KEY(m_shader)] = m_shader->GetStrKey();
+            ERROR_MESSAGE_A(_err.what());
+            return eResult::Fail_InValid;
         }
-        Json::SaveLoad::SavePtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
 
         return eResult::Success;
     }
 
     eResult Material::DeSerialize(const JsonSerializer& _ser)
     {
-        return eResult();
-    }
-
-    eResult Material::SaveJson(Json::Value* _pJVal)
-    {
-
-    }
-
-    eResult Material::LoadJson(const Json::Value* _pJVal)
-    {
-        //nullptr 확인
-        if (nullptr == _pJVal)
+        try
         {
-            return eResult::Fail_Nullptr;
-        }
-
-        //부모 클래스 저장
-        eResult result = iResource::LoadJson(_pJVal);
-        if (eResultFail(result))
-        {
-            return result;
-        }
-        const Json::Value& jVal = *_pJVal;
-
-        //단순 Value의 경우에는 함수로 바로 불러오기 가능
-        Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(m_renderingMode));
-        Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(m_constBufferData));
-
-        //쉐이더 데이터가 있는지 확인하고 가져온 키값으로 쉐이더를 로드
-        std::string shaderStrKey = Json::SaveLoad::LoadPtrStrKey(_pJVal, JSON_KEY_PAIR(m_shader));
-        if (false == shaderStrKey.empty())
-        {
-            //쉐이더는 Base Path를 사용하지 않는다
-            SetShader(ResourceManager<GraphicsShader>::Load(shaderStrKey));
-        }
-        
-        //포인터 배열은 MH::LoadPtrStrKeyVector 함수를 통해서 Key값을 싹 받아올 수 있음.
-        const auto& vecLoad = Json::SaveLoad::LoadPtrStrKeyVector(_pJVal, JSON_KEY_PAIR(mTextures));
-        for (size_t i = 0; i < vecLoad.size(); ++i)
-        {
-            if (false == vecLoad[i].empty())
+            //shader
             {
-                SetTexture((eTextureSlot)i, ResourceManager<Texture>::Load(vecLoad[i]));
+                std::string strKey{};
+                _ser[JSON_KEY(m_shader)] >> strKey;
+                m_shader = ResourceManager<GraphicsShader>::Load(strKey);
             }
+
+
+            //textures
+            const Json::Value& textures = _ser[JSON_KEY(m_textures)];
+            for (size_t i = 0; i < m_textures.size(); ++i)
+            {
+                std::string strKey{};
+                textures[i] >> strKey;
+                m_textures[i] = ResourceManager<Texture>::Load(strKey);
+            }
+
+            //const buffer
+            const Json::Value& cbData = _ser[JSON_KEY(m_constBufferData)];
+            cbData[JSON_KEY(m_constBufferData.Amb)] >> m_constBufferData.Amb;
+            cbData[JSON_KEY(m_constBufferData.bAnim)] >> m_constBufferData.bAnim;
+            cbData[JSON_KEY(m_constBufferData.BoneCount)] >> m_constBufferData.BoneCount;
+            cbData[JSON_KEY(m_constBufferData.Diff)] >> m_constBufferData.Diff;
+            cbData[JSON_KEY(m_constBufferData.Emv)] >> m_constBufferData.Emv;
+            cbData[JSON_KEY(m_constBufferData.Spec)] >> m_constBufferData.Spec;
+            //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
+
+            //renderingMode
+            _ser[JSON_KEY(m_renderingMode)] >> m_renderingMode;
         }
+        catch (const Json::Exception& _err)
+        {
+            ERROR_MESSAGE_A(_err.what());
+            return eResult::Fail_InValid;
+        }
+
         return eResult::Success;
     }
 
@@ -126,9 +142,9 @@ namespace ehw
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
-            if (mTextures[slotIndex])
+            if (m_textures[slotIndex])
             {
-                mTextures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
+                m_textures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
             else
             {
@@ -149,8 +165,43 @@ namespace ehw
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
-            if (mTextures[slotIndex])
-                mTextures[slotIndex]->UnBindData();
+            if (m_textures[slotIndex])
+                m_textures[slotIndex]->UnBindData();
+        }
+    }
+    void Material::SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture)
+    {
+        m_textures[(UINT)_slot] = _texture;
+        BOOL bTex = nullptr != _texture ? TRUE : FALSE;
+        switch ((UINT)_slot)
+        {
+        case 0u:
+            m_constBufferData.bTex_0 = bTex;
+            break;
+        case 1u:
+            m_constBufferData.bTex_1 = bTex;
+            break;
+        case 2u:
+            m_constBufferData.bTex_2 = bTex;
+            break;
+        case 3u:
+            m_constBufferData.bTex_3 = bTex;
+            break;
+        case 4u:
+            m_constBufferData.bTex_4 = bTex;
+            break;
+        case 5u:
+            m_constBufferData.bTex_5 = bTex;
+            break;
+        case 6u:
+            m_constBufferData.bTex_6 = bTex;
+            break;
+        case 7u:
+            m_constBufferData.bTex_7 = bTex;
+            break;
+        default:
+            ASSERT(false, "에러");
+            break;
         }
     }
 }

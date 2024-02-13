@@ -10,10 +10,8 @@
 
 #include "../../define_Enum.h"
 
-
 #include <wrl.h>
 #include <utility>
-
 
 namespace Json
 {

@@ -46,7 +46,7 @@ namespace ehw
 		std::shared_ptr<GraphicsShader> GetShader() const { return m_shader; }
 
 
-		inline void SetTexture(eTextureSlot slot, std::shared_ptr<Texture> _texture);
+		void SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture);
 		std::shared_ptr<Texture> GetTexture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
 
 		eRenderingMode GetRenderingMode() const { return m_renderingMode; }
@@ -59,11 +59,11 @@ namespace ehw
 
 			
 	private:
-		eRenderingMode m_renderingMode;
-		tCB_MaterialData m_constBufferData;
-		
 		std::shared_ptr<GraphicsShader> m_shader;
 		std::array<std::shared_ptr<Texture>, (int)eTextureSlot::END> m_textures;
+
+		eRenderingMode m_renderingMode;
+		tCB_MaterialData m_constBufferData;
 	};
 
 	inline void Material::SetMaterialCoefficient(const float4& _vDiff, const float4& _vSpec, const float4& _vAmb, const float4& _vEmis)
@@ -72,42 +72,6 @@ namespace ehw
 		m_constBufferData.Spec = _vSpec;
 		m_constBufferData.Amb = _vAmb;
 		m_constBufferData.Emv = _vEmis;
-	}
-
-	inline void Material::SetTexture(eTextureSlot slot, std::shared_ptr<Texture> _texture)
-	{
-		m_textures[(UINT)slot] = _texture;
-		BOOL bTex = nullptr != _texture ? TRUE : FALSE;
-		switch ((UINT)slot)
-		{
-		case 0u:
-			m_constBufferData.bTex_0 = bTex;
-			break;
-		case 1u:
-			m_constBufferData.bTex_1 = bTex;
-			break;
-		case 2u:
-			m_constBufferData.bTex_2 = bTex;
-			break;
-		case 3u:
-			m_constBufferData.bTex_3 = bTex;
-			break;
-		case 4u:
-			m_constBufferData.bTex_4 = bTex;
-			break;
-		case 5u:
-			m_constBufferData.bTex_5 = bTex;
-			break;
-		case 6u:
-			m_constBufferData.bTex_6 = bTex;
-			break;
-		case 7u:
-			m_constBufferData.bTex_7 = bTex;
-			break;
-		default:
-			ASSERT(false, "에러");
-			break;
-		}
 	}
 }
 
