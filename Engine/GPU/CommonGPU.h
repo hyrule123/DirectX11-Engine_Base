@@ -25,6 +25,7 @@ namespace ehw
 {
 	enum class eTextureSlot
 	{
+		//기본 이름(최대 8장)
 		Tex_0,
 		Tex_1,
 		Tex_2,
@@ -34,7 +35,7 @@ namespace ehw
 		Tex_6,
 		Tex_7,
 
-
+		//명칭
 		Albedo = Register_t_AlbedoTexture,
 		Normal = Register_t_NormalTexture,
 		Specular = Register_t_SpecularTexture,

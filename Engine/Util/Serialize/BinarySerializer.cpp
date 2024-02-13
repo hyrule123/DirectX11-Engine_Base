@@ -124,7 +124,7 @@ namespace ehw
 			_size = m_data.size() - m_readOffset;
 		}
 
-		unsigned char* src = m_data.data() + m_readOffset;
+		const unsigned char* src = m_data.data() + m_readOffset;
 		memcpy_s(_pDest, _size, src, _size);
 		m_readOffset += _size;
 

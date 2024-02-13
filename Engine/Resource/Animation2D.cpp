@@ -44,7 +44,7 @@ namespace ehw
 		return eResult::Fail_NotImplemented;
 	}
 
-	eResult Animation2D::DeSerialize(JsonSerializer& _ser)
+	eResult Animation2D::DeSerialize(const JsonSerializer& _ser)
 	{
 		return eResult::Fail_NotImplemented;
 	}

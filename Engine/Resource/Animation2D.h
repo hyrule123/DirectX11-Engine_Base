@@ -46,7 +46,7 @@ namespace ehw
 
 		
 		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		uint Update();
 		void InternalUpdate();

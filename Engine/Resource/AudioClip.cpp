@@ -30,11 +30,9 @@ namespace ehw
 	}
 
 
-	eResult AudioClip::Load(const std::fs::path& _pathFromBaseDir)
+	eResult AudioClip::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Save(_pathFromBaseDir);
-
-		std::fs::path fullPath = ResourceManager<AudioClip>::GetBaseDir() / _pathFromBaseDir;
+		std::fs::path fullPath = _baseDir / _strKeyPath;
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE("파일이 없습니다.");

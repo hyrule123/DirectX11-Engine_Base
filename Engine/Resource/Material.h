@@ -6,11 +6,9 @@
 
 #include "../Manager/RenderManager.h"
 
-
 #include "iResource.h"
 #include "Shader/GraphicsShader.h"
 #include "Texture.h"
-
 
 #include <array>
 
@@ -22,90 +20,92 @@ namespace editor
 
 namespace ehw
 {
-	class Material final : public iResource
+	class Material final 
+		: public iResource
+		, public Serializable<JsonSerializer>
 	{
 		friend class editor::EditorMaterial;
 	public:
 		Material();
 
 		Material(const Material& _other);
-		CLONE(Material);
+		CLONE_ABLE(Material);
 
 		virtual ~Material();
 
-		virtual eResult Save(const std::fs::path& _filePath) override;
-		virtual eResult Load(const std::fs::path& _filePath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		void BindData();
 		void UnBindData();
 
-		void SetShader(std::shared_ptr<GraphicsShader> _shader) { mShader = _shader; }
-		std::shared_ptr<GraphicsShader> GetShader() const { return mShader; }
+		void SetShader(std::shared_ptr<GraphicsShader> _shader) { m_shader = _shader; }
+		std::shared_ptr<GraphicsShader> GetShader() const { return m_shader; }
 
 
 		inline void SetTexture(eTextureSlot slot, std::shared_ptr<Texture> _texture);
-		std::shared_ptr<Texture> GetTexture(eTextureSlot _slot) const { return mTextures[(uint)_slot]; }
+		std::shared_ptr<Texture> GetTexture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
 
-		eRenderingMode GetRenderingMode() const { return mMode; }
-		void SetRenderingMode(eRenderingMode _mode) { mMode = _mode; }
+		eRenderingMode GetRenderingMode() const { return m_renderingMode; }
+		void SetRenderingMode(eRenderingMode _mode) { m_renderingMode = _mode; }
 
 		inline void SetMaterialCoefficient(const float4& _vDiff, const float4& _vSpec, const float4& _vAmb, const float4& _vEmis);
 
-		void SetAnim3D(bool _bAnim3D) { mCB.bAnim = (BOOL)_bAnim3D; }
-		void SetBoneCount(int _iBoneCount) { mCB.BoneCount = _iBoneCount; }
+		void SetAnim3D(bool _bAnim3D) { m_constBufferData.bAnim = (BOOL)_bAnim3D; }
+		void SetBoneCount(int _iBoneCount) { m_constBufferData.BoneCount = _iBoneCount; }
 
 			
 	private:
-		eRenderingMode mMode;
-		tCB_MaterialData mCB;
+		eRenderingMode m_renderingMode;
+		tCB_MaterialData m_constBufferData;
 		
-		std::shared_ptr<GraphicsShader> mShader;
-		std::array<std::shared_ptr<Texture>, (int)eTextureSlot::END> mTextures;
+		std::shared_ptr<GraphicsShader> m_shader;
+		std::array<std::shared_ptr<Texture>, (int)eTextureSlot::END> m_textures;
 	};
 
 	inline void Material::SetMaterialCoefficient(const float4& _vDiff, const float4& _vSpec, const float4& _vAmb, const float4& _vEmis)
 	{
-		mCB.Diff = _vDiff;
-		mCB.Spec = _vSpec;
-		mCB.Amb = _vAmb;
-		mCB.Emv = _vEmis;
+		m_constBufferData.Diff = _vDiff;
+		m_constBufferData.Spec = _vSpec;
+		m_constBufferData.Amb = _vAmb;
+		m_constBufferData.Emv = _vEmis;
 	}
 
 	inline void Material::SetTexture(eTextureSlot slot, std::shared_ptr<Texture> _texture)
 	{
-		mTextures[(UINT)slot] = _texture;
+		m_textures[(UINT)slot] = _texture;
 		BOOL bTex = nullptr != _texture ? TRUE : FALSE;
 		switch ((UINT)slot)
 		{
 		case 0u:
-			mCB.bTex_0 = bTex;
+			m_constBufferData.bTex_0 = bTex;
 			break;
 		case 1u:
-			mCB.bTex_1 = bTex;
+			m_constBufferData.bTex_1 = bTex;
 			break;
 		case 2u:
-			mCB.bTex_2 = bTex;
+			m_constBufferData.bTex_2 = bTex;
 			break;
 		case 3u:
-			mCB.bTex_3 = bTex;
+			m_constBufferData.bTex_3 = bTex;
 			break;
 		case 4u:
-			mCB.bTex_4 = bTex;
+			m_constBufferData.bTex_4 = bTex;
 			break;
 		case 5u:
-			mCB.bTex_5 = bTex;
+			m_constBufferData.bTex_5 = bTex;
 			break;
 		case 6u:
-			mCB.bTex_6 = bTex;
+			m_constBufferData.bTex_6 = bTex;
 			break;
 		case 7u:
-			mCB.bTex_7 = bTex;
+			m_constBufferData.bTex_7 = bTex;
 			break;
 		default:
-			ASSERT(false, "미구현");
+			ASSERT(false, "에러");
 			break;
 		}
 	}

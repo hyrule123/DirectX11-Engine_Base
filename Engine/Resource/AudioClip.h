@@ -15,7 +15,7 @@ namespace ehw
 		AudioClip();
 		virtual ~AudioClip();
 
-		virtual eResult Load(const std::fs::path& _pathFromBaseDir) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		
 		void Play();
 		void Stop();
