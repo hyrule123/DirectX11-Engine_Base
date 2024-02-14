@@ -15,7 +15,7 @@ namespace ehw
         virtual ~Prefab();
         
         virtual eResult Serialize(JsonSerializer& _ser) override;
-        virtual eResult DeSerialize(JsonSerializer& _ser) override;
+        virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
         //virtual eResult SaveJson(Json::Value* _pJVal) override;
         //virtual eResult LoadJson(const Json::Value* _pJVal) override;

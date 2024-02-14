@@ -52,7 +52,7 @@ namespace ehw
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
 		virtual eResult Serialize(BinarySerializer& _ser) override;
-		virtual eResult DeSerialize(BinarySerializer& _ser) override;
+		virtual eResult DeSerialize(const BinarySerializer& _ser) override;
 
 
 		template <typename Vertex>

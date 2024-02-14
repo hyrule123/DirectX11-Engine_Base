@@ -27,8 +27,8 @@ namespace ehw
 		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult Save(const std::filesystem::path& _pathFromBaseDir) override;
-		virtual eResult Load(const std::filesystem::path& _pathFromBaseDir) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		void InitializeResource();
 
 

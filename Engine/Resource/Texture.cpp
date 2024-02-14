@@ -164,23 +164,14 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::Save(const std::filesystem::path& _pathFromBaseDir)
+	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		std::fs::path checkPath = (ResourceManager<Texture>::GetBaseDir() / _pathFromBaseDir).parent_path();
-
-		if (false == std::fs::exists(checkPath))
-		{
-			std::fs::create_directories(checkPath);
-		}
-
-		return SaveFile(_pathFromBaseDir);
+		return SaveFile(_baseDir / _strKeyPath);
 	}
 
-	eResult Texture::Load(const std::filesystem::path& _pathFromBaseDir)
+	eResult Texture::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		iResource::Load(_pathFromBaseDir);
-
-		std::fs::path fullPath = ResourceManager<Texture>::GetBaseDir() / _pathFromBaseDir;
+		std::fs::path fullPath = _baseDir / _strKeyPath;
 
 		if (false == std::fs::exists(fullPath))
 		{
@@ -189,7 +180,6 @@ namespace ehw
 			ERROR_MESSAGE_W(errMsg.c_str());
 			return eResult::Fail_Open;
 		}
-
 
 		eResult result = LoadFile(fullPath);
 
@@ -226,6 +216,21 @@ namespace ehw
 
 	eResult Texture::SaveFile(const std::filesystem::path& _fullPath)
 	{
+		//부모 경로 존재 확인
+		{
+			std::fs::path checkPath = _fullPath.parent_path();
+
+			if (false == std::fs::exists(checkPath))
+			{
+				if (false == std::fs::create_directories(checkPath))
+				{
+					ERROR_MESSAGE("경로가 잘못되었습니다.");
+					return eResult::Fail_Open;
+				}
+			}
+		}
+
+
 		std::wstring Extension = _fullPath.extension().wstring();
 		
 		if (FAILED(DirectX::CaptureTexture(GPUManager::Device().Get(), GPUManager::Context().Get(), mTexture.Get(), mImage)))

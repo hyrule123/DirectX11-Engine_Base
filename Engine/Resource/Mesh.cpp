@@ -76,7 +76,7 @@ namespace ehw
 		}
 	}
 
-	eResult Mesh::DeSerialize(BinarySerializer& _ser)
+	eResult Mesh::DeSerialize(const BinarySerializer& _ser)
 	{
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
 		_ser >> m_vertexInfo.ByteStride;
