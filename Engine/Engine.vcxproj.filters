@@ -456,6 +456,7 @@
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializeTool.cpp" />
+    <ClCompile Include="Util\Serialize\Serializable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

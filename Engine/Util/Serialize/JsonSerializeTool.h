@@ -101,6 +101,5 @@ namespace ehw
 	//MATRIX
 	void operator << (Json::Value& _jVal, const MATRIX& _m);
 	void operator >> (const Json::Value& _jVal, MATRIX& _m);
-
 #pragma endregion //특수화
 }

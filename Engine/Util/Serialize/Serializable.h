@@ -1,5 +1,6 @@
 #pragma once
 
+#include "json-forwards.h"
 #include "../type_traits_Ex.h"
 #include "../../define_Enum.h"
 #include "../../define_Macro.h"
@@ -9,105 +10,51 @@ namespace std
 {
 	namespace fs = filesystem;
 }
-#include <iostream>
-#include <cstdint>
-#include <vector>
+#include <fstream>
 
 namespace ehw
 {
-	template <typename T>
-	concept is_serializable = requires (std::ostream & _ofs, std::istream & _ifs, T _t)
-	{
-		{ _ofs << _t } -> type_traits_Ex::Decay_Derived_From<std::ostream>;
-		{ _ifs >> _t } -> type_traits_Ex::Decay_Derived_From<std::istream>;
-	};
-
-	//다중상속 용도
-	template <is_serializable T>
 	class Serializable
 	{
 	protected:
-		Serializable() {};
-		virtual ~Serializable() {};
+		Serializable();
+		virtual ~Serializable();
 
-	public:
-		//여러 형태로 저장한 클래스의 경우(바이너리 + json) 명시적으로 호출해줘야 함
-		//Serializable<JsonSerializer>::SaveFile()
-		//Serializable<BinarySerializer>::SaveFile()
-		inline eResult SaveFile(std::fs::path const& _fullPath);
-		inline eResult LoadFile(std::fs::path const& _fullPath);
-
-		virtual eResult Serialize(T& _ser) = 0;
-		virtual eResult DeSerialize(const T& _ser) = 0;
+		std::shared_ptr<std::ofstream> OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
+		std::shared_ptr<std::ifstream> OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
 	};
 
 
-	template <is_serializable T>
-	inline eResult Serializable<T>::SaveFile(std::fs::path const& _fullPath)
+#pragma region BINARY
+	class BinarySerializer;
+	class Serializable_Binary
+		: public Serializable
 	{
-		std::fs::path parentDir = _fullPath.parent_path();
+	public:
+		Serializable_Binary();
+		virtual ~Serializable_Binary();
 
-		//폴더 생성
-		if (false == std::fs::exists(parentDir))
-		{
-			try
-			{
-				if (false == std::fs::create_directories(parentDir))
-				{
-					return eResult::Fail_Path;
-				}
-			}
-			catch (const std::exception& _err)
-			{
-				ERROR_MESSAGE_A(err.what());
-				return eResult::Fail_Path;
-			}
-		}
+		eResult SaveFileToBinary(std::fs::path const& _fullPath);
+		eResult LoadFileFromBinary(std::fs::path const& _fullPath);
 
-		//저장할 파일 오픈
-		std::ofstream ofs(_fullPath, std::ios::binary);
-		if (false == ofs.is_open())
-		{
-			ERROR_MESSAGE("파일 열기 실패");
-			return eResult::Fail_Open;
-		}
+		virtual eResult Serialize_Binary(BinarySerializer* _ser) = 0;
+		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) = 0;
+	};
+#pragma endregion //BINARY
 
-		//Serialize
-		T ser{};
-		eResult result = Serialize(&ser);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		//파일 저장
-		ofs << ser;
-		ofs.close();
-
-		return eResult::Success;
-	}
-
-	template<is_serializable T>
-	inline eResult Serializable<T>::LoadFile(std::filesystem::path const& _fullPath)
+#pragma region JSON
+	class Serializable_Json
+		: public Serializable
 	{
-		if (false == std::fs::exists(_fullPath))
-		{
-			ERROR_MESSAGE("파일을 찾지 못했습니다.");
-			return eResult::Fail_Open;
-		}
-		
-		//파일 오픈
-		std::ifstream ifs(_fullPath, std::ios::binary);
-		if (false == ifs.is_open())
-		{
-			ERROR_MESSAGE("파일을 열지 못했습니다.");
-			return eResult::Fail_Open;
-		}
+	public:
+		Serializable_Json();
+		virtual ~Serializable_Json();
 
-		T ser{};
-		ifs >> ser;
-		ifs.close();
+		eResult SaveFileToJson(std::fs::path const& _fullPath);
+		eResult LoadFileFromJson(std::fs::path const& _fullPath);
 
-		return ser.DeSerialize();
-	}
+		virtual eResult Serialize_Json(Json::Value* _ser) = 0;
+		virtual eResult DeSerialize_Json(const Json::Value* _ser) = 0;
+	};
+#pragma endregion //JSON
 }
