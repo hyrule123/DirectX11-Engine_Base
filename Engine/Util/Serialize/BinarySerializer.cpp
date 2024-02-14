@@ -16,55 +16,15 @@ namespace ehw
 	{
 	}
 
-	eResult BinarySerializer::SaveFile(std::filesystem::path const& _savePath)
+
+	eResult BinarySerializer::SaveFile(std::ostream& _file) const
 	{
-		auto openMode = std::ios::binary;
-		std::ofstream openFile(_savePath, openMode);
-
-		return SaveFile(openFile);
-	}
-
-
-	eResult BinarySerializer::LoadFile(std::filesystem::path const& _loadPath)
-	{
-		auto openMode = std::ios::binary;
-		std::ifstream openFile(_loadPath, openMode);
-
-		return LoadFile(openFile);
-	}
-
-
-	eResult BinarySerializer::SaveFile(std::ofstream& _file)
-	{
-		if (false == _file.is_open())
-		{
-			ERROR_MESSAGE("파일 열기 실패");
-			return eResult::Fail_Open;
-		}
-		else if (0 == (std::ios::binary & _file.flags()))
-		{
-			ERROR_MESSAGE("Binary 모드로 열린 파일이 아닙니다.");
-			return eResult::Fail_InValid;
-		}
-
-		_file.write(reinterpret_cast<char*>(m_data.data()), m_data.size());
-
+		_file.write(reinterpret_cast<const char*>(m_data.data()), m_data.size());
 		return eResult::Success;
 	}
 
-	eResult BinarySerializer::LoadFile(std::ifstream& _file)
+	eResult BinarySerializer::LoadFile(std::istream& _file)
 	{
-		if (false == _file.is_open())
-		{
-			ERROR_MESSAGE("파일 열기 실패");
-			return eResult::Fail_Open;
-		}
-		else if (0 == (std::ios::binary & _file.flags()))
-		{
-			ERROR_MESSAGE("Binary 모드로 열린 파일이 아닙니다.");
-			return eResult::Fail_InValid;
-		}
-
 		//원래 위치 받아둔다
 		std::streampos origPos = _file.tellg();
 
@@ -129,6 +89,24 @@ namespace ehw
 		m_readOffset += _size;
 
 		return _size;
+	}
+
+	std::ostream& operator<<(std::ostream& _os, const BinarySerializer& _ser)
+	{
+		if (eResultFail(_ser.SaveFile(_os)))
+		{
+			ERROR_MESSAGE("저장 실패.");
+		}
+		return _os;
+	}
+
+	std::istream& operator>>(std::istream& _is, BinarySerializer& _ser)
+	{
+		if (eResultFail(_ser.LoadFile(_is)))
+		{
+			ERROR_MESSAGE("불러오기 실패.");
+		}
+		return _is;
 	}
 
 }

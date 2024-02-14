@@ -16,6 +16,7 @@ namespace ehw
 		Fail,
 
 		Fail_Open,
+		Fail_Path,
 
 		Fail_Create,
 

@@ -1,29 +1,9 @@
-#include "JsonSerializer.h"
+#include "JsonSerializeTool.h"
 
 #include "../../CommonType.h"
 
 namespace ehw
 {
-
-	JsonSerializer::JsonSerializer()
-		: m_jVal(Json::objectValue)
-	{
-	}
-
-	JsonSerializer::~JsonSerializer()
-	{
-	}
-	eResult JsonSerializer::SaveFile(std::filesystem::path const& _fullPath)
-	{
-		return eResult::Fail_NotImplemented;
-	}
-
-	eResult JsonSerializer::LoadFile(std::filesystem::path const& _fullPath)
-	{
-		return eResult::Fail_NotImplemented;
-	}
-
-
 	void operator<<(Json::Value& _jVal, const char* _c_str)
 	{
 		if (nullptr != _c_str)

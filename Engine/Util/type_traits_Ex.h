@@ -17,6 +17,9 @@ namespace type_traits_Ex
 	template <typename P>
 	concept NotPointerTypes = !PointerTypes<P>;
 
+	template <typename Derived, typename Base>
+	concept Decay_Derived_From = std::derived_from<std::decay_t<Derived>, std::decay_t<Base>>;
+
 	template <typename T>
 	concept is_enum_class_v =
 		std::is_enum_v<T> &&

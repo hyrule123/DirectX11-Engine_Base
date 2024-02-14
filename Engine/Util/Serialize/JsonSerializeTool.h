@@ -1,38 +1,18 @@
 #pragma once
-#include "Serializer.h"
-
 #include "../../CommonGlobalVar.h"
 #include "../../CommonType.h"
 
+#include "../type_traits_Ex.h"
 #include "../StringConverter.h"
 #include "json.h"
 
+//CPP에서 include 후 사용해주면 됨(특정 타입을 Json::value 형태로 변환하기 위한 전역 함수 모음임)
 
 #define MAKE_JSONPAIR(_var) JsonSerializer::JsonPair(#_var, _var)
 #define JSON_KEY(_varName) #_varName
 
 namespace ehw
 {
-	class JsonSerializer 
-		: public Serializer
-	{
-	public:
-		JsonSerializer();
-		virtual ~JsonSerializer();
-
-
-
-		virtual eResult SaveFile(std::filesystem::path const& _fullPath) override;
-		virtual eResult LoadFile(std::filesystem::path const& _fullPath) override;
-
-		Json::Value& operator[] (const std::string_view _strKey) { return m_jVal[_strKey]; }
-		const Json::Value& operator[] (const std::string_view _strKey) const { return m_jVal[_strKey]; };
-		bool isMember(const std::string_view _strKey) const { return m_jVal.isMember(_strKey); }
-
-	private:
-		Json::Value m_jVal;
-	};
-
 	//템플릿을 통한 1차 타입 분류
 	//Json 기본 생성자에서 지원하는 타입의 경우 그대로 추가하고,
 	//미지원 타입인 경우 JsonSerializer에서 오버로드된 함수를 호출함.

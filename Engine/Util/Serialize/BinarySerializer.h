@@ -1,5 +1,6 @@
 #pragma once
-#include "Serializer.h"
+#include "../../define_Enum.h"
+#include "../type_traits_Ex.h"
 
 namespace ehw
 {
@@ -24,17 +25,14 @@ namespace ehw
 		BinaryManualHandleTypes<T>;
 
 
-	class BinarySerializer : public Serializer
+	class BinarySerializer
 	{
 	public:
 		BinarySerializer();
-		virtual ~BinarySerializer();
+		~BinarySerializer();
 
-		virtual eResult SaveFile(std::filesystem::path const& _fullPath) override;
-		virtual eResult LoadFile(std::filesystem::path const& _fullPath) override;
-
-		eResult SaveFile(std::ofstream& _saveFile);
-		eResult LoadFile(std::ifstream& _loadFile);
+		eResult SaveFile(std::ostream& _os) const;
+		eResult LoadFile(std::istream& _is);
 
 		void Write(const unsigned char* _pSrc, size_t _size);
 		size_t Read(unsigned char* _pDest, size_t _size) const;
@@ -165,4 +163,8 @@ namespace ehw
 		return ret;
 	}
 
+
+	//Global operator
+	std::ostream& operator <<(std::ostream& _os, const BinarySerializer& _ser);
+	std::istream& operator >>(std::istream& _is, BinarySerializer& _ser);
 }
