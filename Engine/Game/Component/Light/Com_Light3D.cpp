@@ -15,24 +15,22 @@
 
 #include "../../../GPU/ConstBuffer.h"
 
-#include "../../../json-cpp/json.h"
-
 namespace ehw
 {
 	Com_Light3D::Com_Light3D()
 		: iLight(eDimensionType::_3D)
-		, mVolumeMesh()
-		, mLightMaterial()
-		, mIndex()
+		, m_volumeMesh()
+		, m_lightMaterial()
+		, m_index()
 	{
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
 		: iLight(_other)
-		, mIndex(_other.mIndex)
-		, mAttribute(_other.mAttribute)
-		, mVolumeMesh(_other.mVolumeMesh)
-		, mLightMaterial(_other.mLightMaterial)
+		, m_index(_other.m_index)
+		, m_attribute(_other.m_attribute)
+		, m_volumeMesh(_other.m_volumeMesh)
+		, m_lightMaterial(_other.m_lightMaterial)
 	{
 	}
 
@@ -40,54 +38,105 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Light3D::SaveJson(Json::Value* _pJVal)
+	eResult Com_Light3D::Serialize(JsonSerializer& _ser)
 	{
-		if (nullptr == _pJVal)
+		try
 		{
-			return eResult::Fail_Nullptr;
-		}
+			Json::Value& light3d = _ser[GetStrKey()];
 
-		eResult result = iComponent::SaveJson(_pJVal);
-		if (eResultFail(result))
+			//m_attribute
+			{
+				Json::Value& attribute = light3d[JSON_KEY(m_attribute)];
+
+				attribute[JSON_KEY(m_attribute.angle)]			<< m_attribute.angle;
+				attribute[JSON_KEY(m_attribute.color.ambient)]	<< m_attribute.color.ambient;
+				attribute[JSON_KEY(m_attribute.color.diffuse)]	<< m_attribute.color.diffuse;
+				attribute[JSON_KEY(m_attribute.color.specular)] << m_attribute.color.specular;
+				attribute[JSON_KEY(m_attribute.direction)]		<< m_attribute.direction;
+				attribute[JSON_KEY(m_attribute.lightType)]		<< m_attribute.lightType;
+				attribute[JSON_KEY(m_attribute.position)]		<< m_attribute.position;
+				attribute[JSON_KEY(m_attribute.radius)]			<< m_attribute.radius;
+			}
+
+			//m_volumeMesh
+			if (nullptr == m_volumeMesh)
+			{
+				ERROR_MESSAGE("Volume Mesh 정보가 없습니다.");
+				return eResult::Fail_InValid;
+			}
+			else if (nullptr == m_lightMaterial)
+			{
+				ERROR_MESSAGE("Light Material 정보가 없습니다.");
+				return eResult::Fail_InValid;
+			}
+
+			light3d[JSON_KEY(m_volumeMesh)] << m_volumeMesh->GetStrKey();
+			light3d[JSON_KEY(m_lightMaterial)] << m_lightMaterial->GetStrKey();
+
+		}
+		catch (const std::exception& _err)
 		{
-			return result;
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail_InValid;
 		}
-
-		Json::Value& jVal = *_pJVal;
-
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mAttribute));
 
 		return eResult::Success;
 	}
 
-	eResult Com_Light3D::LoadJson(const Json::Value* _pJVal)
+	eResult Com_Light3D::DeSerialize(const JsonSerializer& _ser)
 	{
-
-		if (nullptr == _pJVal)
+		try
 		{
-			return eResult::Fail_Nullptr;
+			const Json::Value& light3d = _ser[GetStrKey()];
+
+			//m_attribute
+			{
+				const Json::Value& attribute = light3d[JSON_KEY(m_attribute)];
+
+				attribute[JSON_KEY(m_attribute.angle)]				>> m_attribute.angle;
+				attribute[JSON_KEY(m_attribute.color.ambient)]		>> m_attribute.color.ambient;
+				attribute[JSON_KEY(m_attribute.color.diffuse)]		>> m_attribute.color.diffuse;
+				attribute[JSON_KEY(m_attribute.color.specular)]		>> m_attribute.color.specular;
+				attribute[JSON_KEY(m_attribute.direction)]			>> m_attribute.direction;
+				attribute[JSON_KEY(m_attribute.lightType)]			>> m_attribute.lightType;
+				attribute[JSON_KEY(m_attribute.position)]			>> m_attribute.position;
+				attribute[JSON_KEY(m_attribute.radius)]				>> m_attribute.radius;
+			}
+
+			//m_volumeMesh
+			if (nullptr == m_volumeMesh)
+			{
+				ERROR_MESSAGE("Volume Mesh 정보가 없습니다.");
+				return eResult::Fail_InValid;
+			}
+			else if (nullptr == m_lightMaterial)
+			{
+				ERROR_MESSAGE("Light Material 정보가 없습니다.");
+				return eResult::Fail_InValid;
+			}
+
+			std::string strKey{};
+			light3d[JSON_KEY(m_volumeMesh)] >> strKey;
+
+			m_volumeMesh = ResourceManager<Mesh>::Load(strKey);
+			strKey.clear();
+
+			light3d[JSON_KEY(m_lightMaterial)] >> strKey;
+			m_lightMaterial = ResourceManager<Material>::Load(strKey);
 		}
-
-		//부모클래스의 LoadJson()을 호출해서 부모클래스의 데이터를 저장
-		//실패시 실패결과를 리턴
-		eResult result = iComponent::LoadJson(_pJVal);
-		if (eResultFail(result))
+		catch (const std::exception& _err)
 		{
-			return result;
-		}
-	
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute));
-
-		SetLightType((eLightType)mAttribute.lightType);
-
-		//불러오기 실패 시 기본값으로 적용
-		if (false == Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mAttribute.lightType)))
-		{
-			mAttribute.lightType = (int)eLightType::Directional;
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail_InValid;
 		}
 
 		return eResult::Success;
+
+		return eResult();
 	}
+
+
+
 
 
 	void Com_Light3D::OnEnable()
@@ -103,15 +152,15 @@ namespace ehw
 			return;
 
 		float3 position = tr->GetRelativePos();
-		mAttribute.position = float4(position.x, position.y, position.z, 1.0f);
+		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 			
 		//Transform 조작은 Update()까지만 가능.
-		switch ((eLightType)mAttribute.lightType)
+		switch ((eLightType)m_attribute.lightType)
 		{
 		case ehw::eLightType::Directional:
 			break;
 		case ehw::eLightType::Point:
-			tr->SetRelativeScale(float3(mAttribute.radius));
+			tr->SetRelativeScale(float3(m_attribute.radius));
 			break;
 		case ehw::eLightType::Spot:
 			break;
@@ -130,10 +179,10 @@ namespace ehw
 			return;
 		}
 
-		switch ((eLightType)mAttribute.lightType)
+		switch ((eLightType)m_attribute.lightType)
 		{
 		case ehw::eLightType::Directional:
-			mAttribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
+			m_attribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
 			break;
 		case ehw::eLightType::Point:
 			//Update에서 수행했음.
@@ -147,15 +196,15 @@ namespace ehw
 		}
 
 		float3 position = tr->GetRelativePos();
-		mAttribute.position = float4(position.x, position.y, position.z, 1.0f);
+		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		RenderManager::PushLightAttribute(mAttribute);
+		RenderManager::PushLightAttribute(m_attribute);
 	}
 
 
 	void Com_Light3D::Render()
 	{
-		if (nullptr == mLightMaterial)
+		if (nullptr == m_lightMaterial)
 		{
 			return;
 		}
@@ -170,32 +219,32 @@ namespace ehw
 		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::numberOfLight);
 		tCB_NumberOfLight data = {};
 		data.numberOfLight = (uint)RenderManager::GetLights().size();
-		data.indexOfLight = mIndex;
+		data.indexOfLight = m_index;
 
 		cb->SetData(&data);
 		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		mVolumeMesh->BindBuffer();
-		mLightMaterial->BindData();
-		mVolumeMesh->Render();
-		mLightMaterial->UnBindData();
+		m_volumeMesh->BindBuffer();
+		m_lightMaterial->BindData();
+		m_volumeMesh->Render();
+		m_lightMaterial->UnBindData();
 	}
 
 
 	void Com_Light3D::SetLightType(eLightType type)
 	{
-		mAttribute.lightType = (int)type;
-		if (mAttribute.lightType == (int)eLightType::Directional)
+		m_attribute.lightType = (int)type;
+		if (m_attribute.lightType == (int)eLightType::Directional)
 		{
-			mVolumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
-			mLightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightDirMaterial);
+			m_volumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
+			m_lightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightDirMaterial);
 		}
-		else if (mAttribute.lightType == (int)eLightType::Point)
+		else if (m_attribute.lightType == (int)eLightType::Point)
 		{
-			mVolumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::SphereMesh);
-			mLightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightPointMaterial);
+			m_volumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::SphereMesh);
+			m_lightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightPointMaterial);
 		}
-		else if (mAttribute.lightType == (int)eLightType::Spot)
+		else if (m_attribute.lightType == (int)eLightType::Spot)
 		{
 			ERROR_MESSAGE("미구현");
 		}

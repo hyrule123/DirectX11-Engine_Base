@@ -4,6 +4,7 @@
 
 
 #include "../../Util/SimpleMath.h"
+#include "../../Util/Serialize/JsonSerializer.h"
 
 
 #include "define_Component.h"
@@ -14,7 +15,9 @@ namespace ehw
 {
 	class GameObject;
 	class iScene;
-	class iComponent : public Entity
+	class iComponent 
+		: public Entity
+		, public Serializable<JsonSerializer>
 	{
 		friend class ComponentManager;
 	public:
@@ -62,8 +65,6 @@ namespace ehw
 		UINT32 m_ComTypeID;
 		iScene* m_OwnerScene;
 		GameObject* m_Owner;
-		
-
 
 		bool m_bStart;
 

@@ -6,7 +6,6 @@
 #include "../../../Resource/Mesh.h"
 #include "../../../Resource/Material.h"
 #include "../../../Game/GameObject.h"
-#include "../../../json-cpp/json.h"
 #include "../../../Manager/ResourceManager.h"
 #include "../../../Resource/Model3D/Skeleton.h"
 
@@ -18,9 +17,9 @@
 namespace ehw
 {
 	iRenderer::iRenderer()
-		: mMesh(nullptr)
-		, mMaterials(1)
-		, mbCullingEnable(true)
+		: m_mesh(nullptr)
+		, m_materials(1)
+		, m_bCullingEnable(true)
 	{
 	}
 
@@ -30,94 +29,131 @@ namespace ehw
 
 	iRenderer::iRenderer(const iRenderer& _other)
 		: Component(_other)
-		, mMesh(_other.mMesh)
-		, mMaterials{}
-		, mbCullingEnable(_other.mbCullingEnable)
+		, m_mesh(_other.m_mesh)
+		, m_materials{}
+		, m_bCullingEnable(_other.m_bCullingEnable)
 	{
-		mMaterials.resize(_other.mMaterials.size());
-		for (size_t i = 0; i < mMaterials.size(); ++i)
+		m_materials.resize(_other.m_materials.size());
+		for (size_t i = 0; i < m_materials.size(); ++i)
 		{
 			//Shared Material은 공유 항목이므로 그대로 복사
-			mMaterials[i].SharedMaterial = _other.mMaterials[i].SharedMaterial;
+			m_materials[i].SharedMaterial = _other.m_materials[i].SharedMaterial;
 
 			//Dynamic Material은 고유 항목이므로 Clone해서 이쪽도 마찬가지로 고유 항목 생성
-			if (_other.mMaterials[i].DynamicMaterial)
+			if (_other.m_materials[i].DynamicMaterial)
 			{
-				mMaterials[i].DynamicMaterial = std::unique_ptr<Material>(_other.mMaterials[i].DynamicMaterial->Clone());
+				m_materials[i].DynamicMaterial = std::unique_ptr<Material>(_other.m_materials[i].DynamicMaterial->Clone());
 			}
 		}
 	}
 
-	eResult iRenderer::SaveJson(Json::Value* _pJson)
+	eResult iRenderer::Serialize(JsonSerializer& _ser)
 	{
-		if (nullptr == _pJson)
+		if (nullptr == m_mesh)
 		{
-			return eResult::Fail_Nullptr;
+			ERROR_MESSAGE("Mesh 정보가 없습니다.");
+			return eResult::Fail_InValid;
 		}
-		eResult result = iComponent::SaveJson(_pJson);
-		if (eResultFail(result))
+		else if (m_materials.empty())
 		{
-			return result;
-		}
-		Json::Value& jVal = *_pJson;
-
-		//포인터의 경우 키값을 저장
-		if (mMesh)
-		{
-			jVal[JSON_KEY(mMesh)] = mMesh->GetStrKey();
+			ERROR_MESSAGE("Material 정보가 없습니다.");
+			return eResult::Fail_InValid;
 		}
 
-		//TODO: FBX 로드를 위해 주석 처리
-		//if (mMaterial)
-		//{
-		//	jVal[JSON_KEY(mMaterial)] = mMaterial->GetKey();
-		//}
+
+		try
+		{
+			Json::Value& renderer = _ser[GetStrKey()];
+
+			//m_mesh
+			renderer[JSON_KEY(m_mesh)] << m_mesh->GetStrKey();
+
+			//materials
+			{
+				Json::Value& materials = renderer[JSON_KEY(m_materials)];
+				materials.resize(m_materials.size());
+				
+				for (size_t i = 0; i < m_materials.size(); ++i)
+				{
+					if (nullptr == m_materials[i].SharedMaterial)
+					{
+						ERROR_MESSAGE("Material 정보가 없습니다.");
+						return eResult::Fail_Nullptr;
+					}
+
+					materials[i] << m_materials[i].SharedMaterial->GetStrKey();
+				}
+			}
+
+			//m_bCullingEnable
+			renderer[JSON_KEY(m_bCullingEnable)] << m_bCullingEnable;
+
+		}
+		catch (const std::exception& _err)
+		{
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail_InValid;
+		}
+
+
+
 
 		return eResult::Success;
 	}
 
-	eResult iRenderer::LoadJson(const Json::Value* _pJson)
+	eResult iRenderer::DeSerialize(const JsonSerializer& _ser)
 	{
-		if (nullptr == _pJson)
+		try
 		{
-			return eResult::Fail_Nullptr;
+			const Json::Value& renderer = _ser[GetStrKey()];
+
+			//m_mesh
+			{
+				std::string strKey{};
+				renderer[JSON_KEY(m_mesh)] >> strKey;
+				m_mesh = ResourceManager<Mesh>::Load(strKey);
+			}
+			
+
+			//materials
+			{
+				const Json::Value& materials = renderer[JSON_KEY(m_materials)];
+				m_materials.resize(materials.size());
+
+				for (size_t i = 0; i < m_materials.size(); ++i)
+				{
+					std::string strKey{};
+					materials[i] >> strKey;
+					m_materials[i].SharedMaterial = ResourceManager<Material>::Load(strKey);
+				}
+			}
+
+			//m_bCullingEnable
+			renderer[JSON_KEY(m_bCullingEnable)] >> m_bCullingEnable;
+
 		}
-		eResult result = iComponent::LoadJson(_pJson);
-		if (eResultFail(result))
+		catch (const std::exception& _err)
 		{
-			return result;
-		}
-		const Json::Value& jVal = *_pJson;
-
-		if (jVal.isMember(JSON_KEY(mMesh)))
-		{
-			mMesh = ResourceManager<Mesh>::Load(jVal[JSON_KEY(mMesh)].asString());
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail_InValid;
 		}
 
-		//TODO: FBX 로드를 위해 주석 처리
-		//if (jVal.isMember(JSON_KEY(mMaterial)))
-		//{
-		//	mMaterial = ResourceManager::Load<Material>(jVal[JSON_KEY(mMaterial)].asString());
-		//}
-
-		return eResult::Success;
+		return eResult();
 	}
-
-
 
 	void iRenderer::SetMesh(const std::shared_ptr<Mesh> _mesh)
 	{
-		mMesh = _mesh;
+		m_mesh = _mesh;
 
-		//if (false == mMaterials.empty())
+		//if (false == m_materials.empty())
 		//{
-		//	mMaterials.clear();
+		//	m_materials.clear();
 		//	std::vector<tMaterialSet> materials;
-		//	mMaterials.swap(materials);
+		//	m_materials.swap(materials);
 		//}
 
-		if (nullptr != mMesh)
-			mMaterials.resize(mMesh->GetSubsetCount());
+		if (nullptr != m_mesh)
+			m_materials.resize(m_mesh->GetSubsetCount());
 	}
 
 	Material* iRenderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)

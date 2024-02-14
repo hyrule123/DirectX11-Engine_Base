@@ -8,7 +8,8 @@
 
 namespace ehw
 {
-	class Com_Animator2D : public iAnimator
+	class Com_Animator2D 
+		: public iAnimator
 	{
 	public:
 		struct tEvents
@@ -38,12 +39,12 @@ namespace ehw
 		Com_Animator2D();
 
 		Com_Animator2D(const Com_Animator2D& _other);
-		CLONE(Com_Animator2D);
+		CLONE_ABLE(Com_Animator2D);
 
 		virtual ~Com_Animator2D();
 
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		virtual void Update() override; 
 		virtual void InternalUpdate() override;

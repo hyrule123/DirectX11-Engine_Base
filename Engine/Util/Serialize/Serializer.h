@@ -4,6 +4,10 @@
 #include "../../define_Enum.h"
 
 #include <filesystem>
+namespace std
+{
+	namespace fs = filesystem;
+}
 #include <iostream>
 #include <cstdint>
 #include <vector>
@@ -16,8 +20,8 @@ namespace ehw
 		Serializer() {};
 		virtual ~Serializer() {};
 	public:
-		virtual eResult SaveFile(std::filesystem::path const& _fullPath) = 0;
-		virtual eResult LoadFile(std::filesystem::path const& _fullPath) = 0;
+		virtual eResult SaveFile(std::fs::path const& _fullPath) = 0;
+		virtual eResult LoadFile(std::fs::path const& _fullPath) = 0;
 	};
 
 
@@ -33,8 +37,8 @@ namespace ehw
 		//여러 형태로 저장한 클래스의 경우(바이너리 + json) 명시적으로 호출해줘야 함
 		//Serializable<JsonSerializer>::SaveFile()
 		//Serializable<BinarySerializer>::SaveFile()
-		inline eResult SaveFile(std::filesystem::path const& _fullPath);
-		inline eResult LoadFile(std::filesystem::path const& _fullPath);
+		inline eResult SaveFile(std::fs::path const& _fullPath);
+		inline eResult LoadFile(std::fs::path const& _fullPath);
 
 		virtual eResult Serialize(T& _ser) = 0;
 		virtual eResult DeSerialize(const T& _ser) = 0;
@@ -42,7 +46,7 @@ namespace ehw
 
 
 	template<typename T> requires std::is_base_of_v<Serializer, T>
-	inline eResult Serializable<T>::SaveFile(std::filesystem::path const& _fullPath)
+	inline eResult Serializable<T>::SaveFile(std::fs::path const& _fullPath)
 	{
 		T ser{};
 

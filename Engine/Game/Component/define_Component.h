@@ -49,5 +49,10 @@ namespace ehw
 			"BehaviorTree",
 			"Scripts"
 		};
+		
+		inline STRKEY GetComponentCategoryName(eComponentCategory _category)
+		{
+			return eComponentCategory_String[(int)_category];
+		}
 	}
 }

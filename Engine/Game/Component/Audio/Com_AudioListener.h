@@ -11,11 +11,12 @@ namespace ehw
 
 		//복사할 변수가 없으므로 기본 복사생성자( = default)로 충분함
 		Com_AudioListener(const Com_AudioListener& _other) = default;
-		CLONE(Com_AudioListener);
-
-		//저장할 변수가 없으므로 SaveJson, LoadJson 필요없음
+		CLONE_ABLE(Com_AudioListener);
 
 		virtual ~Com_AudioListener();
+
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		virtual void Awake() override;
 		virtual void Update() override;

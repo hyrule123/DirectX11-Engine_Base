@@ -20,6 +20,8 @@ namespace ehw
 		JsonSerializer();
 		virtual ~JsonSerializer();
 
+
+
 		virtual eResult SaveFile(std::filesystem::path const& _fullPath) override;
 		virtual eResult LoadFile(std::filesystem::path const& _fullPath) override;
 
@@ -59,7 +61,8 @@ namespace ehw
 		_jVal = _data;
 	}
 
-	template <JsonDefaultTypes T>
+	//rvalue_reference 테스트를 하지 않으면 const가 붙지 않은 lvalue reference가 이쪽으로 들어온다.
+	template <JsonDefaultTypes T> requires std::is_rvalue_reference_v<T>
 	inline void operator <<(Json::Value& _jVal, T&& _data) noexcept
 	{
 		_jVal = std::move(_data);

@@ -8,12 +8,12 @@ namespace ehw
 	public:
 		iCollider3D();
 		iCollider3D(const iCollider3D& _collider);
-		CLONE(iCollider3D);
+		CLONE_ABLE(iCollider3D);
 		
 		virtual ~iCollider3D();
 
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		//virtual void Init() override;
 		//virtual void Update() override;

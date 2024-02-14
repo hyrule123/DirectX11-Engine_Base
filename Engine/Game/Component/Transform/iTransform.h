@@ -10,6 +10,9 @@ namespace ehw
 		iTransform();
 		virtual ~iTransform();
 
+		virtual eResult Serialize(JsonSerializer& _ser) override { return eResult::Success; }
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override { return eResult::Success; }
+
 		virtual void BindData() = 0;
 
 	protected:

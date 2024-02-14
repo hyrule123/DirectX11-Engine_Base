@@ -60,6 +60,16 @@ namespace ehw
 	{
 	}
 
+	eResult Com_Animator3D::Serialize(JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
+	eResult Com_Animator3D::DeSerialize(const JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
 	void Com_Animator3D::Init()
 	{
 		StructBuffer::Desc desc{};

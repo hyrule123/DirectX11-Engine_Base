@@ -4,7 +4,7 @@
 
 #include "../Manager/SceneManager.h"
 
-#include "../json-cpp/json.h"
+#include "../Util/Serialize/json.h"
 
 #include "../Resource/Prefab.h"
 
@@ -80,30 +80,24 @@ namespace ehw
 		//}
 	}
 
-	eResult GameObject::SaveJson(Json::Value* _pJson)
+	eResult GameObject::Serialize(JsonSerializer& _ser)
 	{
-		eResult Result = Entity::SaveJson(_pJson);
-		if (eResultFail(Result))
-		{
-			return Result;
-		}
+		_ser[JSON_KEY(m_name)] << m_name;
+		_ser[JSON_KEY(m_layerType)] << m_layerType;
+		_ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
 
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_name));
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_layerType));
-		Json::SaveLoad::SaveValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnLoad));
-		
-
+		//m_baseComponents
 		{
 			(*_pJson)[strKey::Json::GameObject::m_baseComponents] = Json::Value(Json::arrayValue);
 			Json::Value& arrComponent = (*_pJson)[strKey::Json::GameObject::m_baseComponents];
-			
+
 			//트랜스폼은 저장하지 않음
 			for (size_t i = (size_t)eComponentCategory::Transform + (size_t)1; i < m_baseComponents.size(); ++i)
 			{
 				if (m_baseComponents[i])
 				{
 					Json::Value ComJson = Json::Value(Json::objectValue);
-					
+
 					Result = m_baseComponents[i]->SaveJson(&(ComJson));
 					if (eResultFail(Result))
 					{
@@ -157,18 +151,9 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GameObject::LoadJson(const Json::Value* _pJson)
+	eResult GameObject::DeSerialize(const JsonSerializer& _ser)
 	{
-		if (nullptr == _pJson)
-		{
-			return eResult::Fail_Nullptr;
-		}
-
-		eResult Result = Entity::LoadJson(_pJson);
-		if (eResultFail(Result))
-		{
-			return Result;
-		}
+		
 
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_name));
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_layerType));

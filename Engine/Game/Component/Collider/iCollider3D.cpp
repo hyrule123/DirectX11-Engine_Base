@@ -2,9 +2,6 @@
 
 
 
-#include "../../../json-cpp/json.h"
-
-
 #include "../Transform/Com_transform.h"
 
 namespace ehw
@@ -25,49 +22,13 @@ namespace ehw
 	{
 	}
 
-	eResult iCollider3D::SaveJson(Json::Value* _pJVal)
+	eResult iCollider3D::Serialize(JsonSerializer& _ser)
 	{
-		ASSERT(FALSE, "미구현");
-
-		//if (nullptr == _pJVal)
-		//{
-		//	return eResult::Fail_Nullptr;
-		//}
-
-		//eResult result = iCollider::SaveJson(_pJVal);
-		//if (eResultFail(result))
-		//{
-		//	return result;
-		//}
-
-		//Json::Value& jVal = *_pJVal;
-
-		//Json::SaveLoad::SaveValue(_pJVal, JSONVAL(m_ComCategory));
-
-		return eResult::Success;
+		return eResult();
 	}
 
-	eResult iCollider3D::LoadJson(const Json::Value* _pJVal)
+	eResult iCollider3D::DeSerialize(const JsonSerializer& _ser)
 	{
-		ASSERT(FALSE, "미구현");
-
-		//if (nullptr == _pJVal)
-		//{
-		//	return eResult::Fail_Nullptr;
-		//}
-
-		//eResult result = iCollider::LoadJson(_pJVal);
-		//if (eResultFail(result))
-		//{
-		//	return result;
-		//}
-
-		//const Json::Value& jVal = (*_pJVal);
-
-		//Json::SaveLoad::LoadValue(_pJVal, JSONVAL(m_ComCategory));
-		
-		return eResult::Success;
+		return eResult();
 	}
-
-
 }

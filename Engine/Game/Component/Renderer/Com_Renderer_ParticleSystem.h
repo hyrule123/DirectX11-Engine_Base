@@ -20,7 +20,7 @@ namespace ehw
 	public:
 		Com_Renderer_ParticleSystem();
 		Com_Renderer_ParticleSystem(const Com_Renderer_ParticleSystem& _other);
-		CLONE(Com_Renderer_ParticleSystem);
+		CLONE_ABLE(Com_Renderer_ParticleSystem);
 
 		~Com_Renderer_ParticleSystem();
 

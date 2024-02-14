@@ -7,8 +7,6 @@
 
 #include "../../../Manager/RenderManager.h"
 
-#include "../../../json-cpp/json.h"
-
 
 #include "../Transform/Com_Transform.h"
 #include "../Script/iScript.h"
@@ -44,65 +42,14 @@ namespace ehw
 	{
 	}
 
-	eResult iCollider2D::SaveJson(Json::Value* _pJVal)
+	eResult iCollider2D::Serialize(JsonSerializer& _ser)
 	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-
-		eResult result = iCollider::SaveJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		Json::Value& jVal = *_pJVal;
-
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(m_ComCategory));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mSize));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mCenter));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mPosition));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
-
-		return eResult::Success;
+		return eResult();
 	}
 
-	eResult iCollider2D::LoadJson(const Json::Value* _pJVal)
+	eResult iCollider2D::DeSerialize(const JsonSerializer& _ser)
 	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-
-		eResult result = iCollider::LoadJson(_pJVal);
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		const Json::Value& jVal = (*_pJVal);
-
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(m_ComCategory));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mSize));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mCenter));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mPosition));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mbTrigger));
-
-		mID = gColliderNumber++;
-
-		if (GetOwner() && nullptr == mTransform)
-		{
-			auto ownerTransform = GetOwner()->GetComponent<Com_Transform>();
-			if (ownerTransform)
-			{
-				mTransform = ownerTransform;
-			}
-		}
-
-		return eResult::Success;
+		return eResult();
 	}
 
 	void iCollider2D::Awake()

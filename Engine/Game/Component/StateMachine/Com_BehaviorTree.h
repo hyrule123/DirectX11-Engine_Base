@@ -10,6 +10,8 @@ namespace ehw
 		Com_BehaviorTree();
 		virtual ~Com_BehaviorTree();
 
+
+
 		virtual void InternalUpdate() override {}
 	};
 }

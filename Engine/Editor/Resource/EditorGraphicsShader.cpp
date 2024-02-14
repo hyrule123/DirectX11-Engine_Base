@@ -5,7 +5,6 @@
 #include "../../Manager/PathManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Resource/Shader/GraphicsShader.h"
-#include "../../json-cpp/json.h"
 
 
 namespace editor

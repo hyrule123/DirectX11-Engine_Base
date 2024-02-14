@@ -5,5 +5,5 @@ namespace ehw
 {
 	tGPUInitSetting gGPUInitSetting{};
 	tCB_Global		gGlobal{};
-	std::unordered_set<const std::string> g_cstrArchive{};
+	std::unordered_set<std::string> g_cstrArchive{};
 }

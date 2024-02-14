@@ -35,7 +35,7 @@ namespace ehw
 		Animation2D();
 
 		Animation2D(const Animation2D& _other);
-		CLONE(Animation2D);
+		CLONE_ABLE(Animation2D);
 
 		virtual ~Animation2D();
 

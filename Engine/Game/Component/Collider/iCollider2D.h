@@ -11,12 +11,12 @@ namespace ehw
 	public:
 		iCollider2D();
 		iCollider2D(const iCollider2D& _collider);
-		CLONE(iCollider2D);
+		CLONE_ABLE(iCollider2D);
 
 		virtual ~iCollider2D();
 
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		virtual void Awake() override;
 		virtual void Update() override;

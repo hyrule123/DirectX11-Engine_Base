@@ -20,9 +20,12 @@ namespace ehw
 		Com_Animator3D();
 
 		Com_Animator3D(const Com_Animator3D& _other);
-		CLONE(Com_Animator3D);
+		CLONE_ABLE(Com_Animator3D);
 
 		virtual ~Com_Animator3D();
+
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		virtual void Init() override;
 		virtual void Update() {};

@@ -15,6 +15,9 @@ namespace ehw
 		iScript(const iScript& _other) = default;
 		virtual ~iScript();
 
+		virtual eResult Serialize(JsonSerializer& _ser) override { return eResult::Success; }
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override { return eResult::Success; }
+
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};

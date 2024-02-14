@@ -1,7 +1,6 @@
 #include "Com_Animator2D.h"
 
 
-#include "../../../json-cpp/json.h"
 #include "../../GameObject.h"
 
 #include "../Transform/Com_Transform.h"
@@ -89,14 +88,11 @@ namespace ehw
 			evt.second = nullptr;
 		}
 	}
-	eResult Com_Animator2D::SaveJson(Json::Value* _pJson)
+	eResult Com_Animator2D::Serialize(JsonSerializer& _ser)
 	{
-
-
-
-		return eResult::Success;
+		return eResult();
 	}
-	eResult Com_Animator2D::LoadJson(const Json::Value* _pJson)
+	eResult Com_Animator2D::DeSerialize(const JsonSerializer& _ser)
 	{
 		return eResult();
 	}

@@ -54,7 +54,7 @@ namespace ehw
         StructBuffer(const Desc& _tDesc);
 
         StructBuffer(const StructBuffer& _other);
-        CLONE(StructBuffer);
+        CLONE_ABLE(StructBuffer);
 
         virtual ~StructBuffer();
 

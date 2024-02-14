@@ -10,10 +10,9 @@ namespace ehw
 		Com_Renderer_3DAnimMesh();
 		virtual ~Com_Renderer_3DAnimMesh();
 
+
 		virtual void InternalUpdate() override {};
 		virtual void Render() override;
-
-
 	};
 }
 

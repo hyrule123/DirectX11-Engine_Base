@@ -8,19 +8,19 @@
 namespace ehw
 {
     class GameObject;
-    class Com_Transform :
-        public iTransform
+    class Com_Transform 
+        : public iTransform
     {
     public:
         Com_Transform();
 
         //단순 Value만 저장 중이므로 기본 복사 생성자로도 충분함.
         Com_Transform(const Com_Transform& _other) = default;
-        CLONE(Com_Transform);
+        CLONE_ABLE(Com_Transform);
 
         virtual ~Com_Transform();
 
-    public:
+    
         //virtual void Init() override;
         virtual void InternalUpdate() override;
         virtual void BindData() override; 

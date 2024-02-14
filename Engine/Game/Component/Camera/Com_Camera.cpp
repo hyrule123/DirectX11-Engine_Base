@@ -46,6 +46,16 @@ namespace ehw
 	{
 	}
 
+	eResult Com_Camera::Serialize(JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
+	eResult Com_Camera::DeSerialize(const JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
 	void Com_Camera::OnEnable()
 	{
 

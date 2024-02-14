@@ -23,8 +23,6 @@ namespace ehw
 
 	private:
 		static std::unique_ptr<iScene>				mActiveScene;
-
-
 		static std::unordered_map<std::string_view, std::function<iScene* ()>> mUmapSceneConstructor;
 	};
 

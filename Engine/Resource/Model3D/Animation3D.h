@@ -38,7 +38,7 @@ namespace ehw
 		Animation3D();
 
         Animation3D(const Animation3D& _other);
-        CLONE(Animation3D);
+        CLONE_ABLE(Animation3D);
 
         virtual ~Animation3D();
 

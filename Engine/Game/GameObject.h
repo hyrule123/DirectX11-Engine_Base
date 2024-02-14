@@ -13,7 +13,9 @@ namespace ehw
 	class iScene;
 	class Layer;
 	class iScript;
-	class GameObject : public Entity
+	class GameObject 
+		: public Entity
+		, public Serializable<JsonSerializer>
 	{
 		friend class GameObject;
 	public:
@@ -22,12 +24,12 @@ namespace ehw
 
 		GameObject();
 		GameObject(const GameObject& _other);
-		CLONE(GameObject);
+		CLONE_ABLE(GameObject);
 
 		virtual ~GameObject();
 
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 		
 		void Awake();
 		void Update();

@@ -38,8 +38,8 @@ namespace ehw
 		virtual void InternalUpdate() override {};
 		virtual void Render() = 0;
 
-		virtual eResult SaveJson(Json::Value* _pJson) override;
-		virtual eResult LoadJson(const Json::Value* _pJson) override;
+		virtual eResult Serialize(JsonSerializer& _ser) override;
+		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
 
 		void SetMesh(const std::shared_ptr<Mesh> _mesh);
 
@@ -47,36 +47,36 @@ namespace ehw
 		inline void SetMaterial(const std::shared_ptr <Material> _Mtrl, UINT _idx);
 		Material* SetMaterialMode(UINT _idx, eMaterialMode _mode);
 
-		std::shared_ptr<Mesh> GetMesh() { return mMesh; }
+		std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
 
 		inline std::shared_ptr<Material> GetSharedMaterial(UINT _idx);
 		inline Material* GetDynamicMaterial(UINT _idx);
 		inline Material* GetCurrentMaterial(UINT _idx);
 
-		UINT GetMaterialCount() { return (UINT)mMaterials.size(); }
-		bool IsRenderReady() const { return (mMesh && false == mMaterials.empty()); }
+		UINT GetMaterialCount() { return (UINT)m_materials.size(); }
+		bool IsRenderReady() const { return (m_mesh && false == m_materials.empty()); }
 
-		void SetCullingEnable(bool _bFrustumCull) { mbCullingEnable = _bFrustumCull; }
-		bool IsCullingEnabled() const { return mbCullingEnable; }
+		void SetCullingEnable(bool _bFrustumCull) { m_bCullingEnable = _bFrustumCull; }
+		bool IsCullingEnabled() const { return m_bCullingEnable; }
 
 	private:
 		inline tMaterialSet* GetMaterialSet(UINT _idx);
 
 	private:
-		std::shared_ptr<Mesh> mMesh;
-		std::vector<tMaterialSet> mMaterials;
+		std::shared_ptr<Mesh> m_mesh;
+		std::vector<tMaterialSet> m_materials;
 
-		bool mbCullingEnable;
+		bool m_bCullingEnable;
 	};
 
 	inline void iRenderer::SetMaterial(const std::shared_ptr<Material> _Mtrl, UINT _idx)
 	{
-		if ((UINT)mMaterials.size() <= _idx)
-			mMaterials.resize(_idx + 1u);
+		if ((UINT)m_materials.size() <= _idx)
+			m_materials.resize(_idx + 1u);
 
-		mMaterials[_idx] = {};
-		mMaterials[_idx].SharedMaterial = _Mtrl;
-		mMaterials[_idx].CurrentMaterial = mMaterials[_idx].SharedMaterial.get();
+		m_materials[_idx] = {};
+		m_materials[_idx].SharedMaterial = _Mtrl;
+		m_materials[_idx].CurrentMaterial = m_materials[_idx].SharedMaterial.get();
 	}
 
 
@@ -84,9 +84,9 @@ namespace ehw
 	inline Material* iRenderer::GetCurrentMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
-		if ((UINT)mMaterials.size() > _idx)
+		if ((UINT)m_materials.size() > _idx)
 		{
-			retMtrl = mMaterials[_idx].CurrentMaterial;
+			retMtrl = m_materials[_idx].CurrentMaterial;
 		}
 
 		return retMtrl;
@@ -95,9 +95,9 @@ namespace ehw
 	inline std::shared_ptr<Material> iRenderer::GetSharedMaterial(UINT _idx)
 	{
 		std::shared_ptr<Material> retMtrl = nullptr;
-		if ((UINT)mMaterials.size() > _idx)
+		if ((UINT)m_materials.size() > _idx)
 		{
-			retMtrl = mMaterials[_idx].SharedMaterial;
+			retMtrl = m_materials[_idx].SharedMaterial;
 		}
 		return retMtrl;
 	}
@@ -105,9 +105,9 @@ namespace ehw
 	inline Material* iRenderer::GetDynamicMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
-		if ((UINT)mMaterials.size() > _idx)
+		if ((UINT)m_materials.size() > _idx)
 		{
-			retMtrl = mMaterials[_idx].DynamicMaterial.get();
+			retMtrl = m_materials[_idx].DynamicMaterial.get();
 		}
 		return retMtrl;
 	}
@@ -116,9 +116,9 @@ namespace ehw
 	inline tMaterialSet* iRenderer::GetMaterialSet(UINT _idx)
 	{
 		tMaterialSet* mtrlSet = nullptr;
-		if ((UINT)mMaterials.size() > _idx)
+		if ((UINT)m_materials.size() > _idx)
 		{
-			mtrlSet = &mMaterials[_idx];
+			mtrlSet = &m_materials[_idx];
 		}
 		return mtrlSet;
 	}

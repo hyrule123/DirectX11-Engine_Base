@@ -19,6 +19,16 @@ namespace ehw
 	{
 	}
 
+	eResult Com_DummyAnimator::Serialize(JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
+	eResult Com_DummyAnimator::DeSerialize(const JsonSerializer& _ser)
+	{
+		return eResult();
+	}
+
 	void Com_DummyAnimator::Init()
 	{
 		const auto& parent = GetOwner()->GetParent();
