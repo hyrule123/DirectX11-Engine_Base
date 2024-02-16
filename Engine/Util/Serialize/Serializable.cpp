@@ -1,7 +1,7 @@
 #include "Serializable.h"
 
 #include "BinarySerializer.h"
-#include "json.h"
+#include "JsonSerializer.h"
 
 namespace ehw
 {
@@ -68,7 +68,7 @@ namespace ehw
 	Serializable_Binary::~Serializable_Binary()
 	{
 	}
-	eResult Serializable_Binary::SaveFileToBinary(std::fs::path const& _fullPath)
+	eResult Serializable_Binary::SaveFile_Binary(std::fs::path const& _fullPath)
 	{
 		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 
@@ -92,7 +92,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Serializable_Binary::LoadFileFromBinary(std::fs::path const& _fullPath)
+	eResult Serializable_Binary::LoadFile_Binary(std::fs::path const& _fullPath)
 	{
 		std::shared_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
 		if (nullptr == ifs)
@@ -117,7 +117,7 @@ namespace ehw
 	{
 	}
 
-	eResult Serializable_Json::SaveFileToJson(std::fs::path const& _fullPath)
+	eResult Serializable_Json::SaveFile_Json(std::fs::path const& _fullPath)
 	{
 		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 
@@ -141,7 +141,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Serializable_Json::LoadFileFromJson(std::fs::path const& _fullPath)
+	eResult Serializable_Json::LoadFile_Json(std::fs::path const& _fullPath)
 	{
 		std::shared_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
 		if (nullptr == ifs)

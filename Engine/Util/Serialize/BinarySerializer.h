@@ -2,6 +2,8 @@
 #include "../../define_Enum.h"
 #include "../type_traits_Ex.h"
 
+//전방선언 후 CPP에서 include 후 사용할것.
+
 namespace ehw
 {
 	//수동으로 처리해줘야 하는 타입들을 여기 추가할것.
@@ -85,14 +87,6 @@ namespace ehw
 		Write(reinterpret_cast<const unsigned char*>(&strByteSize), sizeof(strByteSize));
 		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
 	}
-
-	//template<typename CharType>
-	//inline void BinarySerializer::operator<<(const std::basic_string_view<CharType> _data)
-	//{
-	//	size_t strByteSize = _data.size() * sizeof(CharType);
-	//	Write(&strByteSize, sizeof(strByteSize));
-	//	Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
-	//}
 	
 
 	template<BinaryDefaultTypes T>

@@ -4,12 +4,11 @@
 
 #include "../type_traits_Ex.h"
 #include "../StringConverter.h"
+
+#include "Serializable.h"
 #include "json.h"
 
 //CPP에서 include 후 사용해주면 됨(특정 타입을 Json::value 형태로 변환하기 위한 전역 함수 모음임)
-
-#define MAKE_JSONPAIR(_var) JsonSerializer::JsonPair(#_var, _var)
-#define JSON_KEY(_varName) #_varName
 
 namespace ehw
 {

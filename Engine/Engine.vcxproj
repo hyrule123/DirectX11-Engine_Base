@@ -261,7 +261,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Util\Serialize\JsonSerializeTool.h" />
+    <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="CommonType.h" />
     <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
@@ -398,7 +398,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Util\Serialize\JsonSerializeTool.cpp" />
+    <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
     <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />

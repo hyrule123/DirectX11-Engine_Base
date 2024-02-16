@@ -455,7 +455,7 @@
     <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
-    <ClCompile Include="Util\Serialize\JsonSerializeTool.cpp" />
+    <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\Serializable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -788,7 +788,7 @@
     <ClInclude Include="Util\Serialize\Serializable.h" />
     <ClInclude Include="CommonType.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
-    <ClInclude Include="Util\Serialize\JsonSerializeTool.h" />
+    <ClInclude Include="Util\Serialize\JsonSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

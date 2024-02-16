@@ -31,7 +31,7 @@ namespace ehw
 		//파일 사이즈 확인 후 resize
 		_file.seekg(0, std::ios::end);
 		std::streampos fileSize = _file.tellg() - origPos;
-
+		 
 		size_t origDataSize = m_data.size();
 		m_data.resize(origDataSize + fileSize);
 
