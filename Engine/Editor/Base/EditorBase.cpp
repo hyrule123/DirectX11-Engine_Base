@@ -1,66 +1,100 @@
-
 #include "EditorBase.h"
 
 #include "../../Define_Macro.h"
+
+#include "../../Util/Serialize/JsonSerializer.h"
+#include "../../Manager/EditorManager.h"
 
 namespace editor
 {
 	EditorBase::EditorBase(const std::string_view _strName)
 		: EditorEntity(_strName)
-		, m_Parent()
-		, m_Childs{}
-		, mbNoChild()
-		, mbEnable(true)
+		, m_parent()
+		, m_childs{}
+		, m_bNoChild()
+		, m_bEnable(true)
 	{
 	}
 
 	EditorBase::~EditorBase()
 	{
 	}
-	ehw::eResult EditorBase::SaveJson(Json::Value* _pJval)
+	ehw::eResult EditorBase::Serialize_Json(ehw::JsonSerializer* _ser)
 	{
-		if (nullptr == _pJval)
-			return ehw::eResult::Fail_Nullptr;
+		using namespace ehw;
 
-		ehw::eResult result = EditorEntity::SaveJson(_pJval);
-		if (eResultFail(result))
-			return result;
+		SERIALIZER_CHECK_PTR(_ser);
 
-		Json::SaveLoad::SaveValue(_pJval, JSON_KEY_PAIR(mbEnable));
+		JsonSerializer& ser = *_ser;
 
-		for (size_t i = 0; i < m_Childs.size(); ++i)
+		try
 		{
-			if (m_Childs[i])
-				m_Childs[i]->SaveJson(_pJval);
+			ser << m_bEnable;
+
+			JsonSerializer& childs = ser[JSON_KEY(m_childs)];
+			for (size_t i = 0; i < m_childs.size(); ++i)
+			{
+				//에디터 child의 경우 정적으로 생성되므로 StrKey를 별도로 저장할 필요가 없음.
+				JsonSerializer& child = childs.append(Json::Value());
+				
+				eResult result = m_childs[i]->Serialize_Json(&child);
+				if (eResultFail(result))
+				{
+					ERROR_MESSAGE("Child 저장 실패");
+					return result;
+				}
+			}
+		}
+		catch (const std::exception& _err)
+		{
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail;
+		}
+
+
+		return ehw::eResult::Success;
+	}
+	ehw::eResult EditorBase::DeSerialize_Json(const ehw::JsonSerializer* _ser)
+	{
+		using namespace ehw;
+		SERIALIZER_CHECK_PTR(_ser);
+		
+		const JsonSerializer& ser = *_ser;
+
+		try
+		{
+			ser >> m_bEnable;
+
+			const JsonSerializer& childs = ser[JSON_KEY(m_childs)];
+			for (Json::Value::ArrayIndex i = 0; i < childs.size(); ++i)
+			{
+				//에디터 child의 경우 정적으로 생성되므로 StrKey를 별도로 저장할 필요가 없음.
+				const JsonSerializer& child = childs[i];
+
+				eResult result = m_childs[i]->DeSerialize_Json(&child);
+				if (eResultFail(result))
+				{
+					ERROR_MESSAGE("Child 저장 실패");
+					return result;
+				}
+			}
+		}
+		catch (const std::exception& _err)
+		{
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail;
 		}
 
 		return ehw::eResult::Success;
 	}
-	ehw::eResult EditorBase::LoadJson(const Json::Value* _pJval)
-	{
-		if (nullptr == _pJval)
-			return ehw::eResult::Fail_Nullptr;
 
-		ehw::eResult result = EditorEntity::LoadJson(_pJval);
-		if (eResultFail(result))
-			return result;
 
-		Json::SaveLoad::LoadValue(_pJval, JSON_KEY_PAIR(mbEnable));
-
-		for (size_t i = 0; i < m_Childs.size(); ++i)
-		{
-			if (m_Childs[i])
-				m_Childs[i]->LoadJson(_pJval);
-		}
-
-		return ehw::eResult::Success;
-	}
 	void EditorBase::InitRecursive()
 	{
 		Init();
-		for (size_t i = 0; i < m_Childs.size(); ++i)
+		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			m_Childs[i]->InitRecursive();
+			m_childs[i]->InitRecursive();
 		}
 	}
 	void EditorBase::InternalUpdate()
@@ -74,9 +108,9 @@ namespace editor
 		if (true == BeginUI())
 		{
 			UpdateUI();
-			for (size_t i = 0; i < m_Childs.size(); ++i)
+			for (size_t i = 0; i < m_childs.size(); ++i)
 			{
-				m_Childs[i]->InternalUpdate();
+				m_childs[i]->InternalUpdate();
 			}
 
 			EndUI();
@@ -93,7 +127,7 @@ namespace editor
 
 			auto parent = shared_from_this();
 			_pChild->SetParent(std::static_pointer_cast<EditorBase>(parent));
-			m_Childs.push_back(_pChild);
+			m_childs.push_back(_pChild);
 
 			ret = _pChild;
 		}
@@ -103,18 +137,18 @@ namespace editor
 
 	void EditorBase::ClearChild()
 	{
-		m_Childs.clear();
+		m_childs.clear();
 	}
 
 
 	void EditorBase::RemoveChild(const std::shared_ptr<EditorBase>& _pChild)
 	{
-		for (auto iter = m_Childs.begin(); iter != m_Childs.end(); ++iter)
+		for (auto iter = m_childs.begin(); iter != m_childs.end(); ++iter)
 		{
 			if ((*iter) == _pChild)
 			{
 				(*iter)->SetParent(nullptr);
-				m_Childs.erase(iter);
+				m_childs.erase(iter);
 				break;
 			}
 		}

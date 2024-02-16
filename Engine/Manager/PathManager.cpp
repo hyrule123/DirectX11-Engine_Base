@@ -25,7 +25,7 @@ namespace ehw
 
 		m_relativeResourceDir = "../../../";
 		m_relativeResourceDir /= strKey::path::directory::resource::Resource;
-		ASSERT(std::fs::exists(m_relativeResourceDir), "절대경로와 상대경로가 일치하지 않습니다.")
+		ASSERT(std::fs::exists(m_relativeResourceDir), "절대경로와 상대경로가 일치하지 않습니다.");
 
 		m_relativeDir_ShaderCSO = ".";
 		m_relativeDir_ShaderCSO /= ehw::strKey::path::directory::CompiledShader;

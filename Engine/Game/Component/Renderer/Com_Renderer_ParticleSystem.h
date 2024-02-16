@@ -24,8 +24,8 @@ namespace ehw
 
 		~Com_Renderer_ParticleSystem();
 
-		virtual eResult SaveJson(Json::Value* _pJVal) override;
-		virtual eResult LoadJson(const Json::Value* _pJVal) override;
+		virtual eResult Serialize_Json(JsonSerializer* Json) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* Json) override;
 
 		virtual void Init() override;
 		virtual void Update() override;

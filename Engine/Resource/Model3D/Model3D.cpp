@@ -12,7 +12,9 @@
 #include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "../../Game/Component/Animator/Com_Animator3D.h"
 
+#include "../../Resource/Shader/GraphicsShader.h"
 
+#include "../Texture.h"
 #include "Skeleton.h"
 #include "FBXLoader.h"
 

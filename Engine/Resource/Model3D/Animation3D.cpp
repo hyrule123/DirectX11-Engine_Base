@@ -4,6 +4,8 @@
 
 #include "../../Manager/ResourceManager.h"
 
+#include "../../Util/Serialize/BinarySerializer.h"
+
 
 #include "FBXLoader.h"
 #include "Model3D.h"

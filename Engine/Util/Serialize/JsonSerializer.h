@@ -34,17 +34,19 @@ namespace ehw
 		!JsonTypeSpecialization<T> &&
 		!requires (T t) { { Json::Value(t) }; };
 
-	template <JsonDefaultTypes T>
-	inline void operator <<(Json::Value& _jVal, const T& _data)
-	{
-		_jVal = _data;
-	}
+	//template <JsonDefaultTypes T>
+	//inline void operator <<(Json::Value& _jVal, const T& _data)
+	//{
+	//	_jVal = _data;
+	//}
 
-	//rvalue_reference 테스트를 하지 않으면 const가 붙지 않은 lvalue reference가 이쪽으로 들어온다.
-	template <JsonDefaultTypes T> requires std::is_rvalue_reference_v<T>
+	//Template 함수에서 &&는 '보편적 레퍼런스(Universal Reference)'이다.
+	//&&을 뗀 T 형태가 우측 레퍼런스일 경우 우측 레퍼런스로, 그렇지 않을 경우 좌측 레퍼런스로 전달한다.
+	//https://modoocode.com/228
+	template <JsonDefaultTypes T>
 	inline void operator <<(Json::Value& _jVal, T&& _data) noexcept
 	{
-		_jVal = std::move(_data);
+		_jVal = std::forward<T>(_data);
 	}
 
 	//특수화하지 않았을 경우 타입을 가리지 않고 포인터 제외 데이터를 Base64로 전환하므로 주의할것.

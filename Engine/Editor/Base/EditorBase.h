@@ -3,17 +3,20 @@
 
 #include "../../Editor/strKey_Editor.h"
 
+#include "../../Util/Serialize/Serializable.h"
+
 namespace editor
 {
 	class EditorBase 
 		: public EditorEntity
+		, public ehw::Serializable_Json
 	{
 	public:
 		EditorBase(const std::string_view _strName);
 		virtual ~EditorBase();
 
-		virtual ehw::eResult SaveJson(Json::Value* _pJval) override;
-		virtual ehw::eResult LoadJson(const Json::Value* _pJval) override;
+		virtual ehw::eResult Serialize_Json(ehw::JsonSerializer* _ser) override;
+		virtual ehw::eResult DeSerialize_Json(const ehw::JsonSerializer* _ser) override;
 
 		void InitRecursive();
 		void InternalUpdate();
@@ -34,37 +37,37 @@ namespace editor
 		virtual void EndUI() = 0;
 
 
-		const std::weak_ptr<EditorBase>& GetParent() { return m_Parent; }
+		const std::weak_ptr<EditorBase>& GetParent() { return m_parent; }
 
 		template <typename T>
 		std::shared_ptr<T> AddChild();
 		std::shared_ptr<EditorBase> AddChild(const std::shared_ptr<EditorBase>& _pChild);
 		void ClearChild();
 
-		void ReserveChildsVector(size_t _size) { m_Childs.reserve(_size); }
+		void ReserveChildsVector(size_t _size) { m_childs.reserve(_size); }
 
-		bool GetEnable() { return mbEnable; }
-		bool* GetEnablePtr() { return &mbEnable; }
-		void SetEnable(bool _bEnable) { mbEnable = _bEnable; }
-		void Close() { mbEnable = false; }
+		bool GetEnable() { return m_bEnable; }
+		bool* GetEnablePtr() { return &m_bEnable; }
+		void SetEnable(bool _bEnable) { m_bEnable = _bEnable; }
+		void Close() { m_bEnable = false; }
 
 
 
 		//void SaveRecursive(Json::Value& _Node);
 		//void LoadRecursive(Json::Value& _Node);
 
-		void SetNoChild(bool _bNoChild) { mbNoChild = _bNoChild; }
-		void SetParent(const std::shared_ptr<EditorBase>& _Parent) { m_Parent = _Parent; }
-		const std::vector<std::shared_ptr<EditorBase>>& GetChilds() { return m_Childs; }
+		void SetNoChild(bool _bNoChild) { m_bNoChild = _bNoChild; }
+		void SetParent(const std::shared_ptr<EditorBase>& _Parent) { m_parent = _Parent; }
+		const std::vector<std::shared_ptr<EditorBase>>& GetChilds() { return m_childs; }
 		void RemoveChild(const std::shared_ptr<EditorBase>& _pChild);
 
 
 	private:
-		std::weak_ptr<EditorBase> m_Parent;
-		std::vector<std::shared_ptr<EditorBase>>		m_Childs;		// 자식 EditorBase 목록
-		bool						mbNoChild;		// 자식 노드가 들어갈 수 없는 노드로 설정
+		std::weak_ptr<EditorBase> m_parent;
+		std::vector<std::shared_ptr<EditorBase>>		m_childs;		// 자식 EditorBase 목록
+		bool						m_bNoChild;		// 자식 노드가 들어갈 수 없는 노드로 설정
 
-		bool						mbEnable;
+		bool						m_bEnable;
 	};
 
 	template<typename T>
@@ -73,7 +76,7 @@ namespace editor
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
 		std::shared_ptr<T> retVal = nullptr;
-		if(false == mbNoChild)
+		if(false == m_bNoChild)
 		{
 			retVal = std::make_shared<T>();
 			const std::shared_ptr<EditorBase>& result = AddChild(std::static_pointer_cast<EditorBase>(retVal));

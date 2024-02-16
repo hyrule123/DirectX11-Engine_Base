@@ -7,6 +7,7 @@
 #include "../../Manager/RenderManager.h"
 #include "../../Manager/PathManager.h"
 
+#include "../../Util/Serialize/JsonSerializer.h"
 
 namespace ehw
 {

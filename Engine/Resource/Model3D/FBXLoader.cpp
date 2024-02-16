@@ -699,7 +699,7 @@ namespace ehw
 					, mContainers[i].vecMtrl[j].AmbientColor
 					, mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = pMaterial->Save(strMtrlKey);
+				eResult result = ResourceManager<Material>::Save(pMaterial);
 
 				if (eResultFail(result))
 				{

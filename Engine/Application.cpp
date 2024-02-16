@@ -16,6 +16,7 @@
 #include "Manager/PathManager.h"
 #include "Manager/EditorManager.h"
 #include "Manager/ThreadPoolManager.h"
+#include "Manager/GPUManager.h"
 
 #include "CommonGlobalVar.h"
 

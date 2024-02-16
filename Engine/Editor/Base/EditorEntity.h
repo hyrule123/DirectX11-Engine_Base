@@ -17,9 +17,6 @@ namespace editor
 		EditorEntity(const std::string_view _strName);
 		virtual ~EditorEntity();
 
-		virtual ehw::eResult SaveJson(Json::Value* _pJval) { return ehw::eResult::Success; }
-		virtual ehw::eResult LoadJson(const Json::Value* _pJval) { return ehw::eResult::Success; };
-
 		UINT32 GetID() const { return m_ID; }
 
 		const std::string& GetName() const { return m_Name; }

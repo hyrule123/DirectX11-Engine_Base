@@ -94,67 +94,67 @@ namespace ehw
 		ser[JSON_KEY(m_layerType)] << m_layerType;
 		ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
 
-		//m_baseComponents
-		{
-			(*_pJson)[strKey::Json::GameObject::m_baseComponents] = Json::Value(Json::arrayValue);
-			Json::Value& arrComponent = (*_pJson)[strKey::Json::GameObject::m_baseComponents];
+		////m_baseComponents
+		//{
+		//	(*_pJson)[strKey::Json::GameObject::m_baseComponents] = Json::Value(Json::arrayValue);
+		//	Json::Value& arrComponent = (*_pJson)[strKey::Json::GameObject::m_baseComponents];
 
-			//트랜스폼은 저장하지 않음
-			for (size_t i = (size_t)eComponentCategory::Transform + (size_t)1; i < m_baseComponents.size(); ++i)
-			{
-				if (m_baseComponents[i])
-				{
-					Json::Value ComJson = Json::Value(Json::objectValue);
+		//	//트랜스폼은 저장하지 않음
+		//	for (size_t i = (size_t)eComponentCategory::Transform + (size_t)1; i < m_baseComponents.size(); ++i)
+		//	{
+		//		if (m_baseComponents[i])
+		//		{
+		//			Json::Value ComJson = Json::Value(Json::objectValue);
 
-					Result = m_baseComponents[i]->SaveJson(&(ComJson));
-					if (eResultFail(Result))
-					{
-						return Result;
-					}
-					arrComponent.append(ComJson);
-				}
-				else
-				{
-					arrComponent.append(Json::Value(Json::nullValue));
-				}
-			}
-		}
+		//			Result = m_baseComponents[i]->SaveJson(&(ComJson));
+		//			if (eResultFail(Result))
+		//			{
+		//				return Result;
+		//			}
+		//			arrComponent.append(ComJson);
+		//		}
+		//		else
+		//		{
+		//			arrComponent.append(Json::Value(Json::nullValue));
+		//		}
+		//	}
+		//}
 
 
-		//GameObject* m_parent;
-		//부모 오브젝트가 있을 경우 재귀 구조로 부모 쪽에서 생성한 뒤 자식으로 등록할 것임
+		////GameObject* m_parent;
+		////부모 오브젝트가 있을 경우 재귀 구조로 부모 쪽에서 생성한 뒤 자식으로 등록할 것임
 
-		//child의 경우 별도의 프리팹으로 취급해서 새로운 파일을 생성
-		//std::vector<GameObject*> m_childs;
-		{
-			(*_pJson)[strKey::Json::GameObject::m_childs] = Json::Value(Json::arrayValue);
-			Json::Value& arrChilds = (*_pJson)[strKey::Json::GameObject::m_childs];
-			for (size_t i = 0; i < m_childs.size(); ++i)
-			{
-				if (m_childs[i])
-				{
-					//자식의 Key가 존재하지 않을 경우 자신의 Key에 숫자를 붙여서 생성
-					std::string childStrKey = m_childs[i]->GetStrKey();
-					if (childStrKey.empty())
-					{
-						childStrKey = GetStrKey() + "_";
-						childStrKey += std::to_string((int)i);
-						m_childs[i]->SetStrKey(childStrKey);
-					}
+		////child의 경우 별도의 프리팹으로 취급해서 새로운 파일을 생성
+		////std::vector<GameObject*> m_childs;
+		//{
+		//	(*_pJson)[strKey::Json::GameObject::m_childs] = Json::Value(Json::arrayValue);
+		//	Json::Value& arrChilds = (*_pJson)[strKey::Json::GameObject::m_childs];
+		//	for (size_t i = 0; i < m_childs.size(); ++i)
+		//	{
+		//		if (m_childs[i])
+		//		{
+		//			//자식의 Key가 존재하지 않을 경우 자신의 Key에 숫자를 붙여서 생성
+		//			std::string childStrKey = m_childs[i]->GetStrKey();
+		//			if (childStrKey.empty())
+		//			{
+		//				childStrKey = GetStrKey() + "_";
+		//				childStrKey += std::to_string((int)i);
+		//				m_childs[i]->SetStrKey(childStrKey);
+		//			}
 
-					Prefab SavePrefab{};
-					SavePrefab.RegisterPrefab(m_childs[i].get(), true);
-					eResult Result = SavePrefab.Save(childStrKey);
-					if (eResultFail(Result))
-					{
-						return Result;
-					}
+		//			Prefab SavePrefab{};
+		//			SavePrefab.RegisterPrefab(m_childs[i].get(), true);
+		//			eResult Result = SavePrefab.Save(childStrKey);
+		//			if (eResultFail(Result))
+		//			{
+		//				return Result;
+		//			}
 
-					//자식 프리팹 이름을 등록
-					arrChilds.append(childStrKey);
-				}
-			}
-		}
+		//			//자식 프리팹 이름을 등록
+		//			arrChilds.append(childStrKey);
+		//		}
+		//	}
+		//}
 
 		return eResult::Success;
 	}
@@ -169,68 +169,68 @@ namespace ehw
 
 		const JsonSerializer& ser = *_ser;
 
-		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_name));
-		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_layerType));
-		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnLoad));
+		//Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_name));
+		//Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_layerType));
+		//Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_bDontDestroyOnLoad));
 
-		//컴포넌트 추가
-		if (_pJson->isMember(strKey::Json::GameObject::m_baseComponents))
-		{
-			const Json::Value& jValCom = (*_pJson)[strKey::Json::GameObject::m_baseComponents];
-			if (jValCom.isArray())
-			{
-				for (Json::ValueConstIterator iter = jValCom.begin(); iter != jValCom.end(); ++iter)
-				{
-					if (iter->isNull())
-					{
-						continue;
-					}
+		////컴포넌트 추가
+		//if (_pJson->isMember(strKey::Json::GameObject::m_baseComponents))
+		//{
+		//	const Json::Value& jValCom = (*_pJson)[strKey::Json::GameObject::m_baseComponents];
+		//	if (jValCom.isArray())
+		//	{
+		//		for (Json::ValueConstIterator iter = jValCom.begin(); iter != jValCom.end(); ++iter)
+		//		{
+		//			if (iter->isNull())
+		//			{
+		//				continue;
+		//			}
 
-					if (false == iter->isMember(strKey::Json::Entity::mStrKey))
-					{
-						continue;
-					}
+		//			if (false == iter->isMember(strKey::Json::Entity::mStrKey))
+		//			{
+		//				continue;
+		//			}
 
-					std::shared_ptr<iComponent> pCom = ComponentManager::GetNewComponent((*iter)[strKey::Json::Entity::mStrKey].asString());
-					if (pCom)
-					{
-						AddComponent(pCom);
-					}
-				}
-			}
-		}
+		//			std::shared_ptr<iComponent> pCom = ComponentManager::GetNewComponent((*iter)[strKey::Json::Entity::mStrKey].asString());
+		//			if (pCom)
+		//			{
+		//				AddComponent(pCom);
+		//			}
+		//		}
+		//	}
+		//}
 
-		if (_pJson->isMember(strKey::Json::GameObject::m_childs))
-		{
-			const Json::Value& jValChilds = (*_pJson)[strKey::Json::GameObject::m_childs];
-			if (jValChilds.isArray())
-			{
-				for (Json::ValueConstIterator iter = jValChilds.begin(); iter != jValChilds.end(); ++iter)
-				{
-					if (iter->isNull())
-					{
-						continue;
-					}
+		//if (_pJson->isMember(strKey::Json::GameObject::m_childs))
+		//{
+		//	const Json::Value& jValChilds = (*_pJson)[strKey::Json::GameObject::m_childs];
+		//	if (jValChilds.isArray())
+		//	{
+		//		for (Json::ValueConstIterator iter = jValChilds.begin(); iter != jValChilds.end(); ++iter)
+		//		{
+		//			if (iter->isNull())
+		//			{
+		//				continue;
+		//			}
 
-					if (false == iter->isMember(strKey::Json::Entity::mStrKey))
-					{
-						continue;
-					}
+		//			if (false == iter->isMember(strKey::Json::Entity::mStrKey))
+		//			{
+		//				continue;
+		//			}
 
-					std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
-					const Json::Value& childJson = *iter;
-					Result = child->LoadJson(&childJson);
-					if (eResultFail(Result))
-					{
-						ERROR_MESSAGE_W(L"Child 오브젝트 로드 실패.");
-						child = nullptr;
-						return Result;
-					}
+		//			std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
+		//			const Json::Value& childJson = *iter;
+		//			Result = child->LoadJson(&childJson);
+		//			if (eResultFail(Result))
+		//			{
+		//				ERROR_MESSAGE_W(L"Child 오브젝트 로드 실패.");
+		//				child = nullptr;
+		//				return Result;
+		//			}
 
-					AddChild(child);
-				}
-			}
-		}
+		//			AddChild(child);
+		//		}
+		//	}
+		//}
 
 		return eResult::Success;
 	}

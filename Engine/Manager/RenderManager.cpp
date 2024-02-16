@@ -9,6 +9,7 @@
 
 #include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
+#include "../Resource/Shader/GraphicsShader.h"
 #include "../Resource/Shader/ComputeShaders/NormalConvertShader.h"
 #include "../Resource/Shader/ComputeShaders/ParticleShader.h"
 #include "../Resource/Shader/ComputeShaders/Animation3DShader.h"

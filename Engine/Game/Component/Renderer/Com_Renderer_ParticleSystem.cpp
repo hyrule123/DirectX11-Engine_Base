@@ -5,6 +5,7 @@
 
 #include "../../../Manager/TimeManager.h"
 #include "../../../Manager/ResourceManager.h"
+#include "../../../Manager/RenderManager.h"
 
 #include "../../../Resource/Mesh.h"
 #include "../../../Resource/Material.h"
@@ -76,83 +77,10 @@ namespace ehw
 		mSharedBuffer = nullptr;
 	}
 
-	eResult Com_Renderer_ParticleSystem::SaveJson(Json::Value* _pJVal)
+
+	eResult Com_Renderer_ParticleSystem::DeSerialize_Json(const JsonSerializer* Json)
 	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		eResult result = iRenderer::SaveJson(_pJVal);
-
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		Json::Value& jVal = *_pJVal;
-
-
-		//float4 mStartSize;
-		//float4 mStartColor;
-
-		//eSimulationSpace mSimulationSpace;
-		//uint mMaxParticles;  
-		//float mStartLifeTime;
-		//float mFrequency;
-		//float mRadius;
-
-		//float mStartSpeed;
-		//float mTime;
-
-		////누적시간
-		//float mElapsedTime;
-
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mStartSize));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mStartColor));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mSimulationSpace));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mMaxParticles));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mStartLifeTime));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mFrequency));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mStartSpeed));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mTime));
-		Json::SaveLoad::SaveValue(_pJVal, JSON_KEY_PAIR(mElapsedTime));
-
-		return eResult::Success;
-	}
-
-	eResult Com_Renderer_ParticleSystem::LoadJson(const Json::Value* _pJVal)
-	{
-		if (nullptr == _pJVal)
-		{
-			return eResult::Fail_Nullptr;
-		}
-
-		//부모클래스의 LoadJson()을 호출해서 부모클래스의 데이터를 저장
-		//실패시 실패결과를 리턴
-		eResult result = iRenderer::LoadJson(_pJVal);
-
-		if (eResultFail(result))
-		{
-			return result;
-		}
-
-		if (false == Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mStartSize)))
-		{
-			mStartSize = float4::One;
-		}
-
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mStartColor));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mSimulationSpace));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mMaxParticles));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mStartLifeTime));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mFrequency));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mRadius));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mStartSpeed));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mTime));
-		Json::SaveLoad::LoadValue(_pJVal, JSON_KEY_PAIR(mElapsedTime));
-
-		return eResult::Success;
+		return eResult();
 	}
 
 	void Com_Renderer_ParticleSystem::Init()
