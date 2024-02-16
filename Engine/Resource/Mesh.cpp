@@ -13,6 +13,7 @@
 #include "../Manager/PathManager.h"
 
 #include "../Util/define_Util.h"
+#include "../Util/Serialize/BinarySerializer.h"
 
 #include "Model3D/FBXLoader.h"
 
@@ -46,7 +47,7 @@ namespace ehw
 	{
 		std::fs::path filePath = _baseDir / _strKeyPath;
 		filePath.replace_extension(strKey::path::extension::Mesh);
-		return SaveFile(filePath);
+		return SaveFile_Binary(filePath);
 	}
 
 	eResult Mesh::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
@@ -54,35 +55,51 @@ namespace ehw
 		std::fs::path filePath = _baseDir / _strKeyPath;
 		filePath.replace_extension(strKey::path::extension::Mesh);
 		SetStrKey(_strKeyPath.string());
-		return LoadFile(filePath);
+		return LoadFile_Binary(filePath);
 	}
 
-	eResult Mesh::Serialize(BinarySerializer& _ser)
+	eResult Mesh::Serialize_Binary(BinarySerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		BinarySerializer& ser = *_ser;
+
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		_ser << m_vertexInfo.ByteStride;
-		_ser << m_vertexInfo.Count;
-		_ser << m_vertexInfo.Desc;
-		_ser << m_vertexInfo.SysMem;
+		ser << m_vertexInfo.ByteStride;
+		ser << m_vertexInfo.Count;
+		ser << m_vertexInfo.Desc;
+		ser << m_vertexInfo.SysMem;
 
 
 		//m_indexInfos: m_vertexInfo와 같음. 대신 여긴 vector이므로 순회를 돌면서 저장한다.
-		_ser << m_indexInfos.size();
+		ser << m_indexInfos.size();
 		for (size_t i = 0; i < m_indexInfos.size(); ++i)
 		{
-			_ser << m_indexInfos[i].Count;
-			_ser << m_indexInfos[i].Desc;
-			_ser << m_indexInfos[i].SysMem;
+			ser << m_indexInfos[i].Count;
+			ser << m_indexInfos[i].Desc;
+			ser << m_indexInfos[i].SysMem;
 		}
 	}
 
-	eResult Mesh::DeSerialize(const BinarySerializer& _ser)
+	eResult Mesh::DeSerialize_Binary(const BinarySerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const BinarySerializer& ser = *_ser;
+
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		_ser >> m_vertexInfo.ByteStride;
-		_ser >> m_vertexInfo.Count;
-		_ser >> m_vertexInfo.Desc;
-		_ser >> m_vertexInfo.SysMem;
+		ser >> m_vertexInfo.ByteStride;
+		ser >> m_vertexInfo.Count;
+		ser >> m_vertexInfo.Desc;
+		ser >> m_vertexInfo.SysMem;
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
 		if (false == CreateVertexBufferInternal())
@@ -94,7 +111,7 @@ namespace ehw
 
 		//m_indexInfos: m_vertexInfo와 같음. 대신 여긴 vector이므로 순회를 돌면서 저장한다.
 		size_t indexSize{};
-		_ser >> indexSize;
+		ser >> indexSize;
 
 		//resize 대신 reserve 하는 이유: CreateIndexInternal() 함수에서 back()을 사용함.
 		m_indexInfos.reserve(indexSize);
@@ -102,9 +119,9 @@ namespace ehw
 		{
 			tIndexInfo& indexInfo = m_indexInfos.emplace_back();
 
-			_ser >> indexInfo.Count;
-			_ser >> indexInfo.Desc;
-			_ser >> indexInfo.SysMem;
+			ser >> indexInfo.Count;
+			ser >> indexInfo.Desc;
+			ser >> indexInfo.SysMem;
 
 			if (false == CreateIndexBufferInternal())
 			{

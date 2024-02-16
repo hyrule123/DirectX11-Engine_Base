@@ -1,9 +1,9 @@
 #pragma once
 #include "iResource.h"
 
-
-#include "../Util/Serialize/BinarySerializer.h"
+#include "../Util/Serialize/Serializable.h"
 #include "../GPU/CommonGPU.h"
+
 #include "../CommonStruct.h"
 
 namespace ehw
@@ -40,7 +40,7 @@ namespace ehw
 	struct tFBXContainer;
 	class Mesh final 
 		: public iResource 
-		, Serializable<BinarySerializer>
+		, Serializable_Binary
 	{
 	public:
 		Mesh();
@@ -51,8 +51,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-		virtual eResult Serialize(BinarySerializer& _ser) override;
-		virtual eResult DeSerialize(const BinarySerializer& _ser) override;
+		virtual eResult Serialize_Binary(BinarySerializer* _ser) override;
+		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
 
 
 		template <typename Vertex>
