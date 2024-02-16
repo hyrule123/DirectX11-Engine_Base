@@ -31,12 +31,12 @@ namespace ehw
 
 	eResult GraphicsShader::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		return SaveFile(_baseDir / _strKeyPath);
+		return SaveFile_Json(_baseDir / _strKeyPath);
 	}
 
 	eResult GraphicsShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		return LoadFile(_baseDir / _strKeyPath);
+		return LoadFile_Json(_baseDir / _strKeyPath);
 	}
 
 	eResult GraphicsShader::CreateByCompile(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)
@@ -206,10 +206,18 @@ namespace ehw
 		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
 	}
 
-	eResult GraphicsShader::Serialize(JsonSerializer& _ser)
+	eResult GraphicsShader::Serialize_Json(JsonSerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		JsonSerializer& ser = *_ser;
+
 		//구조체 안에 const char* 타입이 있어서 수동으로 해줘야함
-		Json::Value& jsonInputLayouts = _ser[JSON_KEY(m_inputLayoutDescs)];
+		Json::Value& jsonInputLayouts = ser[JSON_KEY(m_inputLayoutDescs)];
 		jsonInputLayouts = Json::Value(Json::arrayValue);
 
 		//Input Layout Desc
@@ -242,12 +250,12 @@ namespace ehw
 		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(m_inputLayoutDescs));
 
 		//토폴로지
-		_ser[JSON_KEY(m_topology)] << m_topology;
+		ser[JSON_KEY(m_topology)] << m_topology;
 
 
 		//쉐이더 파일명
 		{
-			Json::Value& ShaderFileName = _ser[JSON_KEY(m_arrShaderCode)];
+			Json::Value& ShaderFileName = ser[JSON_KEY(m_arrShaderCode)];
 			for (int i = 0; i < (int)eGSStage::END; ++i)
 			{
 				ShaderFileName.append(m_arrShaderCode[i].strKey);
@@ -255,18 +263,26 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		_ser[JSON_KEY(m_depthStencilType)] << m_rasterizerType;
-		_ser[JSON_KEY(m_depthStencilType)] << m_depthStencilType;
-		_ser[JSON_KEY(m_blendType)] << m_blendType;
+		ser[JSON_KEY(m_depthStencilType)] << m_rasterizerType;
+		ser[JSON_KEY(m_depthStencilType)] << m_depthStencilType;
+		ser[JSON_KEY(m_blendType)] << m_blendType;
 	}
 
-	eResult GraphicsShader::DeSerialize(const JsonSerializer& _ser)
+	eResult GraphicsShader::DeSerialize_Json(const JsonSerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const JsonSerializer& ser = *_ser;
+
 		//Input Layout Desc
 		m_inputLayoutDescs.clear();
-		if (_ser.isMember(JSON_KEY(m_inputLayoutDescs)))
+		if (ser.isMember(JSON_KEY(m_inputLayoutDescs)))
 		{
-			const Json::Value& jsonInputLayouts = _ser[JSON_KEY(m_inputLayoutDescs)];
+			const Json::Value& jsonInputLayouts = ser[JSON_KEY(m_inputLayoutDescs)];
 
 			if (jsonInputLayouts.isArray())
 			{
@@ -309,11 +325,11 @@ namespace ehw
 
 
 		//토폴로지
-		_ser[JSON_KEY(m_topology)] >> m_topology;
+		ser[JSON_KEY(m_topology)] >> m_topology;
 
 		//쉐이더
 		{
-			const Json::Value& shaderFileNames = _ser[JSON_KEY(m_arrShaderCode)];
+			const Json::Value& shaderFileNames = ser[JSON_KEY(m_arrShaderCode)];
 
 			if ((size_t)shaderFileNames.size() < m_arrShaderCode.size())
 			{
@@ -346,9 +362,9 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		_ser[JSON_KEY(m_depthStencilType)] >> m_rasterizerType;
-		_ser[JSON_KEY(m_depthStencilType)] >> m_depthStencilType;
-		_ser[JSON_KEY(m_blendType)] >> m_blendType;
+		ser[JSON_KEY(m_depthStencilType)] >> m_rasterizerType;
+		ser[JSON_KEY(m_depthStencilType)] >> m_depthStencilType;
+		ser[JSON_KEY(m_blendType)] >> m_blendType;
 
 		//에디트 모드가 아닐 경우에만 Input Layout 생성.
 		if (false == m_bEditMode)

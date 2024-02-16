@@ -4,7 +4,7 @@
 
 
 #include "../../GPU/CommonGPU.h"
-#include "../../Util/Serialize/JsonSerializer.h"
+#include "../../Util/Serialize/Serializable.h"
 
 
 #include <unordered_set>
@@ -25,7 +25,7 @@ namespace ehw
 
 	class GraphicsShader final 
 		: public iShader
-		, public Serializable<JsonSerializer>
+		, public Serializable_Json
 	{
 		friend class editor::EditorGraphicsShader;
 	public:
@@ -35,8 +35,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		eResult CreateByCompile(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
