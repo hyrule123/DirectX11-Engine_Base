@@ -60,12 +60,12 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Animator3D::Serialize(JsonSerializer& _ser)
+	eResult Com_Animator3D::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult Com_Animator3D::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_Animator3D::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

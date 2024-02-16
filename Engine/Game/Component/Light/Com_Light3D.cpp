@@ -4,6 +4,7 @@
 
 #include "../Transform/Com_Transform.h"
 
+#include "../../../Util/Serialize/JsonSerializer.h"
 
 #include "../../../Manager/RenderManager.h"
 #include "../../../Manager/ResourceManager.h"
@@ -38,11 +39,19 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Light3D::Serialize(JsonSerializer& _ser)
+	eResult Com_Light3D::Serialize_Json(JsonSerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		JsonSerializer ser = *_ser;
+
 		try
 		{
-			Json::Value& light3d = _ser[GetStrKey()];
+			Json::Value& light3d = ser[GetStrKey()];
 
 			//m_attribute
 			{
@@ -83,11 +92,19 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Com_Light3D::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_Light3D::DeSerialize_Json(const JsonSerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const JsonSerializer& ser = *_ser;
+
 		try
 		{
-			const Json::Value& light3d = _ser[GetStrKey()];
+			const Json::Value& light3d = ser[GetStrKey()];
 
 			//m_attribute
 			{
@@ -131,8 +148,6 @@ namespace ehw
 		}
 
 		return eResult::Success;
-
-		return eResult();
 	}
 
 

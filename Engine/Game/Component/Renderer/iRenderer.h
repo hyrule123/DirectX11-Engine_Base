@@ -38,8 +38,8 @@ namespace ehw
 		virtual void InternalUpdate() override {};
 		virtual void Render() = 0;
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		void SetMesh(const std::shared_ptr<Mesh> _mesh);
 

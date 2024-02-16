@@ -15,8 +15,9 @@ namespace ehw
 		iScript(const iScript& _other) = default;
 		virtual ~iScript();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override { return eResult::Success; }
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override { return eResult::Success; }
+		//Script의 경우 Serialize 하지 않는 경우도 있으므로 일단 재정의해둔다.
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override { return eResult::Success; }
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void Init() {};
 		virtual void Awake() override {};

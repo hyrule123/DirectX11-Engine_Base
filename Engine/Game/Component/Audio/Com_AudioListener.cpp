@@ -27,12 +27,12 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioListener::Serialize(JsonSerializer& _ser)
+	eResult Com_AudioListener::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult Com_AudioListener::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_AudioListener::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

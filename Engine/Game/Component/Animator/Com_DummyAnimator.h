@@ -11,8 +11,8 @@ namespace ehw
 		Com_DummyAnimator();
 		virtual ~Com_DummyAnimator();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 		
 		virtual void Init() override;
 		virtual void InternalUpdate() override {};

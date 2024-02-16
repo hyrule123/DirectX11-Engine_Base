@@ -68,12 +68,12 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioSource::Serialize(JsonSerializer& _ser)
+	eResult Com_AudioSource::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult Com_AudioSource::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_AudioSource::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

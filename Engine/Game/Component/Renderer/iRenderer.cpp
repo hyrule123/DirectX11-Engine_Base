@@ -9,6 +9,8 @@
 #include "../../../Manager/ResourceManager.h"
 #include "../../../Resource/Model3D/Skeleton.h"
 
+#include "../../../Util/Serialize/JsonSerializer.h"
+
 
 #include "../Transform/Com_Transform.h"
 #include "../Animator/Com_Animator2D.h"
@@ -47,8 +49,12 @@ namespace ehw
 		}
 	}
 
-	eResult iRenderer::Serialize(JsonSerializer& _ser)
+	eResult iRenderer::Serialize_Json(JsonSerializer* _ser)
 	{
+		SERIALIZER_CHECK_PTR(_ser);
+
+		JsonSerializer& ser = *_ser;
+
 		if (nullptr == m_mesh)
 		{
 			ERROR_MESSAGE("Mesh 정보가 없습니다.");
@@ -63,7 +69,7 @@ namespace ehw
 
 		try
 		{
-			Json::Value& renderer = _ser[GetStrKey()];
+			Json::Value& renderer = ser[GetStrKey()];
 
 			//m_mesh
 			renderer[JSON_KEY(m_mesh)] << m_mesh->GetStrKey();
@@ -101,11 +107,15 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult iRenderer::DeSerialize(const JsonSerializer& _ser)
+	eResult iRenderer::DeSerialize_Json(const JsonSerializer* _ser)
 	{
+		SERIALIZER_CHECK_PTR(_ser);
+
+		const JsonSerializer& ser = *_ser;
+
 		try
 		{
-			const Json::Value& renderer = _ser[GetStrKey()];
+			const Json::Value& renderer = ser[GetStrKey()];
 
 			//m_mesh
 			{

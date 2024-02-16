@@ -9,7 +9,7 @@
 
 #include "../../../Manager/RenderManager.h"
 #include "../../../Manager/SceneManager.h"
-#include "../../../Manager/SceneManager.h"
+#include "../../../Manager/GPUManager.h"
 #include "../../../Manager/ResourceManager.h"
 
 #include "../../../Resource/Material.h"
@@ -46,12 +46,12 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Camera::Serialize(JsonSerializer& _ser)
+	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult Com_Camera::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_Camera::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

@@ -19,12 +19,12 @@ namespace ehw
 	{
 	}
 
-	eResult Com_DummyAnimator::Serialize(JsonSerializer& _ser)
+	eResult Com_DummyAnimator::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult Com_DummyAnimator::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_DummyAnimator::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

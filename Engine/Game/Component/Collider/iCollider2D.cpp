@@ -42,12 +42,12 @@ namespace ehw
 	{
 	}
 
-	eResult iCollider2D::Serialize(JsonSerializer& _ser)
+	eResult iCollider2D::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	eResult iCollider2D::DeSerialize(const JsonSerializer& _ser)
+	eResult iCollider2D::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

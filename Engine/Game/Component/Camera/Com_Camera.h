@@ -16,8 +16,8 @@ namespace  ehw
 		Com_Camera();
 		virtual ~Com_Camera();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		__forceinline static const MATRIX& GetGpuViewMatrix() { return gView; }
 		__forceinline static const MATRIX& GetGpuViewInvMatrix() { return gViewInverse; }

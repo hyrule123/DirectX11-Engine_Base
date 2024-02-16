@@ -10,8 +10,9 @@ namespace ehw
 		iTransform();
 		virtual ~iTransform();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override { return eResult::Success; }
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override { return eResult::Success; }
+		//TODO: 여기 구현 할것.
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override { return eResult::Success; }
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void BindData() = 0;
 
