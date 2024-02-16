@@ -8,6 +8,7 @@
 #include "../../Manager/ResourceManager.h"
 
 #include "../../Resource/Material.h"
+#include "../../Resource/Texture.h"
 #include "../../Resource/Shader/GraphicsShader.h"
 
 #include "../../GPU/CommonGPU.h"
@@ -245,16 +246,16 @@ namespace editor
 	void EditorMaterial::UpdateMtrlConstBuffer()
 	{
 		ImGui::DragFloat4("Diffuse Color", 
-			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Diff)));
+			reinterpret_cast<float*>(&(mTargetMaterial->m_constBufferData.Diff)));
 
 		ImGui::DragFloat4("Specular Color",
-			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Spec)));
+			reinterpret_cast<float*>(&(mTargetMaterial->m_constBufferData.Spec)));
 
 		ImGui::DragFloat4("Ambient Color",
-			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Amb)));
+			reinterpret_cast<float*>(&(mTargetMaterial->m_constBufferData.Amb)));
 
 		ImGui::DragFloat4("Emissive Color",
-			reinterpret_cast<float*>(&(mTargetMaterial->mCB.Emv)));
+			reinterpret_cast<float*>(&(mTargetMaterial->m_constBufferData.Emv)));
 	}
 	void EditorMaterial::UpdateSaveLoad()
 	{
@@ -294,7 +295,7 @@ namespace editor
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
 		}
-		else if (nullptr == mTargetMaterial->mTextures[0])
+		else if (nullptr == mTargetMaterial->m_textures[0])
 		{
 			if (IDNO == MessageBoxW(nullptr, L"첫 번째 텍스처(Tex0)가 없습니다.\n(에러는 아님 나중에 코드로 할거면 괜찮음)\n저장할까요?", L"Notification", MB_YESNO))
 			{
@@ -322,8 +323,8 @@ namespace editor
 
 		std::string strKey = outputPath.filename().string();
 		mTargetMaterial->SetStrKey(strKey);
-		mTargetMaterial->Save(strKey);
 
+		ehw::ResourceManager<ehw::Material>::Save(mTargetMaterial);
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -392,8 +393,8 @@ namespace editor
 					}
 					else
 					{
-						mTargetMaterial = std::make_shared<ehw::Material>();
-						if (ehw::eResultFail(mTargetMaterial->Load(filePath.filename())))
+						mTargetMaterial = ehw::ResourceManager<ehw::Material>::Load(filePath.filename());
+						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();
 							errMsg += L"\n불러오기에 실패했습니다.";
