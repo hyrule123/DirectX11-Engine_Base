@@ -1,13 +1,15 @@
 #include "Material.h"
 
-
-
 #include "../GPU/ConstBuffer.h"
 
 #include "../Manager/ResourceManager.h"
+#include "../Manager/RenderManager.h"
 #include "../Manager/PathManager.h"
 
 #include "../Util/Serialize/JsonSerializer.h"
+
+#include "Texture.h"
+#include "Shader/GraphicsShader.h"
 
 namespace ehw
 {
@@ -35,30 +37,38 @@ namespace ehw
 
     eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
     {
-        return this->Serializable<JsonSerializer>::SaveFile(_baseDir / _strKeyPath);
+        return SaveFile_Json(_baseDir / _strKeyPath);
     }
 
     eResult Material::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
     {
-        return this->Serializable<JsonSerializer>::LoadFile(_baseDir / _strKeyPath);
+        return LoadFile_Json(_baseDir / _strKeyPath);
     }
 
-    eResult Material::Serialize(JsonSerializer& _ser)
+    eResult Material::Serialize_Json(JsonSerializer* _ser)
     {
+        if (nullptr == _ser)
+        {
+            ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+            return eResult::Fail_Nullptr;
+        }
+
+        JsonSerializer& ser = *_ser;
+
         try
         {
             //shader
             if (m_shader)
             {
-                _ser[JSON_KEY(m_shader)] << m_shader->GetStrKey();
+                ser[JSON_KEY(m_shader)] << m_shader->GetStrKey();
             }
             else
             {
-                _ser[JSON_KEY(m_shader)] << Json::nullValue;
+                ser[JSON_KEY(m_shader)] << Json::nullValue;
             }
 
             //textures
-            Json::Value& textures = _ser[JSON_KEY(m_textures)];
+            Json::Value& textures = ser[JSON_KEY(m_textures)];
             textures.resize(m_textures.size());
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
@@ -73,10 +83,10 @@ namespace ehw
             }
 
             //renderingMode
-            _ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
+            ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
 
             //const buffer
-            Json::Value& cbData = _ser[JSON_KEY(m_constBufferData)];
+            Json::Value& cbData = ser[JSON_KEY(m_constBufferData)];
             cbData[JSON_KEY(m_constBufferData.Amb)] << m_constBufferData.Amb;
             cbData[JSON_KEY(m_constBufferData.bAnim)] << m_constBufferData.bAnim;
             cbData[JSON_KEY(m_constBufferData.BoneCount)] << m_constBufferData.BoneCount;
@@ -94,20 +104,28 @@ namespace ehw
         return eResult::Success;
     }
 
-    eResult Material::DeSerialize(const JsonSerializer& _ser)
+    eResult Material::DeSerialize_Json(const JsonSerializer* _ser)
     {
+        if (nullptr == _ser)
+        {
+            ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+            return eResult::Fail_Nullptr;
+        }
+
+        const JsonSerializer& ser = *_ser;
+
         try
         {
             //shader
             {
                 std::string strKey{};
-                _ser[JSON_KEY(m_shader)] >> strKey;
+                ser[JSON_KEY(m_shader)] >> strKey;
                 m_shader = ResourceManager<GraphicsShader>::Load(strKey);
             }
 
 
             //textures
-            const Json::Value& textures = _ser[JSON_KEY(m_textures)];
+            const Json::Value& textures = ser[JSON_KEY(m_textures)];
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
                 std::string strKey{};
@@ -116,7 +134,7 @@ namespace ehw
             }
 
             //const buffer
-            const Json::Value& cbData = _ser[JSON_KEY(m_constBufferData)];
+            const Json::Value& cbData = ser[JSON_KEY(m_constBufferData)];
             cbData[JSON_KEY(m_constBufferData.Amb)] >> m_constBufferData.Amb;
             cbData[JSON_KEY(m_constBufferData.bAnim)] >> m_constBufferData.bAnim;
             cbData[JSON_KEY(m_constBufferData.BoneCount)] >> m_constBufferData.BoneCount;
@@ -126,7 +144,7 @@ namespace ehw
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
 
             //renderingMode
-            _ser[JSON_KEY(m_renderingMode)] >> m_renderingMode;
+            ser[JSON_KEY(m_renderingMode)] >> m_renderingMode;
         }
         catch (const Json::Exception& _err)
         {
@@ -169,6 +187,7 @@ namespace ehw
                 m_textures[slotIndex]->UnBindData();
         }
     }
+
     void Material::SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture)
     {
         m_textures[(UINT)_slot] = _texture;

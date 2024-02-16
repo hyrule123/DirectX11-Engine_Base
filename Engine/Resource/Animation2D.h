@@ -2,7 +2,7 @@
 #include "iAnimation.h"
 
 #include "Texture.h"
-#include "../Util/Serialize/JsonSerializer.h"
+#include "../Util/Serialize/Serializable.h"
 
 namespace ehw
 {
@@ -10,7 +10,7 @@ namespace ehw
 
 	class Animation2D final
 		: public iAnimation
-		, public Serializable<JsonSerializer>
+		, public Serializable_Json
 	{
 	public:
 		struct tSprite
@@ -45,8 +45,8 @@ namespace ehw
 		}
 
 		
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		uint Update();
 		void InternalUpdate();

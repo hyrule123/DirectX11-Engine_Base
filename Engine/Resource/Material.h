@@ -1,14 +1,11 @@
 #pragma once
-
-
-
 #include "../define_Enum.h"
 
-#include "../Manager/RenderManager.h"
+#include "../GPU/CommonGPU.h"
+
+#include "../Util/Serialize/Serializable.h"
 
 #include "iResource.h"
-#include "Shader/GraphicsShader.h"
-#include "Texture.h"
 
 #include <array>
 
@@ -20,9 +17,11 @@ namespace editor
 
 namespace ehw
 {
+	class Texture;
+	class GraphicsShader;
 	class Material final 
 		: public iResource
-		, public Serializable<JsonSerializer>
+		, public Serializable_Json
 	{
 		friend class editor::EditorMaterial;
 	public:
@@ -36,8 +35,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		void BindData();
 		void UnBindData();
