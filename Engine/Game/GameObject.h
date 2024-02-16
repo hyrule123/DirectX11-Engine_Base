@@ -1,12 +1,9 @@
 #pragma once
 #include "../Entity.h"
 
-
+#include "../Util/Serialize/Serializable.h"
 
 #include "../Manager/ComponentManager.h"
-
-#include <span>
-
 
 namespace ehw
 {
@@ -15,7 +12,7 @@ namespace ehw
 	class iScript;
 	class GameObject 
 		: public Entity
-		, public Serializable<JsonSerializer>
+		, public Serializable_Json
 	{
 		friend class GameObject;
 	public:
@@ -28,8 +25,8 @@ namespace ehw
 
 		virtual ~GameObject();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 		
 		void Awake();
 		void Update();

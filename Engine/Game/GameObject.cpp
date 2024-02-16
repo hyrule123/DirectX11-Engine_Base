@@ -80,11 +80,19 @@ namespace ehw
 		//}
 	}
 
-	eResult GameObject::Serialize(JsonSerializer& _ser)
+	eResult GameObject::Serialize_Json(JsonSerializer* _ser)
 	{
-		_ser[JSON_KEY(m_name)] << m_name;
-		_ser[JSON_KEY(m_layerType)] << m_layerType;
-		_ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		JsonSerializer& ser = *_ser;
+
+		ser[JSON_KEY(m_name)] << m_name;
+		ser[JSON_KEY(m_layerType)] << m_layerType;
+		ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
 
 		//m_baseComponents
 		{
@@ -151,9 +159,15 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GameObject::DeSerialize(const JsonSerializer& _ser)
+	eResult GameObject::DeSerialize_Json(const JsonSerializer* _ser)
 	{
-		
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const JsonSerializer& ser = *_ser;
 
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_name));
 		Json::SaveLoad::LoadValue(_pJson, JSON_KEY_PAIR(m_layerType));

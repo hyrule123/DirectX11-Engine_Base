@@ -88,11 +88,11 @@ namespace ehw
 			evt.second = nullptr;
 		}
 	}
-	eResult Com_Animator2D::Serialize(JsonSerializer& _ser)
+	eResult Com_Animator2D::Serialize_Json(JsonSerializer* _ser)
 	{
 		return eResult();
 	}
-	eResult Com_Animator2D::DeSerialize(const JsonSerializer& _ser)
+	eResult Com_Animator2D::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

@@ -43,8 +43,8 @@ namespace ehw
 
 		virtual ~Com_Animator2D();
 
-		virtual eResult Serialize(JsonSerializer& _ser) override;
-		virtual eResult DeSerialize(const JsonSerializer& _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void Update() override; 
 		virtual void InternalUpdate() override;

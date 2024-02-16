@@ -1,11 +1,8 @@
 #pragma once
 #include "../../Entity.h"
 
-
-
 #include "../../Util/SimpleMath.h"
-#include "../../Util/Serialize/JsonSerializer.h"
-
+#include "../../Util/Serialize/Serializable.h"
 
 #include "define_Component.h"
 
@@ -17,7 +14,7 @@ namespace ehw
 	class iScene;
 	class iComponent 
 		: public Entity
-		, public Serializable<JsonSerializer>
+		, public Serializable_Json
 	{
 		friend class ComponentManager;
 	public:
