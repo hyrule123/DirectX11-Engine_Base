@@ -4,6 +4,8 @@
 
 
 #include "../../Util/define_Util.h"
+#include "../../Util/StringConverter.h"
+#include "../../Util/Serialize/BinarySerializer.h"
 
 #include "../../DefaultShader/Resource.hlsli"
 
@@ -13,9 +15,8 @@
 
 
 #include "Model3D.h"
-
-
 #include "FBXLoader.h"
+#include "Animation3D.h"
 
 
 #include <cctype>
@@ -50,20 +51,20 @@ namespace ehw
 
 		std::fs::path fullPath = _basePath / _strKeyPath;
 		//Skeleton
-		eResult result = SaveFile(fullPath);
+		eResult result = SaveFile_Binary(fullPath);
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
 			return eResult::Fail;
 		}
 		
-		//Animation3D는 Skeleton에 종속되므로 ResourceManager를 사용하지 않음 -> SaveFile을 통해 저장한다.
+		//Animation3D는 Skeleton에 종속되므로 ResourceManager를 사용하지 않음 -> SaveFile_Binary을 통해 저장한다.
 		{
 			fullPath.remove_filename();
 
 			for (const auto& iter : m_animations)
 			{
-				result = iter.second->SaveFile(fullPath / iter.first);
+				result = iter.second->SaveFile_Binary(fullPath / iter.first);
 				if (eResultFail(result))
 				{
 					std::wstringstream errmsg{};
@@ -77,14 +78,14 @@ namespace ehw
 		}
 
 
-		return SaveFile(_basePath / _strKeyPath);
+		return SaveFile_Binary(_basePath / _strKeyPath);
 	}
 	eResult Skeleton::Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath)
 	{
 		std::fs::path fullPath = _basePath / _strKeyPath;
 
 		//Skeleton
-		eResult result = LoadFile(fullPath);
+		eResult result = LoadFile_Binary(fullPath);
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
@@ -118,7 +119,7 @@ namespace ehw
 				}
 				
 				std::shared_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
-				eResult result = a3d->LoadFile(filePath);
+				eResult result = a3d->LoadFile_Binary(filePath);
 				if (eResultFail(result))
 				{
 					std::wstringstream errmsg;
@@ -146,9 +147,17 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Skeleton::Serialize(BinarySerializer& _ser)
+	eResult Skeleton::Serialize_Binary(BinarySerializer* _ser)
 	{
-		_ser << m_vecBones.size();
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		BinarySerializer& ser = *_ser;
+
+		ser << m_vecBones.size();
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
 			//std::string			strBoneName{};
@@ -156,11 +165,11 @@ namespace ehw
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			_ser << m_vecBones[i].strBoneName;
-			_ser << m_vecBones[i].iDepth;
-			_ser << m_vecBones[i].iParentIndx;
-			_ser << m_vecBones[i].matOffset;
-			_ser << m_vecBones[i].matBone;
+			ser << m_vecBones[i].strBoneName;
+			ser << m_vecBones[i].iDepth;
+			ser << m_vecBones[i].iParentIndx;
+			ser << m_vecBones[i].matOffset;
+			ser << m_vecBones[i].matBone;
 		}
 
 		return eResult::Success;
@@ -168,10 +177,18 @@ namespace ehw
 
 
 
-	eResult Skeleton::DeSerialize(const BinarySerializer& _ser)
+	eResult Skeleton::DeSerialize_Binary(const BinarySerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const BinarySerializer& ser = *_ser;
+
 		size_t size{};
-		_ser >> size;
+		ser >> size;
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
 			//std::string			strBoneName{};
@@ -179,11 +196,11 @@ namespace ehw
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			_ser >> m_vecBones[i].strBoneName;
-			_ser >> m_vecBones[i].iDepth;
-			_ser >> m_vecBones[i].iParentIndx;
-			_ser >> m_vecBones[i].matOffset;
-			_ser >> m_vecBones[i].matBone;
+			ser >> m_vecBones[i].strBoneName;
+			ser >> m_vecBones[i].iDepth;
+			ser >> m_vecBones[i].iParentIndx;
+			ser >> m_vecBones[i].matOffset;
+			ser >> m_vecBones[i].matBone;
 		}
 		CreateBoneOffsetSBuffer();
 
@@ -303,7 +320,7 @@ namespace ehw
 			std::fs::path filePath = _saveDir.filename();
 			filePath /= strKey;
 			
-			if (eResultFail(ourAnim->SaveFile(filePath)))
+			if (eResultFail(ourAnim->SaveFile_Binary(filePath)))
 				return false;
 
 			//우리 애니메이션 쪽에 등록

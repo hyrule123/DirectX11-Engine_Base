@@ -2,17 +2,18 @@
 #include "../../Entity.h"
 
 #include "../../CommonStruct.h"
-#include "../../Util/Serialize/BinarySerializer.h"
-#include "Animation3D.h"
+
+#include "../../Util/Serialize/Serializable.h"
 
 //MeshData에 종속된 클래스
 namespace ehw
 {
 	class FBXLoader;
 	class StructBuffer;
+	class Animation3D;
 	class Skeleton final
 		: public iResource
-		, public Serializable<BinarySerializer>
+		, public Serializable_Binary
 	{
 	public:
 		Skeleton();
@@ -21,8 +22,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
 		virtual eResult Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) override;
 
-		virtual eResult Serialize(BinarySerializer& _ser) override;
-		virtual eResult DeSerialize(const BinarySerializer& _ser) override;
+		virtual eResult Serialize_Binary(BinarySerializer* _ser) override;
+		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
 		
 
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);

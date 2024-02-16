@@ -2,7 +2,7 @@
 
 
 #include "../../Util/define_Util.h"
-#include "../../Util/define_Util.h"
+#include "../../Util/Serialize/JsonSerializer.h"
 
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/PathManager.h"
@@ -15,7 +15,6 @@
 
 #include "Skeleton.h"
 #include "FBXLoader.h"
-
 
 #include <regex>
 
@@ -37,7 +36,7 @@ namespace ehw
 
 		fileName.replace_extension(strKey::path::extension::Model3D);
 
-		return LoadFile(_baseDir / fileName);
+		return LoadFile_Json(_baseDir / fileName);
 	}
 
 	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
@@ -53,75 +52,96 @@ namespace ehw
 		//Player/Player.json 형태로 저장한다.
 		std::fs::path fullPath = _baseDir / _strKeyPath;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
-		return SaveFile(fullPath);
+		return SaveFile_Json(fullPath);
 	}
 
-	eResult Model3D::Serialize(JsonSerializer& _ser)
+	eResult Model3D::Serialize_Json(JsonSerializer* _ser)
 	{
-		eResult result = eResult::Fail;
-
-
-		//Skeleton
-		eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
-		if (eResultFail(result))
+		if (nullptr == _ser)
 		{
-			ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
-			return result;
+			ERROR_MESSAGE("Json::Value가 nullptr 입니다.");
+			return eResult::Fail_Nullptr;
 		}
-		_ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
 
+		Json::Value& ser = *_ser;
 
-		//전부 포인터 형태이므로 StrKey를 등록해 준다.
-		Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
-		for (size_t i = 0; i < m_meshContainers.size(); ++i)
+		try
 		{
-			//nullptr check
-			if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
-			{
-				return eResult::Fail_InValid;
-			}
-			Json::Value& meshContainer = arrMeshCont[i];
-
-			//Mesh
-			result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
+			//Skeleton
+			eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
 			if (eResultFail(result))
 			{
-				ERROR_MESSAGE("메쉬 정보 저장 실패");
+				ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 				return result;
 			}
-			meshContainer["mesh"] << m_meshContainers[i].mesh->GetStrKey();
+			ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
 
-			//Materials
-			Json::Value& materials = meshContainer["materials"];
-			for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
+
+			//전부 포인터 형태이므로 StrKey를 등록해 준다.
+			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
+			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				if (nullptr == m_meshContainers[i].materials[j])
+				//nullptr check
+				if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
 				{
-					return eResult::Fail_Nullptr;
+					return eResult::Fail_InValid;
 				}
-				result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j]);
+				Json::Value& meshContainer = arrMeshCont[i];
+
+				//Mesh
+				result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
 				if (eResultFail(result))
 				{
-					ERROR_MESSAGE("재질 정보 저장 실패");
+					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
+				meshContainer["mesh"] << m_meshContainers[i].mesh->GetStrKey();
 
-				materials[j] << m_meshContainers[i].materials[j]->GetStrKey();
+				//Materials
+				Json::Value& materials = meshContainer["materials"];
+				for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
+				{
+					if (nullptr == m_meshContainers[i].materials[j])
+					{
+						return eResult::Fail_Nullptr;
+					}
+					result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j]);
+					if (eResultFail(result))
+					{
+						ERROR_MESSAGE("재질 정보 저장 실패");
+						return result;
+					}
+
+					materials[j] << m_meshContainers[i].materials[j]->GetStrKey();
+				}
 			}
 		}
+		catch (const std::exception& _err)
+		{
+
+		}
+
+
 
 		return eResult::Success;
 	}
 
-	eResult Model3D::DeSerialize(const JsonSerializer& _ser)
+	eResult Model3D::DeSerialize_Json(const JsonSerializer* _ser)
 	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+		const JsonSerializer& ser = *_ser;
+
 		m_skeleton = nullptr;
 		m_meshContainers.clear();
 
 		//Skeleton
 		{
 			std::string skeletonStrkey{};
-			_ser[JSON_KEY(m_skeleton)] >> skeletonStrkey;
+			ser[JSON_KEY(m_skeleton)] >> skeletonStrkey;
 			const std::shared_ptr<Skeleton>& skeletonPtr = ResourceManager<Skeleton>::Load(skeletonStrkey);
 			if (nullptr == skeletonPtr)
 			{
@@ -133,7 +153,7 @@ namespace ehw
 		//MeshContainers
 		{
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
-			const Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_meshContainers)];
+			const Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
 			size_t meshContSize = (size_t)arrMeshCont.size();
 			m_meshContainers.resize(meshContSize);
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
@@ -508,13 +528,12 @@ namespace ehw
 					}
 				}
 
-				std::shared_ptr<Texture> newTex = std::make_shared<Texture>();
-
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
+				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::Load(texKey);
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (eResultFail(newTex->Load(texKey)))
+				if (nullptr == newTex)
 				{
 					newTex = nullptr;
 				}
@@ -625,13 +644,13 @@ namespace ehw
 								if (std::string::npos != fileName.find(texSuffix[j]))
 								{
 									//일치할 경우 이 텍스처를 material에 추가
-									newTex = std::make_shared<Texture>();
-
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
-									newTex->SetStrKey(texKey.string());
 
-									newTex->Load(texKey);
+									newTex = ResourceManager<Texture>::Load(texKey);
+
+
+									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");
 
 									_mtrl->SetTexture((eTextureSlot)j, newTex);
 								}

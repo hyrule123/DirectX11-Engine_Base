@@ -71,51 +71,68 @@ namespace ehw
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::Serialize(BinarySerializer& _ser)
+
+    eResult Animation3D::Serialize_Binary(BinarySerializer* _ser)
     {
+        if (nullptr == _ser)
+        {
+            ERROR_MESSAGE("Serializer이 nullptr 입니다.");
+            return eResult::Fail_Nullptr;
+        }
         if (m_OwnerSkeleton.expired())
         {
             ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
         }
-        _ser << m_StartFrame;
-        _ser << m_EndFrame;
-        _ser << m_FrameLength;
-        _ser << m_StartTime;
-        _ser << m_EndTime;
-        _ser << m_TimeLength;
-        _ser << m_UpdateTime;
-        _ser << m_FramePerSec;
 
-        _ser << m_KeyFramesPerBone.size();
+        BinarySerializer& ser = *_ser;
+
+        ser << m_StartFrame;
+        ser << m_EndFrame;
+        ser << m_FrameLength;
+        ser << m_StartTime;
+        ser << m_EndTime;
+        ser << m_TimeLength;
+        ser << m_UpdateTime;
+        ser << m_FramePerSec;
+
+        ser << m_KeyFramesPerBone.size();
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
-            _ser << m_KeyFramesPerBone[i].BoneIndex;
-            _ser << m_KeyFramesPerBone[i].vecKeyFrame;
+            ser << m_KeyFramesPerBone[i].BoneIndex;
+            ser << m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
         return eResult::Success;
     }
 
-    eResult Animation3D::DeSerialize(const BinarySerializer& _ser)
+    eResult Animation3D::DeSerialize_Binary(const BinarySerializer* _ser)
     {
-        _ser >> m_StartFrame;
-        _ser >> m_EndFrame;
-        _ser >> m_FrameLength;
-        _ser >> m_StartTime;
-        _ser >> m_EndTime;
-        _ser >> m_TimeLength;
-        _ser >> m_UpdateTime;
-        _ser >> m_FramePerSec;
+        if (nullptr == _ser)
+        {
+            ERROR_MESSAGE("Serializer이 nullptr 입니다.");
+            return eResult::Fail_Nullptr;
+        }
+
+        const BinarySerializer& ser = *_ser;
+
+        ser >> m_StartFrame;
+        ser >> m_EndFrame;
+        ser >> m_FrameLength;
+        ser >> m_StartTime;
+        ser >> m_EndTime;
+        ser >> m_TimeLength;
+        ser >> m_UpdateTime;
+        ser >> m_FramePerSec;
         
 
         size_t vecSize = 0;
-        _ser >> vecSize;
+        ser >> vecSize;
         m_KeyFramesPerBone.resize(vecSize);
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
-            _ser >> m_KeyFramesPerBone[i].BoneIndex;
-            _ser >> m_KeyFramesPerBone[i].vecKeyFrame;
+            ser >> m_KeyFramesPerBone[i].BoneIndex;
+            ser >> m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
         if (false == CreateKeyFrameSBuffer())

@@ -1,12 +1,10 @@
 #pragma once
 #include "../iAnimation.h"
 
-
-
-#include "../../Util/SimpleMath.h"
-#include "../../Util/Serialize/BinarySerializer.h"
 #include "../../defines.h"
 
+#include "../../Util/SimpleMath.h"
+#include "../../Util/Serialize/Serializable.h"
 
 namespace ehw
 {
@@ -31,7 +29,7 @@ namespace ehw
     class Skeleton;
 	class Animation3D final
         : public iAnimation
-        , public Serializable<BinarySerializer>
+        , public Serializable_Binary
 	{
         friend class Skeleton;
 	public:
@@ -49,8 +47,8 @@ namespace ehw
         virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
         virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-        eResult Serialize(BinarySerializer& _ser) override;
-        eResult DeSerialize(const BinarySerializer& _ser) override;
+        eResult Serialize_Binary(BinarySerializer* _ser) override;
+        eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
 
         eResult LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
