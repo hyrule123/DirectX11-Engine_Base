@@ -15,6 +15,7 @@
 
 
 #include "Model3D.h"
+#include "Skeleton.h"
 #include "FBXLoader.h"
 #include "Animation3D.h"
 
@@ -235,7 +236,11 @@ namespace ehw
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
 
-			eResult result = anim->LoadFromFBX(shared_from_this_T<Skeleton>(), &animClip[i]);
+
+			const std::shared_ptr<Skeleton>& sklt = shared_from_this_T<Skeleton>();
+
+			eResult result = anim->LoadFromFBX(sklt, &animClip[i]);
+
 			if (eResultFail(result))
 			{
 				ERROR_MESSAGE("애니메이션 생성 실패");

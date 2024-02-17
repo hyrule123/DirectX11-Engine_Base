@@ -1,6 +1,6 @@
-
 #include "EditorNormalConverter.h"
 
+#include "../../define_Enum.h"
 
 #include "../../Manager/PathManager.h"
 #include "../../Manager/ResourceManager.h"
@@ -95,6 +95,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 	void EditorNormalConverter::DestTextureUpdate()
 	{
+		using namespace ehw;
 		HilightText("Dest Texture Save Directory");
 		{
 			std::string curText = "* Current: ";
@@ -142,6 +143,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 	void EditorNormalConverter::CopyTextureUpdate()
 	{
+		using namespace ehw;
 		if (ImGui::Button("Convert Normal Map Texture", ImVec2(0.f, 35.f)))
 		{
 			if (nullptr == mTextureSrc)
@@ -176,7 +178,8 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				if (eResultFail(convertedTex->Save(savePath)))
+				eResult result = ResourceManager<Texture>::Save(convertedTex.get(), savePath);
+				if (eResultFail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");
 				}

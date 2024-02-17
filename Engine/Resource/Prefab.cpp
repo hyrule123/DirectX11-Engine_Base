@@ -30,7 +30,7 @@ namespace ehw
 	{
 		if (m_prefab)
 		{
-			return m_prefab->SaveFile(_baseDir / _strKeyPath);
+			return m_prefab->SaveFile_Json(_baseDir / _strKeyPath);
 		}
 
 		return eResult::Fail_Nullptr;
@@ -39,7 +39,7 @@ namespace ehw
 	{
 		m_prefab = std::make_unique<GameObject>();
 
-		eResult result = m_prefab->LoadFile(_baseDir / _strKeyPath);
+		eResult result = m_prefab->LoadFile_Json(_baseDir / _strKeyPath);
 		if (eResultFail(result))
 		{
 			m_prefab = nullptr;

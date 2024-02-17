@@ -324,7 +324,7 @@ namespace editor
 		std::string strKey = outputPath.filename().string();
 		mTargetMaterial->SetStrKey(strKey);
 
-		ehw::ResourceManager<ehw::Material>::Save(mTargetMaterial);
+		ehw::ResourceManager<ehw::Material>::Save(mTargetMaterial.get());
 	}
 	void EditorMaterial::LoadFromFile()
 	{

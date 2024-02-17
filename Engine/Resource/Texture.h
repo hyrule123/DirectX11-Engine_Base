@@ -52,8 +52,8 @@ namespace ehw
 		ComPtr<ID3D11ShaderResourceView> GetSRV() { return mSRV; }
 
 	private:
-		eResult LoadFile(const std::filesystem::path& _fullPath);
 		eResult SaveFile(const std::filesystem::path& _fullPath);
+		eResult LoadFile(const std::filesystem::path& _fullPath);
 		bool CreateView();
 
 	private:
@@ -66,7 +66,7 @@ namespace ehw
 		ComPtr<ID3D11ShaderResourceView>		mSRV;
 		ComPtr<ID3D11UnorderedAccessView>		mUAV;
 		ComPtr<ID3D11DepthStencilView>			mDSV;
-		ComPtr<ID3D11RenderTargetView>			mRTV;
+		ComPtr<ID3D11RenderTargetView>			mRTV; 
 
 		
 		//현재 연결되어있는 버퍼 정보

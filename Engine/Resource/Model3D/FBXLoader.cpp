@@ -6,6 +6,7 @@
 
 #include "../../Resource/Texture.h"
 #include "../../Resource/Material.h"
+#include "../../Resource/Shader/GraphicsShader.h"
 #include "../../Resource/Model3D/Model3D.h"
 
 #include "../../Util/define_Util.h"
@@ -655,7 +656,12 @@ namespace ehw
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 				pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
-				pMaterial->SetShader(ResourceManager<GraphicsShader>::Find(strKey::defaultRes::shader::graphics::DefferedShader));
+
+				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::Find(strKey::defaultRes::shader::graphics::DefferedShader);
+
+				ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
+
+				pMaterial->SetShader(defferedShader);
 
 				
 				{
@@ -699,7 +705,7 @@ namespace ehw
 					, mContainers[i].vecMtrl[j].AmbientColor
 					, mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = ResourceManager<Material>::Save(pMaterial);
+				eResult result = ResourceManager<Material>::Save(pMaterial.get());
 
 				if (eResultFail(result))
 				{

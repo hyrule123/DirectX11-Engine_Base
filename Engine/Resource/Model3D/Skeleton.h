@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Entity.h"
+#include "../iResource.h"
 
 #include "../../CommonStruct.h"
 

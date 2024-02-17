@@ -107,7 +107,7 @@ namespace editor
 		Json::Value* pJval = CheckJsonSaved(retPtr->GetName());
 		if (pJval)
 		{
-			retPtr->LoadJson(pJval);
+			retPtr->DeSerialize_Json(pJval);
 		}
 
 		AddGuiWindow(std::static_pointer_cast<EditorBase>(retPtr));

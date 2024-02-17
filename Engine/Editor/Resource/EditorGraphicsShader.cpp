@@ -5,6 +5,7 @@
 #include "../../Manager/PathManager.h"
 #include "../../Manager/ResourceManager.h"
 #include "../../Resource/Shader/GraphicsShader.h"
+#include "../../CommonGlobalVar.h"
 
 
 namespace editor
@@ -385,6 +386,8 @@ namespace editor
 
 	bool EditorGraphicsShader::CreateDefaultShaders()
 	{
+		using namespace ehw;
+
 		struct tShaderGroup
 		{
 			std::array<std::fs::path, (int)ehw::eGSStage::END> FileName;
@@ -461,7 +464,9 @@ namespace editor
 						DummyGS.SetShaderKey((ehw::eGSStage)i, fileNames[i].string());
 					}
 
-					if (ehw::eResultFail(DummyGS.SaveJson(&jVal)))
+					
+					eResult result = DummyGS.Serialize_Json(&jVal);
+					if (eResultFail(result))
 					{
 						ERROR_MESSAGE("json 파일 저장에 실패했습니다.");
 						return false;
@@ -532,6 +537,7 @@ namespace editor
 
 	void EditorGraphicsShader::InputElementEditModal()
 	{
+		using namespace ehw;
 		bool bSemanticEditMode = (0 <= mSemanticEditIdx);
 		if (bSemanticEditMode)
 		{
@@ -574,7 +580,7 @@ namespace editor
 							break;
 						}
 
-						const auto& pair = ehw::GraphicsShader::mSemanticNames.insert(mSemanticName);
+						const auto& pair = g_stringArchive.insert(mSemanticName);
 
 						mDescForEdit.SemanticName = pair.first->c_str();
 
@@ -771,6 +777,7 @@ namespace editor
 
 	void EditorGraphicsShader::SaveToJson(const std::filesystem::path& _filePath)
 	{
+		using namespace ehw;
 		ehw::GraphicsShader shader{};
 
 		//이름 등록
@@ -856,8 +863,10 @@ namespace editor
 			}
 		}
 
-		shader.SetStrKey(_filePath.string());
-		if (ehw::eResultSuccess(shader.Save(_filePath)))
+
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetBaseDir();
+		
+		if (ehw::eResultSuccess(shader.Save(baseDir, _filePath)))
 		{
 			LoadShaderSettingComboBox();
 		}
@@ -869,9 +878,12 @@ namespace editor
 
 	void EditorGraphicsShader::LoadFromJson(const std::filesystem::path& _filePath)
 	{
+		using namespace ehw;
 		ehw::GraphicsShader shader{};
 		shader.SetEditMode(true);
-		if (ehw::eResultFail(shader.Load(_filePath)))
+
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetBaseDir();
+		if (ehw::eResultFail(shader.Load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;
@@ -879,7 +891,7 @@ namespace editor
 		
 		mSaveFileName = _filePath.string();
 
-		mInputLayoutDescs = shader.mInputLayoutDescs;
+		mInputLayoutDescs = shader.GetInputLayoutDescs();
 		
 		mTopologyCombo.SetCurrentIndex((int)shader.GetTopology());
 

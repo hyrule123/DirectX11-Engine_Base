@@ -36,7 +36,7 @@
 #include "../Editor/Resource/EditorNormalConverter.h"
 #include "../Editor/Resource/EditorUVCalculator.h"
 
-
+#include "RenderManager.h"
 #include "ResourceManager.h"
 #include "GPUManager.h"
 #include "InputManager.h"
@@ -209,7 +209,7 @@ namespace editor
 				{
 					//한 파일에 몰아서 저장
 					Json::Value& saveVal = (*mJsonUIData.get())[guiPair.first];
-					guiPair.second->SaveJson(&saveVal);
+					guiPair.second->Serialize_Json(&saveVal);
 				}
 				//delete guiPair.second;
 			}

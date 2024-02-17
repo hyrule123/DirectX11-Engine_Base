@@ -41,8 +41,8 @@ namespace ehw
 		void BindData();
 		void UnBindData();
 
-		void SetShader(std::shared_ptr<GraphicsShader> _shader) { m_shader = _shader; }
-		std::shared_ptr<GraphicsShader> GetShader() const { return m_shader; }
+		void SetShader(const std::shared_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
+		const std::shared_ptr<GraphicsShader>& GetShader() const { return m_shader; }
 
 
 		void SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture);

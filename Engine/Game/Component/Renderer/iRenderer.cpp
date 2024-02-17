@@ -77,7 +77,7 @@ namespace ehw
 			//materials
 			{
 				Json::Value& materials = renderer[JSON_KEY(m_materials)];
-				materials.resize(m_materials.size());
+				materials.resize((Json::ArrayIndex)m_materials.size());
 				
 				for (size_t i = 0; i < m_materials.size(); ++i)
 				{

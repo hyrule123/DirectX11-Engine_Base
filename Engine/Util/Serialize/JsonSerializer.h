@@ -26,13 +26,13 @@ namespace ehw
 
 	template <typename T>
 	concept JsonDefaultTypes =
-		!JsonTypeSpecialization<T> &&
-		requires (T t) { { Json::Value(t) }; };
+		(!JsonTypeSpecialization<T>) &&
+		(requires (T t) { { Json::Value(t) }; });
 
 	template <typename T>
 	concept JsonBase64Types =
-		!JsonTypeSpecialization<T> &&
-		!requires (T t) { { Json::Value(t) }; };
+		(!JsonTypeSpecialization<T>) &&
+		(!requires (T t) { { Json::Value(t) }; });
 
 	//template <JsonDefaultTypes T>
 	//inline void operator <<(Json::Value& _jVal, const T& _data)
@@ -60,7 +60,7 @@ namespace ehw
 	
 
 	//enum class
-	template <JsonTypeSpecialization T> requires type_traits_Ex::is_enum_class_v<T>
+	template <JsonTypeSpecialization T> requires std::is_enum_v<T>
 	inline void operator <<(Json::Value& _jVal, T _data)
 	{
 		_jVal = static_cast<std::underlying_type_t<T>>(_data);
@@ -69,7 +69,15 @@ namespace ehw
 	template <JsonDefaultTypes T>
 	inline void operator >>(const Json::Value& _jVal, T& _data)
 	{
-		_data = _jVal.as<T>();
+		if constexpr (std::is_enum_v<T>)
+		{
+			_data = static_cast<T>(_jVal.as<std::underlying_type_t<T>>());
+		}
+		else
+		{
+			_data = _jVal.as<T>();
+		}
+		
 	}
 
 	template <JsonBase64Types T>
@@ -79,7 +87,7 @@ namespace ehw
 	}
 
 
-	template <JsonTypeSpecialization T> requires type_traits_Ex::is_enum_class_v<T>
+	template <JsonTypeSpecialization T> requires std::is_enum_v<T>
 	inline void operator >>(const Json::Value& _jVal, T& _data)
 	{
 		_data = static_cast<T>(_jVal.as<std::underlying_type_t<T>>());

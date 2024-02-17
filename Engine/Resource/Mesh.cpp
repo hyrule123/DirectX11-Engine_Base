@@ -83,6 +83,8 @@ namespace ehw
 			ser << m_indexInfos[i].Desc;
 			ser << m_indexInfos[i].SysMem;
 		}
+
+		return eResult::Success;
 	}
 
 	eResult Mesh::DeSerialize_Binary(const BinarySerializer* _ser)

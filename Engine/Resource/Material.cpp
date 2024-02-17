@@ -69,7 +69,7 @@ namespace ehw
 
             //textures
             Json::Value& textures = ser[JSON_KEY(m_textures)];
-            textures.resize(m_textures.size());
+            textures.resize((Json::ArrayIndex)m_textures.size());
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
                 if (m_textures[i])

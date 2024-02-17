@@ -122,7 +122,7 @@ namespace ehw
 	inline void BinarySerializer::operator>>(std::basic_string<CharType>& _data) const
 	{
 		size_t bytesToRead{};
-		Read(&bytesToRead, sizeof(size_t));
+		Read(reinterpret_cast<unsigned char*>(&bytesToRead), sizeof(size_t));
 		_data.clear();
 		
 		_data.resize(bytesToRead / sizeof(CharType));

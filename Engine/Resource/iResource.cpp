@@ -22,6 +22,7 @@ namespace ehw
 	iResource::~iResource()
 	{
 	}
+
 	eResult iResource::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
 		ERROR_MESSAGE("저장을 지원하지 않는 리소스 타입입니다.");

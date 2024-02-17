@@ -160,11 +160,11 @@ namespace editor
 			mFutureConvertResult = ehw::ThreadPoolManager::EnqueueJob(
 				[this]()->ehw::eResult
 				{
-					std::shared_ptr<ehw::Model3D> meshData = std::make_unique<ehw::Model3D>();
-					ehw::eResult result = meshData->ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
+					ehw::Model3D meshData{};
+					ehw::eResult result = meshData.ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
 					if (ehw::eResultSuccess(result))
 					{
-						result = meshData->Save(mOutputDirName);
+						result = meshData.Save(mOutputDirName, meshData.GetStrKey());
 					}
 
 					return result;

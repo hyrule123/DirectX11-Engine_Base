@@ -11,6 +11,6 @@ namespace ehw
 	extern tCB_Global			gGlobal;
 	
 	//c_str 저장용 컨테이너
-	extern std::unordered_set<std::string> g_cstrArchive;
+	extern std::unordered_set<std::string> g_stringArchive;
 }
 

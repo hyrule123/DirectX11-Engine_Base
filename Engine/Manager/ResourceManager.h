@@ -11,27 +11,29 @@
 
 namespace ehw
 {
-	template <typename BaseResType> 
-		requires std::is_base_of_v<iResource, BaseResType>
+	template <typename T>
+	concept ResourceTypes = std::is_base_of_v<iResource, T>;
+
+	template <typename ResourceTypes> 
 	class ResourceManager
 	{
 	public:
 		static inline void Init(const std::fs::path& _baseDir);
 
 		static inline eResult Save(const std::string_view _strKey);
-		static inline eResult Save(const std::shared_ptr<BaseResType>& _resPtr);
-		static inline eResult Save(const std::shared_ptr<BaseResType>& _resPtr, const std::fs::path& _strKeyPath);
+		static inline eResult Save(ResourceTypes* _resPtr);
+		static inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath);
 
-		template <typename DerivedResType = BaseResType>
+		template <typename DerivedResType = ResourceTypes>
 		static inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _strKeyPath);
 
-		template <typename DerivedResType = BaseResType>
+		template <typename DerivedResType = ResourceTypes>
 		static inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
 
-		template <typename DerivedResType = BaseResType>
+		template <typename DerivedResType = ResourceTypes>
 		static inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
 
-		static const std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
 		static inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
@@ -48,27 +50,27 @@ namespace ehw
 		static bool m_bInitialized;
 		static std::fs::path m_BaseDir;
 
-		static std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>> m_Resources;
+		static std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>> m_Resources;
 
 	private:
 		ResourceManager() = delete;
 		~ResourceManager() = delete;
 	};
 
-	template <typename BaseResType>
-	bool ResourceManager<BaseResType>::m_bInitialized = false;
+	template <typename ResourceTypes>
+	bool ResourceManager<ResourceTypes>::m_bInitialized = false;
 
-	template <typename BaseResType>
-	std::fs::path ResourceManager<BaseResType>::m_BaseDir{};
+	template <typename ResourceTypes>
+	std::fs::path ResourceManager<ResourceTypes>::m_BaseDir{};
 
-	template <typename BaseResType>
-	std::unordered_map<std::string, std::shared_ptr<BaseResType>, tHashFunc_StringView, std::equal_to<>> ResourceManager<BaseResType>::m_Resources{};
+	template <typename ResourceTypes>
+	std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>> ResourceManager<ResourceTypes>::m_Resources{};
 
-	template<typename BaseResType>
+	template<typename ResourceTypes>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Load(const std::filesystem::path& _strKeyPath)
+	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::Load(const std::filesystem::path& _strKeyPath)
 	{
-		static_assert(std::is_base_of_v<BaseResType, DerivedResType>);
+		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
 
 		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
@@ -84,7 +86,7 @@ namespace ehw
 
 			if (eResultSuccess(result))
 			{
-				Insert(_strKeyPath.string(), static_pointer_cast<BaseResType>(returnPtr));
+				Insert(_strKeyPath.string(), static_pointer_cast<ResourceTypes>(returnPtr));
 			}
 			else
 			{
@@ -97,9 +99,9 @@ namespace ehw
 
 
 
-	template<typename BaseResType>
+	template<typename ResourceTypes>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<BaseResType>::Find(const std::string_view _strKey)
+	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::Find(const std::string_view _strKey)
 	{
 		std::shared_ptr<DerivedResType> returnRes = nullptr;
 
@@ -108,7 +110,7 @@ namespace ehw
 		if (m_Resources.end() != iter)
 		{
 			//동일 리소스 타입일 경우 즉시 반환
-			if constexpr (std::is_same_v<BaseResType, DerivedResType>)
+			if constexpr (std::is_same_v<ResourceTypes, DerivedResType>)
 			{
 				returnRes = iter->second;
 			}
@@ -130,20 +132,20 @@ namespace ehw
 		return returnRes;
 	}
 
-	template<typename BaseResType>
+	template<typename ResourceTypes>
 	template <typename DerivedResType>
-	inline void ResourceManager<BaseResType>::Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res)
+	inline void ResourceManager<ResourceTypes>::Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res)
 	{
-		static_assert(std::is_base_of_v<BaseResType, DerivedResType>, "넣으려는 리소스 타입이 BaseResType의 상속 클래스가 아닙니다.");
+		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == Find(_strKey), "이미 동일한 키값을 가진 리소스가 있습니다.");
 
 		_Res->SetStrKey(_strKey);
 
-		m_Resources.insert(std::make_pair(std::string(_strKey), std::static_pointer_cast<BaseResType>(_Res)));
+		m_Resources.insert(std::make_pair(std::string(_strKey), std::static_pointer_cast<ResourceTypes>(_Res)));
 	}
 
-	template<typename BaseResType>
-	inline void ResourceManager<BaseResType>::Init(const std::fs::path& _baseDir)
+	template<typename ResourceTypes>
+	inline void ResourceManager<ResourceTypes>::Init(const std::fs::path& _baseDir)
 	{
 		m_bInitialized = true;
 
@@ -154,10 +156,10 @@ namespace ehw
 		AtExit::AddFunc(Release);
 	}
 
-	template<typename BaseResType>
-	inline eResult ResourceManager<BaseResType>::Save(const std::string_view _strKey)
+	template<typename ResourceTypes>
+	inline eResult ResourceManager<ResourceTypes>::Save(const std::string_view _strKey)
 	{
-		const std::shared_ptr<BaseResType>& savedFile = Find(_strKey);
+		const std::shared_ptr<ResourceTypes>& savedFile = Find(_strKey);
 		if (nullptr == savedFile)
 		{
 			return eResult::Fail_Nullptr;
@@ -167,8 +169,8 @@ namespace ehw
 		return savedFile->Save(m_BaseDir, _strKey);
 	}
 
-	template<typename BaseResType>
-	inline eResult ResourceManager<BaseResType>::Save(const std::shared_ptr<BaseResType>& _resPtr)
+	template<typename ResourceTypes>
+	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr)
 	{
 		if (nullptr == _resPtr)
 		{
@@ -182,8 +184,8 @@ namespace ehw
 		return _resPtr->Save(m_BaseDir, _resPtr->GetStrKey());
 	}
 
-	template<typename BaseResType>
-	inline eResult ResourceManager<BaseResType>::Save(const std::shared_ptr<BaseResType>& _resPtr, const std::fs::path& _strKeyPath)
+	template<typename ResourceTypes>
+	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath)
 	{
 		if (nullptr == _resPtr)
 		{
@@ -196,7 +198,7 @@ namespace ehw
 
 		//기존 키값 임시 저장
 		std::string tempStr = _resPtr->GetStrKey();
-		_resPtr->SetStrKey(_strKeyPath);
+		_resPtr->SetStrKey(_strKeyPath.string());
 
 		//저장하고
 		eResult result = _resPtr->Save(m_BaseDir, _strKeyPath);
@@ -207,16 +209,16 @@ namespace ehw
 		return result;
 	}
 
-	template<typename BaseResType>
-	inline void ResourceManager<BaseResType>::Release()
+	template<typename ResourceTypes>
+	inline void ResourceManager<ResourceTypes>::Release()
 	{
 		m_bInitialized = false;
 		m_BaseDir.clear();
 		m_Resources.clear();
 	}
 
-	template<typename BaseResType>
-	inline std::vector<std::shared_ptr<iResource>> ResourceManager<BaseResType>::GetResourcesVector()
+	template<typename ResourceTypes>
+	inline std::vector<std::shared_ptr<iResource>> ResourceManager<ResourceTypes>::GetResourcesVector()
 	{
 		std::vector<std::shared_ptr<iResource>> retVec{};
 
@@ -228,8 +230,8 @@ namespace ehw
 		return retVec;
 	}
 
-	template<typename BaseResType>
-	inline void ResourceManager<BaseResType>::CleanUnusedResources()
+	template<typename ResourceTypes>
+	inline void ResourceManager<ResourceTypes>::CleanUnusedResources()
 	{
 		using pairType = decltype(m_Resources)::value_type;
 		std::erase_if(m_Resources,

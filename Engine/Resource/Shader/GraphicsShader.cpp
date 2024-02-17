@@ -1,6 +1,6 @@
 #include "GraphicsShader.h"
 
-
+#include "../../CommonGlobalVar.h"
 
 #include "../../Manager/GPUManager.h"
 #include "../../Manager/ResourceManager.h"
@@ -152,6 +152,29 @@ namespace ehw
 		return Result;
 	}
 
+	void GraphicsShader::AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc)
+	{
+		m_inputLayoutDescs.push_back(_desc);
+
+		//이름을 별도 저장된 공간에 저장된 뒤 해당 주소의 포인터로 교체
+		const auto& pair = g_stringArchive.insert(m_inputLayoutDescs.back().SemanticName);
+		m_inputLayoutDescs.back().SemanticName = pair.first->c_str();
+	}
+
+	void GraphicsShader::SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs)
+	{
+		m_inputLayoutDescs = _descs;
+
+		for (size_t i = 0; i < m_inputLayoutDescs.size(); ++i)
+		{
+			if (m_inputLayoutDescs[i].SemanticName)
+			{
+				const auto& pair = g_stringArchive.insert(m_inputLayoutDescs[i].SemanticName);
+				m_inputLayoutDescs[i].SemanticName = pair.first->c_str();
+			}
+		}
+	}
+
 	eResult GraphicsShader::CreateInputLayout()
 	{
 		ID3DBlob* VSBlobData = m_arrShaderCode[(int)eGSStage::Vertex].blob.Get();
@@ -267,6 +290,8 @@ namespace ehw
 		ser[JSON_KEY(m_depthStencilType)] << m_rasterizerType;
 		ser[JSON_KEY(m_depthStencilType)] << m_depthStencilType;
 		ser[JSON_KEY(m_blendType)] << m_blendType;
+
+		return eResult::Success;
 	}
 
 	eResult GraphicsShader::DeSerialize_Json(const JsonSerializer* _ser)

@@ -70,7 +70,7 @@ namespace ehw
 		try
 		{
 			//Skeleton
-			eResult result = ResourceManager<Skeleton>::Save(m_skeleton);
+			eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
 			if (eResultFail(result))
 			{
 				ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
@@ -91,7 +91,7 @@ namespace ehw
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh);
+				result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh.get());
 				if (eResultFail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
@@ -107,7 +107,8 @@ namespace ehw
 					{
 						return eResult::Fail_Nullptr;
 					}
-					result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j]);
+
+					result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j].get());
 					if (eResultFail(result))
 					{
 						ERROR_MESSAGE("재질 정보 저장 실패");
@@ -120,7 +121,8 @@ namespace ehw
 		}
 		catch (const std::exception& _err)
 		{
-
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail;
 		}
 
 
@@ -313,7 +315,7 @@ namespace ehw
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::Save(shared_from_this_T<Model3D>(), _dirAndFileName);
+		result = ResourceManager<Model3D>::Save(this, _dirAndFileName);
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
