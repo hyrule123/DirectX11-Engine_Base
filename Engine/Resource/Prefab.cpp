@@ -26,7 +26,7 @@ namespace ehw
 	Prefab::~Prefab()
 	{
 	}
-	eResult Prefab::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Prefab::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
 	{
 		if (m_prefab)
 		{

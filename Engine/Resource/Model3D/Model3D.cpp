@@ -34,25 +34,27 @@ namespace ehw
 
 	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		std::fs::path fileName = _strKeyPath / _strKeyPath;
-
-		fileName.replace_extension(strKey::path::extension::Model3D);
-
-		return LoadFile_Json(_baseDir / fileName);
-	}
-
-	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
-	{
-		if (nullptr == m_skeleton)
-		{
-			ERROR_MESSAGE("스켈레톤 정보가 없습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path fullPath = _baseDir / _strKeyPath;
+		std::fs::path strKey = _strKeyPath;
+		strKey.replace_extension();
+
+		std::fs::path fullPath = _baseDir / strKey / strKey;
+		fullPath.replace_extension(strKey::path::extension::Model3D);
+
+		return LoadFile_Json(fullPath);
+	}
+
+	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+	{
+		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
+		//예를 들어 Player를 저장한다고 하면
+		//Player/Player.json 형태로 저장한다.
+		std::fs::path strKey = _strKeyPath;
+		strKey.replace_extension();
+
+		std::fs::path fullPath = _baseDir / strKey / strKey;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
 		return SaveFile_Json(fullPath);
 	}
@@ -70,14 +72,16 @@ namespace ehw
 		try
 		{
 			//Skeleton
-			eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
-			if (eResultFail(result))
+			if (m_skeleton)
 			{
-				ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
-				return result;
+				eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
+				if (eResultFail(result))
+				{
+					ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
+					return result;
+				}
+				ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
 			}
-			ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
-
 
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
 			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
@@ -91,7 +95,7 @@ namespace ehw
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh.get());
+				eResult result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh.get());
 				if (eResultFail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
@@ -108,7 +112,7 @@ namespace ehw
 						return eResult::Fail_Nullptr;
 					}
 
-					result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j].get());
+					eResult result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j].get());
 					if (eResultFail(result))
 					{
 						ERROR_MESSAGE("재질 정보 저장 실패");
@@ -143,6 +147,7 @@ namespace ehw
 		m_meshContainers.clear();
 
 		//Skeleton
+		if (ser.isMember(JSON_KEY(m_skeleton)))
 		{
 			std::string skeletonStrkey{};
 			ser[JSON_KEY(m_skeleton)] >> skeletonStrkey;

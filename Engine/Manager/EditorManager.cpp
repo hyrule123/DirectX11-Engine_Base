@@ -2,12 +2,10 @@
 #include "EditorManager.h"
 
 
-
-
-
 #include "../Application.h"
 #include "../GameMainWindow.h"
 #include "../Util/AtExit.h"
+#include "../Util/Serialize/JsonSerializer.h"
 
 #include "../Resource/Mesh.h"
 #include "../Resource/Material.h"
@@ -275,23 +273,23 @@ namespace editor
 
 	void EditorManager::InitGuiWindows()
 	{
-		AddGuiWindow<EditorMainMenu>();
+		NewGuiWindow<EditorMainMenu>();
 
-		AddGuiWindow<EditorInspector>();
+		NewGuiWindow<EditorInspector>();
 
-		AddGuiWindow<EditorGameObject>();
+		NewGuiWindow<EditorGameObject>();
 
-		AddGuiWindow<EditorResources>();
+		NewGuiWindow<EditorResources>();
 
-		AddGuiWindow<EditorGraphicsShader>();
+		NewGuiWindow<EditorGraphicsShader>();
 
-		AddGuiWindow<EditorFBXConverter>();
+		NewGuiWindow<EditorFBXConverter>();
 
-		AddGuiWindow<EditorMaterial>();
+		NewGuiWindow<EditorMaterial>();
 
-		AddGuiWindow<EditorNormalConverter>();
+		NewGuiWindow<EditorNormalConverter>();
 
-		AddGuiWindow<EditorUVCalculator>();
+		NewGuiWindow<EditorUVCalculator>();
 	}
 
 	void EditorManager::ImGuiInitialize()
@@ -427,16 +425,19 @@ namespace editor
 		}
 	}
 
-	void EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
+	bool EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
 		const std::string_view guiName = _pBase->GetStrKey();
 
 		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
 		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
+		
 		if (foundPtr)
 		{
-			_pBase->MakeUniqueKeyByName();
+			ERROR_MESSAGE("이미 해당 이름을 가진 윈도우 창이 존재합니다.");
+			return false;
+			//_pBase->MakeUniqueKeyByName();
 		}
 
 		mGuiWindows.insert(std::make_pair(_pBase->GetStrKey(), _pBase));
@@ -444,7 +445,15 @@ namespace editor
 		if (mbInitialized)
 		{
 			_pBase->InitRecursive();
+
+			Json::Value* pJval = CheckJsonSaved(_pBase->GetName());
+			if (pJval)
+			{
+				_pBase->DeSerialize_Json(pJval);
+			}
 		}
+
+		return true;
 	}
 
 	void EditorManager::RenderGuizmo()

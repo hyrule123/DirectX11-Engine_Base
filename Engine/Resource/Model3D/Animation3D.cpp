@@ -61,7 +61,7 @@ namespace ehw
         m_SBufferKeyFrame->UnBindData();
     }
 
-    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;

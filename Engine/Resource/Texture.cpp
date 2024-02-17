@@ -164,7 +164,7 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
 	{
 		return SaveFile(_baseDir / _strKeyPath);
 	}
@@ -214,7 +214,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Texture::SaveFile(const std::filesystem::path& _fullPath)
+	eResult Texture::SaveFile(const std::filesystem::path& _fullPath) const
 	{
 		//부모 경로 존재 확인
 		{

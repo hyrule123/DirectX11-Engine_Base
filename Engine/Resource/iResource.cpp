@@ -23,7 +23,7 @@ namespace ehw
 	{
 	}
 
-	eResult iResource::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult iResource::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
 	{
 		ERROR_MESSAGE("저장을 지원하지 않는 리소스 타입입니다.");
 		return eResult::Fail_NotImplemented;

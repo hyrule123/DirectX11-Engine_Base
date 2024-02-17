@@ -37,7 +37,7 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath)
+	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) const
 	{
 		//상위 디렉토리 있는지 테스트
 		{

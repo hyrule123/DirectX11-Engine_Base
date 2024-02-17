@@ -360,6 +360,7 @@ using Allocator =
     typename std::conditional<JSONCPP_USING_SECURE_MEMORY, SecureAllocator<T>,
                               std::allocator<T>>::type;
 using String = std::basic_string<char, std::char_traits<char>, Allocator<char>>;
+using String_View = std::basic_string_view<char, std::char_traits<char>>;
 using IStringStream =
     std::basic_istringstream<String::value_type, String::traits_type,
                              String::allocator_type>;

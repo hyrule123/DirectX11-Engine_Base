@@ -32,7 +32,7 @@ namespace ehw
 		GraphicsShader();
 		virtual ~GraphicsShader();
 
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;

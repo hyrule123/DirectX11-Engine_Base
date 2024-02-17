@@ -35,7 +35,7 @@ namespace ehw
     {
     }
 
-    eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
     {
         return SaveFile_Json(_baseDir / _strKeyPath);
     }

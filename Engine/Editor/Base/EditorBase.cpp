@@ -66,16 +66,19 @@ namespace editor
 			ser[JSON_KEY(m_bEnable)] >> m_bEnable;
 
 			const JsonSerializer& childs = ser[JSON_KEY(m_childs)];
-			for (Json::Value::ArrayIndex i = 0; i < childs.size(); ++i)
+			for (size_t i = 0; i < m_childs.size(); ++i)
 			{
 				//에디터 child의 경우 정적으로 생성되므로 StrKey를 별도로 저장할 필요가 없음.
-				const JsonSerializer& child = childs[i];
-
-				eResult result = m_childs[i]->DeSerialize_Json(&child);
-				if (eResultFail(result))
+				if (childs.isValidIndex((Json::ArrayIndex)i))
 				{
-					ERROR_MESSAGE("Child 저장 실패");
-					return result;
+					const JsonSerializer& child = childs[i];
+
+					eResult result = m_childs[i]->DeSerialize_Json(&child);
+					if (eResultFail(result))
+					{
+						ERROR_MESSAGE("Child 저장 실패");
+						return result;
+					}
 				}
 			}
 		}

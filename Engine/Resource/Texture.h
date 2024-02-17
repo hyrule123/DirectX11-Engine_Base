@@ -27,7 +27,7 @@ namespace ehw
 		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 		void InitializeResource();
 
@@ -52,7 +52,7 @@ namespace ehw
 		ComPtr<ID3D11ShaderResourceView> GetSRV() { return mSRV; }
 
 	private:
-		eResult SaveFile(const std::filesystem::path& _fullPath);
+		eResult SaveFile(const std::filesystem::path& _fullPath) const;
 		eResult LoadFile(const std::filesystem::path& _fullPath);
 		bool CreateView();
 

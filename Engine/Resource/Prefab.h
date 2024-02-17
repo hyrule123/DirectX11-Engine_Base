@@ -13,7 +13,7 @@ namespace ehw
         Prefab();
         virtual ~Prefab();
 
-        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
         virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
         //virtual eResult SaveJson(Json::Value* _pJVal) override;

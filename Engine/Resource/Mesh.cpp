@@ -43,7 +43,7 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
 	{
 		std::fs::path filePath = _baseDir / _strKeyPath;
 		filePath.replace_extension(strKey::path::extension::Mesh);
@@ -117,7 +117,7 @@ namespace ehw
 
 		//resize 대신 reserve 하는 이유: CreateIndexInternal() 함수에서 back()을 사용함.
 		m_indexInfos.reserve(indexSize);
-		for (size_t i = 0; i < m_indexInfos.size(); ++i)
+		for (size_t i = 0; i < indexSize; ++i)
 		{
 			tIndexInfo& indexInfo = m_indexInfos.emplace_back();
 

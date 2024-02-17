@@ -9,9 +9,7 @@
 
 #include "../GPU/CommonGPU.h"
 
-
 #include "../Editor/imgui/ImGuizmo.h"
-
 
 #include <unordered_map>
 
@@ -32,7 +30,7 @@ namespace editor
 		static std::shared_ptr<EditorBase> FindGuiWindow(const std::string_view _strKey);
 
 		template <typename T>
-		static std::shared_ptr<T> AddGuiWindow();
+		static std::shared_ptr<T> NewGuiWindow();
 
 		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
@@ -59,7 +57,7 @@ namespace editor
 		static void ImGuiNewFrame();
 		static void ImGuiRender();
 		
-		static void AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase);
+		static bool AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase);
 
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
@@ -95,7 +93,7 @@ namespace editor
 
 
 	template<typename T>
-	inline std::shared_ptr<T> EditorManager::AddGuiWindow()
+	inline std::shared_ptr<T> EditorManager::NewGuiWindow()
 	{
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
@@ -104,13 +102,11 @@ namespace editor
 
 		std::shared_ptr<T> retPtr = std::make_shared<T>();
 
-		Json::Value* pJval = CheckJsonSaved(retPtr->GetName());
-		if (pJval)
+		if (false == AddGuiWindow(std::static_pointer_cast<EditorBase>(retPtr)))
 		{
-			retPtr->DeSerialize_Json(pJval);
+			return nullptr;
 		}
 
-		AddGuiWindow(std::static_pointer_cast<EditorBase>(retPtr));
 		return retPtr;
 	}
 
