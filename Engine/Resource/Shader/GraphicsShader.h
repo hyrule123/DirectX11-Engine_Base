@@ -42,8 +42,8 @@ namespace ehw
 		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
 		eResult CreateByCSO(eGSStage _stage, const std::filesystem::path& _FileName);
 
-		inline void AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc);
-		inline void SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs);
+		void AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc);
+		void SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs);
 		eResult CreateInputLayout();
 		const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutDescs() { return m_inputLayoutDescs; }
 
