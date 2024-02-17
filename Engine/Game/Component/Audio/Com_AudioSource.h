@@ -17,7 +17,7 @@ namespace ehw
 
 		virtual ~Com_AudioSource();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) override;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void InternalUpdate() override;

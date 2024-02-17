@@ -15,7 +15,7 @@ namespace editor
 		EditorBase(const std::string_view _strName);
 		virtual ~EditorBase();
 
-		virtual ehw::eResult Serialize_Json(ehw::JsonSerializer* _ser) override;
+		virtual ehw::eResult Serialize_Json(ehw::JsonSerializer* _ser) const override;
 		virtual ehw::eResult DeSerialize_Json(const ehw::JsonSerializer* _ser) override;
 
 		void InitRecursive();

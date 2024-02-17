@@ -45,7 +45,7 @@ namespace ehw
         return LoadFile_Json(_baseDir / _strKeyPath);
     }
 
-    eResult Material::Serialize_Json(JsonSerializer* _ser)
+    eResult Material::Serialize_Json(JsonSerializer* _ser) const
     {
         if (nullptr == _ser)
         {

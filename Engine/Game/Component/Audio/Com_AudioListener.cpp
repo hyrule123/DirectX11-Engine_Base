@@ -27,7 +27,7 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioListener::Serialize_Json(JsonSerializer* _ser)
+	eResult Com_AudioListener::Serialize_Json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}

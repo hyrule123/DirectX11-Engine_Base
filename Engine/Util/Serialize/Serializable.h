@@ -46,10 +46,11 @@ namespace ehw
 		Serializable_Binary();
 		virtual ~Serializable_Binary();
 
-		eResult SaveFile_Binary(std::fs::path const& _fullPath);
+		eResult SaveFile_Binary(std::fs::path const& _fullPath) const;
 		eResult LoadFile_Binary(std::fs::path const& _fullPath);
 
-		virtual eResult Serialize_Binary(BinarySerializer* _ser) = 0;
+		
+		virtual eResult Serialize_Binary(BinarySerializer* _ser) const = 0;
 		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) = 0;
 	};
 #pragma endregion //BINARY
@@ -73,10 +74,10 @@ namespace ehw
 		Serializable_Json();
 		virtual ~Serializable_Json();
 
-		eResult SaveFile_Json(std::fs::path const& _fullPath);
+		eResult SaveFile_Json(std::fs::path const& _fullPath) const;
 		eResult LoadFile_Json(std::fs::path const& _fullPath);
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) = 0;
+		virtual eResult Serialize_Json(JsonSerializer* _ser) const = 0;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) = 0;
 	};
 #pragma endregion //JSON

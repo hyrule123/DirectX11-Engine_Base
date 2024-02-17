@@ -148,7 +148,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Skeleton::Serialize_Binary(BinarySerializer* _ser)
+	eResult Skeleton::Serialize_Binary(BinarySerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{

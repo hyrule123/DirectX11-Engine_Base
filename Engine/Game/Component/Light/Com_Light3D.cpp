@@ -39,7 +39,7 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Light3D::Serialize_Json(JsonSerializer* _ser)
+	eResult Com_Light3D::Serialize_Json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{

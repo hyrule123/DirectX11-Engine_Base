@@ -74,7 +74,7 @@ namespace ehw
     }
 
 
-    eResult Animation3D::Serialize_Binary(BinarySerializer* _ser)
+    eResult Animation3D::Serialize_Binary(BinarySerializer* _ser) const
     {
         if (nullptr == _ser)
         {

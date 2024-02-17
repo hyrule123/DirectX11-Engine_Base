@@ -68,7 +68,7 @@ namespace ehw
 	Serializable_Binary::~Serializable_Binary()
 	{
 	}
-	eResult Serializable_Binary::SaveFile_Binary(std::fs::path const& _fullPath)
+	eResult Serializable_Binary::SaveFile_Binary(std::fs::path const& _fullPath) const
 	{
 		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 
@@ -117,7 +117,7 @@ namespace ehw
 	{
 	}
 
-	eResult Serializable_Json::SaveFile_Json(std::fs::path const& _fullPath)
+	eResult Serializable_Json::SaveFile_Json(std::fs::path const& _fullPath) const
 	{
 		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 

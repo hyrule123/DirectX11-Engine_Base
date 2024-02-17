@@ -58,7 +58,7 @@ namespace ehw
 		return LoadFile_Binary(filePath);
 	}
 
-	eResult Mesh::Serialize_Binary(BinarySerializer* _ser)
+	eResult Mesh::Serialize_Binary(BinarySerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{

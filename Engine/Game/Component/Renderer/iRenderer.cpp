@@ -49,7 +49,7 @@ namespace ehw
 		}
 	}
 
-	eResult iRenderer::Serialize_Json(JsonSerializer* _ser)
+	eResult iRenderer::Serialize_Json(JsonSerializer* _ser) const
 	{
 		SERIALIZER_CHECK_PTR(_ser);
 

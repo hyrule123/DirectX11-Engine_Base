@@ -57,7 +57,7 @@ namespace ehw
 		return SaveFile_Json(fullPath);
 	}
 
-	eResult Model3D::Serialize_Json(JsonSerializer* _ser)
+	eResult Model3D::Serialize_Json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{

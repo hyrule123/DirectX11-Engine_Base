@@ -233,7 +233,8 @@ namespace ehw
 
 		std::wstring Extension = _fullPath.extension().wstring();
 		
-		if (FAILED(DirectX::CaptureTexture(GPUManager::Device().Get(), GPUManager::Context().Get(), mTexture.Get(), mImage)))
+		DirectX::ScratchImage img{};
+		if (FAILED(DirectX::CaptureTexture(GPUManager::Device().Get(), GPUManager::Context().Get(), mTexture.Get(), img)))
 		{
 			ERROR_MESSAGE("Texture를 Scratch Image로 가져오는 데 실패했습니다.");
 			return eResult::Fail_Create;
@@ -242,21 +243,21 @@ namespace ehw
 		StringConverter::MakeUpperCase(Extension);
 		if (Extension == L".DDS")
 		{
-			if (FAILED(DirectX::SaveToDDSFile(mImage.GetImages(), mImage.GetImageCount(), mImage.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
+			if (FAILED(DirectX::SaveToDDSFile(img.GetImages(), img.GetImageCount(), img.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
 			{
 				return eResult::Fail_Create;
 			}
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(DirectX::SaveToTGAFile(*(mImage.GetImage(0, 0, 0)), TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &mImage.GetMetadata())))
+			if (FAILED(DirectX::SaveToTGAFile(*(img.GetImage(0, 0, 0)), TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &img.GetMetadata())))
 			{
 				return eResult::Fail_Create;
 			}
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
-			if (FAILED(DirectX::SaveToWICFile(mImage.GetImages(), mImage.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WICCodecs::WIC_CODEC_PNG), _fullPath.wstring().c_str())))
+			if (FAILED(DirectX::SaveToWICFile(img.GetImages(), img.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WICCodecs::WIC_CODEC_PNG), _fullPath.wstring().c_str())))
 			{
 				return eResult::Fail_Create;
 			}

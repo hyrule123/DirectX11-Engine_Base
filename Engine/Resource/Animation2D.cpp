@@ -39,7 +39,7 @@ namespace ehw
 	}
 
 
-	eResult Animation2D::Serialize_Json(JsonSerializer* _ser)
+	eResult Animation2D::Serialize_Json(JsonSerializer* _ser) const
 	{
 		return eResult::Fail_NotImplemented;
 	}

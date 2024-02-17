@@ -22,7 +22,7 @@ namespace ehw
 	{
 	}
 
-	eResult iCollider3D::Serialize_Json(JsonSerializer* _ser)
+	eResult iCollider3D::Serialize_Json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}

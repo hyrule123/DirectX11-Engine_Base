@@ -68,7 +68,7 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioSource::Serialize_Json(JsonSerializer* _ser)
+	eResult Com_AudioSource::Serialize_Json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}

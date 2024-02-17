@@ -11,7 +11,7 @@ namespace ehw
 		virtual ~iTransform();
 
 		//TODO: 여기 구현 할것.
-		virtual eResult Serialize_Json(JsonSerializer* _ser) override { return eResult::Success; }
+		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult::Success; }
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void BindData() = 0;

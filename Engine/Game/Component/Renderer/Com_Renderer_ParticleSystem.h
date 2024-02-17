@@ -24,7 +24,7 @@ namespace ehw
 
 		~Com_Renderer_ParticleSystem();
 
-		virtual eResult Serialize_Json(JsonSerializer* Json) override;
+		virtual eResult Serialize_Json(JsonSerializer* Json) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* Json) override;
 
 		virtual void Init() override;

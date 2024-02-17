@@ -230,7 +230,7 @@ namespace ehw
 		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
 	}
 
-	eResult GraphicsShader::Serialize_Json(JsonSerializer* _ser)
+	eResult GraphicsShader::Serialize_Json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{

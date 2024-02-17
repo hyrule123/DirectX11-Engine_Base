@@ -78,6 +78,11 @@ namespace ehw
 	}
 
 
+	eResult Com_Renderer_ParticleSystem::Serialize_Json(JsonSerializer* Json) const
+	{
+		return eResult();
+	}
+
 	eResult Com_Renderer_ParticleSystem::DeSerialize_Json(const JsonSerializer* Json)
 	{
 		return eResult();

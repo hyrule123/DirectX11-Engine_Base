@@ -47,7 +47,7 @@ namespace ehw
         virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
         virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
-        eResult Serialize_Binary(BinarySerializer* _ser) override;
+        eResult Serialize_Binary(BinarySerializer* _ser) const override;
         eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
 
         eResult LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);

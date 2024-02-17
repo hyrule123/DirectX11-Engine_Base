@@ -19,7 +19,7 @@ namespace editor
 	EditorBase::~EditorBase()
 	{
 	}
-	ehw::eResult EditorBase::Serialize_Json(ehw::JsonSerializer* _ser)
+	ehw::eResult EditorBase::Serialize_Json(ehw::JsonSerializer* _ser) const
 	{
 		using namespace ehw;
 
