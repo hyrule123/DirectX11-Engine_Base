@@ -29,7 +29,7 @@ namespace editor
 
 		try
 		{
-			ser << m_bEnable;
+			ser[JSON_KEY(m_bEnable)] << m_bEnable;
 
 			JsonSerializer& childs = ser[JSON_KEY(m_childs)];
 			for (size_t i = 0; i < m_childs.size(); ++i)
@@ -63,7 +63,7 @@ namespace editor
 
 		try
 		{
-			ser >> m_bEnable;
+			ser[JSON_KEY(m_bEnable)] >> m_bEnable;
 
 			const JsonSerializer& childs = ser[JSON_KEY(m_childs)];
 			for (Json::Value::ArrayIndex i = 0; i < childs.size(); ++i)

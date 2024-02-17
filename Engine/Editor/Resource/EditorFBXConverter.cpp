@@ -208,13 +208,22 @@ namespace editor
 		mProjMeshDataCombo.SetStrKey("Model3D List");
 		const std::fs::path& meshPath = ehw::ResourceManager<ehw::Model3D>::GetBaseDir();
 
-		for (const auto& entry : std::fs::directory_iterator(meshPath))
+		try
 		{
-			if (std::fs::is_directory(entry.path()))
+			for (const auto& entry : std::fs::directory_iterator(meshPath))
 			{
-				mProjMeshDataCombo.AddItem(entry.path().filename().string());
+				if (std::fs::is_directory(entry.path()))
+				{
+					mProjMeshDataCombo.AddItem(entry.path().filename().string());
+				}
 			}
 		}
+		catch (const std::exception& _err)
+		{
+			ERROR_MESSAGE_A(_err.what());
+			return;
+		}
+
 	}
 }
 

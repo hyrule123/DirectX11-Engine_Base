@@ -40,7 +40,7 @@ namespace ehw
 
 		static inline void CleanUnusedResources();
 
-		static void SetBaseDir(const std::fs::path& _baseDir) { m_BaseDir = _baseDir; }
+		static inline void SetBaseDir(const std::fs::path& _baseDir);
 		static const std::fs::path& GetBaseDir() { return m_BaseDir; }
 
 	private:
@@ -245,6 +245,18 @@ namespace ehw
 				return needErase;
 			}
 		);
+	}
+
+	template<typename ResourceTypes>
+	inline void ResourceManager<ResourceTypes>::SetBaseDir(const std::fs::path& _baseDir)
+	{
+		m_BaseDir = _baseDir;
+
+		if (false == std::fs::exists(m_BaseDir))
+		{
+			bool result = std::fs::create_directories(m_BaseDir);
+			ASSERT(result, "리소스 기본 디렉토리 생성에 실패했습니다.");
+		}
 	}
 
 
