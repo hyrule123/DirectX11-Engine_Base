@@ -52,7 +52,6 @@ namespace ehw
             ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
             return eResult::Fail_Nullptr;
         }
-
         JsonSerializer& ser = *_ser;
 
         try
@@ -130,7 +129,11 @@ namespace ehw
             {
                 std::string strKey{};
                 textures[i] >> strKey;
-                m_textures[i] = ResourceManager<Texture>::Load(strKey);
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::Load(strKey);
+                if (tex)
+                {
+                    SetTexture((eTextureSlot)i, tex);
+                }
             }
 
             //const buffer
@@ -188,7 +191,7 @@ namespace ehw
         }
     }
 
-    void Material::SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture)
+    void Material::SetTexture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)
     {
         m_textures[(UINT)_slot] = _texture;
         BOOL bTex = nullptr != _texture ? TRUE : FALSE;

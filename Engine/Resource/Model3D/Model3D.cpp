@@ -269,7 +269,7 @@ namespace ehw
 				renderer = _emptyRootObj->AddComponent<Com_Renderer_Mesh>();
 			}
 
-			SetRenderer(renderer, 0);
+			SetDataToRenderer(renderer.get(), 0);
 		}
 
 		//여러 개의 container를 가지고 있을 경우: 하나의 부모 object에 여러개의 child를 생성해서 각각 Meshrenderer에 할당
@@ -297,7 +297,7 @@ namespace ehw
 				}
 
 				ASSERT(renderer, "renderer가 생성되지 않았습니다.");
-				SetRenderer(renderer, (UINT)i);
+				SetDataToRenderer(renderer.get(), (UINT)i);
 			}
 		}
 
@@ -560,12 +560,12 @@ namespace ehw
 
 		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);
 
-		CheckMHMaterial(mtrl, texDir);
+		CheckMHMaterial(mtrl.get(), texDir);
 
 		return mtrl;
 	}
 
-	void Model3D::CheckMHMaterial(std::shared_ptr<Material> _mtrl, const std::fs::path& _texDestDir)
+	void Model3D::CheckMHMaterial(Material* _mtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _mtrl)
 			return;
@@ -599,7 +599,7 @@ namespace ehw
 		bool isMHTex = false;
 		for (size_t i = 0; i < texSuffixSize; ++i)
 		{
-			std::shared_ptr<Texture> tex = _mtrl->GetTexture((eTextureSlot)i);
+			const std::shared_ptr<Texture>& tex = _mtrl->GetTexture((eTextureSlot)i);
 			if (tex)
 			{
 				std::string texKey = tex->GetStrKey();
@@ -671,7 +671,7 @@ namespace ehw
 		}
 	}
 
-	bool Model3D::SetRenderer(const std::shared_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx)
+	bool Model3D::SetDataToRenderer(Com_Renderer_Mesh* _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;

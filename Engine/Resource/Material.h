@@ -45,8 +45,8 @@ namespace ehw
 		const std::shared_ptr<GraphicsShader>& GetShader() const { return m_shader; }
 
 
-		void SetTexture(eTextureSlot _slot, std::shared_ptr<Texture> _texture);
-		std::shared_ptr<Texture> GetTexture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
+		void SetTexture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture);
+		const std::shared_ptr<Texture>& GetTexture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
 
 		eRenderingMode GetRenderingMode() const { return m_renderingMode; }
 		void SetRenderingMode(eRenderingMode _mode) { m_renderingMode = _mode; }

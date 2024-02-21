@@ -67,9 +67,9 @@ namespace ehw
 		//몬스터헌터 텍스처 일부를 FBX에서 읽어주지 못해서 직접 등록해야함.
 		//특히 노말맵이 등록이 안돼있어서 수동으로 등록해줘야됨.
 		//다행히도 이름이 통일되어 있어서 이를 활용하면 가능할 듯
-		void CheckMHMaterial(std::shared_ptr<Material> _mtrl, const std::fs::path& _texDestDir);
+		void CheckMHMaterial(Material* _mtrl, const std::fs::path& _texDestDir);
 
-		bool SetRenderer(const std::shared_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx);
+		bool SetDataToRenderer(Com_Renderer_Mesh* _renderer, UINT _idx);
 
 	private:
 		std::shared_ptr<Skeleton> m_skeleton;
