@@ -74,6 +74,11 @@ namespace ehw
 
 		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
+		if (_strKeyPath.empty())
+		{
+			return nullptr;
+		}
+
 		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_strKeyPath.string());
 
 		if(nullptr == returnPtr)

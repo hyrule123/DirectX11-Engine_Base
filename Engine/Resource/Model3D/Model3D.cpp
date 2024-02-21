@@ -72,16 +72,22 @@ namespace ehw
 		try
 		{
 			//Skeleton
-			if (m_skeleton)
 			{
-				eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
-				if (eResultFail(result))
+				std::string skeletonStrKey{};
+				if (m_skeleton)
 				{
-					ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
-					return result;
+					eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
+					if (eResultFail(result))
+					{
+						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
+						return result;
+					}
+					skeletonStrKey = m_skeleton->GetStrKey();
 				}
-				ser[JSON_KEY(m_skeleton)] << m_skeleton->GetStrKey();
+
+				ser[JSON_KEY(m_skeleton)] << skeletonStrKey;
 			}
+
 
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
 			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
@@ -147,15 +153,19 @@ namespace ehw
 		m_meshContainers.clear();
 
 		//Skeleton
-		if (ser.isMember(JSON_KEY(m_skeleton)))
 		{
-			std::string skeletonStrkey{};
-			ser[JSON_KEY(m_skeleton)] >> skeletonStrkey;
-			const std::shared_ptr<Skeleton>& skeletonPtr = ResourceManager<Skeleton>::Load(skeletonStrkey);
-			if (nullptr == skeletonPtr)
+			std::string skeletonStrKey{};
+			ser[JSON_KEY(m_skeleton)] >> skeletonStrKey;
+
+			if (false == skeletonStrKey.empty())
 			{
-				ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
-				return eResult::Fail_Nullptr;
+				const std::shared_ptr<Skeleton>& skeletonPtr = ResourceManager<Skeleton>::Load(skeletonStrKey);
+				if (nullptr == skeletonPtr)
+				{
+					ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
+					return eResult::Fail_Nullptr;
+
+				}
 			}
 		}
 

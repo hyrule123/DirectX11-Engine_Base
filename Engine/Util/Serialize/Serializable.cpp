@@ -150,8 +150,18 @@ namespace ehw
 		}
 
 		Json::Value ser{};
-		(*ifs) >> ser;
-		ifs->close();
+		
+		try
+		{
+			(*ifs) >> ser;
+			ifs->close();	
+		}
+		catch (const std::exception& _err)
+		{
+			ERROR_MESSAGE_A(_err.what());
+			return eResult::Fail_Open;
+		}
+
 
 		return DeSerialize_Json(&ser);
 	}
