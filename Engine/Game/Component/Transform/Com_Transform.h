@@ -1,208 +1,202 @@
 #pragma once
 #include "iTransform.h"
 
-
-
 #include "../../../DefaultShader/CommonStruct.hlsli"
+
+//Transform 업데이트 로직
+//1. 모든 변경사항은 InternalUpdate 로직 때 반영됨(지연 적용).
+//2. 그러나 스크립트에서 호출할 가능성이 있는 함수 중, Get/Set World 함수의 경우에는 업데이트된 내용을 바로 갱신해야할 필요성이 있음.
+//	이 경우에는 Impl 함수를 직접 호출해서, 값이 반영되었다는 사실을 숨기고(silence) 한번 갱신을 해준다.
+//3. 
 
 namespace ehw
 {
-    class GameObject;
-    class Com_Transform 
-        : public iTransform
-    {
-    public:
-        Com_Transform();
+	class GameObject;
+	class Com_Transform 
+		: public iTransform
+	{
+		friend class Com_Transform;
+	public:
+		Com_Transform();
 
-        //단순 Value만 저장 중이므로 기본 복사 생성자로도 충분함.
-        Com_Transform(const Com_Transform& _other) = default;
-        CLONE_ABLE(Com_Transform);
+		//단순 Value만 저장 중이므로 기본 복사 생성자로도 충분함.
+		Com_Transform(const Com_Transform& _other) = default;
+		CLONE_ABLE(Com_Transform);
 
-        virtual ~Com_Transform();
+		virtual ~Com_Transform();
 
-    
-        //virtual void Init() override;
-        virtual void InternalUpdate() override;
-        virtual void BindData() override; 
+	
+		virtual void InternalUpdate() override;
+		virtual void BindData() override; 
 
-    public:
-        //inline Setter
+	
+		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }
+		inline void AddChild(const std::shared_ptr<Com_Transform>& _transform);
 
-        //사이즈의 경우 전체를 갱신할 필요 없음.
-        void SetSize(const float3& _vSize);
-        void SetSizeXY(const float2& _v2Size);
-
-        void SetRelativePos(const float3& _v3Pos) { mPosRelative = _v3Pos; SetMyUpdate(); }
-        void SetRelativePosXY(const float2& _v2Pos) { mPosRelative.x = _v2Pos.x; mPosRelative.y = _v2Pos.y; SetMyUpdate(); }
-        void SetRelativePos(float _x, float _y, float _z) { mPosRelative = float3(_x, _y, _z); SetMyUpdate(); }
-        void AddRelativePos(const float3& _v3Pos) { mPosRelative += _v3Pos; SetMyUpdate(); }
-        void AddRelativePosXY(const float2& _v2Pos) { mPosRelative += _v2Pos; SetMyUpdate(); }
+		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
+		inline const std::vector<std::shared_ptr<Com_Transform>>& GetChilds() const { return m_childs; }
 
 
-        void SetRelativeScale(const float3& _vScale);
-        void SetRelativeScale(float _x, float _y, float _z);
+#pragma region //LOCAL
+		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
+		inline const float3& GetLocalScale() const { return m_localScale; }
+		inline const math::Quaternion& GetLocalRotation() const { return m_localRotation; }
+		inline const float3& GetLocalPosition() const { return m_localPosition; }
+		
+		inline void SetLocalScale(const float3& _localScale);
+		inline void SetLocalRotation(const math::Quaternion& _quat);
+		inline void SetLocalPosition(const float3& _localPosition);
+#pragma endregion //LOCAL
 
-        void SetRelativeRotXYZ(const float3& _vRot) { mRotRelative = _vRot; SetMyUpdate(); }
-        void SetRelativeRotXYZ(float _x, float _y, float _z) { mRotRelative = float3(_x, _y, _z); SetMyUpdate(); }
-        void SetRelativeRotX(float _x) { mRotRelative.x = _x; SetMyUpdate(); }
-        void SetRelativeRotY(float _y) { mRotRelative.y = _y; SetMyUpdate(); }
-        void SetRelativeRotZ(float _z) { mRotRelative.z = _z; SetMyUpdate(); }
+#pragma region //WORLD
+		inline const MATRIX& GetWorldMatrix() { return m_worldMatrix; }
+		inline const float3& GetWorldScale();
+		inline const math::Quaternion& GetWorldRotation();
+		inline float3 GetWorldPosition();
 
-        void SetRelativePosX(float _x) { mPosRelative.x = _x; SetMyUpdate(); }
-        void SetRelativePosY(float _y) { mPosRelative.y = _y; SetMyUpdate(); }
-        void SetRelativePosZ(float _z) { mPosRelative.z = _z; SetMyUpdate(); }
+		void SetWorldScale(const float3& _localScale);
+		void SetWorldRotation(const math::Quaternion& _quat);
+		void SetWorldPosition(const float3& _localPosition);
+		
+#pragma endregion //WORLD
 
-        void SetScaleInheritance(bool _bInherit) { mbInheritScale = _bInherit; SetMyUpdate(); }
-        void SetRotInheritance(bool _bInherit) { mbInheritRot = _bInherit; SetMyUpdate(); }
+	private:
+		inline bool IsLocalValueChanged() const { return m_bNeedUpdateLocal; }
+		inline bool IsNeedUpdateChild() const { return m_bNeedUpdateChild; }
+		inline bool IsInlineUpdated() const { return m_bInternalUpdated; }
+		void UpdateLocalMatrix();
+		void UpdateWorldMatrix();
 
-        //상대 회전값은 변화하지만 실제로 회전하지는 않음.
-        void SetLockRotation(bool _bLockRot) { mbLockRotation = _bLockRot; }
+		//_bSilencedUpdate가 true일 경우: m_bInternalUpdated 값을 변경하지 않고 업데이트 함.
+		//-> InternalUpdate 단계에서 다시 상태 업데이트가 진행된다
+		void InternalUpdate_Impl(bool _bSilencedUpdate);
 
-        //이번 틱에 업데이트를 해야한다고 설정. 자신의 움직임에 영향을 받는 자식 오브젝트들에게도 재귀적으로 알림
-        void SetMyUpdate() { mbNeedMyUpdate = true; }
+	private:
+#pragma region LOCAL
+		//크기
+		float3 m_localScale;
+		float3 m_localSize;
+		
+		//회전
+		math::Quaternion m_localRotation;
 
+		//이동
+		float3 m_localPosition;
 
-        //이 길이는 트랜스폼을 정사각형(또는 정육면체)라고 가정했을 때 한 모서리까지의 길이이다.
-        //이 길이를 간이 충돌체 한 변의 반의 길이로 사용하면, 
-        //어떤 도형이던 간에 안에 들어오는 형태의 정사각형 또는 정육면체를 만들 수 있다.(간이 충돌체로 적합)
-        //사이즈 또는 스케일값이 변했을 경우 간이 충돌체 정보를 새로 생성.
-        //현재 컬링 및 간이 충돌체 계산에 사용 중.
-        bool IsUpdated() const { return mbNeedMyUpdate; }
-        bool GetSizeUpdated() const { return mbSizeUpdated; }
+		MATRIX m_localMatrix;
 
-        //inline Getter
-        const float3& GetSize() const { return mSize; }
-
-        //개별 사이즈 + 월드 Scale 반영된 실제 사이즈
-        float3 GetWorldSize() const;
-
-        const float3& GetRelativePos() const { return mPosRelative; }
-        float3 GetWorldPos() const { return float3(mMatRelative.m[3]); }
-        float GetWorldPosX() const { return mCB_Transform.World.m[3][0]; }
-        float GetWorldPosY() const { return mCB_Transform.World.m[3][1]; }
-        float GetWorldPosZ() const { return mCB_Transform.World.m[3][2]; }
-        const float3& GetRelativeScale() const { return mScaleRelative; }
-        float3 GetWorldScale() const;
-
-        float GetRelativeRotX() const { return mRotRelative.x; }
-        float GetRelativeRotY() const { return mRotRelative.y; }
-        float GetRelativeRotZ() const { return mRotRelative.z; }
-        const float3& GetRelativeRotXYZ() const { return mRotRelative; }
-
-
-        MATRIX GetWorldRotMat() const;
-        float3 GetWorldRot(eAxis3D _eAxis) const;
-
-        const float3& GetRelativeDir(eDirectionType _eDir) const { return mDirRelative[(UINT)_eDir]; }
-        const float3& Forward() const { return mDirRelative[(int)eDirectionType::FRONT]; }
-        const float3& Up() const { return mDirRelative[(int)eDirectionType::UP]; }
-        const float3& Right() const { return mDirRelative[(int)eDirectionType::RIGHT]; }
-        float3 GetWorldDir(eDirectionType _eDir) const { return float3((float*)mMatRelative.m[(UINT)_eDir]).Normalize(); }
-        const MATRIX& GetWorldMat() const { return mCB_Transform.World; }
+		//방향
+		float3 m_localDirection[(int)eDirectionType::END];
+#pragma region //LOCAL
 
 
-        //호출 시점: GameObject에서 FinalTick() 순회 끝난 이후
-        //갱신 여부를 전부 끔
-        void ClearUpdateState();
-    private:
+#pragma region //WORLD
+		//월드 크기
+		float3 m_worldScale;
 
-        //Scale 적용 안된 단순 bottom - y sorting 용도(OBB 등에는 사용하지 말것)
-        float3 GetSimpleBottom() const { return GetWorldPos() - mSize; }
+		//월드 회전(참고 - 월드 회전은 부모 트랜스폼으로부터 누적시켜서 '비교를 위해서만' 사용한다.
+		math::Quaternion m_worldRotation;
 
-        void UpdateMyTransform();
+		//월드 위치는 구할 수 없음.
 
-        //부모의 트랜스폼 행렬을 받아서 최종적인 월드행렬을 업데이트 한다.
-        void UpdateParentMatrix(const std::shared_ptr<Com_Transform>& _parentTransform);
+		MATRIX m_worldMatrix;
 
-    private:
-        float3    mSize;
-        float3    mScaleRelative;
+		float3 m_worldDirection[(int)eDirectionType::END];
+#pragma endregion //WORLD
 
-        float3    mPosRelative;
-        float3    mRotRelative;
+		//로컬정보 변경되었을 시 true
+		bool m_bNeedUpdateLocal;
 
-        //앞, 위, 오른쪽으로 나타내는 직관적인 방향 정보
-        //eDirectionType 열거체를 사용.
-        float3    mDirRelative[(int)eDirectionType::END];
+		//자식 트랜스폼의 업데이트가 필요할 경우 on(local 또는 world 매트릭스가 변경되어야 할 경우 경우) true
+		bool m_bNeedUpdateChild;
 
-        //월드 방향(모든 회전정보 누적)
-        float3    mDirWorld[(int)eDirectionType::END];
+		//이번 프레임 Interal Update 로직 돌았을 시 true
+		bool m_bInternalUpdated;
 
-        //상속받지 않은 고유 트랜스폼. Scale은 적용, Size는 미적용
-        MATRIX  mMatRelative;
+		//부모의 크기 무시할 시 true
+		bool m_bIgnoreParentScale;
 
-        //부모로부터 누적된 트랜스폼 정보
-        MATRIX  mMatParent;
+		//부모의 회전 무시할 시 true
+		bool m_bIgnoreParentRotation;
+		
+// **************************** 부모자식관계가 transform 안에 있는 이유 *************************************
+//I think 2 style reasons.
+// One is that 3D modeling programs use a Transform for parent / child.Unity tries to be friendly to experienced game designers.
 
-        //최종 행렬은 여기에 저장됨
-        tCB_Transform mCB_Transform;
+//The other, related, is that parent / child is mostly about the things a Transform holds(this may be what dan_wipf is getting at).
+// When you change position / scale / rotation in a Transform, you run through it’s child Transforms and update their stats.
+// It’s all Transforms – you never touch a gameObject.And it’s just as easy to walk through a tree of Transforms as one of gameObjects.
+// It feels a little weird to walk from sub - object to sub - object, but it works fine.Esp. for people who prefer using: public Transform cow; as the primary way to link to gameObjects.
+		std::weak_ptr<Com_Transform> m_parent;
+		std::vector<std::shared_ptr<Com_Transform>> m_childs;
+	};
 
-        bool    mbInheritScale;
-        bool    mbInheritRot;
-        bool    mbLockRotation; //자신의 회전 방지
+	inline void Com_Transform::SetLocalScale(const float3& _localScale)
+	{
+		m_localScale = _localScale; 
+		m_bNeedUpdateLocal = true;
+		m_bNeedUpdateChild = true;
+	}
 
-        //상속 형태로 업데이트가 필요한지 여부를 저장.
-        //위치가 변하지 않았는데 굳이 월드행렬을 업데이트 할 필요가 없음.
-        //mMatRelative를 업데이트 해야하는지 여부가 저장되어있음.
-        //자신의 행렬을 업데이트 해야 한다면 반드시 부모 행렬을 받아와야 하기 때문에 m_bNeedParentUpdate도 업데이트 해준다.
-        bool    mbNeedMyUpdate;
+	inline void Com_Transform::SetLocalRotation(const math::Quaternion& _quat)
+	{
+		m_localRotation = _quat; 
+		m_bNeedUpdateLocal = true;
+		m_bNeedUpdateChild = true;
+	}
 
-        //Size는 자신에게만 적용되는 고유값이므로 재귀형으로 전달할 필요 없음.
-        bool    mbSizeUpdated;
-    };
+	inline void Com_Transform::SetLocalPosition(const float3& _localPosition)
+	{
+		m_localPosition = _localPosition; 
+		m_bNeedUpdateLocal = true;
+		m_bNeedUpdateChild = true;
+	}
 
+	//Decompose 이론 - 참고만
+//https://math.stackexchange.com/questions/237369/given-this-transformation-matrix-how-do-i-decompose-it-into-translation-rotati
+	const float3& Com_Transform::GetWorldScale()
+	{
+		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
+		if (false == m_bInternalUpdated)
+		{
+			InternalUpdate_Impl(true);
+		}
 
-    inline void Com_Transform::SetSize(const float3& _vSize)
-    {
-        mSize = _vSize;
-        mbSizeUpdated = true;
-    }
+		return m_worldScale;
+	}
 
-    inline void Com_Transform::SetSizeXY(const float2& _v2Size)
-    {
-        mSize = _v2Size;
-        mbSizeUpdated = true;
-    }
+	const math::Quaternion& Com_Transform::GetWorldRotation()
+	{
+		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
+		if (false == m_bInternalUpdated)
+		{
+			InternalUpdate_Impl(true);
+		}
 
-    inline void Com_Transform::SetRelativeScale(const float3& _vScale)
-    {
-        mScaleRelative = _vScale;
-        SetMyUpdate();
-        mbSizeUpdated = true;
-    }
+		return m_worldRotation;
+	}
+	float3 Com_Transform::GetWorldPosition()
+	{
+		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
+		if (false == m_bInternalUpdated)
+		{
+			InternalUpdate_Impl(true);
+		}
 
-    inline void Com_Transform::SetRelativeScale(float _x, float _y, float _z)
-    {
-        mScaleRelative = float3(_x, _y, _z);
-        SetMyUpdate();
-        mbSizeUpdated = true;
-    }
+		return float3(m_worldMatrix.m[3]);
+	}
 
-
-    inline float3 Com_Transform::GetWorldSize() const
-    {
-        return float3(mCB_Transform.World.Right().Length(), mCB_Transform.World.Up().Length(), mCB_Transform.World.Forward().Length());
-    }
-
-    inline float3 Com_Transform::GetWorldScale() const
-    {
-        return float3(mCB_Transform.World.Right().Length(), mCB_Transform.World.Right().Length(), mCB_Transform.World.Right().Length());
-    }
-
-    inline MATRIX Com_Transform::GetWorldRotMat() const
-    {
-        return MATRIX(mCB_Transform.World.Right().Normalize(), mCB_Transform.World.Up().Normalize(), mCB_Transform.World.Forward().Normalize());
-    }
-
-    inline float3 Com_Transform::GetWorldRot(eAxis3D _eAxis) const
-    {
-        return mCB_Transform.World.Axis((eAxis4D)_eAxis).Normalize();
-    }
-
-    inline void Com_Transform::ClearUpdateState()
-    {
-        mbNeedMyUpdate = false;
-        mbSizeUpdated = false;
-    }
+	inline void Com_Transform::AddChild(const std::shared_ptr<Com_Transform>& _transform)
+	{
+		if (_transform)
+		{
+			m_childs.push_back(_transform);
+			_transform->SetParent(shared_from_this_T<Com_Transform>());
+			m_bNeedUpdateChild = true;
+		}
+	}
 
 }

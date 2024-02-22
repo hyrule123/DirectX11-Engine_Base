@@ -16,8 +16,6 @@ namespace ehw
 	{
 		friend class GameObject;
 	public:
-		using BaseComponents = std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>;
-		using Scripts = std::vector<std::shared_ptr<iScript>>;
 
 		GameObject();
 		GameObject(const GameObject& _other);
@@ -53,9 +51,12 @@ namespace ehw
 		inline const std::shared_ptr<iComponent>& GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 
 
+		using BaseComponents = std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>;
+		const BaseComponents& 
+			GetComponents() const { return m_baseComponents; }
 
-		const BaseComponents& GetComponents() { return m_baseComponents; }
-		const Scripts& GetScripts() { return m_scripts; }
+		using Scripts = std::vector<std::shared_ptr<iScript>>;
+		const Scripts& GetScripts() const { return m_scripts; }
 
 		void SetName(const std::string_view _Name) { m_name = _Name; }
 		const std::string& GetName() const { return m_name; }
@@ -78,23 +79,9 @@ namespace ehw
 		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
 		void SetLayerType(eLayerType _type) { m_layerType = _type; }
 
-		//특정 게임오브젝트를 자녀로 추가. Scene에 등록해주지는 않으므로 유의
-		const std::shared_ptr<GameObject>& AddChild(const std::shared_ptr<GameObject>& _pObj);
-
-
-		std::vector<std::shared_ptr<GameObject>> GetGameObjectsInHierarchy();
-
-		bool IsMaster() const { return m_parent.expired(); }
-		std::shared_ptr<GameObject> GetParent() { return m_parent.lock(); }
-		const std::vector<std::shared_ptr<GameObject>>& GetChilds() const { return m_childs; }
-
-		void SetParent(const std::shared_ptr<GameObject>& _pObj) { m_parent = _pObj; }
-		void RemoveChild(GameObject* _pObj);
-
 		bool IsAwaken() const { return m_bAwake; }
 
 	protected:
-		void GetGameObjectsRecursive(std::vector<std::shared_ptr<GameObject>>& _gameObjects);
 		void SetActiveRecursive(bool _bActive);
 		void DestroyRecursive();
 		
@@ -105,11 +92,8 @@ namespace ehw
 		iScene* m_ownerScene;
 		eLayerType m_layerType;
 
-		BaseComponents	m_baseComponents;
+		std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
 		std::vector<std::shared_ptr<iScript>> m_scripts;
-
-		std::weak_ptr<GameObject> m_parent;
-		std::vector<std::shared_ptr<GameObject>> m_childs;
 		
 		enum class eState
 		{

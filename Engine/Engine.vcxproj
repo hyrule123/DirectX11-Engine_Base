@@ -264,7 +264,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="CommonType.h" />
-    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
     <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
@@ -286,7 +285,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Audio\Com_AudioSource.h" />
     <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
-    <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
     <ClInclude Include="Game\Component\ComponentInitializer.h" />
@@ -401,7 +399,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
-    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
     <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
@@ -425,7 +422,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp" />
     <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
-    <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
     <ClCompile Include="CommonGlobalVar.cpp" />

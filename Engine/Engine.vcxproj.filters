@@ -369,9 +369,6 @@
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp">
-      <Filter>Component\Animator</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Animation2D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
@@ -451,7 +448,6 @@
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
-    <ClCompile Include="Game\Component\Transform\Com_DummyTransform.cpp" />
     <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
@@ -693,9 +689,6 @@
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h">
-      <Filter>Component\Animator</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\Animation2D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
@@ -781,7 +774,6 @@
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
-    <ClInclude Include="Game\Component\Transform\Com_DummyTransform.h" />
     <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
