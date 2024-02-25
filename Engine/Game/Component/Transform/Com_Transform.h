@@ -9,6 +9,25 @@
 //	이 경우에는 Impl 함수를 직접 호출해서, 값이 반영되었다는 사실을 숨기고(silence) 한번 갱신을 해준다.
 //3. 
 
+//SRT 각 행렬은 다음과 같은 특징을 가진다.
+//S: 단위행렬 E의 배수 형태(11, 22, 33에 크기정보, 44는 1).
+// 대각선 행렬(diagonal matrix)이므로 역행렬 존재. 교환법칙 무조건 성립 가능.
+//R: 직교행렬(orthogonal matrix). 직교행렬은 전치행렬이 곧 역행렬이다.
+//T: 판별식이 0. 교환법칙 성립하지 않음.
+
+//child Transform의 world 행렬: ScRcTc*SpRpTp
+//S: 언제나 교환법칙이 성립함. 앞으로 보낼 수 있음 -> ScSp * RcTc * RpTp
+//R: 교환법칙은 성립하지 않으나, S행렬과 R행렬은 지들끼리만 놈.
+//T: 계산 '결과'가 저장됨.
+// SR 행렬에 영향을 받으나, SR 행렬에 영향을 미치지 않음. 교환법칙도 성립 안함.
+//-> 그러나, T행렬이 영향을 미치지 않으므로 최종 T 결과(Tw)를 알고 있다면,
+//ScSp * RcRp * Tw가 가능하다는 것.
+
+//Local Value: 변경 즉시 반영
+//Local Matrix: 요청 시 or InternalUpdate 호출 시 반영
+//World Value: 요청 시 or InternalUpdate 호출 시 반영
+//World Matrix: 요청 시 or InternalUpdate 호출 시 반영
+
 namespace ehw
 {
 	class GameObject;
@@ -38,38 +57,44 @@ namespace ehw
 
 
 #pragma region //LOCAL
-		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
 		inline const float3& GetLocalScale() const { return m_localScale; }
 		inline const math::Quaternion& GetLocalRotation() const { return m_localRotation; }
 		inline const float3& GetLocalPosition() const { return m_localPosition; }
+		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
 		
 		inline void SetLocalScale(const float3& _localScale);
-		inline void SetLocalRotation(const math::Quaternion& _quat);
+		inline void SetLocalRotation(const math::Quaternion& _localRotation);
 		inline void SetLocalPosition(const float3& _localPosition);
 #pragma endregion //LOCAL
 
 #pragma region //WORLD
-		inline const MATRIX& GetWorldMatrix() { return m_worldMatrix; }
 		inline const float3& GetWorldScale();
 		inline const math::Quaternion& GetWorldRotation();
 		inline float3 GetWorldPosition();
+		inline const MATRIX& GetWorldMatrix();
 
-		void SetWorldScale(const float3& _localScale);
-		void SetWorldRotation(const math::Quaternion& _quat);
-		void SetWorldPosition(const float3& _localPosition);
-		
+		void SetWorldScale(const float3& _worldScale);
+		void SetWorldRotation(const math::Quaternion& _worldRotation);
+		void SetWorldPosition(const float3& _worldPosition);
 #pragma endregion //WORLD
 
 	private:
-		inline bool IsLocalValueChanged() const { return m_bNeedUpdateLocal; }
-		inline bool IsNeedUpdateChild() const { return m_bNeedUpdateChild; }
-		inline bool IsInlineUpdated() const { return m_bInternalUpdated; }
-		void UpdateLocalMatrix();
-		void UpdateWorldMatrix();
+		inline void SetAllFlagsOn();
+
+
+		inline const float3& GetWorldScale_Internal() const { return m_worldScale; }
+		inline const math::Quaternion& GetWorldRotation_Internal() const { return m_worldRotation; }
+		inline const MATRIX& GetWorldMatrix_Internal() const { return m_worldMatrix; }
+
+		bool UpdateLocalMatrix();
+
+		//갱신사항이 있을 경우 true를 반환한다.
+		bool UpdateWorldValue();
+
+		bool UpdateWorldMatrix();
 
 		//_bSilencedUpdate가 true일 경우: m_bInternalUpdated 값을 변경하지 않고 업데이트 함.
 		//-> InternalUpdate 단계에서 다시 상태 업데이트가 진행된다
-		void InternalUpdate_Impl(bool _bSilencedUpdate);
 
 	private:
 #pragma region LOCAL
@@ -105,13 +130,14 @@ namespace ehw
 #pragma endregion //WORLD
 
 		//로컬정보 변경되었을 시 true
-		bool m_bNeedUpdateLocal;
+		bool m_bNeedUpdateLocalMatrix;
 
-		//자식 트랜스폼의 업데이트가 필요할 경우 on(local 또는 world 매트릭스가 변경되어야 할 경우 경우) true
-		bool m_bNeedUpdateChild;
+		//World Scale / Rotation 변경 시 true	
+		bool m_bNeedUpdateWorldValue;
 
-		//이번 프레임 Interal Update 로직 돌았을 시 true
-		bool m_bInternalUpdated;
+		//World Matrix가 변경되어야 할 경우 true
+		bool m_bNeedUpdateWorldMatrix;
+
 
 		//부모의 크기 무시할 시 true
 		bool m_bIgnoreParentScale;
@@ -134,35 +160,31 @@ namespace ehw
 	inline void Com_Transform::SetLocalScale(const float3& _localScale)
 	{
 		m_localScale = _localScale; 
-		m_bNeedUpdateLocal = true;
-		m_bNeedUpdateChild = true;
+		SetAllFlagsOn();
 	}
 
-	inline void Com_Transform::SetLocalRotation(const math::Quaternion& _quat)
+	inline void Com_Transform::SetLocalRotation(const math::Quaternion& _localRotation)
 	{
-		m_localRotation = _quat; 
-		m_bNeedUpdateLocal = true;
-		m_bNeedUpdateChild = true;
+		m_localRotation = _localRotation;
+		SetAllFlagsOn();
 	}
 
 	inline void Com_Transform::SetLocalPosition(const float3& _localPosition)
 	{
 		m_localPosition = _localPosition; 
-		m_bNeedUpdateLocal = true;
-		m_bNeedUpdateChild = true;
+
+		SetAllFlagsOn();
 	}
 
 	//Decompose 이론 - 참고만
 //https://math.stackexchange.com/questions/237369/given-this-transformation-matrix-how-do-i-decompose-it-into-translation-rotati
+
 	const float3& Com_Transform::GetWorldScale()
 	{
 		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
-		if (false == m_bInternalUpdated)
-		{
-			InternalUpdate_Impl(true);
-		}
-
+		UpdateWorldValue();
+		
 		return m_worldScale;
 	}
 
@@ -170,10 +192,7 @@ namespace ehw
 	{
 		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
-		if (false == m_bInternalUpdated)
-		{
-			InternalUpdate_Impl(true);
-		}
+		UpdateWorldValue();
 
 		return m_worldRotation;
 	}
@@ -181,13 +200,17 @@ namespace ehw
 	{
 		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
-		if (false == m_bInternalUpdated)
-		{
-			InternalUpdate_Impl(true);
-		}
+		UpdateWorldMatrix();
 
-		return float3(m_worldMatrix.m[3]);
+		return m_worldMatrix.Translation();
 	}
+
+	const MATRIX& Com_Transform::GetWorldMatrix()
+	{
+		UpdateWorldMatrix();
+		return m_worldMatrix;
+	}
+
 
 	inline void Com_Transform::AddChild(const std::shared_ptr<Com_Transform>& _transform)
 	{
@@ -195,8 +218,14 @@ namespace ehw
 		{
 			m_childs.push_back(_transform);
 			_transform->SetParent(shared_from_this_T<Com_Transform>());
-			m_bNeedUpdateChild = true;
+			_transform->SetAllFlagsOn();
 		}
 	}
 
+	inline void Com_Transform::SetAllFlagsOn()
+	{
+		m_bNeedUpdateLocalMatrix = true;
+		m_bNeedUpdateWorldValue = true;
+		m_bNeedUpdateWorldMatrix = true;
+	}
 }
