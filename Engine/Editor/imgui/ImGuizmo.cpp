@@ -726,7 +726,7 @@ namespace IMGUIZMO_NAMESPACE
       //vec_t mWorldToLocalAxis;
 
       // scale
-      vec_t mScale;
+      vec_t m_scale;
       vec_t mScaleValueOrigin;
       vec_t mScaleLast;
       float mSaveMousePosx;
@@ -1364,7 +1364,7 @@ namespace IMGUIZMO_NAMESPACE
 
       if (gContext.mbUsing && (gContext.mActualID == -1 || gContext.mActualID == gContext.mEditingID))
       {
-         scaleDisplay = gContext.mScale;
+         scaleDisplay = gContext.m_scale;
       }
 
       for (int i = 0; i < 3; i++)
@@ -1452,7 +1452,7 @@ namespace IMGUIZMO_NAMESPACE
 
       if (gContext.mbUsing && (gContext.mActualID == -1 || gContext.mActualID == gContext.mEditingID))
       {
-         scaleDisplay = gContext.mScale;
+         scaleDisplay = gContext.m_scale;
       }
 
       for (int i = 0; i < 3; i++)
@@ -2243,7 +2243,7 @@ namespace IMGUIZMO_NAMESPACE
             const float len = IntersectRayPlane(gContext.mRayOrigin, gContext.mRayVector, gContext.mTranslationPlan);
             gContext.mTranslationPlanOrigin = gContext.mRayOrigin + gContext.mRayVector * len;
             gContext.mMatrixOrigin = gContext.mModel.v.position;
-            gContext.mScale.Set(1.f, 1.f, 1.f);
+            gContext.m_scale.Set(1.f, 1.f, 1.f);
             gContext.mRelativeOrigin = (gContext.mTranslationPlanOrigin - gContext.mModel.v.position) * (1.f / gContext.mScreenFactor);
             gContext.mScaleValueOrigin = makeVect(gContext.mModelSource.v.right.Length(), gContext.mModelSource.v.up.Length(), gContext.mModelSource.v.dir.Length());
             gContext.mSaveMousePosx = io.MousePos.x;
@@ -2273,41 +2273,41 @@ namespace IMGUIZMO_NAMESPACE
             vec_t baseVector = gContext.mTranslationPlanOrigin - gContext.mModelLocal.v.position;
             float ratio = Dot(axisValue, baseVector + delta) / Dot(axisValue, baseVector);
 
-            gContext.mScale[axisIndex] = max(ratio, 0.001f);
+            gContext.m_scale[axisIndex] = max(ratio, 0.001f);
          }
          else
          {
             float scaleDelta = (io.MousePos.x - gContext.mSaveMousePosx) * 0.01f;
-            gContext.mScale.Set(max(1.f + scaleDelta, 0.001f));
+            gContext.m_scale.Set(max(1.f + scaleDelta, 0.001f));
          }
 
          // snap
          if (snap)
          {
             float scaleSnap[] = { snap[0], snap[0], snap[0] };
-            ComputeSnap(gContext.mScale, scaleSnap);
+            ComputeSnap(gContext.m_scale, scaleSnap);
          }
 
          // no 0 allowed
          for (int i = 0; i < 3; i++)
-            gContext.mScale[i] = max(gContext.mScale[i], 0.001f);
+            gContext.m_scale[i] = max(gContext.m_scale[i], 0.001f);
 
-         if (gContext.mScaleLast != gContext.mScale)
+         if (gContext.mScaleLast != gContext.m_scale)
          {
             modified = true;
          }
-         gContext.mScaleLast = gContext.mScale;
+         gContext.mScaleLast = gContext.m_scale;
 
          // compute matrix & delta
          matrix_t deltaMatrixScale;
-         deltaMatrixScale.Scale(gContext.mScale * gContext.mScaleValueOrigin);
+         deltaMatrixScale.Scale(gContext.m_scale * gContext.mScaleValueOrigin);
 
          matrix_t res = deltaMatrixScale * gContext.mModelLocal;
          *(matrix_t*)matrix = res;
 
          if (deltaMatrix)
          {
-            vec_t deltaScale = gContext.mScale * gContext.mScaleValueOrigin;
+            vec_t deltaScale = gContext.m_scale * gContext.mScaleValueOrigin;
 
             vec_t originalScaleDivider;
             originalScaleDivider.x = 1 / gContext.mModelScaleOrigin.x;
@@ -2323,7 +2323,7 @@ namespace IMGUIZMO_NAMESPACE
          if (!io.MouseDown[0])
          {
             gContext.mbUsing = false;
-            gContext.mScale.Set(1.f, 1.f, 1.f);
+            gContext.m_scale.Set(1.f, 1.f, 1.f);
          }
 
          type = gContext.mCurrentOperation;

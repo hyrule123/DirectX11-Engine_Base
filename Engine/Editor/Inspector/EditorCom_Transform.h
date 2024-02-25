@@ -14,9 +14,9 @@ namespace editor
 		virtual void UpdateUI() override;
 
 	private:
-		float3 mPosisition;
-		float3 mRotation;
-		float3 mScale;
+		float3 m_position;
+		Quaternion m_rotation;
+		float3 m_scale;
 	};
 
 }

@@ -51,7 +51,7 @@ namespace  ehw
 		void CreateProjectionMatrix(uint ResolutionX, uint ResolutionY);
 		
 		void SetScale(float _scale);
-		float GetScale() const { return mScale; }
+		float GetScale() const { return m_scale; }
 		const MATRIX& GetViewMatrix() const { return mView; }
 		const MATRIX& GetProjectionMatrix() const { return mProjection; }
 
@@ -81,7 +81,7 @@ namespace  ehw
 
 		float mNear;
 		float mFar;
-		float mScale;
+		float m_scale;
 
 		std::bitset<(uint)eLayerType::END> mLayerMasks;
 		std::vector<GameObject*> mDefferedOpaqueGameObjects;

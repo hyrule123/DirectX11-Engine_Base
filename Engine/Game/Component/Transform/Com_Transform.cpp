@@ -18,16 +18,17 @@ namespace ehw
 	Com_Transform::Com_Transform()
 		: m_localScale(float3::One)
 		, m_localSize(float3::One)
-		, m_localRotation()
-		, m_localPosition()
-		, m_localDirection{}
+		, m_localRotation(float3::Zero)
+		, m_localPosition(float3::Zero)
+		, m_localDirection{ float3::Right, float3::Up, float3::Forward }
 		, m_localMatrix(MATRIX::Identity)
 		, m_worldScale(float3::One)
-		, m_worldRotation()
-		, m_worldDirection{}
+		, m_worldRotation(math::Quaternion::Identity)
+		, m_worldDirection{ float3::Right, float3::Up, float3::Forward }
 		, m_worldMatrix(MATRIX::Identity)
 		, m_bNeedUpdateLocalMatrix(true)
 		, m_bNeedUpdateWorldValue(true)
+		, m_bNeedUpdateWorldMatrix(true)
 
 		, m_parent()
 		, m_childs()

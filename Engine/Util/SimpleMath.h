@@ -253,6 +253,8 @@ namespace ehw::math
         
 
         Vector3(const Vector3&) = default;
+        Vector3(const Vector2& _v2) : XMFLOAT3(_v2.x, _v2.y, 0.f) {}
+        Vector3(const Vector2& _v2, float _z) : XMFLOAT3(_v2.x, _v2.y, _z) {}
         Vector3& operator=(const Vector2& _v2) { this->x = _v2.x; this->y = _v2.y; return *this; }
         Vector3& operator=(const Vector3&) = default;
 

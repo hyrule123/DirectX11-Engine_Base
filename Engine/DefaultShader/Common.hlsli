@@ -14,8 +14,12 @@
 
 
 using float2 = ehw::math::Vector2;
+using ehw::math::Vector2;
 using float3 = ehw::math::Vector3;
+using ehw::math::Vector3;
 using float4 = ehw::math::Vector4;
+using ehw::math::Vector4;
+using ehw::math::Quaternion;
 using MATRIX = ehw::math::Matrix;
 using uint = std::uint32_t;
 

@@ -27,24 +27,24 @@ namespace editor
 
 		const auto& tr = GetTarget().lock()->GetComponent<ehw::Com_Transform>();
 
-		mPosisition = tr->GetRelativePos();
-		mRotation = tr->GetRelativeRotXYZ();
-		mScale = tr->GetRelativeScale();
+		m_position = tr->GetLocalPosition();
+		m_rotation = tr->GetLocalRotation();
+		m_scale = tr->GetLocalScale();
 	}
 
 	void EditorCom_Transform::UpdateUI()
 	{
-		ImGui::DragFloat3("Position", (float*)&mPosisition);
-		ImGui::DragFloat3("Rotation", (float*)&mRotation);
-		ImGui::DragFloat3("Scale", (float*)&mScale);
+		ImGui::DragFloat3("Position", (float*)&m_position);
+		ImGui::DragFloat3("Rotation", (float*)&m_rotation);
+		ImGui::DragFloat3("Scale", (float*)&m_scale);
 
 		if (false == GetTarget().expired())
 		{
 			const auto& tr = GetTarget().lock()->GetComponent<ehw::Com_Transform>();
 
-			tr->SetRelativePos(mPosisition);
-			tr->SetRelativeRotXYZ(mRotation);
-			tr->SetRelativeScale(mScale);
+			tr->SetLocalPosition(m_position);
+			tr->SetLocalRotation(m_rotation);
+			tr->SetLocalScale(m_scale);
 		}
 	}
 

@@ -61,6 +61,10 @@ namespace ehw
 		inline const math::Quaternion& GetLocalRotation() const { return m_localRotation; }
 		inline const float3& GetLocalPosition() const { return m_localPosition; }
 		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
+		inline const float3& GetLocalDirection(eDirectionType _dirType);
+		inline const std::array<float3, (int)eDirectionType::END>& GetLocalDirection();
+
+		
 		
 		inline void SetLocalScale(const float3& _localScale);
 		inline void SetLocalRotation(const math::Quaternion& _localRotation);
@@ -72,11 +76,16 @@ namespace ehw
 		inline const math::Quaternion& GetWorldRotation();
 		inline float3 GetWorldPosition();
 		inline const MATRIX& GetWorldMatrix();
+		inline const float3& GetWorldDirection(eDirectionType _dirType);
+		inline const std::array<float3, (int)eDirectionType::END>& GetWorldDirection();
 
 		void SetWorldScale(const float3& _worldScale);
 		void SetWorldRotation(const math::Quaternion& _worldRotation);
 		void SetWorldPosition(const float3& _worldPosition);
 #pragma endregion //WORLD
+
+		void SetIgnoreParentScale(bool _b) { m_bIgnoreParentScale = _b; }
+		void SetIgnoreParentRotation(bool _b) { m_bIgnoreParentRotation = _b; }
 
 	private:
 		inline void SetAllFlagsOn();
@@ -111,7 +120,7 @@ namespace ehw
 		MATRIX m_localMatrix;
 
 		//방향
-		float3 m_localDirection[(int)eDirectionType::END];
+		std::array<float3, (int)eDirectionType::END> m_localDirection;
 #pragma region //LOCAL
 
 
@@ -126,7 +135,7 @@ namespace ehw
 
 		MATRIX m_worldMatrix;
 
-		float3 m_worldDirection[(int)eDirectionType::END];
+		std::array<float3, (int)eDirectionType::END> m_worldDirection;
 #pragma endregion //WORLD
 
 		//로컬정보 변경되었을 시 true
@@ -211,6 +220,17 @@ namespace ehw
 		return m_worldMatrix;
 	}
 
+	inline const float3& Com_Transform::GetWorldDirection(eDirectionType _dirType)
+	{
+		return GetWorldDirection()[(int)_dirType];
+	}
+
+	inline const std::array<float3, (int)eDirectionType::END>& Com_Transform::GetWorldDirection()
+	{
+		UpdateWorldMatrix();
+		return m_worldDirection;
+	}
+
 
 	inline void Com_Transform::AddChild(const std::shared_ptr<Com_Transform>& _transform)
 	{
@@ -220,6 +240,18 @@ namespace ehw
 			_transform->SetParent(shared_from_this_T<Com_Transform>());
 			_transform->SetAllFlagsOn();
 		}
+	}
+
+	inline const float3& ehw::Com_Transform::GetLocalDirection(eDirectionType _dirType)
+	{
+		return GetLocalDirection()[(int)_dirType];
+	}
+	
+
+	inline const std::array<float3, (int)eDirectionType::END>& ehw::Com_Transform::GetLocalDirection()
+	{
+		UpdateLocalMatrix();
+		return m_localDirection;
 	}
 
 	inline void Com_Transform::SetAllFlagsOn()

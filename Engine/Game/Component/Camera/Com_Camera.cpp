@@ -37,7 +37,7 @@ namespace ehw
 		, mAspectRatio(1.0f)
 		, mNear(1.0f)
 		, mFar(50000.f)
-		, mScale(1.0f)
+		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
 	}
@@ -226,8 +226,8 @@ namespace ehw
 	{
 		mCullingAgent.reset();
 
-		float width = (float)ResolutionX * mScale;
-		float height = (float)ResolutionY * mScale;
+		float width = (float)ResolutionX * m_scale;
+		float height = (float)ResolutionY * m_scale;
 
 		mAspectRatio = width / height;
 
@@ -263,7 +263,7 @@ namespace ehw
 		if (_scale < 0.f)
 			return;
 
-		mScale = _scale;
+		m_scale = _scale;
 		CreateProjectionMatrix();
 	}
 

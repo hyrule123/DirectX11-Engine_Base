@@ -170,12 +170,17 @@ namespace ehw
 		events->Events.resize(_uColTotal * _uRowTotal);
 		mEvents.insert(std::make_pair(_name, events));
 
-		float2 size = animation->GetSpriteSize(0u);
+		
 
 		//사이즈 수정
 		const auto& tr = GetOwner()->GetComponent<Com_Transform>(); 
-		if(tr)
-			tr->SetSizeXY(animation->GetSpriteSize(0u));
+		if (tr)
+		{
+			float2 size = animation->GetSpriteSize(0u);
+			
+			tr->SetIgnoreParentScale(true);
+			tr->SetLocalScale(float3(size, 1.f));
+		}
 
 		return true;
 	}
