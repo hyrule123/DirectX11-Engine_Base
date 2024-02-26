@@ -48,21 +48,22 @@ namespace ehw
 		virtual void InternalUpdate() override;
 		virtual void BindData() override; 
 
-	
-		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }
-		inline void AddChild(const std::shared_ptr<Com_Transform>& _transform);
-
 		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
+		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }
+
+		inline void AddChild(const std::shared_ptr<Com_Transform>& _transform);
 		inline const std::vector<std::shared_ptr<Com_Transform>>& GetChilds() const { return m_childs; }
 
+		void GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects);
+		
 
 #pragma region //LOCAL
 		inline const float3& GetLocalScale() const { return m_localScale; }
 		inline const math::Quaternion& GetLocalRotation() const { return m_localRotation; }
 		inline const float3& GetLocalPosition() const { return m_localPosition; }
 		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
-		inline const float3& GetLocalDirection(eDirectionType _dirType);
-		inline const std::array<float3, (int)eDirectionType::END>& GetLocalDirection();
+		inline const float3& GetLocalDirection(eDirection _dirType);
+		inline const std::array<float3, (int)eDirection::END>& GetLocalDirection();
 
 		
 		
@@ -76,8 +77,8 @@ namespace ehw
 		inline const math::Quaternion& GetWorldRotation();
 		inline float3 GetWorldPosition();
 		inline const MATRIX& GetWorldMatrix();
-		inline const float3& GetWorldDirection(eDirectionType _dirType);
-		inline const std::array<float3, (int)eDirectionType::END>& GetWorldDirection();
+		inline const float3& GetWorldDirection(eDirection _dirType);
+		inline const std::array<float3, (int)eDirection::END>& GetWorldDirection();
 
 		void SetWorldScale(const float3& _worldScale);
 		void SetWorldRotation(const math::Quaternion& _worldRotation);
@@ -89,7 +90,6 @@ namespace ehw
 
 	private:
 		inline void SetAllFlagsOn();
-
 
 		inline const float3& GetWorldScale_Internal() const { return m_worldScale; }
 		inline const math::Quaternion& GetWorldRotation_Internal() const { return m_worldRotation; }
@@ -120,7 +120,7 @@ namespace ehw
 		MATRIX m_localMatrix;
 
 		//방향
-		std::array<float3, (int)eDirectionType::END> m_localDirection;
+		std::array<float3, (int)eDirection::END> m_localDirection;
 #pragma region //LOCAL
 
 
@@ -135,7 +135,7 @@ namespace ehw
 
 		MATRIX m_worldMatrix;
 
-		std::array<float3, (int)eDirectionType::END> m_worldDirection;
+		std::array<float3, (int)eDirection::END> m_worldDirection;
 #pragma endregion //WORLD
 
 		//로컬정보 변경되었을 시 true
@@ -220,12 +220,12 @@ namespace ehw
 		return m_worldMatrix;
 	}
 
-	inline const float3& Com_Transform::GetWorldDirection(eDirectionType _dirType)
+	inline const float3& Com_Transform::GetWorldDirection(eDirection _dirType)
 	{
 		return GetWorldDirection()[(int)_dirType];
 	}
 
-	inline const std::array<float3, (int)eDirectionType::END>& Com_Transform::GetWorldDirection()
+	inline const std::array<float3, (int)eDirection::END>& Com_Transform::GetWorldDirection()
 	{
 		UpdateWorldMatrix();
 		return m_worldDirection;
@@ -242,13 +242,14 @@ namespace ehw
 		}
 	}
 
-	inline const float3& ehw::Com_Transform::GetLocalDirection(eDirectionType _dirType)
+
+	inline const float3& ehw::Com_Transform::GetLocalDirection(eDirection _dirType)
 	{
 		return GetLocalDirection()[(int)_dirType];
 	}
 	
 
-	inline const std::array<float3, (int)eDirectionType::END>& ehw::Com_Transform::GetLocalDirection()
+	inline const std::array<float3, (int)eDirection::END>& ehw::Com_Transform::GetLocalDirection()
 	{
 		UpdateLocalMatrix();
 		return m_localDirection;

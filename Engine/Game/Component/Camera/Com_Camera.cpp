@@ -125,12 +125,10 @@ namespace ehw
 	void Com_Camera::CreateViewMatrix()
 	{
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
-		if (nullptr == tr || false == tr->IsUpdated())
-			return;
+		const auto& tr = GetOwner()->Transform();
 
-		float3 vCamPos = tr->GetWorldPos();
 
+		float3 vCamPos = tr->GetWorldPosition();
 		//뷰행렬 = 카메라 앞으로 월드행렬의 물체들을 끌어오는 작업.
 		//도로 끌어오는 작업이므로 월드행렬에 배치했던 순서의 역순으로 작업을 해주면 된다.
 		//이동과 회전을 원래대로 되돌리는 행렬은 특정 행렬을 다시 원래 상태로 돌리는 행렬이라고 볼 수 있다.
@@ -158,7 +156,6 @@ namespace ehw
 		*/
 		mView = MATRIX::CreateTranslation(-vCamPos);
 
-
 		//2. 회전
 		//회전은 이동과는 역행렬의 모습은 다르지만 쉽게 구할수 있다.
 		//이는 직교행렬의 성질 덕분이다.
@@ -170,7 +167,7 @@ namespace ehw
 		//const XMVECTOR& vecQut = XMQuaternionRotationRollPitchYawFromVector(vecRot);
 		//Matrix tempmat = Matrix::CreateFromQuaternion(vecQut);
 		//m_matView *= tempmat.Transpose();
-		const MATRIX& matRot = tr->GetWorldRotMat();
+		const MATRIX& matRot = tr->GetWorldMatrix();
 		mView *= matRot.Transpose();
 
 		//3. transform 상수버퍼 구조체에 업데이트 -> 안함. 나중에 render때 일괄적으로 view 행렬과 proj 행렬을 곱할 예정.
@@ -236,7 +233,7 @@ namespace ehw
 		case eProjectionType::Perspective:
 			mProjection = MATRIX::CreatePerspectiveFieldOfViewLH
 			(
-				XM_2PI / 6.0f
+				XM_2PI / 4.0f
 				, mAspectRatio
 				, mNear
 				, mFar

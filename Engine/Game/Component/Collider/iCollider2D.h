@@ -37,7 +37,7 @@ namespace ehw
 		void SetRadius(float _radius) { mRadius = _radius; }
 		bool IsTriiger() const { return mbTrigger; }
 		uint GetID() const { return mID; }
-		float3 GetRelativePos() const { return mPosition; }
+		float3 GetLocalPosition() const { return mPosition; }
 		float2 GetSize() const { return mSize; }
 
 	private:

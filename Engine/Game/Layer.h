@@ -17,6 +17,7 @@ namespace ehw
 		void Update();
 		void InternalUpdate();
 		void Render();
+		void FrameEnd();
 		void Destroy();
 
 		iScene* GetOwnerScene() const { return m_OwnerScene; }

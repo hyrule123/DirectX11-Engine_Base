@@ -237,14 +237,15 @@ namespace editor
 		const auto& debugObj = mDebugObjects[(UINT)mesh.type];
 		
 		const auto& tr = debugObj->GetComponent<ehw::Com_Transform>();
-		tr->SetRelativePos(mesh.position);
-		tr->SetRelativeRotXYZ(mesh.rotatation);
+
+		tr->SetLocalPosition(mesh.position);
+		tr->SetLocalRotation(mesh.rotation);
 		
 
 		if (mesh.type == ehw::eColliderType::Rect)
-			tr->SetRelativeScale(mesh.scale);
+			tr->SetLocalScale(mesh.scale);
 		else
-			tr->SetRelativeScale(Vector3(mesh.radius));
+			tr->SetLocalScale(Vector3(mesh.radius));
 
 
 		const auto& renderer = debugObj->GetComponent<ehw::iRenderer>();
@@ -547,7 +548,7 @@ namespace editor
 			}
 			else if (mCurrentGizmoOperation == ImGuizmo::SCALE)
 			{
-				tr->SetRelativeScale(scale);
+				tr->SetLocalScale(scale);
 			}
 			else
 			{

@@ -74,6 +74,14 @@ namespace ehw
 	}
 
 
+	void iScene::AddGameObjects(const eLayerType _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects)
+	{
+		for (size_t i = 0; i < _gameObjects.size(); ++i)
+		{
+			m_Layers[(int)_type].AddGameObject(_gameObjects[i]);
+		}
+	}
+
 
 
 
@@ -91,48 +99,5 @@ namespace ehw
 	const std::vector<std::shared_ptr<GameObject>>& iScene::GetGameObjects(const eLayerType _type)
 	{
 		return m_Layers[(uint)_type].GetGameObjects();
-	}
-
-
-	const std::shared_ptr<GameObject>& iScene::AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj)
-	{
-		ASSERT_DEBUG(nullptr != _newGameObj, "GameObject가 nullptr이었습니다.");
-	
-		_newGameObj->SetLayerType(_type);
-
-		auto Func = [this, _type, newGameObj = _newGameObj]()->void
-			{
-				//게임오브젝트 계층구조를 싹 받아온다.
-				std::vector<std::shared_ptr<GameObject>> gameObjects = newGameObj->GetGameObjectsInHierarchy();
-				for (size_t i = 0; i < gameObjects.size(); ++i)
-				{
-					ASSERT_DEBUG(false == gameObjects[i]->IsInScene(), "이미 Scene에 들어간 오브젝트는 추가할 수 없습니다.\n(새 게임 오브젝트만 추가 가능)");
-					gameObjects[i]->SetOwnerScene(this);
-
-					eLayerType presetLayerType = gameObjects[i]->GetLayerType();
-					if (eLayerType::None == presetLayerType)
-					{
-						m_Layers[(int)_type].AddGameObject(gameObjects[i]);
-					}
-					else
-					{
-						m_Layers[(int)presetLayerType].AddGameObject(gameObjects[i]);
-					}
-				}
-			};
-
-		//아직 씬이 작동 전일 경우 바로 추가
-		if (false == m_bAwake)
-		{
-			Func();
-		}
-
-		//씬이 작동 중일 경우 지연 추가
-		else
-		{
-			AddFrameEndJob(Func);
-		}
-
-		return _newGameObj;
 	}
 }

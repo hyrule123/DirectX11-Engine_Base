@@ -75,7 +75,7 @@ namespace ehw
 	{
 		eColliderType type;
 		float3 position;
-		float3 rotatation;
+		Quaternion rotation;
 		float3 scale;
 
 		float radius;

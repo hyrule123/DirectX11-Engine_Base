@@ -63,12 +63,12 @@ namespace ehw
 
 	void iCollider2D::InternalUpdate()
 	{
-		float3 scale = mTransform->GetRelativeScale();
+		float3 scale = mTransform->GetLocalScale();
 		scale *= float3(mSize.x, mSize.y, 1.0f);
 
-		float3 rotation = mTransform->GetRelativeRotXYZ();
+		Quaternion rotation = mTransform->GetLocalRotation();
 
-		float3 position = mTransform->GetRelativePos();
+		float3 position = mTransform->GetLocalPosition();
 		float3 colliderPos = position + float3(mCenter.x, mCenter.y, 0.0f);
 		mPosition = colliderPos;
 
@@ -86,7 +86,7 @@ namespace ehw
 		tDebugMesh meshAttribute = {};
 		meshAttribute.position = float3(colliderPos.x, colliderPos.y, colliderPos.z);
 		meshAttribute.radius = mRadius;
-		meshAttribute.rotatation = rotation;
+		meshAttribute.rotation = rotation;
 		meshAttribute.scale = scale;
 		meshAttribute.type = m_ComCategory;
 

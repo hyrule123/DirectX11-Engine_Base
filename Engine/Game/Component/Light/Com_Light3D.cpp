@@ -166,7 +166,7 @@ namespace ehw
 		if (nullptr == tr)
 			return;
 
-		float3 position = tr->GetRelativePos();
+		float3 position = tr->GetLocalPosition();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 			
 		//Transform 조작은 Update()까지만 가능.
@@ -175,7 +175,7 @@ namespace ehw
 		case ehw::eLightType::Directional:
 			break;
 		case ehw::eLightType::Point:
-			tr->SetRelativeScale(float3(m_attribute.radius));
+			tr->SetLocalScale(float3(m_attribute.radius));
 			break;
 		case ehw::eLightType::Spot:
 			break;
@@ -197,8 +197,13 @@ namespace ehw
 		switch ((eLightType)m_attribute.lightType)
 		{
 		case ehw::eLightType::Directional:
-			m_attribute.direction = float4(tr->Forward().x, tr->Forward().y, tr->Forward().z, 0.0f);
+		{
+			const float3& forward = tr->GetWorldDirection(eDirection::Forward);
+			m_attribute.direction = float4(forward, 0.0f);
+			
 			break;
+		}
+
 		case ehw::eLightType::Point:
 			//Update에서 수행했음.
 			break;
@@ -210,7 +215,7 @@ namespace ehw
 			break;
 		}
 
-		float3 position = tr->GetRelativePos();
+		float3 position = tr->GetLocalPosition();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
 		RenderManager::PushLightAttribute(m_attribute);

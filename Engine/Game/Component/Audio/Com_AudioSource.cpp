@@ -82,8 +82,8 @@ namespace ehw
 	void Com_AudioSource::InternalUpdate()
 	{
 		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
-		float3 pos = tr->GetRelativePos();
-		float3 foward = tr->Forward();
+		float3 pos = tr->GetLocalPosition();
+		float3 foward = tr->GetLocalDirection(eDirection::Forward);
 
 		mAudioClip->Set3DAttributes(pos, foward);
 	}

@@ -52,8 +52,8 @@ namespace ehw
 		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetWorldPosition();
 
-		float3 foward = tr->GetWorldDirection(eDirectionType::FRONT);
-		float3 up = tr->GetWorldDirection(eDirectionType::UP);
+		float3 foward = tr->GetWorldDirection(eDirection::Forward);
+		float3 up = tr->GetWorldDirection(eDirection::Up);
 
 		float3 vel = { 0.0f, 0.0f, 0.0f };
 		AudioManager::Set3DListenerAttributes(&pos, &vel, &foward, &up);

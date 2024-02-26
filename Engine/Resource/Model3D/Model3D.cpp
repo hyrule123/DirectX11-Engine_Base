@@ -252,7 +252,7 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		std::shared_ptr<Com_Transform> tr = _emptyRootObj->AddComponent<Com_Transform>();
+		std::shared_ptr<Com_Transform> tr = _emptyRootObj->GetComponent<Com_Transform>();
 		ASSERT(tr, "트랜스폼 컴포넌트 생성 실패");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
@@ -288,9 +288,9 @@ namespace ehw
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
 				std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
-				_emptyRootObj->AddChild(child);
+				_emptyRootObj->Transform()->AddChild(child->Transform());
 
-				child->AddComponent<Com_Transform>();
+				//child->AddComponent<Com_Transform>();
 				child->AddComponent<Com_DummyAnimator>();
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.

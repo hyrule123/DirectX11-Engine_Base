@@ -23,7 +23,6 @@ namespace ehw
 		, mSkeleton()
 		//, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
-		, m_bFinalMatUpdate(false)
 		, m_PrevFrame(-1)
 		, m_Anim3DCBuffer()
 
@@ -32,6 +31,9 @@ namespace ehw
 
 		, mCurrentAnim()
 		, m_fClipUpdateTime()
+
+		, m_bInternalUpdated(false)
+		, m_bFinalMatrixUpdated(false)
 	{
 	}
 
@@ -40,7 +42,7 @@ namespace ehw
 		, mSkeleton()
 		//, m_iFramePerSecond(_other.m_iFramePerSecond)
 		, m_pBoneFinalMatBuffer(nullptr)
-		, m_bFinalMatUpdate(false)
+		, m_bFinalMatrixUpdated(false)
 		, m_PrevFrame(_other.m_PrevFrame)
 		, m_Anim3DCBuffer(_other.m_Anim3DCBuffer)
 
@@ -85,7 +87,15 @@ namespace ehw
 	{
 		//애니메이션이 없을 경우 플레이하지 않는다
 		if (nullptr == mSkeleton || nullptr == mCurrentAnim)
+		{
 			return;
+		}
+		else if (m_bInternalUpdated)
+		{
+			return;
+		}
+		m_bInternalUpdated = true;
+			
 
 		bool bChangeEnd = false;
 		if (m_Anim3DCBuffer.bChangingAnim)
@@ -156,7 +166,13 @@ namespace ehw
 
 
 		// 컴퓨트 쉐이더 연산여부
-		m_bFinalMatUpdate = false;
+		m_bFinalMatrixUpdated = false;
+	}
+
+	void Com_Animator3D::FrameEnd()
+	{
+		m_bInternalUpdated = false;
+		m_bFinalMatrixUpdated = false;
 	}
 	
 
@@ -248,10 +264,13 @@ namespace ehw
 	void Com_Animator3D::BindData()
 	{
 		if (nullptr == mCurrentAnim)
-			return;
-
-		if (false == m_bFinalMatUpdate)
 		{
+			return;
+		}
+
+		if (false == m_bFinalMatrixUpdated)
+		{
+			m_bFinalMatrixUpdated = true;
 			// Animation3D Update Compute Shader
 			static std::shared_ptr<Animation3DShader> pUpdateShader = LOAD_COMPUTESHADER(Animation3DShader);
 
@@ -279,7 +298,7 @@ namespace ehw
 			// 업데이트 쉐이더 실행
 			pUpdateShader->OnExcute();
 
-			m_bFinalMatUpdate = true;
+			m_bFinalMatrixUpdated = true;
 		}
 
 		// t19 레지스터에 최종행렬 데이터(구조버퍼) 바인딩	
@@ -337,7 +356,7 @@ namespace ehw
 				m_Anim3DCBuffer.NextFrame = 1;
 				m_Anim3DCBuffer.FrameRatio = 0.f;
 				m_Anim3DCBuffer.FrameLength = mCurrentAnim->GetFrameLength();
-				m_bFinalMatUpdate = false;
+				m_bFinalMatrixUpdated = false;
 				bPlayed = true;
 			}
 

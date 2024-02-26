@@ -1,10 +1,9 @@
 #pragma once
 
-
-
 #include "../Util/EnumFlags.h"
-
 #include "../Game/Component/Collider/iCollider2D.h"
+
+#include <map>
 
 namespace ehw
 {

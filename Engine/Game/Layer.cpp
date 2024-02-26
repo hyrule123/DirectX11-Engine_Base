@@ -62,6 +62,17 @@ namespace ehw
 		}
 	}
 
+	void Layer::FrameEnd()
+	{
+		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		{
+			if (m_GameObjects[i]->IsActive())
+			{
+				m_GameObjects[i]->Render();
+			}
+		}
+	}
+
 	void Layer::Destroy()
 	{
 		std::erase_if(m_GameObjects,

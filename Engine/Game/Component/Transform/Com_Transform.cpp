@@ -48,6 +48,7 @@ namespace ehw
 		UpdateWorldMatrix();
 	}
 
+
 	void Com_Transform::BindData()
 	{
 		tCB_Transform cbData{};
@@ -81,14 +82,23 @@ namespace ehw
 		m_localMatrix *= matRot;
 
 		//2-1. 회전행렬으로부터 직관적 방향을 계산한다.
-		m_localDirection[(int)eDirectionType::FRONT] = matRot.Forward();
-		m_localDirection[(int)eDirectionType::RIGHT] = matRot.Right();
-		m_localDirection[(int)eDirectionType::UP] = matRot.Up();
+		m_localDirection[(int)eDirection::Forward] = matRot.Forward();
+		m_localDirection[(int)eDirection::Right] = matRot.Right();
+		m_localDirection[(int)eDirection::Up] = matRot.Up();
 
 		//3. 이동행렬
 		m_localMatrix *= MATRIX::CreateTranslation(m_localPosition);
 
 		return true;
+	}
+
+	void Com_Transform::GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects)
+	{
+		_retObjects.push_back(GetOwner()->shared_from_this_T<GameObject>());
+		for (size_t i = 0; i < m_childs.size(); ++i)
+		{
+			m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
+		}
 	}
 
 	bool Com_Transform::UpdateWorldValue()
@@ -210,10 +220,12 @@ namespace ehw
 		}
 
 		//월드 방향 계산
-		for (int i = 0; i < (int)eDirectionType::END; ++i)
+		for (int i = 0; i < (int)eDirection::END; ++i)
 		{
 			m_worldDirection[i] = float3(m_worldMatrix.m[i]);
 		}
+
+		return true;
 	}
 
 

@@ -200,11 +200,37 @@ namespace ehw
 		}
 	}
 
+	void GameObject::FrameEnd()
+	{
+		if (false == IsActive())
+		{
+			return;
+		}
+
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		{
+			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			{
+				m_baseComponents[i]->FrameEnd();
+			}
+		}
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			{
+				m_scripts[i]->FrameEnd();
+			}
+		}
+	}
+
 
 	std::shared_ptr<iComponent> GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
 	{
 		if (nullptr == _pCom)
+		{
 			return nullptr;
+		}
 
 		eComponentCategory ComType = _pCom->GetComponentCategory();
 
@@ -240,7 +266,6 @@ namespace ehw
 	{
 		if (IsDestroyed() || IsActive() == _bActive)
 			return;
-
 
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
 		if (m_ownerScene->IsAwaken())

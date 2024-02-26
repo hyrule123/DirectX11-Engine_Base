@@ -31,9 +31,9 @@ namespace ehw
 		void InternalUpdate();
 
 		void Render();
+		void FrameEnd();
 
 	public:
-
 		template <typename T>
 		inline std::shared_ptr<T> AddComponent();
 		
@@ -49,6 +49,8 @@ namespace ehw
 		std::shared_ptr<iScript> GetScript(const std::string_view _strKey);
 
 		inline const std::shared_ptr<iComponent>& GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
+		inline std::shared_ptr<Com_Transform> Transform();
+
 
 
 		using BaseComponents = std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>;
@@ -140,6 +142,8 @@ namespace ehw
 
 
 
+
+
 	template <typename T>
 	std::shared_ptr<T> GameObject::GetComponent()
 	{
@@ -183,6 +187,12 @@ namespace ehw
 
 		return pCom;
 	}
+
+	inline std::shared_ptr<Com_Transform> GameObject::Transform()
+	{
+		return std::static_pointer_cast<Com_Transform>(m_baseComponents[(int)eComponentCategory::Transform]);
+	}
+
 	template<typename T>
 	inline std::shared_ptr<T> GameObject::GetScript()
 	{

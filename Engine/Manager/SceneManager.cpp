@@ -81,8 +81,7 @@ namespace ehw
 		{
 			dontDestroyObjs = mActiveScene->GetDontDestroyGameObjects();
 		}
-			
-
+		
 		if (mActiveScene)
 			mActiveScene->OnExit();
 
@@ -92,7 +91,7 @@ namespace ehw
 
 		for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		{
-			mActiveScene->AddNewGameObjectHierarchy(dontDestroyObjs[i]->GetLayerType(), std::move(dontDestroyObjs[i]));
+			mActiveScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
 		}
 
 		//OnEnter 호출

@@ -33,11 +33,15 @@ namespace ehw
 		virtual void Update() {};
 		virtual void InternalUpdate() = 0;
 
-		GameObject* GetOwner() const { return m_Owner; }
-		void SetOwner(GameObject* _owner) { m_Owner = _owner; }
+		virtual void FrameEnd() {};
 
-		iScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
+		//Raw Pointer 사용하는 이유: 생성자에서 weak_ptr 할당시 에러가 발생함.
+		//또한, Component는 GameObject에 달아서 사용하는 것을 전제로 만든 클래스임.
+		inline GameObject* GetOwner() { return m_Owner; }
+		inline void SetOwner(GameObject* _owner) { m_Owner = _owner; }
+
+		inline iScene* GetOwnerScene() const { return m_OwnerScene; }
+		inline void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
 
 		eComponentCategory GetComponentCategory() const { return m_ComCategory; };
 

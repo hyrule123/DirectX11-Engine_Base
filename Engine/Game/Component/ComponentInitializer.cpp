@@ -16,6 +16,7 @@
 #include "Audio\Com_AudioListener.h"
 #include "Animator\Com_Animator3D.h"
 #include "Light\Com_Light3D.h"
+#include "Animator\Com_DummyAnimator.h"
 #include "Transform\Com_Transform.h"
 #include "Camera\Com_Camera.h"
 #include "Renderer\Com_Renderer_3DAnimMesh.h"
@@ -37,6 +38,7 @@ namespace ehw
 		CONSTRUCTOR_T(Com_AudioListener);
 		CONSTRUCTOR_T(Com_Animator3D);
 		CONSTRUCTOR_T(Com_Light3D);
+		CONSTRUCTOR_T(Com_DummyAnimator);
 		CONSTRUCTOR_T(Com_Transform);
 		CONSTRUCTOR_T(Com_Camera);
 		CONSTRUCTOR_T(Com_Renderer_3DAnimMesh);

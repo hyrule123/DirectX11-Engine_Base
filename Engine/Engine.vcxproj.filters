@@ -453,7 +453,7 @@
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\Serializable.cpp" />
-    <ClCompile Include="Game\Component\Animator\Com_DummyAnimator.cpp" />
+    <ClCompile Include="Game\Component\Animator\Animation3DPlayData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -782,7 +782,7 @@
     <ClInclude Include="CommonType.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
-    <ClInclude Include="Game\Component\Animator\Com_DummyAnimator.h" />
+    <ClInclude Include="Game\Component\Animator\Animation3DPlayData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

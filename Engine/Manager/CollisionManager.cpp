@@ -9,7 +9,6 @@
 
 #include "../Util/AtExit.h"
 
-
 #include "SceneManager.h"
 
 namespace ehw
@@ -186,8 +185,8 @@ namespace ehw
 			return false;
 
 
-		MATRIX leftMat = leftTr->GetWorldMat();
-		MATRIX rightMat = rightTr->GetWorldMat();
+		MATRIX leftMat = leftTr->GetWorldMatrix();
+		MATRIX rightMat = rightTr->GetWorldMatrix();
 
 
 
@@ -216,7 +215,7 @@ namespace ehw
 		for (int index = 0; index < 4; index++)
 			Axis[index].z = 0.0f;
 
-		float3 vc = leftTr->GetWorldPos() - rightTr->GetWorldPos();
+		float3 vc = leftTr->GetWorldPosition() - rightTr->GetWorldPosition();
 		vc.z = 0.0f;
 
 		float3 centerDir = vc;

@@ -11,7 +11,7 @@ namespace ehw
 	iComponent::iComponent(eComponentCategory _type)
 		: m_ComCategory(_type)
 		, m_ComTypeID()
-		, m_Owner(nullptr)
+		, m_Owner()
 		, m_State(eState::Enabled)
 	{
 	}
@@ -20,7 +20,7 @@ namespace ehw
 		: Entity(_other)
 		, m_ComCategory(_other.m_ComCategory)
 		, m_ComTypeID()
-		, m_Owner(nullptr)
+		, m_Owner()
 		, m_State(_other.m_State)
 	{
 	}

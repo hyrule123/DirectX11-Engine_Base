@@ -35,20 +35,22 @@ namespace ehw
 		//아래 함수를 재정의해서 씬을 커스터마이즈 하면 됨
 		virtual void OnEnter() = 0;//리소스 로드
 
-		virtual void Update() {};
-		virtual void InternalUpdate() {};
-		virtual void Render() {};
-		virtual void Destroy() {};
-		virtual void OnExit() {};
+		virtual void Update() {}
+		virtual void InternalUpdate() {}
+		virtual void Render() {}
+		virtual void Destroy() {}
+		virtual void FrameEnd() {}
+		virtual void OnExit() {}
 		
 		Layer&							GetLayer(eLayerType _type) { return m_Layers[(uint)_type]; }
 
 		bool	IsAwaken() const { return m_bAwake; }
 
 		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		const std::shared_ptr<GameObject>& AddNewGameObjectHierarchy(const eLayerType _type, const std::shared_ptr<GameObject>& _newGameObj);
 		inline std::shared_ptr<GameObject> NewGameObject(const eLayerType _type);
 		inline std::shared_ptr<GameObject> NewGameObject(const eLayerType _type, const std::string_view _name);
+		void AddGameObjects(const eLayerType _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects);
+		inline void AddGameObject(const eLayerType _type, const std::shared_ptr<GameObject>& _gameObject);
 
 		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
 		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayerType _type);
@@ -70,14 +72,22 @@ namespace ehw
 
 	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayerType _type)
 	{
-		return AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
+		std::shared_ptr retObj = std::make_shared<GameObject>();
+		m_Layers[(int)_type].AddGameObject(retObj);
+		return retObj;
 	}
 
 	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayerType _type, const std::string_view _name)
 	{
-		const std::shared_ptr<GameObject>& retObj = AddNewGameObjectHierarchy(_type, std::make_shared<GameObject>());
+		std::shared_ptr retObj = std::make_shared<GameObject>();
+		m_Layers[(int)_type].AddGameObject(retObj);
 		retObj->SetName(_name);
 		return retObj;
+	}
+
+	inline void iScene::AddGameObject(const eLayerType _type, const std::shared_ptr<GameObject>& _gameObject)
+	{
+		m_Layers[(int)_type].AddGameObject(_gameObject);
 	}
 
 	template<class F, class ...Args>

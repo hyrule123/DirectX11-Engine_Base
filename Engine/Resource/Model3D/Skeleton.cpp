@@ -190,6 +190,7 @@ namespace ehw
 
 		size_t size{};
 		ser >> size;
+		m_vecBones.resize(size);
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
 			//std::string			strBoneName{};
@@ -365,7 +366,6 @@ namespace ehw
 		}
 
 		//Create
-		
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
 		desc.REGISLOT_t_SRV = Register_t_g_BoneOffsetArray;

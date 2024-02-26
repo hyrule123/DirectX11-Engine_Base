@@ -28,8 +28,8 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void Init() override;
-		virtual void Update() {};
 		virtual void InternalUpdate() override;
+		virtual void FrameEnd() override;
 
 		virtual bool IsPlaying() const { return (nullptr != mCurrentAnim); }
 
@@ -84,7 +84,9 @@ namespace ehw
 
 
         std::unique_ptr<StructBuffer>	m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
-        bool							m_bFinalMatUpdate;		// 최종행렬 연산 수행여부
+
+		bool							m_bInternalUpdated;
+        bool							m_bFinalMatrixUpdated;		// 최종행렬 연산 수행여부
 	};
 }
 

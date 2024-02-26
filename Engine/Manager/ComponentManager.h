@@ -1,7 +1,4 @@
 #pragma once
-
-
-
 #include "../CommonStruct.h"
 
 #include "../Game/Component/BaseComponents.h"
