@@ -71,9 +71,9 @@ namespace editor
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, ehw::tDataPtr{}, true);
 
-		for (size_t i = 0; i < (UINT)ehw::eLayerType::END; i++)
+		for (size_t i = 0; i < (UINT)ehw::eLayer::END; i++)
 		{
-			ehw::Layer& layer = scene->GetLayer((ehw::eLayerType)i);
+			ehw::Layer& layer = scene->GetLayer((ehw::eLayer)i);
 			const std::vector<std::shared_ptr<ehw::GameObject>>& gameObjs
 				= layer.GetGameObjects();
 

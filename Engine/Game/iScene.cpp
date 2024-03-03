@@ -10,7 +10,7 @@ namespace ehw
 		for (size_t i = 0; i < m_Layers.size(); ++i)
 		{
 			m_Layers[i].SetOwnerScene(this);
-			m_Layers[i].SetLayerType((eLayerType)i);
+			m_Layers[i].SetLayerType((eLayer)i);
 		}
 	}
 
@@ -74,7 +74,7 @@ namespace ehw
 	}
 
 
-	void iScene::AddGameObjects(const eLayerType _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects)
+	void iScene::AddGameObjects(const eLayer _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects)
 	{
 		for (size_t i = 0; i < _gameObjects.size(); ++i)
 		{
@@ -89,14 +89,14 @@ namespace ehw
 	{
 		std::vector<std::shared_ptr<GameObject>> dontGameObjs{};
 
-		for (int i = 0; i < (int)eLayerType::END; ++i)
+		for (int i = 0; i < (int)eLayer::END; ++i)
 		{
 			m_Layers[i].GetDontDestroyGameObjects(dontGameObjs);
 		}
 
 		return dontGameObjs;
 	}
-	const std::vector<std::shared_ptr<GameObject>>& iScene::GetGameObjects(const eLayerType _type)
+	const std::vector<std::shared_ptr<GameObject>>& iScene::GetGameObjects(const eLayer _type)
 	{
 		return m_Layers[(uint)_type].GetGameObjects();
 	}

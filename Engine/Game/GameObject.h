@@ -76,10 +76,10 @@ namespace ehw
 		void SetOwnerScene(iScene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
-		eLayerType GetLayerType() const { return m_layerType; }
+		eLayer GetLayerType() const { return m_layerType; }
 
 		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
-		void SetLayerType(eLayerType _type) { m_layerType = _type; }
+		void SetLayerType(eLayer _type) { m_layerType = _type; }
 
 		bool IsAwaken() const { return m_bAwake; }
 
@@ -92,7 +92,7 @@ namespace ehw
 		std::string m_name;
 
 		iScene* m_ownerScene;
-		eLayerType m_layerType;
+		eLayer m_layerType;
 
 		std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
 		std::vector<std::shared_ptr<iScript>> m_scripts;
@@ -103,11 +103,10 @@ namespace ehw
 			Active,
 			Destroy
 		} m_State;
-		bool m_bAwake;
-
-		bool m_bDontDestroyOnLoad;
-
 		void SetState(eState _state) { m_State = _state; }
+
+		bool m_bAwake;
+		bool m_bDontDestroyOnLoad;
 	};
 
 

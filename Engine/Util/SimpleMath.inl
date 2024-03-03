@@ -10,6 +10,8 @@
 //-------------------------------------------------------------------------------------
 
 #pragma once
+namespace ehw::math
+{
 
 /****************************************************************************
 *
@@ -20,7 +22,6 @@
 //------------------------------------------------------------------------------
 // Rectangle operations
 //------------------------------------------------------------------------------
-using namespace ehw::math;
 
 inline Vector2 Rectangle::Location() const noexcept
 {
@@ -50,7 +51,7 @@ inline void Rectangle::Inflate(long horizAmount, long vertAmount) noexcept
 //------------------------------------------------------------------------------
 
 
-inline ehw::math::Rectangle Rectangle::Intersect(const Rectangle& ra, const Rectangle& rb) noexcept
+inline Rectangle Rectangle::Intersect(const Rectangle& ra, const Rectangle& rb) noexcept
 {
     const long righta = ra.x + ra.width;
     const long rightb = rb.x + rb.width;
@@ -112,7 +113,7 @@ inline RECT Rectangle::Intersect(const RECT& rcta, const RECT& rctb) noexcept
     return result;
 }
 
-inline ehw::math::Rectangle Rectangle::Union(const Rectangle& ra, const Rectangle& rb) noexcept
+inline Rectangle Rectangle::Union(const Rectangle& ra, const Rectangle& rb) noexcept
 {
     const long righta = ra.x + ra.width;
     const long rightb = rb.x + rb.width;
@@ -623,7 +624,7 @@ inline Vector2 Vector2::Refract(const Vector2& ivec, const Vector2& nvec, float 
     return result;
 }
 
-inline void Vector2::Transform(const Vector2& v, const ehw::math::Quaternion& quat, Vector2& result) noexcept
+inline void Vector2::Transform(const Vector2& v, const Quaternion& quat, Vector2& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat2(&v);
@@ -632,7 +633,7 @@ inline void Vector2::Transform(const Vector2& v, const ehw::math::Quaternion& qu
     XMStoreFloat2(&result, X);
 }
 
-inline Vector2 Vector2::Transform(const Vector2& v, const ehw::math::Quaternion& quat) noexcept
+inline Vector2 Vector2::Transform(const Vector2& v, const Quaternion& quat) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat2(&v);
@@ -750,7 +751,7 @@ inline bool Vector3::operator != (const Vector3& V) const noexcept
 // Assignment operators
 //------------------------------------------------------------------------------
 
-inline Vector3& ehw::math::Vector3::operator+=(const Vector2& _v2) noexcept
+inline Vector3& Vector3::operator+=(const Vector2& _v2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat3(this);
@@ -1223,7 +1224,7 @@ inline Vector3 Vector3::Refract(const Vector3& ivec, const Vector3& nvec, float 
     return result;
 }
 
-inline void Vector3::Transform(const Vector3& v, const ehw::math::Quaternion& quat, Vector3& result) noexcept
+inline void Vector3::Transform(const Vector3& v, const Quaternion& quat, Vector3& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1232,7 +1233,7 @@ inline void Vector3::Transform(const Vector3& v, const ehw::math::Quaternion& qu
     XMStoreFloat3(&result, X);
 }
 
-inline Vector3 Vector3::Transform(const Vector3& v, const ehw::math::Quaternion& quat) noexcept
+inline Vector3 Vector3::Transform(const Vector3& v, const Quaternion& quat) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1814,7 +1815,7 @@ inline Vector4 Vector4::Refract(const Vector4& ivec, const Vector4& nvec, float 
     return result;
 }
 
-inline void Vector4::Transform(const Vector2& v, const ehw::math::Quaternion& quat, Vector4& result) noexcept
+inline void Vector4::Transform(const Vector2& v, const Quaternion& quat, Vector4& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat2(&v);
@@ -1824,7 +1825,7 @@ inline void Vector4::Transform(const Vector2& v, const ehw::math::Quaternion& qu
     XMStoreFloat4(&result, X);
 }
 
-inline Vector4 Vector4::Transform(const Vector2& v, const ehw::math::Quaternion& quat) noexcept
+inline Vector4 Vector4::Transform(const Vector2& v, const Quaternion& quat) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat2(&v);
@@ -1837,7 +1838,7 @@ inline Vector4 Vector4::Transform(const Vector2& v, const ehw::math::Quaternion&
     return result;
 }
 
-inline void Vector4::Transform(const Vector3& v, const ehw::math::Quaternion& quat, Vector4& result) noexcept
+inline void Vector4::Transform(const Vector3& v, const Quaternion& quat, Vector4& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1847,7 +1848,7 @@ inline void Vector4::Transform(const Vector3& v, const ehw::math::Quaternion& qu
     XMStoreFloat4(&result, X);
 }
 
-inline Vector4 Vector4::Transform(const Vector3& v, const ehw::math::Quaternion& quat) noexcept
+inline Vector4 Vector4::Transform(const Vector3& v, const Quaternion& quat) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat3(&v);
@@ -1860,7 +1861,7 @@ inline Vector4 Vector4::Transform(const Vector3& v, const ehw::math::Quaternion&
     return result;
 }
 
-inline void Vector4::Transform(const Vector4& v, const ehw::math::Quaternion& quat, Vector4& result) noexcept
+inline void Vector4::Transform(const Vector4& v, const Quaternion& quat, Vector4& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat4(&v);
@@ -1870,7 +1871,7 @@ inline void Vector4::Transform(const Vector4& v, const ehw::math::Quaternion& qu
     XMStoreFloat4(&result, X);
 }
 
-inline Vector4 Vector4::Transform(const Vector4& v, const ehw::math::Quaternion& quat) noexcept
+inline Vector4 Vector4::Transform(const Vector4& v, const Quaternion& quat) noexcept
 {
     using namespace DirectX;
     const XMVECTOR v1 = XMLoadFloat4(&v);
@@ -2318,7 +2319,7 @@ inline Matrix operator* (float S, const Matrix& M) noexcept
 // Matrix operations
 //------------------------------------------------------------------------------
 
-inline bool Matrix::Decompose(Vector3& scale, ehw::math::Quaternion& rotation, Vector3& translation) noexcept
+inline bool Matrix::Decompose(Vector3& scale, Quaternion& rotation, Vector3& translation) noexcept
 {
     using namespace DirectX;
 
@@ -2700,7 +2701,7 @@ inline Matrix Matrix::CreateWorld(const Vector3& position, const Vector3& forwar
     return R;
 }
 
-inline Matrix Matrix::CreateFromQuaternion(const ehw::math::Quaternion& rotation) noexcept
+inline Matrix Matrix::CreateFromQuaternion(const Quaternion& rotation) noexcept
 {
     using namespace DirectX;
     const XMVECTOR quatv = XMLoadFloat4(&rotation);
@@ -2794,7 +2795,7 @@ inline Matrix Matrix::Lerp(const Matrix& M1, const Matrix& M2, float t) noexcept
     return result;
 }
 
-inline void Matrix::Transform(const Matrix& M, const ehw::math::Quaternion& rotation, Matrix& result) noexcept
+inline void Matrix::Transform(const Matrix& M, const Quaternion& rotation, Matrix& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR quatv = XMLoadFloat4(&rotation);
@@ -2805,7 +2806,7 @@ inline void Matrix::Transform(const Matrix& M, const ehw::math::Quaternion& rota
     XMStoreFloat4x4(&result, XMMatrixMultiply(M0, M1));
 }
 
-inline Matrix Matrix::Transform(const Matrix& M, const ehw::math::Quaternion& rotation) noexcept
+inline Matrix Matrix::Transform(const Matrix& M, const Quaternion& rotation) noexcept
 {
     using namespace DirectX;
     const XMVECTOR quatv = XMLoadFloat4(&rotation);
@@ -2927,7 +2928,7 @@ inline Plane Plane::Transform(const Plane& plane, const Matrix& M) noexcept
     return result;
 }
 
-inline void Plane::Transform(const Plane& plane, const ehw::math::Quaternion& rotation, Plane& result) noexcept
+inline void Plane::Transform(const Plane& plane, const Quaternion& rotation, Plane& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR p = XMLoadFloat4(&plane);
@@ -2937,7 +2938,7 @@ inline void Plane::Transform(const Plane& plane, const ehw::math::Quaternion& ro
     XMStoreFloat4(&result, X);
 }
 
-inline Plane Plane::Transform(const Plane& plane, const ehw::math::Quaternion& rotation) noexcept
+inline Plane Plane::Transform(const Plane& plane, const Quaternion& rotation) noexcept
 {
     using namespace DirectX;
     const XMVECTOR p = XMLoadFloat4(&plane);
@@ -2961,7 +2962,7 @@ inline Plane Plane::Transform(const Plane& plane, const ehw::math::Quaternion& r
  // Comparision operators
  //------------------------------------------------------------------------------
 
-inline bool ehw::math::Quaternion::operator == (const ehw::math::Quaternion& q) const noexcept
+inline bool Quaternion::operator == (const Quaternion& q) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -2969,7 +2970,7 @@ inline bool ehw::math::Quaternion::operator == (const ehw::math::Quaternion& q) 
     return XMQuaternionEqual(q1, q2);
 }
 
-inline bool ehw::math::Quaternion::operator != (const ehw::math::Quaternion& q) const noexcept
+inline bool Quaternion::operator != (const Quaternion& q) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -2981,7 +2982,7 @@ inline bool ehw::math::Quaternion::operator != (const ehw::math::Quaternion& q) 
 // Assignment operators
 //------------------------------------------------------------------------------
 
-inline ehw::math::Quaternion& ehw::math::Quaternion::operator+= (const ehw::math::Quaternion& q) noexcept
+inline Quaternion& Quaternion::operator+= (const Quaternion& q) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -2990,7 +2991,7 @@ inline ehw::math::Quaternion& ehw::math::Quaternion::operator+= (const ehw::math
     return *this;
 }
 
-inline ehw::math::Quaternion& ehw::math::Quaternion::operator-= (const ehw::math::Quaternion& q) noexcept
+inline Quaternion& Quaternion::operator-= (const Quaternion& q) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -2999,7 +3000,7 @@ inline ehw::math::Quaternion& ehw::math::Quaternion::operator-= (const ehw::math
     return *this;
 }
 
-inline ehw::math::Quaternion& ehw::math::Quaternion::operator*= (const ehw::math::Quaternion& q) noexcept
+inline Quaternion& Quaternion::operator*= (const Quaternion& q) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -3008,7 +3009,7 @@ inline ehw::math::Quaternion& ehw::math::Quaternion::operator*= (const ehw::math
     return *this;
 }
 
-inline ehw::math::Quaternion& ehw::math::Quaternion::operator*= (float S) noexcept
+inline Quaternion& Quaternion::operator*= (float S) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
@@ -3016,7 +3017,7 @@ inline ehw::math::Quaternion& ehw::math::Quaternion::operator*= (float S) noexce
     return *this;
 }
 
-inline ehw::math::Quaternion& ehw::math::Quaternion::operator/= (const ehw::math::Quaternion& q) noexcept
+inline Quaternion& Quaternion::operator/= (const Quaternion& q) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -3030,12 +3031,12 @@ inline ehw::math::Quaternion& ehw::math::Quaternion::operator/= (const ehw::math
 // Urnary operators
 //------------------------------------------------------------------------------
 
-inline ehw::math::Quaternion ehw::math::Quaternion::operator- () const noexcept
+inline Quaternion Quaternion::operator- () const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMVectorNegate(q));
     return R;
 }
@@ -3044,67 +3045,67 @@ inline ehw::math::Quaternion ehw::math::Quaternion::operator- () const noexcept
 // Binary operators
 //------------------------------------------------------------------------------
 
-inline ehw::math::Quaternion operator+ (const ehw::math::Quaternion& Q1, const ehw::math::Quaternion& Q2) noexcept
+inline Quaternion operator+ (const Quaternion& Q1, const Quaternion& Q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(&Q1);
     const XMVECTOR q2 = XMLoadFloat4(&Q2);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMVectorAdd(q1, q2));
     return R;
 }
 
-inline ehw::math::Quaternion operator- (const ehw::math::Quaternion& Q1, const ehw::math::Quaternion& Q2) noexcept
+inline Quaternion operator- (const Quaternion& Q1, const Quaternion& Q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(&Q1);
     const XMVECTOR q2 = XMLoadFloat4(&Q2);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMVectorSubtract(q1, q2));
     return R;
 }
 
-inline ehw::math::Quaternion operator* (const ehw::math::Quaternion& Q1, const ehw::math::Quaternion& Q2) noexcept
+inline Quaternion operator* (const Quaternion& Q1, const Quaternion& Q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(&Q1);
     const XMVECTOR q2 = XMLoadFloat4(&Q2);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionMultiply(q1, q2));
     return R;
 }
 
-inline ehw::math::Quaternion operator* (const ehw::math::Quaternion& Q, float S) noexcept
+inline Quaternion operator* (const Quaternion& Q, float S) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(&Q);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMVectorScale(q, S));
     return R;
 }
 
-inline ehw::math::Quaternion operator/ (const ehw::math::Quaternion& Q1, const ehw::math::Quaternion& Q2) noexcept
+inline Quaternion operator/ (const Quaternion& Q1, const Quaternion& Q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(&Q1);
     XMVECTOR q2 = XMLoadFloat4(&Q2);
     q2 = XMQuaternionInverse(q2);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionMultiply(q1, q2));
     return R;
 }
 
-inline ehw::math::Quaternion operator* (float S, const ehw::math::Quaternion& Q) noexcept
+inline Quaternion operator* (float S, const Quaternion& Q) noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(&Q);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMVectorScale(q1, S));
     return R;
 }
@@ -3113,56 +3114,56 @@ inline ehw::math::Quaternion operator* (float S, const ehw::math::Quaternion& Q)
 // Quaternion operations
 //------------------------------------------------------------------------------
 
-inline float ehw::math::Quaternion::Length() const noexcept
+inline float Quaternion::Length() const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     return XMVectorGetX(XMQuaternionLength(q));
 }
 
-inline float ehw::math::Quaternion::LengthSquared() const noexcept
+inline float Quaternion::LengthSquared() const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     return XMVectorGetX(XMQuaternionLengthSq(q));
 }
 
-inline void ehw::math::Quaternion::Normalize() noexcept
+inline void Quaternion::Normalize() noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     XMStoreFloat4(this, XMQuaternionNormalize(q));
 }
 
-inline void ehw::math::Quaternion::Normalize(ehw::math::Quaternion& result) const noexcept
+inline void Quaternion::Normalize(Quaternion& result) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     XMStoreFloat4(&result, XMQuaternionNormalize(q));
 }
 
-inline void ehw::math::Quaternion::Conjugate() noexcept
+inline void Quaternion::Conjugate() noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     XMStoreFloat4(this, XMQuaternionConjugate(q));
 }
 
-inline void ehw::math::Quaternion::Conjugate(ehw::math::Quaternion& result) const noexcept
+inline void Quaternion::Conjugate(Quaternion& result) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     XMStoreFloat4(&result, XMQuaternionConjugate(q));
 }
 
-inline void ehw::math::Quaternion::Inverse(ehw::math::Quaternion& result) const noexcept
+inline void Quaternion::Inverse(Quaternion& result) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q = XMLoadFloat4(this);
     XMStoreFloat4(&result, XMQuaternionInverse(q));
 }
 
-inline float ehw::math::Quaternion::Dot(const ehw::math::Quaternion& q) const noexcept
+inline float Quaternion::Dot(const Quaternion& q) const noexcept
 {
     using namespace DirectX;
     const XMVECTOR q1 = XMLoadFloat4(this);
@@ -3170,12 +3171,12 @@ inline float ehw::math::Quaternion::Dot(const ehw::math::Quaternion& q) const no
     return XMVectorGetX(XMQuaternionDot(q1, q2));
 }
 
-inline void ehw::math::Quaternion::RotateTowards(const ehw::math::Quaternion& target, float maxAngle) noexcept
+inline void Quaternion::RotateTowards(const Quaternion& target, float maxAngle) noexcept
 {
     RotateTowards(target, maxAngle, *this);
 }
 
-inline Vector3 ehw::math::Quaternion::ToEuler() const noexcept
+inline Vector3 Quaternion::ToEuler() const noexcept
 {
     const float xx = x * x;
     const float yy = y * y;
@@ -3207,43 +3208,43 @@ inline Vector3 ehw::math::Quaternion::ToEuler() const noexcept
 // Static functions
 //------------------------------------------------------------------------------
 
-inline ehw::math::Quaternion ehw::math::Quaternion::CreateFromAxisAngle(const Vector3& axis, float angle) noexcept
+inline Quaternion Quaternion::CreateFromAxisAngle(const Vector3& axis, float angle) noexcept
 {
     using namespace DirectX;
     const XMVECTOR a = XMLoadFloat3(&axis);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionRotationAxis(a, angle));
     return R;
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll) noexcept
+inline Quaternion Quaternion::CreateFromYawPitchRoll(float yaw, float pitch, float roll) noexcept
 {
     using namespace DirectX;
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionRotationRollPitchYaw(pitch, yaw, roll));
     return R;
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::CreateFromYawPitchRoll(const Vector3& angles) noexcept
+inline Quaternion Quaternion::CreateFromYawPitchRoll(const Vector3& angles) noexcept
 {
     using namespace DirectX;
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionRotationRollPitchYawFromVector(angles));
     return R;
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::CreateFromRotationMatrix(const Matrix& M) noexcept
+inline Quaternion Quaternion::CreateFromRotationMatrix(const Matrix& M) noexcept
 {
     using namespace DirectX;
     const XMMATRIX M0 = XMLoadFloat4x4(&M);
 
-    ehw::math::Quaternion R;
+    Quaternion R;
     XMStoreFloat4(&R, XMQuaternionRotationMatrix(M0));
     return R;
 }
 
-inline void ehw::math::Quaternion::Lerp(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2, float t, ehw::math::Quaternion& result) noexcept
+inline void Quaternion::Lerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
@@ -3268,7 +3269,7 @@ inline void ehw::math::Quaternion::Lerp(const ehw::math::Quaternion& q1, const e
     XMStoreFloat4(&result, XMQuaternionNormalize(R));
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::Lerp(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2, float t) noexcept
+inline Quaternion Quaternion::Lerp(const Quaternion& q1, const Quaternion& q2, float t) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
@@ -3290,12 +3291,12 @@ inline ehw::math::Quaternion ehw::math::Quaternion::Lerp(const ehw::math::Quater
         R = XMVectorSubtract(X0, X1);
     }
 
-    ehw::math::Quaternion result;
+    Quaternion result;
     XMStoreFloat4(&result, XMQuaternionNormalize(R));
     return result;
 }
 
-inline void ehw::math::Quaternion::Slerp(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2, float t, ehw::math::Quaternion& result) noexcept
+inline void Quaternion::Slerp(const Quaternion& q1, const Quaternion& q2, float t, Quaternion& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
@@ -3303,18 +3304,18 @@ inline void ehw::math::Quaternion::Slerp(const ehw::math::Quaternion& q1, const 
     XMStoreFloat4(&result, XMQuaternionSlerp(Q0, Q1, t));
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::Slerp(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2, float t) noexcept
+inline Quaternion Quaternion::Slerp(const Quaternion& q1, const Quaternion& q2, float t) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
     const XMVECTOR Q1 = XMLoadFloat4(&q2);
 
-    ehw::math::Quaternion result;
+    Quaternion result;
     XMStoreFloat4(&result, XMQuaternionSlerp(Q0, Q1, t));
     return result;
 }
 
-inline void ehw::math::Quaternion::Concatenate(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2, ehw::math::Quaternion& result) noexcept
+inline void Quaternion::Concatenate(const Quaternion& q1, const Quaternion& q2, Quaternion& result) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
@@ -3322,32 +3323,32 @@ inline void ehw::math::Quaternion::Concatenate(const ehw::math::Quaternion& q1, 
     XMStoreFloat4(&result, XMQuaternionMultiply(Q1, Q0));
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::Concatenate(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2) noexcept
+inline Quaternion Quaternion::Concatenate(const Quaternion& q1, const Quaternion& q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
     const XMVECTOR Q1 = XMLoadFloat4(&q2);
 
-    ehw::math::Quaternion result;
+    Quaternion result;
     XMStoreFloat4(&result, XMQuaternionMultiply(Q1, Q0));
     return result;
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::FromToRotation(const Vector3& fromDir, const Vector3& toDir) noexcept
+inline Quaternion Quaternion::FromToRotation(const Vector3& fromDir, const Vector3& toDir) noexcept
 {
-    ehw::math::Quaternion result;
+    Quaternion result;
     FromToRotation(fromDir, toDir, result);
     return result;
 }
 
-inline ehw::math::Quaternion ehw::math::Quaternion::LookRotation(const Vector3& forward, const Vector3& up) noexcept
+inline Quaternion Quaternion::LookRotation(const Vector3& forward, const Vector3& up) noexcept
 {
-    ehw::math::Quaternion result;
+    Quaternion result;
     LookRotation(forward, up, result);
     return result;
 }
 
-inline float ehw::math::Quaternion::Angle(const ehw::math::Quaternion& q1, const ehw::math::Quaternion& q2) noexcept
+inline float Quaternion::Angle(const Quaternion& q1, const Quaternion& q2) noexcept
 {
     using namespace DirectX;
     const XMVECTOR Q0 = XMLoadFloat4(&q1);
@@ -3878,4 +3879,6 @@ inline void Viewport::Unproject(const Vector3& p, const Matrix& proj, const Matr
     const XMMATRIX projection = XMLoadFloat4x4(&proj);
     v = XMVector3Unproject(v, x, y, width, height, minDepth, maxDepth, projection, view, world);
     XMStoreFloat3(&result, v);
+}
+
 }

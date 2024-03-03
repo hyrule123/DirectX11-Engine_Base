@@ -197,17 +197,17 @@ namespace ehw
 
 		if (Extension == L".DDS")
 		{
-			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DDS_FLAGS::DDS_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, nullptr, mImage)))
 				return eResult::Fail_Open;
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), TGA_FLAGS::TGA_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, nullptr, mImage)))
 				return eResult::Fail_Open;
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
-			if (FAILED(LoadFromWICFile(_fullPath.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromWICFile(_fullPath.c_str(), DirectX::WIC_FLAGS::WIC_FLAGS_NONE, nullptr, mImage)))
 				return eResult::Fail_Open;
 		}
 
@@ -250,7 +250,7 @@ namespace ehw
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(DirectX::SaveToTGAFile(*(img.GetImage(0, 0, 0)), TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &img.GetMetadata())))
+			if (FAILED(DirectX::SaveToTGAFile(*(img.GetImage(0, 0, 0)), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &img.GetMetadata())))
 			{
 				return eResult::Fail_Create;
 			}

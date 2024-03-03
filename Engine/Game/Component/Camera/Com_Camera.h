@@ -37,7 +37,7 @@ namespace  ehw
 		
 		void RegisterCameraInRenderer();
 
-		void TurnLayerMask(eLayerType _layer, bool _enable = true);
+		void TurnLayerMask(eLayer _layer, bool _enable = true);
 		void EnableLayerMasks() { mLayerMasks.set(); }
 		void DisableLayerMasks() { mLayerMasks.reset(); }
 
@@ -83,7 +83,7 @@ namespace  ehw
 		float mFar;
 		float m_scale;
 
-		std::bitset<(uint)eLayerType::END> mLayerMasks;
+		std::bitset<(uint)eLayer::END> mLayerMasks;
 		std::vector<GameObject*> mDefferedOpaqueGameObjects;
 		std::vector<GameObject*> mOpaqueGameObjects;
 		std::vector<GameObject*> mCutoutGameObjects;

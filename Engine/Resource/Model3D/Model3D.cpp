@@ -7,10 +7,11 @@
 #include "../../Manager/ResourceManager.h"
 #include "../../Manager/PathManager.h"
 
+#include "../../Game/iScene.h"
 #include "../../Game/GameObject.h"
-#include "../../Game/Component/Animator/Com_DummyAnimator.h"
 #include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "../../Game/Component/Animator/Com_Animator3D.h"
+#include "../../Game/Component/Animator/Animation3D_PlayData.h"
 
 #include "../../Resource/Shader/GraphicsShader.h"
 
@@ -226,57 +227,67 @@ namespace ehw
 
 
 
-	std::shared_ptr<GameObject> Model3D::Instantiate()
+	eResult Model3D::Instantiate(iScene* _pScene, eLayer _type)
 	{
-		std::shared_ptr<GameObject> rootObj{}; 
-		if (m_meshContainers.empty())
+		if (nullptr == _pScene)
 		{
-			return rootObj;
+			return eResult::Fail_Nullptr;
 		}
-		rootObj = std::make_shared<GameObject>();
-
-		if (eResultFail(Instantiate(rootObj.get())))
+		else if (false == CheckeLayerValid(_type))
 		{
-			rootObj = nullptr;
+			return eResult::Fail_InValid;
+		}
+		else if (m_meshContainers.empty())
+		{
+			return eResult::Fail;
 		}
 
-		//만들어진 GameObject 주소를 반환
-		return rootObj;
+
+		std::shared_ptr<GameObject> rootObj = _pScene->NewGameObject(_type);
+
+		return Instantiate(rootObj);;
 	}
 
-	eResult Model3D::Instantiate(GameObject* _emptyRootObj)
+	eResult Model3D::Instantiate(const std::shared_ptr<GameObject>& _inSceneObj)
 	{
-		if (nullptr == _emptyRootObj)
+		if (nullptr == _inSceneObj)
 		{
 			ERROR_MESSAGE("GameObject가 nullptr 입니다.");
 			return eResult::Fail_Nullptr;
 		}
+		
+		else if (false == _inSceneObj->IsInScene())
+		{
+			ERROR_MESSAGE("인자로 들어온 GameObject가 Scene에 들어가있지 않습니다.");
+			return eResult::Fail_InValid;
+		}
 
-		std::shared_ptr<Com_Transform> tr = _emptyRootObj->GetComponent<Com_Transform>();
-		ASSERT(tr, "트랜스폼 컴포넌트 생성 실패");
+		std::shared_ptr<Com_Transform> tr = _inSceneObj->GetComponent<Com_Transform>();
+		ASSERT(tr, "트랜스폼 컴포넌트가 없습니다.");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
-		std::shared_ptr<Com_Animator3D> animator = nullptr;
+		std::shared_ptr<Animation3D_PlayData> sharedAnimationData{};
 		if (m_skeleton)
 		{
-			animator = _emptyRootObj->AddComponent<Com_Animator3D>();
-			ASSERT(animator, "애니메이터 컴포넌트 생성 실패");
-			animator->SetSkeleton(m_skeleton);
+			std::shared_ptr<Com_Animator3D> rootAnimator = _inSceneObj->AddComponent<Com_Animator3D>();
+			ASSERT(rootAnimator, "애니메이터 컴포넌트 생성 실패");
+			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
+			sharedAnimationData->SetSkeleton(m_skeleton);
 		}
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
 		if (1u == (UINT)m_meshContainers.size())
 		{
 			std::shared_ptr<Com_Renderer_Mesh> renderer = nullptr;
-			if (animator)
+			if (sharedAnimationData)
 			{
 				//수동으로 애니메이터를 설정
-				std::shared_ptr<Com_Renderer_3DAnimMesh> renderer3D = _emptyRootObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				std::shared_ptr<Com_Renderer_3DAnimMesh> renderer3D = _inSceneObj->AddComponent<Com_Renderer_3DAnimMesh>();
 				renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 			}
 			else
 			{
-				renderer = _emptyRootObj->AddComponent<Com_Renderer_Mesh>();
+				renderer = _inSceneObj->AddComponent<Com_Renderer_Mesh>();
 			}
 
 			SetDataToRenderer(renderer.get(), 0);
@@ -285,18 +296,21 @@ namespace ehw
 		//여러 개의 container를 가지고 있을 경우: 하나의 부모 object에 여러개의 child를 생성해서 각각 Meshrenderer에 할당
 		else
 		{
+			iScene* scene = _inSceneObj->GetOwnerScene();
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				std::shared_ptr<GameObject> child = std::make_shared<GameObject>();
-				_emptyRootObj->Transform()->AddChild(child->Transform());
-
-				//child->AddComponent<Com_Transform>();
-				child->AddComponent<Com_DummyAnimator>();
+				eLayer layer = _inSceneObj->GetLayerType();
+				std::shared_ptr<GameObject> child = scene->NewGameObject(_inSceneObj->GetLayerType());
+				_inSceneObj->Transform()->AddChild(child->Transform());
+				
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				std::shared_ptr<Com_Renderer_Mesh> renderer = nullptr;
-				if (animator)
+				if (sharedAnimationData)
 				{
+					std::shared_ptr<Com_Animator3D> childAnimator = child->AddComponent<Com_Animator3D>();
+					childAnimator->SetSharedAnimationData(sharedAnimationData);
+
 					//수동으로 애니메이터를 설정
 					auto renderer3D = child->AddComponent<Com_Renderer_3DAnimMesh>();
 					renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);

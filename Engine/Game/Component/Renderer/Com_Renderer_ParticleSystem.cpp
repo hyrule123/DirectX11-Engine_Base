@@ -110,8 +110,8 @@ namespace ehw
 			particles[i].position = float4(0.0f, 0.0f, 20.0f, 1.0f);
 			particles[i].active = 0;
 			particles[i].direction =
-				float4(cosf((float)i * (XM_2PI / (float)mMaxParticles))
-					, sin((float)i * (XM_2PI / (float)mMaxParticles)), 0.0f, 1.0f);
+				float4(cosf((float)i * (DirectX::XM_2PI / (float)mMaxParticles))
+					, sin((float)i * (DirectX::XM_2PI / (float)mMaxParticles)), 0.0f, 1.0f);
 
 			particles[i].speed = 100.0f;
 		}

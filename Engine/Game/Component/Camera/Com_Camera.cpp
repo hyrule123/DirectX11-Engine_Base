@@ -125,10 +125,9 @@ namespace ehw
 	void Com_Camera::CreateViewMatrix()
 	{
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
-		const auto& tr = GetOwner()->Transform();
+		auto tr = GetOwner()->Transform();
 
-
-		float3 vCamPos = tr->GetWorldPosition();
+		MATRIX world = tr->GetWorldMatrix();
 		//뷰행렬 = 카메라 앞으로 월드행렬의 물체들을 끌어오는 작업.
 		//도로 끌어오는 작업이므로 월드행렬에 배치했던 순서의 역순으로 작업을 해주면 된다.
 		//이동과 회전을 원래대로 되돌리는 행렬은 특정 행렬을 다시 원래 상태로 돌리는 행렬이라고 볼 수 있다.
@@ -142,7 +141,7 @@ namespace ehw
 		//역행렬을 곱하면 순서가 반대로 됨. 주의할 것
 		//또한 역행렬은 행렬마다 만들어지는 방식이 다르다. 어떤 행렬은 역행렬이 존재하지 않을 수도 있다.
 		//역행렬의 존재 여부는 판별식(행렬곱 Det)으로 가능하다.
-		//월드변환행렬의 경우는 역행렬이 다 존재하므로 사용할 필요는 없음.
+		//의 경우는 역행렬이 다 존재하므로 사용할 필요는 없음.
 
 
 		//1. 위치의 역행렬 -> 그냥 음수만큼 이동해주면됨
@@ -154,7 +153,7 @@ namespace ehw
 		0 0 1 0
 		-a -b -c 1
 		*/
-		mView = MATRIX::CreateTranslation(-vCamPos);
+		mView = MATRIX::CreateTranslation(-world.Translation());
 
 		//2. 회전
 		//회전은 이동과는 역행렬의 모습은 다르지만 쉽게 구할수 있다.
@@ -167,12 +166,15 @@ namespace ehw
 		//const XMVECTOR& vecQut = XMQuaternionRotationRollPitchYawFromVector(vecRot);
 		//Matrix tempmat = Matrix::CreateFromQuaternion(vecQut);
 		//m_matView *= tempmat.Transpose();
-		const MATRIX& matRot = tr->GetWorldMatrix();
-		mView *= matRot.Transpose();
+		world.Translation(Vector3::Zero);
+		world.Right(world.Right().Normalize());
+		world.Up(world.Up().Normalize());
+		world.Forward(world.Forward().Normalize());
+		world.Transpose();
 
 		//3. transform 상수버퍼 구조체에 업데이트 -> 안함. 나중에 render때 일괄적으로 view 행렬과 proj 행렬을 곱할 예정.
 		//g_matCam.matViewProj = m_matView;
-
+		mView *= world;
 
 		////===========
 		////투영 -> 사실 이건 한번만 구해줘도 됨 -> Init()으로 이동함
@@ -233,7 +235,7 @@ namespace ehw
 		case eProjectionType::Perspective:
 			mProjection = MATRIX::CreatePerspectiveFieldOfViewLH
 			(
-				XM_2PI / 4.0f
+				DirectX::XM_2PI / 4.0f
 				, mAspectRatio
 				, mNear
 				, mFar
@@ -270,7 +272,7 @@ namespace ehw
 		RenderManager::RegisterCamera(shared_from_this_T<Com_Camera>());
 	}
 
-	void Com_Camera::TurnLayerMask(eLayerType _layer, bool _enable)
+	void Com_Camera::TurnLayerMask(eLayer _layer, bool _enable)
 	{
 		mLayerMasks.set((uint)_layer, _enable);
 	}
@@ -310,11 +312,11 @@ namespace ehw
 		mPostProcessGameObjects.clear();
 
 		iScene* scene = SceneManager::GetActiveScene();
-		for (int index = 0; index < (uint)eLayerType::END; index++)
+		for (int index = 0; index < (uint)eLayer::END; index++)
 		{
 			if (mLayerMasks[index] == true)
 			{
-				Layer& layer = scene->GetLayer((eLayerType)index);
+				Layer& layer = scene->GetLayer((eLayer)index);
 				const std::vector<std::shared_ptr<GameObject>>& gameObjects = layer.GetGameObjects();
 				if (gameObjects.size() == 0)
 					continue;

@@ -28,11 +28,11 @@ namespace ehw
 	GameObject::GameObject()
 		: m_baseComponents()
 		, m_ownerScene()
-		, m_layerType(eLayerType::None)
+		, m_layerType(eLayer::None)
 		, m_name()
 		, m_State(eState::Active)
-		, m_bAwake()
-		, m_bDontDestroyOnLoad()
+		, m_bAwake(false)
+		, m_bDontDestroyOnLoad(false)
 	{
 		AddComponent<Com_Transform>();
 	}
@@ -227,11 +227,14 @@ namespace ehw
 
 	std::shared_ptr<iComponent> GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
 	{
+		std::shared_ptr<iComponent> retRVO{};
+
 		if (nullptr == _pCom)
 		{
-			return nullptr;
+			return retRVO;
 		}
 
+		retRVO = _pCom;
 		eComponentCategory ComType = _pCom->GetComponentCategory();
 
 		ASSERT(false == _pCom->GetStrKey().empty(),
@@ -243,22 +246,36 @@ namespace ehw
 		}
 		else
 		{
-			ASSERT(nullptr == m_baseComponents[(int)ComType], "이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
+			//해당 컴포넌트 카테고리가 비어있을 경우 컴포넌트를 집어넣는다.
+			if (nullptr == m_baseComponents[(int)ComType])
+			{
+				m_baseComponents[(int)ComType] = _pCom;
+			}
 
-			m_baseComponents[(int)ComType] = _pCom;
+			//동일한 ID의 컴포넌트가 컴포넌트 카테고리 안에 들어가 있을경우 해당 컴포넌트를 반환한다.
+			else if (_pCom->GetComponentTypeID() == m_baseComponents[(int)ComType]->GetComponentTypeID())
+			{
+				retRVO = m_baseComponents[(int)ComType];
+			}
+
+			//컴포넌트가 들어가 있는데, 동일한 컴포넌트 ID가 아닐 경우 에러
+			else
+			{
+				ASSERT(nullptr == m_baseComponents[(int)ComType], "이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
+			}
 		}
 
-		_pCom->SetOwner(this);
-		_pCom->SetOwnerScene(m_ownerScene);
-		_pCom->Init();
+		retRVO->SetOwner(this);
+		retRVO->SetOwnerScene(m_ownerScene);
+		retRVO->Init();
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
 		if (IsActive() && m_bAwake)
 		{
-			_pCom->Awake();
+			retRVO->Awake();
 		}
 
-		return _pCom;
+		return retRVO;
 	}
 
 

@@ -13,7 +13,7 @@
 
 namespace ehw
 {
-	std::bitset<(uint)eLayerType::END> CollisionManager::mLayerCollisionMatrix[(uint)eLayerType::END] = {};
+	std::bitset<(uint)eLayer::END> CollisionManager::mLayerCollisionMatrix[(uint)eLayer::END] = {};
 	std::map<UINT64, bool> CollisionManager::mCollisionMap;
 
 	void CollisionManager::Init()
@@ -22,7 +22,7 @@ namespace ehw
 	}
 	void CollisionManager::Release()
 	{
-		for (int i = 0; i < (int)eLayerType::END; ++i)
+		for (int i = 0; i < (int)eLayer::END; ++i)
 		{
 			mLayerCollisionMatrix[i].reset();
 		}
@@ -32,13 +32,13 @@ namespace ehw
 	void CollisionManager::Update()
 	{
 		iScene* scene = SceneManager::GetActiveScene();
-		for (uint row = 0; row < (uint)eLayerType::END; row++)
+		for (uint row = 0; row < (uint)eLayer::END; row++)
 		{
-			for (uint column = 0; column < (uint)eLayerType::END; column++)
+			for (uint column = 0; column < (uint)eLayer::END; column++)
 			{
 				if (mLayerCollisionMatrix[row][column])
 				{
-					LayerCollision(scene, (eLayerType)row, (eLayerType)column);
+					LayerCollision(scene, (eLayer)row, (eLayer)column);
 				}
 			}
 		}
@@ -49,7 +49,7 @@ namespace ehw
 	void CollisionManager::Render()
 	{
 	}
-	void CollisionManager::CollisionLayerCheck(eLayerType _left, eLayerType _right, bool _enable)
+	void CollisionManager::CollisionLayerCheck(eLayer _left, eLayer _right, bool _enable)
 	{
 		int row = 0;
 		int column = 0;
@@ -67,7 +67,7 @@ namespace ehw
 
 		mLayerCollisionMatrix[row][column] = _enable;
 	}
-	void CollisionManager::LayerCollision(iScene* _scene, eLayerType _left, eLayerType _right)
+	void CollisionManager::LayerCollision(iScene* _scene, eLayer _left, eLayer _right)
 	{
 		const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
 		const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);

@@ -11,9 +11,6 @@
 #endif
 #include <Windows.h>
 
-using namespace DirectX;
-using namespace DirectX::PackedVector;
-
 namespace ehw
 {
 	enum class eAxis2D
@@ -53,6 +50,8 @@ namespace ehw
 
 namespace ehw::math
 {
+	using namespace ::DirectX;
+	using namespace ::DirectX::PackedVector;
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;
@@ -1027,10 +1026,5 @@ namespace ehw::math
 #endif
 		static RECT __cdecl ComputeTitleSafeArea(UINT backBufferWidth, UINT backBufferHeight) noexcept;
 	};
-
-#include "SimpleMath.inl"
 }
-
-
-
-
+#include "SimpleMath.inl"

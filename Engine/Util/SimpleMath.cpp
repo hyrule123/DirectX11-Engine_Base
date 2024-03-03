@@ -9,14 +9,15 @@
 	// http://go.microsoft.com/fwlink/?LinkId=248929
 	// http://go.microsoft.com/fwlink/?LinkID=615561
 	//-------------------------------------------------------------------------------------
-
+namespace ehw::math
+{
+	using namespace DirectX;
 /****************************************************************************
  *
  * Constants
  *
  ****************************************************************************/
-namespace ehw::math
-{
+
 	const Vector2 Vector2::Zero = { 0.f, 0.f };
 	const Vector2 Vector2::One = { 1.f, 1.f };
 	const Vector2 Vector2::UnitX = { 1.f, 0.f };
@@ -48,10 +49,6 @@ namespace ehw::math
 
 	const Quaternion Quaternion::Identity = { 0.f, 0.f, 0.f, 1.f };
 
-
-
-	using namespace DirectX;
-	//
 
 	/****************************************************************************
 	 *

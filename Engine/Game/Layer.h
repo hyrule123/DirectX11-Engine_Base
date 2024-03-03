@@ -30,11 +30,11 @@ namespace ehw
 
 		void GetDontDestroyGameObjects(std::vector<std::shared_ptr<GameObject>>& _dontObjects);
 
-		void SetLayerType(eLayerType _type) { m_LayerType = _type; }
+		void SetLayerType(eLayer _type) { m_LayerType = _type; }
 
 	private:
 		iScene* m_OwnerScene;
-		eLayerType m_LayerType;
+		eLayer m_LayerType;
 
 		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 	};

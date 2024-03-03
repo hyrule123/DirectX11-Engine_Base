@@ -522,7 +522,7 @@ namespace ehw
 
 			int iSlice = 40;
 			float fRadius = 0.5f;
-			float fTheta = XM_2PI / (float)iSlice;
+			float fTheta = DirectX::XM_2PI / (float)iSlice;
 
 			Vertex2D vtx2d = {};
 			for (int i = 0; i < iSlice; ++i)
@@ -798,8 +798,8 @@ namespace ehw
 			uint iStackCount = 40; // 가로 분할 개수
 			uint iSliceCount = 40; // 세로 분할 개수
 
-			float fStackAngle = XM_PI / iStackCount;
-			float fSliceAngle = XM_2PI / iSliceCount;
+			float fStackAngle = DirectX::XM_PI / iStackCount;
+			float fSliceAngle = DirectX::XM_2PI / iSliceCount;
 
 			float fUVXStep = 1.f / (float)iSliceCount;
 			float fUVYStep = 1.f / (float)iStackCount;

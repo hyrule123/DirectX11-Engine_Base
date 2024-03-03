@@ -32,7 +32,7 @@ namespace ehw
 	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
 	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
 
-	enum class eLayerType
+	enum class eLayer
 	{
 		None = -1,
 		Com_Camera,
@@ -46,6 +46,10 @@ namespace ehw
 
 		END
 	};
+	inline bool CheckeLayerValid(eLayer _type)
+	{
+		return ((eLayer::None != _type) && (eLayer::END != _type));
+	}
 
 	enum class eProjectionType
 	{

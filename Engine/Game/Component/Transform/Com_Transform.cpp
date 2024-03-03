@@ -18,7 +18,7 @@ namespace ehw
 	Com_Transform::Com_Transform()
 		: m_localScale(float3::One)
 		, m_localSize(float3::One)
-		, m_localRotation(float3::Zero)
+		, m_localRotation(Quaternion::Identity)
 		, m_localPosition(float3::Zero)
 		, m_localDirection{ float3::Right, float3::Up, float3::Forward }
 		, m_localMatrix(MATRIX::Identity)
@@ -29,7 +29,6 @@ namespace ehw
 		, m_bNeedUpdateLocalMatrix(true)
 		, m_bNeedUpdateWorldValue(true)
 		, m_bNeedUpdateWorldMatrix(true)
-
 		, m_parent()
 		, m_childs()
 	{
@@ -181,13 +180,11 @@ namespace ehw
 				//크기 무시 + 회전 반영
 				else
 				{
-					//부모의 World Scale의 역수를 만들어서 월드행렬 앞에 곱해준다(회전정보만 제거)
-					parentMat = MATRIX::CreateScale(float3(1.f) / parent->GetWorldScale());
+					//정규화하면 크기정보가 제거된다.
 					parentMat *= parent->GetWorldMatrix();
-					//정규화해서 크기정보를 제거
-					//parentMat.Right(parentMat.Right().Normalize());
-					//parentMat.Up(parentMat.Up().Normalize());
-					//parentMat.Forward(parentMat.Forward().Normalize());
+					parentMat.Right(parentMat.Right().Normalize());
+					parentMat.Up(parentMat.Up().Normalize());
+					parentMat.Forward(parentMat.Forward().Normalize());
 				}
 			}
 
@@ -213,6 +210,12 @@ namespace ehw
 					//회전정보만 상속받는 경우: 크기정보만 추출
 					//이 코드는 Scale이 음수일시는 작동하지 않는다는 문제점이 있다.
 					//float3 Scale(parentMat.Right().Length(), parentMat.Up().Length(), parentMat.Forward().Length());
+				}
+
+				//크기 반영 + 회전 반영 -> 그냥 바로 적용
+				else
+				{
+					parentMat *= parent->GetWorldMatrix_Internal();
 				}
 			}
 

@@ -1,10 +1,9 @@
 #pragma once
 #include "../iComponent.h"
 
-
-
 #include "../../../CommonStruct.h"
 
+#include <functional>
 
 namespace ehw
 {

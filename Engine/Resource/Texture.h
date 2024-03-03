@@ -1,17 +1,11 @@
 #pragma once
 #include "iResource.h"
-
-
-
 #include "../Manager/GPUManager.h"
-
 
 #include <DirectXTex/DirectXTex.h>
 
 namespace ehw
 {
-	using Microsoft::WRL::ComPtr;
-
 	class Texture final : public iResource
 	{
 	public:
@@ -23,7 +17,7 @@ namespace ehw
 
 		//생성 관련 함수
 		bool Create(UINT _width, UINT _height, DXGI_FORMAT _format, uint _D3D11_BIND_FLAG, bool _bAllowCPURead = false);
-		bool Create(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture);
+		bool Create(ComPtr<ID3D11Texture2D> _texture);
 		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
@@ -59,7 +53,7 @@ namespace ehw
 	private:
 		D3D11_TEXTURE2D_DESC					mDesc;
 		ComPtr<ID3D11Texture2D>					mTexture;
-		ScratchImage							mImage;
+		DirectX::ScratchImage							mImage;
 		
 		//각종 View
 		//특정 버퍼와 연결하기 위한 통행증이라고 보면 됨

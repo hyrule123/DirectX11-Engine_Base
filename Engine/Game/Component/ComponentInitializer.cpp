@@ -12,14 +12,13 @@
 #include "strKey_Component.h"
 
 
-#include "Animator\Com_Animator2D.h"
 #include "Audio\Com_AudioListener.h"
-#include "Animator\Com_Animator3D.h"
+#include "Animator\Com_Animator2D.h"
 #include "Light\Com_Light3D.h"
-#include "Animator\Com_DummyAnimator.h"
-#include "Transform\Com_Transform.h"
-#include "Camera\Com_Camera.h"
+#include "Animator\Com_Animator3D.h"
 #include "Renderer\Com_Renderer_3DAnimMesh.h"
+#include "Camera\Com_Camera.h"
+#include "Transform\Com_Transform.h"
 #include "Audio\Com_AudioSource.h"
 #include "Renderer\Com_Renderer_Mesh.h"
 #include "Renderer\Com_Renderer_ParticleSystem.h"
@@ -34,14 +33,13 @@ namespace ehw
 
 	void ComponentInitializer::Init()
 	{
-		CONSTRUCTOR_T(Com_Animator2D);
 		CONSTRUCTOR_T(Com_AudioListener);
-		CONSTRUCTOR_T(Com_Animator3D);
+		CONSTRUCTOR_T(Com_Animator2D);
 		CONSTRUCTOR_T(Com_Light3D);
-		CONSTRUCTOR_T(Com_DummyAnimator);
-		CONSTRUCTOR_T(Com_Transform);
-		CONSTRUCTOR_T(Com_Camera);
+		CONSTRUCTOR_T(Com_Animator3D);
 		CONSTRUCTOR_T(Com_Renderer_3DAnimMesh);
+		CONSTRUCTOR_T(Com_Camera);
+		CONSTRUCTOR_T(Com_Transform);
 		CONSTRUCTOR_T(Com_AudioSource);
 		CONSTRUCTOR_T(Com_Renderer_Mesh);
 		CONSTRUCTOR_T(Com_Renderer_ParticleSystem);

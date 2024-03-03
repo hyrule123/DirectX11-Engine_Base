@@ -237,6 +237,7 @@ namespace ehw
 		if (_transform)
 		{
 			m_childs.push_back(_transform);
+
 			_transform->SetParent(shared_from_this_T<Com_Transform>());
 			_transform->SetAllFlagsOn();
 		}
