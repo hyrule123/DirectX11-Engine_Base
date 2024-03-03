@@ -29,6 +29,7 @@ namespace ehw
 		, m_bNeedUpdateLocalMatrix(true)
 		, m_bNeedUpdateWorldValue(true)
 		, m_bNeedUpdateWorldMatrix(true)
+		, m_bTransformUpdated(true)
 		, m_parent()
 		, m_childs()
 	{
@@ -72,6 +73,7 @@ namespace ehw
 			return false;
 		}
 		m_bNeedUpdateLocalMatrix = false;
+		m_bTransformUpdated = true;
 
 		//1. 크기행렬
 		m_localMatrix = MATRIX::CreateScale(m_localScale);
@@ -117,6 +119,7 @@ namespace ehw
 			return false;
 		}
 		m_bNeedUpdateWorldValue = false;
+		m_bTransformUpdated = true;
 
 		m_worldScale = m_localScale;
 		m_worldRotation = m_localRotation;
@@ -152,7 +155,7 @@ namespace ehw
 			return false;
 		}
 		m_bNeedUpdateWorldMatrix = false;
-
+		m_bTransformUpdated = true;
 
 		m_worldMatrix = m_localMatrix;
 		if (parent)
@@ -225,7 +228,7 @@ namespace ehw
 		//월드 방향 계산
 		for (int i = 0; i < (int)eDirection::END; ++i)
 		{
-			m_worldDirection[i] = float3(m_worldMatrix.m[i]);
+			m_worldDirection[i] = float3(m_worldMatrix.m[i]).Normalize();
 		}
 
 		return true;
@@ -272,6 +275,10 @@ namespace ehw
 			//설정하려는 World Rotation을 부모의 World Rotation로 나눠 주면 Local Rotation을 얼마나 지정해야하는지 알 수 있다.
 			SetLocalRotation(_worldRotation / parent->GetWorldRotation_Internal());
 		}
+	}
+	inline void Com_Transform::SetWorldRotation(const float3& _worldRotationEuler)
+	{
+		SetWorldRotation(Quaternion::CreateFromYawPitchRoll(_worldRotationEuler));
 	}
 	void Com_Transform::SetWorldPosition(const float3& _worldPosition)
 	{

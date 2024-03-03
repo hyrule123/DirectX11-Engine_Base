@@ -124,8 +124,13 @@ namespace ehw
 
 	void Com_Camera::CreateViewMatrix()
 	{
-		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
 		auto tr = GetOwner()->Transform();
+
+		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
+		if (false == tr->IsTransformUpdated())
+		{
+			return;
+		}
 
 		MATRIX world = tr->GetWorldMatrix();
 		//뷰행렬 = 카메라 앞으로 월드행렬의 물체들을 끌어오는 작업.
@@ -167,6 +172,7 @@ namespace ehw
 		//Matrix tempmat = Matrix::CreateFromQuaternion(vecQut);
 		//m_matView *= tempmat.Transpose();
 		world.Translation(Vector3::Zero);
+
 		world.Right(world.Right().Normalize());
 		world.Up(world.Up().Normalize());
 		world.Forward(world.Forward().Normalize());
@@ -175,6 +181,14 @@ namespace ehw
 		//3. transform 상수버퍼 구조체에 업데이트 -> 안함. 나중에 render때 일괄적으로 view 행렬과 proj 행렬을 곱할 예정.
 		//g_matCam.matViewProj = m_matView;
 		mView *= world;
+
+
+		//방법 2: MATRIX CreateLookAt 함수 사용 -> 카메라의 월드 위치 기준으로
+		world = tr->GetWorldMatrix();
+		Vector3 target = Vector3::Transform(Vector3::UnitZ, world);
+		mView = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
+
+
 
 		////===========
 		////투영 -> 사실 이건 한번만 구해줘도 됨 -> Init()으로 이동함
@@ -235,7 +249,7 @@ namespace ehw
 		case eProjectionType::Perspective:
 			mProjection = MATRIX::CreatePerspectiveFieldOfViewLH
 			(
-				DirectX::XM_2PI / 4.0f
+				DirectX::XM_2PI / 6.0f
 				, mAspectRatio
 				, mNear
 				, mFar

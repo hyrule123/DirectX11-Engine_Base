@@ -56,10 +56,12 @@ namespace ehw
 
 		void GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects);
 		
+		inline bool IsTransformUpdated() const { return m_bTransformUpdated; }
 
 #pragma region //LOCAL
 		inline const float3& GetLocalScale() const { return m_localScale; }
 		inline const math::Quaternion& GetLocalRotation() const { return m_localRotation; }
+
 		inline const float3& GetLocalPosition() const { return m_localPosition; }
 		inline const MATRIX& GetLocalMatrix() const { return m_localMatrix; }
 		inline const float3& GetLocalDirection(eDirection _dirType);
@@ -69,12 +71,14 @@ namespace ehw
 		
 		inline void SetLocalScale(const float3& _localScale);
 		inline void SetLocalRotation(const math::Quaternion& _localRotation);
+		inline void SetLocalRotation(const float3& _localRotationEuler);
 		inline void SetLocalPosition(const float3& _localPosition);
 #pragma endregion //LOCAL
 
 #pragma region //WORLD
 		inline const float3& GetWorldScale();
 		inline const math::Quaternion& GetWorldRotation();
+		
 		inline float3 GetWorldPosition();
 		inline const MATRIX& GetWorldMatrix();
 		inline const float3& GetWorldDirection(eDirection _dirType);
@@ -82,6 +86,7 @@ namespace ehw
 
 		void SetWorldScale(const float3& _worldScale);
 		void SetWorldRotation(const math::Quaternion& _worldRotation);
+		inline void SetWorldRotation(const float3& _worldRotationEuler);
 		void SetWorldPosition(const float3& _worldPosition);
 #pragma endregion //WORLD
 
@@ -147,6 +152,9 @@ namespace ehw
 		//World Matrix가 변경되어야 할 경우 true
 		bool m_bNeedUpdateWorldMatrix;
 
+		//local이던 world던 뭐던간에 업데이트 발생 시 true
+		bool m_bTransformUpdated;
+
 
 		//부모의 크기 무시할 시 true
 		bool m_bIgnoreParentScale;
@@ -175,6 +183,12 @@ namespace ehw
 	inline void Com_Transform::SetLocalRotation(const math::Quaternion& _localRotation)
 	{
 		m_localRotation = _localRotation;
+		SetAllFlagsOn();
+	}
+
+	inline void Com_Transform::SetLocalRotation(const float3& _localRotationEuler)
+	{
+		m_localRotation = Quaternion::CreateFromYawPitchRoll(_localRotationEuler);
 		SetAllFlagsOn();
 	}
 
@@ -261,5 +275,6 @@ namespace ehw
 		m_bNeedUpdateLocalMatrix = true;
 		m_bNeedUpdateWorldValue = true;
 		m_bNeedUpdateWorldMatrix = true;
+		m_bTransformUpdated = true;
 	}
 }
