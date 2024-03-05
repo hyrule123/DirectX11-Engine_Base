@@ -1,15 +1,15 @@
+#include "Editor/DebugObject/EditorGameObject.h"
 
-#include "EditorGameObject.h"
+#include "Application.h"
 
-#include "../../Application.h"
-#include "../../Game/iScene.h"
-#include "../../Game/Layer.h"
-#include "../../Manager/SceneManager.h"
-#include "../../Manager/RenderManager.h"
+#include "Game/iScene.h"
+#include "Game/Layer.h"
 
-#include "../../Manager/EditorManager.h"
+#include "Manager/SceneManager.h"
+#include "Manager/RenderManager.h"
+#include "Manager/EditorManager.h"
 
-#include "../../Editor/Inspector/EditorInspector.h"
+#include "Editor/Inspector/EditorInspector.h"
 
 namespace editor
 {

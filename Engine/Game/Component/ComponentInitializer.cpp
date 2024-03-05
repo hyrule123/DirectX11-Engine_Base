@@ -8,7 +8,7 @@
 
 
 #include "ComponentInitializer.h"
-#include "../../Manager/ComponentManager.h"
+#include "Manager/ComponentManager.h"
 #include "strKey_Component.h"
 
 

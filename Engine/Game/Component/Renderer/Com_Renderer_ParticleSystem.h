@@ -1,9 +1,7 @@
 #pragma once
-#include "Com_Renderer_Mesh.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-
-#include "../../../Resource/Shader/ComputeShaders/ParticleShader.h"
-#include "../../../DefaultShader/Particle/Particle.hlsli"
+#include "DefaultShader/Particle/Particle.hlsli"
 
 namespace ehw
 {
@@ -13,8 +11,8 @@ namespace ehw
 		World,
 	};
 
+	class ParticleShader;
 	class StructBuffer;
-
 	class Com_Renderer_ParticleSystem : public Com_Renderer_Mesh
 	{
 	public:
@@ -37,10 +35,12 @@ namespace ehw
 		StructBuffer* mBuffer;
 		StructBuffer* mSharedBuffer;
 #pragma endregion
+
 #pragma region tParticle GraphicsShader 관련 변수 선언
 		std::shared_ptr<ParticleShader> mCS;
 		tCB_ParticleSystem mCBData;
 #pragma endregion
+
 #pragma region tParticle System 관련 변수 선언
 		float4 mStartSize;
 		float4 mStartColor;

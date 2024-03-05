@@ -2,10 +2,10 @@
 
 
 
-#include "../Util/define_Util.h"
-#include "../Util/StringConverter.h"
+#include "Util/define_Util.h"
+#include "Util/StringConverter.h"
 
-#include "../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 
 #ifdef _WIN64

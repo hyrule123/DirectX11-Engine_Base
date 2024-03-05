@@ -1,7 +1,7 @@
 #include "iResource.h"
 
 
-#include "../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 namespace ehw
 {

@@ -3,17 +3,17 @@
 
 
 
-#include "../CommonGlobalVar.h"
+#include "CommonGlobalVar.h"
 
-#include "../GPU/StructBuffer.h"
+#include "GPU/StructBuffer.h"
 
-#include "../Manager/ResourceManager.h"
-#include "../Manager/RenderManager.h"
-#include "../Manager/GPUManager.h"
-#include "../Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/RenderManager.h"
+#include "Manager/GPUManager.h"
+#include "Manager/PathManager.h"
 
-#include "../Util/define_Util.h"
-#include "../Util/Serialize/BinarySerializer.h"
+#include "Util/define_Util.h"
+#include "Util/Serialize/BinarySerializer.h"
 
 #include "Model3D/FBXLoader.h"
 

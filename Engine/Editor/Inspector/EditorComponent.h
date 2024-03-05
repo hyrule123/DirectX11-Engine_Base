@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 
-#include "../../Game/GameObject.h"
+#include "Game/GameObject.h"
 
 
 namespace editor

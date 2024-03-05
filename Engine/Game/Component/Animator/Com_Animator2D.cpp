@@ -1,9 +1,9 @@
 #include "Com_Animator2D.h"
 
 
-#include "../../GameObject.h"
+#include "Game/GameObject.h"
 
-#include "../Transform/Com_Transform.h"
+#include "Game/Component/Transform/Com_Transform.h"
 
 
 

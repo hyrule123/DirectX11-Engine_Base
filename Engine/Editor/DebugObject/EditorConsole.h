@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Editor/Base/EditorBase.h"
+#include "Editor/Base/EditorBase.h"
 
 
 namespace editor

@@ -1,8 +1,7 @@
 #pragma once
-#include "../../Editor/Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
 
-
-#include "../../Util/SimpleMath.h"
+#include "Util/SimpleMath.h"
 
 namespace ehw
 {

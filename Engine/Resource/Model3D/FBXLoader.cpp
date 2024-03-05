@@ -1,15 +1,15 @@
 
 #include "FBXLoader.h"
 
-#include "../../Manager/PathManager.h"
-#include "../../Manager/ResourceManager.h"
+#include "Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Resource/Texture.h"
-#include "../../Resource/Material.h"
-#include "../../Resource/Shader/GraphicsShader.h"
-#include "../../Resource/Model3D/Model3D.h"
+#include "Resource/Texture.h"
+#include "Resource/Material.h"
+#include "Resource/Shader/GraphicsShader.h"
+#include "Resource/Model3D/Model3D.h"
 
-#include "../../Util/define_Util.h"
+#include "Util/define_Util.h"
 
 
 

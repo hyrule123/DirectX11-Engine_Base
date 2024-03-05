@@ -1,4 +1,4 @@
-#include "../Basic/_3D.hlsli"
+#include "Basic/_3D.hlsli"
 
 VSOut main(VSIn _in)
 {

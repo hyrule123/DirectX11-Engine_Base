@@ -1,21 +1,21 @@
 #include "Model3D.h"
 
 
-#include "../../Util/define_Util.h"
-#include "../../Util/Serialize/JsonSerializer.h"
+#include "Util/define_Util.h"
+#include "Util/Serialize/JsonSerializer.h"
 
-#include "../../Manager/ResourceManager.h"
-#include "../../Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/PathManager.h"
 
-#include "../../Game/iScene.h"
-#include "../../Game/GameObject.h"
-#include "../../Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
-#include "../../Game/Component/Animator/Com_Animator3D.h"
-#include "../../Game/Component/Animator/Animation3D_PlayData.h"
+#include "Game/iScene.h"
+#include "Game/GameObject.h"
+#include "Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "Game/Component/Animator/Com_Animator3D.h"
+#include "Game/Component/Animator/Animation3D_PlayData.h"
 
-#include "../../Resource/Shader/GraphicsShader.h"
+#include "Resource/Shader/GraphicsShader.h"
 
-#include "../Texture.h"
+#include "Texture.h"
 #include "Skeleton.h"
 #include "FBXLoader.h"
 

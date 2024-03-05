@@ -1,8 +1,8 @@
+#include "Editor/Base/EditorMainMenu.h"
 
-#include "EditorMainMenu.h"
+#include "Application.h"
 
-#include "../../Application.h"
-#include "../../Manager/EditorManager.h"
+#include "Manager/EditorManager.h"
 
 namespace editor
 {

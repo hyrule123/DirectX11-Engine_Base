@@ -2,10 +2,10 @@
 
 #include "EditorGraphicsShader.h"
 
-#include "../../Manager/PathManager.h"
-#include "../../Manager/ResourceManager.h"
-#include "../../Resource/Shader/GraphicsShader.h"
-#include "../../CommonGlobalVar.h"
+#include "Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
+#include "Resource/Shader/GraphicsShader.h"
+#include "CommonGlobalVar.h"
 
 
 namespace editor

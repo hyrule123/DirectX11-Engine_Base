@@ -1,7 +1,7 @@
 
 #include "EditorWidget_List.h"
 
-#include "../../Util/StringConverter.h"
+#include "Util/StringConverter.h"
 
 namespace editor
 {

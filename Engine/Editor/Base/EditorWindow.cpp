@@ -1,6 +1,4 @@
-
-#include "EditorWindow.h"
-
+#include "Editor/Base/EditorWindow.h"
 
 namespace editor
 {

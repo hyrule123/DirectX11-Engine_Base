@@ -1,9 +1,9 @@
 #pragma once
-#include "../iResource.h"
+#include "iResource.h"
 
-#include "../../CommonStruct.h"
+#include "CommonStruct.h"
 
-#include "../../Util/Serialize/Serializable.h"
+#include "Util/Serialize/Serializable.h"
 
 //MeshData에 종속된 클래스
 namespace ehw

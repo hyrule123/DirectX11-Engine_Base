@@ -2,12 +2,12 @@
 
 
 
-#include "../GPU/CommonGPU.h"
-#include "../CommonStruct.h"
-#include "../Util/SimpleMath.h"
+#include "GPU/CommonGPU.h"
+#include "CommonStruct.h"
+#include "Util/SimpleMath.h"
 
 
-#include "../DefaultShader/Light/Func_Light.hlsli"
+#include "DefaultShader/Light/Func_Light.hlsli"
 
 namespace ehw
 {

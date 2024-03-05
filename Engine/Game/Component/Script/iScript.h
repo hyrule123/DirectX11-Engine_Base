@@ -1,9 +1,7 @@
 #pragma once
-#include "../iComponent.h"
+#include "Game/Component/iComponent.h"
 
-
-
-#include "../Collider/iCollider2D.h"
+#include "Game/Component/Collider/iCollider2D.h"
 
 namespace ehw
 {

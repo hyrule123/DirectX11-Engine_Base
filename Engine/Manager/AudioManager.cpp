@@ -3,7 +3,7 @@
 
 
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
 
 #include <Fmod/fmod.hpp>

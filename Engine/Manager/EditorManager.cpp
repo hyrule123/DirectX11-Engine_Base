@@ -2,37 +2,37 @@
 #include "EditorManager.h"
 
 
-#include "../Application.h"
-#include "../GameMainWindow.h"
-#include "../Util/AtExit.h"
-#include "../Util/Serialize/JsonSerializer.h"
+#include "Application.h"
+#include "GameMainWindow.h"
+#include "Util/AtExit.h"
+#include "Util/Serialize/JsonSerializer.h"
 
-#include "../Resource/Mesh.h"
-#include "../Resource/Material.h"
+#include "Resource/Mesh.h"
+#include "Resource/Material.h"
 
-#include "../Game/Component/Transform/Com_Transform.h"
-#include "../Game/Component/Renderer/Com_Renderer_Mesh.h"
-#include "../Game/Component/Script/GridScript.h"
-#include "../Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "Game/Component/Script/GridScript.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-#include "../Editor/imgui/imgui.h"
-#include "../Editor/imgui/imgui_impl_win32.h"
-#include "../Editor/imgui/imgui_impl_dx11.h"
-#include "../Editor/Inspector/EditorInspector.h"
-#include "../Editor/DebugObject/EditorGame.h"
-#include "../Editor/Base/EditorBase.h"
-#include "../Editor/Resource/EditorResources.h"
-#include "../Editor/Base/EditorMainMenu.h"
-#include "../Editor/DebugObject/EditorConsole.h"
-#include "../Editor/Widget/EditorWidget_List.h"
-#include "../Editor/DebugObject/EditorGameObject.h"
-#include "../Editor/Resource/EditorFBXConverter.h"
-#include "../Editor/Resource/EditorGraphicsShader.h"
-#include "../Editor/DebugObject/DebugObject.h"
-#include "../Editor/DebugObject/EditorObject.h"
-#include "../Editor/Resource/EditorMaterial.h"
-#include "../Editor/Resource/EditorNormalConverter.h"
-#include "../Editor/Resource/EditorUVCalculator.h"
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_impl_win32.h"
+#include "Editor/imgui/imgui_impl_dx11.h"
+#include "Editor/Inspector/EditorInspector.h"
+#include "Editor/DebugObject/EditorGame.h"
+#include "Editor/Base/EditorBase.h"
+#include "Editor/Resource/EditorResources.h"
+#include "Editor/Base/EditorMainMenu.h"
+#include "Editor/DebugObject/EditorConsole.h"
+#include "Editor/Widget/EditorWidget_List.h"
+#include "Editor/DebugObject/EditorGameObject.h"
+#include "Editor/Resource/EditorFBXConverter.h"
+#include "Editor/Resource/EditorGraphicsShader.h"
+#include "Editor/DebugObject/DebugObject.h"
+#include "Editor/DebugObject/EditorObject.h"
+#include "Editor/Resource/EditorMaterial.h"
+#include "Editor/Resource/EditorNormalConverter.h"
+#include "Editor/Resource/EditorUVCalculator.h"
 
 #include "RenderManager.h"
 #include "ResourceManager.h"
@@ -383,9 +383,9 @@ namespace editor
 		// - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
 		//io.Fonts->AddFontDefault();
 		//io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
-		//io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-		//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-		//io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
+		//io.Fonts->AddFontFromFileTTF("misc/fonts/DroidSans.ttf", 16.0f);
+		//io.Fonts->AddFontFromFileTTF("misc/fonts/Roboto-Medium.ttf", 16.0f);
+		//io.Fonts->AddFontFromFileTTF("misc/fonts/Cousine-Regular.ttf", 15.0f);
 		//ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
 		//IM_ASSERT(font != nullptr);
 

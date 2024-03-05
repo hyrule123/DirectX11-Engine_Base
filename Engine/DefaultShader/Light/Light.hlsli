@@ -1,8 +1,8 @@
 #ifndef LIGHT_HLSLI
 #define LIGHT_HLSLI
 #ifndef __cplusplus//HLSL
-#include "../Globals.hlsli"
-#include "../Func_DecodeColor.hlsli"
+#include "Globals.hlsli"
+#include "Func_DecodeColor.hlsli"
 
 #include "Func_Light.hlsli"
 

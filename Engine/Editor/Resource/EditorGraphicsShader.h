@@ -1,9 +1,8 @@
 #pragma once
-#include "../../Editor/Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
 
-
-#include "../../Editor/Widget/EditorWidget_ComboBox.h"
-#include "../../GPU/CommonGPU.h"
+#include "Editor/Widget/EditorWidget_ComboBox.h"
+#include "GPU/CommonGPU.h"
 
 namespace ehw
 {

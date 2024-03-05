@@ -1,15 +1,17 @@
-#include "EditorNormalConverter.h"
+#include "Editor/Resource/EditorNormalConverter.h"
 
-#include "../../define_Enum.h"
+#include "define_Enum.h"
 
-#include "../../Manager/PathManager.h"
-#include "../../Manager/ResourceManager.h"
+#include "Editor/Widget/EditorWidget_ComboBox.h"
 
-#include "../../Util/define_Util.h"
+#include "Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Resource/Shader/ComputeShaders/NormalConvertShader.h"
+#include "Util/define_Util.h"
 
-#include "../../DefaultShader/NormalConverter/NormalConverter.hlsli"
+#include "Resource/Shader/ComputeShaders/NormalConvertShader.h"
+
+#include "DefaultShader/NormalConverter/NormalConverter.hlsli"
 
 namespace editor
 {

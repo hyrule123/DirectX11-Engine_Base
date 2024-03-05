@@ -3,7 +3,7 @@
 
 
 
-#include "../Manager/GPUManager.h"
+#include "Manager/GPUManager.h"
 
 namespace ehw
 {

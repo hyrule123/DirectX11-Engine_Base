@@ -1,5 +1,4 @@
-
-#include "EditorEntity.h"
+#include "Editor/Base/EditorEntity.h"
 
 
 namespace editor

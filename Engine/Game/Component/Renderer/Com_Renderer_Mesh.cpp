@@ -1,11 +1,10 @@
-#include "Com_Renderer_Mesh.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
+
+#include "Game/Component/Animator/iAnimator.h"
+
+#include "Game/GameObject.h"
 
 
-
-#include "../../GameObject.h"
-
-
-#include "../Animator/iAnimator.h"
 
 
 namespace ehw

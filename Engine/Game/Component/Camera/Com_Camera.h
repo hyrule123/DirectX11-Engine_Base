@@ -1,7 +1,7 @@
 #pragma once
-#include "../iComponent.h"
+#include "Game/Component/iComponent.h"
 
-#include "../../../define_Enum.h"
+#include "define_Enum.h"
 
 #include <bitset>
 

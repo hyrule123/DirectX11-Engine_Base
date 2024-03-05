@@ -1,10 +1,10 @@
 #pragma once
 #include "iResource.h"
 
-#include "../Util/Serialize/Serializable.h"
-#include "../GPU/CommonGPU.h"
+#include "Util/Serialize/Serializable.h"
+#include "GPU/CommonGPU.h"
 
-#include "../CommonStruct.h"
+#include "CommonStruct.h"
 
 namespace ehw
 {

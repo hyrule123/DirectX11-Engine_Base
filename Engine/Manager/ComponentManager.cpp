@@ -3,9 +3,9 @@
 
 
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
-#include "../Game/Component/iComponent.h"
+#include "Game/Component/iComponent.h"
 
 namespace ehw
 {

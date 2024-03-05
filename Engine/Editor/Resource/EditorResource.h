@@ -1,8 +1,7 @@
 #pragma once
-#include "../../Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 
-
-#include "../../Resource/iResource.h"
+#include "Resource/iResource.h"
 
 namespace editor
 {

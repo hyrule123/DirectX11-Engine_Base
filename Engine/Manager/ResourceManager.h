@@ -1,7 +1,7 @@
 #pragma once
-#include "../Util/AtExit.h"
-#include "../CommonStruct.h"
-#include "../Resource/iResource.h"
+#include "Util/AtExit.h"
+#include "CommonStruct.h"
+#include "Resource/iResource.h"
 
 #include "ResourceManagers.h"
 

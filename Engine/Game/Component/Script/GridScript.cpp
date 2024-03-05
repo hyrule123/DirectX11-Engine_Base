@@ -1,18 +1,15 @@
+#include "Game/Component/Script/GridScript.h"
 
-#include "GridScript.h"
+#include "GPU/ConstBuffer.h"
+#include "Game/GameObject.h"
+#include "Application.h"
 
-
-
-#include "../../../GPU/ConstBuffer.h"
-#include "../../../Game/GameObject.h"
-#include "../../../Application.h"
-
-#include "../../../Manager/RenderManager.h"
-#include "../../../Manager/SceneManager.h"
+#include "Manager/RenderManager.h"
+#include "Manager/SceneManager.h"
 
 
-#include "../Transform/Com_Transform.h"
-
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Camera/Com_Camera.h"
 
 namespace ehw
 {

@@ -1,15 +1,13 @@
+#include "Game/Component/Collider/iCollider2D.h"
 
-#include "iCollider2D.h"
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Script/iScript.h"
+
+#include "Game/GameObject.h"
+
+#include "Manager/RenderManager.h"
 
 
-
-#include "../../../Game/GameObject.h"
-
-#include "../../../Manager/RenderManager.h"
-
-
-#include "../Transform/Com_Transform.h"
-#include "../Script/iScript.h"
 
 namespace ehw
 {

@@ -1,7 +1,7 @@
 #include "Func_Animation3D.hlsli"
 
-#include "../ConstBuffer.hlsli"
-#include "../Resource.hlsli"
+#include "ConstBuffer.hlsli"
+#include "Resource.hlsli"
 
 
 

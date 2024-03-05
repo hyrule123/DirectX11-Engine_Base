@@ -1,19 +1,17 @@
-
 #include "EditorResources.h"
 
+#include "Application.h"
 
-#include "../../Application.h"
+#include "Manager/EditorManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Manager/EditorManager.h"
-#include "../../Manager/ResourceManager.h"
+#include "Resource/Texture.h"
+#include "Resource/Material.h"
+#include "Resource/Mesh.h"
+#include "Resource/Shader/GraphicsShader.h"
 
-#include "../../Resource/Texture.h"
-#include "../../Resource/Material.h"
-#include "../../Resource/Mesh.h"
-#include "../../Resource/Shader/GraphicsShader.h"
-
-#include "../../Editor/Inspector/EditorInspector.h"
-#include "../../Editor/Resource/EditorResource.h"
+#include "Editor/Inspector/EditorInspector.h"
+#include "Editor/Resource/EditorResource.h"
 
 
 

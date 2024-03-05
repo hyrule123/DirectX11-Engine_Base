@@ -1,5 +1,5 @@
 #pragma once
-#include "iAnimator.h"
+#include "Game/Component/Animator/iAnimator.h"
 
 namespace ehw
 {

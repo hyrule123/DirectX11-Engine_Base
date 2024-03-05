@@ -1,7 +1,6 @@
 #pragma once
-#include "../../Editor/Base/EditorChild.h"
-
-#include "../../Editor/Widget/EditorWidget_Tree.h"
+#include "Editor/Base/EditorChild.h"
+#include "Editor/Widget/EditorWidget_Tree.h"
 
 namespace ehw
 {

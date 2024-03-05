@@ -1,19 +1,18 @@
+#include "Editor/Resource/EditorMaterial.h"
 
-#include "EditorMaterial.h"
 
+#include "Application.h"
 
-#include "../../Application.h"
+#include "Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Manager/PathManager.h"
-#include "../../Manager/ResourceManager.h"
+#include "Resource/Material.h"
+#include "Resource/Texture.h"
+#include "Resource/Shader/GraphicsShader.h"
 
-#include "../../Resource/Material.h"
-#include "../../Resource/Texture.h"
-#include "../../Resource/Shader/GraphicsShader.h"
+#include "GPU/CommonGPU.h"
 
-#include "../../GPU/CommonGPU.h"
-
-#include "../../Util/define_Util.h"
+#include "Util/define_Util.h"
 
 
 namespace editor

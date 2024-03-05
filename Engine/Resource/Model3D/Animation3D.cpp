@@ -1,10 +1,10 @@
 #include "Animation3D.h"
 
-#include "../../GPU/StructBuffer.h"
+#include "GPU/StructBuffer.h"
 
-#include "../../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Util/Serialize/BinarySerializer.h"
+#include "Util/Serialize/BinarySerializer.h"
 
 
 #include "FBXLoader.h"

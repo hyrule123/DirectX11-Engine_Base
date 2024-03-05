@@ -1,9 +1,9 @@
 #pragma once
-#include "../../../Resource/Shader/iComputeShader.h"
+#include "Resource/Shader/iComputeShader.h"
 
 
 
-#include "../../../Resource/Texture.h"
+#include "Resource/Texture.h"
 
 namespace ehw
 {

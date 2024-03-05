@@ -1,5 +1,4 @@
-
-#include "EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 
 editor::EditorChild::EditorChild(const std::string_view _strName)
     : EditorWindow(_strName)

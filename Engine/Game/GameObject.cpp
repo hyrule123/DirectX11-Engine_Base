@@ -1,12 +1,12 @@
-#include "GameObject.h"
+#include "Game/GameObject.h"
 
 
 
-#include "../Manager/SceneManager.h"
+#include "Manager/SceneManager.h"
 
-#include "../Util/Serialize/json.h"
+#include "Util/Serialize/json.h"
 
-#include "../Resource/Prefab.h"
+#include "Resource/Prefab.h"
 
 #include "Component/Renderer/iRenderer.h"
 

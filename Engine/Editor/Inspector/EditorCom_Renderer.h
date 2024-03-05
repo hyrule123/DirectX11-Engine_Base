@@ -1,8 +1,8 @@
 #pragma once
-#include "EditorComponent.h"
+#include "Editor/Inspector/EditorComponent.h"
 
-#include "../../Resource/Material.h"
-#include "../../Resource/Mesh.h"
+#include "Resource/Material.h"
+#include "Resource/Mesh.h"
 
 namespace editor
 {

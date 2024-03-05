@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Editor/Resource/EditorResource.h"
+#include "Editor/Resource/EditorResource.h"
 
-#include "../../Resource/Texture.h"
+#include "Resource/Texture.h"
 
 namespace editor
 {

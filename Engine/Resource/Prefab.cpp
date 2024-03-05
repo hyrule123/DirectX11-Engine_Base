@@ -2,11 +2,11 @@
 #include "Prefab.h"
 
 
-#include "../Util/Serialize/json.h"
+#include "Util/Serialize/json.h"
 
-#include "../Game/GameObject.h"
+#include "Game/GameObject.h"
 
-#include "../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 namespace ehw
 {

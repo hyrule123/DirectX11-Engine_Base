@@ -3,7 +3,7 @@
 
 
 
-#include "../DefaultShader/ConstBuffer.hlsli"
+#include "DefaultShader/ConstBuffer.hlsli"
 
 namespace ehw
 {

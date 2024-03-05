@@ -2,21 +2,21 @@
 
 
 
-#include "../../../DefaultShader/Resource.hlsli"
-#include "../../../DefaultShader/NormalConverter/NormalConverter.hlsli"
+#include "DefaultShader/Resource.hlsli"
+#include "DefaultShader/NormalConverter/NormalConverter.hlsli"
 
 #if defined (_WIN64) && !(NDEBUG)
-#include "../../../CompiledShaderHeader/CS_NormalConverter_x64_Debug.h"
+#include "CompiledShaderHeader/CS_NormalConverter_x64_Debug.h"
 #endif
 #if defined (_WIN64) && (NDEBUG)
-#include "../../../CompiledShaderHeader/CS_NormalConverter_x64_Release.h"
+#include "CompiledShaderHeader/CS_NormalConverter_x64_Release.h"
 #endif
 
-#include "../../../Resource/Texture.h"
+#include "Resource/Texture.h"
 
-#include "../../../Manager/RenderManager.h"
+#include "Manager/RenderManager.h"
 
-#include "../../../GPU/ConstBuffer.h"
+#include "GPU/ConstBuffer.h"
 
 
 namespace ehw

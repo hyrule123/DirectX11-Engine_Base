@@ -1,6 +1,5 @@
 #pragma once
-
-#include "../../Game/GameObject.h"
+#include "Game/GameObject.h"
 
 
 namespace editor

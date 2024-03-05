@@ -1,14 +1,14 @@
 #ifndef ANIMATION_2D_HLSLI
 #define ANIMATION_2D_HLSLI
 
-#include "../Common.hlsli"
+#include "Common.hlsli"
 
 //Atlas texture(Animation 2D)
 TEXTURE2D(AtlasTexture, t, 0);
 #define IsAtlasTex bTex_0
 
 #ifdef __HLSL
-#include "../Light/Func_Light.hlsli"
+#include "Light/Func_Light.hlsli"
 struct VSIn
 {
 	float4 Pos : POSITION;

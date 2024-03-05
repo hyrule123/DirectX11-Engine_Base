@@ -1,15 +1,15 @@
-#include "Com_Transform.h"
+#include "Game/Component/Transform/Com_Transform.h"
+
+#include "Game/GameObject.h"
+
+#include "Manager/RenderManager.h"
+
+#include "GPU/ConstBuffer.h"
+
+#include "Application.h"
 
 
 
-#include "../../../Game/GameObject.h"
-#include "../../../Manager/RenderManager.h"
-
-#include "../../../GPU/ConstBuffer.h"
-#include "../../../Application.h"
-
-
-#include "../Camera/Com_Camera.h"
 
 
 

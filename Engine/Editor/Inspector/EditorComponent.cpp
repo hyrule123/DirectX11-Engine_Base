@@ -1,9 +1,9 @@
 
-#include "EditorComponent.h"
+#include "Editor/Inspector/EditorComponent.h"
 
-#include "../../Editor/imgui/imgui.h"
-#include "../../Editor/imgui/imgui_impl_win32.h"
-#include "../../Editor/imgui/imgui_impl_dx11.h"
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_impl_win32.h"
+#include "Editor/imgui/imgui_impl_dx11.h"
 
 namespace editor
 {

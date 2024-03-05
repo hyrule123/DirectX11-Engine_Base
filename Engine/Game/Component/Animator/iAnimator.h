@@ -1,7 +1,7 @@
 #pragma once
-#include "../iComponent.h"
+#include "Game/Component/iComponent.h"
 
-#include "../../../CommonStruct.h"
+#include "CommonStruct.h"
 
 #include <functional>
 

@@ -1,7 +1,7 @@
 #pragma once
-#include "iTransform.h"
+#include "Game/Component/iComponent.h"
 
-#include "../../../DefaultShader/CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 
 //Transform 업데이트 로직
 //1. 모든 변경사항은 InternalUpdate 로직 때 반영됨(지연 적용).
@@ -32,7 +32,7 @@ namespace ehw
 {
 	class GameObject;
 	class Com_Transform 
-		: public iTransform
+		: public Component<Com_Transform, eComponentCategory::Transform>
 	{
 		friend class Com_Transform;
 	public:
@@ -43,10 +43,9 @@ namespace ehw
 		CLONE_ABLE(Com_Transform);
 
 		virtual ~Com_Transform();
-
 	
 		virtual void InternalUpdate() override;
-		virtual void BindData() override; 
+		void BindData(); 
 
 		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
 		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }

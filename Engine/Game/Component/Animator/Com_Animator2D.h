@@ -1,10 +1,9 @@
 #pragma once
-#include "iAnimator.h"
+#include "Game/Component/Animator/iAnimator.h"
 
+#include "CommonStruct.h"
 
-
-#include "../../../Resource/Animation2D.h"
-#include "../../../CommonStruct.h"
+#include "Resource/Animation2D.h"
 
 namespace ehw
 {

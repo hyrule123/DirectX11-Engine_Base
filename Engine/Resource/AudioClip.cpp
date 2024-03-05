@@ -1,9 +1,9 @@
 #include "AudioClip.h"
 
 
-#include "../Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Transform/Com_Transform.h"
 
-#include "../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>

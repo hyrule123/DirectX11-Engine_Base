@@ -1,4 +1,4 @@
-#include "../Globals.hlsli"
+#include "Globals.hlsli"
 struct VSIn
 {
     float4 Pos : POSITION;

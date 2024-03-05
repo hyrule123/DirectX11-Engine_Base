@@ -1,13 +1,13 @@
 #pragma once
-#include "../Base/EditorWindow.h"
+#include "Base/EditorWindow.h"
 
 
 
-#include "../../Game/GameObject.h"
+#include "Game/GameObject.h"
 
-#include "../Resource/EditorResource.h"
+#include "Resource/EditorResource.h"
 
-#include "EditorComponent.h"
+#include "Editor/Inspector/EditorComponent.h"
 
 namespace editor
 {

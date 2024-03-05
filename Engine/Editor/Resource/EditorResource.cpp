@@ -1,6 +1,4 @@
-
-
-#include "../../Editor/Resource/EditorResource.h"
+#include "Editor/Resource/EditorResource.h"
 
 namespace editor
 {

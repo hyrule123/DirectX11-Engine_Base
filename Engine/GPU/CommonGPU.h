@@ -2,8 +2,8 @@
 #include "define_GPU.h"
 
 
-#include "../DefaultShader/ConstBuffer.hlsli"
-#include "../DefaultShader/Resource.hlsli"
+#include "DefaultShader/ConstBuffer.hlsli"
+#include "DefaultShader/Resource.hlsli"
 
 
 #include <d3d11.h>

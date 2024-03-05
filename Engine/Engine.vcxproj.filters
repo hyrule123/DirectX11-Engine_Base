@@ -448,7 +448,6 @@
     <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
-    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
@@ -775,7 +774,6 @@
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
-    <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
     <ClInclude Include="Util\Serialize\Serializable.h" />

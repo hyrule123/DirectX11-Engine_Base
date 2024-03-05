@@ -1,8 +1,8 @@
 #pragma once
+#include "define_Enum.h"
+#include "define_Macro.h"
 
-#include "../type_traits_Ex.h"
-#include "../../define_Enum.h"
-#include "../../define_Macro.h"
+#include "Util/type_traits_Ex.h"
 
 #include <filesystem>
 namespace std

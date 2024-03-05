@@ -1,25 +1,22 @@
-
 #include "Com_Renderer_ParticleSystem.h"
 
+#include "Game/Component/Transform/Com_Transform.h"
 
+#include "Game/GameObject.h"
 
-#include "../../../Manager/TimeManager.h"
-#include "../../../Manager/ResourceManager.h"
-#include "../../../Manager/RenderManager.h"
+#include "Manager/TimeManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/RenderManager.h"
 
-#include "../../../Resource/Mesh.h"
-#include "../../../Resource/Material.h"
-#include "../../../Resource/Texture.h"
+#include "Resource/Mesh.h"
+#include "Resource/Material.h"
+#include "Resource/Texture.h"
+#include "Resource/Shader/ComputeShaders/ParticleShader.h"
 
-#include "../../../GPU/ConstBuffer.h"
-#include "../../../GPU/StructBuffer.h"
+#include "GPU/ConstBuffer.h"
+#include "GPU/StructBuffer.h"
 
-#include "../../../Game/GameObject.h"
-
-#include "../../../DefaultShader/Animation/Animation2D.hlsli"
-
-
-#include "../Transform/Com_Transform.h"
+#include "DefaultShader/Animation/Animation2D.hlsli"
 
 
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "../iAnimation.h"
+#include "iAnimation.h"
 
-#include "../../defines.h"
+#include "defines.h"
 
-#include "../../Util/SimpleMath.h"
-#include "../../Util/Serialize/Serializable.h"
+#include "Util/SimpleMath.h"
+#include "Util/Serialize/Serializable.h"
 
 namespace ehw
 {

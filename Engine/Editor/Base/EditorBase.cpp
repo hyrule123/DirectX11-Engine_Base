@@ -1,9 +1,9 @@
-#include "EditorBase.h"
+#include "Editor/Base/EditorBase.h"
 
-#include "../../Define_Macro.h"
+#include "Define_Macro.h"
 
-#include "../../Util/Serialize/JsonSerializer.h"
-#include "../../Manager/EditorManager.h"
+#include "Util/Serialize/JsonSerializer.h"
+#include "Manager/EditorManager.h"
 
 namespace editor
 {

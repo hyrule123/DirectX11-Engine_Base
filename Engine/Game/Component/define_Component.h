@@ -3,8 +3,8 @@
 
 
 
-#include "../../define_Macro.h"
-#include "../../define_Enum.h"
+#include "define_Macro.h"
+#include "define_Enum.h"
 
 namespace ehw
 {

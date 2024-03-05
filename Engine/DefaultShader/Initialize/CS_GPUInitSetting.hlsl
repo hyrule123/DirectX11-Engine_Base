@@ -1,5 +1,5 @@
-#include "../Resource.hlsli"
-#include "../Func_Bitwise.hlsli"
+#include "Resource.hlsli"
+#include "Func_Bitwise.hlsli"
 
 //초기화해야 하는 값이 있으면 여기서 초기화.
 //또는 디버그 용도로 사용

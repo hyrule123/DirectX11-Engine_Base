@@ -1,5 +1,6 @@
 #pragma once
-#include "EditorBase.h"
+#include "Editor/Base/EditorBase.h"
+#include "-I/"
 
 namespace editor
 {

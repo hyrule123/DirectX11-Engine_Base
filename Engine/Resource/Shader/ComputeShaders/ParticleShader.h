@@ -1,9 +1,9 @@
 #pragma once
-#include "../iComputeShader.h"
+#include "iComputeShader.h"
 
 
 
-#include "../../../GPU/StructBuffer.h"
+#include "GPU/StructBuffer.h"
 
 namespace ehw
 {

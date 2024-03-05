@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Editor/Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
 
-#include "../../Editor/Widget/EditorWidget_ComboBox.h"
+#include "Editor/Widget/EditorWidget_ComboBox.h"
 
 #include <thread>
 #include <future>

@@ -78,6 +78,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -85,6 +86,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -92,6 +94,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -99,6 +102,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -265,7 +269,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="CommonType.h" />
-    <ClInclude Include="Game\Component\Transform\iTransform.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Game\Component\StateMachine\iStateMachine.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
@@ -401,7 +404,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
-    <ClCompile Include="Game\Component\Transform\iTransform.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />

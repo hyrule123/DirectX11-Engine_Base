@@ -1,7 +1,7 @@
 #pragma once
-#include "../iComputeShader.h"
+#include "iComputeShader.h"
 
-#include "../../../CommonGlobalVar.h"
+#include "CommonGlobalVar.h"
 
 
 namespace ehw

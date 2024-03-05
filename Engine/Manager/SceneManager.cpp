@@ -1,9 +1,9 @@
 #include "SceneManager.h"
 
 
-#include "../Resource/Texture.h"
+#include "Resource/Texture.h"
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
 
 #include "RenderManager.h"

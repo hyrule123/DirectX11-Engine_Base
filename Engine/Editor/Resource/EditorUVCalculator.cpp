@@ -1,14 +1,14 @@
 
-#include "EditorUVCalculator.h"
+#include "Editor/Resource/EditorUVCalculator.h"
 
-#include "../../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Util/define_Util.h"
+#include "Util/define_Util.h"
 
-#include "../../Manager/PathManager.h"
+#include "Manager/PathManager.h"
 
-#include "EditorTexture.h"
-#include "../../Resource/Texture.h"
+#include "Editor/Resource/EditorTexture.h"
+#include "Resource/Texture.h"
 
 namespace editor
 {

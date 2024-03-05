@@ -1,11 +1,9 @@
+#include "Editor/DebugObject/EditorGame.h"
 
+#include "Manager/ResourceManager.h"
+#include "Manager/GPUManager.h"
 
-#include "EditorGame.h"
-
-#include "../../Manager/ResourceManager.h"
-#include "../../Manager/GPUManager.h"
-
-#include "../../Resource/Texture.h"
+#include "Resource/Texture.h"
 
 
 namespace editor

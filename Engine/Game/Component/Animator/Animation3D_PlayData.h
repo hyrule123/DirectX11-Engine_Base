@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../Entity.h"
+#include "Entity.h"
 
-#include "../../../CommonStruct.h"
+#include "CommonStruct.h"
 
 //설명: Animation3D의 개별 플레이 관련 데이터를 저장하는 클래스
 //참고 - class Animation3D: 변하지 않는 데이터

@@ -3,8 +3,8 @@
 
 
 
-#include "../Manager/GPUManager.h"
-#include "../Manager/RenderManager.h"
+#include "Manager/GPUManager.h"
+#include "Manager/RenderManager.h"
 
 
 #include "ConstBuffer.h"

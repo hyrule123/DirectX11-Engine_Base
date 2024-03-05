@@ -3,15 +3,15 @@
 
 
 
-#include "../Application.h"
+#include "Application.h"
 
-#include "../Resource/Mesh.h"
-#include "../Resource/Texture.h"
-#include "../Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include "Resource/Mesh.h"
+#include "Resource/Texture.h"
+#include "Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
-#include "../GPU/ConstBuffer.h"
+#include "GPU/ConstBuffer.h"
 
 
 #include "RenderManager.h"

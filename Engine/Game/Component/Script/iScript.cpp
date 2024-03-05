@@ -1,6 +1,4 @@
-#include "iScript.h"
-
-
+#include "Game/Component/Script/iScript.h"
 
 namespace ehw
 {

@@ -1,9 +1,9 @@
 #pragma once
-#include "../../CommonGlobalVar.h"
-#include "../../CommonType.h"
+#include "CommonGlobalVar.h"
+#include "CommonType.h"
 
-#include "../type_traits_Ex.h"
-#include "../StringConverter.h"
+#include "Util/type_traits_Ex.h"
+#include "StringConverter.h"
 
 #include "Serializable.h"
 #include "json.h"

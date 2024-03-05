@@ -3,15 +3,15 @@
 
 
 
-#include "../../Util/define_Util.h"
-#include "../../Util/StringConverter.h"
-#include "../../Util/Serialize/BinarySerializer.h"
+#include "Util/define_Util.h"
+#include "Util/StringConverter.h"
+#include "Util/Serialize/BinarySerializer.h"
 
-#include "../../DefaultShader/Resource.hlsli"
+#include "DefaultShader/Resource.hlsli"
 
-#include "../../GPU/StructBuffer.h"
+#include "GPU/StructBuffer.h"
 
-#include "../../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
 
 #include "Model3D.h"

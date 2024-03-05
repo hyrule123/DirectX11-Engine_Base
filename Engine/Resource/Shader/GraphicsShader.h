@@ -3,8 +3,8 @@
 
 
 
-#include "../../GPU/CommonGPU.h"
-#include "../../Util/Serialize/Serializable.h"
+#include "GPU/CommonGPU.h"
+#include "Util/Serialize/Serializable.h"
 
 
 #include <unordered_set>

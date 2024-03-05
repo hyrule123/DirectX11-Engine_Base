@@ -1,13 +1,13 @@
 #include "GraphicsShader.h"
 
-#include "../../CommonGlobalVar.h"
+#include "CommonGlobalVar.h"
 
-#include "../../Manager/GPUManager.h"
-#include "../../Manager/ResourceManager.h"
-#include "../../Manager/RenderManager.h"
-#include "../../Manager/PathManager.h"
+#include "Manager/GPUManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/RenderManager.h"
+#include "Manager/PathManager.h"
 
-#include "../../Util/Serialize/JsonSerializer.h"
+#include "Util/Serialize/JsonSerializer.h"
 
 namespace ehw
 {

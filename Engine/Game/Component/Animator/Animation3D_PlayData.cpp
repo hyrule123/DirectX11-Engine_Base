@@ -1,17 +1,18 @@
-#include "Animation3D_PlayData.h"
+#include "Game/Component/Animator/Animation3D_PlayData.h"
 
-#include "../../../GPU/StructBuffer.h"
+#include "Game/Component/Animator/iAnimator.h"
+
+#include "GPU/StructBuffer.h"
+
+#include "Manager/ResourceManager.h"
+#include "Manager/TimeManager.h"
+
+#include "Resource/Model3D/Animation3D.h"
+#include "Resource/Model3D/Skeleton.h"
+
+#include "Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 #include <fbxsdk/fbxsdk.h>
-
-#include "../../../Manager/ResourceManager.h"
-#include "../../../Manager/TimeManager.h"
-
-#include "../../../Resource/Model3D/Animation3D.h"
-#include "../../../Resource/Model3D/Skeleton.h"
-#include "../../../Game/Component/Animator/iAnimator.h"
-
-#include "../../../Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 namespace ehw
 {

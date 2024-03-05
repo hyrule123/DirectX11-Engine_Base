@@ -1,8 +1,8 @@
 
 #include "EditorCom_Transform.h"
 
-#include "../../Game/Component/Transform/Com_Transform.h"
-#include "../../Editor/Inspector/EditorInspector.h"
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Editor/Inspector/EditorInspector.h"
 
 namespace editor
 {

@@ -1,10 +1,10 @@
 #pragma once
-#include "../../CommonStruct.h"
+#include "CommonStruct.h"
 
-#include "../../Editor/imgui/imgui.h"
-#include "../../Editor/imgui/imgui_stdlib.h"
+#include "define_Enum.h"
 
-#include "../../define_Enum.h"
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_stdlib.h"
 
 #include <string>
 

@@ -1,4 +1,4 @@
-#include "EditorTexture.h"
+#include "Editor/Resource/EditorTexture.h"
 
 
 namespace editor

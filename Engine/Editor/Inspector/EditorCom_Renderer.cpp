@@ -1,18 +1,16 @@
+#include "Editor/Inspector/EditorCom_Renderer.h"
 
-#include "EditorCom_Renderer.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/EditorManager.h"
 
-#include "../../Manager/ResourceManager.h"
+#include "Game/GameObject.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "Game/Component/Renderer/Com_Renderer_Sprite.h"
 
-#include "../../Game/GameObject.h"
-#include "../../Game/Component/Renderer/Com_Renderer_Mesh.h"
-#include "../../Game/Component/Renderer/Com_Renderer_Sprite.h"
+#include "Resource/iResource.h"
 
-#include "../../Resource/iResource.h"
-
-#include "../../Manager/EditorManager.h"
-
-#include "../../Editor/Widget/EditorWidget_List.h"
-#include "../../Editor/Inspector/EditorInspector.h"
+#include "Editor/Widget/EditorWidget_List.h"
+#include "Editor/Inspector/EditorInspector.h"
 
 
 namespace editor

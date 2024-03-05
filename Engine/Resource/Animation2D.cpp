@@ -2,12 +2,12 @@
 
 
 
-#include "../Manager/TimeManager.h"
-#include "../Manager/RenderManager.h"
+#include "Manager/TimeManager.h"
+#include "Manager/RenderManager.h"
 
-#include "../GPU/ConstBuffer.h"
+#include "GPU/ConstBuffer.h"
 
-#include "../DefaultShader/Animation/Animation2D.hlsli"
+#include "DefaultShader/Animation/Animation2D.hlsli"
 
 namespace ehw
 {

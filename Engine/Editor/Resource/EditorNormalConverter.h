@@ -1,12 +1,9 @@
 #pragma once
-#include "../../Editor/Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
 
+#include "CommonStruct.h"
 
-#include "../../Editor/Widget/EditorWidget_ComboBox.h"
-
-#include "../../CommonStruct.h"
-
-#include "../../DefaultShader/CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 
 namespace ehw
 {

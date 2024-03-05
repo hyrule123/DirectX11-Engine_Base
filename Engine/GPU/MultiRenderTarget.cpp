@@ -3,9 +3,9 @@
 
 
 
-#include "../define_Macro.h"
+#include "define_Macro.h"
 
-#include "../Resource/Texture.h"
+#include "Resource/Texture.h"
 
 namespace ehw
 {

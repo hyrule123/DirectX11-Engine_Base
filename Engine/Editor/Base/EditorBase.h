@@ -1,9 +1,8 @@
 #pragma once
-#include "EditorEntity.h"
+#include "Editor/Base/EditorEntity.h"
+#include "Editor/strKey_Editor.h"
 
-#include "../../Editor/strKey_Editor.h"
-
-#include "../../Util/Serialize/Serializable.h"
+#include "Util/Serialize/Serializable.h"
 
 namespace editor
 {

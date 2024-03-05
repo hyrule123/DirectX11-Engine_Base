@@ -1,8 +1,8 @@
 #pragma once
-#include "../../Editor/Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
+#include "Editor/Widget/EditorWidget_ComboBox.h"
 
-#include "../../Editor/Widget/EditorWidget_ComboBox.h"
-#include "../../CommonStruct.h"
+#include "CommonStruct.h"
 
 //Material 전방선언
 namespace ehw

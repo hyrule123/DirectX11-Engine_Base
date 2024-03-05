@@ -1,6 +1,6 @@
 #include "JsonSerializer.h"
 
-#include "../../CommonType.h"
+#include "CommonType.h"
 
 namespace ehw
 {

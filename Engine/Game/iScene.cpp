@@ -21,7 +21,9 @@ namespace ehw
 	void iScene::SceneAwake()
 	{
 		if (m_bAwake)
+		{
 			return;
+		}
 
 		m_bAwake = true;
 		

@@ -3,28 +3,28 @@
 
 
 
-#include "../Application.h"
+#include "Application.h"
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
-#include "../Resource/Mesh.h"
-#include "../Resource/Material.h"
-#include "../Resource/Shader/GraphicsShader.h"
-#include "../Resource/Shader/ComputeShaders/NormalConvertShader.h"
-#include "../Resource/Shader/ComputeShaders/ParticleShader.h"
-#include "../Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
+#include "Resource/Mesh.h"
+#include "Resource/Material.h"
+#include "Resource/Shader/GraphicsShader.h"
+#include "Resource/Shader/ComputeShaders/NormalConvertShader.h"
+#include "Resource/Shader/ComputeShaders/ParticleShader.h"
+#include "Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
-#include "../GPU/ConstBuffer.h"
-#include "../GPU/MultiRenderTarget.h"
+#include "GPU/ConstBuffer.h"
+#include "GPU/MultiRenderTarget.h"
 
-#include "../Game/Component/Light/Com_Light3D.h"
+#include "Game/Component/Light/Com_Light3D.h"
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
-#include "../CompiledShaderHeader/DefaultShaders.h"
+#include "CompiledShaderHeader/DefaultShaders.h"
 
-#include "../Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include "Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
-#include "../CommonGlobalVar.h"
+#include "CommonGlobalVar.h"
 
 
 #include "ResourceManager.h"

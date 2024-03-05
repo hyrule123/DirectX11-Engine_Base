@@ -1,4 +1,4 @@
-#include "iLight.h"
+#include "Game/Component/Light/iLight.h"
 
 namespace ehw
 {

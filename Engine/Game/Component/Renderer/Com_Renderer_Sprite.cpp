@@ -1,17 +1,15 @@
 #include "Com_Renderer_Sprite.h"
 
+#include "Manager/ResourceManager.h"
+
+#include "Resource/Mesh.h"
+#include "Resource/Material.h"
+
+#include "Game/GameObject.h"
 
 
-#include "../../../Manager/ResourceManager.h"
-
-#include "../../../Resource/Mesh.h"
-#include "../../../Resource/Material.h"
-
-#include "../../../Game/GameObject.h"
-
-
-#include "../Transform/Com_Transform.h"
-#include "../Animator/Com_Animator2D.h"
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Animator/Com_Animator2D.h"
 
 namespace ehw
 {

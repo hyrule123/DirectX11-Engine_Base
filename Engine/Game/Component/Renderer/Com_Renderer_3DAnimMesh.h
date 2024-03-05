@@ -1,5 +1,5 @@
 #pragma once
-#include "Com_Renderer_Mesh.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
 
 namespace ehw
 {

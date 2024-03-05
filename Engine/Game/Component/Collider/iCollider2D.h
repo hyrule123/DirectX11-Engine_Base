@@ -1,5 +1,5 @@
 #pragma once
-#include "iCollider.h"
+#include "Game/Component/Collider/iCollider.h"
 
 
 namespace ehw

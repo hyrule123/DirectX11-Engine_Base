@@ -1,7 +1,7 @@
 #ifndef GRID_HLSLI
 #define GRID_HLSLI
 
-#include "../Globals.hlsli"
+#include "Globals.hlsli"
 
 struct VSIn
 {

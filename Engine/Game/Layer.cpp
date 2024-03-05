@@ -3,11 +3,11 @@
 
 
 
-#include "../Manager/RenderManager.h"
+#include "Manager/RenderManager.h"
 
 
 #include "iScene.h"
-#include "GameObject.h"
+#include "Game/GameObject.h"
 
 
 namespace ehw

@@ -1,10 +1,10 @@
 #pragma once
-#include "../../Editor/Base/EditorChild.h"
-#include "../../Editor/Widget/EditorWidget_Tree.h"
+#include "Editor/Base/EditorChild.h"
+#include "Editor/Widget/EditorWidget_Tree.h"
 
-#include "../../Manager/ResourceManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Resource/iResource.h"
+#include "Resource/iResource.h"
 
 
 namespace editor

@@ -1,5 +1,5 @@
 #pragma once
-#include "../iResource.h"
+#include "iResource.h"
 
 
 namespace ehw

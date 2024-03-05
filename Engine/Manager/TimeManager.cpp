@@ -3,9 +3,9 @@
 
 
 
-#include "../Util/AtExit.h"
+#include "Util/AtExit.h"
 
-#include "../Application.h"
+#include "Application.h"
 
 
 namespace ehw

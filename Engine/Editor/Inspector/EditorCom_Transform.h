@@ -1,5 +1,5 @@
 #pragma once
-#include "EditorComponent.h"
+#include "Editor/Inspector/EditorComponent.h"
 
 namespace editor
 {

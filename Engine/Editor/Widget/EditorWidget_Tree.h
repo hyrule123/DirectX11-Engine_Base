@@ -1,8 +1,8 @@
 #pragma once
-#include "../../Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 
 
-#include "../../CommonStruct.h"
+#include "CommonStruct.h"
 
 #include <functional>
 

@@ -1,12 +1,12 @@
 #include "Material.h"
 
-#include "../GPU/ConstBuffer.h"
+#include "GPU/ConstBuffer.h"
 
-#include "../Manager/ResourceManager.h"
-#include "../Manager/RenderManager.h"
-#include "../Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
+#include "Manager/RenderManager.h"
+#include "Manager/PathManager.h"
 
-#include "../Util/Serialize/JsonSerializer.h"
+#include "Util/Serialize/JsonSerializer.h"
 
 #include "Texture.h"
 #include "Shader/GraphicsShader.h"

@@ -2,7 +2,7 @@
 #include "iAnimation.h"
 
 #include "Texture.h"
-#include "../Util/Serialize/Serializable.h"
+#include "Util/Serialize/Serializable.h"
 
 namespace ehw
 {

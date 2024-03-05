@@ -1,24 +1,22 @@
+#include "Game/Component/Camera/Com_Camera.h"
 
-#include "Com_Camera.h"
+#include "Application.h"
 
+#include "Game/GameObject.h"
+#include "Game/iScene.h"
 
-#include "../../../Application.h"
+#include "Manager/RenderManager.h"
+#include "Manager/SceneManager.h"
+#include "Manager/GPUManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../../Game/GameObject.h"
-#include "../../../Game/iScene.h"
+#include "Resource/Material.h"
 
-#include "../../../Manager/RenderManager.h"
-#include "../../../Manager/SceneManager.h"
-#include "../../../Manager/GPUManager.h"
-#include "../../../Manager/ResourceManager.h"
+#include "GPU/MultiRenderTarget.h"
 
-#include "../../../Resource/Material.h"
-
-#include "../../../GPU/MultiRenderTarget.h"
-
-#include "../Transform/Com_Transform.h"
-#include "../Renderer/iRenderer.h"
-#include "../Light/Com_Light3D.h"
+#include "Game/Component/Transform/Com_Transform.h"
+#include "Game/Component/Renderer/iRenderer.h"
+#include "Game/Component/Light/Com_Light3D.h"
 
 extern ehw::Application gApplication;
 

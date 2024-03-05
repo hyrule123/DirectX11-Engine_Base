@@ -1,9 +1,9 @@
 #pragma once
-#include "../define_Enum.h"
+#include "define_Enum.h"
 
-#include "../GPU/CommonGPU.h"
+#include "GPU/CommonGPU.h"
 
-#include "../Util/Serialize/Serializable.h"
+#include "Util/Serialize/Serializable.h"
 
 #include "iResource.h"
 

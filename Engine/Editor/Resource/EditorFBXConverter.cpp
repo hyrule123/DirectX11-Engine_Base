@@ -1,16 +1,15 @@
+#include "Editor/Resource/EditorFBXConverter.h"
 
-#include "EditorFBXConverter.h"
+#include "Application.h"
 
+#include "Manager/TimeManager.h"
+#include "Manager/ThreadPoolManager.h"
+#include "Manager/PathManager.h"
+#include "Manager/ResourceManager.h"
 
-#include "../../Application.h"
+#include "Util/define_Util.h"
 
-#include "../../Manager/TimeManager.h"
-#include "../../Manager/ThreadPoolManager.h"
-#include "../../Manager/PathManager.h"
-#include "../../Manager/ResourceManager.h"
-
-#include "../../Util/define_Util.h"
-#include "../../Resource/Model3D/Model3D.h"
+#include "Resource/Model3D/Model3D.h"
 
 namespace editor
 {

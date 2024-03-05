@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CommonType.h"
+#include "CommonType.h"
 
 //전방선언
 namespace FMOD

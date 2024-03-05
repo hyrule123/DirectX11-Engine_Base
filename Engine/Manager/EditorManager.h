@@ -2,14 +2,14 @@
 
 
 
-#include "../CommonStruct.h"
-#include "../define_Macro.h"
+#include "CommonStruct.h"
+#include "define_Macro.h"
 
-#include "../Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 
-#include "../GPU/CommonGPU.h"
+#include "GPU/CommonGPU.h"
 
-#include "../Editor/imgui/ImGuizmo.h"
+#include "Editor/imgui/ImGuizmo.h"
 
 #include <unordered_map>
 

@@ -1,10 +1,10 @@
 #pragma once
-#include "../../Resource/iResource.h"
+#include "Resource/iResource.h"
 
-#include "../../CommonStruct.h"
-#include "../../GPU/CommonGPU.h"
+#include "CommonStruct.h"
+#include "GPU/CommonGPU.h"
 
-#include "../../Util/Serialize/Serializable.h"
+#include "Util/Serialize/Serializable.h"
 
 namespace editor
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "iResource.h"
 
-#include "../Util/Serialize/JsonSerializer.h"
+#include "Util/Serialize/JsonSerializer.h"
 
 namespace ehw
 {

@@ -1,5 +1,4 @@
-
-#include "EditorObject.h"
+#include "Editor/DebugObject/EditorObject.h"
 
 namespace editor
 {

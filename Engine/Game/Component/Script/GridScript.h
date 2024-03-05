@@ -1,9 +1,10 @@
 #pragma once
-#include "iScript.h"
-#include "../Camera/Com_Camera.h"
+#include "Game/Component/Script/iScript.h"
+
 
 namespace ehw
 {
+	class Com_Camera;
 	class GridScript : public iScript
 	{
 	public:

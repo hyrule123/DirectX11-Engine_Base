@@ -1,8 +1,8 @@
 #pragma once
-#include "../../Editor/Base/EditorBase.h"
+#include "Editor/Base/EditorBase.h"
 
 
-#include "../../CommonStruct.h"
+#include "CommonStruct.h"
 
 namespace editor
 {

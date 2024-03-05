@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../Resource/Shader/iComputeShader.h"
+#include "Resource/Shader/iComputeShader.h"
 
-#include "../../../DefaultShader/CommonStruct.hlsli"
+#include "DefaultShader/CommonStruct.hlsli"
 
 //설명: 3D 애니메이션을 처리하기 위한 컴퓨트쉐이더
 //사용법

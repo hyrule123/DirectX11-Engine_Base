@@ -2,11 +2,11 @@
 #include "EditorInspector.h"
 
 
-#include "../../Manager/RenderManager.h"
-#include "../../Editor/Resource/EditorTexture.h"
+#include "Manager/RenderManager.h"
+#include "Editor/Resource/EditorTexture.h"
 
 #include "EditorCom_Transform.h"
-#include "EditorCom_Renderer.h"
+#include "Editor/Inspector/EditorCom_Renderer.h"
 
 namespace editor
 {
