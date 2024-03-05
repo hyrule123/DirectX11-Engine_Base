@@ -10,6 +10,7 @@
 
 namespace ehw
 {
+	class Animation3D_ComputeShader;
 	class Skeleton;
 	class Animation3D;
 	class StructBuffer;
@@ -50,6 +51,7 @@ namespace ehw
 		bool CheckMesh();
 
 	private:
+		std::shared_ptr<Animation3D_ComputeShader>		m_animationComputeShader;
 		std::shared_ptr<Skeleton>						m_skeleton;
 		std::shared_ptr<Animation3D>					m_currentAnimation;
 		std::shared_ptr<Animation3D>					m_nextAnimation;

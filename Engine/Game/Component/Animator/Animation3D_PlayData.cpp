@@ -11,12 +11,13 @@
 #include "../../../Resource/Model3D/Skeleton.h"
 #include "../../../Game/Component/Animator/iAnimator.h"
 
-#include "../../../Resource/Shader/ComputeShaders/Animation3DShader.h"
+#include "../../../Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 namespace ehw
 {
 	Animation3D_PlayData::Animation3D_PlayData()
-		: m_skeleton()
+		: m_animationComputeShader()
+		, m_skeleton()
 		//, m_iFramePerSecond(30)
 		, m_pBoneFinalMatBuffer(nullptr)
 		, m_PrevFrame(-1)
@@ -31,6 +32,8 @@ namespace ehw
 		, m_bInternalUpdated(false)
 		, m_bFinalMatrixUpdated(false)
 	{
+		m_animationComputeShader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+
 		StructBuffer::Desc desc{};
 		desc.REGISLOT_t_SRV = Register_t_g_FinalBoneMatrixArray;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex;
@@ -65,6 +68,8 @@ namespace ehw
 
 	bool Animation3D_PlayData::InternalUpdate()
 	{
+		
+
 		if (nullptr == m_skeleton || nullptr == m_currentAnimation)
 		{
 			return false;
@@ -74,7 +79,6 @@ namespace ehw
 			return false;
 		}
 		m_bInternalUpdated = true;
-
 
 		bool bChangeEnd = false;
 		if (m_Anim3DCBuffer.bChangingAnim)
@@ -156,9 +160,6 @@ namespace ehw
 		if (false == m_bFinalMatrixUpdated)
 		{
 			m_bFinalMatrixUpdated = true;
-			// Animation3D Update Compute Shader
-			static std::shared_ptr<Animation3DShader> pUpdateShader = LOAD_COMPUTESHADER(Animation3DShader);
-
 
 			//구조화 버퍼가 정상적으로 생성되었는지 확인한다.
 			if (false == CheckMesh())
@@ -167,24 +168,24 @@ namespace ehw
 			}
 				
 
-			Animation3DShader::Desc desc{};
-			desc.CurrentAnimKeyFrameBuffer = m_currentAnimation->GetKeyFrameSBuffer();
+			Animation3D_ComputeShader::Desc desc{};
+			desc.CurrentAnimKeyFrameBuffer = m_currentAnimation->GetKeyFrameSBuffer().get();
 
 			if (m_nextAnimation)
 			{
-				desc.NextAnimKeyFrameBuffer = m_nextAnimation->GetKeyFrameSBuffer();
+				desc.NextAnimKeyFrameBuffer = m_nextAnimation->GetKeyFrameSBuffer().get();
 			}
 
-			desc.BoneOffsetMatrixBuffer = m_skeleton->GetBoneOffsetBuffer();
+			desc.BoneOffsetMatrixBuffer = m_skeleton->GetBoneOffsetBuffer().get();
 
 			desc.FinalBoneTranslationMatrixBuffer = m_pBoneFinalMatBuffer.get();
 
 			desc.Anim3DData = &m_Anim3DCBuffer;
 
-			pUpdateShader->SetDesc(desc);
+			m_animationComputeShader->SetDesc(desc);
 
 			// 업데이트 쉐이더 실행
-			pUpdateShader->OnExcute();
+			m_animationComputeShader->OnExcute();
 
 			m_bFinalMatrixUpdated = true;
 		}

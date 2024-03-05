@@ -160,12 +160,11 @@ namespace ehw
 
 			if (false == skeletonStrKey.empty())
 			{
-				const std::shared_ptr<Skeleton>& skeletonPtr = ResourceManager<Skeleton>::Load(skeletonStrKey);
-				if (nullptr == skeletonPtr)
+				m_skeleton = ResourceManager<Skeleton>::Load(skeletonStrKey);
+				if (nullptr == m_skeleton)
 				{
 					ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
 					return eResult::Fail_Nullptr;
-
 				}
 			}
 		}
@@ -202,6 +201,7 @@ namespace ehw
 					ERROR_MESSAGE("메쉬 로드 실패");
 					return eResult::Fail_Open;
 				}
+				m_meshContainers[i].mesh->SetSkeleton(m_skeleton);
 
 				//Materials
 				const Json::Value& materials = meshContainer["materials"];
@@ -459,7 +459,7 @@ namespace ehw
 
 				meshCont.materials.push_back(mtrl);
 			}
-			m_meshContainers.push_back(meshCont);
+			m_meshContainers.push_back(std::move(meshCont));
 		}
 
 		return eResult::Success;

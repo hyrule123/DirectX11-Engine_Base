@@ -12,7 +12,7 @@
 #include "../Resource/Shader/GraphicsShader.h"
 #include "../Resource/Shader/ComputeShaders/NormalConvertShader.h"
 #include "../Resource/Shader/ComputeShaders/ParticleShader.h"
-#include "../Resource/Shader/ComputeShaders/Animation3DShader.h"
+#include "../Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 #include "../GPU/ConstBuffer.h"
 #include "../GPU/MultiRenderTarget.h"
@@ -1178,7 +1178,7 @@ namespace ehw
 
 
 #pragma region ANIMATION 3D
-		std::shared_ptr<Animation3DShader> Anim3DShader = std::make_shared<Animation3DShader>();
+		std::shared_ptr<Animation3D_ComputeShader> Anim3DShader = std::make_shared<Animation3D_ComputeShader>();
 		Anim3DShader->SetEngineDefaultRes(true);
 		Anim3DShader->CreateByHeader(CS_Animation3D, sizeof(CS_Animation3D));
 

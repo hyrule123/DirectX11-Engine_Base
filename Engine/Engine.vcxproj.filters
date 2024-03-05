@@ -360,7 +360,7 @@
     <ClCompile Include="Game\Component\Animator\Com_Animator3D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp">
@@ -681,7 +681,7 @@
     <ClInclude Include="Game\Component\Animator\Com_Animator3D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h">
+    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h">

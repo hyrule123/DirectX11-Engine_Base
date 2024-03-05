@@ -62,7 +62,7 @@ namespace ehw
         int GetFPS() const { return m_FramePerSec; }
         std::shared_ptr<Skeleton> GetSkeleton() const { return m_OwnerSkeleton.lock(); }
         void SetSkeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
-        StructBuffer* GetKeyFrameSBuffer() const { return m_SBufferKeyFrame.get(); }
+        std::shared_ptr<StructBuffer> GetKeyFrameSBuffer() const { return m_SBufferKeyFrame; }
 
     private:
         bool CreateKeyFrameSBuffer();

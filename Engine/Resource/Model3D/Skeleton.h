@@ -32,7 +32,7 @@ namespace ehw
 		//Animation 3D
 		const std::vector<tMTBone>& GetBones() const { return m_vecBones; }
 		UINT GetBoneCount() const { return (UINT)m_vecBones.size(); }
-		StructBuffer* GetBoneOffsetBuffer() { return  m_pBoneOffset.get(); }	   // 각 뼈의 offset 행렬
+		std::shared_ptr<StructBuffer> GetBoneOffsetBuffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬
 
 		//반환타입 변수길이가 좀 김
 		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>& 
@@ -52,7 +52,7 @@ namespace ehw
 		std::vector<tMTBone>							m_vecBones;
 
 		// 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
-		std::unique_ptr<StructBuffer>					m_pBoneOffset;	  
+		std::shared_ptr<StructBuffer>					m_pBoneOffset;	  
 
 		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHashFunc_StringView, std::equal_to<>>	m_animations;
 	};

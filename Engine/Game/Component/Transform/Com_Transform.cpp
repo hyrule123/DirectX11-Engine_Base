@@ -231,6 +231,7 @@ namespace ehw
 			m_worldDirection[i] = float3(m_worldMatrix.m[i]).Normalize();
 		}
 
+
 		return true;
 	}
 

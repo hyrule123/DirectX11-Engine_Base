@@ -12,7 +12,7 @@
 
 #include "../define_Resource.h"
 
-
+#include <fstream>
 
 namespace ehw
 {

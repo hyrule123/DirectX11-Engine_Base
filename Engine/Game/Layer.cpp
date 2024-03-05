@@ -68,7 +68,7 @@ namespace ehw
 		{
 			if (m_GameObjects[i]->IsActive())
 			{
-				m_GameObjects[i]->Render();
+				m_GameObjects[i]->FrameEnd();
 			}
 		}
 	}

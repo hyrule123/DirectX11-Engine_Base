@@ -1,19 +1,23 @@
 #pragma once
 #include "../../../Resource/Shader/iComputeShader.h"
 
-
-
 #include "../../../DefaultShader/CommonStruct.hlsli"
+
+//설명: 3D 애니메이션을 처리하기 위한 컴퓨트쉐이더
+//사용법
+//* Animation3D_ComputeShader::Desc 구조체에 필요한 내용을 넣어서 전달.
 
 namespace ehw
 {
 	class StructBuffer;
-    class Animation3DShader :
+    class Animation3D_ComputeShader :
         public iComputeShader
     {
 	public:
-		Animation3DShader();
-		virtual ~Animation3DShader();
+		Animation3D_ComputeShader();
+		virtual ~Animation3D_ComputeShader();
+
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
 		virtual bool BindData();
 		virtual void UnBindData();
@@ -26,9 +30,9 @@ namespace ehw
 			StructBuffer* BoneOffsetMatrixBuffer{};
 			StructBuffer* FinalBoneTranslationMatrixBuffer{};
 		};
-		void SetDesc(const Animation3DShader::Desc& _desc) { mDesc = _desc; }
+		void SetDesc(const Animation3D_ComputeShader::Desc& _desc) { m_desc = _desc; }
 	private:
-		Desc mDesc;
+		Desc m_desc;
     };
 }
 

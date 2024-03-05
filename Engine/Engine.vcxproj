@@ -271,7 +271,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Resource\Animation2D.h" />
     <ClInclude Include="Resource\Model3D\Animation3D.h" />
-    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3DShader.h" />
+    <ClInclude Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Util\Serialize\Serializable.h" />
     <ClInclude Include="Util\StringConverter.h" />
@@ -405,7 +405,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
-    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3DShader.cpp" />
+    <ClCompile Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.cpp" />
     <ClCompile Include="Util\Serialize\Serializable.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\base64.cpp">

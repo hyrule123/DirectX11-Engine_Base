@@ -29,7 +29,7 @@ namespace ehw
 		//Load 함수와 BindData, UnBindData 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath);
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
 
 		eResult CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize);

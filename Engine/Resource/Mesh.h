@@ -74,7 +74,7 @@ namespace ehw
 		UINT GetSubsetCount() const { return (UINT)m_indexInfos.size(); }
 		float GetBoundingSphereRad() const { return mBoundingSphereRadius; }
 
-		void SetSkeleton(std::shared_ptr<Skeleton> _pSkeleton) { m_skeleton = _pSkeleton; }
+		void SetSkeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
 		std::shared_ptr<Skeleton> GetSkeleton() const { return m_skeleton; }
 
 

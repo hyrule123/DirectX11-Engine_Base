@@ -29,6 +29,8 @@
 	do { MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONINFORMATION); __debugbreak(); } while(false)
 
 #define DEBUG_LOG(_c_str) OutputDebugStringW(L ## _c_str)
+#define DEBUG_LOG_A(_str) OutputDebugStringA(_str)
+#define DEBUG_LOG_W(_wStr) OutputDebugStringW(_wStr)
 
 #else
 #define ASSERT(_expression, _c_str) \
@@ -49,6 +51,10 @@
 
 #define DEBUG_MESSAGE_W(_c_str) 0
 #define DEBUG_MESSAGE_A(_c_str) 0
+
+#define DEBUG_LOG(_c_str) 0
+#define DEBUG_LOG_A(_str) 0
+#define DEBUG_LOG_W(_wStr) 0
 
 #endif _DEBUG
 

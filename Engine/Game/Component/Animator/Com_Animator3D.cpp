@@ -7,7 +7,7 @@
 
 #include "../../../GPU/StructBuffer.h"
 
-#include "../../../Resource/Shader/ComputeShaders/Animation3DShader.h"
+#include "../../../Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 #include "../../../Resource/Model3D/Skeleton.h"
 #include "../../../Resource/Model3D/Animation3D.h"
 
@@ -136,7 +136,7 @@ namespace ehw
 	{
 		if (m_sharedPlayData)
 		{
-			return Play(_strAnimName, _blendTime);
+			return m_sharedPlayData->Play(_strAnimName, _blendTime);
 		}
 
 		return false;

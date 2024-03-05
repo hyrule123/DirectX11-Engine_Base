@@ -66,6 +66,12 @@ namespace ehw
 
 	void iScene::SceneFrameEnd()
 	{
+		FrameEnd();
+		for (Layer& layer : m_Layers)
+		{
+			layer.FrameEnd();
+		}
+
 		while (false == m_FrameEndJobs.empty())
 		{
 			m_FrameEndJobs.front()();
