@@ -8,7 +8,7 @@
 
 #include "Util/Serialize/JsonSerializer.h"
 
-#include "Texture.h"
+#include "Resource/Texture.h"
 #include "Shader/GraphicsShader.h"
 
 namespace ehw

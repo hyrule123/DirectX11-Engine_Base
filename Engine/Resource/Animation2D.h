@@ -1,7 +1,7 @@
 #pragma once
-#include "iAnimation.h"
+#include "Resource/iAnimation.h"
 
-#include "Texture.h"
+#include "Resource/Texture.h"
 #include "Util/Serialize/Serializable.h"
 
 namespace ehw

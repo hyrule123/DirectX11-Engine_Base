@@ -1,7 +1,7 @@
 #ifndef NORMAL_CONVERT_HLSLI
 #define NORMAL_CONVERT_HLSLI
-#include "Resource.hlsli"
-#include "ConstBuffer.hlsli"
+#include "../Resource.hlsli"
+#include "../ConstBuffer.hlsli"
 
 TEXTURE2D(SrcNormalTex, t, 0);
 TEXTURE2D_RW(DestNormalTex, u, 0, float4);

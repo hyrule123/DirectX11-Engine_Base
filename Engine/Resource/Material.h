@@ -5,7 +5,7 @@
 
 #include "Util/Serialize/Serializable.h"
 
-#include "iResource.h"
+#include "Resource/iResource.h"
 
 #include <array>
 

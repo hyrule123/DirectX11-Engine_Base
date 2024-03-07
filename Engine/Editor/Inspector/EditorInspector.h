@@ -1,11 +1,9 @@
 #pragma once
-#include "Base/EditorWindow.h"
-
-
+#include "Editor/Base/EditorWindow.h"
 
 #include "Game/GameObject.h"
 
-#include "Resource/EditorResource.h"
+#include "Editor/Resource/EditorResource.h"
 
 #include "Editor/Inspector/EditorComponent.h"
 

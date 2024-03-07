@@ -1,5 +1,5 @@
 
-#include "FBXLoader.h"
+#include "Resource/Model3D/FBXLoader.h"
 
 #include "Manager/PathManager.h"
 #include "Manager/ResourceManager.h"

@@ -228,7 +228,7 @@ namespace ehw
 		}
 
 		//Transform
-		auto tr = GetOwner()->GetComponent<iTransform>();
+		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 			return;
 		tr->BindData();

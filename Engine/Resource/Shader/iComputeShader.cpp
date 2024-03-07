@@ -1,4 +1,4 @@
-#include "iComputeShader.h"
+#include "Resource/Shader/iComputeShader.h"
 
 
 #include "Manager/ResourceManager.h"
@@ -10,7 +10,7 @@
 #include "GPU/CommonGPU.h"
 
 
-#include "define_Resource.h"
+#include "Resource/define_Resource.h"
 
 #include <fstream>
 

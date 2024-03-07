@@ -15,6 +15,7 @@
 #include "Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 #include "GPU/ConstBuffer.h"
+#include "GPU/StructBuffer.h"
 #include "GPU/MultiRenderTarget.h"
 
 #include "Game/Component/Light/Com_Light3D.h"

@@ -43,6 +43,9 @@ namespace ehw
 		CLONE_ABLE(Com_Transform);
 
 		virtual ~Com_Transform();
+
+		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); }
+		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) { return eResult(); }
 	
 		virtual void InternalUpdate() override;
 		void BindData(); 

@@ -1,5 +1,5 @@
 #pragma once
-#include "iAnimation.h"
+#include "Resource/iAnimation.h"
 
 #include "defines.h"
 

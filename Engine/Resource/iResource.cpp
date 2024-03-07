@@ -1,4 +1,4 @@
-#include "iResource.h"
+#include "Resource/iResource.h"
 
 
 #include "Manager/ResourceManager.h"

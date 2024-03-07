@@ -1,5 +1,5 @@
 #pragma once
-#include "iComputeShader.h"
+#include "Resource/Shader/iComputeShader.h"
 
 #include "CommonGlobalVar.h"
 

@@ -7,9 +7,9 @@
 #include "Util/Serialize/BinarySerializer.h"
 
 
-#include "FBXLoader.h"
+#include "Resource/Model3D/FBXLoader.h"
 #include "Model3D.h"
-#include "Skeleton.h"
+#include "Resource/Model3D/Skeleton.h"
 
 
 namespace ehw

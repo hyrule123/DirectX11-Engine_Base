@@ -4,6 +4,7 @@
 #include "Resource/Shader/ComputeShaders/ParticleShader.h"
 
 #include "GPU/ConstBuffer.h"
+#include "GPU/StructBuffer.h"
 
 
 namespace ehw

@@ -13,7 +13,7 @@
 
 #include "Game/GameObject.h"
 
-#include "Renderer/Com_Renderer_Mesh.h"
+#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
 
 #include "Game/Component/Animator/Animation3D_PlayData.h"
 

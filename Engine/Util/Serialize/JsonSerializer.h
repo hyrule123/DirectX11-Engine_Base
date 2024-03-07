@@ -3,10 +3,10 @@
 #include "CommonType.h"
 
 #include "Util/type_traits_Ex.h"
-#include "StringConverter.h"
+#include "Util/StringConverter.h"
 
-#include "Serializable.h"
-#include "json.h"
+#include "Util/Serialize/Serializable.h"
+#include "Util/Serialize/json.h"
 
 //CPP에서 include 후 사용해주면 됨(특정 타입을 Json::value 형태로 변환하기 위한 전역 함수 모음임)
 

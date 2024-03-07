@@ -83,7 +83,7 @@ namespace ehw
     //template<typename T>
     //inline constexpr eComponentCategory ComponentManager::GetComponentCategory()
     //{
-    //    if constexpr (std::is_base_of_v<iTransform, T>)
+    //    if constexpr (std::is_base_of_v<Com_Transform, T>)
     //    {
     //        return eComponentCategory::Transform;
     //    }
@@ -134,7 +134,7 @@ namespace ehw
     //    {
     //        return true;
     //    }
-    //    else if constexpr (std::is_same_v<iTransform, T>)
+    //    else if constexpr (std::is_same_v<Com_Transform, T>)
     //    {
     //        return true;
     //    }

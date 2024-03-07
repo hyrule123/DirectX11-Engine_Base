@@ -1,6 +1,7 @@
 #ifndef PARTICLE_HLSLI
 #define PARTICLE_HLSLI
-#include "Globals.hlsli"
+#include "../Globals.hlsli"
+
 
 struct alignas(16)   tParticle
 {

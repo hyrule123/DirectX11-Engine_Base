@@ -15,9 +15,9 @@
 
 #include "Resource/Shader/GraphicsShader.h"
 
-#include "Texture.h"
-#include "Skeleton.h"
-#include "FBXLoader.h"
+#include "Resource/Texture.h"
+#include "Resource/Model3D/Skeleton.h"
+#include "Resource/Model3D/FBXLoader.h"
 
 #include <regex>
 

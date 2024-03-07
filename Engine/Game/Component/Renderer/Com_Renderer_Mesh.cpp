@@ -15,7 +15,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		auto tr = GetOwner()->GetComponent<iTransform>();
+		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		tr->BindData();
 
 		//Render
