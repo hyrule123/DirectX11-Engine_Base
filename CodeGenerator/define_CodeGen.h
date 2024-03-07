@@ -28,8 +28,8 @@ namespace define_Preset
 	namespace Path
 	{
 		PRESET(ContentsProj, "./Project/UserContents");
-		PRESET(EngineProj, "./Project/EngineBase/Engine");
-		PRESET(EngineComponent, "./Project/EngineBase/Engine/Game/Component");
+		PRESET(EngineProj, "./Project/Base/Engine");
+		PRESET(EngineComponent, "./Project/Base/Engine/Game/Component");
 		PRESET(Shader_Proj, "./Project/UserShader");
 
 

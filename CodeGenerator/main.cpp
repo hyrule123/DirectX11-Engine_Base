@@ -252,7 +252,7 @@ void CreateUserComponentKey()
         Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
         Desc.ClassName = "UserContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
-        Desc.IncludeManagerHeader = R"(#include <Engine/Manager/ComponentManager.h>)";
+        Desc.IncludeManagerHeader = R"(#include <Base/Engine/Manager/ComponentManager.h>)";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
@@ -299,7 +299,7 @@ void CreateScriptKey()
         Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
         Desc.ClassName = "UserContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
-        Desc.IncludeManagerHeader = "#include <Engine/Manager/ComponentManager.h>";
+        Desc.IncludeManagerHeader = "#include <Base/Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::script::##T))";
@@ -343,7 +343,7 @@ void CreateSceneKey()
         Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
         Desc.ClassName = "UserContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
-        Desc.IncludeManagerHeader = "#include <Engine/Manager/SceneManager.h>";
+        Desc.IncludeManagerHeader = "#include <Base/Engine/Manager/SceneManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(SceneManager::AddSceneConstructor<T>(strKey::scene::##T))";
