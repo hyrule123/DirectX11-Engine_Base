@@ -19,6 +19,8 @@ public:
 	static std::wstring ANSI_to_Unicode(const std::string_view _src);
 	static std::string Unicode_to_ANSI(const std::wstring_view _src);
 
+	// Strlen(UTF-8 Support)
+	static size_t UTF8_Strlen(const std::string_view _str);
 
 	//새 string을 만들어서 return 해줌
 	inline static std::string UpperCase(const std::string_view _str);
