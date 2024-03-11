@@ -1,11 +1,10 @@
-
-#include "TimeManager.h"
-
+#include "Engine/Manager/TimeManager.h"
 
 
-#include "Util/AtExit.h"
 
-#include "Application.h"
+#include "Engine/Util/AtExit.h"
+
+#include "Engine/Application.h"
 
 
 namespace ehw

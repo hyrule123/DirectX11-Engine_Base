@@ -1,7 +1,7 @@
 #pragma once
-#include "Game/Component/iComponent.h"
+#include "Engine/Game/Component/iComponent.h"
 
-#include "CommonStruct.h"
+#include "Engine/CommonStruct.h"
 
 #include <functional>
 

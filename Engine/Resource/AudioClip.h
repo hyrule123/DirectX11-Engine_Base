@@ -1,9 +1,7 @@
 #pragma once
-#include "Resource/iResource.h"
+#include "Engine/Resource/iResource.h"
 
-
-
-#include "Manager/AudioManager.h"
+#include "Engine/Manager/AudioManager.h"
 
 namespace ehw
 {

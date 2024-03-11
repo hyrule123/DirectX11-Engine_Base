@@ -1,16 +1,16 @@
-#include "Resource/Shader/iComputeShader.h"
+#include "Engine/Resource/Shader/iComputeShader.h"
 
 
-#include "Manager/ResourceManager.h"
-#include "Manager/PathManager.h"
-#include "Manager/GPUManager.h"
-#include "Manager/RenderManager.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/PathManager.h"
+#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 
-#include "GPU/ConstBuffer.h"
-#include "GPU/CommonGPU.h"
+#include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/CommonGPU.h"
 
 
-#include "Resource/define_Resource.h"
+#include "Engine/Resource/define_Resource.h"
 
 #include <fstream>
 

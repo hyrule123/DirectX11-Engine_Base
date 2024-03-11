@@ -1,10 +1,8 @@
 #pragma once
-#include "iShader.h"
+#include "Engine/Resource/Shader/iShader.h"
 
-
-
-#include "GPU/CommonGPU.h"
-#include "Util/Serialize/Serializable.h"
+#include "Engine/GPU/CommonGPU.h"
+#include "Engine/Util/Serialize/Serializable.h"
 
 
 #include <unordered_set>

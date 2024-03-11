@@ -1,9 +1,9 @@
 #pragma once
-#include "define_GPU.h"
+#include "Engine/GPU/define_GPU.h"
 
 
-#include "DefaultShader/ConstBuffer.hlsli"
-#include "DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/ConstBuffer.hlsli"
+#include "Engine/DefaultShader/Resource.hlsli"
 
 
 #include <d3d11.h>

@@ -1,18 +1,18 @@
-#include "Game/Component/Light/Com_Light3D.h"
+#include "Engine/Game/Component/Light/Com_Light3D.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Util/Serialize/JsonSerializer.h"
+#include "Engine/Util/Serialize/JsonSerializer.h"
 
-#include "Manager/RenderManager.h"
-#include "Manager/ResourceManager.h"
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/ResourceManager.h"
 
-#include "Resource/Mesh.h"
-#include "Resource/Material.h"
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
 
-#include "GPU/ConstBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
 namespace ehw
 {

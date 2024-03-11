@@ -1,9 +1,9 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Entity.h"
 
-#include "Util/Serialize/Serializable.h"
+#include "Engine/Util/Serialize/Serializable.h"
 
-#include "Manager/ComponentManager.h"
+#include "Engine/Manager/ComponentManager.h"
 
 namespace ehw
 {

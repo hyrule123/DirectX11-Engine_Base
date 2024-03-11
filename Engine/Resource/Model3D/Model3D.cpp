@@ -1,23 +1,22 @@
-#include "Model3D.h"
+#include "Engine/Resource/Model3D/Model3D.h"
 
+#include "Engine/Util/define_Util.h"
+#include "Engine/Util/Serialize/JsonSerializer.h"
 
-#include "Util/define_Util.h"
-#include "Util/Serialize/JsonSerializer.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/PathManager.h"
 
-#include "Manager/ResourceManager.h"
-#include "Manager/PathManager.h"
+#include "Engine/Game/iScene.h"
+#include "Engine/Game/GameObject.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
+#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
-#include "Game/iScene.h"
-#include "Game/GameObject.h"
-#include "Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
-#include "Game/Component/Animator/Com_Animator3D.h"
-#include "Game/Component/Animator/Animation3D_PlayData.h"
+#include "Engine/Resource/Shader/GraphicsShader.h"
 
-#include "Resource/Shader/GraphicsShader.h"
-
-#include "Resource/Texture.h"
-#include "Resource/Model3D/Skeleton.h"
-#include "Resource/Model3D/FBXLoader.h"
+#include "Engine/Resource/Texture.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/FBXLoader.h"
 
 #include <regex>
 

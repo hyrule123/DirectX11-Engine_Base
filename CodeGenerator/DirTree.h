@@ -1,6 +1,6 @@
 #pragma once
 //트리 관리자 클래스
-#include "DirTreeNode.h"
+#include "CodeGenerator/DirTreeNode.h"
 
 #include "../Engine/define_Enum.h"
 #include "json-cpp/json-forwards.h"

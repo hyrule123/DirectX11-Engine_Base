@@ -1,16 +1,16 @@
-#include "Game/Component/Renderer/iRenderer.h"
+#include "Engine/Game/Component/Renderer/iRenderer.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
-#include "Game/Component/Animator/Com_Animator2D.h"
-#include "Game/Component/Animator/Com_Animator3D.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Animator/Com_Animator2D.h"
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
 
-#include "Resource/Mesh.h"
-#include "Resource/Material.h"
-#include "Game/GameObject.h"
-#include "Manager/ResourceManager.h"
-#include "Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
+#include "Engine/Game/GameObject.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
 
-#include "Util/Serialize/JsonSerializer.h"
+#include "Engine/Util/Serialize/JsonSerializer.h"
 
 
 namespace ehw

@@ -3,8 +3,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "Util/SimpleMath.h"
-#include "CommonStruct.h"
+#include "Engine/Util/SimpleMath.h"
+#include "Engine/CommonStruct.h"
 
 namespace ehw
 {
@@ -48,6 +48,7 @@ namespace ehw
 		static HWND mHwnd;
 		static HDC  mHdc;
 		static bool mbInitialized;
+
 
 		
 	public:

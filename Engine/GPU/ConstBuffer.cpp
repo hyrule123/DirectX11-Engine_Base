@@ -1,8 +1,8 @@
-#include "ConstBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
 
 
-#include "Manager/GPUManager.h"
+#include "Engine/Manager/GPUManager.h"
 
 namespace ehw
 {

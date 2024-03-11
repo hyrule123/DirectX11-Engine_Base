@@ -1,9 +1,7 @@
-#include "PCH_CodeGenerator.h"
-
-#include "DirTreeNode.h"
-#include "define_Util.h"
-#include "define_CodeGen.h"
-#include "CodeWriter.h"
+#include "CodeGenerator/DirTreeNode.h"
+#include "CodeGenerator/define_Util.h"
+#include "CodeGenerator/define_CodeGen.h"
+#include "CodeGenerator/CodeWriter.h"
 
 DirTreeNode::DirTreeNode()
 	: m_pParent()

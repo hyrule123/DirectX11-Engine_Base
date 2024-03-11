@@ -1,6 +1,6 @@
 #pragma once
 //SimpleMath, float2~4, int2~4, uint2~4, BOOL, TRUE, FALSE 등 정의
-#include "DefaultShader/Common.hlsli"
+#include "Engine/DefaultShader/Common.hlsli"
 
 #include <string>
 

@@ -1,7 +1,5 @@
-#include "PCH_CodeGenerator.h"
-#include "define_CodeGen.h"
-
-#include "define_Util.h"
+#include "CodeGenerator/define_CodeGen.h"
+#include "CodeGenerator/define_Util.h"
 
 std::regex define_Preset::Regex::g_VarForbiddenChars::A;
 std::wregex define_Preset::Regex::g_VarForbiddenChars::W;

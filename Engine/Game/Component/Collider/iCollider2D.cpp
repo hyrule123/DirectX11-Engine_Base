@@ -1,11 +1,11 @@
-#include "Game/Component/Collider/iCollider2D.h"
+#include "Engine/Game/Component/Collider/iCollider2D.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
-#include "Game/Component/Script/iScript.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Script/iScript.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Manager/RenderManager.h"
+#include "Engine/Manager/RenderManager.h"
 
 
 

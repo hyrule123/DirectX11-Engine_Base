@@ -1,10 +1,10 @@
 
-#include "Game/Component/iComponent.h"
+#include "Engine/Game/Component/iComponent.h"
 
 
 
-#include "Game/GameObject.h"
-#include "Game/iScene.h"
+#include "Engine/Game/GameObject.h"
+#include "Engine/Game/iScene.h"
 
 namespace ehw
 {

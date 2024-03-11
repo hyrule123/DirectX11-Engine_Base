@@ -1,16 +1,16 @@
-#include "Game/Component/Animator/Animation3D_PlayData.h"
+#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
-#include "Game/Component/Animator/iAnimator.h"
+#include "Engine/Game/Component/Animator/iAnimator.h"
 
-#include "GPU/StructBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
-#include "Manager/ResourceManager.h"
-#include "Manager/TimeManager.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/TimeManager.h"
 
-#include "Resource/Model3D/Animation3D.h"
-#include "Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/Animation3D.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
 
-#include "Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
+#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 #include <fbxsdk/fbxsdk.h>
 

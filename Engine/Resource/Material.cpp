@@ -1,14 +1,14 @@
-#include "Material.h"
+#include "Engine/Resource/Material.h"
 
-#include "GPU/ConstBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
-#include "Manager/ResourceManager.h"
-#include "Manager/RenderManager.h"
-#include "Manager/PathManager.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/PathManager.h"
 
-#include "Util/Serialize/JsonSerializer.h"
+#include "Engine/Util/Serialize/JsonSerializer.h"
 
-#include "Resource/Texture.h"
+#include "Engine/Resource/Texture.h"
 #include "Shader/GraphicsShader.h"
 
 namespace ehw

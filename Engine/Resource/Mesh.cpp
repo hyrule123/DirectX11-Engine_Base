@@ -1,21 +1,18 @@
+#include "Engine/Resource/Mesh.h"
 
-#include "Mesh.h"
+#include "Engine/CommonGlobalVar.h"
 
+#include "Engine/GPU/StructBuffer.h"
 
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/PathManager.h"
 
-#include "CommonGlobalVar.h"
+#include "Engine/Util/define_Util.h"
+#include "Engine/Util/Serialize/BinarySerializer.h"
 
-#include "GPU/StructBuffer.h"
-
-#include "Manager/ResourceManager.h"
-#include "Manager/RenderManager.h"
-#include "Manager/GPUManager.h"
-#include "Manager/PathManager.h"
-
-#include "Util/define_Util.h"
-#include "Util/Serialize/BinarySerializer.h"
-
-#include "Model3D/FBXLoader.h"
+#include "Engine/Resource/Model3D/FBXLoader.h"
 
 
 #ifdef max

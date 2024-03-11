@@ -1,6 +1,6 @@
 #pragma once
-#include "Resource/iResource.h"
-#include "Manager/GPUManager.h"
+#include "Engine/Resource/iResource.h"
+#include "Engine/Manager/GPUManager.h"
 
 #include <DirectXTex/DirectXTex.h>
 

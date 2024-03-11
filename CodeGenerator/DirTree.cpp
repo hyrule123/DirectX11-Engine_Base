@@ -1,17 +1,16 @@
-#include "PCH_CodeGenerator.h"
-#include "DirTree.h"
+#include "CodeGenerator/DirTree.h"
 
 
 
-#include "../Engine/Resource/define_Resource.h"
+#include "Engine/Resource/define_Resource.h"
 //#include "../Engine/Resource/Shader/GraphicsShader.h"
 //#include "../Engine/Resource/Shader/iComputeShader.h"
 
 
-#include "define_Util.h"
-#include "json-cpp/json.h"
-#include "CodeWriter.h"
-#include "DirTreeNode.h"
+#include "CodeGenerator/define_Util.h"
+#include "CodeGenerator/json-cpp/json.h"
+#include "CodeGenerator/CodeWriter.h"
+#include "CodeGenerator/DirTreeNode.h"
 
 DirTree::DirTree()
 	: m_RootDir()

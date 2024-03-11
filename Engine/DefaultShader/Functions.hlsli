@@ -3,6 +3,6 @@
 
 #include "Func_Blur.hlsli"
 #include "Func_DecodeColor.hlsli"
-#include "Light/Func_Light.hlsli"
+#include "Engine/Game/Component/Light/Func_Light.hlsli"
 
 #endif

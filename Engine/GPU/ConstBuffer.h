@@ -1,9 +1,9 @@
 #pragma once
-#include "GPUBuffer.h"
+#include "Engine/GPU/GPUBuffer.h"
 
 
 
-#include "DefaultShader/ConstBuffer.hlsli"
+#include "Engine/DefaultShader/ConstBuffer.hlsli"
 
 namespace ehw
 {

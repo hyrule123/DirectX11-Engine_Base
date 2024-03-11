@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Util/EnumFlags.h"
-#include "CommonType.h"
+#include "Engine/Util/EnumFlags.h"
+#include "Engine/CommonType.h"
 
 namespace ehw
 {

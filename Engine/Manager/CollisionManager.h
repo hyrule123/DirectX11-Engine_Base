@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Util/EnumFlags.h"
-#include "Game/Component/Collider/iCollider2D.h"
+#include "Engine/Util/EnumFlags.h"
+#include "Engine/Game/Component/Collider/iCollider2D.h"
 
 #include <map>
 

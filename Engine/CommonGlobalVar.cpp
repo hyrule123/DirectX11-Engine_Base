@@ -1,5 +1,5 @@
-#include "PCH_Engine.h"
-#include "CommonGlobalVar.h"
+
+#include "Engine/CommonGlobalVar.h"
 
 namespace ehw
 {

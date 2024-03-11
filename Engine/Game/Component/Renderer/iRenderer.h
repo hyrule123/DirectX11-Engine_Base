@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/Component/iComponent.h"
+#include "Engine/Game/Component/iComponent.h"
 
-#include "Resource/Mesh.h"
-#include "Resource/Material.h"
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
 
 namespace ehw
 {

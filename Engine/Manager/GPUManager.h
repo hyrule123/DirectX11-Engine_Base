@@ -1,8 +1,6 @@
 #pragma once
-
-
-
-#include "defines.h"
+#include "Engine/GPU/CommonGPU.h"
+#include "Engine/CommonStruct.h"
 
 namespace ehw
 {

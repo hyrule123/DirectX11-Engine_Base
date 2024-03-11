@@ -1,12 +1,12 @@
-#include "Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Manager/RenderManager.h"
+#include "Engine/Manager/RenderManager.h"
 
-#include "GPU/ConstBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
-#include "Application.h"
+#include "Engine/Application.h"
 
 
 

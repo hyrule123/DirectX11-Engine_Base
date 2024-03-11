@@ -1,10 +1,9 @@
 #pragma once
+#include "Engine/CommonStruct.h"
 
 #include <Windows.h>
 #include <vector>
 #include <functional>
-
-#include "CommonStruct.h"
 
 struct tDesc_GameMainWindow
 {

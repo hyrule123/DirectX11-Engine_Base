@@ -78,7 +78,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -86,7 +86,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -94,7 +94,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -102,7 +102,7 @@
     <MultiProcFXC>true</MultiProcFXC>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,7 +116,6 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -156,7 +155,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -196,7 +194,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 /GR- %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -236,7 +233,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 /GR- %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -293,37 +289,9 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
     <ClInclude Include="Game\Component\ComponentInitializer.h" />
     <ClInclude Include="CommonGlobalVar.h" />
-    <ClInclude Include="Editor\Base\EditorBase.h" />
-    <ClInclude Include="Editor\Base\EditorChild.h" />
-    <ClInclude Include="Editor\Inspector\EditorComponent.h" />
-    <ClInclude Include="Editor\Inspector\EditorCom_Renderer.h" />
-    <ClInclude Include="Editor\Inspector\EditorCom_Transform.h" />
-    <ClInclude Include="Editor\DebugObject\EditorConsole.h" />
-    <ClInclude Include="Editor\Base\EditorEntity.h" />
-    <ClInclude Include="Editor\Resource\EditorFBXConverter.h" />
-    <ClInclude Include="Editor\DebugObject\EditorGame.h" />
-    <ClInclude Include="Editor\DebugObject\EditorGameObject.h" />
-    <ClInclude Include="Editor\Resource\EditorGraphicsShader.h" />
-    <ClInclude Include="Editor\Inspector\EditorInspector.h" />
-    <ClInclude Include="Editor\Base\EditorMainMenu.h" />
-    <ClInclude Include="Manager\EditorManager.h" />
-    <ClInclude Include="Editor\Resource\EditorMaterial.h" />
-    <ClInclude Include="Editor\Resource\EditorMesh.h" />
-    <ClInclude Include="Editor\Resource\EditorNormalConverter.h" />
-    <ClInclude Include="Editor\DebugObject\EditorObject.h" />
-    <ClInclude Include="Editor\Resource\EditorResource.h" />
-    <ClInclude Include="Editor\Resource\EditorResources.h" />
-    <ClInclude Include="Editor\Resource\EditorTexture.h" />
-    <ClInclude Include="Editor\Resource\EditorUVCalculator.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_ComboBox.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_List.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
-    <ClInclude Include="Editor\Base\EditorWindow.h" />
-    <ClInclude Include="Editor\strKey_Editor.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="GameMainWindow.h" />
     <ClInclude Include="Manager\GPUManager.h" />
-    <ClInclude Include="Editor\DebugObject\DebugObject.h" />
     <ClInclude Include="Resource\iAnimation.h" />
     <ClInclude Include="Game\Component\Animator\iAnimator.h" />
     <ClInclude Include="Game\Component\Collider\iCollider3D.h" />
@@ -331,16 +299,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Manager\CollisionManager.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Game\Component\Light\iLight.h" />
-    <ClInclude Include="Editor\imgui\ImGuizmo.h" />
-    <ClInclude Include="Editor\imgui\imconfig.h" />
-    <ClInclude Include="Editor\imgui\imgui.h" />
-    <ClInclude Include="Editor\imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="Editor\imgui\imgui_impl_win32.h" />
-    <ClInclude Include="Editor\imgui\imgui_internal.h" />
-    <ClInclude Include="Editor\imgui\imgui_stdlib.h" />
-    <ClInclude Include="Editor\imgui\imstb_rectpack.h" />
-    <ClInclude Include="Editor\imgui\imstb_textedit.h" />
-    <ClInclude Include="Editor\imgui\imstb_truetype.h" />
     <ClInclude Include="Game\Component\Camera\Com_Camera.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h" />
     <ClInclude Include="Util\Serialize\jsonSaveLoad.h" />
@@ -349,7 +307,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Game\Component\Collider\iCollider.h" />
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h" />
-    <ClInclude Include="defines.h" />
     <ClInclude Include="Game\Component\define_Component.h" />
     <ClInclude Include="define_Macro.h" />
     <ClInclude Include="Resource\define_Resource.h" />
@@ -429,36 +386,9 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
     <ClCompile Include="CommonGlobalVar.cpp" />
-    <ClCompile Include="Editor\Base\EditorBase.cpp" />
-    <ClCompile Include="Editor\Base\EditorChild.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorComponent.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorCom_Renderer.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorCom_Transform.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorConsole.cpp" />
-    <ClCompile Include="Editor\Base\EditorEntity.cpp" />
-    <ClCompile Include="Editor\Resource\EditorFBXConverter.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorGame.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorGameObject.cpp" />
-    <ClCompile Include="Editor\Resource\EditorGraphicsShader.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorInspector.cpp" />
-    <ClCompile Include="Editor\Base\EditorMainMenu.cpp" />
-    <ClCompile Include="Manager\EditorManager.cpp" />
-    <ClCompile Include="Editor\Resource\EditorMaterial.cpp" />
-    <ClCompile Include="Editor\Resource\EditorMesh.cpp" />
-    <ClCompile Include="Editor\Resource\EditorNormalConverter.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorObject.cpp" />
-    <ClCompile Include="Editor\Resource\EditorResource.cpp" />
-    <ClCompile Include="Editor\Resource\EditorResources.cpp" />
-    <ClCompile Include="Editor\Resource\EditorTexture.cpp" />
-    <ClCompile Include="Editor\Resource\EditorUVCalculator.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_ComboBox.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_List.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
-    <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="GameMainWindow.cpp" />
     <ClCompile Include="Manager\GPUManager.cpp" />
-    <ClCompile Include="Editor\DebugObject\DebugObject.cpp" />
     <ClCompile Include="Resource\iAnimation.cpp" />
     <ClCompile Include="Game\Component\Animator\iAnimator.cpp" />
     <ClCompile Include="Game\Component\Collider\iCollider3D.cpp" />
@@ -466,57 +396,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Manager\CollisionManager.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Game\Component\Light\iLight.cpp" />
-    <ClCompile Include="Editor\imgui\ImGuizmo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_demo.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_draw.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_impl_dx11.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_impl_win32.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_stdlib.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_tables.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_widgets.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="Game\Component\Camera\Com_Camera.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp" />
     <ClCompile Include="GPU\MultiRenderTarget.cpp" />

@@ -1,13 +1,10 @@
+#include "Engine/GPU/StructBuffer.h"
 
-#include "StructBuffer.h"
-
-
-
-#include "Manager/GPUManager.h"
-#include "Manager/RenderManager.h"
+#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 
 
-#include "ConstBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
 namespace ehw
 {

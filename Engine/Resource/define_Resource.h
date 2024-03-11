@@ -1,9 +1,6 @@
 #pragma once
-
-
-
-#include "define_Macro.h"
-#include "define_Enum.h"
+#include "Engine/define_Macro.h"
+#include "Engine/define_Enum.h"
 
 namespace ehw
 {
@@ -47,7 +44,7 @@ namespace ehw
 
 					//모델링 설정에 따라 애니메이션을 사용할수도 안할수도 있음
 					STRKEY Model3D = "Model3D";
-					STRKEY Skeleton = "Model3D/Skeleton";
+					STRKEY Skeleton = "Engine/Resource/Model3D/Skeleton";
 
 					STRKEY AudioClip = "AudioClip";
 

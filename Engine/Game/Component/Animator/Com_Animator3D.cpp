@@ -1,21 +1,21 @@
 #include "Com_Animator3D.h"
 
 
-#include "Manager/TimeManager.h"
-#include "Manager/ResourceManager.h"
-#include "Manager/InputManager.h"
+#include "Engine/Manager/TimeManager.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/InputManager.h"
 
-#include "GPU/StructBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
-#include "Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
-#include "Resource/Model3D/Skeleton.h"
-#include "Resource/Model3D/Animation3D.h"
+#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/Animation3D.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-#include "Game/Component/Animator/Animation3D_PlayData.h"
+#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
 namespace ehw
 {

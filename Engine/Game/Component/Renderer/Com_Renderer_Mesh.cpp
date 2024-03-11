@@ -1,8 +1,8 @@
-#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-#include "Game/Component/Animator/iAnimator.h"
+#include "Engine/Game/Component/Animator/iAnimator.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
 
 

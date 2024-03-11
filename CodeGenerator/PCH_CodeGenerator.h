@@ -1,8 +1,8 @@
 #ifndef PCH_CODEGEN
 #define PCH_CODEGEN
 
-#include "json-cpp/json.h"
-#include "define_CodeGen.h"
+#include "CodeGenerator/json-cpp/json.h"
+#include "CodeGenerator/define_CodeGen.h"
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include <windows.h>

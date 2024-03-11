@@ -1,9 +1,9 @@
 #pragma once
 
-#include "define_Enum.h"
+#include "Engine/define_Enum.h"
 
-#include "Util/SimpleMath.h"
-#include "DefaultShader/CommonStruct.hlsli"
+#include "Engine/Util/SimpleMath.h"
+#include "Engine/DefaultShader/CommonStruct.hlsli"
 
 #include <fbxsdk/core/base/fbxtime.h>
 

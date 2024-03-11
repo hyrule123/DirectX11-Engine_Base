@@ -321,33 +321,6 @@
     <ClCompile Include="Manager\SceneManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_impl_dx11.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_impl_win32.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_stdlib.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\DebugObject\DebugObject.cpp">
-      <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameMainWindow.cpp">
       <Filter>High Level Interface</Filter>
     </ClCompile>
@@ -374,9 +347,6 @@
     </ClCompile>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp">
       <Filter>Component\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Editor\imgui\ImGuizmo.cpp">
-      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
@@ -420,32 +390,6 @@
     <ClCompile Include="Manager\GPUManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\Base\EditorBase.cpp" />
-    <ClCompile Include="Editor\Base\EditorChild.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorCom_Renderer.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorCom_Transform.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorComponent.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorConsole.cpp" />
-    <ClCompile Include="Editor\Base\EditorEntity.cpp" />
-    <ClCompile Include="Editor\Resource\EditorFBXConverter.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorGame.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorGameObject.cpp" />
-    <ClCompile Include="Editor\Resource\EditorGraphicsShader.cpp" />
-    <ClCompile Include="Editor\Inspector\EditorInspector.cpp" />
-    <ClCompile Include="Editor\Base\EditorMainMenu.cpp" />
-    <ClCompile Include="Manager\EditorManager.cpp" />
-    <ClCompile Include="Editor\Resource\EditorMaterial.cpp" />
-    <ClCompile Include="Editor\Resource\EditorMesh.cpp" />
-    <ClCompile Include="Editor\Resource\EditorNormalConverter.cpp" />
-    <ClCompile Include="Editor\DebugObject\EditorObject.cpp" />
-    <ClCompile Include="Editor\Resource\EditorResource.cpp" />
-    <ClCompile Include="Editor\Resource\EditorResources.cpp" />
-    <ClCompile Include="Editor\Resource\EditorTexture.cpp" />
-    <ClCompile Include="Editor\Resource\EditorUVCalculator.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_ComboBox.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_List.cpp" />
-    <ClCompile Include="Editor\Widget\EditorWidget_Tree.cpp" />
-    <ClCompile Include="Editor\Base\EditorWindow.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
@@ -572,9 +516,6 @@
     <ClInclude Include="Game\Component\define_Component.h">
       <Filter>Common\define</Filter>
     </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Common\define</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Component\BaseComponents.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -635,36 +576,6 @@
     <ClInclude Include="Manager\SceneManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\imgui\imconfig.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imgui_impl_dx11.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imgui_impl_win32.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imgui_stdlib.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\DebugObject\DebugObject.h">
-      <Filter>GuiEditor\Instances\DebugObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameMainWindow.h">
       <Filter>High Level Interface</Filter>
     </ClInclude>
@@ -694,9 +605,6 @@
     </ClInclude>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h">
       <Filter>Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\imgui\ImGuizmo.h">
-      <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h">
       <Filter>Component</Filter>
@@ -743,33 +651,6 @@
     <ClInclude Include="Manager\GPUManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\Base\EditorBase.h" />
-    <ClInclude Include="Editor\Base\EditorChild.h" />
-    <ClInclude Include="Editor\Inspector\EditorCom_Renderer.h" />
-    <ClInclude Include="Editor\Inspector\EditorCom_Transform.h" />
-    <ClInclude Include="Editor\Inspector\EditorComponent.h" />
-    <ClInclude Include="Editor\DebugObject\EditorConsole.h" />
-    <ClInclude Include="Editor\Base\EditorEntity.h" />
-    <ClInclude Include="Editor\Resource\EditorFBXConverter.h" />
-    <ClInclude Include="Editor\DebugObject\EditorGame.h" />
-    <ClInclude Include="Editor\DebugObject\EditorGameObject.h" />
-    <ClInclude Include="Editor\Resource\EditorGraphicsShader.h" />
-    <ClInclude Include="Editor\Inspector\EditorInspector.h" />
-    <ClInclude Include="Editor\Base\EditorMainMenu.h" />
-    <ClInclude Include="Manager\EditorManager.h" />
-    <ClInclude Include="Editor\Resource\EditorMaterial.h" />
-    <ClInclude Include="Editor\Resource\EditorMesh.h" />
-    <ClInclude Include="Editor\Resource\EditorNormalConverter.h" />
-    <ClInclude Include="Editor\DebugObject\EditorObject.h" />
-    <ClInclude Include="Editor\Resource\EditorResource.h" />
-    <ClInclude Include="Editor\Resource\EditorResources.h" />
-    <ClInclude Include="Editor\Resource\EditorTexture.h" />
-    <ClInclude Include="Editor\Resource\EditorUVCalculator.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_ComboBox.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_List.h" />
-    <ClInclude Include="Editor\Widget\EditorWidget_Tree.h" />
-    <ClInclude Include="Editor\Base\EditorWindow.h" />
-    <ClInclude Include="Editor\strKey_Editor.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />

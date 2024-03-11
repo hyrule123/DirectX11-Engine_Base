@@ -1,7 +1,7 @@
 #pragma once
-#include "Game/Component/iComponent.h"
+#include "Engine/Game/Component/iComponent.h"
 
-#include "DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/CommonStruct.hlsli"
 
 //Transform 업데이트 로직
 //1. 모든 변경사항은 InternalUpdate 로직 때 반영됨(지연 적용).

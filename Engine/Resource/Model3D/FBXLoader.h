@@ -1,10 +1,7 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Entity.h"
 
-
-
-#include "Util/SimpleMath.h"
-
+#include "Engine/CommonType.h"
 
 #include <windef.h>
 

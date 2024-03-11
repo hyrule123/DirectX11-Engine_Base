@@ -1,6 +1,6 @@
-#include "Game/Component/Collider/iCollider3D.h"
+#include "Engine/Game/Component/Collider/iCollider3D.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
 
 namespace ehw
 {

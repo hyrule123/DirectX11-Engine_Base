@@ -1,7 +1,6 @@
 #pragma once
-#include "define_Enum.h"
-#include "define_Macro.h"
-
+#include "Engine/define_Enum.h"
+#include "Engine/define_Macro.h"
 
 
 namespace ehw

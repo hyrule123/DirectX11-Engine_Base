@@ -1,8 +1,8 @@
 #pragma once
-#include "Resource/iAnimation.h"
+#include "Engine/Resource/iAnimation.h"
 
-#include "Resource/Texture.h"
-#include "Util/Serialize/Serializable.h"
+#include "Engine/Resource/Texture.h"
+#include "Engine/Util/Serialize/Serializable.h"
 
 namespace ehw
 {

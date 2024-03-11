@@ -1,7 +1,5 @@
 #pragma once
-
-#include "PCH_CodeGenerator.h"
-#include "CodeWriter.h"
+#include "CodeGenerator/CodeWriter.h"
 
 
 struct tShaderGroup

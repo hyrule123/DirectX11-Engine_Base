@@ -1,10 +1,10 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Entity.h"
 
-#include "Util/SimpleMath.h"
-#include "Util/Serialize/Serializable.h"
+#include "Engine/Util/SimpleMath.h"
+#include "Engine/Util/Serialize/Serializable.h"
 
-#include "define_Component.h"
+#include "Engine/Game/Component/define_Component.h"
 
 #include <type_traits>
 

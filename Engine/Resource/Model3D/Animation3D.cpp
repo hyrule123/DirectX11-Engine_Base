@@ -1,15 +1,14 @@
-#include "Animation3D.h"
+#include "Engine/Resource/Model3D/Animation3D.h"
 
-#include "GPU/StructBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
-#include "Manager/ResourceManager.h"
+#include "Engine/Manager/ResourceManager.h"
 
-#include "Util/Serialize/BinarySerializer.h"
+#include "Engine/Util/Serialize/BinarySerializer.h"
 
-
-#include "Resource/Model3D/FBXLoader.h"
-#include "Model3D.h"
-#include "Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/FBXLoader.h"
+#include "Engine/Resource/Model3D/Model3D.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
 
 
 namespace ehw

@@ -1,9 +1,5 @@
-
-#include "GPUBuffer.h"
-
-
-
-#include "Manager/GPUManager.h"
+#include "Engine/GPU/GPUBuffer.h"
+#include "Engine/Manager/GPUManager.h"
 
 namespace ehw
 {

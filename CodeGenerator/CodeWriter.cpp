@@ -1,6 +1,4 @@
-#include "PCH_CodeGenerator.h"
-
-#include "CodeWriter.h"
+#include "CodeGenerator/CodeWriter.h"
 
 CodeWriter::CodeWriter()
 	: m_vecBuffer(1)

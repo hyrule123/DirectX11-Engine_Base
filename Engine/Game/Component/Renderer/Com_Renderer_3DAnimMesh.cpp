@@ -1,10 +1,10 @@
-#include "Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 
-#include "Game/Component/Animator/Com_Animator3D.h"
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
 
 
 

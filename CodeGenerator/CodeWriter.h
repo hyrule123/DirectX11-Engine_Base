@@ -1,7 +1,6 @@
 #pragma once
-
-#include "define_CodeGen.h"
-#include "define_Util.h"
+#include "CodeGenerator/define_CodeGen.h"
+#include "CodeGenerator/define_Util.h"
 
 class CodeWriter
 {

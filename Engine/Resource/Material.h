@@ -1,11 +1,11 @@
 #pragma once
-#include "define_Enum.h"
+#include "Engine/define_Enum.h"
 
-#include "GPU/CommonGPU.h"
+#include "Engine/GPU/CommonGPU.h"
 
-#include "Util/Serialize/Serializable.h"
+#include "Engine/Util/Serialize/Serializable.h"
 
-#include "Resource/iResource.h"
+#include "Engine/Resource/iResource.h"
 
 #include <array>
 

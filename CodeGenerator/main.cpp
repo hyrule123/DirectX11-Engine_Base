@@ -1,10 +1,6 @@
-// CodeGenerator.cpp : 이 파일에는 'main' 함수가 포함됩니다. 거기서 프로그램 실행이 시작되고 종료됩니다.
-//
-#include "PCH_CodeGenerator.h"
-#include "DirTree.h"
-
-#include "../Engine/Resource/define_Resource.h"
-#include "../Engine/GPU/define_GPU.h"
+#include "CodeGenerator/DirTree.h"
+#include "Engine/Resource/define_Resource.h"
+#include "Engine/GPU/define_GPU.h"
 
 #include <iostream>
 
@@ -205,7 +201,7 @@ void CreateEngineComponentKey()
         Desc.BaseType = "iComponent";
 
         //PCH 강제 include 시켜서 필요 없어짐
-        //Desc.IncludePCH = R"(#include "PCH_Engine.h")";
+        Desc.IncludePCH = R"(#include "PCH_Engine.h")";
 
         Desc.ClassName = "ComponentInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";

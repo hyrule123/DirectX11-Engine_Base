@@ -1,7 +1,7 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Entity.h"
 
-#include "Resource/define_Resource.h"
+#include "Engine/Resource/define_Resource.h"
 
 namespace ehw
 {

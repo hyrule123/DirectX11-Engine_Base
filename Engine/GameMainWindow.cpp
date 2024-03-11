@@ -1,13 +1,10 @@
-#include "PCH_Engine.h"
-#include "GameMainWindow.h"
-#include "resource.h"
+#include "Engine/GameMainWindow.h"
+#include "Engine/resource.h"
 
-#include "define_Macro.h"
-#include "Util/AtExit.h"
+#include "Engine/define_Macro.h"
+#include "Engine/Util/AtExit.h"
          
-#include "Application.h"
-
-#include "Manager/EditorManager.h"
+#include "Engine/Application.h"
 
 HINSTANCE GameMainWindow::mInstance{};
 HWND GameMainWindow::mHwnd{};

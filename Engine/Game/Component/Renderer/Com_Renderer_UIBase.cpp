@@ -1,10 +1,10 @@
-#include "Game/Component/Renderer/Com_Renderer_UIBase.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_UIBase.h"
 
-#include "Manager/RenderManager.h"
-#include "GPU/ConstBuffer.h"
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/GPU/ConstBuffer.h"
 
-#include "Manager/ResourceManager.h"
-#include "Resource/Mesh.h"
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Resource/Mesh.h"
 
 namespace ehw
 {

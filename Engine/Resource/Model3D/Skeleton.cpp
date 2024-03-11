@@ -1,23 +1,21 @@
-
-#include "Resource/Model3D/Skeleton.h"
-
+#include "Engine/Resource/Model3D/Skeleton.h"
 
 
-#include "Util/define_Util.h"
-#include "Util/StringConverter.h"
-#include "Util/Serialize/BinarySerializer.h"
+#include "Engine/Util/define_Util.h"
+#include "Engine/Util/StringConverter.h"
+#include "Engine/Util/Serialize/BinarySerializer.h"
 
-#include "DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Resource.hlsli"
 
-#include "GPU/StructBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
-#include "Manager/ResourceManager.h"
+#include "Engine/Manager/ResourceManager.h"
 
 
-#include "Model3D.h"
-#include "Resource/Model3D/Skeleton.h"
-#include "Resource/Model3D/FBXLoader.h"
-#include "Animation3D.h"
+#include "Engine/Resource/Model3D/Model3D.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/Model3D/FBXLoader.h"
+#include "Engine/Resource/Model3D/Animation3D.h"
 
 
 #include <cctype>

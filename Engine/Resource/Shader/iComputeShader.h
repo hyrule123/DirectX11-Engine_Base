@@ -1,9 +1,9 @@
 #pragma once
-#include "iShader.h"
+#include "Engine/Resource/Shader/iShader.h"
 
 
 
-#include "GPU/CommonGPU.h"
+#include "Engine/GPU/CommonGPU.h"
 
 
 

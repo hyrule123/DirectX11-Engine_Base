@@ -1,11 +1,11 @@
-#include "Resource/Texture.h"
+#include "Engine/Resource/Texture.h"
 
 
 
-#include "Util/define_Util.h"
-#include "Util/StringConverter.h"
+#include "Engine/Util/define_Util.h"
+#include "Engine/Util/StringConverter.h"
 
-#include "Manager/ResourceManager.h"
+#include "Engine/Manager/ResourceManager.h"
 
 
 #ifdef _WIN64

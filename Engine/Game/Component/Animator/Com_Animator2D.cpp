@@ -1,9 +1,8 @@
-#include "Com_Animator2D.h"
+#include "Engine/Game/Component/Animator/Com_Animator2D.h"
 
+#include "Engine/Game/GameObject.h"
 
-#include "Game/GameObject.h"
-
-#include "Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
 
 
 

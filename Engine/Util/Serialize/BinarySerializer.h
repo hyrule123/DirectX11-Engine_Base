@@ -1,6 +1,6 @@
 #pragma once
-#include "define_Enum.h"
-#include "Util/type_traits_Ex.h"
+#include "Engine/define_Enum.h"
+#include "Engine/Util/type_traits_Ex.h"
 
 //전방선언 후 CPP에서 include 후 사용할것.
 

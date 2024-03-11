@@ -1,5 +1,5 @@
 #pragma once
-#include "GPUBuffer.h"
+#include "Engine/GPU/GPUBuffer.h"
 
 
 namespace ehw

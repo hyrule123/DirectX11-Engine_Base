@@ -1,10 +1,10 @@
-#include "Game/Component/Audio/Com_AudioListener.h"
+#include "Engine/Game/Component/Audio/Com_AudioListener.h"
 
-#include "Manager/AudioManager.h"
+#include "Engine/Manager/AudioManager.h"
 
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Transform/Com_Transform.h"
 
 
 #include <Fmod/fmod.hpp>

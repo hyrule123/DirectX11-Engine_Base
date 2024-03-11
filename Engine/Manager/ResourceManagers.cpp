@@ -1,19 +1,19 @@
 #include "ResourceManagers.h"
 
-#include "Util/AtExit.h"
+#include "Engine/Util/AtExit.h"
 
 #include "PathManager.h"
 #include "ResourceManager.h"
 
-#include "Resource/Texture.h"
-#include "Resource/Mesh.h"
-#include "Resource/Material.h"
-#include "Resource/Model3D/Model3D.h"
-#include "Resource/Model3D/Skeleton.h"
-#include "Resource/AudioClip.h"
-#include "Resource/Animation2D.h"
-#include "Resource/Shader/GraphicsShader.h"
-#include "Resource/Shader/iComputeShader.h"
+#include "Engine/Resource/Texture.h"
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Model3D/Model3D.h"
+#include "Engine/Resource/Model3D/Skeleton.h"
+#include "Engine/Resource/AudioClip.h"
+#include "Engine/Resource/Animation2D.h"
+#include "Engine/Resource/Shader/GraphicsShader.h"
+#include "Engine/Resource/Shader/iComputeShader.h"
 
 
 namespace ehw

@@ -1,14 +1,12 @@
 #pragma once
-#include "Entity.h"
+#include "Engine/Entity.h"
+
+#include "Engine/Util/SimpleMath.h"
 
 
+#include "Engine/Game/Layer.h"
 
-#include "Util/SimpleMath.h"
-
-
-#include "Layer.h"
-
-#include "Game/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
 
 #include <queue>

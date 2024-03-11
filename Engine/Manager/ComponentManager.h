@@ -1,7 +1,7 @@
 #pragma once
-#include "CommonStruct.h"
+#include "Engine/CommonStruct.h"
 
-#include "Game/Component/BaseComponents.h"
+#include "Engine/Game/Component/BaseComponents.h"
 
 
 #include <unordered_map>

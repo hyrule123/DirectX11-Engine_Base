@@ -1,24 +1,23 @@
-#include "PCH_Engine.h"
-#include "Application.h"
 
-#include "Util/AtExit.h"
+#include "Engine/Application.h"
 
-#include "Game/Component/ComponentInitializer.h"
+#include "Engine/Util/AtExit.h"
 
-#include "Manager/RenderManager.h"
-#include "Manager/TimeManager.h"
-#include "Manager/InputManager.h"
-#include "Manager/SceneManager.h"
-#include "Manager/ResourceManagers.h"
-#include "Manager/CollisionManager.h"
-#include "Manager/AudioManager.h"
-#include "Manager/FontWrapper.h"
-#include "Manager/PathManager.h"
-#include "Manager/EditorManager.h"
-#include "Manager/ThreadPoolManager.h"
-#include "Manager/GPUManager.h"
+#include "Engine/Game/Component/ComponentInitializer.h"
 
-#include "CommonGlobalVar.h"
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/TimeManager.h"
+#include "Engine/Manager/InputManager.h"
+#include "Engine/Manager/SceneManager.h"
+#include "Engine/Manager/ResourceManagers.h"
+#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Manager/AudioManager.h"
+#include "Engine/Manager/FontWrapper.h"
+#include "Engine/Manager/PathManager.h"
+#include "Engine/Manager/ThreadPoolManager.h"
+#include "Engine/Manager/GPUManager.h"
+
+#include "Engine/CommonGlobalVar.h"
 
 namespace ehw
 {
@@ -115,7 +114,7 @@ namespace ehw
 		Render();
 		FrameEnd();
 
-		editor::EditorManager::Run();
+		//editor::EditorManager::Run();
 		
 		return mbInitialized;
 	}
@@ -128,7 +127,7 @@ namespace ehw
 	void Application::Release()
 	{
 		//EndFrame();
-		ReleaseDC(mHwnd, mHdc);
+		::ReleaseDC(mHwnd, mHdc);
 		mbInitialized = false;
 	}
 
@@ -142,8 +141,8 @@ namespace ehw
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcWindow, rcClient;
-		GetWindowRect(mHwnd, &rcWindow);
-		GetClientRect(mHwnd, &rcClient);
+		::GetWindowRect(mHwnd, &rcWindow);
+		::GetClientRect(mHwnd, &rcClient);
 
 		// calculate size of non-client area
 		int xExtra = rcWindow.right - rcWindow.left - rcClient.right;

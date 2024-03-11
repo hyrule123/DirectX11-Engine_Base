@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/Component/Light/iLight.h"
-#include "GPU/CommonGPU.h"
+#include "Engine/Game/Component/Light/iLight.h"
+#include "Engine/GPU/CommonGPU.h"
 
-#include "DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Light/Func_Light.hlsli"
 
 namespace ehw
 {

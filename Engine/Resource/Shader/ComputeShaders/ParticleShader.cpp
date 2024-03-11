@@ -1,10 +1,10 @@
-#include "Manager/TimeManager.h"
-#include "Manager/RenderManager.h"
+#include "Engine/Manager/TimeManager.h"
+#include "Engine/Manager/RenderManager.h"
 
-#include "Resource/Shader/ComputeShaders/ParticleShader.h"
+#include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
 
-#include "GPU/ConstBuffer.h"
-#include "GPU/StructBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
 
 namespace ehw
