@@ -4,7 +4,7 @@ namespace ehw
 {
 	class TimeManager
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		static __forceinline float DeltaTime() { return mDeltaTime; }
 

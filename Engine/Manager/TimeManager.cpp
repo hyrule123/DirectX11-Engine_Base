@@ -4,7 +4,7 @@
 
 #include "Engine/Util/AtExit.h"
 
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 
 namespace ehw
@@ -60,7 +60,7 @@ namespace ehw
         mOneSecond += mDeltaTime;
         if (1.0f < mOneSecond)
         {
-            HWND hWnd = Application::GetHwnd();
+            HWND hWnd = GameEngine::GetHwnd();
 
             wchar_t szFloat[50] = {};
             float FPS = 1.f / mDeltaTime;

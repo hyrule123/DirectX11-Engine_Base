@@ -3,7 +3,7 @@
 
 
 
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 #include "Engine/Util/AtExit.h"
 
@@ -92,7 +92,7 @@ namespace ehw
 
 			POINT mousePos = {};
 			GetCursorPos(&mousePos);
-			ScreenToClient(Application::GetHwnd(), &mousePos);
+			ScreenToClient(GameEngine::GetHwnd(), &mousePos);
 			mMousePos.x = static_cast<float>(mousePos.x);
 			mMousePos.y = static_cast<float>(mousePos.y);
 

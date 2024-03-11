@@ -2,7 +2,7 @@
 
 #include "Engine/GPU/ConstBuffer.h"
 #include "Engine/Game/GameObject.h"
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/SceneManager.h"
@@ -49,7 +49,7 @@ namespace ehw
 		float scale = mCamera->GetScale();
 
 		RECT winRect;
-		GetClientRect(Application::GetHwnd(), &winRect);
+		GetClientRect(GameEngine::GetHwnd(), &winRect);
 		float width = static_cast<float>(winRect.right - winRect.left);
 		float height = static_cast<float>(winRect.bottom - winRect.top);
 		float2 resolution(width, height);

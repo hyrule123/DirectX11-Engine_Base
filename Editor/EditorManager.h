@@ -1,13 +1,14 @@
 #pragma once
-#include <CommonStruct.h>
-#include <define_Macro.h>
+#include <Engine/CommonStruct.h>
+#include <Engine/define_Macro.h>
 
-#include "GPU/CommonGPU.h"
+#include <Engine/GPU/CommonGPU.h>
 
-#include "Base/EditorChild.h"
+#include "Editor/Base/EditorChild.h"
 #include "imgui/ImGuizmo.h"
 
 #include <unordered_map>
+
 
 namespace editor
 {
@@ -15,7 +16,6 @@ namespace editor
 	class DebugObject;
 	class EditorManager
 	{
-		friend class GameEngineWindow;
 	public:
 		static void Run();
 

@@ -2,7 +2,7 @@
 
 #include "Engine/Util/StringConverter.h"
 
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 
 
@@ -41,7 +41,7 @@ std::filesystem::path ehw::WinAPI::FileDialog(const std::filesystem::path& _base
 	OPENFILENAMEW OpenFile = {};
 
 	OpenFile.lStructSize = sizeof(OPENFILENAME);	//구조체 크기
-	OpenFile.hwndOwner = ehw::Application::GetHwnd();	//관리 핸들
+	OpenFile.hwndOwner = ehw::GameEngine::GetHwnd();	//관리 핸들
 
 	std::vector<wchar_t> extensionFilters;
 	for (size_t i = 0; i < _extensions.size(); ++i)

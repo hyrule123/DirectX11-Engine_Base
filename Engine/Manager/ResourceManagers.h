@@ -8,7 +8,7 @@ namespace ehw
 {
 	class ResourceManagers
 	{
-		friend class Application;
+		friend class GameEngine;
 
 	public:
 		static void CleanUnusedResources();

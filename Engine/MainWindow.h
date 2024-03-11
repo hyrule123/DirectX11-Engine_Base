@@ -1,9 +1,11 @@
 #pragma once
 #include "Engine/CommonStruct.h"
 
-#include <Windows.h>
 #include <vector>
 #include <functional>
+
+
+//설명: 윈도우 인스턴스 초기화 및 GameEngine 루프를 실행하는곳
 
 struct tDesc_GameMainWindow
 {
@@ -29,15 +31,16 @@ struct tHashFuncFast_UINT32
 	}
 };
 
-using MsgHandleFunc = std::function<LRESULT WINAPI(HWND, UINT, WPARAM, LPARAM)>;
-class GameMainWindow
+
+class MainWindow
 {
 public:
 	static BOOL Run(const tDesc_GameMainWindow& _Desc);
 
-	static inline void RegisterImGuiWndProc(std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> _Func);
-	static void AddMsgHandleFunc(UINT _Message, MsgHandleFunc _HandleFunc);
-	static void RemoveMsgHandleFunc(UINT _Message, MsgHandleFunc _HandleFunc);
+	static void AddMsgHandleFunc(UINT _Message, const WindowMsgHandleFunc& _HandleFunc);
+	static void RemoveMsgHandleFunc(UINT _Message, const WindowMsgHandleFunc& _HandleFunc);
+
+	static void RunEditor(const WindowMsgHandleFunc& _wndHandleFunc, const std::function<void()>& _runFunc);
 	
 private:
 	static BOOL Init(const tDesc_GameMainWindow& _Desc);
@@ -58,27 +61,25 @@ private:
 	static HACCEL mHAccelTable;
 
 
-	static std::unordered_map<UINT, std::vector<MsgHandleFunc>, tHashFuncFast_UINT32> mMsgHandleFuncs;
-	static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> mImGuiWndProc;
+	//특정 메시지를 처리하는 함수들은 여기
+	static std::unordered_map<UINT, std::vector<WindowMsgHandleFunc>, tHashFuncFast_UINT32> m_msgHandleFunctions;
+
+	static WindowMsgHandleFunc m_editorHandleFunction;
+	static std::function<void()> m_editorRunFunction;
 
 private:
-	GameMainWindow() = delete;
-	~GameMainWindow() = delete;
+	MainWindow() = delete;
+	~MainWindow() = delete;
 };
 
 
 
-inline void GameMainWindow::RegisterImGuiWndProc(std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> _Func)
-{
-	mImGuiWndProc = _Func;
-}
-
-inline void GameMainWindow::AddMsgHandleFunc(UINT _Message, MsgHandleFunc _HandleFunc)
+inline void MainWindow::AddMsgHandleFunc(UINT _Message, const WindowMsgHandleFunc& _HandleFunc)
 {
 	if (nullptr == _HandleFunc)
 		return;
 
-	mMsgHandleFuncs[_Message].push_back(_HandleFunc);
+	m_msgHandleFunctions[_Message].push_back(_HandleFunc);
 }
 
 

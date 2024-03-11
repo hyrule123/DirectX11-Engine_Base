@@ -17,7 +17,7 @@ namespace ehw
 {
 	class AudioManager
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		
 		static bool CreateSound(const std::filesystem::path& _fullPath, FMOD::Sound** _sound);

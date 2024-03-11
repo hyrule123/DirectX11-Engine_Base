@@ -26,7 +26,7 @@ namespace ehw
 
 	class RenderManager
 	{
-		friend class Application;
+		friend class GameEngine;
 		friend class GPUManager;
 	public:
 		static void Render();

@@ -19,17 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base\EditorBase.h" />
-    <ClInclude Include="Base\EditorChild.h" />
-    <ClInclude Include="Base\EditorEntity.h" />
-    <ClInclude Include="Base\EditorMainMenu.h" />
-    <ClInclude Include="Base\EditorWindow.h" />
-    <ClInclude Include="DebugObject\DebugObject.h" />
-    <ClInclude Include="DebugObject\EditorConsole.h" />
-    <ClInclude Include="DebugObject\EditorGame.h" />
-    <ClInclude Include="DebugObject\EditorGameObject.h" />
-    <ClInclude Include="DebugObject\EditorObject.h" />
-    <ClInclude Include="EditorManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\ImGuizmo.h" />
@@ -40,37 +29,10 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="Inspector\EditorComponent.h" />
-    <ClInclude Include="Inspector\EditorCom_Renderer.h" />
-    <ClInclude Include="Inspector\EditorCom_Transform.h" />
-    <ClInclude Include="Inspector\EditorInspector.h" />
     <ClInclude Include="PCH_Editor.h" />
-    <ClInclude Include="Resource\EditorFBXConverter.h" />
-    <ClInclude Include="Resource\EditorGraphicsShader.h" />
-    <ClInclude Include="Resource\EditorMaterial.h" />
-    <ClInclude Include="Resource\EditorMesh.h" />
-    <ClInclude Include="Resource\EditorNormalConverter.h" />
-    <ClInclude Include="Resource\EditorResource.h" />
-    <ClInclude Include="Resource\EditorResources.h" />
-    <ClInclude Include="Resource\EditorTexture.h" />
-    <ClInclude Include="Resource\EditorUVCalculator.h" />
     <ClInclude Include="strKey_Editor.h" />
-    <ClInclude Include="Widget\EditorWidget_ComboBox.h" />
-    <ClInclude Include="Widget\EditorWidget_List.h" />
-    <ClInclude Include="Widget\EditorWidget_Tree.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\EditorBase.cpp" />
-    <ClCompile Include="Base\EditorChild.cpp" />
-    <ClCompile Include="Base\EditorEntity.cpp" />
-    <ClCompile Include="Base\EditorMainMenu.cpp" />
-    <ClCompile Include="Base\EditorWindow.cpp" />
-    <ClCompile Include="DebugObject\DebugObject.cpp" />
-    <ClCompile Include="DebugObject\EditorConsole.cpp" />
-    <ClCompile Include="DebugObject\EditorGame.cpp" />
-    <ClCompile Include="DebugObject\EditorGameObject.cpp" />
-    <ClCompile Include="DebugObject\EditorObject.cpp" />
-    <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\ImGuizmo.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -80,28 +42,12 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Inspector\EditorComponent.cpp" />
-    <ClCompile Include="Inspector\EditorCom_Renderer.cpp" />
-    <ClCompile Include="Inspector\EditorCom_Transform.cpp" />
-    <ClCompile Include="Inspector\EditorInspector.cpp" />
     <ClCompile Include="PCH_Editor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Resource\EditorFBXConverter.cpp" />
-    <ClCompile Include="Resource\EditorGraphicsShader.cpp" />
-    <ClCompile Include="Resource\EditorMaterial.cpp" />
-    <ClCompile Include="Resource\EditorMesh.cpp" />
-    <ClCompile Include="Resource\EditorNormalConverter.cpp" />
-    <ClCompile Include="Resource\EditorResource.cpp" />
-    <ClCompile Include="Resource\EditorResources.cpp" />
-    <ClCompile Include="Resource\EditorTexture.cpp" />
-    <ClCompile Include="Resource\EditorUVCalculator.cpp" />
-    <ClCompile Include="Widget\EditorWidget_ComboBox.cpp" />
-    <ClCompile Include="Widget\EditorWidget_List.cpp" />
-    <ClCompile Include="Widget\EditorWidget_Tree.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -159,28 +105,28 @@
     <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)..\Engine;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)..\Engine;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)..\Engine;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)External\lib\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <ExternalIncludePath>$(SolutionDir)External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)..\Engine;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..;$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)External\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -195,6 +141,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -216,6 +163,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -237,6 +185,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -258,6 +207,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>

@@ -7,7 +7,7 @@ namespace ehw
 	class Texture;
 	class GPUManager 
 	{
-		friend class Application;
+		friend class GameEngine;
 
 	public:
 		__forceinline static ComPtr<ID3D11Device>			Device() { return mDevice; }

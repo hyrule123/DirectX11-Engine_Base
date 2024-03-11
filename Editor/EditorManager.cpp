@@ -64,7 +64,7 @@ namespace editor
 	{
 		AtExit::AddFunc(EditorManager::Release);
 
-		::GameMainWindow::RegisterImGuiWndProc(ImGui_ImplWin32_WndProcHandler);
+		::MainWindow::RegisterImGuiWndProc(ImGui_ImplWin32_WndProcHandler);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		mDebugObjects.resize((UINT)ehw::eColliderType::END);
@@ -124,18 +124,9 @@ namespace editor
 			editor::EditorManager::ToggleEnable();
 		}
 
-
-		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::Z))
-		{
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
-		}
-		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::X))
-		{
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		}
-
 		if (false == mbEnable)
 			return;
+
 		Update();
 		InternalUpdate();
 		Render();
@@ -165,6 +156,15 @@ namespace editor
 		{
 			guiPair.second->InternalUpdate();
 		}
+
+		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::Z))
+		{
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		}
+		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::X))
+		{
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		}
 	}
 
 	void EditorManager::Render()
@@ -188,6 +188,7 @@ namespace editor
 	{
 		if (false == mbInitialized)
 			return;
+		mbInitialized = false;
 
 		//IMGUI 내부 세팅 저장
 		const std::fs::path& saveDir = ehw::PathManager::GetResPathRelative();
@@ -343,7 +344,7 @@ namespace editor
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(ehw::Application::GetHwnd());
+		ImGui_ImplWin32_Init(ehw::GameEngine::GetHwnd());
 		ImGui_ImplDX11_Init(ehw::GPUManager::Device().Get()
 			, ehw::GPUManager::Context().Get());
 

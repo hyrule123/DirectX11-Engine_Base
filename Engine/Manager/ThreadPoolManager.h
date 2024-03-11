@@ -13,7 +13,7 @@ namespace ehw
 {
     class ThreadPoolManager 
     {
-        friend class Application;
+        friend class GameEngine;
     public:
         // job 을 추가한다.
         template <class F, class... Args>

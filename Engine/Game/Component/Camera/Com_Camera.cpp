@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Camera/Com_Camera.h"
 
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/iScene.h"

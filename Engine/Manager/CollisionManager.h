@@ -20,7 +20,7 @@ namespace ehw
 	//	class Scene;
 	class CollisionManager
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		static void Update();
 		static void InternalUpdate();

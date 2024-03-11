@@ -40,7 +40,7 @@ namespace editor
 			bool p_open = GetEnable();
 			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
 			{
-				ehw::Application::ShutDown();
+				ehw::GameEngine::ShutDown();
 			}
 
 			ImGui::EndMenu();

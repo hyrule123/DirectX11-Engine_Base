@@ -15,7 +15,7 @@ namespace ehw
 {
 	class PathManager
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		static void Init();
 		

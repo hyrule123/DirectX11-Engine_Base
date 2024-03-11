@@ -13,7 +13,7 @@ namespace ehw
 {
     class ComponentManager
     {
-        friend class Application;
+        friend class GameEngine;
     public:
         template <typename T>
         static inline void AddComponentConstructor(const std::string_view _strKey);

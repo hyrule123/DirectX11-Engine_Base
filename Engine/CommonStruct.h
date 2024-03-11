@@ -1,5 +1,8 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
 #include "Engine/define_Enum.h"
 
 #include "Engine/Util/SimpleMath.h"
@@ -9,12 +12,15 @@
 
 #include <string>
 #include <vector>
-#include <Windows.h>
 
+//https://stackoverflow.com/questions/10170087/how-does-stdfunction-know-about-calling-convention
+using WindowMsgHandleFunc = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;
 
 //C++ 전용. 1개 이상의 클래스에서 사용되는 "공용" 구조체 모음
 namespace ehw
 {
+
+
 	struct tDesc_GPUMgr
 	{
 		UINT ResolutionX;
@@ -83,4 +89,4 @@ namespace ehw
 		float time;
 	};
 
-}
+};

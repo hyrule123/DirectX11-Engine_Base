@@ -1,5 +1,4 @@
-
-#include "Engine/Application.h"
+#include "Engine/GameEngine.h"
 
 #include "Engine/Util/AtExit.h"
 
@@ -17,15 +16,17 @@
 #include "Engine/Manager/ThreadPoolManager.h"
 #include "Engine/Manager/GPUManager.h"
 
+#include "Engine/MainWindow.h"
+
 #include "Engine/CommonGlobalVar.h"
 
 namespace ehw
 {
-	HWND			Application::mHwnd{};
-	HDC				Application::mHdc{};
-	bool			Application::mbInitialized{};
+	HWND			GameEngine::mHwnd{};
+	HDC				GameEngine::mHdc{};
+	bool			GameEngine::mbInitialized{};
 
-	BOOL Application::Init(const tDesc_Application& _AppDesc)
+	BOOL GameEngine::Init(const tDesc_Application& _AppDesc)
 	{
 		AtExit::AddFunc(Release);
 
@@ -37,7 +38,6 @@ namespace ehw
 
 		SetWindowPos(_AppDesc.LeftWindowPos, _AppDesc.TopWindowPos);
 		SetWindowSize(_AppDesc.Width, _AppDesc.Height);
-
 
 		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
 
@@ -52,11 +52,8 @@ namespace ehw
 			return FALSE;
 		}
 
-		
-
 		AudioManager::Init();
 		FontWrapper::Init();
-
 
 		ComponentInitializer::Init();
 		
@@ -74,7 +71,7 @@ namespace ehw
 
 	// 게임 로직 캐릭터 이동 등등 
 	// CPU UPDATE
-	void Application::Update()
+	void GameEngine::Update()
 	{
 		TimeManager::Update();
 		InputManager::Update();
@@ -83,13 +80,13 @@ namespace ehw
 	}
 
 	// GPU update
-	void Application::InternalUpdate()
+	void GameEngine::InternalUpdate()
 	{
 		CollisionManager::InternalUpdate();
 		SceneManager::InternalUpdate();
 	}
 
-	void Application::Render()
+	void GameEngine::Render()
 	{
 		TimeManager::Render(mHdc);
 
@@ -99,7 +96,7 @@ namespace ehw
 		RenderManager::Render();
 	}
 
-	void Application::FrameEnd()
+	void GameEngine::FrameEnd()
 	{		
 		SceneManager::Destroy();
 
@@ -107,37 +104,35 @@ namespace ehw
 	}
 
 	// Running main engine loop
-	bool Application::Run()
+	bool GameEngine::Run()
 	{
 		Update();
 		InternalUpdate();
 		Render();
 		FrameEnd();
-
-		//editor::EditorManager::Run();
 		
 		return mbInitialized;
 	}
 
-	void Application::Present()
+	void GameEngine::Present()
 	{
 		GPUManager::Present(true);
 	}
 
-	void Application::Release()
+	void GameEngine::Release()
 	{
 		//EndFrame();
 		::ReleaseDC(mHwnd, mHdc);
 		mbInitialized = false;
 	}
 
-	void Application::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)
+	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)
 	{
 		//가로세로 길이는 유지하고 위치만 변경
 		UINT flag = SWP_NOSIZE | SWP_NOZORDER;
 		::SetWindowPos(mHwnd, nullptr, _LeftWindowPos, _TopWindowPos, 0, 0, flag);
 	}
-	void Application::SetWindowSize(int _width, int _height)
+	void GameEngine::SetWindowSize(int _width, int _height)
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcWindow, rcClient;
@@ -154,8 +149,9 @@ namespace ehw
 		::ShowWindow(mHwnd, true);
 		::UpdateWindow(mHwnd);
 	}
+	
 
-	int2 Application::GetWindowSize()
+	int2 GameEngine::GetWindowSize()
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcClient{};

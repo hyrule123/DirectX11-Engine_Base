@@ -12,7 +12,7 @@ namespace ehw
 
 	class FontWrapper
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		static void DrawFont(const wchar_t* _string, float _x, float _y, float _size, UINT32 _rgb);
 

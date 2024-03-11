@@ -1,14 +1,9 @@
 #pragma once
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-#include "Engine/Util/SimpleMath.h"
 #include "Engine/CommonStruct.h"
 
 namespace ehw
 {
-	class Application
+	class GameEngine
 	{
 	public:
 		//struct tDesc_Application
@@ -47,12 +42,11 @@ namespace ehw
 	private:
 		static HWND mHwnd;
 		static HDC  mHdc;
+
 		static bool mbInitialized;
-
-
 		
 	public:
-		Application() = delete;
-		~Application() = delete;
+		GameEngine() = delete;
+		~GameEngine() = delete;
 	};
 }

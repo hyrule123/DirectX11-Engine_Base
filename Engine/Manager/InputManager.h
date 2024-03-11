@@ -42,7 +42,7 @@ namespace ehw
 
 	class InputManager
 	{
-		friend class Application;
+		friend class GameEngine;
 	public:
 		struct tKey
 		{

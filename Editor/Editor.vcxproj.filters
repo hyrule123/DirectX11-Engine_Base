@@ -2,16 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="strKey_Editor.h" />
-    <ClInclude Include="Base\EditorBase.h" />
-    <ClInclude Include="Base\EditorChild.h" />
-    <ClInclude Include="Base\EditorEntity.h" />
-    <ClInclude Include="Base\EditorMainMenu.h" />
-    <ClInclude Include="Base\EditorWindow.h" />
-    <ClInclude Include="DebugObject\DebugObject.h" />
-    <ClInclude Include="DebugObject\EditorConsole.h" />
-    <ClInclude Include="DebugObject\EditorGame.h" />
-    <ClInclude Include="DebugObject\EditorGameObject.h" />
-    <ClInclude Include="DebugObject\EditorObject.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -22,36 +12,9 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="Inspector\EditorCom_Renderer.h" />
-    <ClInclude Include="Inspector\EditorCom_Transform.h" />
-    <ClInclude Include="Inspector\EditorComponent.h" />
-    <ClInclude Include="Inspector\EditorInspector.h" />
-    <ClInclude Include="Resource\EditorFBXConverter.h" />
-    <ClInclude Include="Resource\EditorGraphicsShader.h" />
-    <ClInclude Include="Resource\EditorMaterial.h" />
-    <ClInclude Include="Resource\EditorMesh.h" />
-    <ClInclude Include="Resource\EditorNormalConverter.h" />
-    <ClInclude Include="Resource\EditorResource.h" />
-    <ClInclude Include="Resource\EditorResources.h" />
-    <ClInclude Include="Resource\EditorTexture.h" />
-    <ClInclude Include="Resource\EditorUVCalculator.h" />
-    <ClInclude Include="Widget\EditorWidget_ComboBox.h" />
-    <ClInclude Include="Widget\EditorWidget_List.h" />
-    <ClInclude Include="Widget\EditorWidget_Tree.h" />
     <ClInclude Include="PCH_Editor.h" />
-    <ClInclude Include="EditorManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\EditorBase.cpp" />
-    <ClCompile Include="Base\EditorChild.cpp" />
-    <ClCompile Include="Base\EditorEntity.cpp" />
-    <ClCompile Include="Base\EditorMainMenu.cpp" />
-    <ClCompile Include="Base\EditorWindow.cpp" />
-    <ClCompile Include="DebugObject\DebugObject.cpp" />
-    <ClCompile Include="DebugObject\EditorConsole.cpp" />
-    <ClCompile Include="DebugObject\EditorGame.cpp" />
-    <ClCompile Include="DebugObject\EditorGameObject.cpp" />
-    <ClCompile Include="DebugObject\EditorObject.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -61,23 +24,6 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="imgui\ImGuizmo.cpp" />
-    <ClCompile Include="Inspector\EditorCom_Renderer.cpp" />
-    <ClCompile Include="Inspector\EditorCom_Transform.cpp" />
-    <ClCompile Include="Inspector\EditorComponent.cpp" />
-    <ClCompile Include="Inspector\EditorInspector.cpp" />
-    <ClCompile Include="Resource\EditorFBXConverter.cpp" />
-    <ClCompile Include="Resource\EditorGraphicsShader.cpp" />
-    <ClCompile Include="Resource\EditorMaterial.cpp" />
-    <ClCompile Include="Resource\EditorMesh.cpp" />
-    <ClCompile Include="Resource\EditorNormalConverter.cpp" />
-    <ClCompile Include="Resource\EditorResource.cpp" />
-    <ClCompile Include="Resource\EditorResources.cpp" />
-    <ClCompile Include="Resource\EditorTexture.cpp" />
-    <ClCompile Include="Resource\EditorUVCalculator.cpp" />
-    <ClCompile Include="Widget\EditorWidget_ComboBox.cpp" />
-    <ClCompile Include="Widget\EditorWidget_List.cpp" />
-    <ClCompile Include="Widget\EditorWidget_Tree.cpp" />
     <ClCompile Include="PCH_Editor.cpp" />
-    <ClCompile Include="EditorManager.cpp" />
   </ItemGroup>
 </Project>
