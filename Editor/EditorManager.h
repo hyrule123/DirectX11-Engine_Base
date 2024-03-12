@@ -7,17 +7,19 @@
 #include "Editor/Base/EditorChild.h"
 #include "imgui/ImGuizmo.h"
 
+
 #include <unordered_map>
+#include <functional>
 
-
-namespace editor
+namespace ehw::editor
 {
 	class EditorObject;
 	class DebugObject;
 	class EditorManager
 	{
 	public:
-		static void Run();
+		static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> GetEditorWindowHandleFunction();
+		static std::function<void()> GetEditorRunFunction();
 
 		static inline void SetEnable(bool _bEnable);
 		static inline bool GetEnable() { return mbEnable; }
@@ -28,10 +30,12 @@ namespace editor
 		template <typename T>
 		static std::shared_ptr<T> NewGuiWindow();
 
-		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHashFunc_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
+		static void Run();
+
 		static void Init();
 		static void Release();
 
@@ -39,7 +43,7 @@ namespace editor
 		static void InternalUpdate();
 		static void Render();
 		
-		static void DebugRender(ehw::tDebugMesh& mesh);
+		static void DebugRender(tDebugMesh& mesh);
 
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
 		static Json::Value* CheckJsonSaved(const std::string& _strKey);
@@ -58,7 +62,7 @@ namespace editor
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHashFunc_StringView, std::equal_to<>> mGuiWindows;
 
 		static std::vector<std::shared_ptr<EditorObject>> mEditorObjects;
 		static std::vector<std::shared_ptr<DebugObject>> mDebugObjects;

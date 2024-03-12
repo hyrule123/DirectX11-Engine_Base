@@ -26,7 +26,7 @@ namespace ehw
 	HDC				GameEngine::mHdc{};
 	bool			GameEngine::mbInitialized{};
 
-	BOOL GameEngine::Init(const tDesc_Application& _AppDesc)
+	BOOL GameEngine::Init(const tDesc_GameEngine& _AppDesc)
 	{
 		AtExit::AddFunc(Release);
 

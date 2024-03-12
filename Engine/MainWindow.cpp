@@ -44,16 +44,18 @@ BOOL MainWindow::Init(const tDesc_GameMainWindow& _Desc)
     ShowWindow(mHwnd, SW_HIDE);
     UpdateWindow(mHwnd);
 
+    m_editorHandleFunction = _Desc.EditorHandleFunction;
+    m_editorRunFunction = _Desc.EditorRunFunction;
 
-    ehw::tDesc_Application AppDesc;
-    AppDesc.Hwnd = mHwnd;
-    AppDesc.Height = _Desc.Height;
-    AppDesc.Width = _Desc.Width;
-    AppDesc.LeftWindowPos = _Desc.LeftPos;
-    AppDesc.TopWindowPos = _Desc.TopPos;
-    AppDesc.GPUDesc = _Desc.GPUDesc;
+    ehw::tDesc_GameEngine engineDesc;
+    engineDesc.Hwnd = mHwnd;
+    engineDesc.Height = _Desc.Height;
+    engineDesc.Width = _Desc.Width;
+    engineDesc.LeftWindowPos = _Desc.LeftPos;
+    engineDesc.TopWindowPos = _Desc.TopPos;
+    engineDesc.GPUDesc = _Desc.GPUDesc;
 
-    ehw::GameEngine::Init(AppDesc);
+    ehw::GameEngine::Init(engineDesc);
    
     for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
     {

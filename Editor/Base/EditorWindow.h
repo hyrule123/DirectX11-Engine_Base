@@ -1,7 +1,7 @@
 #pragma once
-#include "Base/EditorBase.h"
+#include "Editor/Base/EditorBase.h"
 
-namespace editor
+namespace ehw::editor
 {
 	class EditorWindow :
 		public EditorBase

@@ -112,8 +112,8 @@ size_t StringConverter::UTF8_Strlen(const std::string_view _str)
 	//연속된 바이트를 사용할 떄 첫 바이트는 '11'로 시작하는 것을 알수 있다.
 	//->만약 11로 시작하는 비트일 때, '11'에서 앞의 1('10')을 제거해준 다음, 여전히 참이면 카운트를 올려주면 된다.
 
-	constexpr char leadingByte = 0b11000000;
-	constexpr char ContinuationByte = 0b10000000;
+	constexpr char leadingByte = (char)0b11000000;
+	constexpr char ContinuationByte = (char)0b10000000;
 	size_t len{};
 	for (size_t i = 0; i < _str.size(); ++i)
 	{

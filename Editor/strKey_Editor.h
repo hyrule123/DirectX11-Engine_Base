@@ -1,8 +1,8 @@
 #pragma once
 
-#include "define_Macro.h"
+#include <Engine/define_Macro.h>
 
-namespace editor::strKey
+namespace ehw::editor::strKey
 {
 	STRKEY_DECLARE(MainMenu);
 	STRKEY EditorGraphicsShader = "Graphics Shader Editor";

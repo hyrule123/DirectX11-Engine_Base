@@ -1,3 +1,5 @@
 #pragma once
 
-#include <PCH_Engine.h>
+#include <Engine/PCH_Engine.h>
+
+#define EDITOR_INCLUDED 1

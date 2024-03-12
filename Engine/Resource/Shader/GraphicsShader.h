@@ -25,7 +25,6 @@ namespace ehw
 		: public iShader
 		, public Serializable_Json
 	{
-		friend class editor::EditorGraphicsShader;
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();

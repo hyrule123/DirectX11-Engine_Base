@@ -31,6 +31,7 @@
 #include <future>
 
 #include <combaseapi.h>
+
 #include "Engine/Util/EnumFlags.h"
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/Util/Serialize/json.h"

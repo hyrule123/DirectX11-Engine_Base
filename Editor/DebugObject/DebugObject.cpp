@@ -1,8 +1,7 @@
-#include "PCH_Editor.h"
-#include "DebugObject/DebugObject.h"
+#include "Editor/DebugObject/DebugObject.h"
 
 
-namespace editor
+namespace ehw::editor
 {
 	DebugObject::DebugObject()
 	{

@@ -1,10 +1,10 @@
 #pragma once
-#include "Game/GameObject.h"
+#include <Engine/Game/GameObject.h>
 
 
-namespace editor
+namespace ehw::editor
 {
-	class DebugObject : public ehw::GameObject
+	class DebugObject : public GameObject
 	{
 	public:
 		DebugObject();

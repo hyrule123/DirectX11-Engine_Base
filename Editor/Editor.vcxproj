@@ -19,6 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base\EditorBase.h" />
+    <ClInclude Include="Base\EditorChild.h" />
+    <ClInclude Include="Base\EditorEntity.h" />
+    <ClInclude Include="Base\MainMenu.h" />
+    <ClInclude Include="Base\EditorWindow.h" />
+    <ClInclude Include="DebugObject\Console.h" />
+    <ClInclude Include="DebugObject\DebugObject.h" />
+    <ClInclude Include="DebugObject\SceneViewer.h" />
+    <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
+    <ClInclude Include="DebugObject\Object.h" />
+    <ClInclude Include="EditorManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\ImGuizmo.h" />
@@ -29,10 +40,37 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="Inspector\Inspector_Component.h" />
+    <ClInclude Include="Inspector\Inspector_Com_Renderer.h" />
+    <ClInclude Include="Inspector\Inspector_Com_Transform.h" />
+    <ClInclude Include="Inspector\InspectorBase.h" />
     <ClInclude Include="PCH_Editor.h" />
+    <ClInclude Include="Resource\FBXConverter.h" />
+    <ClInclude Include="Resource\GraphicsShaderEditor.h" />
+    <ClInclude Include="Resource\MaterialEditor.h" />
+    <ClInclude Include="Resource\MeshEditor.h" />
+    <ClInclude Include="Resource\NormalConverter.h" />
+    <ClInclude Include="Resource\ResourceEditor.h" />
+    <ClInclude Include="Resource\ResourcesViewer.h" />
+    <ClInclude Include="Resource\TextureEditor.h" />
+    <ClInclude Include="Resource\UVCalculator.h" />
     <ClInclude Include="strKey_Editor.h" />
+    <ClInclude Include="Widget\Widget_ComboBox.h" />
+    <ClInclude Include="Widget\Widget_List.h" />
+    <ClInclude Include="Widget\Widget_Tree.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Base\EditorBase.cpp" />
+    <ClCompile Include="Base\EditorChild.cpp" />
+    <ClCompile Include="Base\EditorEntity.cpp" />
+    <ClCompile Include="Base\MainMenu.cpp" />
+    <ClCompile Include="Base\EditorWindow.cpp" />
+    <ClCompile Include="DebugObject\Console.cpp" />
+    <ClCompile Include="DebugObject\DebugObject.cpp" />
+    <ClCompile Include="DebugObject\SceneViewer.cpp" />
+    <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
+    <ClCompile Include="DebugObject\Object.cpp" />
+    <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\ImGuizmo.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -42,12 +80,28 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Inspector\Inspector_Component.cpp" />
+    <ClCompile Include="Inspector\Inspector_Com_Renderer.cpp" />
+    <ClCompile Include="Inspector\Inspector_Com_Transform.cpp" />
+    <ClCompile Include="Inspector\InspectorBase.cpp" />
     <ClCompile Include="PCH_Editor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Resource\FBXConverter.cpp" />
+    <ClCompile Include="Resource\GraphicsShaderEditor.cpp" />
+    <ClCompile Include="Resource\MaterialEditor.cpp" />
+    <ClCompile Include="Resource\MeshEditor.cpp" />
+    <ClCompile Include="Resource\NormalConverter.cpp" />
+    <ClCompile Include="Resource\ResourceEditor.cpp" />
+    <ClCompile Include="Resource\ResourcesViewer.cpp" />
+    <ClCompile Include="Resource\TextureEditor.cpp" />
+    <ClCompile Include="Resource\UVCalculator.cpp" />
+    <ClCompile Include="Widget\Widget_ComboBox.cpp" />
+    <ClCompile Include="Widget\Widget_List.cpp" />
+    <ClCompile Include="Widget\Widget_Tree.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

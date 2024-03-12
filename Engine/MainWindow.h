@@ -21,6 +21,9 @@ struct tDesc_GameMainWindow
 	std::vector<std::function<void()>> ExternalInitFuncs;
 
 	ehw::tDesc_GPUMgr GPUDesc;
+
+	WindowMsgHandleFunc EditorHandleFunction;
+	std::function<void()> EditorRunFunction;
 };
 
 struct tHashFuncFast_UINT32

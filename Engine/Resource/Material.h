@@ -9,11 +9,6 @@
 
 #include <array>
 
-//에디터 전방선언
-namespace editor
-{
-	class EditorMaterial;
-}
 
 namespace ehw
 {
@@ -23,7 +18,6 @@ namespace ehw
 		: public iResource
 		, public Serializable_Json
 	{
-		friend class editor::EditorMaterial;
 	public:
 		Material();
 
@@ -56,6 +50,15 @@ namespace ehw
 		void SetAnim3D(bool _bAnim3D) { m_constBufferData.bAnim = (BOOL)_bAnim3D; }
 		void SetBoneCount(int _iBoneCount) { m_constBufferData.BoneCount = _iBoneCount; }
 
+		float4 GetDiffuseColor() const { return m_constBufferData.Diff; }
+		float4 GetSpecularColor() const { return m_constBufferData.Spec; }
+		float4 GetAmbientColor() const { return m_constBufferData.Amb; }
+		float4 GetEmissiveColor() const { return m_constBufferData.Emv; }
+
+		const void SetDiffuseColor(const float4& _diff)		{ m_constBufferData.Diff = _diff; }
+		const void SetSpecularColor(const float4& _spec)	{ m_constBufferData.Spec = _spec; }
+		const void SetAmbientColor(const float4& _amb)		{ m_constBufferData.Amb = _amb; }
+		const void SetEmissiveColor(const float4& _emsv)	{ m_constBufferData.Emv = _emsv; }
 			
 	private:
 		std::shared_ptr<GraphicsShader> m_shader;
@@ -64,7 +67,7 @@ namespace ehw
 		eRenderingMode m_renderingMode;
 		tCB_MaterialData m_constBufferData;
 	};
-
+	
 	inline void Material::SetMaterialCoefficient(const float4& _vDiff, const float4& _vSpec, const float4& _vAmb, const float4& _vEmis)
 	{
 		m_constBufferData.Diff = _vDiff;

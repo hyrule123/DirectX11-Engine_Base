@@ -28,7 +28,7 @@ namespace ehw
 		UINT RefreshRate;
 	};
 
-	struct tDesc_Application
+	struct tDesc_GameEngine
 	{
 		HWND Hwnd;
 		int  LeftWindowPos;

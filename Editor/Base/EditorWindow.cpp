@@ -1,7 +1,6 @@
-#include "PCH_Editor.h"
-#include "Base/EditorWindow.h"
+#include "Editor/Base/EditorWindow.h"
 
-namespace editor
+namespace ehw::editor
 {
 	EditorWindow::EditorWindow(const std::string_view _strName)
 		: EditorBase(_strName)

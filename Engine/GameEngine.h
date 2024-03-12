@@ -6,7 +6,7 @@ namespace ehw
 	class GameEngine
 	{
 	public:
-		//struct tDesc_Application
+		//struct tDesc_GameEngine
 		//{
 		//	HWND Hwnd;
 		//	int  LeftWindowPos;
@@ -15,7 +15,7 @@ namespace ehw
 		//	int  Height;
 		//	tDesc_GPUMgr GPUDesc;
 		//};
-		static BOOL Init(const tDesc_Application& _AppDesc);
+		static BOOL Init(const tDesc_GameEngine& _AppDesc);
 
 		static void Update();
 		static void InternalUpdate();

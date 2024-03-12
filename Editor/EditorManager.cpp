@@ -1,52 +1,49 @@
-#include "PCH_Editor.h"
-#include "EditorManager.h"
+#include "Editor/EditorManager.h"
 
-#include "Application.h"
-#include "GameMainWindow.h"
-#include "Util/AtExit.h"
-#include "Util/Serialize/JsonSerializer.h"
+#include <Engine/GameEngine.h>
+#include <Engine/MainWindow.h>
+#include <Engine/Util/AtExit.h>
+#include <Engine/Util/Serialize/JsonSerializer.h>
+#include <Engine/Resource/Mesh.h>
+#include <Engine/Resource/Material.h>
+#include <Engine/Game/Component/Transform/Com_Transform.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/GPUManager.h>
+#include <Engine/Manager/InputManager.h>
+#include <Engine/Manager/PathManager.h>
 
-#include "Resource/Mesh.h"
-#include "Resource/Material.h"
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_impl_win32.h"
+#include "Editor/imgui/imgui_impl_dx11.h"
+#include "Editor/Inspector/InspectorBase.h"
+#include "Editor/DebugObject/SceneViewer.h"
+#include "Editor/Base/EditorBase.h"
+#include "Editor/Resource/ResourcesViewer.h"
+#include "Editor/Base/MainMenu.h"
+#include "Editor/DebugObject/Console.h"
+#include "Editor/Widget/Widget_List.h"
+#include "Editor/DebugObject/GameObjectHierarchy.h"
+#include "Editor/Resource/FBXConverter.h"
+#include "Editor/Resource/GraphicsShaderEditor.h"
+#include "Editor/DebugObject/DebugObject.h"
+#include "Editor/DebugObject/Object.h"
+#include "Editor/Resource/MaterialEditor.h"
+#include "Editor/Resource/NormalConverter.h"
+#include "Editor/Resource/UVCalculator.h"
 
-#include "Game/Component/Transform/Com_Transform.h"
-#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
-#include "Game/Component/Script/GridScript.h"
-#include "Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
-#include "Inspector/EditorInspector.h"
-#include "DebugObject/EditorGame.h"
-#include "Base/EditorBase.h"
-#include "Resource/EditorResources.h"
-#include "Base/EditorMainMenu.h"
-#include "DebugObject/EditorConsole.h"
-#include "Widget/EditorWidget_List.h"
-#include "DebugObject/EditorGameObject.h"
-#include "Resource/EditorFBXConverter.h"
-#include "Resource/EditorGraphicsShader.h"
-#include "DebugObject/DebugObject.h"
-#include "DebugObject/EditorObject.h"
-#include "Resource/EditorMaterial.h"
-#include "Resource/EditorNormalConverter.h"
-#include "Resource/EditorUVCalculator.h"
-
-#include "Manager/RenderManager.h"
-#include "Manager/ResourceManager.h"
-#include "Manager/GPUManager.h"
-#include "Manager/InputManager.h"
-#include "Manager/PathManager.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-namespace editor
+namespace ehw::editor
 {
 	constexpr const char* imguiSaveINI = "imgui.ini";
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, std::shared_ptr<EditorBase>, ehw::tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
 	//std::vector<EditorBase*> EditorManager::mGuiWindows{};
 	std::vector<std::shared_ptr<EditorObject>> EditorManager::mEditorObjects{};
 	std::vector<std::shared_ptr<DebugObject>> EditorManager::mDebugObjects{};
@@ -58,32 +55,30 @@ namespace editor
 
 	ImGuizmo::OPERATION EditorManager::mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 
-	using namespace ehw::math;
+	using namespace math;
 	
 	void EditorManager::Init()
 	{
 		AtExit::AddFunc(EditorManager::Release);
 
-		::MainWindow::RegisterImGuiWndProc(ImGui_ImplWin32_WndProcHandler);
-
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
-		mDebugObjects.resize((UINT)ehw::eColliderType::END);
+		mDebugObjects.resize((UINT)eColliderType::END);
 
-		std::shared_ptr<ehw::Mesh> rectMesh = ehw::ResourceManager<ehw::Mesh>::Find(ehw::strKey::defaultRes::mesh::DebugRectMesh);
-		std::shared_ptr<ehw::Material> material = ehw::ResourceManager<ehw::Material>::Find(ehw::strKey::defaultRes::material::DebugMaterial);
+		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::Find(::ehw::strKey::defaultRes::mesh::DebugRectMesh);
+		std::shared_ptr<Material> material = ResourceManager<Material>::Find(::ehw::strKey::defaultRes::material::DebugMaterial);
 
-		mDebugObjects[(UINT)ehw::eColliderType::Rect] = std::make_shared<DebugObject>();
+		mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
 		auto renderer
-			= mDebugObjects[(UINT)ehw::eColliderType::Rect]->AddComponent<ehw::Com_Renderer_Mesh>();
+			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(rectMesh);
 
-		std::shared_ptr<ehw::Mesh> circleMesh = ehw::ResourceManager<ehw::Mesh>::Find("CircleMesh");
+		std::shared_ptr<Mesh> circleMesh = ResourceManager<Mesh>::Find("CircleMesh");
 
-		mDebugObjects[(UINT)ehw::eColliderType::Circle] = std::make_shared<DebugObject>();
+		mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
 		renderer
-			= mDebugObjects[(UINT)ehw::eColliderType::Circle]->AddComponent<ehw::Com_Renderer_Mesh>();
+			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<Com_Renderer_Mesh>();
 
 		renderer->SetMaterial(material, 0);
 		renderer->SetMesh(circleMesh);
@@ -92,10 +87,10 @@ namespace editor
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
-		//ehw::Com_Renderer_Mesh* gridMr = gridObject->AddComponent<ehw::Com_Renderer_Mesh>();
-		//gridMr->SetMesh(ehw::ResourceManager::Find<ehw::Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(ehw::ResourceManager<Material>::Find(L"GridMaterial"));
-		//ehw::GridScript* gridScript = gridObject->AddComponent<ehw::GridScript>();
+		//Com_Renderer_Mesh* gridMr = gridObject->AddComponent<Com_Renderer_Mesh>();
+		//gridMr->SetMesh(ResourceManager::Find<Mesh>(L"RectMesh"));
+		//gridMr->SetMaterial(ResourceManager<Material>::Find(L"GridMaterial"));
+		//GridScript* gridScript = gridObject->AddComponent<GridScript>();
 		//gridScript->SetCamera(gMainCamera);
 
 		//mEditorObjects.push_back(gridObject);
@@ -111,17 +106,27 @@ namespace editor
 		}
 	}
 
+	std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> EditorManager::GetEditorWindowHandleFunction()
+	{
+		return ImGui_ImplWin32_WndProcHandler;
+	}
+
+	std::function<void()> EditorManager::GetEditorRunFunction()
+	{
+		return EditorManager::Run;
+	}
+
 	void EditorManager::Run()
 	{
 		if (
-			ehw::InputManager::GetKeyPress(ehw::eKeyCode::LCTRL)
+			InputManager::GetKeyPress(eKeyCode::LCTRL)
 			&&
-			ehw::InputManager::GetKeyPress(ehw::eKeyCode::LSHIFT)
+			InputManager::GetKeyPress(eKeyCode::LSHIFT)
 			&&
-			ehw::InputManager::GetKeyDown(ehw::eKeyCode::E)
+			InputManager::GetKeyDown(eKeyCode::E)
 			)
 		{
-			editor::EditorManager::ToggleEnable();
+			EditorManager::ToggleEnable();
 		}
 
 		if (false == mbEnable)
@@ -157,11 +162,11 @@ namespace editor
 			guiPair.second->InternalUpdate();
 		}
 
-		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::Z))
+		if (InputManager::GetKeyPress(eKeyCode::Z))
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (ehw::InputManager::GetKeyPress(ehw::eKeyCode::X))
+		if (InputManager::GetKeyPress(eKeyCode::X))
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}
@@ -174,8 +179,8 @@ namespace editor
 			obj->Render();
 		}
 
-		auto& DebugMeshes = ehw::RenderManager::GetDebugMeshes();
-		for ( ehw::tDebugMesh& mesh : DebugMeshes)
+		auto& DebugMeshes = RenderManager::GetDebugMeshes();
+		for ( tDebugMesh& mesh : DebugMeshes)
 		{
 			DebugRender(mesh);
 		}
@@ -191,7 +196,7 @@ namespace editor
 		mbInitialized = false;
 
 		//IMGUI 내부 세팅 저장
-		const std::fs::path& saveDir = ehw::PathManager::GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		ImGui::SaveIniSettingsToDisk(savePath.string().c_str());
 
@@ -231,30 +236,30 @@ namespace editor
 		ImGuiRelease();
 	}
 
-	void EditorManager::DebugRender(ehw::tDebugMesh& mesh)
+	void EditorManager::DebugRender(tDebugMesh& mesh)
 	{
 		const auto& debugObj = mDebugObjects[(UINT)mesh.type];
 		
-		const auto& tr = debugObj->GetComponent<ehw::Com_Transform>();
+		const auto& tr = debugObj->GetComponent<Com_Transform>();
 
 		tr->SetLocalPosition(mesh.position);
 		tr->SetLocalRotation(mesh.rotation);
 		
 
-		if (mesh.type == ehw::eColliderType::Rect)
+		if (mesh.type == eColliderType::Rect)
 			tr->SetLocalScale(mesh.scale);
 		else
 			tr->SetLocalScale(Vector3(mesh.radius));
 
 
-		const auto& renderer = debugObj->GetComponent<ehw::iRenderer>();
-		const auto& mainCam = ehw::RenderManager::GetMainCam();
+		const auto& renderer = debugObj->GetComponent<iRenderer>();
+		const auto& mainCam = RenderManager::GetMainCam();
 
 		tr->InternalUpdate();
 
-		ehw::Com_Camera::SetGpuViewMatrix(
+		Com_Camera::SetGpuViewMatrix(
 			mainCam->GetViewMatrix());
-		ehw::Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
+		Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
 
 		debugObj->Render();
 	}
@@ -275,9 +280,9 @@ namespace editor
 	{
 		NewGuiWindow<EditorMainMenu>();
 
-		NewGuiWindow<EditorInspector>();
+		NewGuiWindow<InspectorBase>();
 
-		NewGuiWindow<EditorGameObject>();
+		NewGuiWindow<GameObjectHierarchy>();
 
 		NewGuiWindow<EditorResources>();
 
@@ -323,7 +328,7 @@ namespace editor
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = ehw::PathManager::GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{
@@ -344,15 +349,15 @@ namespace editor
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(ehw::GameEngine::GetHwnd());
-		ImGui_ImplDX11_Init(ehw::GPUManager::Device().Get()
-			, ehw::GPUManager::Context().Get());
+		ImGui_ImplWin32_Init(GameEngine::GetHwnd());
+		ImGui_ImplDX11_Init(GPUManager::Device().Get()
+			, GPUManager::Context().Get());
 
 
 
 		//설정 파일들 로드
 		//TODO: 여기
-		//std::filesystem::path origDir = ehw::PathManager::GetInst()->GetPathRel_Content();
+		//std::filesystem::path origDir = PathManager::GetInst()->GetPathRel_Content();
 
 		//origDir /= DIRECTORY_NAME::SAVED_SETTING;
 		//std::filesystem::path fullPath = origDir / "imgui.ini";
@@ -464,7 +469,7 @@ namespace editor
 			return;
 		}
 
-		const auto& mainCam = ehw::RenderManager::GetMainCam();
+		const auto& mainCam = RenderManager::GetMainCam();
 
 		if (!mainCam)
 		{
@@ -474,7 +479,7 @@ namespace editor
 		//ImGuizmo::SetOrthographic(false);
 		//ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
 
-		const auto& tr = targetgameobject->GetComponent<ehw::Com_Transform>();
+		const auto& tr = targetgameobject->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 		{
 			return;

@@ -1,14 +1,13 @@
 #pragma once
-#include "CommonStruct.h"
+#include <Engine/CommonStruct.h>
+#include <Engine/define_Enum.h>
 
-#include "define_Enum.h"
+#include "Editor/imgui/imgui.h"
+#include "Editor/imgui/imgui_stdlib.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_stdlib.h"
+#include <memory>
 
-#include <string>
-
-namespace editor
+namespace ehw::editor
 {
 	class EditorEntity
 		: public std::enable_shared_from_this<EditorEntity>
@@ -42,18 +41,7 @@ namespace editor
 		bool						m_bSaveEnable;
 	};
 
-	inline void HilightText(const char* _label, const ImVec2& _size = ImVec2(0.f, 0.f))
-	{
-		ImGui::PushID(0);
-		static ImColor highLight = { 144, 12, 63 };
-		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)highLight);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)highLight);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)highLight);
-
-		ImGui::Button(_label, _size);
-		ImGui::PopStyleColor(3);
-		ImGui::PopID();
-	}
+	void HilightText(const char* _label, const ImVec2& _size = ImVec2(0.f, 0.f));
 }
 
 
