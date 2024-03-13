@@ -226,13 +226,13 @@ namespace ehw
 
 
 
-	eResult Model3D::Instantiate(iScene* _pScene, eLayer _type)
+	eResult Model3D::Instantiate(iScene* _pScene, uint32 _type)
 	{
 		if (nullptr == _pScene)
 		{
 			return eResult::Fail_Nullptr;
 		}
-		else if (false == CheckeLayerValid(_type))
+		else if (false == CheckLayerValid(_type))
 		{
 			return eResult::Fail_InValid;
 		}
@@ -298,8 +298,8 @@ namespace ehw
 			iScene* scene = _inSceneObj->GetOwnerScene();
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				eLayer layer = _inSceneObj->GetLayerType();
-				std::shared_ptr<GameObject> child = scene->NewGameObject(_inSceneObj->GetLayerType());
+				uint32 layer = _inSceneObj->GetLayer();
+				std::shared_ptr<GameObject> child = scene->NewGameObject(_inSceneObj->GetLayer());
 				_inSceneObj->Transform()->AddChild(child->Transform());
 				
 

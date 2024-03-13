@@ -15,7 +15,7 @@ namespace ehw
 
 		void Awake();
 		void Update();
-		void InternalUpdate();
+		void LateUpdate();
 		void Render();
 		void FrameEnd();
 		void Destroy();
@@ -26,16 +26,18 @@ namespace ehw
 
 		void RemoveGameObject(const GameObject* gameObject);
 
-		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects() { return m_GameObjects; }
+		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects() { return m_gameObjects; }
 
 		void GetDontDestroyGameObjects(std::vector<std::shared_ptr<GameObject>>& _dontObjects);
 
-		void SetLayerType(eLayer _type) { m_LayerType = _type; }
+		void SetLayerType(uint32 _type) { m_LayerType = _type; }
 
 	private:
 		iScene* m_OwnerScene;
-		eLayer m_LayerType;
 
-		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
+		std::vector<std::shared_ptr<GameObject>> m_gameObjects;
+		uint32 m_LayerType;
+
+		
 	};
 }

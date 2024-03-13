@@ -12,6 +12,6 @@ namespace ehw
 
 
 
-		virtual void InternalUpdate() override {}
+		virtual void LateUpdate() override {}
 	};
 }

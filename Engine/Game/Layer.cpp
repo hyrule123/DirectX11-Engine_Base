@@ -14,7 +14,7 @@ namespace ehw
 	Layer::Layer()
 		: m_OwnerScene()
 		, m_LayerType()
-		, m_GameObjects{}
+		, m_gameObjects{}
 	{
 	}
 
@@ -24,57 +24,57 @@ namespace ehw
 
 	void Layer::Awake()
 	{
-		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_GameObjects[i]->Awake();
+			m_gameObjects[i]->Awake();
 		}
 	}
 
 	void Layer::Update()
 	{
-		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_GameObjects[i]->Update();
+			m_gameObjects[i]->Update();
 		}
 	}
 
-	void Layer::InternalUpdate()
+	void Layer::LateUpdate()
 	{
-		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_GameObjects[i]->InternalUpdate();
+			m_gameObjects[i]->LateUpdate();
 		}
 
 		// sort z axis
-		//std::vector<GameObject*> m_GameObjects;
-		//std::sort(m_GameObjects.begin(), m_GameObjects.end(), CompareGameObjectByZAxis);
+		//std::vector<GameObject*> m_gameObjects;
+		//std::sort(m_gameObjects.begin(), m_gameObjects.end(), CompareGameObjectByZAxis);
 	}
 
 	void Layer::Render()
 	{
-		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			if (m_GameObjects[i]->IsActive())
+			if (m_gameObjects[i]->IsActive())
 			{
-				m_GameObjects[i]->Render();
+				m_gameObjects[i]->Render();
 			}
 		}
 	}
 
 	void Layer::FrameEnd()
 	{
-		for (size_t i = 0; i < m_GameObjects.size(); ++i)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			if (m_GameObjects[i]->IsActive())
+			if (m_gameObjects[i]->IsActive())
 			{
-				m_GameObjects[i]->FrameEnd();
+				m_gameObjects[i]->FrameEnd();
 			}
 		}
 	}
 
 	void Layer::Destroy()
 	{
-		std::erase_if(m_GameObjects,
+		std::erase_if(m_gameObjects,
 			[](const std::shared_ptr<GameObject>& _gameObj)
 			{
 				return _gameObj->IsDestroyed();
@@ -84,10 +84,10 @@ namespace ehw
 
 	void Layer::AddGameObject(const std::shared_ptr<GameObject>& _gameObject)
 	{
-		m_GameObjects.push_back(_gameObject);
-		
+		m_gameObjects.push_back(_gameObject);
+
 		_gameObject->SetOwnerScene(m_OwnerScene);
-		_gameObject->SetLayerType(m_LayerType);
+		_gameObject->SetLayer(m_LayerType);
 
 		if (m_OwnerScene->IsAwaken())
 		{
@@ -99,13 +99,13 @@ namespace ehw
 	{
 		if (gameObject)
 		{
-			auto iter = m_GameObjects.begin();
-			const auto& iterEnd = m_GameObjects.end();
+			auto iter = m_gameObjects.begin();
+			const auto& iterEnd = m_gameObjects.end();
 			for (iter; iter != iterEnd; ++iter)
 			{
 				if (gameObject == iter->get())
 				{
-					m_GameObjects.erase(iter);
+					m_gameObjects.erase(iter);
 					break;
 				}
 			}
@@ -114,13 +114,13 @@ namespace ehw
 
 	void Layer::GetDontDestroyGameObjects(std::vector<std::shared_ptr<GameObject>>& _dontObjects)
 	{
-		auto iter = std::partition(m_GameObjects.begin(), m_GameObjects.end(),
+		auto iter = std::partition(m_gameObjects.begin(), m_gameObjects.end(),
 			[](const std::shared_ptr<GameObject>& _gameObj)->bool
 			{
 				return !_gameObj->IsDontDestroyOnLoad();
 			}
 		);
 		
-		std::move(iter, m_GameObjects.end(), std::back_inserter(_dontObjects));
+		std::move(iter, m_gameObjects.end(), std::back_inserter(_dontObjects));
 	}
 }

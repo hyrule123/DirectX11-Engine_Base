@@ -20,7 +20,7 @@ namespace ehw
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
-		virtual void InternalUpdate() final {};
+		virtual void LateUpdate() final {};
 
 		virtual void OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider) {};
 		virtual void OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider) {};

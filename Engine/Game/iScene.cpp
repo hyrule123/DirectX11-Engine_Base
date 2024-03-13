@@ -1,16 +1,15 @@
 #include "Engine/Game/iScene.h"
 
+#include "Engine/Game/GameObject.h"
 
 namespace ehw
 {
 	iScene::iScene()
-		: m_bAwake(false)
+		: m_gameObjects()
+		, m_FrameEndJobs()
+		, m_bAwake(false)
 	{
-		for (size_t i = 0; i < m_Layers.size(); ++i)
-		{
-			m_Layers[i].SetOwnerScene(this);
-			m_Layers[i].SetLayerType((eLayer)i);
-		}
+		m_layerNames[0] = "Default";
 	}
 
 	iScene::~iScene()
@@ -26,51 +25,52 @@ namespace ehw
 
 		m_bAwake = true;
 		
-		for (Layer& layer : m_Layers)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.Awake();
+			m_gameObjects[i]->Awake();
 		}
+
 	}
 	void iScene::SceneUpdate()
 	{
 		Update();
 
-		for (Layer& layer : m_Layers)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.Update();
+			m_gameObjects[i]->Update();
 		}
 	}
 	void iScene::SceneInternalUpdate()
 	{
-		InternalUpdate();
-		for (Layer& layer : m_Layers)
+		LateUpdate();
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.InternalUpdate();
+			m_gameObjects[i]->LateUpdate();
 		}
 	}
 	void iScene::SceneRender()
 	{
 		Render();
-		for (Layer& layer : m_Layers)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.Render();
+			m_gameObjects[i]->Render();
 		}
 	}
 	void iScene::SceneDestroy()
 	{
 		Destroy();
-		for (Layer& layer : m_Layers)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.Destroy();
+			m_gameObjects[i]->Destroy();
 		}
 	}
 
 	void iScene::SceneFrameEnd()
 	{
 		FrameEnd();
-		for (Layer& layer : m_Layers)
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			layer.FrameEnd();
+			m_gameObjects[i]->FrameEnd();
 		}
 
 		while (false == m_FrameEndJobs.empty())
@@ -80,31 +80,74 @@ namespace ehw
 		}
 	}
 
-
-	void iScene::AddGameObjects(const eLayer _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects)
+	std::shared_ptr<GameObject> iScene::NewGameObject(const uint _layer, const std::string_view _name)
 	{
-		for (size_t i = 0; i < _gameObjects.size(); ++i)
-		{
-			m_Layers[(int)_type].AddGameObject(_gameObjects[i]);
-		}
+		return AddGameObject(std::make_shared<GameObject>(), _layer, _name);
 	}
 
+	std::shared_ptr<GameObject> iScene::AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint _layer, const std::string_view _name)
+	{
+		//게임오브젝트가 nullptr 이면 그대로 nullptr 반환
+		if (nullptr == _gameObject)
+		{
+			return nullptr;
+		}
+		else if (false == CheckLayerValid(_layer))
+		{
+			return nullptr;
+		}
+
+		//레이어와 이름 바꿔준다.
+		_gameObject->SetLayer(_layer);
+		_gameObject->SetName(_name);
+
+		//이미 자신의 scene에 들어가 있다면 그대로 반환
+		if (this == _gameObject->GetOwnerScene())
+		{
+			return _gameObject;
+		}
+
+		_gameObject->SetOwnerScene(this);
 
 
+		auto lambda = 
+			[this, _obj = _gameObject]()->void
+			{
+				m_gameObjects.push_back(_obj);
+
+				if (m_bAwake)
+				{
+					_obj->Awake();
+				}
+			};
+
+		//Scene이 재생 중일 경우에는 프레임 재생이 끝난 후 추가한다.
+		if (m_bAwake)
+		{
+			AddFrameEndJob(lambda);
+		}
+		else
+		{
+			lambda();
+		}
+
+		return _gameObject;
+	}
 
 	std::vector<std::shared_ptr<GameObject>> iScene::GetDontDestroyGameObjects()
 	{
 		std::vector<std::shared_ptr<GameObject>> dontGameObjs{};
+		dontGameObjs.reserve(m_gameObjects.size());
 
-		for (int i = 0; i < (int)eLayer::END; ++i)
-		{
-			m_Layers[i].GetDontDestroyGameObjects(dontGameObjs);
-		}
+		auto iter = std::partition(m_gameObjects.begin(), m_gameObjects.end(),
+			[](const std::shared_ptr<GameObject>& _gameObj)->bool
+			{
+				return !_gameObj->IsDontDestroyOnLoad();
+			}
+		);
+
+		std::move(iter, m_gameObjects.end(), std::back_inserter(dontGameObjs));
 
 		return dontGameObjs;
-	}
-	const std::vector<std::shared_ptr<GameObject>>& iScene::GetGameObjects(const eLayer _type)
-	{
-		return m_Layers[(uint)_type].GetGameObjects();
 	}
 }

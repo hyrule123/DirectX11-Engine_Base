@@ -49,7 +49,7 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		uint Update();
-		void InternalUpdate();
+		void LateUpdate();
 		void Render();
 
 		void Create(const std::string_view _name, std::shared_ptr<Texture> _atlas

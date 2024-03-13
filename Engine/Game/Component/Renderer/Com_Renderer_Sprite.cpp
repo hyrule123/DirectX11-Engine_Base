@@ -45,7 +45,7 @@ namespace ehw
 	}
 
 
-	void Com_Renderer_Sprite::InternalUpdate()
+	void Com_Renderer_Sprite::LateUpdate()
 	{
 		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
 	}

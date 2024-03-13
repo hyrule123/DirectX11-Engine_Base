@@ -8,10 +8,11 @@
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
-#include <fbxsdk/core/base/fbxtime.h>
-
 #include <string>
 #include <vector>
+#include <functional>
+
+#include <fbxsdk/core/base/fbxtime.h>
 
 //https://stackoverflow.com/questions/10170087/how-does-stdfunction-know-about-calling-convention
 using WindowMsgHandleFunc = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;

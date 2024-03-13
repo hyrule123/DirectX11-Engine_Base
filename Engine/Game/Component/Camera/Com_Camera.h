@@ -28,7 +28,7 @@ namespace  ehw
 		virtual void OnEnable() override;
 		virtual void Awake() override;
 		virtual void Update() override;
-		virtual void InternalUpdate() override;
+		virtual void LateUpdate() override;
 
 		//이 함수는 RenderMgr가 호출
 		void RenderCamera();
@@ -37,7 +37,7 @@ namespace  ehw
 		
 		void RegisterCameraInRenderer();
 
-		void TurnLayerMask(eLayer _layer, bool _enable = true);
+		void TurnLayerMask(uint32 _layer, bool _enable = true);
 		void EnableLayerMasks() { mLayerMasks.set(); }
 		void DisableLayerMasks() { mLayerMasks.reset(); }
 
@@ -58,11 +58,11 @@ namespace  ehw
 	private:
 		void SortGameObjects();
 		void RenderDeffered();
-		void RenderOpaque();
+		void RenderForwardOpaque();
 		void RenderCutout();
 		void RenderTransparent();
 		void RenderPostProcess();
-		void PushGameObjectToRenderingModes(GameObject* _gameObj);
+		void PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj);
 
 	private:
 		static MATRIX gView;
@@ -83,12 +83,12 @@ namespace  ehw
 		float mFar;
 		float m_scale;
 
-		std::bitset<(uint)eLayer::END> mLayerMasks;
-		std::vector<GameObject*> mDefferedOpaqueGameObjects;
-		std::vector<GameObject*> mOpaqueGameObjects;
-		std::vector<GameObject*> mCutoutGameObjects;
-		std::vector<GameObject*> mTransparentGameObjects;
-		std::vector<GameObject*> mPostProcessGameObjects;
+		std::bitset<g_maxLayer> mLayerMasks;
+		std::vector<std::shared_ptr<GameObject>> m_defferedOpaqueGameObjects;
+		std::vector<std::shared_ptr<GameObject>> m_forwardOpaqueGameObjects;
+		std::vector<std::shared_ptr<GameObject>> m_cutoutGameObjects;		//Alpha Test
+		std::vector<std::shared_ptr<GameObject>> m_transparentGameObject;	//Alpha Blend
+		std::vector<std::shared_ptr<GameObject>> m_postProcessGameObjects;
 
 
 
@@ -98,7 +98,7 @@ namespace  ehw
 			CullingAgent() {};
 			virtual ~CullingAgent() {};
 
-			virtual void InternalUpdate() = 0;
+			virtual void LateUpdate() = 0;
 
 		};
 
@@ -108,7 +108,7 @@ namespace  ehw
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			virtual void InternalUpdate() { ASSERT(false, "미구현"); }
+			virtual void LateUpdate() { ASSERT(false, "미구현"); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -117,7 +117,7 @@ namespace  ehw
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
 
-			virtual void InternalUpdate() { ASSERT(false, "미구현"); }
+			virtual void LateUpdate() { ASSERT(false, "미구현"); }
 		};
 	};
 

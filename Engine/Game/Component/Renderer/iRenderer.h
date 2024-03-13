@@ -33,7 +33,7 @@ namespace ehw
 
 		//virtual void Init() override;
 		//virtual void Update() override;
-		virtual void InternalUpdate() override {};
+		virtual void LateUpdate() override {};
 		virtual void Render() = 0;
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;

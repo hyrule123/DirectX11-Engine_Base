@@ -18,7 +18,7 @@ namespace ehw
 		static BOOL Init(const tDesc_GameEngine& _AppDesc);
 
 		static void Update();
-		static void InternalUpdate();
+		static void LateUpdate();
 		static void Render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨

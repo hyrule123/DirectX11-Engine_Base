@@ -39,7 +39,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Transform::InternalUpdate()
+	void Com_Transform::LateUpdate()
 	{
 		//World Value 업데이트
 		UpdateWorldValue();

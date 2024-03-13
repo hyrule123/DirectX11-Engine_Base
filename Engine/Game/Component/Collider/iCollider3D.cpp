@@ -11,7 +11,7 @@ namespace ehw
 	}
 	
 	iCollider3D::iCollider3D(const iCollider3D& _collider)
-		: iCollider(_collider.m_ComCategory)
+		: iCollider(_collider)
 	{
 		ASSERT(FALSE, "미구현");
 	}

@@ -75,15 +75,14 @@ namespace ehw
 	{
 		TimeManager::Update();
 		InputManager::Update();
-		CollisionManager::Update();
 		SceneManager::Update();
 	}
 
 	// GPU update
-	void GameEngine::InternalUpdate()
+	void GameEngine::LateUpdate()
 	{
-		CollisionManager::InternalUpdate();
-		SceneManager::InternalUpdate();
+		CollisionManager::LateUpdate();
+		SceneManager::LateUpdate();
 	}
 
 	void GameEngine::Render()
@@ -107,7 +106,7 @@ namespace ehw
 	bool GameEngine::Run()
 	{
 		Update();
-		InternalUpdate();
+		LateUpdate();
 		Render();
 		FrameEnd();
 		

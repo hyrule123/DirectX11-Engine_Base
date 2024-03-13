@@ -65,7 +65,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Camera::InternalUpdate()
+	void Com_Camera::LateUpdate()
 	{
 		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
@@ -112,7 +112,7 @@ namespace ehw
 		rectMesh->Render();
 
 
-		RenderOpaque();
+		RenderForwardOpaque();
 		RenderCutout();
 		RenderTransparent();
 		RenderPostProcess();
@@ -282,9 +282,9 @@ namespace ehw
 		RenderManager::RegisterCamera(shared_from_this_T<Com_Camera>());
 	}
 
-	void Com_Camera::TurnLayerMask(eLayer _layer, bool _enable)
+	void Com_Camera::TurnLayerMask(uint32 _layer, bool _enable)
 	{
-		mLayerMasks.set((uint)_layer, _enable);
+		mLayerMasks.set((uint32)_layer, _enable);
 	}
 
 
@@ -315,88 +315,86 @@ namespace ehw
 
 	void Com_Camera::SortGameObjects()
 	{
-		mDefferedOpaqueGameObjects.clear();
-		mOpaqueGameObjects.clear();
-		mCutoutGameObjects.clear();
-		mTransparentGameObjects.clear();
-		mPostProcessGameObjects.clear();
+		m_defferedOpaqueGameObjects.clear();
+		m_forwardOpaqueGameObjects.clear();
+		m_cutoutGameObjects.clear();
+		m_transparentGameObject.clear();
+		m_postProcessGameObjects.clear();
 
 		iScene* scene = SceneManager::GetActiveScene();
-		for (int index = 0; index < (uint)eLayer::END; index++)
+		if (nullptr == scene)
 		{
-			if (mLayerMasks[index] == true)
-			{
-				Layer& layer = scene->GetLayer((eLayer)index);
-				const std::vector<std::shared_ptr<GameObject>>& gameObjects = layer.GetGameObjects();
-				if (gameObjects.size() == 0)
-					continue;
+			return;
+		}
 
-				for (size_t i = 0; i < gameObjects.size(); ++i)
-				{
-					PushGameObjectToRenderingModes(gameObjects[i].get());
-				}
+		const std::vector<std::shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+		for (size_t i = 0; i < gameObjects.size(); ++i)
+		{
+			if (true == mLayerMasks[gameObjects[i]->GetLayer()])
+			{
+				PushGameObjectToRenderingModes(gameObjects[i]);
 			}
 		}
 	}
 
 	void Com_Camera::RenderDeffered()
 	{
-		for (size_t i = 0; i < mDefferedOpaqueGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_defferedOpaqueGameObjects.size(); ++i)
 		{
-			if (mDefferedOpaqueGameObjects[i])
+			if (m_defferedOpaqueGameObjects[i])
 			{
-				mDefferedOpaqueGameObjects[i]->Render();
+				m_defferedOpaqueGameObjects[i]->Render();
 			}
 		}
 	}
 
-	void Com_Camera::RenderOpaque()
+	void Com_Camera::RenderForwardOpaque()
 	{
-		for (GameObject* obj : mOpaqueGameObjects)
+		for (size_t i = 0; i < m_forwardOpaqueGameObjects.size(); ++i)
 		{
-			if (obj == nullptr)
-				continue;
-
-			obj->Render();
+			if (m_forwardOpaqueGameObjects[i])
+			{
+				m_forwardOpaqueGameObjects[i]->Render();
+			}
 		}
 	}
 
 	void Com_Camera::RenderCutout()
 	{
-		for (GameObject* obj : mCutoutGameObjects)
+		for (size_t i = 0; i < m_cutoutGameObjects.size(); ++i)
 		{
-			if (obj == nullptr)
-				continue;
-
-			obj->Render();
+			if (m_cutoutGameObjects[i])
+			{
+				m_cutoutGameObjects[i]->Render();
+			}
 		}
 	}
 
 	void Com_Camera::RenderTransparent()
 	{
-		for (GameObject* obj : mTransparentGameObjects)
+		for (size_t i = 0; i < m_transparentGameObject.size(); ++i)
 		{
-			if (obj == nullptr)
-				continue;
-
-			obj->Render();
+			if (m_transparentGameObject[i])
+			{
+				m_transparentGameObject[i]->Render();
+			}
 		}
 	}
 
 	void Com_Camera::RenderPostProcess()
 	{
-
-		for (GameObject* obj : mPostProcessGameObjects)
+		for (size_t i = 0; i < m_postProcessGameObjects.size(); ++i)
 		{
-			if (obj == nullptr)
-				continue;
-
-			RenderManager::CopyRenderTarget();
-			obj->Render();
+			if (m_postProcessGameObjects[i])
+			{
+				RenderManager::CopyRenderTarget();
+				m_postProcessGameObjects[i]->Render();
+			}
 		}
 	}
 
-	void Com_Camera::PushGameObjectToRenderingModes(GameObject* _gameObj)
+	void Com_Camera::PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj)
 	{
 		if (nullptr == _gameObj || false == _gameObj->IsActive())
 			return;
@@ -425,19 +423,19 @@ namespace ehw
 		case eRenderingMode::DefferdOpaque:
 			[[fallthrough]];
 		case eRenderingMode::DefferdMask:
-			mDefferedOpaqueGameObjects.push_back(_gameObj);
+			m_defferedOpaqueGameObjects.push_back(_gameObj);
 			break;
 		case eRenderingMode::Opaque:
-			mOpaqueGameObjects.push_back(_gameObj);
+			m_forwardOpaqueGameObjects.push_back(_gameObj);
 			break;
 		case eRenderingMode::CutOut:
-			mCutoutGameObjects.push_back(_gameObj);
+			m_cutoutGameObjects.push_back(_gameObj);
 			break;
 		case eRenderingMode::Transparent:
-			mTransparentGameObjects.push_back(_gameObj);
+			m_transparentGameObject.push_back(_gameObj);
 			break;
 		case eRenderingMode::PostProcess:
-			mPostProcessGameObjects.push_back(_gameObj);
+			m_postProcessGameObjects.push_back(_gameObj);
 			break;
 		default:
 			break;

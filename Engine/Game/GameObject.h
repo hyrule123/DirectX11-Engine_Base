@@ -16,8 +16,8 @@ namespace ehw
 	{
 		friend class GameObject;
 	public:
-
 		GameObject();
+		GameObject(const std::string_view _name);
 		GameObject(const GameObject& _other);
 		CLONE_ABLE(GameObject);
 
@@ -28,7 +28,7 @@ namespace ehw
 		
 		void Awake();
 		void Update();
-		void InternalUpdate();
+		void LateUpdate();
 
 		void Render();
 		void FrameEnd();
@@ -76,10 +76,10 @@ namespace ehw
 		void SetOwnerScene(iScene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
-		eLayer GetLayerType() const { return m_layerType; }
+		uint32 GetLayer() const { return m_layer; }
 
 		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
-		void SetLayerType(eLayer _type) { m_layerType = _type; }
+		void SetLayer(uint32 _type) { m_layer = _type; }
 
 		bool IsAwaken() const { return m_bAwake; }
 
@@ -92,7 +92,7 @@ namespace ehw
 		std::string m_name;
 
 		iScene* m_ownerScene;
-		eLayer m_layerType;
+		uint32 m_layer;
 
 		std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
 		std::vector<std::shared_ptr<iScript>> m_scripts;

@@ -25,7 +25,7 @@ namespace ehw
 	}
 
 	iCollider2D::iCollider2D(const iCollider2D& _collider)
-		: iCollider(_collider.m_ComCategory)
+		: iCollider(_collider)
 		, mTransform(nullptr)
 		, mSize(_collider.mSize)
 		, mCenter(_collider.mCenter)
@@ -59,7 +59,7 @@ namespace ehw
 	{
 	}
 
-	void iCollider2D::InternalUpdate()
+	void iCollider2D::LateUpdate()
 	{
 		float3 scale = mTransform->GetLocalScale();
 		scale *= float3(mSize.x, mSize.y, 1.0f);
@@ -86,7 +86,7 @@ namespace ehw
 		meshAttribute.radius = mRadius;
 		meshAttribute.rotation = rotation;
 		meshAttribute.scale = scale;
-		meshAttribute.type = m_ComCategory;
+		//meshAttribute.type = GetColli;
 
 		RenderManager::AddDebugMesh(meshAttribute);
 	}

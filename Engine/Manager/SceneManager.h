@@ -8,7 +8,7 @@ namespace ehw
 	public:
 		static void Init();
 		static void Update();
-		static void InternalUpdate();
+		static void LateUpdate();
 		static void Render();
 		static void Destroy();
 		static void FrameEnd();

@@ -47,7 +47,7 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		//아예 새 게임오브젝트를 반환
-		eResult Instantiate(iScene* _pScene, eLayer _type);
+		eResult Instantiate(iScene* _pScene, uint32 _type);
 
 		//Scene에 들어간 Object만 인자로 받음.
 		eResult Instantiate(const std::shared_ptr<GameObject>& _inSceneObj);

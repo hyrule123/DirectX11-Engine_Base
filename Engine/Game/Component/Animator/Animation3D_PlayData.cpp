@@ -67,7 +67,7 @@ namespace ehw
 	{
 	}
 
-	bool Animation3D_PlayData::InternalUpdate()
+	bool Animation3D_PlayData::LateUpdate()
 	{
 		
 

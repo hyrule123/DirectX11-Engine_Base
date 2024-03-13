@@ -47,7 +47,7 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); }
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) { return eResult(); }
 	
-		virtual void InternalUpdate() override;
+		virtual void LateUpdate() override;
 		void BindData(); 
 
 		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }

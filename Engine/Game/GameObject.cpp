@@ -25,7 +25,7 @@ namespace ehw
 	GameObject::GameObject()
 		: m_baseComponents()
 		, m_ownerScene()
-		, m_layerType(eLayer::None)
+		, m_layer()
 		, m_name()
 		, m_State(eState::Active)
 		, m_bAwake(false)
@@ -34,12 +34,18 @@ namespace ehw
 		AddComponent<Com_Transform>();
 	}
 
+	GameObject::GameObject(const std::string_view _name)
+		: GameObject()
+	{
+		m_name = _name;
+	}
+
 
 	GameObject::GameObject(const GameObject& _other)
 		: Entity(_other)
 		, m_baseComponents()
 		, m_ownerScene(_other.m_ownerScene)
-		, m_layerType(_other.m_layerType)
+		, m_layer()
 		, m_name(_other.m_name)
 		, m_State(_other.m_State)
 		, m_bAwake(_other.m_bAwake)
@@ -71,7 +77,7 @@ namespace ehw
 		JsonSerializer& ser = *_ser;
 
 		ser[JSON_KEY(m_name)] << m_name;
-		ser[JSON_KEY(m_layerType)] << m_layerType;
+		ser[JSON_KEY(m_layer)] << m_layer;
 		ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
 
 		ASSERT(false, "미구현");
@@ -157,7 +163,7 @@ namespace ehw
 		}
 	}
 
-	void GameObject::InternalUpdate()
+	void GameObject::LateUpdate()
 	{
 		if (false == IsActive())
 		{
@@ -168,7 +174,7 @@ namespace ehw
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->InternalUpdate();
+				m_baseComponents[i]->LateUpdate();
 			}
 		}
 
@@ -176,7 +182,7 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->InternalUpdate();
+				m_scripts[i]->LateUpdate();
 			}
 		}
 	}

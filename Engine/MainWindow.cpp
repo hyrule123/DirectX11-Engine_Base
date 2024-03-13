@@ -3,7 +3,7 @@
 
 #include "Engine/define_Macro.h"
 #include "Engine/Util/AtExit.h"
-         
+
 #include "Engine/GameEngine.h"
 
 HINSTANCE MainWindow::mInstance{};

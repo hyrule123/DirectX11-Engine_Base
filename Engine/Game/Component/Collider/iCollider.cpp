@@ -2,8 +2,8 @@
 
 namespace ehw
 {
-	iCollider::iCollider(eColliderType _Type)
-		: m_ComCategory(_Type)
+	iCollider::iCollider(eColliderType _type)
+		: m_colliderType(_type)
 	{
 	}
 

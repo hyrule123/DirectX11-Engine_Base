@@ -303,9 +303,6 @@
     <ClCompile Include="GPU\MultiRenderTarget.cpp">
       <Filter>GPU</Filter>
     </ClCompile>
-    <ClCompile Include="Manager\CollisionManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Manager\InputManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -397,6 +394,9 @@
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\Serializable.cpp" />
     <ClCompile Include="Game\Component\Animator\Animation3D_PlayData.cpp" />
+    <ClCompile Include="Manager\CollisionManager.cpp" />
+    <ClCompile Include="Manager\Collision\Collision3DManager.cpp" />
+    <ClCompile Include="Manager\Collision\Collision2DManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -555,9 +555,6 @@
     <ClInclude Include="GPU\MultiRenderTarget.h">
       <Filter>GPU</Filter>
     </ClInclude>
-    <ClInclude Include="Manager\CollisionManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Manager\InputManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -662,6 +659,9 @@
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Game\Component\Animator\Animation3D_PlayData.h" />
+    <ClInclude Include="Manager\CollisionManager.h" />
+    <ClInclude Include="Manager\Collision\Collision3DManager.h" />
+    <ClInclude Include="Manager\Collision\Collision2DManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

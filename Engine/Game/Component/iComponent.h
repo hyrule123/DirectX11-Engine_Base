@@ -31,7 +31,7 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
-		virtual void InternalUpdate() = 0;
+		virtual void LateUpdate() = 0;
 
 		virtual void FrameEnd() {};
 

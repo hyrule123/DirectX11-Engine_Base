@@ -1,19 +1,18 @@
 #pragma once
 #include "Engine/Entity.h"
 
-#include "Engine/Util/SimpleMath.h"
+#include "Engine/Util/type_traits_Ex.h"
 
-
-#include "Engine/Game/Layer.h"
-
-#include "Engine/Game/GameObject.h"
-
+#include "Engine/define_Enum.h"
 
 #include <queue>
 #include <future>
+#include <bitset>
 
 namespace ehw
 {
+
+	class GameObject;
 	class iScene 
 		: public Entity
 	{
@@ -34,24 +33,25 @@ namespace ehw
 		virtual void OnEnter() = 0;//리소스 로드
 
 		virtual void Update() {}
-		virtual void InternalUpdate() {}
+		virtual void LateUpdate() {}
 		virtual void Render() {}
 		virtual void Destroy() {}
 		virtual void FrameEnd() {}
 		virtual void OnExit() {}
-		
-		Layer&							GetLayer(eLayer _type) { return m_Layers[(uint)_type]; }
 
 		bool	IsAwaken() const { return m_bAwake; }
 
 		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		inline std::shared_ptr<GameObject> NewGameObject(const eLayer _type);
-		inline std::shared_ptr<GameObject> NewGameObject(const eLayer _type, const std::string_view _name);
-		void AddGameObjects(const eLayer _type, const std::vector<std::shared_ptr<GameObject>>& _gameObjects);
-		inline void AddGameObject(const eLayer _type, const std::shared_ptr<GameObject>& _gameObject);
+		std::shared_ptr<GameObject> NewGameObject(const uint _layer, const std::string_view _name = "");
+		std::shared_ptr<GameObject> AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint _layer, const std::string_view _name);
+
+		template <type_traits_Ex::is_enum_class_v T>
+		inline std::shared_ptr<GameObject> NewGameObject(const T _layer, const std::string_view _name = "");
+
+		//inline void AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint32 _layer);
 
 		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
-		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects(const eLayer _type);
+		const std::vector<std::shared_ptr<GameObject>>& GetGameObjects() { return m_gameObjects; };
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
@@ -61,32 +61,26 @@ namespace ehw
 		inline std::future<typename std::invoke_result<F, Args...>::type> 
 			AddFrameEndJobReturn(F&& _func, Args&&... _args);
 
+
+
 	private:
-		std::array<Layer, (int)eLayer::END> m_Layers;
-		bool m_bAwake;
+		std::vector<std::shared_ptr<GameObject>> m_gameObjects;
 
 		std::queue<std::function<void()>> m_FrameEndJobs;
+
+		bool m_bAwake;
+
+		
+		std::array<std::string, g_maxLayer>				m_layerNames;
 	};
 
-	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayer _type)
+
+	template<type_traits_Ex::is_enum_class_v T>
+	inline std::shared_ptr<GameObject> iScene::NewGameObject(const T _layer, const std::string_view _name)
 	{
-		std::shared_ptr retObj = std::make_shared<GameObject>();
-		m_Layers[(int)_type].AddGameObject(retObj);
-		return retObj;
+		return NewGameObject(static_cast<std::underlying_type_t<T>>(_layer, _name));
 	}
 
-	inline std::shared_ptr<GameObject> iScene::NewGameObject(const eLayer _type, const std::string_view _name)
-	{
-		std::shared_ptr retObj = std::make_shared<GameObject>();
-		m_Layers[(int)_type].AddGameObject(retObj);
-		retObj->SetName(_name);
-		return retObj;
-	}
-
-	inline void iScene::AddGameObject(const eLayer _type, const std::shared_ptr<GameObject>& _gameObject)
-	{
-		m_Layers[(int)_type].AddGameObject(_gameObject);
-	}
 
 	template<class F, class ...Args>
 	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)

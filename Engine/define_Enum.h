@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Util/EnumFlags.h"
+#include "Engine/Util/type_traits_Ex.h"
 
 namespace ehw
 {
@@ -31,24 +32,29 @@ namespace ehw
 	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
 	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
 
-	enum class eLayer
-	{
-		None = -1,
-		Com_Camera,
-		Grid,
-		Monster,
-		Player,
 
-		tParticle,
-		PostProcess,
-		UI,
+	constexpr const uint32_t g_maxLayer = 32;
+	constexpr inline bool CheckLayerValid(uint32_t _layer) { return (g_maxLayer > _layer); }
+	template <type_traits_Ex::is_enum_class_v T>
+	constexpr inline bool CheckLayerValid(T _layer) { return (g_maxLayer > static_cast<uint32_t>(_layer)); }
+	//enum class eLayer
+	//{
+	//	None = -1,
+	//	Com_Camera,
+	//	Grid,
+	//	Monster,
+	//	Player,
 
-		END
-	};
-	inline bool CheckeLayerValid(eLayer _type)
-	{
-		return ((eLayer::None != _type) && (eLayer::END != _type));
-	}
+	//	tParticle,
+	//	PostProcess,
+	//	UI,
+
+	//	END
+	//};
+	//inline bool CheckeLayerValid(eLayer _type)
+	//{
+	//	return ((eLayer::None != _type) && (eLayer::END != _type));
+	//}
 
 	enum class eProjectionType
 	{

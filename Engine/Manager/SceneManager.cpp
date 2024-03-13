@@ -26,7 +26,7 @@ namespace ehw
 			mActiveScene->SceneUpdate();
 	}
 
-	void SceneManager::InternalUpdate()
+	void SceneManager::LateUpdate()
 	{
 		if (mActiveScene)
 			mActiveScene->SceneInternalUpdate();
@@ -91,7 +91,8 @@ namespace ehw
 
 		for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		{
-			mActiveScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
+			ASSERT(false, "미구현");
+			//mActiveScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
 		}
 
 		//OnEnter 호출
