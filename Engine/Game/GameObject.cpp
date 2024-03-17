@@ -27,7 +27,7 @@ namespace ehw
 		, m_ownerScene()
 		, m_layer()
 		, m_name()
-		, m_State(eState::Active)
+		, m_state(eState::Active)
 		, m_bAwake(false)
 		, m_bDontDestroyOnLoad(false)
 	{
@@ -47,7 +47,7 @@ namespace ehw
 		, m_ownerScene(_other.m_ownerScene)
 		, m_layer()
 		, m_name(_other.m_name)
-		, m_State(_other.m_State)
+		, m_state(_other.m_state)
 		, m_bAwake(_other.m_bAwake)
 		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
 	{
@@ -146,6 +146,7 @@ namespace ehw
 			
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
+
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
 				m_baseComponents[i]->CallStart();
@@ -163,7 +164,16 @@ namespace ehw
 		}
 	}
 
-	void GameObject::LateUpdate()
+	void GameObject::CollisionUpdate()
+	{
+		if (m_baseComponents[(int)eComponentCategory::Collider])
+		{
+			std::static_pointer_cast<iCollider>(m_baseComponents[(int)eComponentCategory::Collider])
+				->CollisionUpdate();
+		}
+	}
+
+	void GameObject::FinalUpdate()
 	{
 		if (false == IsActive())
 		{
@@ -174,7 +184,7 @@ namespace ehw
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->LateUpdate();
+				m_baseComponents[i]->FinalUpdate();
 			}
 		}
 
@@ -182,7 +192,33 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->LateUpdate();
+				m_scripts[i]->FinalUpdate();
+			}
+		}
+	}
+
+	void GameObject::RemoveDestroyed()
+	{
+		if (eState::DestroyReserved == m_state)
+		{
+			m_state = eState::Destroy;
+			return;
+		}
+
+		//개별 Component Destroy 여부 확인
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		{
+			if (m_baseComponents[i] && m_baseComponents[i]->NeedRemove())
+			{
+				m_baseComponents[i] = nullptr;
+			}
+		}
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i] && m_scripts[i]->NeedRemove())
+			{
+				m_scripts[i] = nullptr;
 			}
 		}
 	}
@@ -301,37 +337,6 @@ namespace ehw
 
 	}
 
-	void GameObject::Destroy()
-	{
-		if (IsDestroyed())
-			return;
-
-		m_State = eState::Destroy;
-
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
-		{
-			if (m_baseComponents[i])
-			{
-				//게임오브젝트에서 제거하는 경우에는 강제 제거
-				m_baseComponents[i]->ForceDestroy();
-			}
-		}
-
-		//씬이 작동 중일 경우 지연 실행
-		if (m_ownerScene->IsAwaken())
-		{
-			m_ownerScene->AddFrameEndJob(&GameObject::DestroyRecursive, this);
-		}
-
-		//씬이 작동중이지 않을 경우 바로 호출
-		else
-		{
-			DestroyRecursive();
-		}
-
-	}
-
-
 
 	void GameObject::DestroyRecursive()
 	{
@@ -345,7 +350,7 @@ namespace ehw
 		{
 			if (_bActive)
 			{
-				m_State = eState::Active;
+				m_state = eState::Active;
 
 				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
 				if (m_ownerScene->IsAwaken() && false == m_bAwake)
@@ -366,7 +371,7 @@ namespace ehw
 			}
 			else
 			{
-				m_State = eState::InActive;
+				m_state = eState::InActive;
 
 				for (size_t i = 0; i < m_baseComponents.size(); ++i)
 				{

@@ -79,10 +79,10 @@ namespace ehw
 	}
 
 	// GPU update
-	void GameEngine::LateUpdate()
+	void GameEngine::FinalUpdate()
 	{
-		CollisionManager::LateUpdate();
-		SceneManager::LateUpdate();
+		CollisionManager::FinalUpdate();
+		SceneManager::FinalUpdate();
 	}
 
 	void GameEngine::Render()
@@ -97,7 +97,7 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{		
-		SceneManager::Destroy();
+		SceneManager::RemoveDestroyed();
 
 		SceneManager::FrameEnd();
 	}
@@ -106,7 +106,7 @@ namespace ehw
 	bool GameEngine::Run()
 	{
 		Update();
-		LateUpdate();
+		FinalUpdate();
 		Render();
 		FrameEnd();
 		

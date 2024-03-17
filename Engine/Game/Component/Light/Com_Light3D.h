@@ -23,7 +23,7 @@ namespace ehw
 
 		virtual void OnEnable() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 
 		//Camera가 호출
 		virtual void Render() override;

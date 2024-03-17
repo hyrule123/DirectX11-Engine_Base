@@ -12,6 +12,6 @@ namespace ehw
 
 
 
-		virtual void LateUpdate() override {}
+		virtual void FinalUpdate() override {}
 	};
 }

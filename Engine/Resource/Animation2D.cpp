@@ -72,7 +72,7 @@ namespace ehw
 		return -1;
 	}
 
-	void Animation2D::LateUpdate()
+	void Animation2D::FinalUpdate()
 	{
 
 	}

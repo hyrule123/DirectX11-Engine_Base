@@ -16,6 +16,14 @@ namespace ehw
 	{
 		friend class GameObject;
 	public:
+		enum class eState
+		{
+			InActive,
+			Active,
+			DestroyReserved,
+			Destroy
+		};
+	
 		GameObject();
 		GameObject(const std::string_view _name);
 		GameObject(const GameObject& _other);
@@ -28,9 +36,11 @@ namespace ehw
 		
 		void Awake();
 		void Update();
-		void LateUpdate();
+		void CollisionUpdate();
+		void FinalUpdate();
 
 		void Render();
+		void RemoveDestroyed();
 		void FrameEnd();
 
 	public:
@@ -52,7 +62,6 @@ namespace ehw
 		inline std::shared_ptr<Com_Transform> Transform();
 
 
-
 		using BaseComponents = std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>;
 		const BaseComponents& 
 			GetComponents() const { return m_baseComponents; }
@@ -64,11 +73,14 @@ namespace ehw
 		const std::string& GetName() const { return m_name; }
 		
 		void SetActive(bool _bActive);
-		bool IsActive() const { return eState::Active == m_State; }
+		bool IsActive() const { return eState::Active == m_state; }
+
+		inline eState GetState() const { return m_state; }
+		inline void SetState(eState _state) { m_state = _state; }
 
 		void Destroy();
-		bool IsDestroyed() const { return m_State == eState::Destroy; }
-				
+		inline bool IsDestroyed() const { return (eState::DestroyReserved <= m_state); }
+
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
@@ -97,13 +109,7 @@ namespace ehw
 		std::array<std::shared_ptr<iComponent>, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
 		std::vector<std::shared_ptr<iScript>> m_scripts;
 		
-		enum class eState
-		{
-			InActive,
-			Active,
-			Destroy
-		} m_State;
-		void SetState(eState _state) { m_State = _state; }
+		eState m_state;
 
 		bool m_bAwake;
 		bool m_bDontDestroyOnLoad;
@@ -137,10 +143,6 @@ namespace ehw
 
 		return AddComponent(pCom);
 	}
-
-
-
-
 
 
 	template <typename T>
@@ -207,6 +209,14 @@ namespace ehw
 		}
 
 		return ret;
+	}
+
+	inline void GameObject::Destroy()
+	{
+		if (IsDestroyed())
+			return;
+
+		m_state = eState::DestroyReserved;
 	}
 }
 

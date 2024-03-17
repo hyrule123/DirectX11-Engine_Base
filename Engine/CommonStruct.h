@@ -5,12 +5,14 @@
 
 #include "Engine/define_Enum.h"
 
+#include "Engine/CommonType.h"
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
 #include <string>
 #include <vector>
 #include <functional>
+#include <memory>
 
 #include <fbxsdk/core/base/fbxtime.h>
 
@@ -43,9 +45,9 @@ namespace ehw
 	template<typename T>
 	struct tFastHashFunc
 	{
-		UINT64 operator()(const T& _uKey) const
+		std::size_t operator()(const T& _uKey) const
 		{
-			return static_cast<UINT64>(_uKey);
+			return static_cast<std::size_t>(_uKey);
 		}
 	};
 
@@ -58,6 +60,16 @@ namespace ehw
 		std::size_t operator()(const std::string_view str) const { return hash_type{}(str); }
 		std::size_t operator()(std::string const& str) const { return hash_type{}(str); }
 	};
+
+	//Shared_ptr은 std::hash에 자체적으로 .get 해서 해싱을 하는 기능이 있음(굳이 내가 따로 선언할 필요가 없음)
+	//template <typename T>
+	//struct tHashFunc_SharedPtr
+	//{
+	//	std::size_t operator()(const std::shared_ptr<T>& _sPtr) const
+	//	{
+	//		return reinterpret_cast<uint64>(_sPtr.get());
+	//	}
+	//};
 
 	struct tDataPtr
 	{
@@ -90,4 +102,27 @@ namespace ehw
 		float time;
 	};
 
+	union union_ColliderID
+	{
+		union_ColliderID() = delete;
+		union_ColliderID(uint32 _1, uint32 _2);
+		operator std::size_t() const { return static_cast<std::size_t>(ID64); };
+
+		struct
+		{
+			//ID중 낮은쪽
+			uint32 Low32;
+
+			//ID중 높은쪽
+			uint32 High32;
+		};
+		uint64 ID64;
+	};
+
+	struct tCollisionInfo
+	{
+		eCollisionStatus Status;
+		float2 HitPoint;
+		LARGE_INTEGER CheckedTime;
+	};
 };

@@ -39,7 +39,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Transform::LateUpdate()
+	void Com_Transform::FinalUpdate()
 	{
 		//World Value 업데이트
 		UpdateWorldValue();
@@ -250,7 +250,7 @@ namespace ehw
 		else 
 		{
 			std::shared_ptr<Com_Transform> parent = m_parent.lock();
-			//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+			//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
 			parent->UpdateWorldValue();
 
@@ -269,7 +269,7 @@ namespace ehw
 		{
 			std::shared_ptr<Com_Transform> parent = m_parent.lock();
 
-			//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+			//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
 			parent->UpdateWorldValue();
 

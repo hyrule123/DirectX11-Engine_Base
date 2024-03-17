@@ -65,7 +65,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Camera::LateUpdate()
+	void Com_Camera::FinalUpdate()
 	{
 		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 

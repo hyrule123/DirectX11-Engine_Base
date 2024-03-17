@@ -4,7 +4,7 @@
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
 //Transform 업데이트 로직
-//1. 모든 변경사항은 InternalUpdate 로직 때 반영됨(지연 적용).
+//1. 모든 변경사항은 FinalUpdate 로직 때 반영됨(지연 적용).
 //2. 그러나 스크립트에서 호출할 가능성이 있는 함수 중, Get/Set World 함수의 경우에는 업데이트된 내용을 바로 갱신해야할 필요성이 있음.
 //	이 경우에는 Impl 함수를 직접 호출해서, 값이 반영되었다는 사실을 숨기고(silence) 한번 갱신을 해준다.
 //3. 
@@ -24,9 +24,9 @@
 //ScSp * RcRp * Tw가 가능하다는 것.
 
 //Local Value: 변경 즉시 반영
-//Local Matrix: 요청 시 or InternalUpdate 호출 시 반영
-//World Value: 요청 시 or InternalUpdate 호출 시 반영
-//World Matrix: 요청 시 or InternalUpdate 호출 시 반영
+//Local Matrix: 요청 시 or FinalUpdate 호출 시 반영
+//World Value: 요청 시 or FinalUpdate 호출 시 반영
+//World Matrix: 요청 시 or FinalUpdate 호출 시 반영
 
 namespace ehw
 {
@@ -47,7 +47,7 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); }
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) { return eResult(); }
 	
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 		void BindData(); 
 
 		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
@@ -110,7 +110,7 @@ namespace ehw
 		bool UpdateWorldMatrix();
 
 		//_bSilencedUpdate가 true일 경우: m_bInternalUpdated 값을 변경하지 않고 업데이트 함.
-		//-> InternalUpdate 단계에서 다시 상태 업데이트가 진행된다
+		//-> FinalUpdate 단계에서 다시 상태 업데이트가 진행된다
 
 	private:
 #pragma region LOCAL
@@ -206,7 +206,7 @@ namespace ehw
 
 	const float3& Com_Transform::GetWorldScale()
 	{
-		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
 		UpdateWorldValue();
 		
@@ -215,7 +215,7 @@ namespace ehw
 
 	const math::Quaternion& Com_Transform::GetWorldRotation()
 	{
-		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
 		UpdateWorldValue();
 
@@ -223,7 +223,7 @@ namespace ehw
 	}
 	float3 Com_Transform::GetWorldPosition()
 	{
-		//InternalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
+		//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 		//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
 		UpdateWorldMatrix();
 

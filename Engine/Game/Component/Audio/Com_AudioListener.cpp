@@ -46,7 +46,7 @@ namespace ehw
 
 	}
 
-	void Com_AudioListener::LateUpdate()
+	void Com_AudioListener::FinalUpdate()
 	{
 		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetWorldPosition();

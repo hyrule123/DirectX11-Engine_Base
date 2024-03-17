@@ -18,6 +18,14 @@ namespace ehw
 	{
 		friend class ComponentManager;
 	public:
+		enum class eState
+		{
+			Disabled,
+			Enabled,
+			DestroyReserved,
+			Destroy
+		};
+
 		iComponent(eComponentCategory _type);
 
 		iComponent(const iComponent& _other);
@@ -31,7 +39,7 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
-		virtual void LateUpdate() = 0;
+		virtual void FinalUpdate() = 0;
 
 		virtual void FrameEnd() {};
 
@@ -48,14 +56,18 @@ namespace ehw
 		void SetComponentTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
 		UINT32 GetComponentTypeID() const { return m_ComTypeID; };
 
-		void CallStart() { if (false == m_bStart) { Start(); m_bStart = true; } }
+		inline void CallStart() { if (false == m_bStart) { Start(); m_bStart = true; } }
 
-		bool IsEnabled() const { return eState::Enabled == m_State; }
+		bool IsEnabled() const { return eState::Enabled == m_state; }
 		void SetEnable(bool _bEnable);
 
-		bool IsDestroyed() const { return eState::Destroy == m_State; }
-		void Destroy();
-		void ForceDestroy() { m_State = eState::Destroy; }
+		bool IsDestroyed() const { return eState::DestroyReserved <= m_state; }
+		inline void Destroy();
+
+		inline eState GetState() const { return m_state; }
+		inline void SetState(eState _state) { m_state = _state; }
+
+		bool NeedRemove();
 
 		template <typename T>
 		static inline UINT32 GetComponentTypeID();
@@ -69,13 +81,7 @@ namespace ehw
 
 		bool m_bStart;
 
-		enum class eState
-		{
-			Disabled,
-			Enabled,
-			Destroy
-		} m_State;
-
+		eState m_state;
 	};
 
 
@@ -114,10 +120,11 @@ namespace ehw
 	};
 
 
-	//template<class BaseComponentType, eComponentCategory _category>
-	//template<class CompareType>
-	//inline constexpr bool Component<BaseComponentType, _category>::IsBaseComponentType()
-	//{
-	//	
-	//}
+	inline void iComponent::Destroy()
+	{
+		if (IsDestroyed())
+			return;
+
+		m_state = eState::DestroyReserved;
+	}
 }

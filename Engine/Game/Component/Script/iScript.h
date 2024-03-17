@@ -20,14 +20,14 @@ namespace ehw
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
-		virtual void LateUpdate() final {};
+		virtual void FinalUpdate() final {};
 
-		virtual void OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider) {};
-		virtual void OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider) {};
+		virtual void OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider, const Vector2 _hitPoint) {};
+		virtual void OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider, const Vector2 _hitPoint) {};
 		virtual void OnCollisionExit(const std::shared_ptr<iCollider2D>& _collider) {};
 
-		virtual void OnTriggerEnter(const std::shared_ptr<iCollider2D>& _collider) {};
-		virtual void OnTriggerStay(const std::shared_ptr<iCollider2D>& _collider) {};
+		virtual void OnTriggerEnter(const std::shared_ptr<iCollider2D>& _collider, const Vector2 _hitPoint) {};
+		virtual void OnTriggerStay(const std::shared_ptr<iCollider2D>& _collider, const Vector2 _hitPoint) {};
 		virtual void OnTriggerExit(const std::shared_ptr<iCollider2D>& _collider) {};
 
 	private:

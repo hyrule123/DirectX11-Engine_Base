@@ -22,32 +22,45 @@ namespace ehw
 
 	void SceneManager::Update()
 	{
-		if(mActiveScene)
+		if (mActiveScene)
+		{
 			mActiveScene->SceneUpdate();
+		}
+			
 	}
 
-	void SceneManager::LateUpdate()
+	void SceneManager::FinalUpdate()
 	{
 		if (mActiveScene)
-			mActiveScene->SceneInternalUpdate();
+		{
+			mActiveScene->SceneFinalUpdate();
+		}
+			
 	}
 
 	void SceneManager::Render()
 	{
 		if (mActiveScene)
+		{
 			mActiveScene->SceneRender();
+		}
+			
 	}
 	
-	void SceneManager::Destroy()
+	void SceneManager::RemoveDestroyed()
 	{
 		if (mActiveScene)
-			mActiveScene->SceneDestroy();
+		{
+			mActiveScene->SceneRemoveDestroyed();
+		}	
 	}
 
 	void SceneManager::FrameEnd()
 	{
 		if (mActiveScene)
+		{
 			mActiveScene->SceneFrameEnd();
+		}
 	}
 
 	void SceneManager::Release()

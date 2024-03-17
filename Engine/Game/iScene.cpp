@@ -40,12 +40,22 @@ namespace ehw
 			m_gameObjects[i]->Update();
 		}
 	}
-	void iScene::SceneInternalUpdate()
+
+	void iScene::SceneCollisionUpdate()
 	{
-		LateUpdate();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->LateUpdate();
+			m_gameObjects[i]->Update();
+		}
+	}
+
+	void iScene::SceneFinalUpdate()
+	{
+		FinalUpdate();
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
+		{
+
+			m_gameObjects[i]->FinalUpdate();
 		}
 	}
 	void iScene::SceneRender()
@@ -56,13 +66,27 @@ namespace ehw
 			m_gameObjects[i]->Render();
 		}
 	}
-	void iScene::SceneDestroy()
+	void iScene::SceneRemoveDestroyed()
 	{
-		Destroy();
-		for (size_t i = 0; i < m_gameObjects.size(); ++i)
-		{
-			m_gameObjects[i]->Destroy();
-		}
+		RemoveDestroyed();
+
+		//Destroy 상태의 Object 제거, 아닐 경우 RemoveDestroyed 함수 호출(컴포넌트 지울거있는지 확인)
+		std::erase_if(m_gameObjects, 
+			[](const std::shared_ptr<GameObject>& _obj)->bool
+			{
+				GameObject::eState state = _obj->GetState();
+				if (GameObject::eState::Destroy == state)
+				{
+					return true;
+				}
+				else
+				{
+					_obj->RemoveDestroyed();
+				}
+
+				return false;
+			}
+		);
 	}
 
 	void iScene::SceneFrameEnd()

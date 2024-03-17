@@ -37,6 +37,24 @@ namespace ehw
 	constexpr inline bool CheckLayerValid(uint32_t _layer) { return (g_maxLayer > _layer); }
 	template <type_traits_Ex::is_enum_class_v T>
 	constexpr inline bool CheckLayerValid(T _layer) { return (g_maxLayer > static_cast<uint32_t>(_layer)); }
+
+	enum class eCollisionStatus
+	{
+		Enter,
+		Stay,
+		Exit
+	};
+
+
+
+	enum class eCollider2D_Shape
+	{
+		AABB,
+		OBB,
+		Circle,
+		END
+	};
+
 	//enum class eLayer
 	//{
 	//	None = -1,

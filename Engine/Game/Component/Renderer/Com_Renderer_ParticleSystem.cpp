@@ -127,7 +127,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_ParticleSystem::LateUpdate()
+	void Com_Renderer_ParticleSystem::FinalUpdate()
 	{
 		//파티클 생성 시간
 		float aliveTime = 1.0f / mFrequency;

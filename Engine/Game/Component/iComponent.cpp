@@ -12,7 +12,7 @@ namespace ehw
 		: m_ComCategory(_type)
 		, m_ComTypeID()
 		, m_Owner()
-		, m_State(eState::Enabled)
+		, m_state(eState::Enabled)
 	{
 	}
 
@@ -21,7 +21,7 @@ namespace ehw
 		, m_ComCategory(_other.m_ComCategory)
 		, m_ComTypeID()
 		, m_Owner()
-		, m_State(_other.m_State)
+		, m_state(_other.m_state)
 	{
 	}
 
@@ -41,12 +41,12 @@ namespace ehw
 			{
 				if (_bEnable)
 				{
-					m_State = eState::Enabled;
+					m_state = eState::Enabled;
 					OnEnable();
 				}
 				else
 				{
-					m_State = eState::Disabled;
+					m_state = eState::Disabled;
 					OnDisable();
 				}
 			};
@@ -62,23 +62,18 @@ namespace ehw
 
 	}
 
-	void iComponent::Destroy()
+
+	bool iComponent::NeedRemove()
 	{
-		if (IsDestroyed())
-			return;
-
-		auto DestroyFunc = [this]()
-			{
-				m_State = eState::Destroy;
-			};
-
-		if (m_OwnerScene->IsAwaken())
+		if (eState::Destroy == m_state)
 		{
-			m_OwnerScene->AddFrameEndJob(DestroyFunc);
+			return true;
 		}
-		else
+		else if (eState::DestroyReserved == m_state)
 		{
-			DestroyFunc();
+			m_state = eState::Destroy;
 		}
+
+		return false;
 	}
 }

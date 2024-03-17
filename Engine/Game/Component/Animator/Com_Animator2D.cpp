@@ -123,7 +123,7 @@ namespace ehw
 		}
 
 	}
-	void Com_Animator2D::LateUpdate()
+	void Com_Animator2D::FinalUpdate()
 	{
 	}
 

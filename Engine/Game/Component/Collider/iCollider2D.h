@@ -2,16 +2,19 @@
 #include "Engine/Game/Component/Collider/iCollider.h"
 
 
+
 namespace ehw
 {
 	class Com_Transform;
 	class iCollider2D : public iCollider
 	{
-
 	public:
-		iCollider2D();
+		eCollider2D_Shape GetColliderShape() const { return m_collider2DType; }
+
+
+		iCollider2D(eCollider2D_Shape _type);
 		iCollider2D(const iCollider2D& _collider);
-		CLONE_ABLE(iCollider2D);
+		CLONE_DISABLE(iCollider2D);
 
 		virtual ~iCollider2D();
 
@@ -19,35 +22,10 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void Awake() override;
-		virtual void Update() override;
-		virtual void LateUpdate() override;
-
-
-		virtual void OnCollisionEnter(const std::shared_ptr<iCollider2D>& _collider);
-		virtual void OnCollisionStay(const std::shared_ptr<iCollider2D>& _collider);
-		virtual void OnCollisionExit(const std::shared_ptr<iCollider2D>& _collider);
-
-		virtual void OnTriggerEnter(const std::shared_ptr<iCollider2D>& _collider);
-		virtual void OnTriggerStay(const std::shared_ptr<iCollider2D>& _collider);
-		virtual void OnTriggerExit(const std::shared_ptr<iCollider2D>& _collider);
-
-		void SetSize(float2 _size) { mSize = _size; }
-		void SetCenter(float2 _center) { mCenter = _center; }
-		void SetRadius(float _radius) { mRadius = _radius; }
-		bool IsTriiger() const { return mbTrigger; }
-		uint GetID() const { return mID; }
-		float3 GetLocalPosition() const { return mPosition; }
-		float2 GetSize() const { return mSize; }
+		virtual void Update() final;
+		virtual void FinalUpdate() override;
 
 	private:
-		static uint gColliderNumber;
-		uint mID; 
-		std::shared_ptr<Com_Transform> mTransform;
-
-		float2 mSize;
-		float2 mCenter;
-		float3 mPosition;
-		float mRadius;
-		bool mbTrigger;
+		eCollider2D_Shape m_collider2DType;
 	};
 }

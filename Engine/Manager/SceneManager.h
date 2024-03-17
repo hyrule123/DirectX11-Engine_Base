@@ -8,9 +8,9 @@ namespace ehw
 	public:
 		static void Init();
 		static void Update();
-		static void LateUpdate();
+		static void FinalUpdate();
 		static void Render();
-		static void Destroy();
+		static void RemoveDestroyed();
 		static void FrameEnd();
 		static void Release();
 
@@ -19,7 +19,6 @@ namespace ehw
 
 		template <typename T>
 		static void AddSceneConstructor(const std::string_view _strKey);
-		
 
 	private:
 		static std::unique_ptr<iScene>				mActiveScene;

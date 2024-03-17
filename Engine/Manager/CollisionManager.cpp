@@ -12,6 +12,12 @@ namespace ehw
 {
 	std::array<std::bitset<g_maxLayer>, g_maxLayer> CollisionManager::m_collisionMask{};
 
+	Collision2D				CollisionManager::m_col2DManager{};
+	bool					CollisionManager::m_bEnableCollision2D{};
+
+	Collision3D				CollisionManager::m_col3DManager{};
+	bool					CollisionManager::m_bEnableCollision3D{};
+
 	void CollisionManager::Init()
 	{
 		AtExit::AddFunc(Release);
@@ -22,30 +28,47 @@ namespace ehw
 		{
 			m_collisionMask[i] = 0;
 		}
+
+		m_col2DManager = Collision2D{};
+		m_bEnableCollision2D = false;
+
+		m_col3DManager = Collision3D{};
+		m_bEnableCollision3D = false;
 	}
 
-	void CollisionManager::LateUpdate()
+	void CollisionManager::FinalUpdate()
 	{
-		iScene* scene = SceneManager::GetActiveScene();
-		if (nullptr == scene)
+		if (m_bEnableCollision2D)
 		{
-			return;
+			m_col2DManager.FinalUpdate();
+		}
+		if (m_bEnableCollision3D)
+		{
+			//m_col3DManager
 		}
 
-		for (uint row = 0; row < g_maxLayer; row++)
-		{
-			for (uint column = 0; column < g_maxLayer; column++)
-			{
-				if (m_collisionMask[row][column])
-				{
-					LayerCollision(scene, row, column);
-				}
-			}
-		}
+		//iScene* scene = SceneManager::GetActiveScene();
+		//if (nullptr == scene)
+		//{
+		//	return;
+		//}
+
+		//for (uint row = 0; row < g_maxLayer; row++)
+		//{
+		//	for (uint column = 0; column < g_maxLayer; column++)
+		//	{
+		//		if (m_collisionMask[row][column])
+		//		{
+		//			LayerCollision(scene, row, column);
+		//		}
+		//	}
+		//}
 	}
 	void CollisionManager::Render()
 	{
 	}
+
+
 
 	void CollisionManager::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
 	{

@@ -79,7 +79,7 @@ namespace ehw
 	}
 
 
-	void Com_AudioSource::LateUpdate()
+	void Com_AudioSource::FinalUpdate()
 	{
 		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetLocalPosition();

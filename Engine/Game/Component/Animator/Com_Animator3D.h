@@ -21,7 +21,7 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void Init() override;
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 		virtual void FrameEnd() override;
 
 		virtual bool IsPlaying() const;

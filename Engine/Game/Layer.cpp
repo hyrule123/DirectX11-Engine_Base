@@ -38,11 +38,11 @@ namespace ehw
 		}
 	}
 
-	void Layer::LateUpdate()
+	void Layer::FinalUpdate()
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->LateUpdate();
+			m_gameObjects[i]->FinalUpdate();
 		}
 
 		// sort z axis

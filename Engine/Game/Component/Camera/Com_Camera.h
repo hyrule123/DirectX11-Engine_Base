@@ -28,7 +28,7 @@ namespace  ehw
 		virtual void OnEnable() override;
 		virtual void Awake() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 
 		//이 함수는 RenderMgr가 호출
 		void RenderCamera();
@@ -98,7 +98,7 @@ namespace  ehw
 			CullingAgent() {};
 			virtual ~CullingAgent() {};
 
-			virtual void LateUpdate() = 0;
+			virtual void FinalUpdate() = 0;
 
 		};
 
@@ -108,7 +108,7 @@ namespace  ehw
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			virtual void LateUpdate() { ASSERT(false, "미구현"); }
+			virtual void FinalUpdate() { ASSERT(false, "미구현"); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -117,7 +117,7 @@ namespace  ehw
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
 
-			virtual void LateUpdate() { ASSERT(false, "미구현"); }
+			virtual void FinalUpdate() { ASSERT(false, "미구현"); }
 		};
 	};
 

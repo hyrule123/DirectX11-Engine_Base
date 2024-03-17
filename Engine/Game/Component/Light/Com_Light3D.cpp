@@ -184,7 +184,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Light3D::LateUpdate()
+	void Com_Light3D::FinalUpdate()
 	{
 		auto tr = GetOwner()->GetComponent<Com_Transform>();
 		if (nullptr == tr)

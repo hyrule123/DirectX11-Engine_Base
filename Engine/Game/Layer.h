@@ -15,7 +15,7 @@ namespace ehw
 
 		void Awake();
 		void Update();
-		void LateUpdate();
+		void FinalUpdate();
 		void Render();
 		void FrameEnd();
 		void Destroy();

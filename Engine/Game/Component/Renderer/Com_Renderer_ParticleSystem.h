@@ -27,7 +27,7 @@ namespace ehw
 
 		virtual void Init() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 		virtual void Render() override;
 
 	private:

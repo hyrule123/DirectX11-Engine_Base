@@ -24,7 +24,7 @@ namespace ehw
 	public:
 		iCollider3D();
 		iCollider3D(const iCollider3D& _collider);
-		CLONE_ABLE(iCollider3D);
+		CLONE_DISABLE(iCollider3D);
 		
 		virtual ~iCollider3D();
 
@@ -33,7 +33,7 @@ namespace ehw
 
 		//virtual void Init() override;
 		//virtual void Update() override;
-		virtual void LateUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
+		virtual void FinalUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
 
 	private:
 	};

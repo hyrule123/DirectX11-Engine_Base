@@ -55,13 +55,13 @@ namespace ehw
 	}
 
 
-	void Com_Animator3D::LateUpdate()
+	void Com_Animator3D::FinalUpdate()
 	{
 		if (nullptr == m_sharedPlayData)
 		{
 			return;
 		}
-		else if (false == m_sharedPlayData->LateUpdate())
+		else if (false == m_sharedPlayData->FinalUpdate())
 		{
 			return;
 		}

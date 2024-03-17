@@ -20,7 +20,7 @@ namespace ehw
 
 		virtual void Awake() override;
 		virtual void Update() override;
-		virtual void LateUpdate() override;
+		virtual void FinalUpdate() override;
 	private:
 	};
 }
