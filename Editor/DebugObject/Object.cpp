@@ -19,9 +19,9 @@ namespace ehw::editor
 	{
 		GameObject::Update();
 	}
-	void EditorObject::InternalUpdate()
+	void EditorObject::FinalUpdate()
 	{
-		GameObject::InternalUpdate();
+		GameObject::FinalUpdate();
 	}
 	void EditorObject::Render()
 	{

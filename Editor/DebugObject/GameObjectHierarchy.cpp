@@ -5,11 +5,13 @@
 
 #include <Engine/Game/iScene.h>
 #include <Engine/Game/Layer.h>
+#include <Engine/Game/GameObject.h>
 
 #include <Engine/Manager/SceneManager.h>
 #include <Engine/Manager/RenderManager.h>
 
 #include <Engine/GameEngine.h>
+
 
 namespace ehw::editor
 {
@@ -71,16 +73,11 @@ namespace ehw::editor
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, tDataPtr{}, true);
 
-		for (size_t i = 0; i < (UINT)eLayer::END; i++)
-		{
-			Layer& layer = scene->GetLayer((eLayer)i);
-			const std::vector<std::shared_ptr<GameObject>>& gameObjs
-				= layer.GetGameObjects();
+		const iScene::GameObjects& gameObjects = scene->GetGameObjects();
 
-			for (const std::shared_ptr<GameObject>& obj : gameObjs)
-			{
-				AddGameObject(root, obj.get());
-			}
+		for (size_t i = 0; i < gameObjects.size(); ++i)
+		{
+			AddGameObject(root, gameObjects[i].get());
 		}
 
 		mTreeWidget->SetEnable(true);
@@ -91,7 +88,7 @@ namespace ehw::editor
 		std::string name(gameObject->GetName());
 		if (name.empty())
 		{
-			name = "NoNameObj";
+			name = "NoName";
 		}
 
 		tDataPtr data{};

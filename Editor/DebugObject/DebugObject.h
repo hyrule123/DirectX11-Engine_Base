@@ -10,7 +10,7 @@ namespace ehw::editor
 		DebugObject();
 		virtual ~DebugObject();
 
-		void InternalUpdate();
+		void FinalUpdate();
 	
 
 	private:

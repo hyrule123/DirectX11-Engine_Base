@@ -18,7 +18,7 @@ namespace ehw::editor
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		void InitRecursive();
-		void InternalUpdate();
+		void FinalUpdate();
 
 		virtual void Init() {}
 		virtual void Update() {}

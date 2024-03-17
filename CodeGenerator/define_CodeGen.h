@@ -5,14 +5,6 @@
 
 namespace stdfs = std::filesystem;
 
-#ifndef DEBUG_BREAK
-#ifdef _DEBUG
-#define DEBUG_BREAK DebugBreak()
-#else
-#define DEBUG_BREAK
-#endif
-#endif
-
 
 //#define PRESET constexpr const char*
 

@@ -100,7 +100,7 @@ namespace ehw::editor
 			m_childs[i]->InitRecursive();
 		}
 	}
-	void EditorBase::InternalUpdate()
+	void EditorBase::FinalUpdate()
 	{
 		if (false == GetEnable())
 			return;
@@ -113,7 +113,7 @@ namespace ehw::editor
 			UpdateUI();
 			for (size_t i = 0; i < m_childs.size(); ++i)
 			{
-				m_childs[i]->InternalUpdate();
+				m_childs[i]->FinalUpdate();
 			}
 
 			EndUI();

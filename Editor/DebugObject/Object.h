@@ -11,7 +11,7 @@ namespace ehw::editor
 
 		void Awake();
 		void Update();
-		void InternalUpdate();
+		void FinalUpdate();
 		void Render();
 
 	private:

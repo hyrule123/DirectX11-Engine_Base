@@ -40,7 +40,7 @@ namespace ehw::editor
 		static void Release();
 
 		static void Update();
-		static void InternalUpdate();
+		static void FinalUpdate();
 		static void Render();
 		
 		static void DebugRender(tDebugMesh& mesh);

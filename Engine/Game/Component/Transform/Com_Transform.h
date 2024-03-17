@@ -35,6 +35,7 @@ namespace ehw
 		: public Component<Com_Transform, eComponentCategory::Transform>
 	{
 		friend class Com_Transform;
+		friend class GameObject;
 	public:
 		Com_Transform();
 
@@ -50,6 +51,7 @@ namespace ehw
 		virtual void FinalUpdate() override;
 		void BindData(); 
 
+#pragma region //Hierarchy
 		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
 		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }
 
@@ -57,7 +59,11 @@ namespace ehw
 		inline const std::vector<std::shared_ptr<Com_Transform>>& GetChilds() const { return m_childs; }
 
 		void GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects);
+
 		
+#pragma region //Hierarchy
+
+
 		inline bool IsTransformUpdated() const { return m_bTransformUpdated; }
 
 #pragma region //LOCAL
@@ -92,10 +98,14 @@ namespace ehw
 		void SetWorldPosition(const float3& _worldPosition);
 #pragma endregion //WORLD
 
-		void SetIgnoreParentScale(bool _b) { m_bIgnoreParentScale = _b; }
-		void SetIgnoreParentRotation(bool _b) { m_bIgnoreParentRotation = _b; }
+		inline void SetIgnoreParentScale(bool _b) { m_bIgnoreParentScale = _b; }
+		inline void SetIgnoreParentRotation(bool _b) { m_bIgnoreParentRotation = _b; }
 
 	private:
+		//아래의 2개 함수는 GameObject 호출 용도
+		void RemoveChildPtr(Com_Transform* _pTransform);
+		void DestroyChildsRecursive();
+
 		inline void SetAllFlagsOn();
 
 		inline const float3& GetWorldScale_Internal() const { return m_worldScale; }

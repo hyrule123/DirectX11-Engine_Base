@@ -330,7 +330,7 @@ namespace ehw::editor
 		ImGui::Separator();
 
 		//토폴로지 업데이트
-		mTopologyCombo.InternalUpdate();
+		mTopologyCombo.FinalUpdate();
 
 		ImGui::Separator();
 
@@ -343,13 +343,13 @@ namespace ehw::editor
 		ImGui::Separator();
 
 		//Rasterizer State
-		mRSTypeCombo.InternalUpdate();
+		mRSTypeCombo.FinalUpdate();
 
 		//Depth Stencil
-		mDSTypeCombo.InternalUpdate();
+		mDSTypeCombo.FinalUpdate();
 
 		//Blend State
-		mBSTypeCombo.InternalUpdate();
+		mBSTypeCombo.FinalUpdate();
 
 		
 		ImGui::Spacing();
@@ -547,7 +547,7 @@ namespace ehw::editor
 				ImGui::InputText("SemanticName", &mSemanticName);
 
 				//DXGI Format 에딧
-				mDXGIFormatCombo.InternalUpdate();
+				mDXGIFormatCombo.FinalUpdate();
 
 				int ByteOffset = (int)mDescForEdit.AlignedByteOffset;
 				if (ImGui::InputInt("AlignedByteOffset", &ByteOffset) && ByteOffset >= 0)
@@ -742,7 +742,7 @@ namespace ehw::editor
 			ImGui::OpenPopup("Load Shader");
 			if (ImGui::BeginPopupModal("Load Shader"))
 			{
-				mLoadFileCombo.InternalUpdate();
+				mLoadFileCombo.FinalUpdate();
 
 				if (ImGui::Button("Load File"))
 				{

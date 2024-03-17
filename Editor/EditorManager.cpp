@@ -133,7 +133,7 @@ namespace ehw::editor
 			return;
 
 		Update();
-		InternalUpdate();
+		FinalUpdate();
 		Render();
 
 		mbInitialized = true;
@@ -150,16 +150,16 @@ namespace ehw::editor
 		}
 	}
 
-	void EditorManager::InternalUpdate()
+	void EditorManager::FinalUpdate()
 	{
 		for (const auto& obj : mEditorObjects)
 		{
-			obj->InternalUpdate();
+			obj->FinalUpdate();
 		}
 
 		for (const auto& guiPair : mGuiWindows)
 		{
-			guiPair.second->InternalUpdate();
+			guiPair.second->FinalUpdate();
 		}
 
 		if (InputManager::GetKeyPress(eKeyCode::Z))
@@ -255,7 +255,7 @@ namespace ehw::editor
 		const auto& renderer = debugObj->GetComponent<iRenderer>();
 		const auto& mainCam = RenderManager::GetMainCam();
 
-		tr->InternalUpdate();
+		tr->FinalUpdate();
 
 		Com_Camera::SetGpuViewMatrix(
 			mainCam->GetViewMatrix());

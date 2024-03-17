@@ -99,7 +99,7 @@ namespace ehw::editor
 
 			if (false == mTargetGameObject.expired() && mGuiComponents[i])
 			{
-				mGuiComponents[i]->InternalUpdate();
+				mGuiComponents[i]->FinalUpdate();
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace ehw::editor
 		//{
 		//	if ((false == mTargetResource.expired()) && mGuiResources[i])
 		//	{
-		//		mGuiResources[i]->InternalUpdate();
+		//		mGuiResources[i]->FinalUpdate();
 		//	}
 		//}
 	}

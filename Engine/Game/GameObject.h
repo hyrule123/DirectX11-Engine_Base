@@ -96,9 +96,8 @@ namespace ehw
 		bool IsAwaken() const { return m_bAwake; }
 
 	protected:
+
 		void SetActiveRecursive(bool _bActive);
-		void DestroyRecursive();
-		
 
 	private:
 		std::string m_name;
@@ -209,14 +208,6 @@ namespace ehw
 		}
 
 		return ret;
-	}
-
-	inline void GameObject::Destroy()
-	{
-		if (IsDestroyed())
-			return;
-
-		m_state = eState::DestroyReserved;
 	}
 }
 

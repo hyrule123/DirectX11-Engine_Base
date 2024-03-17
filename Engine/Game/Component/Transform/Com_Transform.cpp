@@ -102,6 +102,8 @@ namespace ehw
 		}
 	}
 
+
+
 	bool Com_Transform::UpdateWorldValue()
 	{
 		std::shared_ptr<Com_Transform> parent = m_parent.lock();
@@ -305,6 +307,32 @@ namespace ehw
 
 			//오차를 최대한 줄이기 위해 position만 가져온다.
 			m_localMatrix.Translation(calculatedLocalMatrix.Translation());
+		}
+	}
+
+	void Com_Transform::RemoveChildPtr(Com_Transform* _pTransform)
+	{
+		for (auto iter = m_childs.begin(); iter != m_childs.end(); ++iter)
+		{
+			if (_pTransform == iter->get())
+			{
+				m_childs.erase(iter);
+				break;
+			}
+		}
+	}
+
+	void Com_Transform::DestroyChildsRecursive()
+	{
+		for (size_t i = 0; i < m_childs.size(); ++i)
+		{
+			GameObject* owner = GetOwner();
+			if (false == owner->IsDestroyed())
+			{
+				owner->SetState(GameObject::eState::DestroyReserved);
+			}
+
+			m_childs[i]->DestroyChildsRecursive();
 		}
 	}
 }

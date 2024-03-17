@@ -97,9 +97,8 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{		
-		SceneManager::RemoveDestroyed();
-
 		SceneManager::FrameEnd();
+		SceneManager::RemoveDestroyed();
 	}
 
 	// Running main engine loop

@@ -32,7 +32,9 @@
 #define DEBUG_LOG_A(_str) OutputDebugStringA(_str)
 #define DEBUG_LOG_W(_wStr) OutputDebugStringW(_wStr)
 
-#else
+#define DEBUG_BREAK ::__debugbreak()
+
+#else //RELEASE
 #define ASSERT(_expression, _c_str) \
 	do \
 	{ \
@@ -55,6 +57,8 @@
 #define DEBUG_LOG(_c_str) 0
 #define DEBUG_LOG_A(_str) 0
 #define DEBUG_LOG_W(_wStr) 0
+
+#define DEBUG_BREAK 0
 
 #endif _DEBUG
 

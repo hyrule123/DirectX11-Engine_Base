@@ -337,10 +337,22 @@ namespace ehw
 
 	}
 
-
-	void GameObject::DestroyRecursive()
+	void GameObject::Destroy()
 	{
+		if (IsDestroyed())
+			return;
 
+		m_state = eState::DestroyReserved;
+
+		std::shared_ptr<Com_Transform> tr = Transform();
+		std::shared_ptr<Com_Transform> parent = Transform()->GetParent();
+
+		//부모 Transform에서 자식의 주소를 제거
+		if (parent)
+		{
+			parent->RemoveChildPtr(tr.get());
+		}
+		tr->DestroyChildsRecursive();
 	}
 
 	void GameObject::SetActiveRecursive(bool _bActive)
