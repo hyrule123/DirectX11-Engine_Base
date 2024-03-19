@@ -201,7 +201,7 @@ void CreateEngineComponentKey()
         Desc.BaseType = "iComponent";
 
         //PCH 강제 include 시켜서 필요 없어짐
-        Desc.IncludePCH = R"(#include "PCH_Engine.h")";
+        //Desc.IncludePCH = R"(#include "Engine/PCH_Engine.h")";
 
         Desc.ClassName = "ComponentInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";

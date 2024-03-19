@@ -45,7 +45,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->Update();
+			m_gameObjects[i]->CollisionUpdate();
 		}
 	}
 
@@ -54,7 +54,6 @@ namespace ehw
 		FinalUpdate();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-
 			m_gameObjects[i]->FinalUpdate();
 		}
 	}
@@ -77,6 +76,7 @@ namespace ehw
 				GameObject::eState state = _obj->GetState();
 				if (GameObject::eState::Destroy == state)
 				{
+					
 					return true;
 				}
 				else

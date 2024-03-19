@@ -8,6 +8,7 @@
 
 #include "Engine/Manager/SceneManager.h"
 
+
 namespace ehw
 {
 	std::array<std::bitset<g_maxLayer>, g_maxLayer> CollisionManager::m_collisionMask{};
@@ -21,6 +22,10 @@ namespace ehw
 	void CollisionManager::Init()
 	{
 		AtExit::AddFunc(Release);
+
+		m_bEnableCollision2D = true;
+		m_col2DManager.Init();
+		m_bEnableCollision3D = false;
 	}
 	void CollisionManager::Release()
 	{
@@ -30,17 +35,14 @@ namespace ehw
 		}
 
 		m_col2DManager = Collision2D{};
-		m_bEnableCollision2D = false;
-
 		m_col3DManager = Collision3D{};
-		m_bEnableCollision3D = false;
 	}
 
-	void CollisionManager::FinalUpdate()
+	void CollisionManager::Update()
 	{
 		if (m_bEnableCollision2D)
 		{
-			m_col2DManager.FinalUpdate();
+			m_col2DManager.Update();
 		}
 		if (m_bEnableCollision3D)
 		{
@@ -63,11 +65,13 @@ namespace ehw
 		//		}
 		//	}
 		//}
+
+		SceneManager::CollisionUpdate();
 	}
+
 	void CollisionManager::Render()
 	{
 	}
-
 
 
 	void CollisionManager::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
@@ -260,5 +264,11 @@ namespace ehw
 
 
 		return true;
+	}
+
+	const void CollisionManager::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
+	{
+		m_collisionMask[_layerA][_layerB] = _isEnable;
+		m_collisionMask[_layerB][_layerA] = _isEnable;
 	}
 }

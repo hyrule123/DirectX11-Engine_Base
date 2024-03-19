@@ -45,13 +45,18 @@ namespace ehw
 		Exit
 	};
 
-
-
 	enum class eCollider2D_Shape
 	{
 		AABB,
 		OBB,
 		Circle,
+		END
+	};
+
+	enum class eCollider3D_Shape
+	{
+		Box,
+		Sphere,
 		END
 	};
 
@@ -81,15 +86,8 @@ namespace ehw
 		Orthographic,
 	};
 
-	enum class eColliderType
-	{
-		None,
-		Rect,
-		Circle,
-		Box,
-		Sphere,
-		END,
-	};
+
+
 
 	enum class eLightType
 	{

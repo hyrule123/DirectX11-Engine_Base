@@ -199,11 +199,12 @@ namespace ehw
 
 	void GameObject::RemoveDestroyed()
 	{
-		if (eState::DestroyReserved == m_state)
+		if (IsDestroyed())
 		{
 			m_state = eState::Destroy;
 			return;
 		}
+		
 
 		//개별 Component Destroy 여부 확인
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
@@ -222,6 +223,7 @@ namespace ehw
 			}
 		}
 	}
+
 
 	//이 함수는 다른 카메라가 호출함
 	//
@@ -340,9 +342,26 @@ namespace ehw
 	void GameObject::Destroy()
 	{
 		if (IsDestroyed())
+		{
 			return;
+		}
 
 		m_state = eState::DestroyReserved;
+
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		{
+			if (m_baseComponents[i])
+			{
+				m_baseComponents[i]->Destroy();
+			}
+		}
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i])
+			{
+				m_scripts[i]->Destroy();
+			}
+		}
 
 		std::shared_ptr<Com_Transform> tr = Transform();
 		std::shared_ptr<Com_Transform> parent = Transform()->GetParent();

@@ -3,6 +3,8 @@
 #include "Engine/CommonStruct.h"
 #include "Engine/define_enum.h"
 
+#include "Engine/Manager/Collision/CollisionInfo.h"
+
 #include <array>
 #include <vector>
 #include <memory>
@@ -20,17 +22,18 @@ namespace ehw
 			bool(const std::shared_ptr<iCollider2D>&, const std::shared_ptr<iCollider2D>&, Vector2&)
 		>;
 	public:
-		void Enqueue(const std::shared_ptr<iCollider2D>& _obj);
+		void Register(const std::shared_ptr<iCollider2D>& _obj);
+
 	private:
 		Collision2D();
 		~Collision2D();
 
 		void Init();
-		void FinalUpdate();
-		void FrameEnd();
+		void Update();
 		void Reset();
 
-		inline const Collision2DFunction& GetIntersectFunc(eCollider2D_Shape _left, eCollider2D_Shape _right);
+	private:
+		void Enqueue(const std::shared_ptr<iCollider2D>& _obj);
 
 		bool CheckIntersect_AABB_AABB(
 			const std::shared_ptr<iCollider2D>& _AABB1, const std::shared_ptr<iCollider2D>& _AABB2, 
@@ -62,7 +65,12 @@ namespace ehw
 
 
 	private:
+		std::vector<std::shared_ptr<iCollider2D>> m_colliders;
 		std::array<std::vector<std::shared_ptr<iCollider2D>>, g_maxLayer> m_objectsInLayer;
+
+		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
+		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯
+		std::unordered_map<tColliderID, CollisionInfo, tColliderID_Hasher> m_collisions;
 
 		//각 Collider2D 함수 주소를 담고있는 이중 배열
 		//사용하는 이유: 
@@ -70,11 +78,5 @@ namespace ehw
 		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
 			m_collision2DFunctions;
 	};
-
-	inline const Collision2D::Collision2DFunction& Collision2D::GetIntersectFunc(const eCollider2D_Shape _left, const eCollider2D_Shape _right)
-	{
-		return m_collision2DFunctions[(int)_left][(int)_right];
-	}
-
 }
 

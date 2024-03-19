@@ -8,6 +8,7 @@ namespace ehw
 	public:
 		static void Init();
 		static void Update();
+		static void CollisionUpdate();
 		static void FinalUpdate();
 		static void Render();
 		static void RemoveDestroyed();

@@ -9,8 +9,7 @@ namespace ehw
 	class iCollider2D : public iCollider
 	{
 	public:
-		eCollider2D_Shape GetColliderShape() const { return m_collider2DType; }
-
+		eCollider2D_Shape GetColliderShape() const { return m_collider2DShape; }
 
 		iCollider2D(eCollider2D_Shape _type);
 		iCollider2D(const iCollider2D& _collider);
@@ -21,11 +20,19 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		virtual void Awake() override;
-		virtual void Update() final;
+		virtual void Init() override;
 		virtual void FinalUpdate() override;
 
+
+		virtual void OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) override;
+		virtual void OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) override;
+		virtual void OnCollisionExit(const std::shared_ptr<iCollider>& _collider) override;
+
+		virtual void OnTriggerEnter(const std::shared_ptr<iCollider>& _collider) override;
+		virtual void OnTriggerStay(const std::shared_ptr<iCollider>& _collider) override;
+		virtual void OnTriggerExit(const std::shared_ptr<iCollider>& _collider) override;
+
 	private:
-		eCollider2D_Shape m_collider2DType;
+		eCollider2D_Shape m_collider2DShape;
 	};
 }

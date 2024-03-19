@@ -62,26 +62,26 @@ namespace ehw::editor
 		AtExit::AddFunc(EditorManager::Release);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
-		mDebugObjects.resize((UINT)eColliderType::END);
+		//mDebugObjects.resize((UINT)eColliderType::END);
 
-		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::Find(::ehw::strKey::defaultRes::mesh::DebugRectMesh);
-		std::shared_ptr<Material> material = ResourceManager<Material>::Find(::ehw::strKey::defaultRes::material::DebugMaterial);
+		//std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::Find(::ehw::strKey::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Material> material = ResourceManager<Material>::Find(::ehw::strKey::defaultRes::material::DebugMaterial);
 
-		mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
-		auto renderer
-			= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<Com_Renderer_Mesh>();
+		//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
+		//auto renderer
+		//	= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<Com_Renderer_Mesh>();
 
-		renderer->SetMaterial(material, 0);
-		renderer->SetMesh(rectMesh);
+		//renderer->SetMaterial(material, 0);
+		//renderer->SetMesh(rectMesh);
 
-		std::shared_ptr<Mesh> circleMesh = ResourceManager<Mesh>::Find("CircleMesh");
+		//std::shared_ptr<Mesh> circleMesh = ResourceManager<Mesh>::Find("CircleMesh");
 
-		mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
-		renderer
-			= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<Com_Renderer_Mesh>();
+		//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
+		//renderer
+		//	= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<Com_Renderer_Mesh>();
 
-		renderer->SetMaterial(material, 0);
-		renderer->SetMesh(circleMesh);
+		//renderer->SetMaterial(material, 0);
+		//renderer->SetMesh(circleMesh);
 
 
 		//그리드 이쪽으로 옮겨줘야 한다.
@@ -238,30 +238,30 @@ namespace ehw::editor
 
 	void EditorManager::DebugRender(tDebugMesh& mesh)
 	{
-		const auto& debugObj = mDebugObjects[(UINT)mesh.type];
-		
-		const auto& tr = debugObj->GetComponent<Com_Transform>();
+		//const auto& debugObj = mDebugObjects[(UINT)mesh.type];
+		//
+		//const auto& tr = debugObj->GetComponent<Com_Transform>();
 
-		tr->SetLocalPosition(mesh.position);
-		tr->SetLocalRotation(mesh.rotation);
-		
+		//tr->SetLocalPosition(mesh.position);
+		//tr->SetLocalRotation(mesh.rotation);
+		//
 
-		if (mesh.type == eColliderType::Rect)
-			tr->SetLocalScale(mesh.scale);
-		else
-			tr->SetLocalScale(Vector3(mesh.radius));
+		//if (mesh.type == eColliderType::Rect)
+		//	tr->SetLocalScale(mesh.scale);
+		//else
+		//	tr->SetLocalScale(Vector3(mesh.radius));
 
 
-		const auto& renderer = debugObj->GetComponent<iRenderer>();
-		const auto& mainCam = RenderManager::GetMainCam();
+		//const auto& renderer = debugObj->GetComponent<iRenderer>();
+		//const auto& mainCam = RenderManager::GetMainCam();
 
-		tr->FinalUpdate();
+		//tr->FinalUpdate();
 
-		Com_Camera::SetGpuViewMatrix(
-			mainCam->GetViewMatrix());
-		Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
+		//Com_Camera::SetGpuViewMatrix(
+		//	mainCam->GetViewMatrix());
+		//Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
 
-		debugObj->Render();
+		//debugObj->Render();
 	}
 
 	Json::Value* EditorManager::CheckJsonSaved(const std::string& _strKey)

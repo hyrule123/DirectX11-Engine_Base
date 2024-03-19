@@ -11,7 +11,8 @@
 namespace ehw
 {
 	iCollider2D::iCollider2D(eCollider2D_Shape _type)
-		: iCollider(eColliderType::None)
+		: iCollider(eDimensionType::_2D)
+		, m_collider2DShape(_type)
 	{
 	}
 
@@ -34,14 +35,11 @@ namespace ehw
 		return eResult();
 	}
 
-	void iCollider2D::Awake()
+	void iCollider2D::Init()
 	{
+		CollisionManager::RegisterCollider2D(shared_from_this_T<iCollider2D>());
 	}
 
-	void iCollider2D::Update()
-	{
-		CollisionManager::EnqueueCollider2D(shared_from_this_T<iCollider2D>());
-	}
 
 	void iCollider2D::FinalUpdate()
 	{
@@ -73,5 +71,29 @@ namespace ehw
 		////meshAttribute.type = GetColli;
 
 		//RenderManager::AddDebugMesh(meshAttribute);
+	}
+	void iCollider2D::OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint)
+	{
+		//DEBUG_BREAK;
+	}
+	void iCollider2D::OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint)
+	{
+		//DEBUG_BREAK;
+	}
+	void iCollider2D::OnCollisionExit(const std::shared_ptr<iCollider>& _collider)
+	{
+		DEBUG_BREAK;
+	}
+	void iCollider2D::OnTriggerEnter(const std::shared_ptr<iCollider>& _collider)
+	{
+		//DEBUG_BREAK;
+	}
+	void iCollider2D::OnTriggerStay(const std::shared_ptr<iCollider>& _collider)
+	{
+		//DEBUG_BREAK;
+	}
+	void iCollider2D::OnTriggerExit(const std::shared_ptr<iCollider>& _collider)
+	{
+		DEBUG_BREAK;
 	}
 }

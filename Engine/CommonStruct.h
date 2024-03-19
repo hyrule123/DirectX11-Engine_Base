@@ -13,6 +13,7 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <variant>
 
 #include <fbxsdk/core/base/fbxtime.h>
 
@@ -92,7 +93,7 @@ namespace ehw
 
 	struct tDebugMesh
 	{
-		eColliderType type;
+		//eColliderType type;
 		float3 position;
 		Quaternion rotation;
 		float3 scale;
@@ -102,21 +103,33 @@ namespace ehw
 		float time;
 	};
 
-	union union_ColliderID
+	struct tColliderID
 	{
-		union_ColliderID() = delete;
-		union_ColliderID(uint32 _1, uint32 _2);
-		operator std::size_t() const { return static_cast<std::size_t>(ID64); };
-
-		struct
+		struct tIDPair
 		{
 			//ID중 낮은쪽
-			uint32 Low32;
+			std::uint32_t Low32;
 
 			//ID중 높은쪽
-			uint32 High32;
+			std::uint32_t High32;
 		};
-		uint64 ID64;
+
+		union
+		{
+			tIDPair pair;
+			std::uint64_t ID;
+		} ID64;
+
+		tColliderID() = delete;
+		tColliderID(std::uint32_t _1, std::uint32_t _2);
+		~tColliderID();
+		operator std::uint64_t() const { return ID64.ID; }
+	};
+
+	struct tColliderID_Hasher
+	{
+		static_assert(sizeof(tColliderID) == sizeof(std::size_t), "사이즈 미일치. 처리함수를 만드세요.");
+		std::size_t operator()(tColliderID _id) const { return static_cast<std::size_t>(_id.ID64.ID); }
 	};
 
 	struct tCollisionInfo

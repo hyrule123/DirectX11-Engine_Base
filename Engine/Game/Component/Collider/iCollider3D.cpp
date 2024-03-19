@@ -5,7 +5,7 @@
 namespace ehw
 {
 	iCollider3D::iCollider3D()
-		: iCollider(eColliderType::None)
+		: iCollider(eDimensionType::_3D)
 	{
 		ASSERT(FALSE, "미구현");
 	}

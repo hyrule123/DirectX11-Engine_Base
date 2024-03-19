@@ -312,11 +312,11 @@ namespace ehw
 
 	void Com_Transform::RemoveChildPtr(Com_Transform* _pTransform)
 	{
-		for (auto iter = m_childs.begin(); iter != m_childs.end(); ++iter)
+		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			if (_pTransform == iter->get())
+			if (_pTransform == m_childs[i].get())
 			{
-				m_childs.erase(iter);
+				m_childs.erase((m_childs.begin() + i));
 				break;
 			}
 		}

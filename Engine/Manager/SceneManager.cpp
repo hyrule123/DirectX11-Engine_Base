@@ -29,6 +29,14 @@ namespace ehw
 			
 	}
 
+	void SceneManager::CollisionUpdate()
+	{
+		if (mActiveScene)
+		{
+			mActiveScene->SceneCollisionUpdate();
+		}
+	}
+
 	void SceneManager::FinalUpdate()
 	{
 		if (mActiveScene)

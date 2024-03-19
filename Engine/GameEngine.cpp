@@ -52,6 +52,7 @@ namespace ehw
 			return FALSE;
 		}
 
+
 		AudioManager::Init();
 		FontWrapper::Init();
 
@@ -76,12 +77,13 @@ namespace ehw
 		TimeManager::Update();
 		InputManager::Update();
 		SceneManager::Update();
+		CollisionManager::Update();
 	}
 
-	// GPU update
+	// GPU에 보내기 위한 최종 정보 정리
 	void GameEngine::FinalUpdate()
 	{
-		CollisionManager::FinalUpdate();
+		
 		SceneManager::FinalUpdate();
 	}
 

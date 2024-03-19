@@ -10,7 +10,7 @@ namespace ehw
 	class iScene;
 	class Layer;
 	class iScript;
-	class GameObject 
+	class GameObject
 		: public Entity
 		, public Serializable_Json
 	{
@@ -38,7 +38,6 @@ namespace ehw
 		void Update();
 		void CollisionUpdate();
 		void FinalUpdate();
-
 		void Render();
 		void RemoveDestroyed();
 		void FrameEnd();

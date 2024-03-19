@@ -398,6 +398,8 @@
     <ClCompile Include="Manager\Collision\Collision3D.cpp" />
     <ClCompile Include="Manager\Collision\Collision2D.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
+    <ClCompile Include="Manager\Collision\CollisionInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -663,6 +665,8 @@
     <ClInclude Include="Manager\CollisionManager.h" />
     <ClInclude Include="Manager\Collision\Collision3D.h" />
     <ClInclude Include="Manager\Collision\Collision2D.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
+    <ClInclude Include="Manager\Collision\CollisionInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
