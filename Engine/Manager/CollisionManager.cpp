@@ -8,7 +8,6 @@
 
 #include "Engine/Manager/SceneManager.h"
 
-
 namespace ehw
 {
 	std::array<std::bitset<g_maxLayer>, g_maxLayer> CollisionManager::m_collisionMask{};
@@ -71,11 +70,15 @@ namespace ehw
 
 	void CollisionManager::Render()
 	{
+		if (m_bEnableCollision2D)
+		{
+			m_col2DManager.Render();
+		}
 	}
 
 
-	void CollisionManager::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
-	{
+	//void CollisionManager::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
+	//{
 		//const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
 		//const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
 
@@ -102,10 +105,10 @@ namespace ehw
 		//		break;*/
 		//}
 
-	}
+	//}
 
-	void CollisionManager::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
-	{
+	//void CollisionManager::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//{
 		//// 두 충돌체 레이어로 구성된 ID 확인
 		//union_ColliderID colliderID;
 		//colliderID.Left = (uint)_left->GetID();
@@ -189,10 +192,10 @@ namespace ehw
 		//		iter->second = false;
 		//	}
 		//}
-	}
+	//}
 
-	bool CollisionManager::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
-	{
+	//bool CollisionManager::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//{
 		//// Rect vs Rect 
 		//// 0 --- 1
 		//// |     |
@@ -263,8 +266,8 @@ namespace ehw
 		//}
 
 
-		return true;
-	}
+	//	return true;
+	//}
 
 	const void CollisionManager::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
 	{

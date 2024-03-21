@@ -735,6 +735,7 @@
     <None Include="DefaultShader\Func_Bitwise.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
+    <None Include="DefaultShader\Debug\Debug.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultShader\Basic\VS_Basic3D.hlsl">

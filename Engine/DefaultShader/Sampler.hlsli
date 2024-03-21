@@ -1,6 +1,6 @@
 #ifndef SAMPLER_HLSLI
 #define SAMPLER_HLSLI
-#include "Common.hlsli"
+#include "Engine/DefaultShader/Common.hlsli"
 
 SAMPLER(pointSampler, s, 0);
 SAMPLER(linearSampler, s, 1);

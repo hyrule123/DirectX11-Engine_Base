@@ -1,6 +1,6 @@
 #ifndef _3D_HLSLI
 #define _3D_HLSLI
-#include "../Globals.hlsli"
+#include "Engine/DefaultShader/Globals.hlsli"
 
 #ifndef __cplusplus
 #include "../Light/Func_Light.hlsli"

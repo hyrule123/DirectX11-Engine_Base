@@ -1,8 +1,8 @@
 #ifndef FUNCTIONS_HLSLI
 #define FUNCTIONS_HLSLI
 
-#include "Func_Blur.hlsli"
-#include "Func_DecodeColor.hlsli"
-#include "Engine/Game/Component/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Func_Blur.hlsli"
+#include "Engine/DefaultShader/Func_DecodeColor.hlsli"
+#include "Engine/DefaultShader/Light/Func_Light.hlsli"
 
 #endif

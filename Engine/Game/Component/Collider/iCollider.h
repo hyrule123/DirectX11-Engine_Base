@@ -17,32 +17,32 @@ namespace ehw
 		iCollider(const iCollider& _collider) = default;
 		virtual ~iCollider();
 
-		eDimensionType GetColliderType() const { return m_dimension; }
-		bool IsTriggerMode() const { return m_isTriggerMode; }
+		virtual void Awake() override;
 
-		virtual void OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) = 0;
-		virtual void OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) = 0;
-		virtual void OnCollisionExit(const std::shared_ptr<iCollider>& _collider) = 0;
+		inline eDimensionType GetColliderType() const { return m_dimension; }
+		inline bool IsTriggerMode() const { return m_isTriggerMode; }
 
-		virtual void OnTriggerEnter(const std::shared_ptr<iCollider>& _collider) = 0;
-		virtual void OnTriggerStay(const std::shared_ptr<iCollider>& _collider) = 0;
-		virtual void OnTriggerExit(const std::shared_ptr<iCollider>& _collider) = 0;
+		virtual void OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) {}
+		virtual void OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) {}
+		virtual void OnCollisionExit(const std::shared_ptr<iCollider>& _collider) {}
 
-		void CollisionUpdate();
-	private:
-		void Contacted(const std::shared_ptr<iCollider>& _col, const Vector2 _contactPoint);
-		void Distanced(const std::shared_ptr<iCollider>& _col);
-		void AllContactsExit();
-		void RemoveContact(const std::shared_ptr<iCollider>& _col);
+		virtual void OnTriggerEnter(const std::shared_ptr<iCollider>& _collider) {}
+		virtual void OnTriggerStay(const std::shared_ptr<iCollider>& _collider) {}
+		virtual void OnTriggerExit(const std::shared_ptr<iCollider>& _collider) {}
 
-		//Collider를 가진 모든 GameObject에 대해 무조건 호출. 충돌이 끝났을 경우 OnCollisionExit 호출.
+		
+
+	protected:
+		inline Com_Transform* GetMyTransform() { return m_transform.get(); }
 		
 	private:
+		virtual void DebugRender() = 0;
+
 		eDimensionType m_dimension;
 		bool m_isTriggerMode;
 
-	
-		std::unordered_set<std::shared_ptr<iCollider>> m_contacts;
+		//Transform을 많이 사용하므로 아예 주소를 받아 놓는다.
+		std::shared_ptr<Com_Transform> m_transform;
 	};
 }
 

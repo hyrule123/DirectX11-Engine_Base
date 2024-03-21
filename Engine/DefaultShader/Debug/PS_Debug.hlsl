@@ -1,4 +1,4 @@
-#include "Globals.hlsli"
+#include "Engine/DefaultShader/Globals.hlsli"
 
 float4 main(float4 position : SV_Position) : SV_TARGET
 {

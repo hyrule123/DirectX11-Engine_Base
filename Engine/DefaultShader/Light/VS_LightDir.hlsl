@@ -1,4 +1,4 @@
-#include "Light.hlsli"
+#include "Engine/DefaultShader/Light/Light.hlsli"
 
 
 //직사광선은 화면 전체를 덮으므로 

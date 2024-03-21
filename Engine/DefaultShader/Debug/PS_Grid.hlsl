@@ -1,4 +1,4 @@
-#include "Globals.hlsli"
+#include "Engine/DefaultShader/Globals.hlsli"
 
 struct VSIn
 {

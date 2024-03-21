@@ -6,7 +6,6 @@ namespace ehw
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
 		: iCollider2D(eCollider2D_Shape::AABB)
-		, m_transform()
 		, m_offsetScale(100.f)
 		, m_leftBottom(0.f, 0.f)
 		, m_rightTop(100.f, 100.f)
@@ -17,14 +16,9 @@ namespace ehw
 	{
 	}
 
-	void Com_Collider2D_AABB::Awake()
-	{
-		m_transform = GetOwner()->Transform();
-	}
-
 	void Com_Collider2D_AABB::Update()
 	{
-		const MATRIX& worldMat = m_transform->GetWorldMatrix();
+		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
 		float2 pos = float2(worldMat._41, worldMat._42);
 		float2 halfExtentXY = m_offsetScale;
 
@@ -39,5 +33,9 @@ namespace ehw
 		m_leftBottom.y = pos.y - halfExtentXY.y;
 		m_rightTop.x = pos.x + halfExtentXY.x;
 		m_rightTop.y = pos.y + halfExtentXY.y;
+	}
+
+	void Com_Collider2D_AABB::DebugRender()
+	{
 	}
 }

@@ -91,17 +91,6 @@ namespace ehw
 		MATRIX				matBone;	// 이거 안씀
 	};
 
-	struct tDebugMesh
-	{
-		//eColliderType type;
-		float3 position;
-		Quaternion rotation;
-		float3 scale;
-
-		float radius;
-		float duration;
-		float time;
-	};
 
 	struct tColliderID
 	{
@@ -132,10 +121,15 @@ namespace ehw
 		std::size_t operator()(tColliderID _id) const { return static_cast<std::size_t>(_id.ID64.ID); }
 	};
 
-	struct tCollisionInfo
+	struct tDebugMesh
 	{
-		eCollisionStatus Status;
-		float2 HitPoint;
-		LARGE_INTEGER CheckedTime;
+		//eColliderType type;
+		float3 position;
+		Quaternion rotation;
+		float3 scale;
+
+		float radius;
+		float duration;
+		float time;
 	};
 };

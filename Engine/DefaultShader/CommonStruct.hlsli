@@ -1,8 +1,25 @@
 #ifndef COMMON_STRUCT_HLSLI
 #define COMMON_STRUCT_HLSLI
-#include "Common.hlsli"
+#include "Engine/DefaultShader/Common.hlsli"
 
 //C++와 공동으로 사용하는 구조체 모음
+struct alignas(16)  tGPUInitSetting
+{
+	BOOL bCPULittleEndian;
+	BOOL bGPULittleEndian;
+	uint GPUEndianessTestVar;
+	uint Padding_InitSetting;
+	
+	uint u8BitPartInU32Pack[4];
+	uint u8BitShiftInU32Pack[4];
+
+	uint u16BitPartInU32Pack[2];
+	uint u16BitShiftInU32Pack[2];
+	
+	uint4 debugVar;
+};
+
+
 
 struct alignas(16)  tCB_Global
 {
@@ -224,20 +241,6 @@ struct alignas(16) tOutputBoneInfo
 };
 
 
-struct alignas(16) tGPUInitSetting
-{
-	BOOL bCPULittleEndian;
-	BOOL bGPULittleEndian;
-	uint GPUEndianessTestVar;
-	uint Padding_InitSetting;
-	
-	uint u8BitPartInU32Pack[4];
-	uint u8BitShiftInU32Pack[4];
 
-	uint u16BitPartInU32Pack[2];
-	uint u16BitShiftInU32Pack[2];
-	
-	uint4 debugVar;
-};
 
 #endif//COMMON_STRUCT_HLSLI

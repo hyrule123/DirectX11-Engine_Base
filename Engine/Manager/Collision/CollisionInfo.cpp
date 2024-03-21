@@ -1,7 +1,6 @@
 #include "Engine/Manager/Collision/CollisionInfo.h"
 
 #include "Engine/Game/Component/Collider/iCollider.h"
-
 namespace ehw
 {
 	CollisionInfo::CollisionInfo(const std::shared_ptr<iCollider>& _left, const std::shared_ptr<iCollider>& _right)
@@ -85,6 +84,5 @@ namespace ehw
 		m_left->OnCollisionExit(m_right);
 		m_right->OnCollisionExit(m_left);
 	}
-
 }
 

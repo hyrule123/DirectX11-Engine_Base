@@ -1,7 +1,7 @@
-#include "Func_Animation3D.hlsli"
+#include "Engine/DefaultShader/Animation/Func_Animation3D.hlsli"
 
-#include "ConstBuffer.hlsli"
-#include "Resource.hlsli"
+#include "Engine/DefaultShader/ConstBuffer.hlsli"
+#include "Engine/DefaultShader/Resource.hlsli"
 
 
 

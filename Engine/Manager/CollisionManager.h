@@ -36,13 +36,15 @@ namespace ehw
 
 		static inline void RegisterCollider2D(const std::shared_ptr<iCollider2D>& _col2D);
 
-		static void LayerCollision(class iScene* _scene, uint32 _left, uint32 _right);
-		static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
-		static bool Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
+		//static void LayerCollision(class iScene* _scene, uint32 _left, uint32 _right);
+		//static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
 
 		static const void SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable);
 		static const std::array<std::bitset<g_maxLayer>, g_maxLayer>& 
 			GetCollisionMasks() { return m_collisionMask; }
+
+		//Editor 프로젝트에서 호출됨.
+		static void Render();
 
 	private:
 		static void Init();
@@ -50,7 +52,7 @@ namespace ehw
 
 		static void Update();
 		
-		static void Render();
+		
 
 	private:
 		//레이어끼리의 상호작용 여부를 담아놓은 이차원 배열

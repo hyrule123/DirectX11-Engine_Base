@@ -2,7 +2,7 @@
 #define USER_INTERFACE_HLSLI
 
 #ifndef __cplusplus
-#include "Globals.hlsli"
+#include "Engine/DefaultShader/Globals.hlsli"
 struct VSIn
 {
 	float4 Pos : POSITION;

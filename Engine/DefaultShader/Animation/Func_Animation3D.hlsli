@@ -1,8 +1,8 @@
 #ifndef FUNC_ANIMATION_3D_HLSLI
 #define FUNC_ANIMATION_3D_HLSLI
 
-#include "ConstBuffer.hlsli"
-#include "Resource.hlsli"
+#include "Engine/DefaultShader/ConstBuffer.hlsli"
+#include "Engine/DefaultShader/Resource.hlsli"
 
 float4 VectorLess(float4 _vQ1, float4 _vQ2)
 {

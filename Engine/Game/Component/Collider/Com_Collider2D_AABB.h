@@ -10,7 +10,6 @@ namespace ehw
         Com_Collider2D_AABB();
         virtual ~Com_Collider2D_AABB();
 
-        virtual void Awake() override;
         virtual void Update() override;
 
         void SetOffsetScale(float2 _scale) { m_offsetScale = _scale; };
@@ -25,7 +24,10 @@ namespace ehw
         float Top() const { return m_rightTop.y; }
 
     private:
-        std::shared_ptr<Com_Transform> m_transform;
+        virtual void DebugRender() override;
+
+
+    private:
         float2 m_offsetScale;
         float2 m_leftBottom;
         float2 m_rightTop;

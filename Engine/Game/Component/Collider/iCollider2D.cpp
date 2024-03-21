@@ -8,6 +8,7 @@
 #include "Engine/Manager/CollisionManager.h"
 #include "Engine/Manager/RenderManager.h"
 
+
 namespace ehw
 {
 	iCollider2D::iCollider2D(eCollider2D_Shape _type)

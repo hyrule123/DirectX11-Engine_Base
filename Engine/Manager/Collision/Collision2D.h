@@ -11,26 +11,33 @@
 #include <unordered_map>
 
 //설명: 2D 충돌체의 충돌 검사를 수행
+//CollisionManager에서만 생성 가능.
 namespace ehw
 {
 	class iCollider2D;
+	class StructBuffer;
+	class GameObject;
+
 	class Collision2D
 	{
 		friend class CollisionManager;
-		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Hit Point(부딫힌 지점)
+		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
 		using Collision2DFunction = std::function<
 			bool(const std::shared_ptr<iCollider2D>&, const std::shared_ptr<iCollider2D>&, Vector2&)
 		>;
 	public:
+		//등록은 Collider::Init()에서
+		//제거는 Collision2D::Update()에서 진행됨.
 		void Register(const std::shared_ptr<iCollider2D>& _obj);
 
 	private:
 		Collision2D();
 		~Collision2D();
+		void Reset();
 
 		void Init();
 		void Update();
-		void Reset();
+		void Render();
 
 	private:
 		void Enqueue(const std::shared_ptr<iCollider2D>& _obj);
@@ -63,7 +70,6 @@ namespace ehw
 			const std::shared_ptr<iCollider2D>& _circle1, const std::shared_ptr<iCollider2D>& _circle2,
 			Vector2& _hitPoint);
 
-
 	private:
 		std::vector<std::shared_ptr<iCollider2D>> m_colliders;
 		std::array<std::vector<std::shared_ptr<iCollider2D>>, g_maxLayer> m_objectsInLayer;
@@ -77,6 +83,8 @@ namespace ehw
 		//각 Collider2D가 가지고 있는 eCollider2D_Type를 index 번호로 해서 함수를 호출하기 위함
 		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
 			m_collision2DFunctions;
+
+		std::array<std::vector<tDebug>, (int)eCollider2D_Shape::END> m_debugData;
 	};
 }
 

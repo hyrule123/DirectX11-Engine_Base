@@ -1,4 +1,4 @@
-#include "NormalConverter.hlsli"
+#include "Engine/DefaultShader/NormalConverter/NormalConverter.hlsli"
 
 float ConvertColor(uint2 _texPos, float _signFactor, float _indexFactor)
 {

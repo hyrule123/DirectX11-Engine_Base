@@ -1,13 +1,16 @@
 #ifndef RESOURCE_HLSLI
 #define RESOURCE_HLSLI
 
-#include "CommonStruct.hlsli"
+#include "Engine/DefaultShader/CommonStruct.hlsli"
 
 //t 버퍼
 
 //GPU Initalize Setting: 처음 1회만 사용.
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
 SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 0);
+
+//Debug -> Debug.hlsli
+//SBUFFER(g_Debug, tDebug, t, 126);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);
@@ -55,20 +58,14 @@ SBUFFER(g_BoneOffsetArray, Matrix, t, 18);
 SBUFFER(g_FinalBoneMatrixArray, Matrix, t, 19);
 SBUFFER_RW(g_FinalBoneMatrixArrayRW, Matrix, u, 0);
 
+//본 인스턴싱용
 //SBUFFER(g_InstancingBoneMatrixArray, Matrix, t, 18);
-
 SBUFFER_RW(g_BoneSocketMatrixArray, tOutputBoneInfo, u, 1);
 SBUFFER_RW(g_InstancingBoneMatrixArray, Matrix, u, 2);
 
 
 // Light
 SBUFFER(lightAttributes, tLightAttribute, t, 14);
-
-
-//StructuredBuffer<LightAttribute> lightAttributes : register(t13);
-//StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
-
-
 
 
 // noise

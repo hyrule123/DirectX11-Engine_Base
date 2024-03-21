@@ -1,4 +1,4 @@
-#include "Light.hlsli"
+#include "Engine/DefaultShader/Light/Light.hlsli"
 
 		//albedo = Resources::Find<Texture>(L"PositionTarget");
 		//lightMaterial->SetTexture(eTextureSlot::PositionTarget, albedo);

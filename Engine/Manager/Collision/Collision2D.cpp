@@ -6,6 +6,7 @@
 #include "Engine/Game/Component/Collider/iCollider2D.h"
 #include "Engine/Game/Component/Collider/Com_Collider2D_AABB.h"
 
+
 #ifdef max
 #undef max
 #endif
@@ -23,6 +24,14 @@ namespace ehw
 
 	Collision2D::~Collision2D()
 	{
+	}
+	void Collision2D::Reset()
+	{
+		for (size_t i = 0; i < m_objectsInLayer.size(); ++i)
+		{
+			m_objectsInLayer[i].clear();
+		}
+		m_colliders.clear();
 	}
 
 	void Collision2D::Register(const std::shared_ptr<iCollider2D>& _obj)
@@ -95,12 +104,10 @@ namespace ehw
 			{
 				if (_col->IsDestroyed())
 				{
-					_col->AllContactsExit();
 					return true;
 				}
 				else if (false == _col->IsEnabled())
 				{
-					_col->AllContactsExit();
 					return false;
 				}
 				
@@ -192,14 +199,17 @@ namespace ehw
 		}
 	}
 
-	void Collision2D::Reset()
+	void Collision2D::Render()
 	{
-		for (size_t i = 0; i < m_objectsInLayer.size(); ++i)
+
+
+		for (size_t i = 0; i < m_colliders.size(); ++i)
 		{
-			m_objectsInLayer[i].clear();
+			
 		}
-		m_colliders.clear();
 	}
+
+
 
 	bool Collision2D::CheckIntersect_AABB_AABB(const std::shared_ptr<iCollider2D>& _AABB1, const std::shared_ptr<iCollider2D>& _AABB2, Vector2& _hitPoint)
 	{
