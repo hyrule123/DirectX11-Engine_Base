@@ -78,7 +78,7 @@ namespace ehw
         HRESULT Create(size_t _ElementStride, size_t _ElementCapacity, const void* _pInitialData, size_t _ElemCount);
 
         //데이터를 버퍼로 전송
-        void SetData(void* _pData, size_t _uCount);
+        void SetData(const void* _pData, size_t _uCount);
 
         //데이터를 받아옴
         void GetData(void* _pDest, size_t _uDestByteCapacity);

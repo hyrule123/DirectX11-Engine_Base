@@ -34,8 +34,4 @@ namespace ehw
 		m_rightTop.x = pos.x + halfExtentXY.x;
 		m_rightTop.y = pos.y + halfExtentXY.y;
 	}
-
-	void Com_Collider2D_AABB::DebugRender()
-	{
-	}
 }

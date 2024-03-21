@@ -1,6 +1,6 @@
 #include "Engine/DefaultShader/Debug/Debug.hlsli"
 
-VSOut main(VSIn _in) : SV_POSITION
+VSOut main(VSIn _in)
 {
 	VSOut _out = (VSOut) 0;
 	

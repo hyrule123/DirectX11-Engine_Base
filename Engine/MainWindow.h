@@ -38,8 +38,6 @@ namespace ehw
 		static void AddSpecificMsgHandleFunc(UINT _Message, const WindowMsgHandleFunc& _handleFunc);
 		static void RemoveSpecificMsgHandleFunc(UINT _Message, const WindowMsgHandleFunc& _handleFunc);
 
-		static void RunEditor(const WindowMsgHandleFunc& _wndHandleFunc, const std::function<void()>& _runFunc);
-
 	private:
 		static BOOL Init(const tDesc_GameMainWindow& _Desc);
 		static BOOL Loop();

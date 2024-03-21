@@ -8,6 +8,7 @@ namespace ehw
 	iCollider::iCollider(eDimensionType _dimension)
 		: m_dimension(_dimension)
 		, m_isTriggerMode(false)
+		, m_isColliding(false)
 	{
 	}
 
@@ -20,6 +21,10 @@ namespace ehw
 	{
 		m_transform = GetOwner()->Transform();
 		ASSERT_DEBUG(m_transform, "Transform 주소를 받아오지 못했습니다.");
+	}
+	const MATRIX& iCollider::GetWorldMatrix()
+	{
+		return m_transform->GetWorldMatrix();
 	}
 }
 

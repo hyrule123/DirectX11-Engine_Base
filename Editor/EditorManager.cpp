@@ -9,11 +9,14 @@
 #include <Engine/Game/Component/Transform/Com_Transform.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+
+
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/GPUManager.h>
 #include <Engine/Manager/InputManager.h>
 #include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/CollisionManager.h>
 
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_win32.h"
@@ -61,7 +64,7 @@ namespace ehw::editor
 	{
 		AtExit::AddFunc(EditorManager::Release);
 
-		
+		MainWindow::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		//mDebugObjects.resize((UINT)eColliderType::END);
@@ -176,6 +179,8 @@ namespace ehw::editor
 
 	void EditorManager::Render()
 	{
+		CollisionManager::Render();
+
 		for (const auto& obj : mEditorObjects)
 		{
 			obj->Render();

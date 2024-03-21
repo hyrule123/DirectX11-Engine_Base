@@ -33,8 +33,8 @@ namespace ehw
 			m_collisionMask[i] = 0;
 		}
 
-		m_col2DManager = Collision2D{};
-		m_col3DManager = Collision3D{};
+		m_col2DManager.Reset();
+		//m_col3DManager.Reset();
 	}
 
 	void CollisionManager::Update()

@@ -134,7 +134,7 @@
       <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
-      <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
@@ -175,7 +175,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
-      <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
@@ -216,7 +216,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
-      <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -257,7 +257,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
-      <AdditionalIncludeDirectories>$(ProjectDir)DefaultShader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

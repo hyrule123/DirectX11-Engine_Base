@@ -17,6 +17,8 @@ namespace ehw
 	class iCollider2D;
 	class StructBuffer;
 	class GameObject;
+	class Mesh;
+	class StructBuffer;
 
 	class Collision2D
 	{
@@ -84,7 +86,7 @@ namespace ehw
 		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
 			m_collision2DFunctions;
 
-		std::array<std::vector<tDebug>, (int)eCollider2D_Shape::END> m_debugData;
+		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;
 	};
 }
 

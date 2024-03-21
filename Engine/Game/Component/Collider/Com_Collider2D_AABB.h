@@ -24,10 +24,6 @@ namespace ehw
         float Top() const { return m_rightTop.y; }
 
     private:
-        virtual void DebugRender() override;
-
-
-    private:
         float2 m_offsetScale;
         float2 m_leftBottom;
         float2 m_rightTop;

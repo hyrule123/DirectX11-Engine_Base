@@ -34,7 +34,7 @@ namespace ehw
 		static ConstBuffer* GetConstBuffer(eCBType _Type) { return mConstBuffers[(int)_Type].get(); }
 		//static void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
 
-		static inline const std::shared_ptr<Com_Camera>& GetMainCam() { return mMainCamera; }
+		static inline const std::shared_ptr<Com_Camera>& GetMainCamera() { return mMainCamera; }
 		static ComPtr<ID3D11RasterizerState>	GetRasterizerState(eRSType _Type) { return mRasterizerStates[(int)_Type]; }
 		static ComPtr<ID3D11BlendState>		GetBlendState(eBSType _Type) { return mBlendStates[(int)_Type]; }
 		static ComPtr<ID3D11DepthStencilState> GetDepthStencilState(eDSType _Type) { return mDepthStencilStates[(int)_Type]; }

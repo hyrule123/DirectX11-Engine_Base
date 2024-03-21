@@ -173,9 +173,6 @@ namespace ehw
 
         m_commonMsgHandleFunctions.clear();
         m_specificMsgHandleFundtions.clear();
-
-        m_editorHandleFunction = nullptr;
-        m_editorRunFunction = nullptr;
     }
 
 
@@ -249,18 +246,6 @@ namespace ehw
     {
         PostQuitMessage(0);
         return 1;
-    }
-
-
-
-
-    void MainWindow::RunEditor(const WindowMsgHandleFunc& _wndHandleFunc, const std::function<void()>& _runFunc)
-    {
-        if (_wndHandleFunc && _runFunc)
-        {
-            m_editorHandleFunction = _wndHandleFunc;
-            m_editorRunFunction = _runFunc;
-        }
     }
 
 

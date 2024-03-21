@@ -164,7 +164,7 @@ namespace ehw
 		return S_OK;
 	}
 
-	void StructBuffer::SetData(void* _pData, size_t _uCount)
+	void StructBuffer::SetData(const void* _pData, size_t _uCount)
 	{
 		m_elementCount = (uint)_uCount;
 

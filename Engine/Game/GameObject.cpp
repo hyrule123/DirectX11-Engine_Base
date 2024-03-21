@@ -168,8 +168,8 @@ namespace ehw
 	{
 		if (m_baseComponents[(int)eComponentCategory::Collider])
 		{
-			std::static_pointer_cast<iCollider>(m_baseComponents[(int)eComponentCategory::Collider])
-				->CollisionUpdate();
+			//std::static_pointer_cast<iCollider>(m_baseComponents[(int)eComponentCategory::Collider])
+				//->CollisionUpdate();
 		}
 	}
 
