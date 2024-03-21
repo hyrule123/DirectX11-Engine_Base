@@ -8,12 +8,19 @@ struct alignas(16)  tDebug
 	BOOL isColliding;
 	float3 pad0;
 };
-SBUFFER(g_Debug, tDebug, t, 126);
+SBUFFER(g_debug, tDebug, t, 126);
 
 #ifdef __HLSL
-struct VS_IN
+struct VSIn
 {
-	
+	float4 Pos : POSITION;
+	uint InstanceID : SV_InstanceID;
+};
+
+struct VSOut
+{
+	float4 Pos : SV_Position;
+	uint InstanceID : SV_InstanceID;
 };
 #endif //__HLSL
 

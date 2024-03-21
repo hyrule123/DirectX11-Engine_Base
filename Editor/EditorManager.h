@@ -15,6 +15,8 @@ namespace ehw::editor
 {
 	class EditorObject;
 	class DebugObject;
+
+
 	class EditorManager
 	{
 	public:

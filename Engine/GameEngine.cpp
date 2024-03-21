@@ -25,6 +25,7 @@ namespace ehw
 	HWND			GameEngine::mHwnd{};
 	HDC				GameEngine::mHdc{};
 	bool			GameEngine::mbInitialized{};
+	std::function<void()> GameEngine::m_editorRunFunction{};
 
 	BOOL GameEngine::Init(const tDesc_GameEngine& _AppDesc)
 	{
@@ -65,6 +66,8 @@ namespace ehw
 		
 		SceneManager::Init();
 
+		m_editorRunFunction = _AppDesc.EditorRunFunction;
+
 		mbInitialized = true;
 
 		return TRUE;
@@ -83,7 +86,6 @@ namespace ehw
 	// GPU에 보내기 위한 최종 정보 정리
 	void GameEngine::FinalUpdate()
 	{
-		
 		SceneManager::FinalUpdate();
 	}
 
@@ -95,6 +97,11 @@ namespace ehw
 		GPUManager::ClearRenderTarget();
 
 		RenderManager::Render();
+
+		if (m_editorRunFunction)
+		{
+			m_editorRunFunction();
+		}
 	}
 
 	void GameEngine::FrameEnd()
@@ -110,6 +117,8 @@ namespace ehw
 		FinalUpdate();
 		Render();
 		FrameEnd();
+
+		Present();
 		
 		return mbInitialized;
 	}

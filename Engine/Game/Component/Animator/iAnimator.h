@@ -14,7 +14,7 @@ namespace ehw
 	public:
 		struct tEvent
 		{
-			std::unordered_map<int, std::vector<std::function<void()>>, tFastHashFunc<int>> CallBackFunctions;
+			std::unordered_map<int, std::vector<std::function<void()>>, tFastHasher<int>> CallBackFunctions;
 		};
 
 	public:
@@ -40,7 +40,7 @@ namespace ehw
 		eDimensionType mDimensionType;
 
 		//애니메이션 포인터 주소
-		std::unordered_map<DWORD_PTR, tEvent, tFastHashFunc<DWORD_PTR>> mMapEvent;
+		std::unordered_map<DWORD_PTR, tEvent, tFastHasher<DWORD_PTR>> mMapEvent;
 	};
 }
 

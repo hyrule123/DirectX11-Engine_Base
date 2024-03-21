@@ -1,10 +1,11 @@
-#include "Debug.hlsli"
+#include "Engine/DefaultShader/Debug/Debug.hlsli"
 
-float4 main( float4 pos : POSITION ) : SV_POSITION
+VSOut main(VSIn _in) : SV_POSITION
 {
-	float4 worldPosition = mul(pos, CB_Transform.World);
-	float4 viewPosition = mul(worldPosition, CB_Transform.View);
-	float4 ProjPosition = mul(viewPosition, CB_Transform.Projection);
-    
-    return ProjPosition;
+	VSOut _out = (VSOut) 0;
+	
+	_out.Pos = mul(_in.Pos, g_debug[_in.InstanceID].WVP);
+	_out.InstanceID = _in.InstanceID;
+	
+	return _out;
 }

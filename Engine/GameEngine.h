@@ -44,6 +44,8 @@ namespace ehw
 		static HDC  mHdc;
 
 		static bool mbInitialized;
+
+		static std::function<void()> m_editorRunFunction;
 		
 	public:
 		GameEngine() = delete;

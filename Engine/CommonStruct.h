@@ -13,7 +13,6 @@
 #include <vector>
 #include <functional>
 #include <memory>
-#include <variant>
 
 #include <fbxsdk/core/base/fbxtime.h>
 
@@ -41,10 +40,12 @@ namespace ehw
 		int  Height;
 		tDesc_GPUMgr GPUDesc;
 		WNDCLASSEX WinClassDesc;
+
+		std::function<void()> EditorRunFunction;
 	};
 
 	template<typename T>
-	struct tFastHashFunc
+	struct tFastHasher
 	{
 		std::size_t operator()(const T& _uKey) const
 		{

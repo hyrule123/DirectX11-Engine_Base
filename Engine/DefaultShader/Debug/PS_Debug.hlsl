@@ -1,6 +1,11 @@
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Debug/Debug.hlsli"
 
-float4 main(float4 position : SV_Position) : SV_TARGET
+float4 main(VSOut _in) : SV_TARGET
 {
-	return float4(1.0f, 0.0f, 1.0f, 1.0f);
+	if(TRUE == g_debug[_in.InstanceID].isColliding)
+	{
+		return float4(1.f, 0.f, 0.f, 1.f);
+	}
+
+	return float4(0.f, 1.f, 0.f, 1.f);
 }
