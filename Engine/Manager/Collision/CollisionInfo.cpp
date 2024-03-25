@@ -3,7 +3,7 @@
 #include "Engine/Game/Component/Collider/iCollider.h"
 namespace ehw
 {
-	CollisionInfo::CollisionInfo(const std::shared_ptr<iCollider>& _left, const std::shared_ptr<iCollider>& _right)
+	CollisionInfo::CollisionInfo(iCollider* const _left, iCollider* const _right)
 		: m_left(_left)
 		, m_right(_right)
 	{

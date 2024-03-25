@@ -39,6 +39,11 @@ namespace ehw
 		{
 			return;
 		}
+		else if (mCamera->IsDestroyed())
+		{
+			mCamera = nullptr;
+			return;
+		}
 
 		const auto& gameObj = mCamera->GetOwner();
 		const auto& TR = gameObj->GetComponent<Com_Transform>();

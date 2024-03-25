@@ -15,6 +15,7 @@ namespace ehw
 		: iCollider(eDimensionType::_2D)
 		, m_collider2DShape(_type)
 	{
+		CollisionManager::RegisterCollider2D(this);
 	}
 
 	iCollider2D::iCollider2D(const iCollider2D& _collider)
@@ -24,6 +25,8 @@ namespace ehw
 
 	iCollider2D::~iCollider2D()
 	{
+		//제거는 CollisionManager::Update에서 일괄적으로 진행됨
+		//각자 소멸자에서 제거요청을 보낼경우 매번 vector를 순회돌면서 지워야해서 속도가 많이 느림
 	}
 
 	eResult iCollider2D::Serialize_Json(JsonSerializer* _ser) const
@@ -38,7 +41,6 @@ namespace ehw
 
 	void iCollider2D::Init()
 	{
-		CollisionManager::RegisterCollider2D(shared_from_this_T<iCollider2D>());
 	}
 
 
@@ -73,27 +75,27 @@ namespace ehw
 
 		//RenderManager::AddDebugMesh(meshAttribute);
 	}
-	void iCollider2D::OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint)
+	void iCollider2D::OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint)
+	void iCollider2D::OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnCollisionExit(const std::shared_ptr<iCollider>& _collider)
+	void iCollider2D::OnCollisionExit(iCollider* const _collider)
 	{
 		DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerEnter(const std::shared_ptr<iCollider>& _collider)
+	void iCollider2D::OnTriggerEnter(iCollider* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerStay(const std::shared_ptr<iCollider>& _collider)
+	void iCollider2D::OnTriggerStay(iCollider* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerExit(const std::shared_ptr<iCollider>& _collider)
+	void iCollider2D::OnTriggerExit(iCollider* const _collider)
 	{
 		DEBUG_BREAK;
 	}

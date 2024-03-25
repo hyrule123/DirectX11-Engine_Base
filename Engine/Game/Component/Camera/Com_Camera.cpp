@@ -36,10 +36,12 @@ namespace ehw
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
+		RenderManager::RegisterCamera(this);
 	}
 
 	Com_Camera::~Com_Camera()
 	{
+		RenderManager::RemoveCamera(this);
 	}
 
 	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser) const
@@ -52,26 +54,11 @@ namespace ehw
 		return eResult();
 	}
 
-	void Com_Camera::OnEnable()
-	{
-
-	}
-
-	void Com_Camera::Awake()
-	{
-	}
-
-	void Com_Camera::Update()
-	{
-	}
-
 	void Com_Camera::FinalUpdate()
 	{
 		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
 		CreateViewMatrix();
-
-		RegisterCameraInRenderer();
 	}
 
 	void Com_Camera::RenderCamera()
@@ -94,9 +81,9 @@ namespace ehw
 		const auto& Lights = RenderManager::GetLights();
 		for (size_t i = 0; i < Lights.size(); ++i)
 		{
-			if (false == Lights[i].expired())
+			if (Lights[i]->IsEnabled())
 			{
-				Lights[i].lock()->Render();
+				Lights[i]->Render();
 			}
 		}
 
@@ -274,12 +261,6 @@ namespace ehw
 
 		m_scale = _scale;
 		CreateProjectionMatrix();
-	}
-
-	void Com_Camera::RegisterCameraInRenderer()
-	{
-		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
-		RenderManager::RegisterCamera(shared_from_this_T<Com_Camera>());
 	}
 
 	void Com_Camera::TurnLayerMask(uint32 _layer, bool _enable)

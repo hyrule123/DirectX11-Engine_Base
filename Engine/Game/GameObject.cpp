@@ -23,15 +23,16 @@ namespace ehw
 
 
 	GameObject::GameObject()
-		: m_baseComponents()
-		, m_ownerScene()
+		: m_transform()
+		, m_baseComponents()
+		, m_ownerScene(nullptr)
 		, m_layer()
 		, m_name()
 		, m_state(eState::Active)
 		, m_bAwake(false)
 		, m_bDontDestroyOnLoad(false)
 	{
-		AddComponent<Com_Transform>();
+		AddComponent(&m_transform);
 	}
 
 	GameObject::GameObject(const std::string_view _name)
@@ -56,7 +57,7 @@ namespace ehw
 		{
 			if (_other.m_baseComponents[i])
 			{
-				std::shared_ptr<iComponent> cloned = std::shared_ptr<iComponent>(_other.m_baseComponents[i]->Clone());
+				std::unique_ptr<iComponent> cloned = std::unique_ptr<iComponent>(_other.m_baseComponents[i]->Clone());
 				AddComponent(cloned);
 			}
 		}
@@ -64,6 +65,22 @@ namespace ehw
 
 	GameObject::~GameObject()
 	{
+		//Transform은 GameObject에 붙어있으므로
+		for (size_t i = (size_t)eComponentCategory::Transform + 1; i < m_baseComponents.size(); ++i)
+		{
+			if (m_baseComponents[i])
+			{
+				delete m_baseComponents[i];
+			}
+		}
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i])
+			{
+				delete m_scripts[i];
+			}
+		}
 	}
 
 	eResult GameObject::Serialize_Json(JsonSerializer* _ser) const
@@ -130,7 +147,7 @@ namespace ehw
 		}
 
 		//Awake의 경우 재귀적으로 호출
-		const std::vector<std::shared_ptr<Com_Transform>>& childs = GetComponent<Com_Transform>()->GetChilds();
+		const std::vector<Com_Transform*>& childs = GetComponent<Com_Transform>()->GetChilds();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
 			childs[i]->GetOwner()->Awake();
@@ -237,7 +254,7 @@ namespace ehw
 		if (m_baseComponents[(int)eComponentCategory::Renderer] && 
 			m_baseComponents[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<iRenderer*>(m_baseComponents[(int)eComponentCategory::Renderer].get())->Render();
+			static_cast<iRenderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->Render();
 		}
 	}
 
@@ -266,24 +283,24 @@ namespace ehw
 	}
 
 
-	std::shared_ptr<iComponent> GameObject::AddComponent(const std::shared_ptr<iComponent>& _pCom)
+	iComponent* GameObject::AddComponent(iComponent* _pCom)
 	{
-		std::shared_ptr<iComponent> retRVO{};
-
+		iComponent* ret = nullptr;
 		if (nullptr == _pCom)
 		{
-			return retRVO;
+			return ret;
 		}
 
-		retRVO = _pCom;
+		ret = _pCom;
 		eComponentCategory ComType = _pCom->GetComponentCategory();
 
 		ASSERT(false == _pCom->GetStrKey().empty(),
 			"컴포넌트에 String Key가 없습니다.\nAddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.");
 
+		
 		if (eComponentCategory::Scripts == ComType)
 		{
-			m_scripts.emplace_back(std::static_pointer_cast<iScript>(_pCom));
+			m_scripts.push_back(static_cast<iScript*>(_pCom));
 		}
 		else
 		{
@@ -296,7 +313,8 @@ namespace ehw
 			//동일한 ID의 컴포넌트가 컴포넌트 카테고리 안에 들어가 있을경우 해당 컴포넌트를 반환한다.
 			else if (_pCom->GetComponentTypeID() == m_baseComponents[(int)ComType]->GetComponentTypeID())
 			{
-				retRVO = m_baseComponents[(int)ComType];
+				_pCom = nullptr;
+				return m_baseComponents[(int)ComType];
 			}
 
 			//컴포넌트가 들어가 있는데, 동일한 컴포넌트 ID가 아닐 경우 에러
@@ -306,18 +324,19 @@ namespace ehw
 			}
 		}
 
-		retRVO->SetOwner(this);
-		retRVO->SetOwnerScene(m_ownerScene);
-		retRVO->Init();
+		ret->SetOwner(this);
+		ret->SetOwnerScene(m_ownerScene);
+		ret->Init();
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
 		if (IsActive() && m_bAwake)
 		{
-			retRVO->Awake();
+			ret->Awake();
 		}
 
-		return retRVO;
+		return ret;
 	}
+
 
 
 	void GameObject::SetActive(bool _bActive)
@@ -363,13 +382,13 @@ namespace ehw
 			}
 		}
 
-		std::shared_ptr<Com_Transform> tr = Transform();
-		std::shared_ptr<Com_Transform> parent = Transform()->GetParent();
+		Com_Transform* tr = Transform();
+		Com_Transform* parent = Transform()->GetParent();
 
 		//부모 Transform에서 자식의 주소를 제거
 		if (parent)
 		{
-			parent->RemoveChildPtr(tr.get());
+			parent->RemoveChildPtr(tr);
 		}
 		tr->DestroyChildsRecursive();
 	}
@@ -413,9 +432,9 @@ namespace ehw
 		}
 	}
 
-	std::shared_ptr<iScript> GameObject::GetScript(const std::string_view _strKey)
+	iScript* GameObject::GetScript(const std::string_view _strKey)
 	{
-		std::shared_ptr<iScript> retScript = nullptr;
+		iScript* retScript = nullptr;
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{

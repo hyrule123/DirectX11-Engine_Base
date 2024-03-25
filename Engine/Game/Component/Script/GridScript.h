@@ -14,9 +14,9 @@ namespace ehw
 		virtual void Awake();
 		virtual void Update();
 
-		void SetCamera(const std::shared_ptr<Com_Camera>& camera) { mCamera = camera; }
+		void SetCamera(Com_Camera* camera) { mCamera = camera; }
 
 	private:
-		std::shared_ptr<Com_Camera> mCamera;
+		Com_Camera* mCamera;
 	};
 }

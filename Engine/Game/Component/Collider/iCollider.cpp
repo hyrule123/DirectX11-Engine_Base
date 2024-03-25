@@ -20,7 +20,6 @@ namespace ehw
 	void iCollider::Awake()
 	{
 		m_transform = GetOwner()->Transform();
-		ASSERT_DEBUG(m_transform, "Transform 주소를 받아오지 못했습니다.");
 	}
 	const MATRIX& iCollider::GetWorldMatrix()
 	{

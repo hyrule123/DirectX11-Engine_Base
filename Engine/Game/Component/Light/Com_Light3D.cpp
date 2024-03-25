@@ -22,6 +22,7 @@ namespace ehw
 		, m_lightMaterial()
 		, m_index()
 	{
+		RenderManager::RegisterLight(this);
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
@@ -148,14 +149,6 @@ namespace ehw
 		return eResult::Success;
 	}
 
-
-
-
-
-	void Com_Light3D::OnEnable()
-	{
-		RenderManager::AddLight(shared_from_this_T<Com_Light3D>());
-	}
 
 	void Com_Light3D::Update()
 	{

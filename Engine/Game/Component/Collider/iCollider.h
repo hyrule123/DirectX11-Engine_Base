@@ -23,18 +23,18 @@ namespace ehw
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
 
-		virtual void OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) {}
-		virtual void OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) {}
-		virtual void OnCollisionExit(const std::shared_ptr<iCollider>& _collider) {}
+		virtual void OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint) {}
+		virtual void OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint) {}
+		virtual void OnCollisionExit(iCollider* const _collider) {}
 
-		virtual void OnTriggerEnter(const std::shared_ptr<iCollider>& _collider) {}
-		virtual void OnTriggerStay(const std::shared_ptr<iCollider>& _collider) {}
-		virtual void OnTriggerExit(const std::shared_ptr<iCollider>& _collider) {}
+		virtual void OnTriggerEnter(iCollider* const _collider) {}
+		virtual void OnTriggerStay(iCollider* const _collider) {}
+		virtual void OnTriggerExit(iCollider* const _collider) {}
 
 		inline bool IsColliding() const { return m_isColliding; }
 
 	protected:
-		inline Com_Transform* GetMyTransform() { return m_transform.get(); }
+		inline Com_Transform* GetMyTransform() { return m_transform; }
 		
 	private:
 		const MATRIX& GetWorldMatrix();
@@ -44,7 +44,7 @@ namespace ehw
 		bool m_isTriggerMode;
 
 		//Transform을 많이 사용하므로 아예 주소를 받아 놓는다.
-		std::shared_ptr<Com_Transform> m_transform;
+		Com_Transform* m_transform;
 
 		bool m_isColliding;
 	};

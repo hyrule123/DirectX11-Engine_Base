@@ -34,29 +34,25 @@ namespace ehw
 		static ConstBuffer* GetConstBuffer(eCBType _Type) { return mConstBuffers[(int)_Type].get(); }
 		//static void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
 
-		static inline const std::shared_ptr<Com_Camera>& GetMainCamera() { return mMainCamera; }
+		static inline Com_Camera* GetMainCamera();
 		static ComPtr<ID3D11RasterizerState>	GetRasterizerState(eRSType _Type) { return mRasterizerStates[(int)_Type]; }
 		static ComPtr<ID3D11BlendState>		GetBlendState(eBSType _Type) { return mBlendStates[(int)_Type]; }
 		static ComPtr<ID3D11DepthStencilState> GetDepthStencilState(eDSType _Type) { return mDepthStencilStates[(int)_Type]; }
 		
-		static void SetMainCamera(const std::shared_ptr<Com_Camera>& _pCam) { mMainCamera = _pCam; }
-		static inline std::shared_ptr<Com_Camera> GetCamera(uint _Idx);
+		static void SetMainCamera(Com_Camera* const _pCam);
+		static inline Com_Camera* GetCamera(size_t _Idx);
 
-		static void RegisterCamera(const std::shared_ptr<Com_Camera>& _pCam) { mCameras.push_back(_pCam); }
-		
-		static void AddDebugMesh(const tDebugMesh& _DebugMesh) { mDebugMeshes.push_back(_DebugMesh); }
-
-		static std::vector<tDebugMesh>& GetDebugMeshes() { return mDebugMeshes; }
+		static void RegisterCamera(Com_Camera* const _pCam);
+		static void RemoveCamera(Com_Camera* const _pCam);
 
 		inline static MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type);
 
 		//Renderer
 		static void PushLightAttribute(const tLightAttribute& lightAttribute) { mLightAttributes.push_back(lightAttribute); }
-		static void AddLight(const std::shared_ptr<Com_Light3D>& _pComLight) { 
-			if (_pComLight) mLights.push_back(_pComLight); }
-		static void RemoveLight(const std::shared_ptr<Com_Light3D>& _pComLight);
+		static inline void RegisterLight(Com_Light3D* const _pComLight);
+		static void RemoveLight(Com_Light3D* const _pComLight);
 
-		static const std::vector<std::weak_ptr<Com_Light3D>>& GetLights() { return mLights; }
+		static const std::vector<Com_Light3D*>& GetLights() { return m_lights_3D; }
 
 
 		static void BindLights();
@@ -91,21 +87,19 @@ namespace ehw
 		static void Release();
 
 	private:
-		static std::shared_ptr<Com_Camera> mMainCamera;
-
 		static std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		mConstBuffers;
 		static std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	mSamplerStates;
 		static std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		mRasterizerStates;
 		static std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	mDepthStencilStates;
 		static std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			mBlendStates;
 		
-		static std::vector<std::shared_ptr<Com_Camera>>					mCameras;
-		static std::vector<tDebugMesh>			mDebugMeshes;
+		static std::vector<Com_Camera*>			m_cameras;
+		static size_t						m_mainCamIndex;
 
 		static std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> mMultiRenderTargets;
 
 		//생성자-소멸자에서 여기에 등록하기 떄문에 raw pointer를 사용해야 함
-		static std::vector<std::weak_ptr<Com_Light3D>> mLights;
+		static std::vector<Com_Light3D*>			m_lights_3D;
 		static std::vector<tLightAttribute>			mLightAttributes;
 		static std::unique_ptr<StructBuffer>		mLightsBuffer;
 
@@ -113,17 +107,30 @@ namespace ehw
 		static std::shared_ptr<Texture>				mNoiseTex;
 	};
 
-
-	inline std::shared_ptr<Com_Camera> RenderManager::GetCamera(uint _Idx)
+	inline Com_Camera* RenderManager::GetMainCamera()
 	{
-		std::shared_ptr<Com_Camera> pCam = nullptr;
-		if (mCameras.size() > (size_t)_Idx)
+		return GetCamera(m_mainCamIndex);
+	}
+
+
+	inline Com_Camera* RenderManager::GetCamera(size_t _Idx)
+	{
+		Com_Camera* pCam = nullptr;
+		if (m_cameras.size() > (size_t)_Idx)
 		{
-			pCam = mCameras[_Idx];
+			pCam = m_cameras[_Idx];
 		}
 			
 
 		return pCam;
+	}
+
+	inline void RenderManager::RegisterLight(Com_Light3D* const _pComLight)
+	{
+		if (_pComLight)
+		{
+			m_lights_3D.push_back(_pComLight);
+		}
 	}
 
 	inline MultiRenderTarget* RenderManager::GetMultiRenderTarget(eMRTType _Type)

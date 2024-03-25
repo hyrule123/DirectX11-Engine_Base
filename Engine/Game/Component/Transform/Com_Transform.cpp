@@ -33,6 +33,7 @@ namespace ehw
 		, m_parent()
 		, m_childs()
 	{
+		SetStrKey("Com_Transform");
 	}
 
 	Com_Transform::~Com_Transform()
@@ -95,27 +96,25 @@ namespace ehw
 
 	void Com_Transform::GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects)
 	{
-		_retObjects.push_back(GetOwner()->shared_from_this_T<GameObject>());
-		for (size_t i = 0; i < m_childs.size(); ++i)
-		{
-			m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
-		}
+		ASSERT(false, "미구현");
+		//_retObjects.push_back(GetOwner()->shared_from_this_T<GameObject>());
+		//for (size_t i = 0; i < m_childs.size(); ++i)
+		//{
+		//	m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
+		//}
 	}
 
 
 
 	bool Com_Transform::UpdateWorldValue()
 	{
-		std::shared_ptr<Com_Transform> parent = m_parent.lock();
-		
-		
-		if (parent)
+		if (m_parent)
 		{
-			//parent도 WorldValue 업데이트를 진행.(or)
-			m_bNeedUpdateWorldValue |= parent->UpdateWorldValue();
+			//m_parent도 WorldValue 업데이트를 진행.(or)
+			m_bNeedUpdateWorldValue |= m_parent->UpdateWorldValue();
 		}
 
-		//parent가 갱신되었을 경우 or 자신의 WorldValue 갱신이 필요할 경우 갱신
+		//m_parent가 갱신되었을 경우 or 자신의 WorldValue 갱신이 필요할 경우 갱신
 		if (false == m_bNeedUpdateWorldValue)
 		{
 			return false;
@@ -127,15 +126,15 @@ namespace ehw
 		m_worldRotation = m_localRotation;
 
 		//Value
-		if (parent)
+		if (m_parent)
 		{
 			if (false == m_bIgnoreParentScale)
 			{
-				m_worldScale *= parent->GetWorldScale();
+				m_worldScale *= m_parent->GetWorldScale();
 			}
 			if (false == m_bIgnoreParentRotation)
 			{
-				m_worldRotation *= parent->GetWorldRotation();
+				m_worldRotation *= m_parent->GetWorldRotation();
 			}
 		}
 
@@ -144,12 +143,10 @@ namespace ehw
 
 	bool Com_Transform::UpdateWorldMatrix()
 	{
-		std::shared_ptr<Com_Transform> parent = m_parent.lock();
-
 		m_bNeedUpdateWorldMatrix |= UpdateLocalMatrix();
-		if (parent)
+		if (m_parent)
 		{
-			m_bNeedUpdateWorldMatrix |= parent->UpdateWorldMatrix();
+			m_bNeedUpdateWorldMatrix |= m_parent->UpdateWorldMatrix();
 		}
 
 		if (false == m_bNeedUpdateWorldMatrix)
@@ -160,19 +157,18 @@ namespace ehw
 		m_bTransformUpdated = true;
 
 		m_worldMatrix = m_localMatrix;
-		if (parent)
+		if (m_parent)
 		{
 			MATRIX parentMat = MATRIX::Identity;
 			constexpr size_t rowErasebytes = sizeof(float) * 3;
 
-			std::shared_ptr<Com_Transform> parent = m_parent.lock();
 			//크기 무시
 			if (m_bIgnoreParentScale)
 			{
 				//크기 무시 + 회전 무시: 0, 0부터 3, 3까지 밀어버리고 단위행렬로 변경
 				if (m_bIgnoreParentRotation)
 				{
-					parentMat = parent->GetWorldMatrix();
+					parentMat = m_parent->GetWorldMatrix();
 
 					memset(parentMat.m[0], 0, rowErasebytes);
 					memset(parentMat.m[1], 0, rowErasebytes);
@@ -186,7 +182,7 @@ namespace ehw
 				else
 				{
 					//정규화하면 크기정보가 제거된다.
-					parentMat *= parent->GetWorldMatrix();
+					parentMat *= m_parent->GetWorldMatrix();
 					parentMat.Right(parentMat.Right().Normalize());
 					parentMat.Up(parentMat.Up().Normalize());
 					parentMat.Forward(parentMat.Forward().Normalize());
@@ -199,7 +195,7 @@ namespace ehw
 				//크기 반영 + 회전 무시
 				if (m_bIgnoreParentRotation)
 				{
-					parentMat = parent->GetWorldMatrix();
+					parentMat = m_parent->GetWorldMatrix();
 
 					//우선 크기 + 회전 정보가 있는 부분을 초기화 한다.
 					memset(parentMat.m[0], 0, rowErasebytes);
@@ -207,7 +203,7 @@ namespace ehw
 					memset(parentMat.m[2], 0, rowErasebytes);
 
 					//WorldScale을 집어넣어준다.
-					const float3& worldScale = parent->GetWorldScale();
+					const float3& worldScale = m_parent->GetWorldScale();
 					parentMat._11 = worldScale.x;
 					parentMat._22 = worldScale.y;
 					parentMat._33 = worldScale.z;
@@ -220,7 +216,7 @@ namespace ehw
 				//크기 반영 + 회전 반영 -> 그냥 바로 적용
 				else
 				{
-					parentMat *= parent->GetWorldMatrix_Internal();
+					parentMat *= m_parent->GetWorldMatrix_Internal();
 				}
 			}
 
@@ -245,38 +241,37 @@ namespace ehw
 	void Com_Transform::SetWorldScale(const float3& _worldScale)
 	{
 		//부모 스케일 무시 or 부모 트랜스폼 없을 경우
-		if (m_bIgnoreParentScale || m_parent.expired())
+		if (m_bIgnoreParentScale || nullptr == m_parent)
 		{
 			SetLocalScale(_worldScale);
 		}
+
+		//else: false == m_bIgnoreParentScale && m_parent
 		else 
 		{
-			std::shared_ptr<Com_Transform> parent = m_parent.lock();
 			//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
-			parent->UpdateWorldValue();
+			m_parent->UpdateWorldValue();
 
 			//설정하려는 World Scale을 부모의 World Scale로 나눠 주면 Local Scale을 얼마나 지정해야하는지 알 수 있다.
-			SetLocalScale(_worldScale / parent->GetWorldScale_Internal());
+			SetLocalScale(_worldScale / m_parent->GetWorldScale_Internal());
 		}
 	}
 	void Com_Transform::SetWorldRotation(const math::Quaternion& _worldRotation)
 	{
 		//부모 스케일 무시 or 부모 트랜스폼 없을 경우
-		if (m_bIgnoreParentRotation || m_parent.expired())
+		if (m_bIgnoreParentRotation || nullptr == m_parent)
 		{
 			SetLocalRotation(_worldRotation);
 		}
 		else
 		{
-			std::shared_ptr<Com_Transform> parent = m_parent.lock();
-
 			//FinalUpdate 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
 			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
-			parent->UpdateWorldValue();
+			m_parent->UpdateWorldValue();
 
 			//설정하려는 World Rotation을 부모의 World Rotation로 나눠 주면 Local Rotation을 얼마나 지정해야하는지 알 수 있다.
-			SetLocalRotation(_worldRotation / parent->GetWorldRotation_Internal());
+			SetLocalRotation(_worldRotation / m_parent->GetWorldRotation_Internal());
 		}
 	}
 	inline void Com_Transform::SetWorldRotation(const float3& _worldRotationEuler)
@@ -286,14 +281,12 @@ namespace ehw
 	void Com_Transform::SetWorldPosition(const float3& _worldPosition)
 	{
 		//부모 트랜스폼 없을 경우
-		if (m_parent.expired())
+		if (nullptr == m_parent)
 		{
 			SetLocalPosition(_worldPosition);
 		}
 		else
 		{
-			std::shared_ptr<Com_Transform> parent = m_parent.lock();
-
 			//World Position을 구하기 위해서는 자신 포함 World Matrix 업데이트를 해줘야함(Parent 까지만)
 			UpdateWorldMatrix();
 
@@ -302,7 +295,7 @@ namespace ehw
 
 			//UpdateWorldMatrix() 호출 시 Local Matrix, World Matrix 전부 새걸로 갱신되어 있는 상태이므로(flag들이 모두 false 가 되어있는 상태)
 			//추가적으로 작업을 안해줘도 됨. -> Set함수를 통하지 않고 변경.
-			MATRIX calculatedLocalMatrix = m_worldMatrix * parent->GetWorldMatrix_Internal().Invert();
+			MATRIX calculatedLocalMatrix = m_worldMatrix * m_parent->GetWorldMatrix_Internal().Invert();
 			m_localPosition = calculatedLocalMatrix.Translation();
 
 			//오차를 최대한 줄이기 위해 position만 가져온다.
@@ -314,7 +307,7 @@ namespace ehw
 	{
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			if (_pTransform == m_childs[i].get())
+			if (_pTransform == m_childs[i])
 			{
 				m_childs.erase((m_childs.begin() + i));
 				break;

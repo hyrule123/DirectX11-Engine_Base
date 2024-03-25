@@ -186,13 +186,6 @@ namespace ehw::editor
 			obj->Render();
 		}
 
-		auto& DebugMeshes = RenderManager::GetDebugMeshes();
-		for ( tDebugMesh& mesh : DebugMeshes)
-		{
-			DebugRender(mesh);
-		}
-		DebugMeshes.clear();
-
 		ImGuiRender();
 	}
 
@@ -241,34 +234,6 @@ namespace ehw::editor
 		mDebugObjects.clear();
 
 		ImGuiRelease();
-	}
-
-	void EditorManager::DebugRender(tDebugMesh& mesh)
-	{
-		//const auto& debugObj = mDebugObjects[(UINT)mesh.type];
-		//
-		//const auto& tr = debugObj->GetComponent<Com_Transform>();
-
-		//tr->SetLocalPosition(mesh.position);
-		//tr->SetLocalRotation(mesh.rotation);
-		//
-
-		//if (mesh.type == eColliderType::Rect)
-		//	tr->SetLocalScale(mesh.scale);
-		//else
-		//	tr->SetLocalScale(Vector3(mesh.radius));
-
-
-		//const auto& renderer = debugObj->GetComponent<iRenderer>();
-		//const auto& mainCam = RenderManager::GetMainCam();
-
-		//tr->FinalUpdate();
-
-		//Com_Camera::SetGpuViewMatrix(
-		//	mainCam->GetViewMatrix());
-		//Com_Camera::SetGpuProjectionMatrix(mainCam->GetProjectionMatrix());
-
-		//debugObj->Render();
 	}
 
 	Json::Value* EditorManager::CheckJsonSaved(const std::string& _strKey)

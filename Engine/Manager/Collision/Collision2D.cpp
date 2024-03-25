@@ -50,7 +50,7 @@ namespace ehw
 		m_debugInfoSBuffer = nullptr;
 	}
 
-	void Collision2D::Register(const std::shared_ptr<iCollider2D>& _obj)
+	void Collision2D::Register(iCollider2D* const _obj)
 	{
 		if (nullptr == _obj)
 		{
@@ -58,7 +58,7 @@ namespace ehw
 		}
 		m_colliders.push_back(_obj);
 	}
-	void Collision2D::Enqueue(const std::shared_ptr<iCollider2D>& _obj)
+	void Collision2D::Enqueue(iCollider2D* const _obj)
 	{
 		m_objectsInLayer[_obj->GetOwner()->GetLayer()].push_back(_obj);
 	}
@@ -116,7 +116,7 @@ namespace ehw
 
 		//Destroy된 component를 제거해주면서 Enqueue 작업까지 진행한다.
 		std::erase_if(m_colliders,
-			[this](const std::shared_ptr<iCollider2D>& _col)->bool
+			[this](iCollider2D* const _col)->bool
 			{
 				if (_col->IsDestroyed())
 				{
@@ -147,14 +147,13 @@ namespace ehw
 					continue;
 				}
 
-				const std::vector<std::shared_ptr<iCollider2D>>& lefts = m_objectsInLayer[i];
-				const std::vector<std::shared_ptr<iCollider2D>>& rights = m_objectsInLayer[j];
-
+				const std::vector<iCollider2D*>& lefts = m_objectsInLayer[i];
+				const std::vector<iCollider2D*>& rights = m_objectsInLayer[j];
 
 
 				for (size_t l = 0; l < lefts.size(); ++l)
 				{
-					const std::shared_ptr<iCollider2D>& left = lefts[l];
+					iCollider2D* const left = lefts[l];
 
 					//동일 레이어 간 충돌일 시, r의 시작번호는 i + 1
 					size_t r = 0;
@@ -165,7 +164,7 @@ namespace ehw
 
 					for (r; r < rights.size(); ++r)
 					{
-						const std::shared_ptr<iCollider2D>& right = rights[r];
+						iCollider2D* const right = rights[r];
 
 						eCollider2D_Shape leftShape = left->GetColliderShape();
 						eCollider2D_Shape rightShape = right->GetColliderShape();
@@ -268,10 +267,10 @@ namespace ehw
 
 
 
-	bool Collision2D::CheckIntersect_AABB_AABB(const std::shared_ptr<iCollider2D>& _AABB1, const std::shared_ptr<iCollider2D>& _AABB2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2, Vector2& _hitPoint)
 	{
-		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1.get());
-		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2.get());
+		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1);
+		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2);
 
 		if (colA->Left() > colB->Right())
 		{
@@ -299,30 +298,30 @@ namespace ehw
 	{
 		_sbuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
 		_sbuffer->BindDataSRV();
-		_mesh->RenderInstanced(0, _debugData.size());
+		_mesh->RenderInstanced(0, (UINT)_debugData.size());
 	}
 
-	bool Collision2D::CheckIntersect_AABB_OBB(const std::shared_ptr<iCollider2D>& _AABB, const std::shared_ptr<iCollider2D>& _OBB, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB, Vector2& _hitPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_AABB_Circle(const std::shared_ptr<iCollider2D>& _AABB, const std::shared_ptr<iCollider2D>& _circle, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle, Vector2& _hitPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_OBB(const std::shared_ptr<iCollider2D>& _OBB1, const std::shared_ptr<iCollider2D>& _OBB2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2, Vector2& _hitPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_Circle(const std::shared_ptr<iCollider2D>& _OBB, const std::shared_ptr<iCollider2D>& _circle, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle, Vector2& _hitPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_AABB(const std::shared_ptr<iCollider2D>& _OBB, const std::shared_ptr<iCollider2D>& _AABB, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB, Vector2& _hitPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_Circle_Circle(const std::shared_ptr<iCollider2D>& _circle1, const std::shared_ptr<iCollider2D>& _circle2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2, Vector2& _hitPoint)
 	{
 		return false;
 	}

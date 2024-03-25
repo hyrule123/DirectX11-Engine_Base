@@ -12,11 +12,10 @@ namespace ehw
 {
 	namespace strKey::Json::Entity
 	{
-		STRKEY_DECLARE(mStrKey);
+		STRKEY_DECLARE(m_strKey);
 	}
 
 	class Entity 
-		: public std::enable_shared_from_this<Entity>
 	{
 	public:
 		Entity();
@@ -28,26 +27,20 @@ namespace ehw
 
 		virtual ~Entity();
 
-		void SetStrKey(const std::string_view _strKey) { mStrKey = _strKey; }
-		const std::string& GetStrKey() const { return mStrKey; }
+		inline void SetStrKey(const std::string_view _strKey) { m_strKey = _strKey; }
+		inline const std::string& GetStrKey() const { return m_strKey; }
 		UINT32 GetID() const { return mID; }
 
-		template <typename T>
-		inline std::shared_ptr<T> shared_from_this_T();
+
 
 	private:
-		std::string mStrKey;
+		std::string m_strKey;
 		const UINT32 mID;
 
 		static UINT32 gIDNext;
 	};
 
-	template<typename T>
-	inline std::shared_ptr<T> Entity::shared_from_this_T()
-	{
-		static_assert(std::is_base_of_v<Entity, T>);
-		return std::static_pointer_cast<T>(shared_from_this());
-	}
+
 }
 
 

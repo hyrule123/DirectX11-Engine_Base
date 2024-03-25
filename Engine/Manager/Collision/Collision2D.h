@@ -25,12 +25,12 @@ namespace ehw
 		friend class CollisionManager;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
 		using Collision2DFunction = std::function<
-			bool(const std::shared_ptr<iCollider2D>&, const std::shared_ptr<iCollider2D>&, Vector2&)
+			bool(iCollider2D* const, iCollider2D* const, Vector2&)
 		>;
 	public:
 		//등록은 Collider::Init()에서
 		//제거는 Collision2D::Update()에서 진행됨.
-		void Register(const std::shared_ptr<iCollider2D>& _obj);
+		void Register(iCollider2D* const _obj);
 
 	private:
 		Collision2D();
@@ -42,39 +42,39 @@ namespace ehw
 		void Render();
 
 	private:
-		void Enqueue(const std::shared_ptr<iCollider2D>& _obj);
+		void Enqueue(iCollider2D* const _obj);
 
 		bool CheckIntersect_AABB_AABB(
-			const std::shared_ptr<iCollider2D>& _AABB1, const std::shared_ptr<iCollider2D>& _AABB2, 
+			iCollider2D* const _AABB1, iCollider2D* const _AABB2, 
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_AABB_OBB(
-			const std::shared_ptr<iCollider2D>& _AABB, const std::shared_ptr<iCollider2D>& _OBB, 
+			iCollider2D* const _AABB, iCollider2D* const _OBB, 
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_AABB_Circle(
-			const std::shared_ptr<iCollider2D>& _AABB, const std::shared_ptr<iCollider2D>& _circle, 
+			iCollider2D* const _AABB, iCollider2D* const _circle, 
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_OBB_OBB(
-			const std::shared_ptr<iCollider2D>& _OBB1, const std::shared_ptr<iCollider2D>& _OBB2, 
+			iCollider2D* const _OBB1, iCollider2D* const _OBB2, 
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_OBB_Circle(
-			const std::shared_ptr<iCollider2D>& _OBB, const std::shared_ptr<iCollider2D>& _circle, 
+			iCollider2D* const _OBB, iCollider2D* const _circle, 
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_OBB_AABB(
-			const std::shared_ptr<iCollider2D>& _OBB, const std::shared_ptr<iCollider2D>& _AABB,
+			iCollider2D* const _OBB, iCollider2D* const _AABB,
 			Vector2& _hitPoint);
 
 		bool CheckIntersect_Circle_Circle(
-			const std::shared_ptr<iCollider2D>& _circle1, const std::shared_ptr<iCollider2D>& _circle2,
+			iCollider2D* const _circle1, iCollider2D* const _circle2,
 			Vector2& _hitPoint);
 
 	private:
-		std::vector<std::shared_ptr<iCollider2D>> m_colliders;
-		std::array<std::vector<std::shared_ptr<iCollider2D>>, g_maxLayer> m_objectsInLayer;
+		std::vector<iCollider2D*> m_colliders;
+		std::array<std::vector<iCollider2D*>, g_maxLayer> m_objectsInLayer;
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
 		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯

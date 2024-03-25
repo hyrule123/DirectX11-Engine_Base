@@ -11,7 +11,7 @@ namespace ehw
 		friend class Collision2D;
 	public:
 		CollisionInfo() = delete;
-		CollisionInfo(const std::shared_ptr<iCollider>& _left, const std::shared_ptr<iCollider>& _right);
+		CollisionInfo(iCollider* const _left, iCollider* const _right);
 		CollisionInfo(const CollisionInfo& _other) = default;
 		CollisionInfo(CollisionInfo&& _right) noexcept = default;
 		~CollisionInfo();
@@ -23,8 +23,8 @@ namespace ehw
 		void Stay(const float2& _contactPoint);
 		void Exit();
 
-		std::shared_ptr<iCollider> m_left;
-		std::shared_ptr<iCollider> m_right;
+		iCollider* m_left;
+		iCollider* m_right;
 	};
 }
 

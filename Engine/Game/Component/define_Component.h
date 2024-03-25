@@ -11,8 +11,7 @@ namespace ehw
 	STRKEY ComponentPrefix = "Com_";
 	enum class eComponentCategory
 	{
-		UNKNOWN = -1,
-
+		UNKNOWN,
 		Transform,
 		Collider,
 		Animator,
@@ -31,6 +30,10 @@ namespace ehw
 
 		END
 	};
+	inline bool IsComponentCategoryValid(eComponentCategory _cat)
+	{
+		return ((eComponentCategory::UNKNOWN < _cat) && (_cat < eComponentCategory::END));
+	}
 
 	namespace strKey
 	{

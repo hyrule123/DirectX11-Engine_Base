@@ -9,16 +9,16 @@ namespace ehw
 
 	Entity::Entity()
 		: mID(++gIDNext)
-		, mStrKey()
+		, m_strKey()
 	{
 	}
 	Entity::Entity(const Entity& _other)
 		: mID(++gIDNext)
-		, mStrKey(_other.mStrKey)
+		, m_strKey(_other.m_strKey)
 	{
 	}
 	Entity::Entity(Entity&& _move) noexcept
-		: mStrKey(_move.mStrKey)
+		: m_strKey(_move.m_strKey)
 		, mID(_move.mID)
 	{
 	}

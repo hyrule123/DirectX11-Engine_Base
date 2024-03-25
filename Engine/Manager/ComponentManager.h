@@ -3,7 +3,6 @@
 
 #include "Engine/Game/Component/BaseComponents.h"
 
-
 #include <unordered_map>
 #include <typeindex>
 #include <string>
@@ -18,11 +17,11 @@ namespace ehw
         template <typename T>
         static inline void AddComponentConstructor(const std::string_view _strKey);
 
-        static std::shared_ptr<iComponent> GetNewComponent(const std::string_view _strKey);
+        static std::unique_ptr<iComponent> GetNewComponent(const std::string_view _strKey);
 
         template <typename T>
         static const std::string_view GetComponentName();
-        inline static const std::string_view GetComponentName(UINT32 _ComID);
+        inline static const std::string_view GetComponentName(uint32 _ComID);
 
         //template <typename T>
         //static inline constexpr eComponentCategory GetComponentCategory();
@@ -37,7 +36,7 @@ namespace ehw
         
 
     private:
-        static std::unordered_map<std::string_view, std::function<std::shared_ptr<iComponent>()>> mUmapComConstructor;
+        static std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> mUmapComConstructor;
         static std::vector<std::string_view> mComNamesByID;
     };
 
@@ -45,27 +44,27 @@ namespace ehw
     static inline void ComponentManager::AddComponentConstructor(const std::string_view _strKey)
     {
         static_assert(std::is_base_of_v<iComponent, T>);
-        UINT32 ComIDIndex = iComponent::GetComponentTypeID<T>();
-        if ((UINT32)mComNamesByID.size() <= ComIDIndex)
+        uint32 ComIDIndex = iComponent::GetComponentTypeID<T>();
+        if ((uint32)mComNamesByID.size() <= ComIDIndex)
         {
             mComNamesByID.resize(ComIDIndex + 1);
         }
 
         mComNamesByID[ComIDIndex] = _strKey;
         mUmapComConstructor.insert(std::make_pair(_strKey,
-            []()->std::shared_ptr<iComponent>
+            []()->std::unique_ptr<iComponent>
             {
-                std::shared_ptr<iComponent> com = std::make_shared<T>();
+                std::unique_ptr<iComponent> com = std::make_unique<T>();
                 com->SetComponentTypeID(iComponent::GetComponentTypeID<T>());
                 return com;
             }
         ));
     }
 
-    inline const std::string_view ComponentManager::GetComponentName(UINT32 _ComID)
+    inline const std::string_view ComponentManager::GetComponentName(uint32 _ComID)
     {
         std::string_view retStr{};
-        if (_ComID < (UINT32)mComNamesByID.size())
+        if (_ComID < (uint32)mComNamesByID.size())
         {
             retStr = mComNamesByID[_ComID];
         }

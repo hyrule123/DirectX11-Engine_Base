@@ -24,13 +24,13 @@ namespace ehw
 		virtual void FinalUpdate() override;
 
 
-		virtual void OnCollisionEnter(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) override;
-		virtual void OnCollisionStay(const std::shared_ptr<iCollider>& _collider, const Vector2 _contactPoint) override;
-		virtual void OnCollisionExit(const std::shared_ptr<iCollider>& _collider) override;
+		virtual void OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint) override;
+		virtual void OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint) override;
+		virtual void OnCollisionExit(iCollider* const _collider) override;
 
-		virtual void OnTriggerEnter(const std::shared_ptr<iCollider>& _collider) override;
-		virtual void OnTriggerStay(const std::shared_ptr<iCollider>& _collider) override;
-		virtual void OnTriggerExit(const std::shared_ptr<iCollider>& _collider) override;
+		virtual void OnTriggerEnter(iCollider* const _collider) override;
+		virtual void OnTriggerStay(iCollider* const _collider) override;
+		virtual void OnTriggerExit(iCollider* const _collider) override;
 
 	private:
 		eCollider2D_Shape m_collider2DShape;

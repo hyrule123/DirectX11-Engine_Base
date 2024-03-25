@@ -52,11 +52,11 @@ namespace ehw
 		void BindData(); 
 
 #pragma region //Hierarchy
-		inline std::shared_ptr<Com_Transform> GetParent() const { return m_parent.lock(); }
-		inline void SetParent(const std::shared_ptr<Com_Transform>& _transform) { m_parent = _transform; }
+		inline Com_Transform* GetParent() const { return m_parent; }
+		inline void SetParent(Com_Transform* _transform) { m_parent = _transform; }
 
-		inline void AddChild(const std::shared_ptr<Com_Transform>& _transform);
-		inline const std::vector<std::shared_ptr<Com_Transform>>& GetChilds() const { return m_childs; }
+		inline void AddChild(Com_Transform* _transform);
+		inline const std::vector<Com_Transform*>& GetChilds() const { return m_childs; }
 
 		void GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects);
 
@@ -182,8 +182,8 @@ namespace ehw
 // When you change position / scale / rotation in a Transform, you run through it’s child Transforms and update their stats.
 // It’s all Transforms – you never touch a gameObject.And it’s just as easy to walk through a tree of Transforms as one of gameObjects.
 // It feels a little weird to walk from sub - object to sub - object, but it works fine.Esp. for people who prefer using: public Transform cow; as the primary way to link to gameObjects.
-		std::weak_ptr<Com_Transform> m_parent;
-		std::vector<std::shared_ptr<Com_Transform>> m_childs;
+		Com_Transform* m_parent;
+		std::vector<Com_Transform*> m_childs;
 	};
 
 	inline void Com_Transform::SetLocalScale(const float3& _localScale)
@@ -258,13 +258,13 @@ namespace ehw
 	}
 
 
-	inline void Com_Transform::AddChild(const std::shared_ptr<Com_Transform>& _transform)
+	inline void Com_Transform::AddChild(Com_Transform* _transform)
 	{
 		if (_transform)
 		{
 			m_childs.push_back(_transform);
 
-			_transform->SetParent(shared_from_this_T<Com_Transform>());
+			_transform->SetParent(this);
 			_transform->SetAllFlagsOn();
 		}
 	}

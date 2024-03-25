@@ -39,19 +39,18 @@
 
 namespace ehw
 {
-	std::shared_ptr<Com_Camera> RenderManager::mMainCamera{};
-
 	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::mConstBuffers{};
 	std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>		RenderManager::mSamplerStates{};
 	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::mRasterizerStates{};
 	std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>		RenderManager::mDepthStencilStates{};
 	std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>				RenderManager::mBlendStates{};
-	std::vector<std::shared_ptr<Com_Camera>>			RenderManager::mCameras{};
-	std::vector<tDebugMesh>				RenderManager::mDebugMeshes{};
+
+	std::vector<Com_Camera*>			RenderManager::m_cameras{};
+	size_t								RenderManager::m_mainCamIndex(0u);
 
 	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::mMultiRenderTargets{};
 
-	std::vector<std::weak_ptr<Com_Light3D>>  RenderManager::mLights{};
+	std::vector<Com_Light3D*>			RenderManager::m_lights_3D{};
 	std::vector<tLightAttribute>		RenderManager::mLightAttributes{};
 	std::unique_ptr<StructBuffer>		RenderManager::mLightsBuffer{};
 	std::shared_ptr<Texture>			RenderManager::mPostProcessTexture{};
@@ -79,7 +78,6 @@ namespace ehw
 
 	void RenderManager::Release()
 	{
-		mMainCamera = nullptr;
 		for (int i = 0; i < (int)eCBType::END; ++i)
 		{
 			mConstBuffers[i].reset();
@@ -101,9 +99,9 @@ namespace ehw
 			mBlendStates[i] = nullptr;
 		}
 
-		mCameras.clear();
+		m_cameras.clear();
+		m_mainCamIndex = 0u;
 
-		mDebugMeshes.clear();
 		mLightAttributes.clear();
 		mLightsBuffer.reset();
 		mPostProcessTexture = nullptr;
@@ -124,26 +122,58 @@ namespace ehw
 		BindNoiseTexture();
 		BindLights();
 
-		for (const auto& cam : mCameras)
+		for (size_t i = 0; i < m_cameras.size(); ++i)
 		{
-			if (cam == nullptr)
-				continue;
+			//if (m_cameras[i]->IsEnabled())
+			//{
+			//	continue;
+			//}
 
-			cam->RenderCamera();
+			m_cameras[i]->RenderCamera();
 		}
 
-		mCameras.clear();
+		//m_cameras.clear();
 		mLightAttributes.clear();
 	}
 
-
-	void RenderManager::RemoveLight(const std::shared_ptr<Com_Light3D>& _pComLight)
+	void RenderManager::SetMainCamera(Com_Camera* const _pCam)
 	{
-		for (auto iter = mLights.begin(); iter != mLights.end(); ++iter)
+		for (size_t i = 0; i < m_cameras.size(); ++i)
 		{
-			if (_pComLight == (*iter).lock())
+			if (_pCam == m_cameras[i])
 			{
-				mLights.erase(iter);
+				m_mainCamIndex = i;
+				return;
+			}
+		}
+	}
+
+	void RenderManager::RegisterCamera(Com_Camera* const _pCam)
+	{
+		ASSERT(_pCam, "nullptr"); m_cameras.push_back(_pCam);
+	}
+
+	void RenderManager::RemoveCamera(Com_Camera* const _pCam)
+	{
+		for (auto iter = m_cameras.begin(); iter != m_cameras.end(); ++iter)
+		{
+			if (_pCam == (*iter))
+			{
+				m_cameras.erase(iter);
+				return;
+			}
+		}
+	}
+
+
+
+	void RenderManager::RemoveLight(Com_Light3D* const _pComLight)
+	{
+		for (auto iter = m_lights_3D.begin(); iter != m_lights_3D.end(); ++iter)
+		{
+			if (_pComLight == (*iter))
+			{
+				m_lights_3D.erase(iter);
 				break;
 			}
 		}
@@ -158,25 +188,25 @@ namespace ehw
 		mLightsBuffer->BindDataSRV(Register_t_lightAttributes, Flag);
 
 		
+
 		tCB_NumberOfLight trCb = {};
 		trCb.numberOfLight = (uint)mLightAttributes.size();
 
 
-		//expire된 light 포인터 제거
-		std::erase_if(mLights,
-			[](const std::weak_ptr<Com_Light3D>& iter)->bool
+		//Destroy된 light 포인터 제거
+		std::erase_if(m_lights_3D,
+			[](Com_Light3D* const iter)->bool
 			{
-				return iter.expired();
+				return iter->IsDestroyed();
 			}
 		);
-		
 
 		//light index 지정
-		for (size_t i = 0; i < mLights.size(); i++)
+		for (size_t i = 0; i < m_lights_3D.size(); i++)
 		{
-			if (false == mLights[i].expired())
+			if (m_lights_3D[i]->IsEnabled())
 			{
-				mLights[i].lock()->SetIndex((uint)i);
+				m_lights_3D[i]->SetIndex((uint)i);
 			}
 		}
 		
@@ -258,7 +288,7 @@ namespace ehw
 			return false;
 		}
 
-		for (const auto& iter : mCameras)
+		for (const auto& iter : m_cameras)
 		{
 			if (iter)
 			{

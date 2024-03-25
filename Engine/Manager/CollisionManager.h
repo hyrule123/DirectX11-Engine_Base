@@ -34,7 +34,7 @@ namespace ehw
 		template <type_traits_Ex::is_enum_class_v T>
 		inline void SetCollisionInteraction(T _left, T _right, bool _enable = true);
 
-		static inline void RegisterCollider2D(const std::shared_ptr<iCollider2D>& _col2D);
+		static inline void RegisterCollider2D(iCollider2D* const _col2D);
 
 		//static void LayerCollision(class iScene* _scene, uint32 _left, uint32 _right);
 		//static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
@@ -75,7 +75,7 @@ namespace ehw
 		m_collisionMask[right][left] = _enable;
 	}
 
-	inline void CollisionManager::RegisterCollider2D(const std::shared_ptr<iCollider2D>& _col2D)
+	inline void CollisionManager::RegisterCollider2D(iCollider2D* const _col2D)
 	{
 		m_col2DManager.Register(_col2D);
 	}

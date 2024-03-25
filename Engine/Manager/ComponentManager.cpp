@@ -1,7 +1,4 @@
-
 #include "ComponentManager.h"
-
-
 
 #include "Engine/Util/AtExit.h"
 
@@ -9,12 +6,12 @@
 
 namespace ehw
 {
-	std::unordered_map<std::string_view, std::function<std::shared_ptr<iComponent>()>> ComponentManager::mUmapComConstructor{};
+	std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> ComponentManager::mUmapComConstructor{};
 	std::vector<std::string_view> ComponentManager::mComNamesByID{};
 
-	std::shared_ptr<iComponent> ComponentManager::GetNewComponent(const std::string_view _strKey)
+	std::unique_ptr<iComponent> ComponentManager::GetNewComponent(const std::string_view _strKey)
 	{
-		std::shared_ptr<iComponent> com{};
+		std::unique_ptr<iComponent> com{};
 		const auto& iter = mUmapComConstructor.find(_strKey);
 		if (iter != mUmapComConstructor.end())
 		{

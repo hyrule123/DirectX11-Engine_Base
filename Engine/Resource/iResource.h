@@ -7,6 +7,7 @@ namespace ehw
 {
 	class iResource 
 		: public Entity
+		, public std::enable_shared_from_this<Entity>
 	{
 	public:
 		iResource(const std::type_info& _info);
@@ -25,6 +26,10 @@ namespace ehw
 		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
+		template <typename T>
+		inline std::shared_ptr<T> shared_from_this_T();
+
+
 		template <class ResourceType>
 		inline bool Is();
 
@@ -37,6 +42,13 @@ namespace ehw
 	inline bool iResource::Is()
 	{
 		return (typeid(ResourceType) == m_ResourceTypeInfo);
+	}
+
+	template<typename T>
+	inline std::shared_ptr<T> iResource::shared_from_this_T()
+	{
+		static_assert(std::is_base_of_v<iResource, T>);
+		return std::static_pointer_cast<T>(shared_from_this());
 	}
 
 }
