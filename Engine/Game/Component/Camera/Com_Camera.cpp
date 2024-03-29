@@ -11,6 +11,7 @@
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Material.h"
+#include "Engine/Resource/Mesh.h"
 
 #include "Engine/GPU/MultiRenderTarget.h"
 
@@ -20,19 +21,19 @@
 
 namespace ehw
 {
-	MATRIX Com_Camera::gView = MATRIX::Identity;
-	MATRIX Com_Camera::gViewInverse = MATRIX::Identity;
-	MATRIX Com_Camera::gProjection = MATRIX::Identity;
+	MATRIX Com_Camera::s_viewMatrix = MATRIX::Identity;
+	MATRIX Com_Camera::s_viewInverseMatrix = MATRIX::Identity;
+	MATRIX Com_Camera::s_projectionMatrix = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: mView()
-		, mViewInverse()
-		, mProjection()
-		, mProjType(eProjectionType::None)
-		, mbCullEnable(true)
-		, mAspectRatio(1.0f)
-		, mNear(1.0f)
-		, mFar(50000.f)
+		: m_viewMatrix()
+		, m_viewInverse()
+		, m_projectionMatrix()
+		, m_projectionType(eProjectionType::None)
+		, m_isEnableCulling(true)
+		, m_aspectRation(1.0f)
+		, m_nearDistance(1.0f)
+		, m_farDistance(50000.f)
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
@@ -56,18 +57,27 @@ namespace ehw
 
 	void Com_Camera::FinalUpdate()
 	{
-		ASSERT(eProjectionType::None != mProjType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
+		ASSERT(eProjectionType::None != m_projectionType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
 		CreateViewMatrix();
 	}
 
+	void Com_Camera::FrameEnd()
+	{
+		m_defferedOpaque.clear();
+		m_forwardOpaque.clear();
+		m_alphaTest.clear();
+		m_alphaBlend.clear();
+		m_postProcess.clear();
+	}
+
 	void Com_Camera::RenderCamera()
 	{
-		gView = mView;
-		gViewInverse = mView.Invert();
-		gProjection = mProjection;
+		s_viewMatrix = m_viewMatrix;
+		s_viewInverseMatrix = m_viewMatrix.Invert();
+		s_projectionMatrix = m_projectionMatrix;
 
-		SortGameObjects();
+		SortRenderersByMode();
 
 		//deffered opaque render
 		RenderManager::GetMultiRenderTarget(eMRTType::Deffered)->Bind();
@@ -141,7 +151,7 @@ namespace ehw
 		0 0 1 0
 		-a -b -c 1
 		*/
-		mView = MATRIX::CreateTranslation(-world.Translation());
+		m_viewMatrix = MATRIX::CreateTranslation(-world.Translation());
 
 		//2. 회전
 		//회전은 이동과는 역행렬의 모습은 다르지만 쉽게 구할수 있다.
@@ -163,13 +173,13 @@ namespace ehw
 
 		//3. transform 상수버퍼 구조체에 업데이트 -> 안함. 나중에 render때 일괄적으로 view 행렬과 proj 행렬을 곱할 예정.
 		//g_matCam.matViewProj = m_matView;
-		mView *= world;
+		m_viewMatrix *= world;
 
 
 		//방법 2: MATRIX CreateLookAt 함수 사용 -> 카메라의 월드 위치 기준으로
 		world = tr->GetWorldMatrix();
 		Vector3 target = Vector3::Transform(Vector3::UnitZ, world);
-		mView = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
+		m_viewMatrix = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
 
 
 
@@ -187,23 +197,23 @@ namespace ehw
 		//
 		////2. 업데이트
 
-		mViewInverse = mView.Invert();
+		m_viewInverse = m_viewMatrix.Invert();
 	}
 
 	inline void Com_Camera::SetCullEnable(bool _bCullingEnable)
 	{
-		mCullingAgent.reset();
+		m_cullingAgent.reset();
 
-		mbCullEnable = _bCullingEnable;
-		if (mbCullEnable)
+		m_isEnableCulling = _bCullingEnable;
+		if (m_isEnableCulling)
 		{
-			switch (mProjType)
+			switch (m_projectionType)
 			{
 			case ehw::eProjectionType::Perspective:
-				mCullingAgent = std::make_unique<CullingAgent_Perspective>();
+				m_cullingAgent = std::make_unique<CullingAgent_Perspective>();
 				break;
 			case ehw::eProjectionType::Orthographic:
-				mCullingAgent = std::make_unique<CullingAgent_Orthographic>();
+				m_cullingAgent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:
 				ASSERT(nullptr, "Projection 타입이 설정되지 않았습니다.");
@@ -220,28 +230,28 @@ namespace ehw
 
 	void Com_Camera::CreateProjectionMatrix(uint ResolutionX, uint ResolutionY)
 	{
-		mCullingAgent.reset();
+		m_cullingAgent.reset();
 
 		float width = (float)ResolutionX * m_scale;
 		float height = (float)ResolutionY * m_scale;
 
-		mAspectRatio = width / height;
+		m_aspectRation = width / height;
 
-		switch (mProjType)
+		switch (m_projectionType)
 		{
 		case eProjectionType::Perspective:
-			mProjection = MATRIX::CreatePerspectiveFieldOfViewLH
+			m_projectionMatrix = MATRIX::CreatePerspectiveFieldOfViewLH
 			(
 				DirectX::XM_2PI / 6.0f
-				, mAspectRatio
-				, mNear
-				, mFar
+				, m_aspectRation
+				, m_nearDistance
+				, m_farDistance
 			);
 			
 
 			break;
 		case eProjectionType::Orthographic:
-			mProjection = MATRIX::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, mNear, mFar);
+			m_projectionMatrix = MATRIX::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, m_nearDistance, m_farDistance);
 
 			break;
 
@@ -251,7 +261,7 @@ namespace ehw
 		}
 
 		//Projection Mode가 변하면 Culling Agent도 교체 필요 -> 한 번 호출해줘야 한다
-		SetCullEnable(mbCullEnable);
+		SetCullEnable(m_isEnableCulling);
 	}
 
 	void Com_Camera::SetScale(float _scale)
@@ -265,7 +275,7 @@ namespace ehw
 
 	void Com_Camera::TurnLayerMask(uint32 _layer, bool _enable)
 	{
-		mLayerMasks.set((uint32)_layer, _enable);
+		m_layerMasks.set((uint32)_layer, _enable);
 	}
 
 
@@ -296,130 +306,178 @@ namespace ehw
 
 	void Com_Camera::SortGameObjects()
 	{
-		m_defferedOpaqueGameObjects.clear();
-		m_forwardOpaqueGameObjects.clear();
-		m_cutoutGameObjects.clear();
-		m_transparentGameObject.clear();
-		m_postProcessGameObjects.clear();
+		ASSERT_DEBUG(GetOwner(), "Owner 주소가 없음");
+		iScene* scene = GetOwner()->GetOwnerScene();
+		ASSERT(scene, "Scene 주소가 없음.");
 
-		iScene* scene = SceneManager::GetActiveScene();
-		if (nullptr == scene)
-		{
-			return;
-		}
+		
 
-		const std::vector<std::shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+		//const std::vector<std::shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-		for (size_t i = 0; i < gameObjects.size(); ++i)
-		{
-			if (true == mLayerMasks[gameObjects[i]->GetLayer()])
-			{
-				PushGameObjectToRenderingModes(gameObjects[i]);
-			}
-		}
+		//for (size_t i = 0; i < gameObjects.size(); ++i)
+		//{
+		//	if (true == m_layerMasks[gameObjects[i]->GetLayer()])
+		//	{
+		//		PushGameObjectToRenderingModes(gameObjects[i]);
+		//	}
+		//}
 	}
 
 	void Com_Camera::RenderDeffered()
 	{
-		for (size_t i = 0; i < m_defferedOpaqueGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_defferedOpaque.size(); ++i)
 		{
-			if (m_defferedOpaqueGameObjects[i])
+			if (m_defferedOpaque[i])
 			{
-				m_defferedOpaqueGameObjects[i]->Render();
+				m_defferedOpaque[i]->Render();
 			}
 		}
 	}
 
 	void Com_Camera::RenderForwardOpaque()
 	{
-		for (size_t i = 0; i < m_forwardOpaqueGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_forwardOpaque.size(); ++i)
 		{
-			if (m_forwardOpaqueGameObjects[i])
+			if (m_forwardOpaque[i])
 			{
-				m_forwardOpaqueGameObjects[i]->Render();
+				m_forwardOpaque[i]->Render();
 			}
 		}
 	}
 
 	void Com_Camera::RenderCutout()
 	{
-		for (size_t i = 0; i < m_cutoutGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_alphaTest.size(); ++i)
 		{
-			if (m_cutoutGameObjects[i])
+			if (m_alphaTest[i])
 			{
-				m_cutoutGameObjects[i]->Render();
+				m_alphaTest[i]->Render();
 			}
 		}
 	}
 
 	void Com_Camera::RenderTransparent()
 	{
-		for (size_t i = 0; i < m_transparentGameObject.size(); ++i)
+		for (size_t i = 0; i < m_alphaBlend.size(); ++i)
 		{
-			if (m_transparentGameObject[i])
+			if (m_alphaBlend[i])
 			{
-				m_transparentGameObject[i]->Render();
+				m_alphaBlend[i]->Render();
 			}
 		}
 	}
 
 	void Com_Camera::RenderPostProcess()
 	{
-		for (size_t i = 0; i < m_postProcessGameObjects.size(); ++i)
+		for (size_t i = 0; i < m_postProcess.size(); ++i)
 		{
-			if (m_postProcessGameObjects[i])
+			if (m_postProcess[i])
 			{
 				RenderManager::CopyRenderTarget();
-				m_postProcessGameObjects[i]->Render();
+				m_postProcess[i]->Render();
 			}
 		}
 	}
 
 	void Com_Camera::PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj)
 	{
-		if (nullptr == _gameObj || false == _gameObj->IsActive())
-			return;
+		//if (nullptr == _gameObj || false == _gameObj->IsActive())
+		//	return;
 
-		const auto& renderer = _gameObj->GetComponent<iRenderer>();
+		//const auto& renderer = _gameObj->GetComponent<iRenderer>();
 
-		if (nullptr == renderer)
-			return;
-		
-		//카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
-		else if (mCullingAgent && renderer->IsCullingEnabled())
+		//if (nullptr == renderer)
+		//	return;
+		//
+		////카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
+		//else if (m_cullingAgent && renderer->IsCullingEnabled())
+		//{
+		//	
+		//}
+
+
+		//eRenderingMode mode = eRenderingMode::None;
+		//Material* mtrl = renderer->GetCurrentMaterial(0u);
+		//if (mtrl)
+		//{
+		//	mode = mtrl->GetRenderingMode();
+		//}
+
+		//switch (mode)
+		//{
+		//case eRenderingMode::DefferdOpaque:
+		//	[[fallthrough]];
+		//case eRenderingMode::DefferdMask:
+		//	m_defferedOpaqueGameObjects.push_back(_gameObj);
+		//	break;
+		//case eRenderingMode::Opaque:
+		//	m_forwardOpaqueGameObjects.push_back(_gameObj);
+		//	break;
+		//case eRenderingMode::CutOut:
+		//	m_cutoutGameObjects.push_back(_gameObj);
+		//	break;
+		//case eRenderingMode::Transparent:
+		//	m_transparentGameObject.push_back(_gameObj);
+		//	break;
+		//case eRenderingMode::PostProcess:
+		//	m_postProcessGameObjects.push_back(_gameObj);
+		//	break;
+		//default:
+		//	break;
+		//}
+	}
+
+	void Com_Camera::SortRenderersByMode()
+	{
+		const auto& renderers = RenderManager::GetRenderers();
+
+		for (size_t i = 0; i < renderers.size(); ++i)
 		{
-			
-		}
+			iRenderer* const renderer = renderers[i];
+
+			if ((nullptr == renderer) || (false == renderer->IsEnabled()))
+			{
+				continue;
+			}
+
+			//카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
+			else if (m_cullingAgent && renderer->IsCullingEnabled())
+			{
+
+			}
 
 
-		eRenderingMode mode = eRenderingMode::None;
-		Material* mtrl = renderer->GetCurrentMaterial(0u);
-		if (mtrl)
-		{
-			mode = mtrl->GetRenderingMode();
-		}
+			eRenderingMode mode = eRenderingMode::None;
+			Material* mtrl = renderer->GetCurrentMaterial(0u);
+			if (mtrl)
+			{
+				mode = mtrl->GetRenderingMode();
+			}
 
-		switch (mode)
-		{
-		case eRenderingMode::DefferdOpaque:
-			[[fallthrough]];
-		case eRenderingMode::DefferdMask:
-			m_defferedOpaqueGameObjects.push_back(_gameObj);
-			break;
-		case eRenderingMode::Opaque:
-			m_forwardOpaqueGameObjects.push_back(_gameObj);
-			break;
-		case eRenderingMode::CutOut:
-			m_cutoutGameObjects.push_back(_gameObj);
-			break;
-		case eRenderingMode::Transparent:
-			m_transparentGameObject.push_back(_gameObj);
-			break;
-		case eRenderingMode::PostProcess:
-			m_postProcessGameObjects.push_back(_gameObj);
-			break;
-		default:
-			break;
+			switch (mode)
+			{
+			case eRenderingMode::DefferdOpaque:
+				m_defferedOpaque.push_back(renderer);
+				break;
+				//[[fallthrough]];
+			case eRenderingMode::DefferdMask:
+				ASSERT(false, "미구현");
+				break;
+			case eRenderingMode::Opaque:
+				m_forwardOpaque.push_back(renderer);
+				break;
+			case eRenderingMode::CutOut:
+				m_alphaTest.push_back(renderer);
+				break;
+			case eRenderingMode::Transparent:
+				m_alphaBlend.push_back(renderer);
+				break;
+			case eRenderingMode::PostProcess:
+				m_postProcess.push_back(renderer);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

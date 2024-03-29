@@ -19,10 +19,10 @@ namespace define_Preset
 {
 	namespace Path
 	{
-		PRESET(ContentsProj, "./Project/UserContents");
+		PRESET(ContentsProj, "./Project/Contents");
 		PRESET(EngineProj, "./Project/Base/Engine");
 		PRESET(EngineComponent, "./Project/Base/Engine/Game/Component");
-		PRESET(Shader_Proj, "./Project/UserShader");
+		PRESET(Shader_Proj, "./Project/Shader");
 
 
 #ifdef _DEBUG
@@ -108,7 +108,7 @@ R"(#ifndef STRKEY
 }
 
 
-#include "../Engine/GPU/define_GPU.h"
+#include "Engine/GPU/define_GPU.h"
 namespace define_ShaderGen
 {
 	struct tShaderSetting

@@ -16,7 +16,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Collider2D_AABB::Update()
+	void Com_Collider2D_AABB::UpdateShape()
 	{
 		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
 		float2 pos = float2(worldMat._41, worldMat._42);

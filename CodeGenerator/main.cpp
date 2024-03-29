@@ -205,7 +205,7 @@ void CreateEngineComponentKey()
 
         Desc.ClassName = "ComponentInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";
-        Desc.IncludeManagerHeader = R"(#include "../../Manager/ComponentManager.h")";
+        Desc.IncludeManagerHeader = R"(#include "Engine/Manager/ComponentManager.h")";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
@@ -241,19 +241,19 @@ void CreateUserComponentKey()
         DirTree.CreateStrKeyHeader(desc);
     }
 
-    //UserContentsInitializer 작성
+    //ContentsInitializer 작성
     {
         tAddBaseClassDesc Desc = {};
         Desc.BaseType = "iComponent";
-        Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
-        Desc.ClassName = "UserContentsInitializer";
+        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
+        Desc.ClassName = "ContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
-        Desc.IncludeManagerHeader = R"(#include <Base/Engine/Manager/ComponentManager.h>)";
+        Desc.IncludeManagerHeader = R"(#include <Engine/Manager/ComponentManager.h>)";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
-        Desc.FilePath = DirPath / "UserContentsInitializer_Component.cpp";
+        Desc.FilePath = DirPath / "ContentsInitializer_Component.cpp";
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
@@ -262,7 +262,6 @@ void CreateUserComponentKey()
 
 void CreateScriptKey()
 {
-
     DirTree DirTree;
     stdfs::path DirPath = define_Preset::Path::ContentsProj::A;
 
@@ -288,19 +287,19 @@ void CreateScriptKey()
     }
     
 
-    //UserContentsInitializer 코드 생성
+    //ContentsInitializer 코드 생성
     {
         tAddBaseClassDesc Desc = {};
         Desc.BaseType = "iScript";
-        Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
-        Desc.ClassName = "UserContentsInitializer";
+        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
+        Desc.ClassName = "ContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
-        Desc.IncludeManagerHeader = "#include <Base/Engine/Manager/ComponentManager.h>";
+        Desc.IncludeManagerHeader = "#include <Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::script::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScript()";
-        Desc.FilePath = DirPath / "UserContentsInitializer_Script.cpp";
+        Desc.FilePath = DirPath / "ContentsInitializer_Script.cpp";
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
@@ -336,15 +335,15 @@ void CreateSceneKey()
     {
         tAddBaseClassDesc Desc = {};
         Desc.BaseType = "iScene";
-        Desc.IncludePCH = R"(#include "PCH_UserContents.h")";
-        Desc.ClassName = "UserContentsInitializer";
+        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
+        Desc.ClassName = "ContentsInitializer";
         Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
-        Desc.IncludeManagerHeader = "#include <Base/Engine/Manager/SceneManager.h>";
+        Desc.IncludeManagerHeader = "#include <Engine/Manager/SceneManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(SceneManager::AddSceneConstructor<T>(strKey::scene::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScene()";
-        Desc.FilePath = DirPath / "UserContentsInitializer_Scene.cpp";
+        Desc.FilePath = DirPath / "ContentsInitializer_Scene.cpp";
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }

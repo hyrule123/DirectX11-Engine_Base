@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/Game/Component/Renderer/Com_Renderer_Mesh.h"
 
+#include "Engine/CommonStruct.h"
+
 namespace ehw
 {
 	class Com_Renderer_UIBase :

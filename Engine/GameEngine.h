@@ -27,7 +27,6 @@ namespace ehw
 		// Running main engine loop
 		static bool Run();
 
-		static void Present();
 		static void Release();
 
 		//사이즈를 입력하면 조절

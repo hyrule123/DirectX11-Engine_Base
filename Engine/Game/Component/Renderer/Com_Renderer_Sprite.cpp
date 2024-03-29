@@ -44,12 +44,6 @@ namespace ehw
 		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
 	}
 
-
-	void Com_Renderer_Sprite::FinalUpdate()
-	{
-		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
-	}
-
 	void Com_Renderer_Sprite::Render()
 	{
 		if (false == IsRenderReady() || nullptr == mAnimator)

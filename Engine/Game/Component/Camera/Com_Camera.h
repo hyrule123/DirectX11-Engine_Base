@@ -7,7 +7,7 @@
 
 namespace  ehw
 {
-	
+	class iRenderer;
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
@@ -19,38 +19,37 @@ namespace  ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		__forceinline static const MATRIX& GetGpuViewMatrix() { return gView; }
-		__forceinline static const MATRIX& GetGpuViewInvMatrix() { return gViewInverse; }
-		__forceinline static const MATRIX& GetGpuProjectionMatrix() { return gProjection; }
-		__forceinline static void SetGpuViewMatrix(MATRIX _view) { gView = _view; }
-		__forceinline static void SetGpuProjectionMatrix(MATRIX _projection) { gProjection = _projection; }
+		__forceinline static const MATRIX& GetGpuViewMatrix() { return s_viewMatrix; }
+		__forceinline static const MATRIX& GetGpuViewInvMatrix() { return s_viewInverseMatrix; }
+		__forceinline static const MATRIX& GetGpuProjectionMatrix() { return s_projectionMatrix; }
+		__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
+		__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
 
 		virtual void FinalUpdate() override;
+		virtual void FrameEnd() override;
 
 		//이 함수는 RenderMgr가 호출
 		void RenderCamera();
 
 		void CreateViewMatrix();
-		
-		void RegisterCameraInRenderer();
 
 		void TurnLayerMask(uint32 _layer, bool _enable = true);
-		void EnableLayerMasks() { mLayerMasks.set(); }
-		void DisableLayerMasks() { mLayerMasks.reset(); }
+		void EnableLayerMasks() { m_layerMasks.set(); }
+		void DisableLayerMasks() { m_layerMasks.reset(); }
 
-		void SetProjectionType(eProjectionType _type) { mProjType = _type; CreateProjectionMatrix(); }
-		eProjectionType GetProjectionType() const { return mProjType; }
+		void SetProjectionType(eProjectionType _type) { m_projectionType = _type; CreateProjectionMatrix(); }
+		eProjectionType GetProjectionType() const { return m_projectionType; }
 
 		inline void SetCullEnable(bool _bCullingEnable);
-		bool IsCullEnabled() const { return mbCullEnable; }
+		bool IsCullEnabled() const { return m_isEnableCulling; }
 
 		void CreateProjectionMatrix();
 		void CreateProjectionMatrix(uint ResolutionX, uint ResolutionY);
 		
 		void SetScale(float _scale);
 		float GetScale() const { return m_scale; }
-		const MATRIX& GetViewMatrix() const { return mView; }
-		const MATRIX& GetProjectionMatrix() const { return mProjection; }
+		const MATRIX& GetViewMatrix() const { return m_viewMatrix; }
+		const MATRIX& GetProjectionMatrix() const { return m_projectionMatrix; }
 
 	private:
 		void SortGameObjects();
@@ -60,33 +59,33 @@ namespace  ehw
 		void RenderTransparent();
 		void RenderPostProcess();
 		void PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj);
+		void SortRenderersByMode();
 
 	private:
-		static MATRIX gView;
-		static MATRIX gViewInverse;
-		static MATRIX gProjection;
+		static MATRIX s_viewMatrix;
+		static MATRIX s_viewInverseMatrix;
+		static MATRIX s_projectionMatrix;
 
-		MATRIX mView;
-		MATRIX mViewInverse;
-		MATRIX mProjection;
+		MATRIX m_viewMatrix;
+		MATRIX m_viewInverse;
+		MATRIX m_projectionMatrix;
 
-		eProjectionType mProjType;
-		std::unique_ptr<CullingAgent> mCullingAgent;
-		bool mbCullEnable;
+		eProjectionType m_projectionType;
+		std::unique_ptr<CullingAgent> m_cullingAgent;
+		bool m_isEnableCulling;
 
-		float mAspectRatio;
+		float m_aspectRation;
 
-		float mNear;
-		float mFar;
+		float m_nearDistance;
+		float m_farDistance;
 		float m_scale;
 
-		std::bitset<g_maxLayer> mLayerMasks;
-		std::vector<std::shared_ptr<GameObject>> m_defferedOpaqueGameObjects;
-		std::vector<std::shared_ptr<GameObject>> m_forwardOpaqueGameObjects;
-		std::vector<std::shared_ptr<GameObject>> m_cutoutGameObjects;		//Alpha Test
-		std::vector<std::shared_ptr<GameObject>> m_transparentGameObject;	//Alpha Blend
-		std::vector<std::shared_ptr<GameObject>> m_postProcessGameObjects;
-
+		std::bitset<g_maxLayer> m_layerMasks;
+		std::vector<iRenderer*> m_defferedOpaque;
+		std::vector<iRenderer*> m_forwardOpaque;
+		std::vector<iRenderer*> m_alphaTest;		//CutOut
+		std::vector<iRenderer*> m_alphaBlend;	//Transparent
+		std::vector<iRenderer*> m_postProcess;
 
 
 		class CullingAgent : public Entity

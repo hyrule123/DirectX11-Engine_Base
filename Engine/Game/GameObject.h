@@ -13,9 +13,13 @@ namespace ehw
 	class GameObject
 		: public Entity
 		, public Serializable_Json
+		, public std::enable_shared_from_this<GameObject>
 	{
 		friend class GameObject;
 	public:
+		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
+		using Scripts = std::vector<iScript*>;
+
 		enum class eState
 		{
 			InActive,
@@ -23,7 +27,7 @@ namespace ehw
 			DestroyReserved,
 			Destroy
 		};
-	
+
 		GameObject();
 		GameObject(const std::string_view _name);
 		GameObject(const GameObject& _other);
@@ -33,7 +37,7 @@ namespace ehw
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
-		
+
 		void Awake();
 		void Update();
 		void CollisionUpdate();
@@ -42,11 +46,12 @@ namespace ehw
 		void RemoveDestroyed();
 		void FrameEnd();
 
+
+
 	public:
 		template <typename T>
 		inline T* AddComponent();
-		
-		
+
 		inline iComponent* AddComponent(std::unique_ptr<iComponent>& _pCom);
 		inline iComponent* AddComponent(const std::string_view _strKey);
 
@@ -61,16 +66,12 @@ namespace ehw
 		inline iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 		inline Com_Transform* Transform();
 
+		inline const BaseComponents& GetComponents() const { return m_baseComponents; }
+		
+		inline const Scripts& GetScripts() const { return m_scripts; }
 
-		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
-		const BaseComponents& 
-			GetComponents() const { return m_baseComponents; }
-
-		using Scripts = std::vector<iScript*>;
-		const Scripts& GetScripts() const { return m_scripts; }
-
-		void SetName(const std::string_view _Name) { m_name = _Name; }
-		const std::string& GetName() const { return m_name; }
+		inline void SetName(const std::string_view _Name) { m_name = _Name; }
+		inline const std::string& GetName() const { return m_name; }
 		
 		void SetActive(bool _bActive);
 		bool IsActive() const { return eState::Active == m_state; }
@@ -93,10 +94,12 @@ namespace ehw
 		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
 		void SetLayer(uint32 _type) { m_layer = _type; }
 
-		bool IsAwaken() const { return m_bAwake; }
+		bool IsAwaken() const { return m_isAwakeCalled; }
+
+		void SwapBaseComponents(GameObject& _other);
 
 	protected:
-		void SetActiveRecursive(bool _bActive);
+		void SetActiveInternal(bool _bActive);
 
 	private:
 		iComponent* AddComponent(iComponent* _pCom);
@@ -107,13 +110,12 @@ namespace ehw
 		iScene* m_ownerScene;
 		uint32 m_layer;
 
-		Com_Transform m_transform;	//Transform은 아예 GameObject에 붙여놓는다
 		std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
 		std::vector<iScript*> m_scripts;
 		
 		eState m_state;
 
-		bool m_bAwake;
+		bool m_isAwakeCalled;
 		bool m_bDontDestroyOnLoad;
 	};
 
@@ -153,13 +155,13 @@ namespace ehw
 	{
 		iComponent* ret = AddComponent(_pCom.get());
 
-		if (_pCom.get() != ret)
+		if (_pCom.get() == ret)
 		{
-			_pCom = nullptr;
+			_pCom.release();
 		}
 		else
 		{
-			_pCom.release();
+			_pCom.reset();
 		}
 
 		return ret;
@@ -210,10 +212,6 @@ namespace ehw
 		return pCom;
 	}
 
-	inline Com_Transform* GameObject::Transform()
-	{
-		return &m_transform;
-	}
 
 	template<typename T>
 	inline T* GameObject::GetScript()
@@ -231,5 +229,10 @@ namespace ehw
 
 		return ret;
 	}
+
+	inline Com_Transform* GameObject::Transform()
+	{
+		return static_cast<Com_Transform*>(m_baseComponents[(int)eComponentCategory::Transform]);
+	};
 }
 

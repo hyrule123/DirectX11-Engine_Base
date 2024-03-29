@@ -15,7 +15,8 @@
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Sprite.h>
 
-#include <Engine/Resource/iResource.h>
+#include <Engine/Resource/Mesh.h>
+#include <Engine/Resource/Material.h>
 
 namespace ehw::editor
 {

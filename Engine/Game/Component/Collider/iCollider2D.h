@@ -20,9 +20,14 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		virtual void Init() override;
-		virtual void FinalUpdate() override;
+		virtual void Update() final;
+		virtual void FrameEnd() final;
 
+		//CollisionManager에서 호출. 충돌체 정보를 계산한다.
+		inline void ColliderUpdate();
+		virtual void UpdateShape() = 0;
+
+		virtual void FinalUpdate() final {}
 
 		virtual void OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint) override;
 		virtual void OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint) override;
@@ -34,5 +39,17 @@ namespace ehw
 
 	private:
 		eCollider2D_Shape m_collider2DShape;
+		bool m_isColliderUpdated;
 	};
+
+	inline void iCollider2D::ColliderUpdate()
+	{
+		if (m_isColliderUpdated)
+		{
+			return;
+		}
+		m_isColliderUpdated = true;
+
+		UpdateShape();
+	}
 }

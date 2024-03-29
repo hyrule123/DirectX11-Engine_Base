@@ -5,8 +5,18 @@
 
 #include <memory>
 
-#define CLONE_ABLE(_type) virtual _type* Clone() override { return new _type(*this); }
-#define CLONE_DISABLE(_type) virtual _type* Clone() override { ERROR_MESSAGE_W(L"Clone할 수 없거나 Clone함수를 재정의하지 않은 클래스입니다."); return nullptr; }
+//Clone을 지원하지 않을 경우 nullptr이 반환된다.
+#define CLONE_ABLE(_type) \
+virtual _type* Clone() override { return new _type(*this); }
+//virtual bool IsCloneable() const override { return true; }
+
+//Clone을 지원하지 않을 경우 nullptr이 반환된다.
+#define CLONE_DISABLE(_type) \
+virtual _type* Clone() override\
+{\
+	return nullptr;\
+}
+//virtual bool IsCloneable() const override { return false; }
 
 namespace ehw
 {
@@ -17,11 +27,15 @@ namespace ehw
 
 	class Entity 
 	{
+		
 	public:
 		Entity();
 
 		Entity(const Entity& _other);
-		virtual Entity* Clone() { ASSERT(false, "Entity 클래스는 Clone할수 없습니다."); return nullptr; }
+
+		//Clone을 지원하지 않을 경우 nullptr이 반환된다.
+		virtual Entity* Clone() { return nullptr; }
+		virtual bool IsCloneable() const { return false; }
 
 		Entity(Entity&& _move) noexcept;
 
@@ -29,15 +43,17 @@ namespace ehw
 
 		inline void SetStrKey(const std::string_view _strKey) { m_strKey = _strKey; }
 		inline const std::string& GetStrKey() const { return m_strKey; }
-		UINT32 GetID() const { return mID; }
+		UINT32 GetID() const { return m_ID; }
 
+	protected:
+		void Swap(Entity& _other);
 
 
 	private:
 		std::string m_strKey;
-		const UINT32 mID;
+		const UINT32 m_ID;
 
-		static UINT32 gIDNext;
+		static UINT32 g_nextID;
 	};
 
 

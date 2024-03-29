@@ -35,7 +35,7 @@ namespace ehw
 	}
 	eResult Prefab::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		m_prefab = std::make_unique<GameObject>();
+		m_prefab = std::make_shared<GameObject>();
 
 		eResult result = m_prefab->LoadFile_Json(_baseDir / _strKeyPath);
 		if (eResultFail(result))

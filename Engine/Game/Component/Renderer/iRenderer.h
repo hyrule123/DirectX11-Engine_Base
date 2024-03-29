@@ -1,11 +1,9 @@
 #pragma once
 #include "Engine/Game/Component/iComponent.h"
 
-#include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
-
 namespace ehw
 {
+	class Mesh;
 	class Material;
 	enum class eMaterialMode
 	{
@@ -33,7 +31,7 @@ namespace ehw
 
 		//virtual void Init() override;
 		//virtual void Update() override;
-		virtual void FinalUpdate() override {};
+		virtual void FinalUpdate() override;
 		virtual void Render() = 0;
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
@@ -42,12 +40,12 @@ namespace ehw
 		void SetMesh(const std::shared_ptr<Mesh> _mesh);
 
 		//인스턴싱 구현 전까지는 일단 Material을 복사해서 사용
-		inline void SetMaterial(const std::shared_ptr <Material> _Mtrl, UINT _idx);
+		void SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx);
 		Material* SetMaterialMode(UINT _idx, eMaterialMode _mode);
 
-		std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
+		inline std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
 
-		inline std::shared_ptr<Material> GetSharedMaterial(UINT _idx);
+		std::shared_ptr<Material> GetSharedMaterial(UINT _idx);
 		inline Material* GetDynamicMaterial(UINT _idx);
 		inline Material* GetCurrentMaterial(UINT _idx);
 
@@ -67,17 +65,6 @@ namespace ehw
 		bool m_bCullingEnable;
 	};
 
-	inline void iRenderer::SetMaterial(const std::shared_ptr<Material> _Mtrl, UINT _idx)
-	{
-		if ((UINT)m_materials.size() <= _idx)
-			m_materials.resize(_idx + 1u);
-
-		m_materials[_idx] = {};
-		m_materials[_idx].SharedMaterial = _Mtrl;
-		m_materials[_idx].CurrentMaterial = m_materials[_idx].SharedMaterial.get();
-	}
-
-
 
 	inline Material* iRenderer::GetCurrentMaterial(UINT _idx)
 	{
@@ -86,7 +73,6 @@ namespace ehw
 		{
 			retMtrl = m_materials[_idx].CurrentMaterial;
 		}
-
 		return retMtrl;
 	}
 

@@ -11,12 +11,23 @@
 
 namespace ehw
 {
-
 	class GameObject;
 	class iScene 
 		: public Entity
 	{
 	public:
+		//GameObjects를 std::vector<GameObject>로 만든다면?
+		//매 프레임마다 partition을 하는데, partition 발생시 이동 할당 연산자 호출됨.
+		//	-> 모든 컴포넌트를 순회하며 SetOwner(this) 호출함.
+		
+		//GameObjects를 std::list<GameObject>로 만든다면?
+		//힙 여기저기 널부러진 GameObject 인스턴스를 찾아 업데이트 하는 셈.
+		//이러면 사실상 std::vector<GameObject*> 와 다를 게 없다.
+
+		//std::vector<std::shared_ptr<GameObject>>를 사용 시
+		//이 때는 람다 함수에 GameObject가 남아있는 채로 종료될 시 메모리 해제를 해줄수 있는 방법이 없다.
+		//-> 일반적인 방법으로 게임 종료시 람다함수를 반드시 실행시키도록 설정
+
 		using GameObjects = std::vector<std::shared_ptr<GameObject>>;
 
 		iScene();
@@ -44,33 +55,29 @@ namespace ehw
 
 		bool	IsAwaken() const { return m_bAwake; }
 
+		std::shared_ptr<GameObject> AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint _layer);
 
-		
+		//들어간 갯수
+		size_t AddGameObjects(const GameObjects& _gameObjects, const uint _layer);
 
-		//Add 'New' Game Object -> 이미 레이어에 들어갔었던 게임오브젝트는 이 함수를 사용하면 안됨
-		std::shared_ptr<GameObject> NewGameObject(const uint _layer = 0u, const std::string_view _name = "");
-		std::shared_ptr<GameObject> AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint _layer, const std::string_view _name);
-
-		template <type_traits_Ex::is_enum_class_v T>
-		inline std::shared_ptr<GameObject> NewGameObject(const T _layer, const std::string_view _name = "");
-
-		//inline void AddGameObject(const std::shared_ptr<GameObject>& _gameObject, const uint32 _layer);
-
-		std::vector<std::shared_ptr<GameObject>>		GetDontDestroyGameObjects();
+		GameObjects		GetDontDestroyGameObjects();
 		const GameObjects& GetGameObjects() { return m_gameObjects; }
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
 
-		//리턴값이 필요한 경우(future 변수 사용)
-		//future를 쓰지 말고 레퍼런스를 보내내서 변수 변화를 보는게 더 나을지도...
-		//template <class F, class... Args>
-		//inline std::future<typename std::invoke_result<F, Args...>::type> 
-		//	AddFrameEndJobReturn(F&& _func, Args&&... _args);
-
+	private:
+		//true: 문제 있음, false: 문제 없음
+		bool SetGameObjectInfo(const std::shared_ptr<GameObject>& _obj, const uint _layer);
+		void AddGameObjectInternal(const std::shared_ptr<GameObject>& _obj);
+		void AddGameObjectsInternal(GameObjects& _from);
 		
 	private:
 		GameObjects m_gameObjects;
+
+		//Scene 진행 중일 경우에는 여기에 임시로 넣었다가 씬에 추가함
+		GameObjects m_delayedAddQueue;
+
 		std::array<std::string, g_maxLayer>				m_layerNames;
 
 		std::queue<std::function<void()>> m_FrameEndJobs;
@@ -79,33 +86,10 @@ namespace ehw
 	};
 
 
-	template<type_traits_Ex::is_enum_class_v T>
-	inline std::shared_ptr<GameObject> iScene::NewGameObject(const T _layer, const std::string_view _name)
-	{
-		return NewGameObject(static_cast<std::underlying_type_t<T>>(_layer, _name));
-	}
-
 
 	template<class F, class ...Args>
 	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)
 	{
 		m_FrameEndJobs.push(std::bind(std::forward<F>(_func), std::forward<Args>(_args)...));
 	}
-
-
-	//template<class F, class ...Args>
-	//inline std::future<typename std::invoke_result<F, Args...>::type> iScene::AddFrameEndJobReturn(F&& _func, Args && ..._args)
-	//{
-	//	using return_type = std::invoke_result<F, Args...>::type;
-
-	//	auto pFunc = std::make_shared<std::packaged_task<return_type()>>(
-	//		std::bind(std::forward<F>(_func), std::forward<Args>(_args)...)
-	//	);
-
-	//	std::future<return_type> pFunc_result_future = pFunc->get_future();
-	//	m_FrameEndJobs.push([pFunc]() { (*pFunc)(); });
-
-	//	return pFunc_result_future;
-	//}
-
 }

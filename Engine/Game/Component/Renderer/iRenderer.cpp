@@ -12,6 +12,8 @@
 
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
+#include "Engine/Manager/RenderManager.h"
+
 
 namespace ehw
 {
@@ -44,6 +46,11 @@ namespace ehw
 				m_materials[i].DynamicMaterial = std::unique_ptr<Material>(_other.m_materials[i].DynamicMaterial->Clone());
 			}
 		}
+	}
+
+	void iRenderer::FinalUpdate()
+	{
+		RenderManager::EnqueueRenderer(this);
 	}
 
 	eResult iRenderer::Serialize_Json(JsonSerializer* _ser) const
@@ -161,6 +168,16 @@ namespace ehw
 
 		if (nullptr != m_mesh)
 			m_materials.resize(m_mesh->GetSubsetCount());
+	}
+
+	void iRenderer::SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx)
+	{
+		if ((UINT)m_materials.size() <= _idx)
+			m_materials.resize(_idx + 1u);
+
+		m_materials[_idx] = {};
+		m_materials[_idx].SharedMaterial = _Mtrl;
+		m_materials[_idx].CurrentMaterial = m_materials[_idx].SharedMaterial.get();
 	}
 
 	Material* iRenderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)

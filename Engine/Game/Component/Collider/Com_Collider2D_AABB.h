@@ -10,7 +10,7 @@ namespace ehw
         Com_Collider2D_AABB();
         virtual ~Com_Collider2D_AABB();
 
-        virtual void Update() override;
+        virtual void UpdateShape() final;
 
         void SetOffsetScale(float2 _scale) { m_offsetScale = _scale; };
         void SyncToTransform(bool _enable) { m_isSyncScaleToTransform = _enable; }

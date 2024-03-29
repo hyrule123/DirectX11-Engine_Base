@@ -33,10 +33,10 @@ namespace ehw
 	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
 
 
-	constexpr const uint32_t g_maxLayer = 32;
-	constexpr inline bool CheckLayerValid(uint32_t _layer) { return (g_maxLayer > _layer); }
+	constexpr const unsigned int g_maxLayer = 32u;
+	constexpr inline bool IsLayerValid(unsigned int _layer) { return (g_maxLayer > _layer); }
 	template <type_traits_Ex::is_enum_class_v T>
-	constexpr inline bool CheckLayerValid(T _layer) { return (g_maxLayer > static_cast<uint32_t>(_layer)); }
+	constexpr inline bool IsLayerValid(T _layer) { return (g_maxLayer > static_cast<unsigned int>(_layer)); }
 
 	enum class eCollisionStatus
 	{

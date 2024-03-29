@@ -5,6 +5,8 @@
 
 #include "Engine/Manager/Collision/CollisionInfo.h"
 
+#include "Engine/DefaultShader/Debug/Debug.hlsli"
+
 #include <array>
 #include <vector>
 #include <memory>
@@ -22,15 +24,12 @@ namespace ehw
 
 	class Collision2D
 	{
+		friend class iCollider2D;
 		friend class CollisionManager;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
 		using Collision2DFunction = std::function<
 			bool(iCollider2D* const, iCollider2D* const, Vector2&)
 		>;
-	public:
-		//등록은 Collider::Init()에서
-		//제거는 Collision2D::Update()에서 진행됨.
-		void Register(iCollider2D* const _obj);
 
 	private:
 		Collision2D();
@@ -40,6 +39,7 @@ namespace ehw
 		void Init();
 		void Update();
 		void Render();
+		void FrameEnd();
 
 	private:
 		void Enqueue(iCollider2D* const _obj);
@@ -73,8 +73,10 @@ namespace ehw
 			Vector2& _hitPoint);
 
 	private:
-		std::vector<iCollider2D*> m_colliders;
-		std::array<std::vector<iCollider2D*>, g_maxLayer> m_objectsInLayer;
+		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer);
+
+	private:
+		std::array<std::vector<iCollider2D*>, g_maxLayer> m_collidersInLayer;
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
 		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯
@@ -86,6 +88,7 @@ namespace ehw
 		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
 			m_collision2DFunctions;
 
+		std::array<std::vector<tDebug>, (int)eCollider2D_Shape::END> m_debugInstancingData;
 		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;
 	};
 }

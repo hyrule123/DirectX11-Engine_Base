@@ -123,12 +123,10 @@ namespace ehw
 		mSharedBuffer->Create<tParticleShared>(1, nullptr, 0u);
 	}
 
-	void Com_Renderer_ParticleSystem::Update()
-	{
-	}
-
 	void Com_Renderer_ParticleSystem::FinalUpdate()
 	{
+		iRenderer::FinalUpdate();
+
 		//파티클 생성 시간
 		float aliveTime = 1.0f / mFrequency;
 

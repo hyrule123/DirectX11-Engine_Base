@@ -20,6 +20,7 @@
 
 #include "Engine/Game/Component/Light/Com_Light3D.h"
 #include "Engine/Game/Component/Camera/Com_Camera.h"
+#include "Engine/Game/Component/Renderer/iRenderer.h"
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"
@@ -39,21 +40,23 @@
 
 namespace ehw
 {
-	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::mConstBuffers{};
-	std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>		RenderManager::mSamplerStates{};
-	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::mRasterizerStates{};
-	std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>		RenderManager::mDepthStencilStates{};
-	std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>				RenderManager::mBlendStates{};
+	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::m_constBuffers{};
+	std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>		RenderManager::m_samplerStates{};
+	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::m_rasterizerStates{};
+	std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>		RenderManager::m_depthStencilStates{};
+	std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>				RenderManager::m_blendStates{};
 
 	std::vector<Com_Camera*>			RenderManager::m_cameras{};
 	size_t								RenderManager::m_mainCamIndex(0u);
 
-	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::mMultiRenderTargets{};
+	std::vector<iRenderer*>				RenderManager::m_renderers{};
+
+	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::m_multiRenderTargets{};
 
 	std::vector<Com_Light3D*>			RenderManager::m_lights_3D{};
-	std::vector<tLightAttribute>		RenderManager::mLightAttributes{};
-	std::unique_ptr<StructBuffer>		RenderManager::mLightsBuffer{};
-	std::shared_ptr<Texture>			RenderManager::mPostProcessTexture{};
+	std::vector<tLightAttribute>		RenderManager::m_lightAttributes{};
+	std::unique_ptr<StructBuffer>		RenderManager::m_lights_SBuffer{};
+	std::shared_ptr<Texture>			RenderManager::m_postProcessTexture{};
 	
 
 	void RenderManager::Init()
@@ -80,35 +83,37 @@ namespace ehw
 	{
 		for (int i = 0; i < (int)eCBType::END; ++i)
 		{
-			mConstBuffers[i].reset();
+			m_constBuffers[i].reset();
 		}
 		for (int i = 0; i < (int)eSamplerType::END; ++i)
 		{
-			mSamplerStates[i] = nullptr;
+			m_samplerStates[i] = nullptr;
 		}
 		for (int i = 0; i < (int)eRSType::END; ++i)
 		{
-			mRasterizerStates[i] = nullptr;
+			m_rasterizerStates[i] = nullptr;
 		}
 		for (int i = 0; i < (int)eDSType::END; ++i)
 		{
-			mDepthStencilStates[i] = nullptr;
+			m_depthStencilStates[i] = nullptr;
 		}
 		for (int i = 0; i < (int)eBSType::END; ++i)
 		{
-			mBlendStates[i] = nullptr;
+			m_blendStates[i] = nullptr;
 		}
 
 		m_cameras.clear();
 		m_mainCamIndex = 0u;
 
-		mLightAttributes.clear();
-		mLightsBuffer.reset();
-		mPostProcessTexture = nullptr;
+		m_renderers.clear();
+
+		m_lightAttributes.clear();
+		m_lights_SBuffer.reset();
+		m_postProcessTexture = nullptr;
 
 		for (int i = 0; i < (int)eMRTType::END; ++i)
 		{
-			mMultiRenderTargets[i].reset();
+			m_multiRenderTargets[i].reset();
 		}
 		
 	}
@@ -122,18 +127,15 @@ namespace ehw
 		BindNoiseTexture();
 		BindLights();
 
-		for (size_t i = 0; i < m_cameras.size(); ++i)
-		{
-			//if (m_cameras[i]->IsEnabled())
-			//{
-			//	continue;
-			//}
-
-			m_cameras[i]->RenderCamera();
-		}
+		EraseIfDestroyed_Camera(true);
 
 		//m_cameras.clear();
-		mLightAttributes.clear();
+		m_lightAttributes.clear();
+	}
+
+	void RenderManager::FrameEnd()
+	{
+		m_renderers.clear();
 	}
 
 	void RenderManager::SetMainCamera(Com_Camera* const _pCam)
@@ -166,7 +168,6 @@ namespace ehw
 	}
 
 
-
 	void RenderManager::RemoveLight(Com_Light3D* const _pComLight)
 	{
 		for (auto iter = m_lights_3D.begin(); iter != m_lights_3D.end(); ++iter)
@@ -181,16 +182,16 @@ namespace ehw
 
 	void RenderManager::BindLights()
 	{
-		mLightsBuffer->SetData(mLightAttributes.data(), mLightAttributes.size());
+		m_lights_SBuffer->SetData(m_lightAttributes.data(), m_lightAttributes.size());
 
 		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 
-		mLightsBuffer->BindDataSRV(Register_t_lightAttributes, Flag);
+		m_lights_SBuffer->BindDataSRV(Register_t_lightAttributes, Flag);
 
 		
 
 		tCB_NumberOfLight trCb = {};
-		trCb.numberOfLight = (uint)mLightAttributes.size();
+		trCb.numberOfLight = (uint)m_lightAttributes.size();
 
 
 		//Destroy된 light 포인터 제거
@@ -212,7 +213,7 @@ namespace ehw
 		
 
 
-		const auto& cb = mConstBuffers[(uint)eCBType::numberOfLight];
+		const auto& cb = m_constBuffers[(uint)eCBType::numberOfLight];
 		cb->SetData(&trCb);
 		cb->BindData(Flag);
 	}
@@ -229,7 +230,7 @@ namespace ehw
 		noiseTime -= TimeManager::DeltaTime();
 		info.NoiseTime = noiseTime;
 
-		ConstBuffer* cb = mConstBuffers[(uint)eCBType::Noise].get();
+		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
 		cb->SetData(&info);
 		cb->BindData(eShaderStageFlag::ALL);
 	}
@@ -242,32 +243,63 @@ namespace ehw
 		//ID3D11ShaderResourceView* srv = nullptr;
 		//GPUManager::Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
 
-		ID3D11Texture2D* dest = mPostProcessTexture->GetTexture().Get();
+		ID3D11Texture2D* dest = m_postProcessTexture->GetTexture().Get();
 		ID3D11Texture2D* source = renderTarget->GetTexture().Get();
 
 		GPUManager::Context()->CopyResource(dest, source);
 
-		mPostProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::Pixel);
+		m_postProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::Pixel);
+	}
+
+	void RenderManager::EraseIfDestroyed_Camera(bool _callRender = false)
+	{
+		std::erase_if(m_cameras,
+			[_callRender](Com_Camera* _cam)->bool
+			{
+				if (_cam->IsDestroyed())
+				{
+					return true;
+				}
+				else if (_callRender && _cam->IsEnabled())
+				{
+					_cam->RenderCamera();
+				}
+
+				return false;
+			}
+		);
 	}
 
 	void RenderManager::ClearMultiRenderTargets()
 	{
 		for (int i = 0; i < (int)eMRTType::END; ++i)
 		{
-			if (mMultiRenderTargets[i])
+			if (m_multiRenderTargets[i])
 			{
 				if ((int)eMRTType::Swapchain == i)
 				{
-					mMultiRenderTargets[i]->Clear(float4(0.2f));
+					m_multiRenderTargets[i]->Clear(float4(0.2f));
 				}
 				else
 				{
-					mMultiRenderTargets[i]->Clear(float4(0.f));
+					m_multiRenderTargets[i]->Clear(float4(0.f));
 				}
 			}
 				
 		}
 	}
+
+
+
+	//void RenderManager::EraseIfDestroyed_Renderer()
+	//{
+	//	std::erase_if(m_renderers,
+	//		[](iRenderer* _renderer)->bool
+	//		{
+	//			return _renderer->IsDestroyed();
+	//		}
+	//	);
+	//}
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{
@@ -309,9 +341,9 @@ namespace ehw
 			arrRTTex[0] = GPUManager::GetRenderTargetTex();
 			dsTex = GPUManager::GetDepthStencilBufferTex();
 
-			mMultiRenderTargets[(UINT)eMRTType::Swapchain] = std::make_unique<MultiRenderTarget>();
+			m_multiRenderTargets[(UINT)eMRTType::Swapchain] = std::make_unique<MultiRenderTarget>();
 
-			if (false == mMultiRenderTargets[(UINT)eMRTType::Swapchain]->Create(arrRTTex, dsTex))
+			if (false == m_multiRenderTargets[(UINT)eMRTType::Swapchain]->Create(arrRTTex, dsTex))
 			{
 				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
@@ -335,8 +367,8 @@ namespace ehw
 
 			dsTex = GPUManager::GetDepthStencilBufferTex();
 
-			mMultiRenderTargets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
-			if(false == mMultiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
+			m_multiRenderTargets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
+			if(false == m_multiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
 			{
 				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
@@ -357,8 +389,8 @@ namespace ehw
 				arrRTTex[i]->SetStrKey(strKey::eMRT_Light_String[i]);
 			}
 
-			mMultiRenderTargets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
-			mMultiRenderTargets[(int)eMRTType::Light]->Create(arrRTTex, nullptr);
+			m_multiRenderTargets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
+			m_multiRenderTargets[(int)eMRTType::Light]->Create(arrRTTex, nullptr);
 		}
 
 		SetTexturesToDefferedMaterials();
@@ -374,7 +406,7 @@ namespace ehw
 
 			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::Find(strKey::defaultRes::material::LightPointMaterial);
 
-			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
+			MultiRenderTarget* DefferedMRT = m_multiRenderTargets[(uint)eMRTType::Deffered].get();
 
 			{
 				//Position Target
@@ -407,7 +439,7 @@ namespace ehw
 		{
 			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::MergeMaterial);
 
-			MultiRenderTarget* DefferedMRT = mMultiRenderTargets[(uint)eMRTType::Deffered].get();
+			MultiRenderTarget* DefferedMRT = m_multiRenderTargets[(uint)eMRTType::Deffered].get();
 			{
 				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::AlbedoTarget);
 				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRT);
@@ -440,7 +472,7 @@ namespace ehw
 			}
 
 
-			MultiRenderTarget* LightMRT = mMultiRenderTargets[(uint)eMRTType::Light].get();
+			MultiRenderTarget* LightMRT = m_multiRenderTargets[(uint)eMRTType::Light].get();
 			{
 				std::shared_ptr<Texture> DiffuseLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::DiffuseLightTarget);
 				mergeMaterial->SetTexture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
@@ -1221,52 +1253,52 @@ namespace ehw
 	void RenderManager::CreateBuffer()
 	{
 #pragma region CONSTANT BUFFER
-		mConstBuffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>(eCBType::Global);
-		mConstBuffers[(uint)eCBType::Global]->Create(sizeof(tCB_Global));
-		mConstBuffers[(uint)eCBType::Global]->SetPresetTargetStage(eShaderStageFlag::ALL);
+		m_constBuffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>(eCBType::Global);
+		m_constBuffers[(uint)eCBType::Global]->Create(sizeof(tCB_Global));
+		m_constBuffers[(uint)eCBType::Global]->SetPresetTargetStage(eShaderStageFlag::ALL);
 
 		UpdateGlobalCBuffer();
 
-		mConstBuffers[(uint)eCBType::Transform] = std::make_unique<ConstBuffer>(eCBType::Transform);
-		mConstBuffers[(uint)eCBType::Transform]->Create(sizeof(tCB_Transform));
+		m_constBuffers[(uint)eCBType::Transform] = std::make_unique<ConstBuffer>(eCBType::Transform);
+		m_constBuffers[(uint)eCBType::Transform]->Create(sizeof(tCB_Transform));
 
-		mConstBuffers[(uint)eCBType::ComputeShader] = std::make_unique<ConstBuffer>(eCBType::ComputeShader);
-		mConstBuffers[(uint)eCBType::ComputeShader]->Create<tCB_ComputeShader>(1u);
-		mConstBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::Compute);
+		m_constBuffers[(uint)eCBType::ComputeShader] = std::make_unique<ConstBuffer>(eCBType::ComputeShader);
+		m_constBuffers[(uint)eCBType::ComputeShader]->Create<tCB_ComputeShader>(1u);
+		m_constBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::Compute);
 
-		mConstBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>(eCBType::Material);
-		mConstBuffers[(uint)eCBType::Material]->Create(sizeof(tCB_MaterialData));
+		m_constBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>(eCBType::Material);
+		m_constBuffers[(uint)eCBType::Material]->Create(sizeof(tCB_MaterialData));
 
-		mConstBuffers[(uint)eCBType::Grid] = std::make_unique<ConstBuffer>(eCBType::Grid);
-		mConstBuffers[(uint)eCBType::Grid]->Create(sizeof(tCB_Grid));
+		m_constBuffers[(uint)eCBType::Grid] = std::make_unique<ConstBuffer>(eCBType::Grid);
+		m_constBuffers[(uint)eCBType::Grid]->Create(sizeof(tCB_Grid));
 
-		mConstBuffers[(uint)eCBType::Animation2D] = std::make_unique<ConstBuffer>(eCBType::Animation2D);
-		mConstBuffers[(uint)eCBType::Animation2D]->Create(sizeof(tCB_Animation2D));
+		m_constBuffers[(uint)eCBType::Animation2D] = std::make_unique<ConstBuffer>(eCBType::Animation2D);
+		m_constBuffers[(uint)eCBType::Animation2D]->Create(sizeof(tCB_Animation2D));
 
-		mConstBuffers[(uint)eCBType::numberOfLight] = std::make_unique<ConstBuffer>(eCBType::numberOfLight);
-		mConstBuffers[(uint)eCBType::numberOfLight]->Create(sizeof(tCB_NumberOfLight));
+		m_constBuffers[(uint)eCBType::numberOfLight] = std::make_unique<ConstBuffer>(eCBType::numberOfLight);
+		m_constBuffers[(uint)eCBType::numberOfLight]->Create(sizeof(tCB_NumberOfLight));
 
-		mConstBuffers[(uint)eCBType::ParticleSystem] = std::make_unique<ConstBuffer>(eCBType::ParticleSystem);
-		mConstBuffers[(uint)eCBType::ParticleSystem]->Create(sizeof(tCB_ParticleSystem));
+		m_constBuffers[(uint)eCBType::ParticleSystem] = std::make_unique<ConstBuffer>(eCBType::ParticleSystem);
+		m_constBuffers[(uint)eCBType::ParticleSystem]->Create(sizeof(tCB_ParticleSystem));
 
-		mConstBuffers[(uint)eCBType::Noise] = std::make_unique<ConstBuffer>(eCBType::Noise);
-		mConstBuffers[(uint)eCBType::Noise]->Create(sizeof(tCB_Noise));
+		m_constBuffers[(uint)eCBType::Noise] = std::make_unique<ConstBuffer>(eCBType::Noise);
+		m_constBuffers[(uint)eCBType::Noise]->Create(sizeof(tCB_Noise));
 
-		mConstBuffers[(uint)eCBType::SBufferCount] = std::make_unique<ConstBuffer>(eCBType::SBufferCount);
-		mConstBuffers[(uint)eCBType::SBufferCount]->Create<tCB_SBufferCount>();
+		m_constBuffers[(uint)eCBType::SBufferCount] = std::make_unique<ConstBuffer>(eCBType::SBufferCount);
+		m_constBuffers[(uint)eCBType::SBufferCount]->Create<tCB_SBufferCount>();
 
-		mConstBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
-		mConstBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
+		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
+		m_constBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
 
-		mConstBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
-		mConstBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
+		m_constBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
+		m_constBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
 
 #pragma endregion
 #pragma region STRUCTED BUFFER
 		StructBuffer::Desc SDesc{};
 		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		mLightsBuffer = std::make_unique<StructBuffer>(SDesc);
-		mLightsBuffer->Create<tLightAttribute>(128u, nullptr, 0);
+		m_lights_SBuffer = std::make_unique<StructBuffer>(SDesc);
+		m_lights_SBuffer->Create<tLightAttribute>(128u, nullptr, 0);
 #pragma endregion
 	}
 
@@ -1300,9 +1332,9 @@ namespace ehw
 #pragma endregion
 
 		//noise
-		std::shared_ptr<Texture> mNoiseTex = std::make_shared<Texture>();
-		mNoiseTex->Create(GPUManager::GetResolutionX(), GPUManager::GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
-		mNoiseTex->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::Pixel);
+		std::shared_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
+		m_noiseTexture->Create(GPUManager::GetResolutionX(), GPUManager::GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+		m_noiseTexture->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::Pixel);
 	}
 
 
@@ -1320,32 +1352,32 @@ namespace ehw
 		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
-			, mSamplerStates[(uint)eSamplerType::Point].GetAddressOf()
+			, m_samplerStates[(uint)eSamplerType::Point].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR;
 		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
-			, mSamplerStates[(uint)eSamplerType::Linear].GetAddressOf()
+			, m_samplerStates[(uint)eSamplerType::Linear].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
 		GPUManager::Device()->CreateSamplerState
 		(
 			&samplerDesc
-			, mSamplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf()
+			, m_samplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf()
 		);
 
 
 		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Point
-			, 1, mSamplerStates[(uint)eSamplerType::Point].GetAddressOf());
+			, 1, m_samplerStates[(uint)eSamplerType::Point].GetAddressOf());
 
 		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Linear
-			, 1, mSamplerStates[(uint)eSamplerType::Linear].GetAddressOf());
+			, 1, m_samplerStates[(uint)eSamplerType::Linear].GetAddressOf());
 
 		GPUManager::Context()->PSSetSamplers((uint)eSamplerType::Anisotropic
-			, 1, mSamplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf());
+			, 1, m_samplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf());
 
 #pragma endregion
 	}
@@ -1359,26 +1391,26 @@ namespace ehw
 		rsDesc.DepthClipEnable = TRUE;
 
 		GPUManager::Device()->CreateRasterizerState(&rsDesc
-			, mRasterizerStates[(uint)eRSType::SolidBack].GetAddressOf());
+			, m_rasterizerStates[(uint)eRSType::SolidBack].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
 		rsDesc.DepthClipEnable = TRUE;
 
 		GPUManager::Device()->CreateRasterizerState(&rsDesc
-			, mRasterizerStates[(uint)eRSType::SolidFront].GetAddressOf());
+			, m_rasterizerStates[(uint)eRSType::SolidFront].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
 		GPUManager::Device()->CreateRasterizerState(&rsDesc
-			, mRasterizerStates[(uint)eRSType::SolidNone].GetAddressOf());
+			, m_rasterizerStates[(uint)eRSType::SolidNone].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
 		GPUManager::Device()->CreateRasterizerState(&rsDesc
-			, mRasterizerStates[(uint)eRSType::WireframeNone].GetAddressOf());
+			, m_rasterizerStates[(uint)eRSType::WireframeNone].GetAddressOf());
 #pragma endregion
 	}
 
@@ -1387,7 +1419,7 @@ namespace ehw
 
 #pragma region Blend State
 		//None
-		mBlendStates[(uint)eBSType::Default] = nullptr;
+		m_blendStates[(uint)eBSType::Default] = nullptr;
 
 		D3D11_BLEND_DESC bsDesc = {};
 		bsDesc.AlphaToCoverageEnable = false;
@@ -1402,7 +1434,7 @@ namespace ehw
 
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		GPUManager::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::AlphaBlend].GetAddressOf());
+		GPUManager::Device()->CreateBlendState(&bsDesc, m_blendStates[(uint)eBSType::AlphaBlend].GetAddressOf());
 
 		bsDesc.AlphaToCoverageEnable = false;
 		bsDesc.IndependentBlendEnable = false;
@@ -1413,7 +1445,7 @@ namespace ehw
 		bsDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		GPUManager::Device()->CreateBlendState(&bsDesc, mBlendStates[(uint)eBSType::OneOne].GetAddressOf());
+		GPUManager::Device()->CreateBlendState(&bsDesc, m_blendStates[(uint)eBSType::OneOne].GetAddressOf());
 
 #pragma endregion
 	}
@@ -1427,7 +1459,7 @@ namespace ehw
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = false;
 		GPUManager::Device()->CreateDepthStencilState(&dsDesc
-			, mDepthStencilStates[(uint)eDSType::Less].GetAddressOf());
+			, m_depthStencilStates[(uint)eDSType::Less].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_GREATER;
@@ -1435,7 +1467,7 @@ namespace ehw
 		dsDesc.StencilEnable = false;
 
 		GPUManager::Device()->CreateDepthStencilState(&dsDesc
-			, mDepthStencilStates[(uint)eDSType::Greater].GetAddressOf());
+			, m_depthStencilStates[(uint)eDSType::Greater].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
@@ -1443,7 +1475,7 @@ namespace ehw
 		dsDesc.StencilEnable = false;
 
 		GPUManager::Device()->CreateDepthStencilState(&dsDesc
-			, mDepthStencilStates[(uint)eDSType::NoWrite].GetAddressOf());
+			, m_depthStencilStates[(uint)eDSType::NoWrite].GetAddressOf());
 
 		dsDesc.DepthEnable = false;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
@@ -1451,7 +1483,7 @@ namespace ehw
 		dsDesc.StencilEnable = false;
 
 		GPUManager::Device()->CreateDepthStencilState(&dsDesc
-			, mDepthStencilStates[(uint)eDSType::None].GetAddressOf());
+			, m_depthStencilStates[(uint)eDSType::None].GetAddressOf());
 #pragma endregion
 	}
 

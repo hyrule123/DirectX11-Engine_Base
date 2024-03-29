@@ -4,7 +4,8 @@
 
 #include "Engine/Game/GameObject.h"
 
-
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
 
 
 namespace ehw

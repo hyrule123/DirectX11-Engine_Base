@@ -30,11 +30,11 @@ namespace ehw
 	{
 		friend class GameEngine;
 	public:
-
 		template <type_traits_Ex::is_enum_class_v T>
 		inline void SetCollisionInteraction(T _left, T _right, bool _enable = true);
 
-		static inline void RegisterCollider2D(iCollider2D* const _col2D);
+		static inline Collision2D& GetCollision2D() { return m_col2DManager; }
+		static inline Collision3D& GetCollision3D() { return m_col3DManager; }
 
 		//static void LayerCollision(class iScene* _scene, uint32 _left, uint32 _right);
 		//static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
@@ -51,18 +51,15 @@ namespace ehw
 		static void Release();
 
 		static void Update();
-		
-		
+		static void FrameEnd();
 
 	private:
 		//레이어끼리의 상호작용 여부를 담아놓은 이차원 배열
 		static std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collisionMask;
 
 		static Collision2D m_col2DManager;
-		static bool m_bEnableCollision2D;
 
 		static Collision3D m_col3DManager;
-		static bool m_bEnableCollision3D;
 	};
 
 	template<type_traits_Ex::is_enum_class_v T>
@@ -73,10 +70,5 @@ namespace ehw
 
 		m_collisionMask[left][right] = _enable;
 		m_collisionMask[right][left] = _enable;
-	}
-
-	inline void CollisionManager::RegisterCollider2D(iCollider2D* const _col2D)
-	{
-		m_col2DManager.Register(_col2D);
 	}
 }

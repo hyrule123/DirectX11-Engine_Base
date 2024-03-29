@@ -41,9 +41,14 @@ namespace ehw
 
 		//단순 Value만 저장 중이므로 기본 복사 생성자로도 충분함.
 		Com_Transform(const Com_Transform& _other) = default;
+		Com_Transform(Com_Transform&& _move) noexcept = default;
+
 		CLONE_ABLE(Com_Transform);
 
 		virtual ~Com_Transform();
+
+		
+		
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); }
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) { return eResult(); }
@@ -58,7 +63,8 @@ namespace ehw
 		inline void AddChild(Com_Transform* _transform);
 		inline const std::vector<Com_Transform*>& GetChilds() const { return m_childs; }
 
-		void GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects);
+		std::vector<GameObject*> GetGameObjectHierarchy();
+		void GetGameObjectHierarchy_Recursive(std::vector<GameObject*>& _retObjects);
 
 		
 #pragma region //Hierarchy

@@ -15,7 +15,6 @@ namespace editor
 
 namespace ehw
 {
-	class iScene;
 	class Mesh;
 	class Material;
 	class GameObject;
@@ -46,11 +45,11 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		//아예 새 게임오브젝트를 반환
-		eResult Instantiate(iScene* _pScene, uint32 _type);
+		std::vector<std::shared_ptr<GameObject>> Instantiate();
 
-		//Scene에 들어간 Object만 인자로 받음.
-		eResult Instantiate(GameObject* const _inSceneObj);
+		//Instantiate(GetOwner());
+		//기존의 BaseComponent는 전부 제거되므로 주의할것.
+		std::vector<std::shared_ptr<GameObject>> Instantiate(const std::shared_ptr<GameObject>& _obj);
 
 	private:
 		eResult ConvertFBX(

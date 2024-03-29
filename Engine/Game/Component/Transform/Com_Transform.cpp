@@ -33,8 +33,8 @@ namespace ehw
 		, m_parent()
 		, m_childs()
 	{
-		SetStrKey("Com_Transform");
 	}
+
 
 	Com_Transform::~Com_Transform()
 	{
@@ -94,14 +94,20 @@ namespace ehw
 		return true;
 	}
 
-	void Com_Transform::GetGameObjectHierarchy_Recursive(std::vector<std::shared_ptr<GameObject>>& _retObjects)
+	std::vector<GameObject*> Com_Transform::GetGameObjectHierarchy()
 	{
-		ASSERT(false, "미구현");
-		//_retObjects.push_back(GetOwner()->shared_from_this_T<GameObject>());
-		//for (size_t i = 0; i < m_childs.size(); ++i)
-		//{
-		//	m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
-		//}
+		std::vector<GameObject*> ret{};
+		GetGameObjectHierarchy_Recursive(ret);
+		return ret;
+	}
+
+	void Com_Transform::GetGameObjectHierarchy_Recursive(std::vector<GameObject*>& _retObjects)
+	{
+		_retObjects.push_back(GetOwner());
+		for (size_t i = 0; i < m_childs.size(); ++i)
+		{
+			m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
+		}
 	}
 
 

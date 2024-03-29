@@ -46,7 +46,7 @@ public:
 	};
 	HRESULT CreateStrKeyHeader(const tStrKeyWriteDesc& _desc);
 
-	//UserContentsInitializer에 자신의 클래스를 등록하는 코드를 생성하는 함수
+	//ContentsInitializer에 자신의 클래스를 등록하는 코드를 생성하는 함수
 	HRESULT CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc);
 
 	HRESULT CreateShaderStrKey(stdfs::path const& _FilePath);

@@ -14,8 +14,8 @@ namespace ehw
 	iCollider2D::iCollider2D(eCollider2D_Shape _type)
 		: iCollider(eDimensionType::_2D)
 		, m_collider2DShape(_type)
+		, m_isColliderUpdated(false)
 	{
-		CollisionManager::RegisterCollider2D(this);
 	}
 
 	iCollider2D::iCollider2D(const iCollider2D& _collider)
@@ -39,42 +39,16 @@ namespace ehw
 		return eResult();
 	}
 
-	void iCollider2D::Init()
+	void iCollider2D::Update()
 	{
+		CollisionManager::GetCollision2D().Enqueue(this);
 	}
 
-
-	void iCollider2D::FinalUpdate()
+	void iCollider2D::FrameEnd()
 	{
-		//float3 scale = mTransform->GetLocalScale();
-		//scale *= float3(mSize.x, mSize.y, 1.0f);
-
-		//Quaternion rotation = mTransform->GetLocalRotation();
-
-		//float3 position = mTransform->GetLocalPosition();
-		//float3 colliderPos = position + float3(mCenter.x, mCenter.y, 0.0f);
-		//mPosition = colliderPos;
-
-		//MATRIX scaleMatrix = MATRIX::CreateScale(scale);
-		//MATRIX rotationMatrix;
-		//rotationMatrix = MATRIX::CreateRotationX(rotation.x);
-		//rotationMatrix *= MATRIX::CreateRotationY(rotation.y);
-		//rotationMatrix *= MATRIX::CreateRotationZ(rotation.z);
-
-		//MATRIX positionMatrix;
-		//positionMatrix.Translation(float3(colliderPos.x, colliderPos.y, colliderPos.z));
-
-		//MATRIX worldMatrix = scaleMatrix * rotationMatrix * positionMatrix;
-
-		//tDebugMesh meshAttribute = {};
-		//meshAttribute.position = float3(colliderPos.x, colliderPos.y, colliderPos.z);
-		//meshAttribute.radius = mRadius;
-		//meshAttribute.rotation = rotation;
-		//meshAttribute.scale = scale;
-		////meshAttribute.type = GetColli;
-
-		//RenderManager::AddDebugMesh(meshAttribute);
+		m_isColliderUpdated = false;
 	}
+
 	void iCollider2D::OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint)
 	{
 		//DEBUG_BREAK;

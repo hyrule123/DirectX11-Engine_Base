@@ -11,7 +11,7 @@ namespace ehw
 	iComponent::iComponent(eComponentCategory _type)
 		: m_ComCategory(_type)
 		, m_ComTypeID()
-		, m_Owner()
+		, m_ownerGameObject()
 		, m_state(eState::Enabled)
 	{
 	}
@@ -20,7 +20,7 @@ namespace ehw
 		: Entity(_other)
 		, m_ComCategory(_other.m_ComCategory)
 		, m_ComTypeID()
-		, m_Owner()
+		, m_ownerGameObject()
 		, m_state(_other.m_state)
 	{
 	}
@@ -51,9 +51,10 @@ namespace ehw
 				}
 			};
 
-		if (m_OwnerScene->IsAwaken())
+		iScene* scene = m_ownerGameObject->GetOwnerScene();
+		if (scene->IsAwaken())
 		{
-			m_OwnerScene->AddFrameEndJob(onEnableDisable);
+			scene->AddFrameEndJob(onEnableDisable);
 		}
 		else
 		{

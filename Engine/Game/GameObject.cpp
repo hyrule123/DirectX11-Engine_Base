@@ -21,18 +21,16 @@ namespace ehw
 		}
 	}
 
-
 	GameObject::GameObject()
-		: m_transform()
-		, m_baseComponents()
-		, m_ownerScene(nullptr)
+		: m_baseComponents()
+		, m_ownerScene()
 		, m_layer()
 		, m_name()
 		, m_state(eState::Active)
-		, m_bAwake(false)
+		, m_isAwakeCalled(false)
 		, m_bDontDestroyOnLoad(false)
 	{
-		AddComponent(&m_transform);
+		AddComponent<Com_Transform>();
 	}
 
 	GameObject::GameObject(const std::string_view _name)
@@ -41,15 +39,14 @@ namespace ehw
 		m_name = _name;
 	}
 
-
 	GameObject::GameObject(const GameObject& _other)
 		: Entity(_other)
 		, m_baseComponents()
 		, m_ownerScene(_other.m_ownerScene)
-		, m_layer()
+		, m_layer(_other.m_layer)
 		, m_name(_other.m_name)
 		, m_state(_other.m_state)
-		, m_bAwake(_other.m_bAwake)
+		, m_isAwakeCalled(_other.m_isAwakeCalled)
 		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
 	{
 		//1. 컴포넌트 목록 복사
@@ -57,16 +54,36 @@ namespace ehw
 		{
 			if (_other.m_baseComponents[i])
 			{
-				std::unique_ptr<iComponent> cloned = std::unique_ptr<iComponent>(_other.m_baseComponents[i]->Clone());
-				AddComponent(cloned);
+				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
+				//그냥 복사한뒤 주인만 바꾸면 됨.
+				m_baseComponents[i] = _other.m_baseComponents[i]->Clone();
+				m_baseComponents[i]->SetOwner(this);
+				//m_baseComponents[i]->SetOwnerScene(_other.m_)
 			}
 		}
+
+		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
+		for (size_t i = 0; i < _other.m_scripts.size(); ++i)
+		{
+			if (m_scripts[i]->IsCloneable())
+			{
+				m_scripts.push_back(static_cast<iScript*>(_other.m_scripts[i]->Clone()));
+				m_scripts.back()->SetOwner(this);
+			}
+#ifdef _DEBUG
+			else
+			{
+				DEBUG_LOG_W(L"스크립트 복사 실패!");
+			}
+#endif
+		}
 	}
+
 
 	GameObject::~GameObject()
 	{
 		//Transform은 GameObject에 붙어있으므로
-		for (size_t i = (size_t)eComponentCategory::Transform + 1; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i])
 			{
@@ -82,6 +99,8 @@ namespace ehw
 			}
 		}
 	}
+
+
 
 	eResult GameObject::Serialize_Json(JsonSerializer* _ser) const
 	{
@@ -119,12 +138,12 @@ namespace ehw
 	
 	void GameObject::Awake()
 	{
-		if (false == IsActive() || m_bAwake)
+		if (m_isAwakeCalled || false == IsActive())
 		{
 			return;
 		}
 
-		m_bAwake = true;
+		m_isAwakeCalled = true;
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i])
@@ -325,11 +344,15 @@ namespace ehw
 		}
 
 		ret->SetOwner(this);
-		ret->SetOwnerScene(m_ownerScene);
-		ret->Init();
+
+		if (false == ret->IsInitialized())
+		{
+			ret->Init();
+			ret->SetState(iComponent::eState::NotAwaken);
+		}
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
-		if (IsActive() && m_bAwake)
+		if (IsActive() && m_isAwakeCalled)
 		{
 			ret->Awake();
 		}
@@ -342,20 +365,28 @@ namespace ehw
 	void GameObject::SetActive(bool _bActive)
 	{
 		if (IsDestroyed() || IsActive() == _bActive)
+		{
 			return;
+		}
 
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
 		if (m_ownerScene->IsAwaken())
 		{
-			m_ownerScene->AddFrameEndJob(&GameObject::SetActiveRecursive, this, _bActive);
+			m_ownerScene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
 		else
 		{
-			SetActiveRecursive(_bActive);
+			SetActiveInternal(_bActive);
 		}
 
+		//자식이 있을경우 전부 InActive
+		const auto& childs = Transform()->GetGameObjectHierarchy();
+		for (size_t i = 0; i < childs.size(); ++i)
+		{
+			childs[i]->SetActive(false);
+		}
 	}
 
 	void GameObject::Destroy()
@@ -393,7 +424,19 @@ namespace ehw
 		tr->DestroyChildsRecursive();
 	}
 
-	void GameObject::SetActiveRecursive(bool _bActive)
+	void GameObject::SwapBaseComponents(GameObject& _other)
+	{
+		Entity::Swap(_other);
+
+		m_baseComponents.swap(_other.m_baseComponents);
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		{
+			m_baseComponents[i]->SetOwner(this);
+			_other.m_baseComponents[i]->SetOwner(&_other);
+		}
+	}
+
+	void GameObject::SetActiveInternal(bool _bActive)
 	{
 		//제거 대기 상태가 아님 && 바꾸고자 하는 상태가 현재 상태와 다른 경우에만
 		if (false == IsDestroyed() && IsActive() != _bActive)
@@ -403,9 +446,9 @@ namespace ehw
 				m_state = eState::Active;
 
 				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
-				if (m_ownerScene->IsAwaken() && false == m_bAwake)
+				if (m_ownerScene->IsAwaken() && false == m_isAwakeCalled)
 				{
-					m_bAwake = true;
+					m_isAwakeCalled = true;
 
 					for (size_t i = 0; i < m_baseComponents.size(); ++i)
 					{
@@ -416,20 +459,28 @@ namespace ehw
 				for (size_t i = 0; i < m_baseComponents.size(); ++i)
 				{
 					if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+					{
 						m_baseComponents[i]->OnEnable();
+					}
+						
 				}
 			}
 			else
 			{
 				m_state = eState::InActive;
 
+				//InActive 상태가 되면 OnDisable은 호출되지만, 각 컴포넌트의 Enabled 상태는 변하지 않음.
 				for (size_t i = 0; i < m_baseComponents.size(); ++i)
 				{
-					if(m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+					if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+					{
 						m_baseComponents[i]->OnDisable();
+					}
 				}
 			}
 		}
+
+
 	}
 
 	iScript* GameObject::GetScript(const std::string_view _strKey)
@@ -447,4 +498,5 @@ namespace ehw
 
 		return retScript;
 	}
+
 }

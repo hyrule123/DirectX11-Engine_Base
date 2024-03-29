@@ -13,8 +13,6 @@
 #include "Engine/Game/Component/Collider/iCollider2D.h"
 #include "Engine/Game/Component/Collider/Com_Collider2D_AABB.h"
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
-
 
 #ifdef max
 #undef max
@@ -25,12 +23,9 @@
 
 namespace ehw
 {
-	//CPP 내부용 전역변수
-	void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer);
 
 	Collision2D::Collision2D()
-		: m_objectsInLayer{}
-		, m_colliders{}
+		: m_collidersInLayer{}
 	{
 	}
 
@@ -39,28 +34,22 @@ namespace ehw
 	}
 	void Collision2D::Reset()
 	{
-		for (size_t i = 0; i < m_objectsInLayer.size(); ++i)
+		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
 		{
-			m_objectsInLayer[i].clear();
+			m_collidersInLayer[i].clear();
 		}
-		m_colliders.clear();
 
 		m_collisions.clear();
 
 		m_debugInfoSBuffer = nullptr;
 	}
 
-	void Collision2D::Register(iCollider2D* const _obj)
-	{
-		if (nullptr == _obj)
-		{
-			return;
-		}
-		m_colliders.push_back(_obj);
-	}
 	void Collision2D::Enqueue(iCollider2D* const _obj)
 	{
-		m_objectsInLayer[_obj->GetOwner()->GetLayer()].push_back(_obj);
+		if (_obj)
+		{
+			m_collidersInLayer[_obj->GetOwner()->GetLayer()].push_back(_obj);
+		}
 	}
 
 
@@ -109,37 +98,14 @@ namespace ehw
 
 	void Collision2D::Update()
 	{
-		for (size_t i = 0; i < m_objectsInLayer.size(); ++i)
-		{
-			m_objectsInLayer[i].clear();
-		}
-
-		//Destroy된 component를 제거해주면서 Enqueue 작업까지 진행한다.
-		std::erase_if(m_colliders,
-			[this](iCollider2D* const _col)->bool
-			{
-				if (_col->IsDestroyed())
-				{
-					return true;
-				}
-				else if (false == _col->IsEnabled())
-				{
-					return false;
-				}
-				
-				Enqueue(_col);
-				return false;
-			}
-			);
-
 		//m_collision 데이터를 임시 컨테이너로 옮겨준다
 		std::unordered_map<tColliderID, CollisionInfo, tColliderID_Hasher> prevCollisions{};
 		m_collisions.swap(prevCollisions);
 
 		const auto& colMask = CollisionManager::GetCollisionMasks();
-		for (size_t i = 0; i < m_objectsInLayer.size(); ++i)
+		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
 		{
-			for (size_t j = i; j < m_objectsInLayer.size(); ++j)
+			for (size_t j = i; j < m_collidersInLayer.size(); ++j)
 			{
 				//충돌하지 않을 시 break
 				if (false == colMask[i][j])
@@ -147,8 +113,8 @@ namespace ehw
 					continue;
 				}
 
-				const std::vector<iCollider2D*>& lefts = m_objectsInLayer[i];
-				const std::vector<iCollider2D*>& rights = m_objectsInLayer[j];
+				const std::vector<iCollider2D*>& lefts = m_collidersInLayer[i];
+				const std::vector<iCollider2D*>& rights = m_collidersInLayer[j];
 
 
 				for (size_t l = 0; l < lefts.size(); ++l)
@@ -165,11 +131,13 @@ namespace ehw
 					for (r; r < rights.size(); ++r)
 					{
 						iCollider2D* const right = rights[r];
+						
+						left->ColliderUpdate();
+						right->ColliderUpdate();
 
 						eCollider2D_Shape leftShape = left->GetColliderShape();
 						eCollider2D_Shape rightShape = right->GetColliderShape();
 						Vector2 contactPoint{};
-
 						bool isContact = m_collision2DFunctions[(int)leftShape][(int)rightShape]
 						(left, right, contactPoint);
 
@@ -215,54 +183,93 @@ namespace ehw
 		{
 			iter.second.Exit();
 		}
+
+
+		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
+		{
+			m_collidersInLayer[i].clear();
+		}
 	}
 
 	void Collision2D::Render()
 	{
-		//미리 collider 최대 갯수만큼 사이즈를 확보
-		std::array<std::vector<tDebug>, (int)eCollider2D_Shape::END> debugInstancingData{};
-		for (size_t i = 0; i < debugInstancingData.size(); ++i)
+		Com_Camera* mainCam = RenderManager::GetMainCamera();
+		if (nullptr == mainCam)
 		{
-			debugInstancingData[i].reserve(m_colliders.size());
+			return;
 		}
 
-		MATRIX matView = RenderManager::GetMainCamera()->GetGpuViewMatrix();
-		MATRIX matProj = RenderManager::GetMainCamera()->GetGpuProjectionMatrix();
+		MATRIX matView = mainCam->GetGpuViewMatrix();
+		MATRIX matProj = mainCam->GetGpuProjectionMatrix();
 
-		for (size_t i = 0; i < m_colliders.size(); ++i)
+		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
 		{
-			tDebug debugData{};
-			debugData.WVP = MATRIX::CreateScale(100.f) * m_colliders[i]->GetWorldMatrix();
-			debugData.WVP *= matView;
-			debugData.WVP *= matProj;
-			debugData.isColliding = (m_colliders[i]->IsColliding() ? TRUE : FALSE);
-
-			debugInstancingData[(int)m_colliders[i]->GetColliderShape()].push_back(std::move(debugData));
+			m_debugInstancingData[i].clear();
 		}
 
+		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
+		{
+			for (size_t j = 0; j < m_collidersInLayer[i].size(); ++j)
+			{
+				iCollider2D* col = m_collidersInLayer[i][j];
+
+				if (false == col->IsEnabled())
+				{
+					continue;
+				}
+
+				col->ColliderUpdate();
+
+				//TODO: Collider 별로 사이즈 제대로 설정하기
+				tDebug debugData{};
+				debugData.WVP = MATRIX::CreateScale(100.f) * col->GetWorldMatrix();
+				debugData.WVP *= matView;
+				debugData.WVP *= matProj;
+				debugData.isColliding = (col->IsColliding() ? TRUE : FALSE);
+
+				m_debugInstancingData[(int)col->GetColliderShape()].push_back(std::move(debugData));
+			}
+		}
+
+
+		//구조화 버퍼 없을 시 생성
 		if (nullptr == m_debugInfoSBuffer)
 		{
+			size_t maxCount = 0;
+			for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
+			{
+				maxCount += m_debugInstancingData[i].size();
+			}
+
 			m_debugInfoSBuffer = std::make_unique<StructBuffer>();
 			StructBuffer::Desc desc{};
 			desc.eSBufferType = eStructBufferType::READ_ONLY;
 			desc.REGISLOT_t_SRV = Register_t_g_debug;
 			desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 			m_debugInfoSBuffer->SetDesc(desc);
-			m_debugInfoSBuffer->Create<tDebug>(m_colliders.size(), nullptr, 0);
+			m_debugInfoSBuffer->Create<tDebug>(maxCount, nullptr, 0);
 		}
 
 		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::DebugRectMesh);
 		std::shared_ptr<Material> mtrl = ResourceManager<Material>::Find(strKey::defaultRes::material::DebugMaterial);
 		mtrl->BindData();
 
-		::ehw::RenderDebugMesh(mesh, debugInstancingData[(int)eCollider2D_Shape::AABB], m_debugInfoSBuffer.get());
+		RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB], m_debugInfoSBuffer.get());
 
-		::ehw::RenderDebugMesh(mesh, debugInstancingData[(int)eCollider2D_Shape::OBB], m_debugInfoSBuffer.get());
+		RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB], m_debugInfoSBuffer.get());
 
 		//mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::CircleMesh);
-		//::ehw::RenderDebugMesh(mesh, debugInstancingData[(int)eCollider2D_Shape::Circle], m_debugInfoSBuffer.get());
+		//::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debugInfoSBuffer.get());
 
 		mtrl->UnBindData();
+	}
+
+	void Collision2D::FrameEnd()
+	{
+		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
+		{
+			m_collidersInLayer[i].clear();
+		}
 	}
 
 
@@ -293,8 +300,7 @@ namespace ehw
 		return true;
 	}
 
-	//전역 함수
-	void ::ehw::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer)
+	void Collision2D::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer)
 	{
 		_sbuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
 		_sbuffer->BindDataSRV();

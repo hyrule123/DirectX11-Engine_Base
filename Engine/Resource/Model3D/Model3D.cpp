@@ -17,6 +17,8 @@
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Model3D/FBXLoader.h"
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
 
 #include <regex>
 
@@ -224,52 +226,23 @@ namespace ehw
 		return eResult::Success;
 	}
 
-
-
-	eResult Model3D::Instantiate(iScene* _pScene, uint32 _type)
+	std::vector<std::shared_ptr<GameObject>> Model3D::Instantiate()
 	{
-		if (nullptr == _pScene)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		else if (false == CheckLayerValid(_type))
-		{
-			return eResult::Fail_InValid;
-		}
-		else if (m_meshContainers.empty())
-		{
-			return eResult::Fail;
-		}
+		std::vector<std::shared_ptr<GameObject>> newObjects{};
+		newObjects.push_back(std::make_shared<GameObject>());
+		GameObject* root = newObjects.back().get();
 
+		root->SetName(GetStrKey());
 
-		std::shared_ptr<GameObject> rootObj = _pScene->NewGameObject(_type);
-
-		return Instantiate(rootObj.get());
-	}
-
-	eResult Model3D::Instantiate(GameObject* const _inSceneObj)
-	{
-		if (nullptr == _inSceneObj)
-		{
-			ERROR_MESSAGE("GameObject가 nullptr 입니다.");
-			return eResult::Fail_Nullptr;
-		}
+		Com_Transform* rootTransform = root->GetComponent<Com_Transform>();
 		
-		else if (false == _inSceneObj->IsInScene())
-		{
-			ERROR_MESSAGE("인자로 들어온 GameObject가 Scene에 들어가있지 않습니다.");
-			return eResult::Fail_InValid;
-		}
-
-		Com_Transform* tr = _inSceneObj->GetComponent<Com_Transform>();
-		ASSERT(tr, "트랜스폼 컴포넌트가 없습니다.");
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		std::shared_ptr<Animation3D_PlayData> sharedAnimationData{};
 		if (m_skeleton)
 		{
-			Com_Animator3D* rootAnimator = _inSceneObj->AddComponent<Com_Animator3D>();
-			ASSERT(rootAnimator, "애니메이터 컴포넌트 생성 실패");
+			Com_Animator3D* rootAnimator = root->AddComponent<Com_Animator3D>();
+
 			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
 			sharedAnimationData->SetSkeleton(m_skeleton);
 		}
@@ -281,27 +254,30 @@ namespace ehw
 			if (sharedAnimationData)
 			{
 				//수동으로 애니메이터를 설정
-				Com_Renderer_3DAnimMesh* renderer3D = _inSceneObj->AddComponent<Com_Renderer_3DAnimMesh>();
+				Com_Renderer_3DAnimMesh* renderer3D = root->AddComponent<Com_Renderer_3DAnimMesh>();
 				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
 			}
 			else
 			{
-				renderer = _inSceneObj->AddComponent<Com_Renderer_Mesh>();
+				renderer = root->AddComponent<Com_Renderer_Mesh>();
 			}
 
-			SetDataToRenderer(renderer, 0);
+			if (false == SetDataToRenderer(renderer, 0))
+			{
+				newObjects.clear();
+				ASSERT(false, "Renderer 세팅 실패.");
+				return newObjects;
+			}
 		}
 
 		//여러 개의 container를 가지고 있을 경우: 하나의 부모 object에 여러개의 child를 생성해서 각각 Meshrenderer에 할당
 		else
 		{
-			iScene* scene = _inSceneObj->GetOwnerScene();
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				uint32 layer = _inSceneObj->GetLayer();
-				std::shared_ptr<GameObject> child = scene->NewGameObject(_inSceneObj->GetLayer());
-				_inSceneObj->Transform()->AddChild(child->Transform());
-				
+				newObjects.push_back(std::make_shared<GameObject>());
+				GameObject* child = newObjects.back().get();
+				rootTransform->AddChild(child->Transform());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				Com_Renderer_Mesh* renderer = nullptr;
@@ -319,14 +295,34 @@ namespace ehw
 					renderer = child->AddComponent<Com_Renderer_Mesh>();
 				}
 
-				ASSERT(renderer, "renderer가 생성되지 않았습니다.");
-				SetDataToRenderer(renderer, (UINT)i);
+				if (false == SetDataToRenderer(renderer, (UINT)i))
+				{
+					newObjects.clear();
+					ASSERT(false, "Renderer 세팅 실패.");
+					return newObjects;
+				}
 			}
 		}
 
-
-		return eResult::Success;
+		return newObjects;
 	}
+
+	std::vector<std::shared_ptr<GameObject>> Model3D::Instantiate(const std::shared_ptr<GameObject>& _obj)
+	{
+		std::vector<std::shared_ptr<GameObject>> ret = Instantiate();
+
+		if (ret.empty())
+		{
+			return ret;
+		}
+
+		//ret[0] -> root 게임오브젝트
+		_obj->SwapBaseComponents((*ret[0]));
+		ret[0] = _obj;
+
+		return ret;
+	}
+
 
 	eResult Model3D::ConvertFBX(
 		const std::fs::path& _fbxPath, bool _bStatic,

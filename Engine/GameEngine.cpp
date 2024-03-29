@@ -102,11 +102,15 @@ namespace ehw
 		{
 			m_editorRunFunction();
 		}
+
+		GPUManager::Present(true);
 	}
 
 	void GameEngine::FrameEnd()
-	{		
+	{	
+		CollisionManager::FrameEnd();
 		SceneManager::FrameEnd();
+		RenderManager::FrameEnd();
 		SceneManager::RemoveDestroyed();
 	}
 
@@ -116,16 +120,10 @@ namespace ehw
 		Update();
 		FinalUpdate();
 		Render();
-		FrameEnd();
 
-		Present();
+		FrameEnd();
 		
 		return mbInitialized;
-	}
-
-	void GameEngine::Present()
-	{
-		GPUManager::Present(true);
 	}
 
 	void GameEngine::Release()

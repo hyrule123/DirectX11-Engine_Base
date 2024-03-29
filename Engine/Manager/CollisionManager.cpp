@@ -13,18 +13,14 @@ namespace ehw
 	std::array<std::bitset<g_maxLayer>, g_maxLayer> CollisionManager::m_collisionMask{};
 
 	Collision2D				CollisionManager::m_col2DManager{};
-	bool					CollisionManager::m_bEnableCollision2D{};
 
 	Collision3D				CollisionManager::m_col3DManager{};
-	bool					CollisionManager::m_bEnableCollision3D{};
 
 	void CollisionManager::Init()
 	{
 		AtExit::AddFunc(Release);
 
-		m_bEnableCollision2D = true;
 		m_col2DManager.Init();
-		m_bEnableCollision3D = false;
 	}
 	void CollisionManager::Release()
 	{
@@ -39,14 +35,9 @@ namespace ehw
 
 	void CollisionManager::Update()
 	{
-		if (m_bEnableCollision2D)
-		{
-			m_col2DManager.Update();
-		}
-		if (m_bEnableCollision3D)
-		{
-			//m_col3DManager
-		}
+		m_col2DManager.Update();
+
+
 
 		//iScene* scene = SceneManager::GetActiveScene();
 		//if (nullptr == scene)
@@ -68,12 +59,14 @@ namespace ehw
 		SceneManager::CollisionUpdate();
 	}
 
+	void CollisionManager::FrameEnd()
+	{
+		m_col2DManager.FrameEnd();
+	}
+
 	void CollisionManager::Render()
 	{
-		if (m_bEnableCollision2D)
-		{
-			m_col2DManager.Render();
-		}
+		m_col2DManager.Render();
 	}
 
 
