@@ -183,12 +183,6 @@ namespace ehw
 		{
 			iter.second.Exit();
 		}
-
-
-		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
-		{
-			m_collidersInLayer[i].clear();
-		}
 	}
 
 	void Collision2D::Render()
@@ -239,6 +233,10 @@ namespace ehw
 			for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
 			{
 				maxCount += m_debugInstancingData[i].size();
+			}
+			if ((size_t)0 == maxCount)
+			{
+				maxCount = 1;
 			}
 
 			m_debugInfoSBuffer = std::make_unique<StructBuffer>();
