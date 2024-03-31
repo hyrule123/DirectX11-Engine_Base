@@ -18,14 +18,19 @@ namespace ehw
 
 	void Com_Collider2D_AABB::UpdateShape()
 	{
+		if (false == m_isOffsetScaleUpdated && false == GetMyTransform()->IsTransformUpdated())
+		{
+			return;
+		}
+
 		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
 		float2 pos = float2(worldMat._41, worldMat._42);
 		float2 halfExtentXY = m_offsetScale;
 
 		if (m_isSyncScaleToTransform)
 		{
-			halfExtentXY.x *= worldMat.Axis(eAxis4D::X).Length();
-			halfExtentXY.y *= worldMat.Axis(eAxis4D::Y).Length();
+			halfExtentXY.x *= worldMat.Axis(eAxis3D::X).Length();
+			halfExtentXY.y *= worldMat.Axis(eAxis3D::Y).Length();
 		}
 		halfExtentXY *= 0.5f;
 
@@ -33,5 +38,32 @@ namespace ehw
 		m_leftBottom.y = pos.y - halfExtentXY.y;
 		m_rightTop.x = pos.x + halfExtentXY.x;
 		m_rightTop.y = pos.y + halfExtentXY.y;
+	}
+
+	void Com_Collider2D_AABB::FrameEnd()
+	{
+		iCollider2D::FrameEnd();
+		m_isOffsetScaleUpdated = false;
+	}
+
+	MATRIX Com_Collider2D_AABB::GetColliderMatrix()
+	{
+		MATRIX mat{};
+		
+		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
+
+		mat._41 = worldMat._41;
+		mat._42 = worldMat._42;
+
+		mat._11 = m_offsetScale.x;
+		mat._22 = m_offsetScale.y;
+
+		if (m_isSyncScaleToTransform)
+		{
+			mat._11 *= worldMat.Axis(eAxis3D::X).Length();
+			mat._22 *= worldMat.Axis(eAxis3D::Y).Length();
+		}
+
+		return mat;
 	}
 }

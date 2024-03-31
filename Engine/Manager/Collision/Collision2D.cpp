@@ -187,15 +187,16 @@ namespace ehw
 
 	void Collision2D::Render()
 	{
+		//메인 카메라
 		Com_Camera* mainCam = RenderManager::GetMainCamera();
 		if (nullptr == mainCam)
 		{
 			return;
 		}
-
 		MATRIX matView = mainCam->GetGpuViewMatrix();
 		MATRIX matProj = mainCam->GetGpuProjectionMatrix();
 
+		//인스턴싱
 		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
 		{
 			m_debugInstancingData[i].clear();
@@ -216,7 +217,7 @@ namespace ehw
 
 				//TODO: Collider 별로 사이즈 제대로 설정하기
 				tDebug debugData{};
-				debugData.WVP = MATRIX::CreateScale(100.f) * col->GetWorldMatrix();
+				debugData.WVP = col->GetColliderMatrix();
 				debugData.WVP *= matView;
 				debugData.WVP *= matProj;
 				debugData.isColliding = (col->IsColliding() ? TRUE : FALSE);

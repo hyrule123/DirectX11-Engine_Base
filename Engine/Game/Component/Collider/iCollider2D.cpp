@@ -46,6 +46,7 @@ namespace ehw
 
 	void iCollider2D::FrameEnd()
 	{
+		iCollider::FrameEnd();
 		m_isColliderUpdated = false;
 	}
 

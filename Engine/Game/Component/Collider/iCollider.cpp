@@ -21,9 +21,5 @@ namespace ehw
 	{
 		m_transform = GetOwner()->Transform();
 	}
-	const MATRIX& iCollider::GetWorldMatrix()
-	{
-		return m_transform->GetWorldMatrix();
-	}
 }
 

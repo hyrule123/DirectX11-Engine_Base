@@ -21,7 +21,7 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		virtual void Update() final;
-		virtual void FrameEnd() final;
+		virtual void FrameEnd() override;
 
 		//CollisionManager에서 호출. 충돌체 정보를 계산한다.
 		inline void ColliderUpdate();

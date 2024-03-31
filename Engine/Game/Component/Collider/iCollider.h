@@ -32,12 +32,13 @@ namespace ehw
 		virtual void OnTriggerExit(iCollider* const _collider) {}
 
 		inline bool IsColliding() const { return m_isColliding; }
+		
+		virtual MATRIX GetColliderMatrix() = 0;
 
 	protected:
 		inline Com_Transform* GetMyTransform() { return m_transform; }
 		
 	private:
-		const MATRIX& GetWorldMatrix();
 		inline void SetColliding(bool _isColliding) { m_isColliding = _isColliding; }
 
 		eDimensionType m_dimension;

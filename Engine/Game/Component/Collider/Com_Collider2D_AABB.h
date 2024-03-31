@@ -11,8 +11,9 @@ namespace ehw
         virtual ~Com_Collider2D_AABB();
 
         virtual void UpdateShape() final;
+        virtual void FrameEnd() final;
 
-        void SetOffsetScale(float2 _scale) { m_offsetScale = _scale; };
+        void SetOffsetScale(float2 _scale) { m_offsetScale = _scale; m_isOffsetScaleUpdated = true; };
         void SyncToTransform(bool _enable) { m_isSyncScaleToTransform = _enable; }
 
         float2 LeftBottom() const { return m_leftBottom; }
@@ -23,8 +24,13 @@ namespace ehw
         float Right() const { return m_rightTop.x; }
         float Top() const { return m_rightTop.y; }
 
+        virtual MATRIX GetColliderMatrix() final;
+
     private:
         float2 m_offsetScale;
+        bool m_isOffsetScaleUpdated;
+
+
         float2 m_leftBottom;
         float2 m_rightTop;
         bool m_isSyncScaleToTransform;
