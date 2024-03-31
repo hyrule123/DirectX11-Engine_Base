@@ -77,9 +77,14 @@ HRESULT DirTree::CreateStrKeyHeader(const tStrKeyWriteDesc& _desc)
 	Writer.WriteCode(0);
 	Writer.WriteCode(0);
 
-	std::string strCode = "namespace ehw::strKey::";
-	strCode += _desc.rootNamespace;
-	Writer.WriteCode(0, strCode);
+	{
+		std::stringstream strCode{};
+		strCode << "namespace " << define_Preset::Keyword::EngineMasterNamespace::A;
+		strCode << "::strKey::";
+		strCode << _desc.rootNamespace;
+		Writer.WriteCode(0, strCode.view());
+	}
+	
 
 	DirTreeNode::tStrKeyWriteDesc desc(Writer, _desc.bEraseExtension, _desc.bWriteChildNamespace, _desc.bAddRelativeDirToString);
 
@@ -107,57 +112,101 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 		return S_OK;
 	}
 
-
-	CodeWriter Writer;
-
+	CodeWriter Writer{};
 	Writer.WriteCode(0, define_Preset::Keyword::Head::A);
 
-
 	{
-		Writer.WriteCode(0, _Desc.IncludePCH);
+		if(false == _Desc.IncludePath_PreCompiledHeader.empty())
+		{
+			std::stringstream includePCH;
+			includePCH << "#include " << _Desc.IncludePath_PreCompiledHeader;
+			Writer.WriteCode(0, includePCH.view());
+		}
+
+		{
+			if (_Desc.IncludePath_OwnerClass.empty())
+			{
+				ASSERT(false, "OwnerClassName은 필수 항목입니다.");
+			}
+			std::stringstream includeOwnerClass{};
+			includeOwnerClass << "#include " << _Desc.IncludePath_OwnerClass;
+			Writer.WriteCode(0, includeOwnerClass.view());
+		}
+
 		Writer.WriteCode(0);
 		
-		std::string includeHeader = "#include \"";
-		includeHeader += _Desc.ClassName;
-		includeHeader += R"(.h")";
-		Writer.WriteCode(0, includeHeader);
-
-		Writer.WriteCode(0, _Desc.IncludeManagerHeader);
-	}
-	{
-		Writer.WriteCode(0, _Desc.IncludeStrKeyHeaderName);
+		if(false == _Desc.IncludePath_ManagerHeader.empty())
+		{
+			std::stringstream includeManagerHeader{};
+			includeManagerHeader << "#include " << _Desc.IncludePath_ManagerHeader;
+			Writer.WriteCode(0, includeManagerHeader.view());
+		}
 	}
 
 	{
-		Writer.WriteCode(0, _Desc.IncludeBaseTypeHeader);
-		Writer.WriteCode(0);
+		if (false == _Desc.IncludePath_BaseTypeHeader.empty())
+		{
+			std::stringstream includeBaseTypeHeader;
+			includeBaseTypeHeader << "#include " << _Desc.IncludePath_BaseTypeHeader;
+			Writer.WriteCode(0, includeBaseTypeHeader.view());
+		}
 	}
+
+	if (false == _Desc.IncludePath_StrKeyHeader.empty())
+	{
+		std::stringstream includeStrKeyHeader{};
+		includeStrKeyHeader << "#include " << _Desc.IncludePath_StrKeyHeader;
+		Writer.WriteCode(0, includeStrKeyHeader.view());
+	}
+
+	Writer.WriteCode(0);
+
+
 
 	//1번 버퍼에 CS 생성 코드를 작성
 	{
 		Writer.WriteCode(1, "");
 
 		{
+			if (_Desc.Constructor_T_MacroDefine.empty())
+			{
+				ASSERT(false, "Constructor_T_MacroDefine 는 필수 항목입니다.");
+			}
 			//CONSTRUCTOR_T(T) 
-			std::string strCode = define_Preset::Keyword::Define_Constructor_T::A;
-			strCode += _Desc.Constructor_T_MacroDefine;
-			Writer.WriteCode(1, strCode);
+			std::stringstream strCode{};
+			strCode << define_Preset::Keyword::Define_Constructor_T::A << _Desc.Constructor_T_MacroDefine;
+			Writer.WriteCode(1, strCode.view());
 
 			Writer.WriteCode(1, "");
 		}
 
+		if(false == _Desc.MasterNamespace.empty())
 		{
-			Writer.WriteCode(1, _Desc.MasterNamespace);
+			std::stringstream masterNameSpace{};
+			masterNameSpace << "namespace ";
+			masterNameSpace << _Desc.MasterNamespace;
+			Writer.WriteCode(1, masterNameSpace.view());
+
 			Writer.OpenBracket(1);
+		}
+
+		if(false == _Desc.UsingNamespace.empty())
+		{
+			std::stringstream usingNameSpace{};
+			usingNameSpace << "using namespace " << _Desc.UsingNamespace;
 			Writer.WriteCode(1, _Desc.UsingNamespace);
 		}
 
-		std::string strCode = "void ";
-		strCode += _Desc.ClassName;
-		strCode += "::";
-		strCode += _Desc.UserClassMgr_InitFuncName;
+		{
+			if (_Desc.UserClassMgr_InitFuncName.empty())
+			{
+				ASSERT(false, "UserClassMgr_InitFuncName 는 필수 항목입니다.");
+			}
+			std::stringstream strCode{};
+			strCode << "void " << _Desc.OwnerClassName << "::" << _Desc.UserClassMgr_InitFuncName;
+			Writer.WriteCode(1, strCode.view());
+		}
 
-		Writer.WriteCode(1, strCode);
 		Writer.OpenBracket(1);
 	}
 	
@@ -168,38 +217,36 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 	{
 		//0번 버퍼에 include 작성
 		{
-			std::string strCode;
-			strCode += define_Preset::Keyword::IncludeBegin::A;
-			strCode += iter.first.string();
-			strCode += "\"";
-			Writer.WriteCode(0, strCode);
+			std::stringstream strCode{};
+			strCode << "#include \"" << _Desc.BasePath_FoundHeader << '\\' << iter.first.string() << '\"';
+			Writer.WriteCode(0, strCode.view());
 		}
 
 		//1번 버퍼에 클래스 생성 코드 작성
 		{
 			const std::string& ClassName = iter.first.filename().replace_extension("").string();
 
-			std::string strCode;
-			strCode += define_Preset::Keyword::Constructor_T::A;
-			strCode += ClassName;
-			strCode += ");";
-			Writer.WriteCode(1, strCode);
+			std::stringstream strCode{};
+			strCode << define_Preset::Keyword::Constructor_T::A << ClassName << ");";
+			Writer.WriteCode(1, strCode.view());
 		}
 	}
 
-	Writer.CloseBracket(1, false);
+	
 	Writer.CloseBracket(1, false);
 
+	if (false == _Desc.MasterNamespace.empty())
+	{
+		Writer.CloseBracket(1, false);
+	}
 
-	HRESULT hr = Writer.SaveAll<char>(_Desc.FilePath);
+	HRESULT hr = Writer.SaveAll<char>(_Desc.SaveFilePath);
 	if (FAILED(hr))
 	{
-		ClearPrevFilesList(_Desc.FilePath);
+		ClearPrevFilesList(_Desc.SaveFilePath);
 		DEBUG_BREAK;
 		return hr;
 	}
-
-
 
 
 	return hr;
@@ -286,7 +333,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 
 	{
 		std::string strCode;
-		strCode += "namespace Graphics";
+		strCode += "namespace graphics";
 		Writer.WriteCode(0, strCode);
 		Writer.OpenBracket(0);
 	}
@@ -306,7 +353,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	{
 		Writer.AddIndentation(1);
 		std::string strCode;
-		strCode += "namespace Compute";
+		strCode += "namespace compute";
 		Writer.WriteCode(1, strCode);
 		Writer.OpenBracket(1);
 	}

@@ -2,21 +2,48 @@
 //트리 관리자 클래스
 #include "CodeGenerator/DirTreeNode.h"
 
-#include "../Engine/define_Enum.h"
+#include <Engine/define_Enum.h>
 #include "json-cpp/json-forwards.h"
 
 struct tAddBaseClassDesc
 {
-	stdfs::path FilePath;
-	std::string ClassName;
-	std::string BaseType;
-	std::string IncludePCH;
-	std::string IncludeManagerHeader;
-	std::string IncludeStrKeyHeaderName;
-	std::string IncludeBaseTypeHeader;
+	//파일 경로
+	stdfs::path SaveFilePath;						
+
+	//어떤 클래스의 함수인지?
+	std::string OwnerClassName;						
+
+	//어떤 Base Type을 다룰것인지?
+	std::string BaseType;							
+
+	//찾은 헤더 앞에 붙일 Base Path 경로(없을 시 비워도 됨)
+	std::string BasePath_FoundHeader;	
+
+	//cpp 파일의 헤더 경로
+	std::string IncludePath_OwnerClass;
+
+	//Base Type의 헤더 경로
+	std::string IncludePath_BaseTypeHeader;
+
+	//미리 컴파일된 헤더 경로(없을 시 비워도 됨)
+	std::string IncludePath_PreCompiledHeader;	
+
+	//Manager 클래스의 헤더 경로
+	std::string IncludePath_ManagerHeader;
+
+	//StrKey의 헤더 경로
+	std::string IncludePath_StrKeyHeader;
+	
+	//매크로 정의
 	std::string Constructor_T_MacroDefine;
+
+	//가장 바깥의 네임스페이스
 	std::string MasterNamespace;
+
+	//using namespace 필요시 작성(없을 시 비워도 됨)
 	std::string UsingNamespace;
+
+	//User 컴포넌트 매니저의 경우 함수 명을 등록
 	std::string UserClassMgr_InitFuncName;
 };
 
@@ -63,7 +90,6 @@ private:
 
 	//에러 발생시 처리용
 	inline void ClearPrevFilesList(const stdfs::path& _filePath);
-
 private:
 	DirTreeNode m_RootDir;
 	std::unordered_map<stdfs::path, ePrevFileStatus> m_PrevFiles;
@@ -76,11 +102,3 @@ inline void DirTree::ClearPrevFilesList(const stdfs::path& _filePath)
 	std::ofstream ofs(stdfs::path(_filePath).replace_extension(".txt"), std::ios::trunc);
 	ofs.close();
 }
-
-
-
-
-
-
-
-

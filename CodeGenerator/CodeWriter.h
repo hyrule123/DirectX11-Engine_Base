@@ -26,9 +26,6 @@ public:
 	inline void CloseBracket(UINT _BufferIdx, bool _bAddSemiColon = false);
 	inline void CloseBracketAll(UINT _BufferIdx);
 
-	inline void IncludeFile(UINT _BufferIdx, const std::string_view _strIncludeFileName);
-	inline void IncludeFile(UINT _BufferIdx, const std::wstring_view _strIncludeFileName);
-
 	inline void AddIndentation(UINT _BufferIdx);
 	inline void SubIndentation(UINT _BufferIdx);
 	inline int GetIndentation(UINT _BufferIdx);
@@ -93,20 +90,6 @@ inline void CodeWriter::CloseBracketAll(UINT _BufferIdx)
 }
 
 
-inline void CodeWriter::IncludeFile(UINT _BufferIdx, const std::string_view _strIncludeFileName)
-{
-	std::string strInclude = define_Preset::Keyword::IncludeBegin::A;
-	strInclude += _strIncludeFileName;
-	strInclude += "\"";
-
-	WriteCode(_BufferIdx, strInclude);
-}
-
-inline void CodeWriter::IncludeFile(UINT _BufferIdx, const std::wstring_view _wstrIncludeFileName)
-{
-	std::string converted = StringConv::ConvertUnicodeToUTF8(_wstrIncludeFileName);
-	IncludeFile(_BufferIdx, converted);
-}
 
 inline void CodeWriter::AddIndentation(UINT _BufferIdx)
 {

@@ -65,6 +65,8 @@ private:
 	void SetParent(DirTreeNode* _pNode) { assert(_pNode); m_pParent = _pNode; }
 	void AddChild(DirTreeNode* _pNode) { assert(_pNode); m_vecChild.push_back(_pNode); }
 
+	void SetDirectoryName(const stdfs::path& _dirName) { m_DirName = _dirName; }
+
 	bool IsRoot() const { return (nullptr == m_pParent); }
 	bool IsLeaf() const { return m_vecChild.empty(); }
 	bool IsReady() const { return !m_DirName.empty(); }

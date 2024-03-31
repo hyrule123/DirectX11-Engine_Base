@@ -10,6 +10,8 @@
 
 #include "Engine/Game/Layer.h"
 
+
+
 namespace ehw
 {
 	namespace strKey::Json
@@ -61,6 +63,7 @@ namespace ehw
 				//m_baseComponents[i]->SetOwnerScene(_other.m_)
 			}
 		}
+
 
 		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
 		for (size_t i = 0; i < _other.m_scripts.size(); ++i)

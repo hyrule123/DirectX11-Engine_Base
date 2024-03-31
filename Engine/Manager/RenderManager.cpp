@@ -128,14 +128,12 @@ namespace ehw
 		BindLights();
 
 		EraseIfDestroyed_Camera(true);
-
-		//m_cameras.clear();
-		m_lightAttributes.clear();
 	}
 
 	void RenderManager::FrameEnd()
 	{
 		m_renderers.clear();
+		m_lightAttributes.clear();
 	}
 
 	void RenderManager::SetMainCamera(Com_Camera* const _pCam)
@@ -251,16 +249,16 @@ namespace ehw
 		m_postProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
-	void RenderManager::EraseIfDestroyed_Camera(bool _callRender = false)
+	void RenderManager::EraseIfDestroyed_Camera(bool _callRenderFunction = false)
 	{
 		std::erase_if(m_cameras,
-			[_callRender](Com_Camera* _cam)->bool
+			[_callRenderFunction](Com_Camera* _cam)->bool
 			{
 				if (_cam->IsDestroyed())
 				{
 					return true;
 				}
-				else if (_callRender && _cam->IsEnabled())
+				else if (_callRenderFunction && _cam->IsEnabled())
 				{
 					_cam->RenderCamera();
 				}

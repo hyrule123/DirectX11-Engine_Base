@@ -198,19 +198,24 @@ void CreateEngineComponentKey()
     //Component Initializer cpp파일 작성
     {
         tAddBaseClassDesc Desc = {};
+        Desc.SaveFilePath = DirPath / "ComponentInitializer.cpp";
+
+        Desc.OwnerClassName = "ComponentInitializer";
+        
         Desc.BaseType = "iComponent";
+        Desc.BasePath_FoundHeader = "Engine\\Game\\Component";
 
-        //PCH 강제 include 시켜서 필요 없어짐
-        //Desc.IncludePCH = R"(#include "Engine/PCH_Engine.h")";
+        Desc.IncludePath_OwnerClass = R"("Engine/Game/Component/ComponentInitializer.h")";
+        Desc.IncludePath_BaseTypeHeader = R"("Engine/Game/Component/iComponent.h")";
+        Desc.IncludePath_PreCompiledHeader = R"("Engine/PCH_Engine.h")";
+        Desc.IncludePath_StrKeyHeader = R"("Engine/Game/Component/strKey_Component.h")";
+        Desc.IncludePath_ManagerHeader = R"("Engine/Manager/ComponentManager.h")";
 
-        Desc.ClassName = "ComponentInitializer";
-        Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Component.h")";
-        Desc.IncludeManagerHeader = R"(#include "Engine/Manager/ComponentManager.h")";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
-        Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
+        Desc.Constructor_T_MacroDefine = 
+            R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "Init()";
-        Desc.FilePath = DirPath / "ComponentInitializer.cpp";
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
@@ -244,16 +249,24 @@ void CreateUserComponentKey()
     //ContentsInitializer 작성
     {
         tAddBaseClassDesc Desc = {};
+        Desc.SaveFilePath = DirPath / "ContentsInitializer_Component.cpp";
+
         Desc.BaseType = "iComponent";
-        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
-        Desc.ClassName = "ContentsInitializer";
-        Desc.IncludeStrKeyHeaderName = R"(#include "strKey_UserComponent.h")";
-        Desc.IncludeManagerHeader = R"(#include <Engine/Manager/ComponentManager.h>)";
+
+        Desc.BasePath_FoundHeader = "Contents";
+
+        Desc.OwnerClassName = "ContentsInitializer";
+
+        Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
+        Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_UserComponent.h")";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/iComponent.h>)";
+        Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
+        Desc.IncludePath_ManagerHeader = R"(<Engine/Manager/ComponentManager.h>)";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
-        Desc.FilePath = DirPath / "ContentsInitializer_Component.cpp";
+        
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
@@ -290,16 +303,23 @@ void CreateScriptKey()
     //ContentsInitializer 코드 생성
     {
         tAddBaseClassDesc Desc = {};
+        Desc.SaveFilePath = DirPath / "ContentsInitializer_Script.cpp";
+        Desc.BasePath_FoundHeader = "Contents";
+
         Desc.BaseType = "iScript";
-        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
-        Desc.ClassName = "ContentsInitializer";
-        Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Script.h")";
-        Desc.IncludeManagerHeader = "#include <Engine/Manager/ComponentManager.h>";
+        
+        Desc.OwnerClassName = "ContentsInitializer";
+        Desc.IncludePath_OwnerClass = "Contents/ContentsInitializer.h";
+
+        Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/Script/iScript.h>)";
+        Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Script.h")";
+        Desc.IncludePath_ManagerHeader = "<Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::script::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScript()";
-        Desc.FilePath = DirPath / "ContentsInitializer_Script.cpp";
+        
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
@@ -334,16 +354,23 @@ void CreateSceneKey()
     
     {
         tAddBaseClassDesc Desc = {};
+        Desc.SaveFilePath = DirPath / "ContentsInitializer_Scene.cpp";
+        Desc.BasePath_FoundHeader = "Contents";
+
         Desc.BaseType = "iScene";
-        Desc.IncludePCH = R"(#include "PCH_Contents.h")";
-        Desc.ClassName = "ContentsInitializer";
-        Desc.IncludeStrKeyHeaderName = R"(#include "strKey_Scene.h")";
-        Desc.IncludeManagerHeader = "#include <Engine/Manager/SceneManager.h>";
+        Desc.OwnerClassName = "ContentsInitializer";
+
+        Desc.IncludePath_OwnerClass = R"(Contents/ContentsInitializer.h)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/iScene.h>)";
+        Desc.IncludePath_PreCompiledHeader = R"("Contents/PCH_Contents.h")";
+        Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Scene.h")";
+        Desc.IncludePath_ManagerHeader = "<Engine/Manager/SceneManager.h>";
+
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(SceneManager::AddSceneConstructor<T>(strKey::scene::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScene()";
-        Desc.FilePath = DirPath / "ContentsInitializer_Scene.cpp";
+        
 
         DirTree.CreateComponentManagerInitCode(Desc);
     }
