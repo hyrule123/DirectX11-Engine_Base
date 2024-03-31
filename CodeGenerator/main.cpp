@@ -309,7 +309,7 @@ void CreateScriptKey()
         Desc.BaseType = "iScript";
         
         Desc.OwnerClassName = "ContentsInitializer";
-        Desc.IncludePath_OwnerClass = "Contents/ContentsInitializer.h";
+        Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
 
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
         Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/Script/iScript.h>)";
@@ -360,7 +360,7 @@ void CreateSceneKey()
         Desc.BaseType = "iScene";
         Desc.OwnerClassName = "ContentsInitializer";
 
-        Desc.IncludePath_OwnerClass = R"(Contents/ContentsInitializer.h)";
+        Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
         Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/iScene.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("Contents/PCH_Contents.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Scene.h")";
