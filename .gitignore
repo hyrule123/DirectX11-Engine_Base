@@ -402,3 +402,4 @@ FBX/
 # .txt Files
 *.txt
 /Engine/ComponentInitializer.cpp
+/Engine/Game/Component/ComponentInitializer.cpp
