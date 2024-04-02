@@ -226,10 +226,10 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	std::vector<std::shared_ptr<GameObject>> Model3D::Instantiate()
+	std::vector<std::unique_ptr<GameObject>> Model3D::Instantiate()
 	{
-		std::vector<std::shared_ptr<GameObject>> newObjects{};
-		newObjects.push_back(std::make_shared<GameObject>());
+		std::vector<std::unique_ptr<GameObject>> newObjects{};
+		newObjects.push_back(std::make_unique<GameObject>());
 		GameObject* root = newObjects.back().get();
 
 		root->SetName(GetStrKey());
@@ -275,7 +275,7 @@ namespace ehw
 		{
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
-				newObjects.push_back(std::make_shared<GameObject>());
+				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
 				rootTransform->AddChild(child->Transform());
 
@@ -307,18 +307,25 @@ namespace ehw
 		return newObjects;
 	}
 
-	std::vector<std::shared_ptr<GameObject>> Model3D::Instantiate(const std::shared_ptr<GameObject>& _obj)
+	std::vector<std::unique_ptr<GameObject>> Model3D::Instantiate(GameObject* const _obj)
 	{
-		std::vector<std::shared_ptr<GameObject>> ret = Instantiate();
-
+		std::vector<std::unique_ptr<GameObject>> ret{};
+		
+		if (nullptr == _obj)
+		{
+			return ret;
+		}
+		
+		ret = Instantiate();
+		
 		if (ret.empty())
 		{
 			return ret;
 		}
-
+		
 		//ret[0] -> root 게임오브젝트
 		_obj->SwapBaseComponents((*ret[0]));
-		ret[0] = _obj;
+		ret[0] = std::unique_ptr<GameObject>(_obj);
 
 		return ret;
 	}

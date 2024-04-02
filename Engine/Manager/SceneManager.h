@@ -11,26 +11,27 @@ namespace ehw
 		static void CollisionUpdate();
 		static void FinalUpdate();
 		static void Render();
-		static void RemoveDestroyed();
 		static void FrameEnd();
 		static void Release();
 
+		static void Destroy();
+
 		static void		LoadScene(const std::string_view _strKey);
-		static iScene*	GetActiveScene() { return mActiveScene.get(); }
+		static iScene*	GetActiveScene() { return m_activeScene.get(); }
 
 		template <typename T>
 		static void AddSceneConstructor(const std::string_view _strKey);
 
 	private:
-		static std::unique_ptr<iScene>				mActiveScene;
-		static std::unordered_map<std::string_view, std::function<iScene* ()>> mUmapSceneConstructor;
+		static std::unique_ptr<iScene>				m_activeScene;
+		static std::unordered_map<std::string_view, std::function<iScene* ()>> m_umapSceneConstructor;
 	};
 
 	template<typename T>
 	inline void SceneManager::AddSceneConstructor(const std::string_view _strKey)
 	{
 		static_assert(std::is_base_of_v<iScene, T>);
-		mUmapSceneConstructor.insert(std::make_pair(_strKey,
+		m_umapSceneConstructor.insert(std::make_pair(_strKey,
 			[]()->T*
 			{
 				return new T;

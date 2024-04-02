@@ -10,7 +10,7 @@
 
 #include "Engine/Game/Layer.h"
 
-
+#include "Engine/Util/StringConverter.h"
 
 namespace ehw
 {
@@ -58,9 +58,12 @@ namespace ehw
 			{
 				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
 				//그냥 복사한뒤 주인만 바꾸면 됨.
-				m_baseComponents[i] = _other.m_baseComponents[i]->Clone();
-				m_baseComponents[i]->SetOwner(this);
-				//m_baseComponents[i]->SetOwnerScene(_other.m_)
+				m_baseComponents[i] = static_cast<iComponent*>(_other.m_baseComponents[i]->Clone());
+
+				if (m_baseComponents[i])
+				{
+					m_baseComponents[i]->SetOwner(this);
+				}
 			}
 		}
 
@@ -68,15 +71,19 @@ namespace ehw
 		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
 		for (size_t i = 0; i < _other.m_scripts.size(); ++i)
 		{
-			if (m_scripts[i]->IsCloneable())
+			iScript* cloned = static_cast<iScript*>(_other.m_scripts[i]->Clone());
+			if (cloned)
 			{
-				m_scripts.push_back(static_cast<iScript*>(_other.m_scripts[i]->Clone()));
+				m_scripts.push_back(cloned);
 				m_scripts.back()->SetOwner(this);
 			}
 #ifdef _DEBUG
 			else
 			{
-				DEBUG_LOG_W(L"스크립트 복사 실패!");
+				std::wstringstream stream{};
+				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->GetStrKey());
+				stream << L"스크립트 복사 실패.\n";
+				DEBUG_LOG_W(stream.str().c_str());
 			}
 #endif
 		}
@@ -85,20 +92,33 @@ namespace ehw
 
 	GameObject::~GameObject()
 	{
-		//Transform은 GameObject에 붙어있으므로
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i])
+			iComponent* com = m_baseComponents[i];
+			if (com)
 			{
-				delete m_baseComponents[i];
+				if (com->IsEnabled())
+				{
+					com->OnDisable();
+				}
+
+				com->OnDestroy();
+				delete com;
 			}
 		}
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i])
+			iScript* script = m_scripts[i];
+			if (script)
 			{
-				delete m_scripts[i];
+				if (script->IsEnabled())
+				{
+					script->OnDisable();
+				}
+
+				script->OnDestroy();
+				delete script;
 			}
 		}
 	}
@@ -138,7 +158,7 @@ namespace ehw
 
 		return eResult::Success;
 	}
-	
+
 	void GameObject::Awake()
 	{
 		if (m_isAwakeCalled || false == IsActive())
@@ -182,7 +202,7 @@ namespace ehw
 		{
 			return;
 		}
-			
+
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 
@@ -236,36 +256,48 @@ namespace ehw
 		}
 	}
 
+
 	void GameObject::RemoveDestroyed()
 	{
 		if (IsDestroyed())
 		{
-			m_state = eState::Destroy;
 			return;
 		}
-		
 
-		//개별 Component Destroy 여부 확인
+		auto needDestroyPred =
+			[](iComponent* const _com)->bool
+			{
+				iComponent::eState state = _com->GetState();
+
+				if (iComponent::eState::DestroyReserved == state)
+				{
+					_com->SetState(iComponent::eState::Destroy);
+					return false;
+				}
+				else if (iComponent::eState::Destroy == state)
+				{
+					_com->OnDisable();
+					delete _com;
+					return true;
+				}
+
+				return false;
+			};
+
+		//개별 Component Destroy 여부 확인 후 true 반환될 시 제거
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->NeedRemove())
+			if (m_baseComponents[i] && needDestroyPred(m_baseComponents[i]))
 			{
 				m_baseComponents[i] = nullptr;
 			}
 		}
 
-		for (size_t i = 0; i < m_scripts.size(); ++i)
-		{
-			if (m_scripts[i] && m_scripts[i]->NeedRemove())
-			{
-				m_scripts[i] = nullptr;
-			}
-		}
+		std::erase_if(m_scripts, needDestroyPred);
 	}
 
 
 	//이 함수는 다른 카메라가 호출함
-	//
 	void GameObject::Render()
 	{
 		if (false == IsActive())
@@ -416,14 +448,8 @@ namespace ehw
 			}
 		}
 
-		Com_Transform* tr = Transform();
-		Com_Transform* parent = Transform()->GetParent();
-
-		//부모 Transform에서 자식의 주소를 제거
-		if (parent)
-		{
-			parent->RemoveChildPtr(tr);
-		}
+		Com_Transform* const tr = Transform();
+		tr->UnlinkParent();
 		tr->DestroyChildsRecursive();
 	}
 

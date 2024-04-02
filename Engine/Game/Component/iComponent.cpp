@@ -12,7 +12,9 @@ namespace ehw
 		: m_ComCategory(_type)
 		, m_ComTypeID()
 		, m_ownerGameObject()
-		, m_state(eState::Enabled)
+		, m_state(eState::NotInitialzed)
+		, m_isStarted(false)
+		, m_isEnabled(true)
 	{
 	}
 
@@ -22,6 +24,8 @@ namespace ehw
 		, m_ComTypeID()
 		, m_ownerGameObject()
 		, m_state(_other.m_state)
+		, m_isStarted(_other.m_isStarted)
+		, m_isEnabled(_other.m_isEnabled)
 	{
 	}
 
@@ -32,21 +36,21 @@ namespace ehw
 	void iComponent::SetEnable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
-		if (IsDestroyed() || IsEnabled() == _bEnable)
+		if (IsDestroyed() || m_isEnabled == _bEnable)
 		{
 			return;
 		}
 
-		auto onEnableDisable = [this, _bEnable]()
+		m_isEnabled = _bEnable;
+
+		auto onEnableDisable = [this]()
 			{
-				if (_bEnable)
+				if (m_isEnabled)
 				{
-					m_state = eState::Enabled;
 					OnEnable();
 				}
 				else
 				{
-					m_state = eState::Disabled;
 					OnDisable();
 				}
 			};
@@ -64,17 +68,5 @@ namespace ehw
 	}
 
 
-	bool iComponent::NeedRemove()
-	{
-		if (eState::Destroy == m_state)
-		{
-			return true;
-		}
-		else if (eState::DestroyReserved == m_state)
-		{
-			m_state = eState::Destroy;
-		}
 
-		return false;
-	}
 }

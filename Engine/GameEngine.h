@@ -36,6 +36,7 @@ namespace ehw
 
 		static HWND GetHwnd() { return mHwnd; }
 
+		static void Destroy();
 		static void ShutDown() { mbInitialized = false; }
 
 	private:

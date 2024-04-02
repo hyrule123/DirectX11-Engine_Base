@@ -81,8 +81,6 @@ namespace ehw
     BOOL MainWindow::Init(const tDesc_GameMainWindow& _Desc)
     {
         mInstance = _Desc.Inst;
-        AddSpecificMsgHandleFunc(WM_COMMAND, Wm_Command);
-        AddSpecificMsgHandleFunc(WM_PAINT, Wm_Paint);
         AddSpecificMsgHandleFunc(WM_DESTROY, Wm_Destroy);
 
         ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
@@ -115,22 +113,25 @@ namespace ehw
     BOOL MainWindow::Loop()
     {
         BOOL bReturn = TRUE;
-        MSG msg;
+        MSG msg{};
         // 기본 메시지 루프입니다:
         while (bReturn)
         {
             if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
             {
+                //WMQUIT는 여기서 처리해줘야 함(DispatchMessage를 통해 WndProc로 전달되지 않음.
                 if (WM_QUIT == msg.message)
                 {
                     bReturn = FALSE;
                     break;
                 }
 
-
+                //TranslateAccelerator: 메뉴 명령을 위한 메시지 처리
                 if (!TranslateAccelerator(msg.hwnd, mHAccelTable, &msg))
                 {
                     TranslateMessage(&msg);
+
+                    //여기서 WndProc 함수를 호출한다.
                     DispatchMessage(&msg);
                 }
             }
@@ -191,6 +192,13 @@ namespace ehw
 
     LRESULT CALLBACK MainWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
+        //참고
+        //WM_CLOSE: 윈도우의 X버튼이나 Alt + F4 등의 버튼을 눌렀을 때 전달되는 메시지.
+        //WM_DESTROY: WM_CLOSE 메시지가 DefWindowProc 함수에 들어갔을 때 전달되는 메시지.
+        //WM_QUIT: PostQuitMessage 함수 호출 시 전달되는 메시지. 
+        //  ㄴ참고: WM_QUIT 메시지는 WndProc 내부로 전달되지 않으므로 주의.
+
+
         for (size_t i = 0; i < m_commonMsgHandleFunctions.size(); ++i)
         {
             LRESULT result = m_commonMsgHandleFunctions[i](hWnd, message, wParam, lParam);
@@ -217,36 +225,10 @@ namespace ehw
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
 
-
-
-    LRESULT WINAPI MainWindow::Wm_Command(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-    {
-        int wmId = LOWORD(wParam);
-        // 메뉴 선택을 구문 분석합니다:
-        //switch (wmId)
-        //{
-        //default:
-        //    return DefWindowProc(hWnd, message, wParam, lParam);
-        //}
-
-        return 1;
-    }
-
-    LRESULT WINAPI MainWindow::Wm_Paint(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-    {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-        EndPaint(hWnd, &ps);
-
-        return 1;
-    }
-
     LRESULT WINAPI MainWindow::Wm_Destroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
+        GameEngine::Destroy();
         PostQuitMessage(0);
         return 1;
     }
-
-
 }

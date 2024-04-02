@@ -24,8 +24,8 @@ namespace ehw
 {
 	HWND			GameEngine::mHwnd{};
 	HDC				GameEngine::mHdc{};
-	bool			GameEngine::mbInitialized{};
-	std::function<void()> GameEngine::m_editorRunFunction{};
+	bool			GameEngine::mbInitialized = false;
+	std::function<void()> GameEngine::m_editorRunFunction = nullptr;
 
 	BOOL GameEngine::Init(const tDesc_GameEngine& _AppDesc)
 	{
@@ -111,7 +111,6 @@ namespace ehw
 		CollisionManager::FrameEnd();
 		SceneManager::FrameEnd();
 		RenderManager::FrameEnd();
-		SceneManager::RemoveDestroyed();
 	}
 
 	// Running main engine loop
@@ -165,6 +164,13 @@ namespace ehw
 		GetClientRect(mHwnd, &rcClient);
 
 		return int2{ rcClient.right, rcClient.bottom };
+	}
+
+	void GameEngine::Destroy()
+	{
+		SceneManager::Destroy();
+		Run();
+		mbInitialized = false;
 	}
 
 }

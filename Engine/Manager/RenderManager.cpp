@@ -134,6 +134,7 @@ namespace ehw
 	{
 		m_renderers.clear();
 		m_lightAttributes.clear();
+		m_lights_3D.clear();
 	}
 
 	void RenderManager::SetMainCamera(Com_Camera* const _pCam)

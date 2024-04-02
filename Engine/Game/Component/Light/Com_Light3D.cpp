@@ -22,7 +22,6 @@ namespace ehw
 		, m_lightMaterial()
 		, m_index()
 	{
-		RenderManager::RegisterLight(this);
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
@@ -209,6 +208,7 @@ namespace ehw
 		float3 position = tr->GetLocalPosition();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
+		RenderManager::RegisterLight(this);
 		RenderManager::PushLightAttribute(m_attribute);
 	}
 

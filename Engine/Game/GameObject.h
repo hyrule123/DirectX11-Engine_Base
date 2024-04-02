@@ -8,12 +8,10 @@
 namespace ehw
 {
 	class iScene;
-	class Layer;
 	class iScript;
 	class GameObject
 		: public Entity
 		, public Serializable_Json
-		, public std::enable_shared_from_this<GameObject>
 	{
 		friend class GameObject;
 	public:
@@ -43,10 +41,8 @@ namespace ehw
 		void CollisionUpdate();
 		void FinalUpdate();
 		void Render();
-		void RemoveDestroyed();
 		void FrameEnd();
-
-
+		void RemoveDestroyed();
 
 	public:
 		template <typename T>
@@ -110,8 +106,8 @@ namespace ehw
 		iScene* m_ownerScene;
 		uint32 m_layer;
 
-		std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>	m_baseComponents;
-		std::vector<iScript*> m_scripts;
+		BaseComponents	m_baseComponents;
+		Scripts m_scripts;
 		
 		eState m_state;
 

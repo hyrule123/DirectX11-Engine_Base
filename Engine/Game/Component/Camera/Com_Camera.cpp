@@ -71,6 +71,16 @@ namespace ehw
 		m_postProcess.clear();
 	}
 
+	void Com_Camera::OnDisable()
+	{
+		DEBUG_BREAK;
+	}
+
+	void Com_Camera::OnDestroy()
+	{
+		DEBUG_BREAK;
+	}
+
 	void Com_Camera::RenderCamera()
 	{
 		s_viewMatrix = m_viewMatrix;

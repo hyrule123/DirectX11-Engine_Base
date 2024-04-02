@@ -45,11 +45,12 @@ namespace ehw
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		std::vector<std::shared_ptr<GameObject>> Instantiate();
+		std::vector<std::unique_ptr<GameObject>> Instantiate();
 
 		//Instantiate(GetOwner());
+		//자신의 포인터는 리턴되는 값의 0번에 들어감.
 		//기존의 BaseComponent는 전부 제거되므로 주의할것.
-		std::vector<std::shared_ptr<GameObject>> Instantiate(const std::shared_ptr<GameObject>& _obj);
+		std::vector<std::unique_ptr<GameObject>> Instantiate(GameObject* const _obj);
 
 	private:
 		eResult ConvertFBX(

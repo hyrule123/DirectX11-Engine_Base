@@ -59,6 +59,7 @@ namespace ehw
 #pragma region //Hierarchy
 		inline Com_Transform* GetParent() const { return m_parent; }
 		inline void SetParent(Com_Transform* _transform) { m_parent = _transform; }
+		void UnlinkParent();
 
 		inline void AddChild(Com_Transform* _transform);
 		inline const std::vector<Com_Transform*>& GetChilds() const { return m_childs; }
@@ -263,6 +264,15 @@ namespace ehw
 		return m_worldDirection;
 	}
 
+
+	inline void Com_Transform::UnlinkParent()
+	{
+		if (m_parent)
+		{
+			m_parent->RemoveChildPtr(this);
+			m_parent = nullptr;
+		}
+	}
 
 	inline void Com_Transform::AddChild(Com_Transform* _transform)
 	{

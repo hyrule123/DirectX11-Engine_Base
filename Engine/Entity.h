@@ -35,7 +35,6 @@ namespace ehw
 
 		//Clone을 지원하지 않을 경우 nullptr이 반환된다.
 		virtual Entity* Clone() { return nullptr; }
-		virtual bool IsCloneable() const { return false; }
 
 		Entity(Entity&& _move) noexcept;
 

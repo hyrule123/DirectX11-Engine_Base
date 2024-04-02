@@ -23,8 +23,7 @@ namespace ehw
 		{
 			NotInitialzed,
 			NotAwaken,
-			Disabled,
-			Enabled,
+			Active,
 			DestroyReserved,
 			Destroy
 		};
@@ -39,12 +38,14 @@ namespace ehw
 		virtual void Init() {};
 		virtual void Awake() {};
 		virtual void OnEnable() {};
-		virtual void OnDisable() {};
 		virtual void Start() {};
 		virtual void Update() {};
 		virtual void FinalUpdate() = 0;
 
 		virtual void FrameEnd() {};
+
+		virtual void OnDisable() {};
+		virtual void OnDestroy() {};
 
 		//Raw Pointer 사용하는 이유: 생성자에서 weak_ptr 할당시 에러가 발생함.
 		//또한, Component는 GameObject에 달아서 사용하는 것을 전제로 만든 클래스임.
@@ -53,14 +54,14 @@ namespace ehw
 
 		eComponentCategory GetComponentCategory() const { return m_ComCategory; };
 
-		void SetComponentTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
+		inline void SetComponentTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
 		UINT32 GetComponentTypeID() const { return m_ComTypeID; };
 
-		inline void CallStart() { if (false == m_bStart) { Start(); m_bStart = true; } }
+		inline void CallStart() { if (false == m_isStarted) { Start(); m_isStarted = true; } }
 
-		bool IsInitialized() const { return eState::NotInitialzed < m_state; }
+		inline bool IsInitialized() const { return eState::NotInitialzed < m_state; }
 
-		bool IsEnabled() const { return eState::Enabled == m_state; }
+		inline bool IsEnabled() const { return m_isEnabled; }
 		void SetEnable(bool _bEnable);
 
 		bool IsDestroyed() const { return eState::DestroyReserved <= m_state; }
@@ -69,7 +70,7 @@ namespace ehw
 		inline eState GetState() const { return m_state; }
 		
 
-		bool NeedRemove();
+		inline bool UpdateDestroyState();
 
 		template <typename T>
 		static inline UINT32 GetComponentTypeID();
@@ -81,9 +82,9 @@ namespace ehw
 		UINT32 m_ComTypeID;
 		GameObject* m_ownerGameObject;
 
-		bool m_bStart;
-
 		eState m_state;
+		bool m_isStarted;
+		bool m_isEnabled;
 	};
 
 
@@ -128,5 +129,19 @@ namespace ehw
 			return;
 
 		m_state = eState::DestroyReserved;
+	}
+
+	inline bool iComponent::UpdateDestroyState()
+	{
+		if (eState::Destroy == m_state)
+		{
+			return true;
+		}
+		else if (eState::DestroyReserved == m_state)
+		{
+			m_state = eState::Destroy;
+		}
+
+		return false;
 	}
 }

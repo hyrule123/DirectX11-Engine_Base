@@ -11,9 +11,9 @@
 
 namespace ehw
 {
-	std::unique_ptr<iScene> SceneManager::mActiveScene = nullptr;
+	std::unique_ptr<iScene> SceneManager::m_activeScene = nullptr;
 
-	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneManager::mUmapSceneConstructor{};
+	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneManager::m_umapSceneConstructor{};
 
 	void SceneManager::Init()
 	{
@@ -22,67 +22,67 @@ namespace ehw
 
 	void SceneManager::Update()
 	{
-		if (mActiveScene)
+		if (m_activeScene)
 		{
-			mActiveScene->SceneUpdate();
+			m_activeScene->SceneUpdate();
 		}
 			
 	}
 
 	void SceneManager::CollisionUpdate()
 	{
-		if (mActiveScene)
+		if (m_activeScene)
 		{
-			mActiveScene->SceneCollisionUpdate();
+			m_activeScene->SceneCollisionUpdate();
 		}
 	}
 
 	void SceneManager::FinalUpdate()
 	{
-		if (mActiveScene)
+		if (m_activeScene)
 		{
-			mActiveScene->SceneFinalUpdate();
+			m_activeScene->SceneFinalUpdate();
 		}
 			
 	}
 
 	void SceneManager::Render()
 	{
-		if (mActiveScene)
+		if (m_activeScene)
 		{
-			mActiveScene->SceneRender();
+			m_activeScene->SceneRender();
 		}
 			
-	}
-	
-	void SceneManager::RemoveDestroyed()
-	{
-		if (mActiveScene)
-		{
-			mActiveScene->SceneRemoveDestroyed();
-		}	
 	}
 
 	void SceneManager::FrameEnd()
 	{
-		if (mActiveScene)
+		if (m_activeScene)
 		{
-			mActiveScene->SceneFrameEnd();
+			m_activeScene->SceneFrameEnd();
 		}
 	}
 
 	void SceneManager::Release()
 	{
-		mActiveScene.reset();
-		mUmapSceneConstructor.clear();
+		m_activeScene.reset();
+		m_umapSceneConstructor.clear();
+	}
+
+	void SceneManager::Destroy()
+	{
+		if (m_activeScene)
+		{
+			m_activeScene->Destroy();
+		}
 	}
 
 
 	void SceneManager::LoadScene(const std::string_view _strKey)
 	{
-		const auto& Func = mUmapSceneConstructor.find(_strKey);
+		const auto& Func = m_umapSceneConstructor.find(_strKey);
 
-		if (Func == mUmapSceneConstructor.end())
+		if (Func == m_umapSceneConstructor.end())
 		{
 			ERROR_MESSAGE("그런 이름의 씬이 없습니다.");
 			return;
@@ -99,29 +99,29 @@ namespace ehw
 		//ASSERT(false, "미구현");
 		//std::vector<std::shared_ptr<GameObject>> dontDestroyObjs;
 
-		//if (mActiveScene)
+		//if (m_activeScene)
 		//{
-		//	dontDestroyObjs = mActiveScene->GetDontDestroyGameObjects();
+		//	dontDestroyObjs = m_activeScene->GetDontDestroyGameObjects();
 		//}
 		
-		if (mActiveScene)
-			mActiveScene->OnExit();
+		//if (m_activeScene)
+		//	m_activeScene->OnExit();
 
 		//씬 갈아끼우기
-		mActiveScene.reset();
-		mActiveScene = std::move(NewScene);
+		m_activeScene.reset();
+		m_activeScene = std::move(NewScene);
 
 		//ASSERT(false, "미구현");
 		//for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		//{
 		//	
-		//	mActiveScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
+		//	m_activeScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
 		//}
 
 		//OnEnter 호출
-		mActiveScene->OnEnter();
+		m_activeScene->OnEnter();
 
-		mActiveScene->SceneAwake();
+		m_activeScene->SceneAwake();
 	}
 
 }

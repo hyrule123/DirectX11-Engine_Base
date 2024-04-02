@@ -323,15 +323,14 @@ namespace ehw
 
 	void Com_Transform::DestroyChildsRecursive()
 	{
+		//swap 하는 이유: 지워질때마다 UnlinkParent가 호출되어 m_childs에서 자신을 지워달라고 요청함.
+		//미리 m_childs를 비워놔야 에러가 안 발생함
+		std::vector<Com_Transform*> childs{};
+		childs.swap(m_childs);
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			GameObject* owner = GetOwner();
-			if (false == owner->IsDestroyed())
-			{
-				owner->SetState(GameObject::eState::DestroyReserved);
-			}
-
-			m_childs[i]->DestroyChildsRecursive();
+			childs[i]->SetParent(nullptr);
+			childs[i]->GetOwner()->Destroy();
 		}
 	}
 }
