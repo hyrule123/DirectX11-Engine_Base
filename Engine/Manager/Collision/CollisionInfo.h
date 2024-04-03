@@ -19,8 +19,8 @@ namespace ehw
 		void operator = (const CollisionInfo& _other);
 
 	private:
-		void Enter(const float2& _contactPoint);
-		void Stay(const float2& _contactPoint);
+		void Enter();
+		void Stay();
 		void Exit();
 
 		iCollider* m_left;

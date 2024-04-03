@@ -1,6 +1,6 @@
 #include "Engine/Manager/Collision/CollisionInfo.h"
 
-#include "Engine/Game/Component/Collider/iCollider.h"
+#include "Engine/Game/Component/Collider/iCollider2D.h"
 namespace ehw
 {
 	CollisionInfo::CollisionInfo(iCollider* const _left, iCollider* const _right)
@@ -19,7 +19,7 @@ namespace ehw
 		m_right = _other.m_right;
 	}
 
-	void CollisionInfo::Enter(const float2& _contactPoint)
+	void CollisionInfo::Enter()
 	{
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())
@@ -41,7 +41,7 @@ namespace ehw
 		m_right->OnCollisionEnter(m_left, _contactPoint);
 	}
 
-	void CollisionInfo::Stay(const float2& _contactPoint)
+	void CollisionInfo::Stay()
 	{
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())

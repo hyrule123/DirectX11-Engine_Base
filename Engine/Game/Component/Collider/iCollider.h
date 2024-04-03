@@ -23,13 +23,7 @@ namespace ehw
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
 
-		virtual void OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint) {}
-		virtual void OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint) {}
-		virtual void OnCollisionExit(iCollider* const _collider) {}
 
-		virtual void OnTriggerEnter(iCollider* const _collider) {}
-		virtual void OnTriggerStay(iCollider* const _collider) {}
-		virtual void OnTriggerExit(iCollider* const _collider) {}
 
 		inline bool IsColliding() const { return m_isColliding; }
 		

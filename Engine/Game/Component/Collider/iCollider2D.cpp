@@ -50,11 +50,11 @@ namespace ehw
 		m_isColliderUpdated = false;
 	}
 
-	void iCollider2D::OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint)
+	void iCollider2D::OnCollisionEnter(iCollider* const _collider, const float3& _contactPoint)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint)
+	void iCollider2D::OnCollisionStay(iCollider* const _collider, const float3& _contactPoint)
 	{
 		//DEBUG_BREAK;
 	}

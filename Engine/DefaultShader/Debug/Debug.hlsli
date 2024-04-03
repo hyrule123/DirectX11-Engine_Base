@@ -2,13 +2,13 @@
 #define DEBUG_HLSLI
 #include "Engine/DefaultShader/Common.hlsli"
 
-struct alignas(16)  tDebug
+struct alignas(16)  tDebugDrawData
 {
 	MATRIX WVP;
 	BOOL isColliding;
 	float3 pad0;
 };
-SBUFFER(g_debug, tDebug, t, 126);
+SBUFFER(g_debugDrawData, tDebugDrawData, t, 126);
 
 #ifdef __HLSL
 struct VSIn

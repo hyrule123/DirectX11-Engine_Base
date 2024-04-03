@@ -86,7 +86,7 @@ namespace ehw
 	{
 		m_gameObjects.push_back(_gameObject);
 
-		_gameObject->SetOwnerScene(m_OwnerScene);
+		_gameObject->SetScene(m_OwnerScene);
 		_gameObject->SetLayer(m_LayerType);
 
 		if (m_OwnerScene->IsAwaken())

@@ -317,7 +317,7 @@ namespace ehw
 	void Com_Camera::SortGameObjects()
 	{
 		ASSERT_DEBUG(GetOwner(), "Owner 주소가 없음");
-		iScene* scene = GetOwner()->GetOwnerScene();
+		iScene* scene = GetOwner()->GetScene();
 		ASSERT(scene, "Scene 주소가 없음.");
 
 		

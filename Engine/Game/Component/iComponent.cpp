@@ -55,7 +55,7 @@ namespace ehw
 				}
 			};
 
-		iScene* scene = m_ownerGameObject->GetOwnerScene();
+		iScene* scene = m_ownerGameObject->GetScene();
 		if (scene->IsAwaken())
 		{
 			scene->AddFrameEndJob(onEnableDisable);

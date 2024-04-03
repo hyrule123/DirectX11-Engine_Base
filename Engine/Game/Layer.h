@@ -20,8 +20,8 @@ namespace ehw
 		void FrameEnd();
 		void Destroy();
 
-		iScene* GetOwnerScene() const { return m_OwnerScene; }
-		void SetOwnerScene(iScene* _scene) { m_OwnerScene = _scene; }
+		iScene* GetScene() const { return m_OwnerScene; }
+		void SetScene(iScene* _scene) { m_OwnerScene = _scene; }
 		void AddGameObject(const std::shared_ptr<GameObject>& _gameObject);
 
 		void RemoveGameObject(const GameObject* gameObject);

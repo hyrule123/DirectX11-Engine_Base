@@ -188,6 +188,14 @@ namespace ehw
 			}
 		}
 
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i]->IsEnabled())
+			{
+				m_scripts[i]->OnEnable();
+			}
+		}
+
 		//Awake의 경우 재귀적으로 호출
 		const std::vector<Com_Transform*>& childs = GetComponent<Com_Transform>()->GetChilds();
 		for (size_t i = 0; i < childs.size(); ++i)

@@ -47,8 +47,6 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void OnDestroy() {};
 
-		//Raw Pointer 사용하는 이유: 생성자에서 weak_ptr 할당시 에러가 발생함.
-		//또한, Component는 GameObject에 달아서 사용하는 것을 전제로 만든 클래스임.
 		inline GameObject* GetOwner() { return m_ownerGameObject; }
 		inline void SetOwner(GameObject* _owner) { m_ownerGameObject = _owner; }
 

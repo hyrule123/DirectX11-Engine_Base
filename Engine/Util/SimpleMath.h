@@ -16,6 +16,14 @@
 
 namespace ehw
 {
+	//1(rad) / 180 * PI = PI / 180
+	constexpr const float g_radianToDegreeFactor = DirectX::XM_PI / 180.f;
+
+	//1(deg) / PI * 180 = 180 / PI
+	constexpr const float g_degreeToRadianFactor = 180.f / DirectX::XM_PI;
+	inline constexpr float ToRadian(float _radian) { return _radian * g_radianToDegreeFactor; }
+	inline constexpr float ToDegree(float _degree) { return _degree * g_degreeToRadianFactor; }
+
 	enum class eAxis2D
 	{
 		X,

@@ -57,7 +57,9 @@ namespace ehw
 	{
 		Box,
 		Sphere,
-		END
+		Cylinder,
+		Line,
+		END,
 	};
 
 	//enum class eLayer
@@ -104,4 +106,16 @@ namespace ehw
 		_3D
 	};
 
+
+	enum class eRotationOrder : UINT8
+	{
+		XYZ,
+		XZY,
+		YXZ,
+		YZX,
+		ZXY,
+		ZYX,
+
+		END
+	};
 }

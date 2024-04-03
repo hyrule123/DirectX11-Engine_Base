@@ -98,10 +98,10 @@ namespace ehw
 		struct tIDPair
 		{
 			//ID중 낮은쪽
-			std::uint32_t Low32;
+			uint32 Low32;
 
 			//ID중 높은쪽
-			std::uint32_t High32;
+			uint32 High32;
 		};
 
 		union
@@ -111,15 +111,15 @@ namespace ehw
 		} ID64;
 
 		tColliderID() = delete;
-		tColliderID(std::uint32_t _1, std::uint32_t _2);
+		tColliderID(uint32 _1, uint32 _2);
 		~tColliderID();
-		operator std::uint64_t() const { return ID64.ID; }
+		operator uint64() const { return ID64.ID; }
 	};
 
 	struct tColliderID_Hasher
 	{
-		static_assert(sizeof(tColliderID) == sizeof(std::size_t), "사이즈 미일치. 처리함수를 만드세요.");
-		std::size_t operator()(tColliderID _id) const { return static_cast<std::size_t>(_id.ID64.ID); }
+		static_assert(sizeof(tColliderID) == sizeof(size_t), "사이즈 미일치. 처리함수를 만드세요.");
+		size_t operator()(tColliderID _id) const { return static_cast<size_t>(_id.ID64.ID); }
 	};
 
 	struct tDebugMesh

@@ -81,8 +81,8 @@ namespace ehw
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		iScene* GetOwnerScene() const { return m_ownerScene; }
-		void SetOwnerScene(iScene* _scene) { m_ownerScene = _scene; }
+		iScene* GetScene() const { return m_ownerScene; }
+		void SetScene(iScene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
 		uint32 GetLayer() const { return m_layer; }

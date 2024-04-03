@@ -127,9 +127,12 @@ namespace ehw
 
 	void GameEngine::Release()
 	{
-		//EndFrame();
 		::ReleaseDC(mHwnd, mHdc);
+
+		mHwnd = {};
+		mHdc = {};
 		mbInitialized = false;
+		m_editorRunFunction = nullptr;
 	}
 
 	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)
@@ -161,14 +164,17 @@ namespace ehw
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcClient{};
-		GetClientRect(mHwnd, &rcClient);
+		::GetClientRect(mHwnd, &rcClient);
 
 		return int2{ rcClient.right, rcClient.bottom };
 	}
 
 	void GameEngine::Destroy()
 	{
+		//Destroy() 호출 후
 		SceneManager::Destroy();
+
+		//한 프레임 돌려주고(충돌체 해제 등의 작업 진행) 끝낸다
 		Run();
 		mbInitialized = false;
 	}

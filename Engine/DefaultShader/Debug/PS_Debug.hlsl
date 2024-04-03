@@ -2,7 +2,7 @@
 
 float4 main(VSOut _in) : SV_TARGET
 {
-	if(TRUE == g_debug[_in.InstanceID].isColliding)
+	if (TRUE == g_debugDrawData[_in.InstanceID].isColliding)
 	{
 		return float4(1.f, 0.f, 0.f, 1.f);
 	}

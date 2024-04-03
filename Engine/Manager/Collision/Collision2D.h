@@ -27,9 +27,8 @@ namespace ehw
 		friend class iCollider2D;
 		friend class CollisionManager;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
-		using Collision2DFunction = std::function<
-			bool(iCollider2D* const, iCollider2D* const, Vector2&)
-		>;
+		using Collision2DFunction = 
+			std::function<bool(iCollider2D* const, iCollider2D* const)>;
 
 	private:
 		Collision2D();
@@ -44,36 +43,22 @@ namespace ehw
 	private:
 		void Enqueue(iCollider2D* const _obj);
 
-		bool CheckIntersect_AABB_AABB(
-			iCollider2D* const _AABB1, iCollider2D* const _AABB2, 
-			Vector2& _hitPoint);
+		bool CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2);
 
-		bool CheckIntersect_AABB_OBB(
-			iCollider2D* const _AABB, iCollider2D* const _OBB, 
-			Vector2& _hitPoint);
+		bool CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB);
 
-		bool CheckIntersect_AABB_Circle(
-			iCollider2D* const _AABB, iCollider2D* const _circle, 
-			Vector2& _hitPoint);
+		bool CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle);
 
-		bool CheckIntersect_OBB_OBB(
-			iCollider2D* const _OBB1, iCollider2D* const _OBB2, 
-			Vector2& _hitPoint);
+		bool CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2);
 
-		bool CheckIntersect_OBB_Circle(
-			iCollider2D* const _OBB, iCollider2D* const _circle, 
-			Vector2& _hitPoint);
+		bool CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle);
 
-		bool CheckIntersect_OBB_AABB(
-			iCollider2D* const _OBB, iCollider2D* const _AABB,
-			Vector2& _hitPoint);
+		bool CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB);
 
-		bool CheckIntersect_Circle_Circle(
-			iCollider2D* const _circle1, iCollider2D* const _circle2,
-			Vector2& _hitPoint);
+		bool CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2);
 
 	private:
-		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer);
+		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData, StructBuffer* const _sbuffer);
 
 	private:
 		std::array<std::vector<iCollider2D*>, g_maxLayer> m_collidersInLayer;
@@ -88,7 +73,7 @@ namespace ehw
 		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
 			m_collision2DFunctions;
 
-		std::array<std::vector<tDebug>, (int)eCollider2D_Shape::END> m_debugInstancingData;
+		std::array<std::vector<tDebugDrawData>, (int)eCollider2D_Shape::END> m_debugInstancingData;
 		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;
 	};
 }

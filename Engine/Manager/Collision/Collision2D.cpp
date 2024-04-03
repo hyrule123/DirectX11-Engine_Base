@@ -42,6 +42,21 @@ namespace ehw
 		m_collisions.clear();
 
 		m_debugInfoSBuffer = nullptr;
+
+		for (size_t i = 0; i < m_collision2DFunctions.size(); ++i)
+		{
+			for (size_t j = 0; j < m_collision2DFunctions[i].size(); ++j)
+			{
+				m_collision2DFunctions[i][j] = nullptr;
+			}
+		}
+
+		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
+		{
+			m_debugInstancingData[i].clear();
+		}
+
+		m_debugInfoSBuffer = nullptr;
 	}
 
 	void Collision2D::Enqueue(iCollider2D* const _obj)
@@ -58,41 +73,41 @@ namespace ehw
 		//AABB-AABB
 		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::AABB]
 			= std::bind(&Collision2D::CheckIntersect_AABB_AABB, this, 
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 
 		//AABB-Circle
 		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::Circle]
 			= std::bind(&Collision2D::CheckIntersect_AABB_Circle, this, 
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::AABB]
 			= std::bind(&Collision2D::CheckIntersect_AABB_Circle, this, 
-				std::placeholders::_2, std::placeholders::_1, std::placeholders::_3);
+				std::placeholders::_2, std::placeholders::_1);
 
 		//AABB-OBB
 		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::OBB]
 			= std::bind(&Collision2D::CheckIntersect_AABB_OBB, this, 
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::AABB]
 			= std::bind(&Collision2D::CheckIntersect_AABB_OBB, this, 
-				std::placeholders::_2, std::placeholders::_1, std::placeholders::_3);
+				std::placeholders::_2, std::placeholders::_1);
 
 		//Circle-Circle
 		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::Circle]
 			= std::bind(&Collision2D::CheckIntersect_Circle_Circle, this,
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 
 		//Circle-OBB
 		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::Circle]
 			= std::bind(&Collision2D::CheckIntersect_OBB_Circle, this,
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::OBB]
 			= std::bind(&Collision2D::CheckIntersect_OBB_Circle, this,
-				std::placeholders::_2, std::placeholders::_1, std::placeholders::_3);
+				std::placeholders::_2, std::placeholders::_1);
 
 		//OBB-OBB
 		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::OBB]
 			= std::bind(&Collision2D::CheckIntersect_OBB_OBB, this,
-				std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+				std::placeholders::_1, std::placeholders::_2);
 	}
 
 
@@ -137,9 +152,9 @@ namespace ehw
 
 						eCollider2D_Shape leftShape = left->GetColliderShape();
 						eCollider2D_Shape rightShape = right->GetColliderShape();
-						Vector2 contactPoint{};
+
 						bool isContact = m_collision2DFunctions[(int)leftShape][(int)rightShape]
-						(left, right, contactPoint);
+						(left, right);
 
 						tColliderID id{ left->GetID(), right->GetID() };
 
@@ -216,7 +231,7 @@ namespace ehw
 				col->ColliderUpdate();
 
 				//TODO: Collider 별로 사이즈 제대로 설정하기
-				tDebug debugData{};
+				tDebugDrawData debugData{};
 				debugData.WVP = col->GetColliderMatrix();
 				debugData.WVP *= matView;
 				debugData.WVP *= matProj;
@@ -243,10 +258,10 @@ namespace ehw
 			m_debugInfoSBuffer = std::make_unique<StructBuffer>();
 			StructBuffer::Desc desc{};
 			desc.eSBufferType = eStructBufferType::READ_ONLY;
-			desc.REGISLOT_t_SRV = Register_t_g_debug;
+			desc.REGISLOT_t_SRV = Register_t_g_debugDrawData;
 			desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 			m_debugInfoSBuffer->SetDesc(desc);
-			m_debugInfoSBuffer->Create<tDebug>(maxCount, nullptr, 0);
+			m_debugInfoSBuffer->Create<tDebugDrawData>(maxCount, nullptr, 0);
 		}
 
 		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::DebugRectMesh);
@@ -273,7 +288,7 @@ namespace ehw
 
 
 
-	bool Collision2D::CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2)
 	{
 		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1);
 		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2);
@@ -299,34 +314,34 @@ namespace ehw
 		return true;
 	}
 
-	void Collision2D::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebug>& _debugData, StructBuffer* const _sbuffer)
+	void Collision2D::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData, StructBuffer* const _sbuffer)
 	{
 		_sbuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
 		_sbuffer->BindDataSRV();
 		_mesh->RenderInstanced(0, (UINT)_debugData.size());
 	}
 
-	bool Collision2D::CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2, Vector2& _hitPoint)
+	bool Collision2D::CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2)
 	{
 		return false;
 	}

@@ -17,25 +17,25 @@ namespace ehw
 
 		virtual ~iCollider2D();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		eResult Serialize_Json(JsonSerializer* _ser) const override;
+		eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		virtual void Update() final;
-		virtual void FrameEnd() override;
+		void Update() final;
+		void FrameEnd() override;
 
 		//CollisionManager에서 호출. 충돌체 정보를 계산한다.
 		inline void ColliderUpdate();
 		virtual void UpdateShape() = 0;
 
-		virtual void FinalUpdate() final {}
+		void FinalUpdate() final {}
 
-		virtual void OnCollisionEnter(iCollider* const _collider, const Vector2 _contactPoint) override;
-		virtual void OnCollisionStay(iCollider* const _collider, const Vector2 _contactPoint) override;
-		virtual void OnCollisionExit(iCollider* const _collider) override;
+		void OnCollisionEnter(iCollider2D* const _collider, const float2& _contactPoint) {}
+		void OnCollisionStay(iCollider2D* const _collider, const float2& _contactPoint) {}
+		void OnCollisionExit(iCollider2D* const _collider) {}
 
-		virtual void OnTriggerEnter(iCollider* const _collider) override;
-		virtual void OnTriggerStay(iCollider* const _collider) override;
-		virtual void OnTriggerExit(iCollider* const _collider) override;
+		void OnTriggerEnter(iCollider2D* const _collider) {}
+		void OnTriggerStay(iCollider2D* const _collider) {}
+		void OnTriggerExit(iCollider2D* const _collider) {}
 
 	private:
 		eCollider2D_Shape m_collider2DShape;
