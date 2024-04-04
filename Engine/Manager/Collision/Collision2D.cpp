@@ -117,7 +117,7 @@ namespace ehw
 		std::unordered_map<tColliderID, CollisionInfo, tColliderID_Hasher> prevCollisions{};
 		m_collisions.swap(prevCollisions);
 
-		const auto& colMask = CollisionManager::GetCollisionMasks();
+		const auto& colMask = CollisionManager::GetCollisionMask();
 		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
 		{
 			for (size_t j = i; j < m_collidersInLayer.size(); ++j)
@@ -170,7 +170,7 @@ namespace ehw
 							if (prevCollisions.end() == iter)
 							{
 								CollisionInfo info{ left, right };
-								info.Enter(contactPoint);
+								info.Enter();
 
 								m_collisions.insert(
 									std::make_pair(std::move(id), std::move(info)));
@@ -178,7 +178,7 @@ namespace ehw
 							else
 							{
 								//Stay 호출
-								iter->second.Stay(contactPoint);
+								iter->second.Stay();
 
 								//prevCollisions에서 데이터 추출해서 m_collisions로 넣어준다.
 								m_collisions.insert(prevCollisions.extract(iter));

@@ -5,13 +5,13 @@
 
 namespace ehw
 {
-	class iCollider;
+	class iCollider2D;
 	class CollisionInfo
 	{
 		friend class Collision2D;
 	public:
 		CollisionInfo() = delete;
-		CollisionInfo(iCollider* const _left, iCollider* const _right);
+		CollisionInfo(iCollider2D* const _left, iCollider2D* const _right);
 		CollisionInfo(const CollisionInfo& _other) = default;
 		CollisionInfo(CollisionInfo&& _right) noexcept = default;
 		~CollisionInfo();
@@ -23,8 +23,8 @@ namespace ehw
 		void Stay();
 		void Exit();
 
-		iCollider* m_left;
-		iCollider* m_right;
+		iCollider2D* m_left;
+		iCollider2D* m_right;
 	};
 }
 

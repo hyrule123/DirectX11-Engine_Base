@@ -38,15 +38,20 @@ namespace ehw
 		eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); };
 		eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult(); };
 
-		void Start() override;
+		void OnEnable() override;
+		void OnDisable() override;
 
 		void CollisionUpdate();
 		void CollisionLateUpdate();
+		
 		void FinalUpdate() override { ASSERT(false, "미구현"); }; // 구현 안함
 
 		inline void DestroyShape() { _shape = nullptr; };
 
 		inline bool IsTrigger() const { return _isTrigger; };
+
+		MATRIX GetColliderMatrix() override { return MATRIX{}; };
+		
 		void SetTrigger();
 
 		float3 GetWorldScale() const;

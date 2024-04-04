@@ -262,9 +262,14 @@ namespace ehw
 	//	return true;
 	//}
 
-	const void CollisionManager::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
+	void CollisionManager::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
 	{
 		m_collisionMask[_layerA][_layerB] = _isEnable;
 		m_collisionMask[_layerB][_layerA] = _isEnable;
+	}
+	void CollisionManager::SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable)
+	{
+		m_raycastMask[_layerA][_layerB] = _isEnable;
+		m_raycastMask[_layerB][_layerA] = _isEnable;
 	}
 }

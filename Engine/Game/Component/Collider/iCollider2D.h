@@ -29,13 +29,13 @@ namespace ehw
 
 		void FinalUpdate() final {}
 
-		void OnCollisionEnter(iCollider2D* const _collider, const float2& _contactPoint) {}
-		void OnCollisionStay(iCollider2D* const _collider, const float2& _contactPoint) {}
-		void OnCollisionExit(iCollider2D* const _collider) {}
+		void OnCollisionEnter(iCollider2D* const _collider);
+		void OnCollisionStay(iCollider2D* const _collider);
+		void OnCollisionExit(iCollider2D* const _collider);
 
-		void OnTriggerEnter(iCollider2D* const _collider) {}
-		void OnTriggerStay(iCollider2D* const _collider) {}
-		void OnTriggerExit(iCollider2D* const _collider) {}
+		void OnTriggerEnter(iCollider2D* const _collider);
+		void OnTriggerStay(iCollider2D* const _collider);
+		void OnTriggerExit(iCollider2D* const _collider);
 
 	private:
 		eCollider2D_Shape m_collider2DShape;

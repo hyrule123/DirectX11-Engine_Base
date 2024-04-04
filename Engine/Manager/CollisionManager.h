@@ -36,12 +36,14 @@ namespace ehw
 		static inline Collision2D& GetCollision2D() { return m_col2DManager; }
 		static inline Collision3D& GetCollision3D() { return m_col3DManager; }
 
-		//static void LayerCollision(class iScene* _scene, uint32 _left, uint32 _right);
-		//static void ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right);
+		static void SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable);
+		static inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
+			GetCollisionMask() { return m_collisionMask; }
 
-		static const void SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable);
-		static const std::array<std::bitset<g_maxLayer>, g_maxLayer>& 
-			GetCollisionMasks() { return m_collisionMask; }
+		static void SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable);
+		static inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
+			GetRaycastMask() { return m_raycastMask; };
+
 
 		//Editor 프로젝트에서 호출됨.
 		static void Render();
@@ -56,9 +58,9 @@ namespace ehw
 	private:
 		//레이어끼리의 상호작용 여부를 담아놓은 이차원 배열
 		static std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collisionMask;
+		static std::array<std::bitset<g_maxLayer>, g_maxLayer> m_raycastMask;
 
 		static Collision2D m_col2DManager;
-
 		static Collision3D m_col3DManager;
 	};
 

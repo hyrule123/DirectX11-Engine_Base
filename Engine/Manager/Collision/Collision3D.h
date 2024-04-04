@@ -17,6 +17,11 @@
 #pragma warning(default : 26451)
 #pragma warning(default : 6297)
 
+//작동방식
+//OnEnable 시점에 PhysX에 등록
+//OnDisable 시점에 PhysX에서 해제
+
+
 namespace ehw
 {
 	// 전방 선언
@@ -44,25 +49,26 @@ namespace ehw
 		END
 	};
 
-	constexpr std::array<float, static_cast<UINT8>(UpdateInterval::END)> g_intervals
-	{
-		1.f / 30.f,
-		1.f / 60.f,
-		1.f / 120.f,
-		1.f / 144.f,
-		1.f / 240.f,
-	};
+
 
 	class Collision3D final : public ::physx::PxSimulationEventCallback
 	{
 		friend class CollisionManager;
 
 	public:
-		void Initialize();
+		static constexpr float s_defaultDensity = 10.f;
+		static constexpr std::array<float, (int)UpdateInterval::END> s_physxUpdateIntervals
+		{
+			1.f / 30.f,
+			1.f / 60.f,
+			1.f / 120.f,
+			1.f / 144.f,
+			1.f / 240.f,
+		};
+	
+		void Init();
 		void CollisionUpdate();
 
-		void EnableRaycast(uint32 leftLayerIndex, uint32 rightLayerIndex, bool enable);
-		void EnableCollision(uint32 leftLayerIndex, uint32 rightLayerIndex, bool enable);
 		void EnableGravity(bool enable, iScene* scene, const float3& gravity) const;
 
 		void createActorCube(GameObject* gameObject, const float3& halfExtents, physx::PxShape** outShape, bool isStatic);
@@ -88,8 +94,8 @@ namespace ehw
 			physx::PxPairFlags& pairFlags,
 			const void* constantBlock, physx::PxU32 constantBlockSize);
 
-		inline void setUpdateInterval(UpdateInterval interval) { _currentInterval = interval; }
-		inline float getUpdateInterval() const { return g_intervals[static_cast<UINT8>(_currentInterval)]; }
+		inline void setUpdateInterval(UpdateInterval interval) { m_curUpdateInterval = interval; }
+		inline float getUpdateInterval() const { return s_physxUpdateIntervals[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override;
@@ -101,23 +107,22 @@ namespace ehw
 
 
 	private:
-		physx::PxDefaultAllocator		_allocator;
-		physx::PxDefaultErrorCallback	_errorCallback;
-		physx::PxFoundation* _foundation;
-		physx::PxPhysics* _physics;
-		physx::PxDefaultCpuDispatcher* _dispatcher;
-		physx::PxScene* _currentScene;
-		physx::PxMaterial* _material;
-		std::array<std::bitset<32>, 32> _collisionMask;
-		std::array<std::bitset<32>, 32> _raycastMask;
+		physx::PxDefaultAllocator		m_allocator;
+		physx::PxDefaultErrorCallback	m_errorCallback;
 
+		physx::PxFoundation* m_foundation;
+		physx::PxPhysics* m_physics;
+		physx::PxDefaultCpuDispatcher* m_dispatcher;
+		physx::PxScene* m_currentScene;
+		physx::PxMaterial* m_material;
 		
-		UpdateInterval											   _currentInterval;
+		UpdateInterval	m_curUpdateInterval;
 
-		std::unordered_map<iScene*, physx::PxScene*>  _scenes;
-		inline static constexpr float _kDefaultDensity = 10.f;
+		std::unordered_map<iScene*, physx::PxScene*>  m_physxScenes;
+		
 #ifdef _DEBUG
-		physx::PxPvd* _pvd{};
+		//Physx Visualization Debugger
+		physx::PxPvd* m_PVD;
 #endif
 	};
 

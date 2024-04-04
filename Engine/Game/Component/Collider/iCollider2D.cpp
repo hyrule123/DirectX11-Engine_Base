@@ -50,27 +50,27 @@ namespace ehw
 		m_isColliderUpdated = false;
 	}
 
-	void iCollider2D::OnCollisionEnter(iCollider* const _collider, const float3& _contactPoint)
+	void iCollider2D::OnCollisionEnter(iCollider2D* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnCollisionStay(iCollider* const _collider, const float3& _contactPoint)
+	void iCollider2D::OnCollisionStay(iCollider2D* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnCollisionExit(iCollider* const _collider)
+	void iCollider2D::OnCollisionExit(iCollider2D* const _collider)
 	{
 		DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerEnter(iCollider* const _collider)
+	void iCollider2D::OnTriggerEnter(iCollider2D* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerStay(iCollider* const _collider)
+	void iCollider2D::OnTriggerStay(iCollider2D* const _collider)
 	{
 		//DEBUG_BREAK;
 	}
-	void iCollider2D::OnTriggerExit(iCollider* const _collider)
+	void iCollider2D::OnTriggerExit(iCollider2D* const _collider)
 	{
 		DEBUG_BREAK;
 	}

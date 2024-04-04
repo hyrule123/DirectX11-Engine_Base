@@ -43,7 +43,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Collider3D::Start()
+	void Com_Collider3D::OnEnable()
 	{
 		if (_syncScaleToTransform)
 		{
@@ -55,22 +55,19 @@ namespace ehw
 
 		if (_shape == nullptr)
 		{
-			if (_type == eCollider3D_Shape::Box)
+			if (eCollider3D_Shape::Box == _type)
 			{
 				CollisionManager::GetCollision3D().createActorCube(GetOwner(), realScale, &_shape, _isStatic);
 			}
-				
-			else if (_type == eCollider3D_Shape::Sphere)
+			else if (eCollider3D_Shape::Sphere == _type)
 			{
 				CollisionManager::GetCollision3D().createActorSphere(GetOwner(), realScale.x, &_shape, _isStatic);
 			}
-				
 		}
 		else if (_shape)
 		{
 			CollisionManager::GetCollision3D().changeGeometry(this, _shape, _type);
 		}
-
 
 		EnableGravity(_isGravityEnabled);
 		SetMass(_mass);
@@ -89,27 +86,10 @@ namespace ehw
 		}
 	}
 
+	void Com_Collider3D::OnDisable()
+	{
 
-
-
-	//void Com_Collider3D::Render()
-	//{
-		//_positionBufferData.world = _worldMatrix;
-
-		////const Camera& camera = *(renderer::cameras[(UINT)eSceneType::Play]);
-		//_positionBufferData.view = Camera::GetGpuViewMatrix();
-		//_positionBufferData.projection = Camera::GetGpuProjectionMatrix();
-		//_positionBuffer->SetData(&_positionBufferData);
-		//_positionBuffer->Bind(eShaderStage::ALL);
-
-		//_wireFrameData.collisionCount = _collisionCount;
-		//_wireFrameBuffer->SetData(&_wireFrameData);
-		//_wireFrameBuffer->Bind(eShaderStage::PS);
-
-		//_shader->Binds();
-		//_mesh->Render(0u);
-
-	//}
+	}
 
 	void Com_Collider3D::CollisionUpdate()
 	{
@@ -169,7 +149,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Collider3D::OnCollisionStay(Com_Collider3D* other, const float3& collisionPosition)
+	void Com_Collider3D::OnCollisionStay(Com_Collider3D* const other, const float3& collisionPosition)
 	{
 		const auto& scripts = GetOwner()->GetScripts();
 		for (auto& script : scripts)
@@ -178,7 +158,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Collider3D::OnCollisionExit(Com_Collider3D* other)
+	void Com_Collider3D::OnCollisionExit(Com_Collider3D* const other)
 	{
 		--_collisionCount;
 		const auto& scripts = GetOwner()->GetScripts();
@@ -188,7 +168,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Collider3D::OnTriggerEnter(Com_Collider3D* other)
+	void Com_Collider3D::OnTriggerEnter(Com_Collider3D* const other)
 	{
 		_otherOverlapping = other->GetOwner();
 		const auto& scripts = GetOwner()->GetScripts();
@@ -200,7 +180,19 @@ namespace ehw
 		//_wireFrameData.isTrigger = true;
 	}
 
-	void Com_Collider3D::OnTriggerExit(Com_Collider3D* other)
+	void Com_Collider3D::OnTriggerStay(Com_Collider3D* const other)
+	{
+		_otherOverlapping = other->GetOwner();
+		const auto& scripts = GetOwner()->GetScripts();
+		for (auto& script : scripts)
+		{
+			script->OnTriggerEnter(other);
+		}
+	}
+
+
+
+	void Com_Collider3D::OnTriggerExit(Com_Collider3D* const other)
 	{
 		const auto& scripts = GetOwner()->GetScripts();
 		for (auto& script : scripts)
@@ -339,11 +331,6 @@ namespace ehw
 		}
 	}
 
-	void Com_Collider3D::AddForce(const float3& force)
-	{
-		ASSERT(false, "미구현");
-	}
-
 	void Com_Collider3D::ClearForce()
 	{
 		if (_shape)
@@ -480,7 +467,7 @@ namespace ehw
 		assert(rigidActor);
 
 		physx::PxTransformT<float> transform{};
-		memcpy(&transform.p, _worldMatrix.m[3], sizeof(float) * 3);
+		transform.p = MathUtil::ToPxVec3(_worldMatrix.Translation());
 
 		Quaternion q = GetOwner()->GetComponent<Com_Transform>()->GetWorldRotation();
 		transform.q = MathUtil::ToPxQuat(q);
@@ -490,32 +477,12 @@ namespace ehw
 	void Com_Collider3D::FetchPhysX()
 	{
 		physx::PxActor* actor = _shape->getActor();
-		assert(actor);
+		ASSERT_DEBUG(actor, "actor가 nullptr");
 
 		physx::PxRigidActor* rigidActor = actor->is<physx::PxRigidActor>();
-		assert(rigidActor);
+		ASSERT_DEBUG(rigidActor, "rigidActor가 nullptr");
 
 		physx::PxTransform worldTransform = rigidActor->getGlobalPose();
-
-		//Debug
-		if (GetOwner()->GetName() == "Wolf")
-		{
-			static Quaternion prevQuat{};
-			Quaternion curQuat = MathUtil::ToQuaternion(worldTransform.q);
-			prevQuat = curQuat;
-
-			float3 angle = MathUtil::ToQuaternion(worldTransform.q).ToEuler() * g_radianToDegreeFactor;
-				
-			int iangle = (int)std::floorf(angle.x);
-			if (0 == iangle)
-			{
-				int a = 3;
-			}
-			else if (-180 == iangle)
-			{
-				int a = 3;
-			}
-		}
 
 		if (false == _isStatic)
 		{
@@ -527,17 +494,13 @@ namespace ehw
 
 			float3 diffPos = diff.Translation();
 
-			if (GetOwner()->GetName() == "childObj")
-			{
-				int a = 3;
-			}
-
 			Com_Transform* tr = GetOwner()->GetComponent<Com_Transform>();
 			tr->SetWorldRotation(diffQuat);
 			tr->SetWorldPosition(diffPos);
 			//GetOwner()->GetComponent<Com_Transform>()->FetchPhysX(diffQuat, diffPos);
 		}
 	}
+
 	void Com_Collider3D::UpdateMatrix()
 	{
 		//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 MATRIX를 만들어줘야 한다.
