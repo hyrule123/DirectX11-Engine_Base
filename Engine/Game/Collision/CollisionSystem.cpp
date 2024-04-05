@@ -1,4 +1,4 @@
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 
 #include "Engine/Game/iScene.h"
 #include "Engine/Game/Component/Transform/Com_Transform.h"
@@ -10,30 +10,20 @@
 
 namespace ehw
 {
-	std::array<std::bitset<g_maxLayer>, g_maxLayer> CollisionManager::m_collisionMask{};
-
-	Collision2D				CollisionManager::m_col2DManager{};
-
-	Collision3D				CollisionManager::m_col3DManager{};
-
-	void CollisionManager::Init()
+	CollisionSystem::CollisionSystem(iScene* const _ownerScene)
+		: m_owner{ _ownerScene }
+		, m_collisionMask{}
+		, m_raycastMask{}
+		, m_col2DManager{ this }
+		, m_col3DManager{ this }
 	{
-		AtExit::AddFunc(Release);
-
-		m_col2DManager.Init();
-	}
-	void CollisionManager::Release()
-	{
-		for (size_t i = 0; i < m_collisionMask.size(); ++i)
-		{
-			m_collisionMask[i] = 0;
-		}
-
-		m_col2DManager.Reset();
-		//m_col3DManager.Reset();
 	}
 
-	void CollisionManager::Update()
+	CollisionSystem::~CollisionSystem()
+	{
+	}
+
+	void CollisionSystem::Update()
 	{
 		m_col2DManager.Update();
 
@@ -55,22 +45,20 @@ namespace ehw
 		//		}
 		//	}
 		//}
-
-		SceneManager::CollisionUpdate();
 	}
 
-	void CollisionManager::FrameEnd()
+	void CollisionSystem::FrameEnd()
 	{
 		m_col2DManager.FrameEnd();
 	}
 
-	void CollisionManager::Render()
+	void CollisionSystem::Render()
 	{
 		m_col2DManager.Render();
 	}
 
 
-	//void CollisionManager::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
+	//void CollisionSystem::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
 	//{
 		//const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
 		//const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
@@ -100,7 +88,7 @@ namespace ehw
 
 	//}
 
-	//void CollisionManager::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//void CollisionSystem::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
 	//{
 		//// 두 충돌체 레이어로 구성된 ID 확인
 		//union_ColliderID colliderID;
@@ -187,7 +175,7 @@ namespace ehw
 		//}
 	//}
 
-	//bool CollisionManager::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//bool CollisionSystem::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
 	//{
 		//// Rect vs Rect 
 		//// 0 --- 1
@@ -262,12 +250,14 @@ namespace ehw
 	//	return true;
 	//}
 
-	void CollisionManager::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
+
+
+void CollisionSystem::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
 	{
 		m_collisionMask[_layerA][_layerB] = _isEnable;
 		m_collisionMask[_layerB][_layerA] = _isEnable;
 	}
-	void CollisionManager::SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable)
+	void CollisionSystem::SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable)
 	{
 		m_raycastMask[_layerA][_layerB] = _isEnable;
 		m_raycastMask[_layerB][_layerA] = _isEnable;

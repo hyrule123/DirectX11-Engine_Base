@@ -179,7 +179,7 @@ namespace ehw::editor
 
 	void EditorManager::Render()
 	{
-		CollisionManager::Render();
+		CollisionSystem::Render();
 
 		for (const auto& obj : mEditorObjects)
 		{

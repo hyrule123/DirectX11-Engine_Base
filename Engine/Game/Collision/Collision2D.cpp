@@ -1,6 +1,6 @@
-#include "Engine/Manager/Collision/Collision2D.h"
+#include "Engine/Game/Collision/Collision2D.h"
 
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
@@ -23,9 +23,62 @@
 
 namespace ehw
 {
+	//AABB,
+	//OBB,
+	//Circle,
+	//END
+	std::array<std::array<Collision2D::CheckIntersectFunction,
+		(int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
+		Collision2D::s_checkIntersectFunctions
+	{
+		{
+			{
+				//AABB-AABB(0, 0)
+				std::bind(Collision2D::CheckIntersect_AABB_AABB,
+					std::placeholders::_1, std::placeholders::_2),
 
-	Collision2D::Collision2D()
-		: m_collidersInLayer{}
+				//AABB-OBB(0, 1)
+				std::bind(Collision2D::CheckIntersect_AABB_OBB,
+					std::placeholders::_1, std::placeholders::_2),
+
+				//AABB-Circle(0, 2)
+				std::bind(Collision2D::CheckIntersect_AABB_Circle,
+					std::placeholders::_1, std::placeholders::_2)
+			}
+			,
+			{
+				//OBB-AABB(1, 0)
+				std::bind(Collision2D::CheckIntersect_AABB_OBB,
+					std::placeholders::_2, std::placeholders::_1),
+
+				//OBB-OBB(1, 1)
+				std::bind(Collision2D::CheckIntersect_OBB_OBB,
+					std::placeholders::_1, std::placeholders::_2),
+
+				//OBB-Circle(1, 2)
+				std::bind(Collision2D::CheckIntersect_OBB_Circle,
+					std::placeholders::_1, std::placeholders::_2)
+			}
+			,
+			{
+				//Circle-AABB(2, 0)
+				std::bind(Collision2D::CheckIntersect_AABB_Circle,
+					std::placeholders::_2, std::placeholders::_1),
+
+				//Circle-OBB(2, 1)
+				std::bind(Collision2D::CheckIntersect_OBB_Circle,
+					std::placeholders::_2, std::placeholders::_1),
+
+				//Circle-Circle(2, 2)
+				std::bind(Collision2D::CheckIntersect_Circle_Circle,
+					std::placeholders::_1, std::placeholders::_2),
+			}
+		}
+	};
+
+	Collision2D::Collision2D(CollisionSystem* const _owner)
+		: m_owner(_owner)
+		, m_collidersInLayer{}
 	{
 	}
 
@@ -42,14 +95,6 @@ namespace ehw
 		m_collisions.clear();
 
 		m_debugInfoSBuffer = nullptr;
-
-		for (size_t i = 0; i < m_collision2DFunctions.size(); ++i)
-		{
-			for (size_t j = 0; j < m_collision2DFunctions[i].size(); ++j)
-			{
-				m_collision2DFunctions[i][j] = nullptr;
-			}
-		}
 
 		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
 		{
@@ -68,48 +113,6 @@ namespace ehw
 	}
 
 
-	void Collision2D::Init()
-	{
-		//AABB-AABB
-		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::AABB]
-			= std::bind(&Collision2D::CheckIntersect_AABB_AABB, this, 
-				std::placeholders::_1, std::placeholders::_2);
-
-		//AABB-Circle
-		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::Circle]
-			= std::bind(&Collision2D::CheckIntersect_AABB_Circle, this, 
-				std::placeholders::_1, std::placeholders::_2);
-		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::AABB]
-			= std::bind(&Collision2D::CheckIntersect_AABB_Circle, this, 
-				std::placeholders::_2, std::placeholders::_1);
-
-		//AABB-OBB
-		m_collision2DFunctions[(int)eCollider2D_Shape::AABB][(int)eCollider2D_Shape::OBB]
-			= std::bind(&Collision2D::CheckIntersect_AABB_OBB, this, 
-				std::placeholders::_1, std::placeholders::_2);
-		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::AABB]
-			= std::bind(&Collision2D::CheckIntersect_AABB_OBB, this, 
-				std::placeholders::_2, std::placeholders::_1);
-
-		//Circle-Circle
-		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::Circle]
-			= std::bind(&Collision2D::CheckIntersect_Circle_Circle, this,
-				std::placeholders::_1, std::placeholders::_2);
-
-		//Circle-OBB
-		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::Circle]
-			= std::bind(&Collision2D::CheckIntersect_OBB_Circle, this,
-				std::placeholders::_1, std::placeholders::_2);
-		m_collision2DFunctions[(int)eCollider2D_Shape::Circle][(int)eCollider2D_Shape::OBB]
-			= std::bind(&Collision2D::CheckIntersect_OBB_Circle, this,
-				std::placeholders::_2, std::placeholders::_1);
-
-		//OBB-OBB
-		m_collision2DFunctions[(int)eCollider2D_Shape::OBB][(int)eCollider2D_Shape::OBB]
-			= std::bind(&Collision2D::CheckIntersect_OBB_OBB, this,
-				std::placeholders::_1, std::placeholders::_2);
-	}
-
 
 	void Collision2D::Update()
 	{
@@ -117,7 +120,7 @@ namespace ehw
 		std::unordered_map<tColliderID, CollisionInfo, tColliderID_Hasher> prevCollisions{};
 		m_collisions.swap(prevCollisions);
 
-		const auto& colMask = CollisionManager::GetCollisionMask();
+		const auto& colMask = m_owner->GetCollisionMask();
 		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
 		{
 			for (size_t j = i; j < m_collidersInLayer.size(); ++j)
@@ -153,7 +156,7 @@ namespace ehw
 						eCollider2D_Shape leftShape = left->GetColliderShape();
 						eCollider2D_Shape rightShape = right->GetColliderShape();
 
-						bool isContact = m_collision2DFunctions[(int)leftShape][(int)rightShape]
+						bool isContact = s_checkIntersectFunctions[(int)leftShape][(int)rightShape]
 						(left, right);
 
 						tColliderID id{ left->GetID(), right->GetID() };
@@ -334,10 +337,6 @@ namespace ehw
 		return false;
 	}
 	bool Collision2D::CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle)
-	{
-		return false;
-	}
-	bool Collision2D::CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB)
 	{
 		return false;
 	}

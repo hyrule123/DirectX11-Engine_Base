@@ -5,9 +5,12 @@
 namespace ehw
 {
 	iScene::iScene()
-		: m_gameObjects()
-		, m_FrameEndJobs()
-		, m_bAwake(false)
+		: m_gameObjects{}
+		, m_delayedAddQueue{}
+		, m_FrameEndJobs{}
+		, m_bAwake{false}
+		, m_layerNames{}
+		, m_collisionSystem{}
 	{
 		m_layerNames[0] = "Default";
 	}
@@ -38,15 +41,10 @@ namespace ehw
 		{
 			m_gameObjects[i]->Update();
 		}
+
+		m_collisionSystem.Update();
 	}
 
-	void iScene::SceneCollisionUpdate()
-	{
-		for (size_t i = 0; i < m_gameObjects.size(); ++i)
-		{
-			m_gameObjects[i]->CollisionUpdate();
-		}
-	}
 
 	void iScene::SceneFinalUpdate()
 	{

@@ -9,7 +9,6 @@
 #include "Engine/Manager/InputManager.h"
 #include "Engine/Manager/SceneManager.h"
 #include "Engine/Manager/ResourceManagers.h"
-#include "Engine/Manager/CollisionManager.h"
 #include "Engine/Manager/AudioManager.h"
 #include "Engine/Manager/FontWrapper.h"
 #include "Engine/Manager/PathManager.h"
@@ -61,8 +60,6 @@ namespace ehw
 		
 		TimeManager::Init();
 		InputManager::Init();
-
-		CollisionManager::Init();
 		
 		SceneManager::Init();
 
@@ -80,7 +77,7 @@ namespace ehw
 		TimeManager::Update();
 		InputManager::Update();
 		SceneManager::Update();
-		CollisionManager::Update();
+		CollisionSystem::Update();
 	}
 
 	// GPU에 보내기 위한 최종 정보 정리
@@ -108,7 +105,7 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{	
-		CollisionManager::FrameEnd();
+		CollisionSystem::FrameEnd();
 		SceneManager::FrameEnd();
 		RenderManager::FrameEnd();
 	}

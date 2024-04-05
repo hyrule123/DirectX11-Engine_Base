@@ -3,7 +3,7 @@
 #include "Engine/CommonStruct.h"
 #include "Engine/define_enum.h"
 
-#include "Engine/Manager/Collision/CollisionInfo.h"
+#include "Engine/Game/Collision/CollisionInfo.h"
 
 #include "Engine/DefaultShader/Debug/Debug.hlsli"
 
@@ -16,6 +16,7 @@
 //CollisionManager에서만 생성 가능.
 namespace ehw
 {
+	class CollisionSystem;
 	class iCollider2D;
 	class StructBuffer;
 	class GameObject;
@@ -25,17 +26,16 @@ namespace ehw
 	class Collision2D
 	{
 		friend class iCollider2D;
-		friend class CollisionManager;
+		friend class CollisionSystem;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
-		using Collision2DFunction = 
+		using CheckIntersectFunction = 
 			std::function<bool(iCollider2D* const, iCollider2D* const)>;
 
 	private:
-		Collision2D();
+		Collision2D(CollisionSystem* const _owner);
 		~Collision2D();
 		void Reset();
 
-		void Init();
 		void Update();
 		void Render();
 		void FrameEnd();
@@ -43,24 +43,19 @@ namespace ehw
 	private:
 		void Enqueue(iCollider2D* const _obj);
 
-		bool CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2);
-
-		bool CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB);
-
-		bool CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle);
-
-		bool CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2);
-
-		bool CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle);
-
-		bool CheckIntersect_OBB_AABB(iCollider2D* const _OBB, iCollider2D* const _AABB);
-
-		bool CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2);
+		static bool CheckIntersect_AABB_AABB(iCollider2D* const _AABB1, iCollider2D* const _AABB2);
+		static bool CheckIntersect_AABB_OBB(iCollider2D* const _AABB, iCollider2D* const _OBB);
+		static bool CheckIntersect_AABB_Circle(iCollider2D* const _AABB, iCollider2D* const _circle);
+		static bool CheckIntersect_OBB_OBB(iCollider2D* const _OBB1, iCollider2D* const _OBB2);
+		static bool CheckIntersect_OBB_Circle(iCollider2D* const _OBB, iCollider2D* const _circle);
+		static bool CheckIntersect_Circle_Circle(iCollider2D* const _circle1, iCollider2D* const _circle2);
 
 	private:
 		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData, StructBuffer* const _sbuffer);
 
 	private:
+		CollisionSystem* const m_owner;
+
 		std::array<std::vector<iCollider2D*>, g_maxLayer> m_collidersInLayer;
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
@@ -68,10 +63,11 @@ namespace ehw
 		std::unordered_map<tColliderID, CollisionInfo, tColliderID_Hasher> m_collisions;
 
 		//각 Collider2D 함수 주소를 담고있는 이중 배열
-		//사용하는 이유: 
 		//각 Collider2D가 가지고 있는 eCollider2D_Type를 index 번호로 해서 함수를 호출하기 위함
-		std::array<std::array<Collision2DFunction, (int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
-			m_collision2DFunctions;
+		static std::array<std::array<CheckIntersectFunction,
+			(int)eCollider2D_Shape::END>, (int)eCollider2D_Shape::END>
+			s_checkIntersectFunctions;
+		
 
 		std::array<std::vector<tDebugDrawData>, (int)eCollider2D_Shape::END> m_debugInstancingData;
 		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;

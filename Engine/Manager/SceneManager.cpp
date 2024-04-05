@@ -1,13 +1,13 @@
 #include "Engine/Manager/SceneManager.h"
 
-
 #include "Engine/Resource/Texture.h"
 
 #include "Engine/Util/AtExit.h"
 
+#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/ResourceManager.h"
 
-#include "RenderManager.h"
-#include "ResourceManager.h"
+#include "Engine/Game/Collision/PhysXInstance.h"
 
 namespace ehw
 {
@@ -18,6 +18,8 @@ namespace ehw
 	void SceneManager::Init()
 	{
 		AtExit::AddFunc(Release);
+
+		PhysXInstance::Init();
 	}
 
 	void SceneManager::Update()
@@ -25,15 +27,6 @@ namespace ehw
 		if (m_activeScene)
 		{
 			m_activeScene->SceneUpdate();
-		}
-			
-	}
-
-	void SceneManager::CollisionUpdate()
-	{
-		if (m_activeScene)
-		{
-			m_activeScene->SceneCollisionUpdate();
 		}
 	}
 
@@ -43,7 +36,6 @@ namespace ehw
 		{
 			m_activeScene->SceneFinalUpdate();
 		}
-			
 	}
 
 	void SceneManager::Render()
@@ -52,7 +44,6 @@ namespace ehw
 		{
 			m_activeScene->SceneRender();
 		}
-			
 	}
 
 	void SceneManager::FrameEnd()

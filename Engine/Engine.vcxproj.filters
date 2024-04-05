@@ -394,14 +394,15 @@
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\Serializable.cpp" />
     <ClCompile Include="Game\Component\Animator\Animation3D_PlayData.cpp" />
-    <ClCompile Include="Manager\CollisionManager.cpp" />
-    <ClCompile Include="Manager\Collision\Collision2D.cpp" />
+    <ClCompile Include="Game\Collision\CollisionSystem.cpp" />
+    <ClCompile Include="Game\Collision\Collision2D.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
-    <ClCompile Include="Manager\Collision\CollisionInfo.cpp" />
-    <ClCompile Include="Manager\Collision\Collision3D.cpp" />
-    <ClCompile Include="Manager\Collision\temp.cpp" />
-    <ClCompile Include="Manager\Collision\MathUtil.cpp" />
+    <ClCompile Include="Game\Collision\CollisionInfo.cpp" />
+    <ClCompile Include="Game\Collision\Collision3D.cpp" />
+    <ClCompile Include="Game\Collision\temp.cpp" />
+    <ClCompile Include="Game\Collision\PhysXConverter.cpp" />
+    <ClCompile Include="Game\Collision\PhysXInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -664,13 +665,15 @@
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Game\Component\Animator\Animation3D_PlayData.h" />
-    <ClInclude Include="Manager\CollisionManager.h" />
-    <ClInclude Include="Manager\Collision\Collision2D.h" />
+    <ClInclude Include="Game\Collision\CollisionSystem.h" />
+    <ClInclude Include="Game\Collision\Collision2D.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
-    <ClInclude Include="Manager\Collision\CollisionInfo.h" />
-    <ClInclude Include="Manager\Collision\Collision3D.h" />
-    <ClInclude Include="Manager\Collision\temp.h" />
-    <ClInclude Include="Manager\Collision\MathUtil.h" />
+    <ClInclude Include="Game\Collision\CollisionInfo.h" />
+    <ClInclude Include="Game\Collision\Collision3D.h" />
+    <ClInclude Include="Game\Collision\temp.h" />
+    <ClInclude Include="Game\Collision\PhysXConverter.h" />
+    <ClInclude Include="Game\Collision\PhysXInstance.h" />
+    <ClInclude Include="Game\Collision\PhysX.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

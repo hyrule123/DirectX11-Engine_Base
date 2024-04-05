@@ -5,7 +5,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Manager/RenderManager.h"
 
 
@@ -25,7 +25,7 @@ namespace ehw
 
 	iCollider2D::~iCollider2D()
 	{
-		//제거는 CollisionManager::Update에서 일괄적으로 진행됨
+		//제거는 CollisionSystem::Update에서 일괄적으로 진행됨
 		//각자 소멸자에서 제거요청을 보낼경우 매번 vector를 순회돌면서 지워야해서 속도가 많이 느림
 	}
 
@@ -41,7 +41,7 @@ namespace ehw
 
 	void iCollider2D::Update()
 	{
-		CollisionManager::GetCollision2D().Enqueue(this);
+		CollisionSystem::GetCollision2D().Enqueue(this);
 	}
 
 	void iCollider2D::FrameEnd()

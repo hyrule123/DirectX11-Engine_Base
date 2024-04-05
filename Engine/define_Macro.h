@@ -2,8 +2,6 @@
 #include <string>
 #include <cassert>
 
-
-
 #ifdef _DEBUG
 
 //Release 모드에서도 작동

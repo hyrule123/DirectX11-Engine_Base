@@ -8,7 +8,6 @@ namespace ehw
 	public:
 		static void Init();
 		static void Update();
-		static void CollisionUpdate();
 		static void FinalUpdate();
 		static void Render();
 		static void FrameEnd();
@@ -25,6 +24,8 @@ namespace ehw
 	private:
 		static std::unique_ptr<iScene>				m_activeScene;
 		static std::unordered_map<std::string_view, std::function<iScene* ()>> m_umapSceneConstructor;
+
+
 	};
 
 	template<typename T>

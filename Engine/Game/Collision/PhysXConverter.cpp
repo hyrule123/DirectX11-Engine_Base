@@ -3,7 +3,7 @@
 namespace ehw
 {
 
-	Quaternion MathUtil::MakeRotationByASF(float x, float y, float z, eRotationOrder order)
+	Quaternion PhysXConverter::MakeRotationByASF(float x, float y, float z, eRotationOrder order)
 	{
 		const Quaternion xAxis = Quaternion::CreateFromAxisAngle({ 1.f, 0.f, 0.f }, x);
 		const Quaternion yAxis = Quaternion::CreateFromAxisAngle({ 0.f, 1.f, 0.f }, y);

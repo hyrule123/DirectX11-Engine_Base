@@ -1,4 +1,4 @@
-#include "Engine/Manager/Collision/CollisionInfo.h"
+#include "Engine/Game/Collision/CollisionInfo.h"
 
 #include "Engine/Game/Component/Collider/iCollider2D.h"
 namespace ehw

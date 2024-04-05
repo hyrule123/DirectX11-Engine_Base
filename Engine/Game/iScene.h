@@ -5,6 +5,8 @@
 
 #include "Engine/define_Enum.h"
 
+#include "Engine/Game/Collision/CollisionSystem.h"
+
 #include <queue>
 #include <future>
 #include <bitset>
@@ -36,7 +38,6 @@ namespace ehw
 		//로직 호출
 		void SceneAwake();
 		void SceneUpdate();
-		void SceneCollisionUpdate();
 		void SceneFinalUpdate();
 		void SceneRender();
 		void SceneFrameEnd();
@@ -84,6 +85,8 @@ namespace ehw
 		bool m_bAwake;
 
 		std::array<std::string, g_maxLayer>				m_layerNames;
+
+		CollisionSystem m_collisionSystem;
 	};
 
 

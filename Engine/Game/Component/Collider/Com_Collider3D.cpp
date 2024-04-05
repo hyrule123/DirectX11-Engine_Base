@@ -3,7 +3,7 @@
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Manager/Collision/MathUtil.h"
 
 #include <PhysX/PxPhysicsAPI.h>
@@ -57,16 +57,16 @@ namespace ehw
 		{
 			if (eCollider3D_Shape::Box == _type)
 			{
-				CollisionManager::GetCollision3D().createActorCube(GetOwner(), realScale, &_shape, _isStatic);
+				CollisionSystem::GetCollision3D().createActorCube(GetOwner(), realScale, &_shape, _isStatic);
 			}
 			else if (eCollider3D_Shape::Sphere == _type)
 			{
-				CollisionManager::GetCollision3D().createActorSphere(GetOwner(), realScale.x, &_shape, _isStatic);
+				CollisionSystem::GetCollision3D().createActorSphere(GetOwner(), realScale.x, &_shape, _isStatic);
 			}
 		}
 		else if (_shape)
 		{
-			CollisionManager::GetCollision3D().changeGeometry(this, _shape, _type);
+			CollisionSystem::GetCollision3D().changeGeometry(this, _shape, _type);
 		}
 
 		EnableGravity(_isGravityEnabled);
@@ -132,7 +132,7 @@ namespace ehw
 			{
 				float3 realScale = GetOwner()->GetComponent<Com_Transform>()->GetWorldScale() * _offsetScale * 0.5f;
 				physx::PxGeometryHolder holder{ _shape->getGeometry() };
-				holder.box().halfExtents = MathUtil::ToPxVec3(realScale);
+				holder.box().halfExtents = PhysXConverter::ToPxVec3(realScale);
 				_shape->setGeometry(holder.box());
 			}
 		}
@@ -270,7 +270,7 @@ namespace ehw
 		if (outDistance && isPenetrating)
 		{
 			const physx::PxVec3 result = direction * depth;
-			*outDistance = MathUtil::Tofloat3(result);
+			*outDistance = PhysXConverter::Tofloat3(result);
 		}
 
 		return isPenetrating;
@@ -323,9 +323,9 @@ namespace ehw
 				physx::PxRigidBody* rigidActor = actor->is<physx::PxRigidBody>();
 				if (rigidActor)
 				{
-					rigidActor->addForce(MathUtil::ToPxVec3(force), physx::PxForceMode::eACCELERATION);
+					rigidActor->addForce(PhysXConverter::ToPxVec3(force), physx::PxForceMode::eACCELERATION);
 					//Com_Transform* transform = GetOwner()->GetComponent<Com_Transform>();
-					//physx::PxRigidBodyExt::addForceAtPos(*rigidActor, MathUtil::ToPxVec3(force), MathUtil::ToPxVec3(transform->GetWorldPosition()));
+					//physx::PxRigidBodyExt::addForceAtPos(*rigidActor, PhysXConverter::ToPxVec3(force), PhysXConverter::ToPxVec3(transform->GetWorldPosition()));
 				}
 			}
 		}
@@ -382,7 +382,7 @@ namespace ehw
 			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
 			if (dynamicRigid)
 			{
-				dynamicRigid->setLinearVelocity(MathUtil::ToPxVec3(_velocity));
+				dynamicRigid->setLinearVelocity(PhysXConverter::ToPxVec3(_velocity));
 			}
 		}
 	}
@@ -396,7 +396,7 @@ namespace ehw
 			physx::PxRigidDynamic* dynamicRigid = _shape->getActor()->is<physx::PxRigidDynamic>();
 			if (dynamicRigid)
 			{
-				retVec = MathUtil::Tofloat3(dynamicRigid->getLinearVelocity());
+				retVec = PhysXConverter::Tofloat3(dynamicRigid->getLinearVelocity());
 			}
 		}
 
@@ -467,10 +467,10 @@ namespace ehw
 		assert(rigidActor);
 
 		physx::PxTransformT<float> transform{};
-		transform.p = MathUtil::ToPxVec3(_worldMatrix.Translation());
+		transform.p = PhysXConverter::ToPxVec3(_worldMatrix.Translation());
 
 		Quaternion q = GetOwner()->GetComponent<Com_Transform>()->GetWorldRotation();
-		transform.q = MathUtil::ToPxQuat(q);
+		transform.q = PhysXConverter::ToPxQuat(q);
 
 		rigidActor->setGlobalPose(transform);
 	}
@@ -487,7 +487,7 @@ namespace ehw
 		if (false == _isStatic)
 		{
 			MATRIX before = MATRIX::CreateScale(_offsetScale).Invert() * _worldMatrix;
-			MATRIX after = MathUtil::ToMATRIX(physx::PxMat44(worldTransform));
+			MATRIX after = PhysXConverter::ToMATRIX(physx::PxMat44(worldTransform));
 			MATRIX diff = before.Invert() * after;
 
 			Quaternion diffQuat = Quaternion::CreateFromRotationMatrix(diff);

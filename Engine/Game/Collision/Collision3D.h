@@ -2,20 +2,7 @@
 #include "Engine/CommonType.h"
 #include "Engine/define_Enum.h"
 
-#pragma warning(disable : 26495)
-#pragma warning(disable : 33010)
-#pragma warning(disable : 26812)
-#pragma warning(disable : 26451)
-#pragma warning(disable : 6297)
-
-//#define PX_PHYSX_STATIC_LIB
-#include <PhysX/PxPhysicsAPI.h>
-
-#pragma warning(default : 26495)
-#pragma warning(default : 33010)
-#pragma warning(default : 26812)
-#pragma warning(default : 26451)
-#pragma warning(default : 6297)
+#include "Engine/Game/Collision/PhysX.h"
 
 //작동방식
 //OnEnable 시점에 PhysX에 등록
@@ -49,11 +36,12 @@ namespace ehw
 		END
 	};
 
-
-
 	class Collision3D final : public ::physx::PxSimulationEventCallback
 	{
-		friend class CollisionManager;
+		friend class CollisionSystem;
+	private:
+		Collision3D(CollisionSystem* const _owner);
+		virtual ~Collision3D();
 
 	public:
 		static constexpr float s_defaultDensity = 10.f;
@@ -69,7 +57,7 @@ namespace ehw
 		void Init();
 		void CollisionUpdate();
 
-		void EnableGravity(bool enable, iScene* scene, const float3& gravity) const;
+		void EnableGravity(bool enable, const float3& gravity) const;
 
 		void createActorCube(GameObject* gameObject, const float3& halfExtents, physx::PxShape** outShape, bool isStatic);
 		void createActorSphere(GameObject* gameObject, float radius, physx::PxShape** outShape, bool isStatic);
@@ -82,9 +70,6 @@ namespace ehw
 		void changeScene(iScene* scene);
 
 	private:
-		explicit Collision3D();
-		virtual ~Collision3D();
-
 		void SyncGameScene() const;
 		void setupFiltering(physx::PxShape* shape, uint32 layerIndex) const;
 
@@ -105,25 +90,20 @@ namespace ehw
 		void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override;
 		void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override;
 
+	private:
+		template <typename T>
+		static inline void PxRelease(T* _pxPtr) { if (_pxPtr) { _pxPtr->Release(); } }
 
 	private:
-		physx::PxDefaultAllocator		m_allocator;
-		physx::PxDefaultErrorCallback	m_errorCallback;
+		CollisionSystem* const m_owner;
 
-		physx::PxFoundation* m_foundation;
-		physx::PxPhysics* m_physics;
-		physx::PxDefaultCpuDispatcher* m_dispatcher;
-		physx::PxScene* m_currentScene;
-		physx::PxMaterial* m_material;
+		std::unique_ptr<physx::PxScene> m_currentScene;
+
+		//정적 마찰력, 동적 마찰력, 반발력 프리셋.
+		//충돌체(PxShape 생성 시 필요), 프리셋 값을 변경 시 해당 material을 사용한 모든 충돌체의 프리셋 설정이 변경됨.
+		std::shared_ptr<physx::PxMaterial> m_pxMaterial;
 		
 		UpdateInterval	m_curUpdateInterval;
-
-		std::unordered_map<iScene*, physx::PxScene*>  m_physxScenes;
-		
-#ifdef _DEBUG
-		//Physx Visualization Debugger
-		physx::PxPvd* m_PVD;
-#endif
 	};
 
 

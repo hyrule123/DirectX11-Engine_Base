@@ -45,25 +45,20 @@
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 #include "Engine/Game/Component/Collider/Com_Collider3D.h"
 
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Manager/TimeManager.h"
 
-#include "Engine/Manager/Collision/MathUtil.h"
+#include "Engine/Game/Collision/PhysXConverter.h"
 
 namespace ehw
 {
 	using namespace ::physx;
-	Collision3D::Collision3D()
-		: m_allocator{ }
-		, m_errorCallback{ }
-		, m_foundation{ nullptr }
-		, m_physics{ nullptr }
-		, m_dispatcher{ nullptr }
+	Collision3D::Collision3D(CollisionSystem* _owner)
+		: m_owner(_owner)
 		, m_currentScene{ nullptr }
-		, m_material{ nullptr }
+		, m_pxMaterial{ nullptr }
 		, m_curUpdateInterval{ UpdateInterval::Frame_60 }
 	{
-
 	}
 
 	Collision3D::~Collision3D()
@@ -87,40 +82,17 @@ namespace ehw
 			}
 			PX_RELEASE(scene.second);
 		}
-		PX_RELEASE(m_dispatcher);
-		PX_RELEASE(m_physics);
-#ifdef _DEBUG
-		PxCloseExtensions();
-		if (m_PVD)
-		{
-			PxPvdTransport* transport = m_PVD->getTransport();
-			PX_RELEASE(m_PVD);
-			PX_RELEASE(transport);
-		}
-#endif
-		PX_RELEASE(m_foundation);
+
 	}
 
 	void Collision3D::Init()
 	{
-		m_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_allocator, m_errorCallback);
 
-		bool enable = false;
-#ifdef _DEBUG
-		enable = true;
-		m_PVD = PxCreatePvd(*m_foundation);
-		PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
-		m_PVD->connect(*transport, PxPvdInstrumentationFlag::eALL);
-#endif
-		m_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_foundation, PxTolerancesScale{}, enable, m_PVD);
 
-#ifdef _DEBUG
-		PxInitExtensions(*m_physics, m_PVD);
-#endif
-		constexpr uint32 kThreadCount = 2;
-		m_dispatcher = PxDefaultCpuDispatcherCreate(kThreadCount);
-		m_material = m_physics->createMaterial(0.5f, 0.5f, 0.6f);
-
+		{
+			
+			m_pxMaterial = m_physics->createMaterial(0.5f, 0.5f, 0.6f);
+		}
 	}
 
 	void Collision3D::CollisionUpdate()
@@ -131,6 +103,8 @@ namespace ehw
 		//m_currentScene->simulate(_intervals[static_cast<uint8>(m_curUpdateInterval)]);
 		m_currentScene->simulate(TimeManager::DeltaTime());
 		m_currentScene->fetchResults(true);
+
+		
 
 		//SyncGameScene();
 	}
@@ -171,7 +145,7 @@ namespace ehw
 			const MATRIX from = MATRIX::CreateScale(collider->GetWorldScale()).Invert() * collider->GetWorldMatrix();
 
 			//피직스에서 받아온 트랜스폼 정보를 가져온다
-			const MATRIX to = MathUtil::ToMATRIX(PxMat44{ worldTransform });
+			const MATRIX to = PhysXConverter::ToMATRIX(PxMat44{ worldTransform });
 
 			//차이를 구해준다
 			const MATRIX diff = from.Invert() * to;
@@ -251,7 +225,7 @@ namespace ehw
 
 			PxContactPairPoint collisionPoint{};
 			const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
-			const float3	   collisionPosition = MathUtil::Tofloat3(collisionPoint.position);
+			const float3	   collisionPosition = PhysXConverter::Tofloat3(collisionPoint.position);
 
 			// invoke events
 			if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
@@ -279,7 +253,7 @@ namespace ehw
 		auto iter = m_physxScenes.find(scene);
 		if (iter != m_physxScenes.end())
 		{
-			iter->second->setGravity(MathUtil::ToPxVec3(gravity));
+			iter->second->setGravity(PhysXConverter::ToPxVec3(gravity));
 		}
 	}
 
@@ -307,16 +281,16 @@ namespace ehw
 		const PxHitFlags  hitFlag = PxHitFlag::eDEFAULT;
 		PxQueryFilterData filter{};
 
-		filter.data.word0 = CollisionManager::GetRaycastMask()[srcLayerIndex].to_ulong();
+		filter.data.word0 = CollisionSystem::GetRaycastMask()[srcLayerIndex].to_ulong();
 
 		PxRaycastBuffer hit{};
-		const bool		result = m_currentScene->raycast(MathUtil::ToPxVec3(origin), MathUtil::ToPxVec3(direction), maxDistance, hit, hitFlag, filter);
+		const bool		result = m_currentScene->raycast(PhysXConverter::ToPxVec3(origin), PhysXConverter::ToPxVec3(direction), maxDistance, hit, hitFlag, filter);
 
 		outHit->gameObject = (hit.hasBlock) ? static_cast<GameObject*>(hit.block.actor->userData) : nullptr;
 		outHit->hasBlocking = hit.hasBlock;
 		outHit->hitDistance = hit.block.distance;
-		outHit->hitPosition = MathUtil::Tofloat3(hit.block.position);
-		outHit->hitNormal = MathUtil::Tofloat3(hit.block.normal);
+		outHit->hitPosition = PhysXConverter::Tofloat3(hit.block.position);
+		outHit->hitNormal = PhysXConverter::Tofloat3(hit.block.normal);
 
 		return result;
 	}
@@ -378,12 +352,12 @@ namespace ehw
 		assert(m_physxScenes.end() != iter);
 
 		PxTransform t{};
-		t.p = MathUtil::ToPxVec3(component->GetWorldPosition());
-		t.q = MathUtil::ToPxQuat(component->GetWorldRotation());
+		t.p = PhysXConverter::ToPxVec3(component->GetWorldPosition());
+		t.q = PhysXConverter::ToPxQuat(component->GetWorldRotation());
 
 		if (isStatic)
 		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxSphereGeometry{ radius }, *m_material);
+			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxSphereGeometry{ radius }, *m_pxMaterial);
 			//m_currentScene->addActor(*staticObject);
 			iter->second->addActor(*staticObject);
 
@@ -398,7 +372,7 @@ namespace ehw
 		}
 		else
 		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxSphereGeometry{ radius }, *m_material, s_defaultDensity);
+			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxSphereGeometry{ radius }, *m_pxMaterial, s_defaultDensity);
 
 			iter->second->addActor(*dynamic);
 			//currentScene->addActor(*dynamic);
@@ -420,12 +394,12 @@ namespace ehw
 		assert(m_physxScenes.end() != iter);
 
 		PxTransform t{};
-		t.p = *outShape ? MathUtil::ToPxVec3(component->GetWorldPosition()) : MathUtil::ToPxVec3(component->GetLocalPosition());
-		t.q = *outShape ? MathUtil::ToPxQuat(component->GetWorldRotation()) : MathUtil::ToPxQuat(component->GetLocalRotation());
+		t.p = *outShape ? PhysXConverter::ToPxVec3(component->GetWorldPosition()) : PhysXConverter::ToPxVec3(component->GetLocalPosition());
+		t.q = *outShape ? PhysXConverter::ToPxQuat(component->GetWorldRotation()) : PhysXConverter::ToPxQuat(component->GetLocalRotation());
 
 		if (isStatic)
 		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_material);
+			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_pxMaterial);
 			//m_currentScene->addActor(*staticObject);
 			iter->second->addActor(*staticObject);
 
@@ -438,7 +412,7 @@ namespace ehw
 		}
 		else
 		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_material, s_defaultDensity);
+			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_pxMaterial, s_defaultDensity);
 			dynamic->setAngularDamping(100.f);
 
 			iter->second->addActor(*dynamic);
@@ -465,12 +439,12 @@ namespace ehw
 
 		PxTransform t{};
 		t.p = *outShape ? 
-			MathUtil::ToPxVec3(component->GetWorldPosition()) : MathUtil::ToPxVec3(component->GetLocalPosition());
-		t.q = *outShape ? MathUtil::ToPxQuat(component->GetWorldRotation()) : MathUtil::ToPxQuat(component->GetLocalRotation());
+			PhysXConverter::ToPxVec3(component->GetWorldPosition()) : PhysXConverter::ToPxVec3(component->GetLocalPosition());
+		t.q = *outShape ? PhysXConverter::ToPxQuat(component->GetWorldRotation()) : PhysXConverter::ToPxQuat(component->GetLocalRotation());
 
 		if (isStatic)
 		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_material);
+			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_pxMaterial);
 			//targetScene->addActor(*staticObject);
 			iter->second->addActor(*staticObject);
 
@@ -483,7 +457,7 @@ namespace ehw
 		}
 		else
 		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_material, s_defaultDensity);
+			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_pxMaterial, s_defaultDensity);
 			//m_currentScene->addActor(*dynamic);
 			iter->second->addActor(*dynamic);
 
@@ -538,7 +512,7 @@ namespace ehw
 		filterData.word0 = layer.to_ulong();
 
 		// word1 = ID mask to filter pairs that trigger a contact callback
-		filterData.word1 = CollisionManager::GetCollisionMask()[layerIndex].to_ulong(); 
+		filterData.word1 = CollisionSystem::GetCollisionMask()[layerIndex].to_ulong(); 
 		shape->setSimulationFilterData(filterData);
 
 		PxFilterData queryFilterData{};
@@ -547,7 +521,7 @@ namespace ehw
 		queryFilterData.word0 = layer.to_ulong();					   
 
 		// word1 = ID mask to filter pairs that trigger a contact callback
-		queryFilterData.word1 = CollisionManager::GetRaycastMask()[layerIndex].to_ulong(); 
+		queryFilterData.word1 = CollisionSystem::GetRaycastMask()[layerIndex].to_ulong(); 
 		shape->setQueryFilterData(queryFilterData);
 	}
 

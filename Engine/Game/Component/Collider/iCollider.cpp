@@ -1,7 +1,7 @@
 #include "Engine/Game/Component/Collider/iCollider.h"
 
 #include "Engine/Game/GameObject.h"
-#include "Engine/Manager/CollisionManager.h"
+#include "Engine/Game/Collision/CollisionSystem.h"
 
 namespace ehw
 {
