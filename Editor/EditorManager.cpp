@@ -16,7 +16,6 @@
 #include <Engine/Manager/GPUManager.h>
 #include <Engine/Manager/InputManager.h>
 #include <Engine/Manager/PathManager.h>
-#include <Engine/Manager/CollisionManager.h>
 
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_win32.h"
@@ -179,7 +178,8 @@ namespace ehw::editor
 
 	void EditorManager::Render()
 	{
-		CollisionSystem::Render();
+		ERROR_MESSAGE_W(L"충돌체 렌더링 코드 작성");
+		//CollisionSystem::Render();
 
 		for (const auto& obj : mEditorObjects)
 		{

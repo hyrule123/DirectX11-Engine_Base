@@ -8,7 +8,9 @@ namespace ehw
 	iCollider::iCollider(eDimensionType _dimension)
 		: m_dimension(_dimension)
 		, m_isTriggerMode(false)
-		, m_isColliding(false)
+		, m_transform(nullptr)
+		, m_collisionSystem(nullptr)
+		, m_collisionCount(0)
 	{
 	}
 
@@ -21,5 +23,6 @@ namespace ehw
 	{
 		m_transform = GetOwner()->Transform();
 	}
+
 }
 

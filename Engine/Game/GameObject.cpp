@@ -195,6 +195,7 @@ namespace ehw
 				m_scripts[i]->OnEnable();
 			}
 		}
+		SetLayer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
 		const std::vector<Com_Transform*>& childs = GetComponent<Com_Transform>()->GetChilds();

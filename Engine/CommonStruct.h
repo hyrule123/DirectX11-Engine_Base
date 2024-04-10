@@ -22,23 +22,21 @@ using WindowMsgHandleFunc = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;
 //C++ 전용. 1개 이상의 클래스에서 사용되는 "공용" 구조체 모음
 namespace ehw
 {
-
-
-	struct tDesc_GPUMgr
+	struct tGPUManagerDesc
 	{
 		UINT ResolutionX;
 		UINT ResolutionY;
 		UINT RefreshRate;
 	};
 
-	struct tDesc_GameEngine
+	struct tGameEngineDesc
 	{
 		HWND Hwnd;
 		int  LeftWindowPos;
 		int	 TopWindowPos;
 		int  Width;
 		int  Height;
-		tDesc_GPUMgr GPUDesc;
+		tGPUManagerDesc GPUDesc;
 		WNDCLASSEX WinClassDesc;
 
 		std::function<void()> EditorRunFunction;

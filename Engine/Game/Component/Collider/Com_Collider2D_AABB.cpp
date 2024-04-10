@@ -18,12 +18,12 @@ namespace ehw
 
 	void Com_Collider2D_AABB::UpdateShape()
 	{
-		if (false == m_isOffsetScaleUpdated && false == GetMyTransform()->IsTransformUpdated())
+		if (false == m_isOffsetScaleUpdated && false == GetTransform()->IsTransformUpdated())
 		{
 			return;
 		}
 
-		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
+		const MATRIX& worldMat = GetTransform()->GetWorldMatrix();
 		float2 pos = float2(worldMat._41, worldMat._42);
 		float2 halfExtentXY = m_offsetScale;
 
@@ -50,7 +50,7 @@ namespace ehw
 	{
 		MATRIX mat{};
 		
-		const MATRIX& worldMat = GetMyTransform()->GetWorldMatrix();
+		const MATRIX& worldMat = GetTransform()->GetWorldMatrix();
 
 		mat._41 = worldMat._41;
 		mat._42 = worldMat._42;

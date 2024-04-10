@@ -4,6 +4,8 @@
 
 #include "Engine/define_Macro.h"
 
+#include "Engine/Game/Component/Collider/iCollider3D.h"
+
 namespace ehw
 {
 	physx::PxDefaultAllocator		PhysXInstance::m_allocator{};

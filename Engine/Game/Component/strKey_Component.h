@@ -20,7 +20,10 @@ namespace ehw::strKey::component
 	STRKEY Com_AudioSource = "Com_AudioSource";
 	STRKEY Com_Camera = "Com_Camera";
 	STRKEY Com_Collider2D_AABB = "Com_Collider2D_AABB";
-	STRKEY Com_Collider3D = "Com_Collider3D";
+	STRKEY Com_Collider3D_Capsule = "Com_Collider3D_Capsule";
+	STRKEY Com_Collider3D_Cube = "Com_Collider3D_Cube";
+	STRKEY Com_Collider3D_Rigid = "Com_Collider3D_Rigid";
+	STRKEY Com_Collider3D_Sphere = "Com_Collider3D_Sphere";
 	STRKEY Com_Light3D = "Com_Light3D";
 	STRKEY Com_Renderer_3DAnimMesh = "Com_Renderer_3DAnimMesh";
 	STRKEY Com_Renderer_Mesh = "Com_Renderer_Mesh";

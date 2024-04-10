@@ -1,6 +1,6 @@
 #pragma once
 #include "Editor/Base/EditorEntity.h"
-#include "strKey_Editor.h"
+#include "Editor/strKey_Editor.h"
 
 #include <Engine/Util/Serialize/Serializable.h>
 

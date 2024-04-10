@@ -48,6 +48,7 @@ namespace ehw
 		virtual void OnDestroy() {};
 
 		inline GameObject* GetOwner() { return m_ownerGameObject; }
+		inline GameObject* GetOwner() const { return m_ownerGameObject; }
 		inline void SetOwner(GameObject* _owner) { m_ownerGameObject = _owner; }
 
 		eComponentCategory GetComponentCategory() const { return m_ComCategory; };

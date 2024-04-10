@@ -1,23 +1,19 @@
 #pragma once
 #include "Engine/Entity.h"
-
+#include "Engine/CommonStruct.h"
 #include "Engine/Util/type_traits_Ex.h"
 
 #include "Engine/define_Enum.h"
 
-#include "Engine/Game/Collision/CollisionSystem.h"
-
-#include <queue>
-#include <future>
-#include <bitset>
-
 namespace ehw
 {
 	class GameObject;
+	class CollisionSystem;
 	class iScene 
 		: public Entity
 	{
 	public:
+
 		//GameObjects를 std::vector<GameObject>로 만든다면?
 		//매 프레임마다 partition을 하는데, partition 발생시 이동 할당 연산자 호출됨.
 		//	-> 모든 컴포넌트를 순회하며 SetOwner(this) 호출함.
@@ -29,21 +25,26 @@ namespace ehw
 		//std::vector<std::shared_ptr<GameObject>>를 사용 시
 		//이 때는 람다 함수에 GameObject가 남아있는 채로 종료될 시 메모리 해제를 해줄수 있는 방법이 없다.
 		//-> 일반적인 방법으로 게임 종료시 람다함수를 반드시 실행시키도록 설정
+		struct tDesc
+		{
+			bool EnableCollision2D;
+			bool EnableCollision3D;
+		};
 
 		using GameObjects = std::vector<std::unique_ptr<GameObject>>;
 
 		iScene();
 		virtual ~iScene();
 
-		//로직 호출
+		void SceneInit();
 		void SceneAwake();
 		void SceneUpdate();
 		void SceneFinalUpdate();
 		void SceneRender();
 		void SceneFrameEnd();
 
-
 		//로직 재정의
+		virtual void Init(tDesc& _desc) = 0;//tDesc를 통해 세부 설정
 		virtual void OnEnter() = 0;//리소스 로드
 
 		virtual void Update() {}
@@ -62,6 +63,9 @@ namespace ehw
 
 		GameObjects		GetDontDestroyGameObjects();
 		const GameObjects& GetGameObjects() { return m_gameObjects; }
+
+		CollisionSystem* GetCollisionSystem() { return m_collisionSystem.get(); }
+		CollisionSystem* GetCollisionSystem() const { return m_collisionSystem.get(); }
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
@@ -86,7 +90,7 @@ namespace ehw
 
 		std::array<std::string, g_maxLayer>				m_layerNames;
 
-		CollisionSystem m_collisionSystem;
+		std::unique_ptr<CollisionSystem> m_collisionSystem;
 	};
 
 

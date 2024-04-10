@@ -25,14 +25,14 @@ namespace ehw
 		static UINT GetResolutionY() { return mResolutionY; }
 		static uint2 GetResolution() { return uint2{ mResolutionX, mResolutionY }; }
 
-		//struct tDesc_GPUMgr
+		//struct tGPUManagerDesc
 		//{
 		//	UINT ResolutionX;
 		//	UINT ResolutionY;
 		//	UINT RefreshRate;
 		//};
 	private:
-		static bool Init(const tDesc_GPUMgr& _Desc);
+		static bool Init(const tGPUManagerDesc& _Desc);
 		static void Release();
 		static void Reset();
 		static bool CreateDevice(ID3D11Device** _ppDevice, ID3D11DeviceContext** _ppContext);

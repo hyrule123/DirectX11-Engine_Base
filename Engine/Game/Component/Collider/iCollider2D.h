@@ -6,6 +6,7 @@
 namespace ehw
 {
 	class Com_Transform;
+	class Collision2D;
 	class iCollider2D : public iCollider
 	{
 	public:
@@ -20,7 +21,7 @@ namespace ehw
 		eResult Serialize_Json(JsonSerializer* _ser) const override;
 		eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
-		void Update() final;
+		void Init() override;
 		void FrameEnd() override;
 
 		//CollisionManager에서 호출. 충돌체 정보를 계산한다.
@@ -37,8 +38,12 @@ namespace ehw
 		void OnTriggerStay(iCollider2D* const _collider);
 		void OnTriggerExit(iCollider2D* const _collider);
 
+	protected:
+		inline Collision2D* GetCollision2DManager() { return m_col2dManager; };
+
 	private:
 		eCollider2D_Shape m_collider2DShape;
+		Collision2D* m_col2dManager;
 		bool m_isColliderUpdated;
 	};
 

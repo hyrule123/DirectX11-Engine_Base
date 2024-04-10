@@ -18,24 +18,21 @@ namespace ehw
 		static void		LoadScene(const std::string_view _strKey);
 		static iScene*	GetActiveScene() { return m_activeScene.get(); }
 
-		template <typename T>
+		template <typename T> requires std::is_base_of_v<iScene, T>
 		static void AddSceneConstructor(const std::string_view _strKey);
 
 	private:
 		static std::unique_ptr<iScene>				m_activeScene;
-		static std::unordered_map<std::string_view, std::function<iScene* ()>> m_umapSceneConstructor;
-
-
+		static std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene> ()>> m_umapSceneConstructor;
 	};
 
-	template<typename T>
+	template<typename T> requires std::is_base_of_v<iScene, T>
 	inline void SceneManager::AddSceneConstructor(const std::string_view _strKey)
 	{
-		static_assert(std::is_base_of_v<iScene, T>);
 		m_umapSceneConstructor.insert(std::make_pair(_strKey,
-			[]()->T*
+			[]()->std::unique_ptr<iScene>
 			{
-				return new T;
+				return std::unique_ptr<iScene>(static_cast<iScene*>(new T));
 			}
 		));
 	}

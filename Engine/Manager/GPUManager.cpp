@@ -35,7 +35,7 @@ namespace ehw
 	D3D11_VIEWPORT GPUManager::mViewPort{};
 
 
-	bool GPUManager::Init(const tDesc_GPUMgr& _Desc)
+	bool GPUManager::Init(const tGPUManagerDesc& _Desc)
 	{
 		AtExit::AddFunc(GPUManager::Release);
 

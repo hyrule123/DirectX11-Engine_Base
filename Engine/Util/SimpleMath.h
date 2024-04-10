@@ -14,6 +14,13 @@
 #endif
 #include <Windows.h>
 
+#include <PhysX/foundation/PxVec2.h>
+#include <PhysX/foundation/PxVec3.h>
+#include <PhysX/foundation/PxVec4.h>
+#include <PhysX/foundation/PxQuat.h>
+#include <PhysX/foundation/PxMat44.h>
+
+
 namespace ehw
 {
 	//1(rad) / 180 * PI = PI / 180
@@ -62,7 +69,6 @@ namespace ehw
 namespace ehw::math
 {
 	using namespace ::DirectX;
-	using namespace ::DirectX::PackedVector;
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;
@@ -153,6 +159,10 @@ namespace ehw::math
 
 		Vector2(Vector2&&) = default;
 		Vector2& operator=(Vector2&&) = default;
+
+		//PhysX
+		Vector2(const physx::PxVec2& _pxVec2) : XMFLOAT2(_pxVec2.x, _pxVec2.y) {}
+		operator physx::PxVec2() const { return physx::PxVec2{ this->x, this->y }; }
 
 		operator XMVECTOR() const noexcept { return XMLoadFloat2(this); }
 
@@ -271,6 +281,10 @@ namespace ehw::math
 		Vector3(Vector3&&) = default;
 		Vector3& operator=(Vector3&&) = default;
 
+		//PhysX
+		Vector3(const physx::PxVec3& _pxVec3) : XMFLOAT3(_pxVec3.x, _pxVec3.y, _pxVec3.z) {}
+		operator physx::PxVec3() const { return physx::PxVec3{ this->x, this->y, this->z }; }
+
 		operator XMVECTOR() const noexcept { return XMLoadFloat3(this); }
 
 		// Comparison operators
@@ -383,7 +397,7 @@ namespace ehw::math
 		constexpr explicit Vector4(float ix) noexcept : XMFLOAT4(ix, ix, ix, ix) {}
 		constexpr Vector4(float ix, float iy, float iz, float iw) noexcept : XMFLOAT4(ix, iy, iz, iw) {}
 		explicit Vector4(_In_reads_(4) const float* pArray) noexcept : XMFLOAT4(pArray) {}
-		Vector4(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+		Vector4(FXMVECTOR V) noexcept { ::DirectX::XMStoreFloat4(this, V); }
 		Vector4(const XMFLOAT4& V) noexcept { this->x = V.x; this->y = V.y; this->z = V.z; this->w = V.w; }
 		explicit Vector4(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
@@ -393,6 +407,10 @@ namespace ehw::math
 
 		Vector4(Vector4&&) = default;
 		Vector4& operator=(Vector4&&) = default;
+
+		//PhysX
+		Vector4(const physx::PxVec4& _pxVec4) : XMFLOAT4(_pxVec4.x, _pxVec4.y, _pxVec4.z, _pxVec4.w) {}
+		operator physx::PxVec4() const { return physx::PxVec4{ this->x, this->y, this->z, this->w }; }
 
 		operator XMVECTOR() const  noexcept { return XMLoadFloat4(this); }
 
@@ -533,7 +551,7 @@ namespace ehw::math
 		Matrix(const XMFLOAT4X3& M) noexcept;
 
 		explicit Matrix(_In_reads_(16) const float* pArray) noexcept : XMFLOAT4X4(pArray) {}
-		Matrix(CXMMATRIX M) noexcept { XMStoreFloat4x4(this, M); }
+		Matrix(CXMMATRIX M) noexcept { ::DirectX::XMStoreFloat4x4(this, M); }
 
 		Matrix(const Matrix&) = default;
 		Matrix& operator=(const Matrix&) = default;
@@ -541,7 +559,22 @@ namespace ehw::math
 		Matrix(Matrix&&) = default;
 		Matrix& operator=(Matrix&&) = default;
 
-		operator XMMATRIX() const noexcept { return XMLoadFloat4x4(this); }
+		operator XMMATRIX() const noexcept { return ::DirectX::XMLoadFloat4x4(this); }
+
+		//PhysX
+		Matrix(const physx::PxMat44& _pxVec4) noexcept
+		{
+			static_assert(sizeof(XMFLOAT4X4) == sizeof(physx::PxMat44), "byte size not matching");
+			memcpy(this, _pxVec4.front(), sizeof(XMFLOAT4X4));
+		}
+		operator physx::PxMat44() const noexcept
+		{ 
+			static_assert(sizeof(XMFLOAT4X4) == sizeof(physx::PxMat44), "byte size not matching");
+			physx::PxMat44 ret{};
+			memcpy(&(ret.column0[0]), this, sizeof(XMFLOAT4X4));
+			return ret; 
+		}
+	
 
 		// Comparison operators
 		bool operator == (const Matrix& M) const noexcept;
@@ -682,7 +715,7 @@ namespace ehw::math
 		Plane(const Vector3& point, const Vector3& normal) noexcept;
 		explicit Plane(const Vector4& v) noexcept : XMFLOAT4(v.x, v.y, v.z, v.w) {}
 		explicit Plane(_In_reads_(4) const float* pArray) noexcept : XMFLOAT4(pArray) {}
-		Plane(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+		Plane(FXMVECTOR V) noexcept { ::DirectX::XMStoreFloat4(this, V); }
 		Plane(const XMFLOAT4& p) noexcept { this->x = p.x; this->y = p.y; this->z = p.z; this->w = p.w; }
 		explicit Plane(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
@@ -734,7 +767,7 @@ namespace ehw::math
 		Quaternion(const Vector3& v, float scalar) noexcept : XMFLOAT4(v.x, v.y, v.z, scalar) {}
 		explicit Quaternion(const Vector4& v) noexcept : XMFLOAT4(v.x, v.y, v.z, v.w) {}
 		explicit Quaternion(_In_reads_(4) const float* pArray) noexcept : XMFLOAT4(pArray) {}
-		Quaternion(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+		Quaternion(FXMVECTOR V) noexcept { ::DirectX::XMStoreFloat4(this, V); }
 		Quaternion(const XMFLOAT4& q) noexcept { this->x = q.x; this->y = q.y; this->z = q.z; this->w = q.w; }
 		explicit Quaternion(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 
@@ -761,6 +794,15 @@ namespace ehw::math
 		// Unary operators
 		Quaternion operator+ () const  noexcept { return *this; }
 		Quaternion operator- () const noexcept;
+
+		//PhysX
+		Quaternion(const physx::PxQuat& _pxQuat) noexcept 
+			: XMFLOAT4(_pxQuat.x, _pxQuat.y, _pxQuat.z, _pxQuat.w)
+		{}
+		inline operator physx::PxQuat() const noexcept
+		{
+			return physx::PxQuat(this->x, this->y, this->z, this->w);
+		}
 
 		// Quaternion operations
 		float Length() const noexcept;
@@ -832,7 +874,7 @@ namespace ehw::math
 		explicit Color(const Vector3& clr) noexcept : XMFLOAT4(clr.x, clr.y, clr.z, 1.f) {}
 		explicit Color(const Vector4& clr) noexcept : XMFLOAT4(clr.x, clr.y, clr.z, clr.w) {}
 		explicit Color(_In_reads_(4) const float* pArray) noexcept : XMFLOAT4(pArray) {}
-		Color(FXMVECTOR V) noexcept { XMStoreFloat4(this, V); }
+		Color(FXMVECTOR V) noexcept { ::DirectX::XMStoreFloat4(this, V); }
 		Color(const XMFLOAT4& c) noexcept { this->x = c.x; this->y = c.y; this->z = c.z; this->w = c.w; }
 		explicit Color(const XMVECTORF32& F) noexcept { this->x = F.f[0]; this->y = F.f[1]; this->z = F.f[2]; this->w = F.f[3]; }
 

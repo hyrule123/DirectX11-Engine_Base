@@ -222,7 +222,7 @@
     <ClCompile Include="Game\Component\Collider\iCollider2D.cpp">
       <Filter>Component\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Collider\Com_Collider3D.cpp">
+    <ClCompile Include="Game\Component\Collider\iCollider3D.cpp">
       <Filter>Component\Collider\3D</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Collider\iCollider.cpp">
@@ -398,11 +398,15 @@
     <ClCompile Include="Game\Collision\Collision2D.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
-    <ClCompile Include="Game\Collision\CollisionInfo.cpp" />
+    <ClCompile Include="Game\Collision\ContactPair2D.cpp" />
     <ClCompile Include="Game\Collision\Collision3D.cpp" />
     <ClCompile Include="Game\Collision\temp.cpp" />
     <ClCompile Include="Game\Collision\PhysXConverter.cpp" />
     <ClCompile Include="Game\Collision\PhysXInstance.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Rigid.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Capsule.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Cube.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -453,7 +457,7 @@
     <ClInclude Include="Game\Component\Collider\iCollider2D.h">
       <Filter>Component\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Collider\Com_Collider3D.h">
+    <ClInclude Include="Game\Component\Collider\iCollider3D.h">
       <Filter>Component\Collider\3D</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Collider\iCollider.h">
@@ -668,12 +672,16 @@
     <ClInclude Include="Game\Collision\CollisionSystem.h" />
     <ClInclude Include="Game\Collision\Collision2D.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
-    <ClInclude Include="Game\Collision\CollisionInfo.h" />
+    <ClInclude Include="Game\Collision\ContactPair2D.h" />
     <ClInclude Include="Game\Collision\Collision3D.h" />
     <ClInclude Include="Game\Collision\temp.h" />
     <ClInclude Include="Game\Collision\PhysXConverter.h" />
     <ClInclude Include="Game\Collision\PhysXInstance.h" />
     <ClInclude Include="Game\Collision\PhysX.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Rigid.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Sphere.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Cube.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

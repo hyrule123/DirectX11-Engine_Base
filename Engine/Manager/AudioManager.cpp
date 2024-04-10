@@ -1,8 +1,5 @@
 
 #include "AudioManager.h"
-
-
-
 #include "Engine/Util/AtExit.h"
 
 
@@ -10,18 +7,6 @@
 #include <Fmod/fmod_studio.hpp>
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
-#ifdef _WIN64
-#ifdef _DEBUG
-#pragma comment(lib, "Fmod/x64/Debug/fmodL_vc.lib")
-#pragma comment(lib, "Fmod/x64/Debug/fmodstudioL_vc.lib")
-#else
-#pragma comment(lib, "Fmod/x64/Release/fmod_vc.lib")
-#pragma comment(lib, "Fmod/x64/Release/fmodstudio_vc.lib")
-#endif _DEBUG
-
-#else _WIN64
-#error "x64만 지원합니다"
-#endif _WIN64
 
 
 

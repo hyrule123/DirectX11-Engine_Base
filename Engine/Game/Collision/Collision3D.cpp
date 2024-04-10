@@ -1,168 +1,243 @@
 #include "Collision3D.h"
 
-#if defined (_WIN64) && (_DEBUG)
-#pragma comment(lib, "Physx/Library/Debug/PhysX_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCommon_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXCooking_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXFoundation_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXPvdSDK_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXTask_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXVehicle_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/PVDRuntime_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/SceneQuery_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/SimulationController_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/LowLevel_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/LowLevelAABB_static_64.lib")
-#pragma comment(lib, "Physx/Library/Debug/LowLevelDynamics_static_64.lib")
-
-#elif defined (_WIN64) && !(_DEBUG)
-
-#pragma comment(lib, "Physx/Library/Release/PhysX_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCharacterKinematic_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCommon_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXCooking_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXExtensions_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXFoundation_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXPvdSDK_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXTask_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXVehicle_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PhysXVehicle2_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/PVDRuntime_64.lib")
-#pragma comment(lib, "Physx/Library/Release/SceneQuery_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/SimulationController_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/LowLevel_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/LowLevelAABB_static_64.lib")
-#pragma comment(lib, "Physx/Library/Release/LowLevelDynamics_static_64.lib")
-
-#endif
 
 #include "Engine/Game/iScene.h"
 #include "Engine/Game/GameObject.h"
 
 #include "Engine/Game/Component/Transform/Com_Transform.h"
-#include "Engine/Game/Component/Collider/Com_Collider3D.h"
+#include "Engine/Game/Component/Collider/iCollider3D.h"
+#include "Engine/Game/Component/Collider/Com_Collider3D_Rigid.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Manager/TimeManager.h"
 
+#include "Engine/Game/Collision/PhysXInstance.h"
 #include "Engine/Game/Collision/PhysXConverter.h"
+
 
 namespace ehw
 {
 	using namespace ::physx;
+
 	Collision3D::Collision3D(CollisionSystem* _owner)
-		: m_owner(_owner)
-		, m_currentScene{ nullptr }
-		, m_pxMaterial{ nullptr }
+		: m_collisionSystem(_owner)
+		, m_pxScene{ nullptr }
+		, m_defaultPxMaterial{}
 		, m_curUpdateInterval{ UpdateInterval::Frame_60 }
+		, m_accumulatedDeltaTime(0.f)
 	{
 	}
 
 	Collision3D::~Collision3D()
 	{
-		for (auto& scene : m_physxScenes)
-		{
-			const PxU32 actorCount = scene.second->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-			if (actorCount > 0)
-			{
-				std::vector<PxRigidActor*> actors(actorCount);
-				scene.second->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
-				for (const auto& actor : actors)
-				{
-					GameObject* gameObject = static_cast<GameObject*>(actor->userData);
-					if (gameObject)
-					{
-						gameObject->GetComponent<Com_Collider3D>()->DestroyShape();
-					}
-						
-				}
-			}
-			PX_RELEASE(scene.second);
-		}
+		//const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+		//if (actorCount > 0)
+		//{
+		//	std::vector<PxRigidActor*> actors(actorCount);
+		//	m_pxScene->getActors(
+		//		PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, 
+		//		reinterpret_cast<PxActor**>(actors.data()), actorCount);
 
+		//	for (const auto& actor : actors)
+		//	{
+		//		iCollider3D* collider = static_cast<iCollider3D*>(actor->userData);
+		//		if (collider)
+		//		{
+		//			collider->DestroyShape();
+		//		}
+		//	}
+		//}
+
+		PX_RELEASE(m_defaultPxMaterial);
+
+		PX_RELEASE(m_pxScene);
 	}
 
 	void Collision3D::Init()
 	{
+		CreatePxScene();
 
+		physx::PxMaterial* m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
+		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
+	}
 
+	void Collision3D::CreatePxScene()
+	{
+		iScene* gameScene = m_collisionSystem->GetOwnerScene();
+
+		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().getTolerancesScale() };
+		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
+		sceneDescription.cpuDispatcher = PhysXInstance::GetCPUDispatcher();
+		sceneDescription.filterShader = &Collision3D::FilterShader;
+		sceneDescription.simulationEventCallback = this;
+
+		m_pxScene = PhysXInstance::GetInst().createScene(sceneDescription);
+		ASSERT(m_pxScene, "pxScene 생성 실패.");
+
+		m_pxScene->setName(gameScene->GetStrKey().c_str());
+	}
+
+	void Collision3D::FixedUpdate()
+	{
+		m_accumulatedDeltaTime += TimeManager::DeltaTime();
+
+		int simulateCount = (int)(m_accumulatedDeltaTime / m_physxUpdateIntervals[(int)m_curUpdateInterval]);
+
+		//for문을 돌면서 여러번 충돌검사를 진행하면 절망의 늪 현상이 일어날 수 있다
+		//https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/BestPractices.html
+		if (0 < simulateCount)
 		{
+			float simulateTime = (float)simulateCount * m_physxUpdateIntervals[(int)m_curUpdateInterval];
+			m_pxScene->simulate(simulateTime);
+
+			m_accumulatedDeltaTime -= simulateTime;
+			if (0.f > m_accumulatedDeltaTime)
+			{
+				m_accumulatedDeltaTime = 0.f;
+			}
+		}
+
+		PxSceneToGameScene();
+		
+		ASSERT(false, "여기서 충돌결과 전달하는게아니라 충돌결과를 CollisionSystem에 받아놓은뒤 별도처리를 해야됨");
+		//충돌 결과 전달
+		if (m_pxScene->checkResults(true))
+		{
+			//위치 갱신
 			
-			m_pxMaterial = m_physics->createMaterial(0.5f, 0.5f, 0.6f);
+
+			//충돌 콜백함수 호출
+			m_pxScene->fetchResults(false);
 		}
 	}
 
-	void Collision3D::CollisionUpdate()
+	void Collision3D::GameSceneToPxScene()
 	{
-		if (m_currentScene == nullptr)
-			return;
-
-		//m_currentScene->simulate(_intervals[static_cast<uint8>(m_curUpdateInterval)]);
-		m_currentScene->simulate(TimeManager::DeltaTime());
-		m_currentScene->fetchResults(true);
-
-		
-
-		//SyncGameScene();
-	}
-
-
-	void Collision3D::SyncGameScene() const
-	{
-		const PxU32 actorCount = m_currentScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-
+		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
 		if (actorCount == 0)
 		{
 			return;
 		}
 
 		std::vector<PxRigidActor*> actors(actorCount);
-		m_currentScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
 
-		for (const auto& actor : actors)
+		//Scene -> PxScene은 Static도 포함시킨다
+		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
+			reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+		for (size_t i = 0; i < actors.size(); ++i)
 		{
-			const PxTransform worldTransform = actor->getGlobalPose();
+			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			GameObject* gameObject = static_cast<GameObject*>(actor->userData);
-
-			if (gameObject == nullptr || gameObject->IsDestroyed())
+			Com_Collider3D_Rigid* const collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
+			if (collider == nullptr || collider->IsDestroyed())
 			{
 				continue;
 			}
-				
-			// 충돌체에 대해서 일어난 변화이므로, 이를 Com_Transform에도 반영해야 한다.
-			const Com_Collider3D* collider = gameObject->GetComponent<Com_Collider3D>();
-			if (collider->IsTrigger())
+
+			Com_Transform* tr = collider->GetTransform();
+			if (false == tr->IsTransformUpdated())
 			{
 				continue;
 			}
-				
+			physx::PxRigidActor* rigidActor = static_cast<PxRigidActor*>(actors[i]);
 
-			//원래 위치 정보에서 크기정보 제거
-			const MATRIX from = MATRIX::CreateScale(collider->GetWorldScale()).Invert() * collider->GetWorldMatrix();
+			physx::PxTransformT<float> transform{};
+			transform.p = tr->GetWorldPosition();
+			transform.q = tr->GetLocalRotation();
 
-			//피직스에서 받아온 트랜스폼 정보를 가져온다
-			const MATRIX to = PhysXConverter::ToMATRIX(PxMat44{ worldTransform });
-
-			//차이를 구해준다
-			const MATRIX diff = from.Invert() * to;
-
-			// 이동은 회전에 영향을 받으므로
-			const Quaternion rotation = Quaternion::CreateFromRotationMatrix(diff);
-			
-			const float3	 position = to.Translation() - float3::Transform(from.Translation(), rotation);
-
-			Com_Transform* transform = gameObject->GetComponent<Com_Transform>();
-			transform->SetWorldPosition(float3::Transform(transform->GetWorldPosition(), rotation) + position);
-			transform->SetWorldRotation(transform->GetWorldRotation() * rotation);
+			rigidActor->setGlobalPose(transform);
 		}
 	}
 
+	void Collision3D::PxSceneToGameScene()
+	{
+		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		if (actorCount == 0)
+		{
+			return;
+		}
+
+		std::vector<PxRigidActor*> actors(actorCount);
+
+		//PxScene->Scene의 경우 Dynamic만
+		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+		for (size_t i = 0; i < actors.size(); ++i)
+		{
+			const PxTransform worldTransform = actors[i]->getGlobalPose();
+
+			const Com_Collider3D_Rigid* collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
+			if (collider == nullptr || collider->IsDestroyed())
+			{
+				continue;
+			}
+			// 충돌체에 대해서 일어난 변화이므로, 이를 Transform에도 반영해야 한다.
+			else if (collider->IsTrigger())
+			{
+				continue;
+			}
+
+			Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
+			tr->SetWorldPosition(worldTransform.p);
+			tr->SetLocalRotation(worldTransform.q);
+		}
+	}
+
+
+	//void Collision3D::SyncGameScene() const
+	//{
+	//	const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+
+	//	if (actorCount == 0)
+	//	{
+	//		return;
+	//	}
+
+	//	std::vector<PxRigidActor*> actors(actorCount);
+	//	m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+	//	for (const auto& actor : actors)
+	//	{
+	//		const PxTransform worldTransform = actor->getGlobalPose();
+
+	//		iCollider3D* collider = static_cast<iCollider3D*>(actor->userData);
+
+	//		if (collider == nullptr || collider->IsDestroyed())
+	//		{
+	//			continue;
+	//		}
+	//			
+	//		// 충돌체에 대해서 일어난 변화이므로, 이를 Com_Transform에도 반영해야 한다.
+	//		if (collider->IsTrigger())
+	//		{
+	//			continue;
+	//		}
+	//			
+	//		Com_Transform* tr = collider->GetTransform();
+
+	//		//원래 위치 정보에서 크기정보 제거
+	//		const MATRIX from = MATRIX::CreateScale(tr->GetWorldScale()).Invert() * tr->GetWorldMatrix();
+
+	//		//피직스에서 받아온 트랜스폼 정보를 가져온다
+	//		const MATRIX to = PhysXConverter::ToMATRIX(PxMat44{ worldTransform });
+
+	//		//차이를 구해준다
+	//		const MATRIX diff = from.Invert() * to;
+
+	//		// 이동은 회전에 영향을 받으므로
+	//		const Quaternion rotation = Quaternion::CreateFromRotationMatrix(diff);
+	//		
+	//		const float3	 position = to.Translation() - float3::Transform(from.Translation(), rotation);
+
+	//		tr->SetWorldPosition(float3::Transform(tr->GetWorldPosition(), rotation) + position);
+	//		tr->SetWorldRotation(tr->GetWorldRotation() * rotation);
+	//	}
+	//}
+
 	void Collision3D::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	{
+		ASSERT(false, "리팩토링 미진행");
 		for (PxU32 i = 0; i < count; ++i)
 		{
 			const PxTriggerPair& contactpair = pairs[i];
@@ -186,8 +261,8 @@ namespace ehw
 			}
 				
 
-			Com_Collider3D* triggerCollider = triggerObject->GetComponent<Com_Collider3D>();
-			Com_Collider3D* otherCollider = otherObject->GetComponent<Com_Collider3D>();
+			iCollider3D* triggerCollider = triggerObject->GetComponent<iCollider3D>();
+			iCollider3D* otherCollider = otherObject->GetComponent<iCollider3D>();
 
 			// process events
 			if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_FOUND))
@@ -211,21 +286,25 @@ namespace ehw
 
 			// if these actors do not exist in the scene anymore due to deallocation, do not process
 			if (pairHeader.actors[0]->userData == nullptr || pairHeader.actors[1]->userData == nullptr)
+			{
 				continue;
+			}
 
-			GameObject* leftGameObject = static_cast<GameObject*>(pairHeader.actors[0]->userData);
-			GameObject* rightGameObject = static_cast<GameObject*>(pairHeader.actors[1]->userData);
-			if (leftGameObject->IsDestroyed() || rightGameObject->IsDestroyed())
+			iCollider3D* leftCollider = static_cast<iCollider3D*>(pairHeader.actors[0]->userData);
+			iCollider3D* rightCollider = static_cast<iCollider3D*>(pairHeader.actors[1]->userData);
+			if (leftCollider->IsDestroyed() || rightCollider->IsDestroyed())
+			{
 				continue;
-			else if (leftGameObject == rightGameObject)
+			}
+			else if (leftCollider == rightCollider)
+			{
 				continue;
-
-			Com_Collider3D* leftCollider = leftGameObject->GetComponent<Com_Collider3D>();
-			Com_Collider3D* rightCollider = rightGameObject->GetComponent<Com_Collider3D>();
+			}
+			
 
 			PxContactPairPoint collisionPoint{};
 			const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
-			const float3	   collisionPosition = PhysXConverter::Tofloat3(collisionPoint.position);
+			const float3	   collisionPosition = collisionPoint.position;
 
 			// invoke events
 			if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
@@ -246,31 +325,31 @@ namespace ehw
 		}
 	}
 
-	void Collision3D::EnableGravity(bool enable, iScene* scene, const float3& gravity) const
+	void Collision3D::EnableGravity(bool _enable, const float3& _gravity) const
 	{
-		//assert(m_currentScene);
-
-		auto iter = m_physxScenes.find(scene);
-		if (iter != m_physxScenes.end())
+		if (_enable)
 		{
-			iter->second->setGravity(PhysXConverter::ToPxVec3(gravity));
+			m_pxScene->setGravity(_gravity);
+		}
+		else
+		{
+			m_pxScene->setGravity(physx::PxVec3(0.f));
 		}
 	}
 
-	void Collision3D::changeGeometry(Com_Collider3D* collider, physx::PxShape* shape, eCollider3D_Shape type)
-	{
-		const float3 scale = collider->GetWorldScale();
-		switch (type)
-		{
-			
-		case eCollider3D_Shape::Box:
-			shape->setGeometry(PxSphereGeometry{ scale.x });
-			break;
-		case eCollider3D_Shape::Sphere:
-			shape->setGeometry(PxBoxGeometry{ scale.x, scale.y, scale.z });
-			break;
-		}
-	}
+	//void Collision3D::changeGeometry(iCollider3D* collider, physx::PxShape* shape, eCollider3D_Shape type)
+	//{
+	//	const float3 scale = collider->GetWorldScale();
+	//	switch (type)
+	//	{
+	//	case eCollider3D_Shape::Cube:
+	//		shape->setGeometry(PxSphereGeometry{ scale.x });
+	//		break;
+	//	case eCollider3D_Shape::Sphere:
+	//		shape->setGeometry(PxBoxGeometry{ scale.x, scale.y, scale.z });
+	//		break;
+	//	}
+	//}
 
 	bool Collision3D::Raycast(uint32 srcLayerIndex, const float3& origin, const float3& direction, float maxDistance, RaycastHit* outHit) const
 	{
@@ -281,195 +360,67 @@ namespace ehw
 		const PxHitFlags  hitFlag = PxHitFlag::eDEFAULT;
 		PxQueryFilterData filter{};
 
-		filter.data.word0 = CollisionSystem::GetRaycastMask()[srcLayerIndex].to_ulong();
+		filter.data.word0 = m_collisionSystem->GetRaycastMask()[srcLayerIndex].to_ulong();
 
 		PxRaycastBuffer hit{};
-		const bool		result = m_currentScene->raycast(PhysXConverter::ToPxVec3(origin), PhysXConverter::ToPxVec3(direction), maxDistance, hit, hitFlag, filter);
+		const bool		result = m_pxScene->raycast(origin, direction, maxDistance, hit, hitFlag, filter);
 
-		outHit->gameObject = (hit.hasBlock) ? static_cast<GameObject*>(hit.block.actor->userData) : nullptr;
+		outHit->hitCollider = (hit.hasBlock) ? static_cast<iCollider3D*>(hit.block.actor->userData) : nullptr;
 		outHit->hasBlocking = hit.hasBlock;
 		outHit->hitDistance = hit.block.distance;
-		outHit->hitPosition = PhysXConverter::Tofloat3(hit.block.position);
-		outHit->hitNormal = PhysXConverter::Tofloat3(hit.block.normal);
+		outHit->hitPosition = hit.block.position;
+		outHit->hitNormal = hit.block.normal;
 
 		return result;
 	}
 
-	void Collision3D::createScene(iScene* scene)
+	physx::PxFilterData Collision3D::GetCollisionFilterData(uint32 _layer)
 	{
-		assert(scene);
-		const auto iter = m_physxScenes.find(scene);
-			
-			//std::find_if(m_physxScenes.begin(), m_physxScenes.end(), [scene](const PxScene* pxScene) { return pxScene->getName() == scene->GetNameChar(); });
+		physx::PxFilterData ret{};
 
-		//이미 생성된 씬이 있을 경우 return
-		if (iter != m_physxScenes.end())
+		if (_layer < g_maxLayer)
 		{
-			return;
+			ret.word0 = _layer;
+			ret.word1 = m_collisionSystem->GetLayerCollisionMask(_layer).to_ulong();
 		}
 
-		//assert(iter == m_physxScenes.end());
 
-		PxSceneDesc sceneDescription = PxSceneDesc{ m_physics->getTolerancesScale() };
-		sceneDescription.gravity = PxVec3{ 0.f, -0.5f, 0.f };
-		sceneDescription.cpuDispatcher = m_dispatcher;
-		sceneDescription.filterShader = &Collision3D::FilterShader;
-		sceneDescription.simulationEventCallback = this;
-
-		PxScene* newScene = m_physics->createScene(sceneDescription);
-
-		
-		newScene->setName(scene->GetStrKey().c_str());
-
-		m_physxScenes.insert(std::make_pair(scene, newScene));
-		//m_physxScenes.push_back(newScene);
+		return ret;
 	}
 
-	void Collision3D::changeScene(iScene* scene)
+	physx::PxFilterData Collision3D::GetRaycastFilterData(uint32 _layer)
 	{
-		const auto iter = m_physxScenes.find(scene);
-			//std::find_if(m_physxScenes.begin(), m_physxScenes.end(), [scene](const PxScene* pxScene) {
-			//return pxScene->getName() == scene->GetNameChar();
-			//});
-		//assert(iter != m_physxScenes.end());
+		physx::PxFilterData ret{};
 
-		physx::PxScene* pxScene = nullptr;
-
-		if (iter != m_physxScenes.end())
+		if (_layer < g_maxLayer)
 		{
-			pxScene = iter->second;
+			ret.word0 = _layer;
+			ret.word1 = m_collisionSystem->GetLayerRaycastMask(_layer).to_ulong();
 		}
-		
-		m_currentScene = pxScene;
+
+		return ret;
 	}
 
 
-	void Collision3D::createActorSphere(GameObject* gameObject, float radius, PxShape** outShape, bool isStatic)
-	{
-		Com_Transform* component = gameObject->GetComponent<Com_Transform>();
 
-		auto iter = m_physxScenes.find(gameObject->GetScene());
-		assert(m_physxScenes.end() != iter);
+	//void Collision3D::changeScene(iScene* scene)
+	//{
+	//	const auto iter = m_physxScenes.find(scene);
+	//		//std::find_if(m_physxScenes.begin(), m_physxScenes.end(), [scene](const PxScene* pxScene) {
+	//		//return pxScene->getName() == scene->GetNameChar();
+	//		//});
+	//	//assert(iter != m_physxScenes.end());
 
-		PxTransform t{};
-		t.p = PhysXConverter::ToPxVec3(component->GetWorldPosition());
-		t.q = PhysXConverter::ToPxQuat(component->GetWorldRotation());
+	//	physx::PxScene* pxScene = nullptr;
 
-		if (isStatic)
-		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxSphereGeometry{ radius }, *m_pxMaterial);
-			//m_currentScene->addActor(*staticObject);
-			iter->second->addActor(*staticObject);
+	//	if (iter != m_physxScenes.end())
+	//	{
+	//		pxScene = iter->second;
+	//	}
+	//	
+	//	m_pxScene = pxScene;
+	//}
 
-			PxShape* shapes{};
-			const PxU32 count = staticObject->getShapes(&shapes, 1);
-			assert(count);
-
-			staticObject->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			
-			setupFiltering(*outShape, gameObject->GetLayer());
-		}
-		else
-		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxSphereGeometry{ radius }, *m_pxMaterial, s_defaultDensity);
-
-			iter->second->addActor(*dynamic);
-			//currentScene->addActor(*dynamic);
-			dynamic->setAngularDamping(100.f);
-			PxShape* shapes{};
-			const PxU32 count = dynamic->getShapes(&shapes, 1);
-			assert(count);
-			dynamic->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayer()));
-		}
-	}
-
-	void Collision3D::createActorCapsule(GameObject* gameObject, float radius, float height, physx::PxShape** outShape, bool isStatic)
-	{
-		Com_Transform* component =gameObject->GetComponent<Com_Transform>();
-
-		auto iter = m_physxScenes.find(gameObject->GetScene());
-		assert(m_physxScenes.end() != iter);
-
-		PxTransform t{};
-		t.p = *outShape ? PhysXConverter::ToPxVec3(component->GetWorldPosition()) : PhysXConverter::ToPxVec3(component->GetLocalPosition());
-		t.q = *outShape ? PhysXConverter::ToPxQuat(component->GetWorldRotation()) : PhysXConverter::ToPxQuat(component->GetLocalRotation());
-
-		if (isStatic)
-		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_pxMaterial);
-			//m_currentScene->addActor(*staticObject);
-			iter->second->addActor(*staticObject);
-
-			PxShape* shapes{};
-			const PxU32 count = staticObject->getShapes(&shapes, 1);
-			assert(count);
-			staticObject->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayer()));
-		}
-		else
-		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxCapsuleGeometry{ radius, height }, *m_pxMaterial, s_defaultDensity);
-			dynamic->setAngularDamping(100.f);
-
-			iter->second->addActor(*dynamic);
-			//m_currentScene->addActor(*dynamic);
-
-			PxShape* shapes{};
-			const PxU32 count = dynamic->getShapes(&shapes, 1);
-			assert(count);
-
-			dynamic->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayer()));
-		}
-	}
-
-	void Collision3D::createActorCube(GameObject* gameObject, const float3& halfExtents, PxShape** outShape, bool isStatic)
-	{
-		Com_Transform* component = gameObject->GetComponent<Com_Transform>();
-
-		auto iter = m_physxScenes.find(gameObject->GetScene());
-		assert(m_physxScenes.end() != iter);
-
-
-
-		PxTransform t{};
-		t.p = *outShape ? 
-			PhysXConverter::ToPxVec3(component->GetWorldPosition()) : PhysXConverter::ToPxVec3(component->GetLocalPosition());
-		t.q = *outShape ? PhysXConverter::ToPxQuat(component->GetWorldRotation()) : PhysXConverter::ToPxQuat(component->GetLocalRotation());
-
-		if (isStatic)
-		{
-			PxRigidStatic* staticObject = PxCreateStatic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_pxMaterial);
-			//targetScene->addActor(*staticObject);
-			iter->second->addActor(*staticObject);
-
-			PxShape* shapes{};
-			const PxU32 count = staticObject->getShapes(&shapes, 1);
-			assert(count);
-			staticObject->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			setupFiltering(*outShape, static_cast<uint32>(gameObject->GetLayer()));
-		}
-		else
-		{
-			PxRigidDynamic* dynamic = PxCreateDynamic(*m_physics, t, PxBoxGeometry{ halfExtents.x, halfExtents.y, halfExtents.z }, *m_pxMaterial, s_defaultDensity);
-			//m_currentScene->addActor(*dynamic);
-			iter->second->addActor(*dynamic);
-
-			PxShape* shapes{};
-			const PxU32 count = dynamic->getShapes(&shapes, 1);
-			assert(count);
-
-			dynamic->userData = component->GetOwner();
-			*outShape = &shapes[0];
-			setupFiltering(*outShape, gameObject->GetLayer());
-		}
-	}
 
 	PxFilterFlags Collision3D::FilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
@@ -480,9 +431,14 @@ namespace ehw
 		if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
 		{
 			if ((filterData0.word0 & filterData1.word1) || (filterData1.word0 & filterData0.word1))
+			{
 				pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+			}
 			else
+			{
 				return PxFilterFlag::eKILL;
+			}
+				
 
 			return PxFilterFlag::eDEFAULT;
 		}
@@ -498,31 +454,6 @@ namespace ehw
 		}
 
 		return PxFilterFlag::eKILL;
-	}
-
-	void Collision3D::setupFiltering(PxShape* shape, uint32 layerIndex) const
-	{
-		std::bitset<32> layer{};
-
-		layer[layerIndex] = true;
-
-		PxFilterData filterData{};
-
-		// word0 = own ID
-		filterData.word0 = layer.to_ulong();
-
-		// word1 = ID mask to filter pairs that trigger a contact callback
-		filterData.word1 = CollisionSystem::GetCollisionMask()[layerIndex].to_ulong(); 
-		shape->setSimulationFilterData(filterData);
-
-		PxFilterData queryFilterData{};
-
-		// word0 = own ID
-		queryFilterData.word0 = layer.to_ulong();					   
-
-		// word1 = ID mask to filter pairs that trigger a contact callback
-		queryFilterData.word1 = CollisionSystem::GetRaycastMask()[layerIndex].to_ulong(); 
-		shape->setQueryFilterData(queryFilterData);
 	}
 
 #pragma region NOT IMPLEMENTED

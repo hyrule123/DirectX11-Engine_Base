@@ -3,6 +3,9 @@
 #include "Engine/Game/iScene.h"
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 #include "Engine/Game/Component/Collider/iCollider2D.h"
+#include "Engine/Game/Collision/Collision2D.h"
+#include "Engine/Game/Collision/Collision3D.h"
+
 
 #include "Engine/Util/AtExit.h"
 
@@ -14,8 +17,8 @@ namespace ehw
 		: m_owner{ _ownerScene }
 		, m_collisionMask{}
 		, m_raycastMask{}
-		, m_col2DManager{ this }
-		, m_col3DManager{ this }
+		, m_col2DManager{ nullptr }
+		, m_col3DManager{ nullptr }
 	{
 	}
 
@@ -23,12 +26,42 @@ namespace ehw
 	{
 	}
 
+	Collision2D* CollisionSystem::CreateCollision2D()
+	{
+		if (m_col2DManager)
+		{
+			return m_col2DManager.get();
+		}
+
+		m_col2DManager = std::make_unique<Collision2D>(this);
+		return m_col2DManager.get();
+	}
+
+	Collision3D* CollisionSystem::CreateCollision3D()
+	{
+		if (m_col3DManager)
+		{
+			return m_col3DManager.get();
+		}
+
+		m_col3DManager = std::make_unique<Collision3D>(this);
+		m_col3DManager->Init();
+		return m_col3DManager.get();
+	}
+
 	void CollisionSystem::Update()
 	{
-		m_col2DManager.Update();
+		if (m_col2DManager)
+		{
+			m_col2DManager->Update();
+		}
+		
+		if (m_col3DManager)
+		{
+			m_col3DManager->FixedUpdate();
+		}
 
-
-
+		
 		//iScene* scene = SceneManager::GetActiveScene();
 		//if (nullptr == scene)
 		//{
@@ -49,12 +82,12 @@ namespace ehw
 
 	void CollisionSystem::FrameEnd()
 	{
-		m_col2DManager.FrameEnd();
+		m_col2DManager->FrameEnd();
 	}
 
 	void CollisionSystem::Render()
 	{
-		m_col2DManager.Render();
+		m_col2DManager->Render();
 	}
 
 
@@ -252,14 +285,22 @@ namespace ehw
 
 
 
-void CollisionSystem::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
+	void CollisionSystem::SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable)
 	{
-		m_collisionMask[_layerA][_layerB] = _isEnable;
-		m_collisionMask[_layerB][_layerA] = _isEnable;
+		if (_layerA < g_maxLayer && _layerB < g_maxLayer)
+		{
+			m_collisionMask[_layerA][_layerB] = _isEnable;
+			m_collisionMask[_layerB][_layerA] = _isEnable;
+		}
 	}
+
 	void CollisionSystem::SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable)
 	{
-		m_raycastMask[_layerA][_layerB] = _isEnable;
-		m_raycastMask[_layerB][_layerA] = _isEnable;
+		if (_layerA < g_maxLayer && _layerB < g_maxLayer)
+		{
+			m_raycastMask[_layerA][_layerB] = _isEnable;
+			m_raycastMask[_layerB][_layerA] = _isEnable;
+		}
 	}
+
 }

@@ -42,7 +42,7 @@ namespace ehw
 
 		inline void SetStrKey(const std::string_view _strKey) { m_strKey = _strKey; }
 		inline const std::string& GetStrKey() const { return m_strKey; }
-		UINT32 GetID() const { return m_ID; }
+		uint32 GetID() const { return m_ID; }
 
 	protected:
 		void Swap(Entity& _other);
@@ -50,9 +50,9 @@ namespace ehw
 
 	private:
 		std::string m_strKey;
-		const UINT32 m_ID;
+		const uint32 m_ID;
 
-		static UINT32 g_nextID;
+		static uint32 g_nextID;
 	};
 
 

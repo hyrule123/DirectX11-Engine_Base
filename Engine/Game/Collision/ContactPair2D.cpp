@@ -1,26 +1,29 @@
-#include "Engine/Game/Collision/CollisionInfo.h"
+#include "Engine/Game/Collision/ContactPair2D.h"
 
 #include "Engine/Game/Component/Collider/iCollider2D.h"
 namespace ehw
 {
-	CollisionInfo::CollisionInfo(iCollider2D* const _left, iCollider2D* const _right)
+	ContactPair2D::ContactPair2D(iCollider2D* const _left, iCollider2D* const _right)
 		: m_left(_left)
 		, m_right(_right)
 	{
 	}
 
-	CollisionInfo::~CollisionInfo()
+	ContactPair2D::~ContactPair2D()
 	{
 	}
 
-	void CollisionInfo::operator=(const CollisionInfo& _other)
+	void ContactPair2D::operator=(const ContactPair2D& _other)
 	{
 		m_left = _other.m_left;
 		m_right = _other.m_right;
 	}
 
-	void CollisionInfo::Enter()
+	void ContactPair2D::Enter()
 	{
+		m_left->AddCollisionCount();
+		m_right->AddCollisionCount();
+
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())
 		{
@@ -41,7 +44,7 @@ namespace ehw
 		m_right->OnCollisionEnter(m_left);
 	}
 
-	void CollisionInfo::Stay()
+	void ContactPair2D::Stay()
 	{
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())
@@ -63,8 +66,11 @@ namespace ehw
 		m_right->OnCollisionStay(m_left);
 	}
 
-	void CollisionInfo::Exit()
+	void ContactPair2D::Exit()
 	{
+		m_left->SubCollisionCount();
+		m_right->SubCollisionCount();
+
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())
 		{

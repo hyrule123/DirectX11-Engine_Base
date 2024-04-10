@@ -81,14 +81,14 @@ namespace ehw
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
+		iScene* GetScene() { return m_ownerScene; }
 		iScene* GetScene() const { return m_ownerScene; }
+
 		void SetScene(iScene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
-		uint32 GetLayer() const { return m_layer; }
-
-		//임의 호출하지 말것(특정 Layer에 실제로 들어가는 시점에 지정됨)
 		void SetLayer(uint32 _type) { m_layer = _type; }
+		uint32 GetLayer() const { return m_layer; }
 
 		bool IsAwaken() const { return m_isAwakeCalled; }
 
@@ -176,7 +176,7 @@ namespace ehw
 			{
 				if (comTypeID == m_scripts[i]->GetComponentTypeID())
 				{
-					pCom = static_cast<T>(m_scripts[i]);
+					pCom = static_cast<T*>(m_scripts[i]);
 					break;
 				}
 			}
@@ -195,13 +195,20 @@ namespace ehw
 		else //constexpr
 		{
 			eComponentCategory comCategory = T::GetComponentCategoryStatic();
-			if (
-				m_baseComponents[(int)comCategory] &&
-				m_baseComponents[(int)comCategory]->GetComponentTypeID() == iComponent::GetComponentTypeID<T>()
-				)
+			if (m_baseComponents[(int)comCategory])
 			{
-				//일단 ID값으로 비교 후 일치 시 static_cast
-				pCom = static_cast<T*>(m_baseComponents[(int)comCategory]);
+				if (iComponent::GetComponentTypeID<T>()
+					== m_baseComponents[(int)comCategory]->GetComponentTypeID())
+				{
+					//일단 ID값으로 비교 후 일치 시 static_cast
+					pCom = static_cast<T*>(m_baseComponents[(int)comCategory]);
+				}
+				else
+				{
+					//ID값으로 일치하지 않을 경우에는 dynamic_cast 수행
+					pCom = dynamic_cast<T*>(m_baseComponents[(int)comCategory]);
+				}
+
 			}
 		}
 

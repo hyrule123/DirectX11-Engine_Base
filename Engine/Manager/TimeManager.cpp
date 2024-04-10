@@ -1,11 +1,9 @@
 #include "Engine/Manager/TimeManager.h"
 
-
-
 #include "Engine/Util/AtExit.h"
-
 #include "Engine/GameEngine.h"
 
+#include "Engine/CommonGlobalVar.h"
 
 namespace ehw
 {
@@ -47,6 +45,11 @@ namespace ehw
             = static_cast<float>((mCurFrequency.QuadPart - mPrevFrequency.QuadPart));
 
         mDeltaTime = differenceInFrequancy / static_cast<float>(mCpuFrequency.QuadPart);
+        if (g_deltatimeThreshold < mDeltaTime)
+        {
+            mDeltaTime = g_deltatimeThreshold;
+        }
+
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;
     }
 

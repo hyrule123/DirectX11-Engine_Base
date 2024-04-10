@@ -11,8 +11,6 @@
 #include "Engine/Util/define_Util.h"
 
 
-
-
 namespace ehw
 {
 	constexpr const char* strMixamo = "mixamo.com";

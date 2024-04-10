@@ -89,7 +89,7 @@ namespace ehw
         ShowWindow(mHwnd, SW_HIDE);
         UpdateWindow(mHwnd);
 
-        ehw::tDesc_GameEngine engineDesc;
+        ehw::tGameEngineDesc engineDesc;
         engineDesc.Hwnd = mHwnd;
         engineDesc.Height = _Desc.Height;
         engineDesc.Width = _Desc.Width;

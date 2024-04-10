@@ -1,9 +1,8 @@
 #pragma once
-#include "Engine/CommonType.h"
 
 namespace ehw
 {
-	template <typename T, typename Size = uint8>
+	template <typename T, typename Size = unsigned char>
 	class EnumFlags
 	{
 	public:
@@ -38,9 +37,9 @@ namespace ehw
 		EnumFlags<T, Size> operator~(void) const;
 
 		operator bool(void) const;
-		operator uint8(void) const;
-		operator uint16(void) const;
-		operator uint32(void) const;
+		operator unsigned char(void) const;
+		operator unsigned short(void) const;
+		operator unsigned long(void) const;
 
 		void				clear(T e);
 		void				raise(T e);
@@ -200,13 +199,13 @@ namespace ehw
 	EnumFlags<T, Size>::operator bool(void) const { return _bits ? true : false; }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint8(void) const { return static_cast<uint8>(_bits); }
+	EnumFlags<T, Size>::operator unsigned char(void) const { return static_cast<unsigned char>(_bits); }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint16(void) const { return static_cast<uint16>(_bits); }
+	EnumFlags<T, Size>::operator unsigned short(void) const { return static_cast<unsigned short>(_bits); }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>::operator uint32(void) const { return static_cast<uint32>(_bits); }
+	EnumFlags<T, Size>::operator unsigned long(void) const { return static_cast<unsigned long>(_bits); }
 
 	template <typename T, typename Size>
 	void EnumFlags<T, Size>::clear(T e) { _bits &= ~static_cast<Size>(e); }

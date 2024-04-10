@@ -26,7 +26,7 @@ namespace ehw
 	bool			GameEngine::mbInitialized = false;
 	std::function<void()> GameEngine::m_editorRunFunction = nullptr;
 
-	BOOL GameEngine::Init(const tDesc_GameEngine& _AppDesc)
+	BOOL GameEngine::Init(const tGameEngineDesc& _AppDesc)
 	{
 		AtExit::AddFunc(Release);
 
@@ -77,7 +77,6 @@ namespace ehw
 		TimeManager::Update();
 		InputManager::Update();
 		SceneManager::Update();
-		CollisionSystem::Update();
 	}
 
 	// GPU에 보내기 위한 최종 정보 정리
@@ -105,7 +104,6 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{	
-		CollisionSystem::FrameEnd();
 		SceneManager::FrameEnd();
 		RenderManager::FrameEnd();
 	}

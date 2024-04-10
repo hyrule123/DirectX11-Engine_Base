@@ -2,6 +2,8 @@
 
 #include "Engine/Game/GameObject.h"
 
+#include "Engine/Game/Collision/CollisionSystem.h"
+
 namespace ehw
 {
 	iScene::iScene()
@@ -17,6 +19,27 @@ namespace ehw
 
 	iScene::~iScene()
 	{
+	}
+
+
+	void iScene::SceneInit()
+	{
+		tDesc desc{};
+		Init(desc);
+
+		if (desc.EnableCollision2D || desc.EnableCollision3D)
+		{
+			m_collisionSystem = std::make_unique<CollisionSystem>(this);
+
+			if (desc.EnableCollision2D)
+			{
+				m_collisionSystem->CreateCollision2D();
+			}
+			if (desc.EnableCollision3D)
+			{
+				m_collisionSystem->CreateCollision3D();
+			}
+		}
 	}
 
 	void iScene::SceneAwake()
@@ -42,7 +65,10 @@ namespace ehw
 			m_gameObjects[i]->Update();
 		}
 
-		m_collisionSystem.Update();
+		if (m_collisionSystem)
+		{
+			m_collisionSystem->Update();
+		}
 	}
 
 
@@ -71,6 +97,11 @@ namespace ehw
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			m_gameObjects[i]->FrameEnd();
+		}
+
+		if(m_collisionSystem)
+		{
+			m_collisionSystem->FrameEnd();
 		}
 
 		//FrameEnd에 예약해놓은 함수 호출

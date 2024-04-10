@@ -21,7 +21,7 @@ namespace ehw
 
 		std::vector<std::function<void()>> ExternalInitFuncs;
 
-		ehw::tDesc_GPUMgr GPUDesc;
+		ehw::tGPUManagerDesc GPUDesc;
 
 		std::function<void()> EditorRunFunction;
 	};

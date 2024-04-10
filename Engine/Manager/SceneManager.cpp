@@ -13,7 +13,7 @@ namespace ehw
 {
 	std::unique_ptr<iScene> SceneManager::m_activeScene = nullptr;
 
-	std::unordered_map<std::string_view, std::function<iScene* ()>> SceneManager::m_umapSceneConstructor{};
+	std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene>()>> SceneManager::m_umapSceneConstructor{};
 
 	void SceneManager::Init()
 	{
@@ -29,6 +29,7 @@ namespace ehw
 			m_activeScene->SceneUpdate();
 		}
 	}
+
 
 	void SceneManager::FinalUpdate()
 	{
@@ -79,7 +80,7 @@ namespace ehw
 			return;
 		}
 
-		std::unique_ptr<iScene> NewScene = std::unique_ptr<iScene>(Func->second());
+		std::unique_ptr<iScene> NewScene = Func->second();
 		if (nullptr == NewScene)
 		{
 			ERROR_MESSAGE("씬 생성 실패");
@@ -110,8 +111,8 @@ namespace ehw
 		//}
 
 		//OnEnter 호출
+		m_activeScene->SceneInit();
 		m_activeScene->OnEnter();
-
 		m_activeScene->SceneAwake();
 	}
 

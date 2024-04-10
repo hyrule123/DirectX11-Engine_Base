@@ -1,14 +1,15 @@
 #pragma once
 #include "Engine/define_enum.h"
-#include "Engine/Util/type_traits_Ex.h"
 #include "Engine/CommonType.h"
+#include "Engine/CommonStruct.h"
 
-#include "Engine/Game/Collision/Collision2D.h"
-#include "Engine/Game/Collision/Collision3D.h"
+#include "Engine/Util/type_traits_Ex.h"
+
 
 #include <unordered_map>
 #include <array>
 #include <bitset>
+
 
 //업데이트 순서
 //1. SceneManager::Update: 각 Collider들이 자신의 정보를 등록한다.
@@ -23,35 +24,47 @@
 
 namespace ehw
 {
-	//	class Scene;
+	class iScene;
+	class Collision2D;
+	class Collision3D;
 	class CollisionSystem
 	{
 		friend class iScene;
-	private:
+	public:
 		CollisionSystem(iScene* const _ownerScene);
 		~CollisionSystem();
 
-	public:
+		Collision2D* CreateCollision2D();
+		Collision3D* CreateCollision3D();
+
+		inline Collision2D* GetCollision2D() { return m_col2DManager.get(); }
+		inline Collision2D* GetCollision2D() const { return m_col2DManager.get(); }
+		inline Collision3D* GetCollision3D() { return m_col3DManager.get(); }
+		inline Collision3D* GetCollision3D() const { return m_col3DManager.get(); }
+
+
 		template <type_traits_Ex::is_enum_class_v T>
-		inline void SetCollisionInteraction(T _left, T _right, bool _enable = true);
-
-		inline Collision2D& GetCollision2D() { return m_col2DManager; }
-		inline Collision3D& GetCollision3D() { return m_col3DManager; }
-
+		inline void SetCollisionMask(T _left, T _right, bool _enable = true);
 		void SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable);
+		
 		inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
 			GetCollisionMask() { return m_collisionMask; }
+		inline std::bitset<g_maxLayer> GetLayerCollisionMask(uint _layer) const;
 
+
+		template <type_traits_Ex::is_enum_class_v T>
+		inline void SetRaycastMask(T _left, T _right, bool _enable = true);
 		void SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable);
 		inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
 			GetRaycastMask() { return m_raycastMask; };
+		inline std::bitset<g_maxLayer> GetLayerRaycastMask(uint _layer) const;
 
+		inline iScene* GetOwnerScene() { return m_owner; }
 
 		//Editor 프로젝트에서 호출됨.
 		void Render();
 
 	private:
-
 		void Update();
 		void FrameEnd();
 
@@ -62,17 +75,42 @@ namespace ehw
 		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collisionMask;
 		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_raycastMask;
 
-		Collision2D m_col2DManager;
-		Collision3D m_col3DManager;
+		std::unique_ptr<Collision2D> m_col2DManager;
+		std::unique_ptr<Collision3D> m_col3DManager;
 	};
 
 	template<type_traits_Ex::is_enum_class_v T>
-	inline void CollisionSystem::SetCollisionInteraction(T _left, T _right, bool _enable)
+	inline void CollisionSystem::SetCollisionMask(T _left, T _right, bool _enable)
 	{
-		uint left = static_cast<uint>(_left);
-		uint right = static_cast<uint>(_right);
+		SetCollisionMask(static_cast<uint>(_left), static_cast<uint>(_right), _enable);
+	}
 
-		m_collisionMask[left][right] = _enable;
-		m_collisionMask[right][left] = _enable;
+	inline std::bitset<g_maxLayer> CollisionSystem::GetLayerCollisionMask(uint _layer) const
+	{
+		std::bitset<g_maxLayer> ret{};
+
+		if (_layer < g_maxLayer)
+		{
+			ret = m_collisionMask[_layer];
+		}
+
+		return ret;
+	}
+	inline std::bitset<g_maxLayer> CollisionSystem::GetLayerRaycastMask(uint _layer) const
+	{
+		std::bitset<g_maxLayer> ret{};
+
+		if (_layer < g_maxLayer)
+		{
+			ret = m_raycastMask[_layer];
+		}
+
+		return ret;
+	}
+
+	template<type_traits_Ex::is_enum_class_v T>
+	inline void CollisionSystem::SetRaycastMask(T _left, T _right, bool _enable)
+	{
+		SetRaycastMask(static_cast<uint>(_left), static_cast<uint>(_right), _enable);
 	}
 }

@@ -14,15 +14,22 @@ namespace ehw
 	// 전방 선언
 	class iScene;
 	class GameObject;
-	class Com_Collider3D;
+	class iCollider3D;
+	class CollisionSystem;
 
 	struct RaycastHit
 	{
-		GameObject* gameObject;
+		iCollider3D* hitCollider;
 		bool		hasBlocking;
 		float3		hitPosition;
 		float3		hitNormal;
 		float		hitDistance;
+	};
+
+	enum class eFilterType
+	{
+		Collision,
+		Raycast
 	};
 
 	enum class UpdateInterval
@@ -39,13 +46,18 @@ namespace ehw
 	class Collision3D final : public ::physx::PxSimulationEventCallback
 	{
 		friend class CollisionSystem;
-	private:
+	public:
 		Collision3D(CollisionSystem* const _owner);
 		virtual ~Collision3D();
 
-	public:
-		static constexpr float s_defaultDensity = 10.f;
-		static constexpr std::array<float, (int)UpdateInterval::END> s_physxUpdateIntervals
+		void Init();
+		void CreatePxScene();
+		void FixedUpdate();
+		void GameSceneToPxScene();
+		void PxSceneToGameScene();
+
+		static constexpr float m_defaultDensity = 10.f;
+		static constexpr std::array<float, (int)UpdateInterval::END> m_physxUpdateIntervals
 		{
 			1.f / 30.f,
 			1.f / 60.f,
@@ -53,57 +65,50 @@ namespace ehw
 			1.f / 144.f,
 			1.f / 240.f,
 		};
-	
-		void Init();
-		void CollisionUpdate();
 
-		void EnableGravity(bool enable, const float3& gravity) const;
+		inline physx::PxMaterial* GetDefaultPxMaterial() { return m_defaultPxMaterial; }
 
-		void createActorCube(GameObject* gameObject, const float3& halfExtents, physx::PxShape** outShape, bool isStatic);
-		void createActorSphere(GameObject* gameObject, float radius, physx::PxShape** outShape, bool isStatic);
-		void createActorCapsule(GameObject* gameObject, float radius, float height, physx::PxShape** outShape, bool isStatic);
-		void changeGeometry(Com_Collider3D* collider, physx::PxShape* shape, eCollider3D_Shape type);
+		void EnableGravity(bool _enable, const float3& _gravity) const;
 
-		bool Raycast(uint32 srcLayerIndex, const float3& origin, const float3& direction, float maxDistance, RaycastHit* outHit) const;
+		//void changeGeometry(iCollider3D* _collider, physx::PxShape* shape, eCollider3D_Shape type);
 
-		void createScene(iScene* scene);
-		void changeScene(iScene* scene);
+		bool Raycast(uint32 _srcLayerIndex, const float3& _origin, const float3& _direction, float _maxDistance, RaycastHit* _outHit) const;
+		
+		physx::PxFilterData GetCollisionFilterData(uint32 _layer);
+		physx::PxFilterData GetRaycastFilterData(uint32 _layer);
 
 	private:
-		void SyncGameScene() const;
-		void setupFiltering(physx::PxShape* shape, uint32 layerIndex) const;
-
 		static physx::PxFilterFlags FilterShader(
-			physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
-			physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
-			physx::PxPairFlags& pairFlags,
-			const void* constantBlock, physx::PxU32 constantBlockSize);
+			physx::PxFilterObjectAttributes _attributes0, physx::PxFilterData _filterData0,
+			physx::PxFilterObjectAttributes _attributes1, physx::PxFilterData _filterData1,
+			physx::PxPairFlags& _pairFlags,
+			const void* _constantBlock, physx::PxU32 _constantBlockSize);
 
-		inline void setUpdateInterval(UpdateInterval interval) { m_curUpdateInterval = interval; }
-		inline float getUpdateInterval() const { return s_physxUpdateIntervals[static_cast<uint8>(m_curUpdateInterval)]; }
+		inline void setUpdateInterval(UpdateInterval _interval) { m_curUpdateInterval = _interval; }
+		inline float getUpdateInterval() const { return m_physxUpdateIntervals[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
-		void onConstraintBreak(physx::PxConstraintInfo* constraints, physx::PxU32 count) override;
-		void onWake(physx::PxActor** actors, physx::PxU32 count) override;
-		void onSleep(physx::PxActor** actors, physx::PxU32 count) override;
-		void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs) override;
-		void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count) override;
-		void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override;
+		void onConstraintBreak(physx::PxConstraintInfo* _constraints, physx::PxU32 _count) override;
+		void onWake(physx::PxActor** _actors, physx::PxU32 _count) override;
+		void onSleep(physx::PxActor** _actors, physx::PxU32 _count) override;
+		void onContact(const physx::PxContactPairHeader& _pairHeader, const physx::PxContactPair* _pairs, physx::PxU32 _nbPairs) override;
+		void onTrigger(physx::PxTriggerPair* _pairs, physx::PxU32 _count) override;
+		void onAdvance(const physx::PxRigidBody* const* _bodyBuffer, const physx::PxTransform* _poseBuffer, const physx::PxU32 _count) override;
 
 	private:
 		template <typename T>
 		static inline void PxRelease(T* _pxPtr) { if (_pxPtr) { _pxPtr->Release(); } }
 
 	private:
-		CollisionSystem* const m_owner;
+		CollisionSystem* const m_collisionSystem;
+		physx::PxScene* m_pxScene;
 
-		std::unique_ptr<physx::PxScene> m_currentScene;
-
-		//정적 마찰력, 동적 마찰력, 반발력 프리셋.
+		//표면 설정 프리셋
+		//->정적 마찰력, 동적 마찰력, 반발력 프리셋.
 		//충돌체(PxShape 생성 시 필요), 프리셋 값을 변경 시 해당 material을 사용한 모든 충돌체의 프리셋 설정이 변경됨.
-		std::shared_ptr<physx::PxMaterial> m_pxMaterial;
-		
+		physx::PxMaterial* m_defaultPxMaterial;
 		UpdateInterval	m_curUpdateInterval;
+		float m_accumulatedDeltaTime;
 	};
 
 

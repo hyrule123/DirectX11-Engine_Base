@@ -8,11 +8,13 @@
 namespace ehw
 {
 	class Com_Transform;
+	class CollisionSystem;
 	class iCollider
 		: public Component<iCollider, eComponentCategory::Collider>
 	{
 		friend class Collision2D;
 		friend class Collision3D;
+		friend class ContactPair2D;
 	public:
 		iCollider(eDimensionType _dimension);
 		iCollider(const iCollider& _collider) = default;
@@ -23,26 +25,38 @@ namespace ehw
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
 
-
-
-		inline bool IsColliding() const { return m_isColliding; }
+		inline bool IsColliding() const { return (0 < m_collisionCount); }
 		
 		virtual MATRIX GetColliderMatrix() = 0;
 
 	protected:
-		inline Com_Transform* GetMyTransform() { return m_transform; }
+		inline Com_Transform* GetTransform() { return m_transform; }
+		inline CollisionSystem* GetCollisionSystem() { return m_collisionSystem; }
+		inline void AddCollisionCount() { ++m_collisionCount; }
+		inline void SubCollisionCount();
 		
 	private:
-		inline void SetColliding(bool _isColliding) { m_isColliding = _isColliding; }
-
 		eDimensionType m_dimension;
 		bool m_isTriggerMode;
 
 		//Transform을 많이 사용하므로 아예 주소를 받아 놓는다.
 		Com_Transform* m_transform;
+		CollisionSystem* m_collisionSystem;
 
-		bool m_isColliding;
+		int m_collisionCount;
 	};
+
+	inline void iCollider::SubCollisionCount()
+	{
+		--m_collisionCount;
+#ifdef _DEBUG
+		if (0 > m_collisionCount)
+		{
+			m_collisionCount = 0;
+			ASSERT_DEBUG(false, "Collision Count가 음수로 내려갔습니다.");
+		}
+#endif
+	}
 }
 
 

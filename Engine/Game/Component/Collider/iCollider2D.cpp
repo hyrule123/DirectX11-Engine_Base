@@ -4,8 +4,11 @@
 #include "Engine/Game/Component/Script/iScript.h"
 
 #include "Engine/Game/GameObject.h"
+#include "Engine/Game/iScene.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
+#include "Engine/Game/Collision/Collision2D.h"
+
 #include "Engine/Manager/RenderManager.h"
 
 
@@ -39,9 +42,19 @@ namespace ehw
 		return eResult();
 	}
 
-	void iCollider2D::Update()
+	void iCollider2D::Init()
 	{
-		CollisionSystem::GetCollision2D().Enqueue(this);
+		iCollider::Init();
+
+		if (GetCollisionSystem())
+		{
+			m_col2dManager = GetCollisionSystem()->GetCollision2D();
+		}
+		
+		if (m_col2dManager)
+		{
+			m_col2dManager->Enqueue(this);
+		}
 	}
 
 	void iCollider2D::FrameEnd()

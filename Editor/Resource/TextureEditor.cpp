@@ -1,4 +1,4 @@
-#include "Resource/TextureEditor.h"
+#include "Editor/Resource/TextureEditor.h"
 
 
 namespace ehw::editor

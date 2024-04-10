@@ -4,6 +4,7 @@
 
 namespace ehw
 {
+
 	enum class eResult
 	{
 		//음수 = 성공
@@ -53,12 +54,17 @@ namespace ehw
 		END
 	};
 
+	enum class eCollider3DType
+	{
+		Rigid,
+		END
+	};
+
 	enum class eCollider3D_Shape
 	{
-		Box,
+		Cube,
 		Sphere,
-		Cylinder,
-		Line,
+		Capsule,
 		END,
 	};
 
@@ -107,7 +113,7 @@ namespace ehw
 	};
 
 
-	enum class eRotationOrder : UINT8
+	enum class eRotationOrder
 	{
 		XYZ,
 		XZY,
