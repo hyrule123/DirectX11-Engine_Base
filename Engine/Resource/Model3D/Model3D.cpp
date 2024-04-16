@@ -413,6 +413,7 @@ namespace ehw
 
 			//가져올 메쉬를 생성
 			meshCont.mesh = std::make_shared<Mesh>();
+			meshCont.mesh->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 			result = meshCont.mesh->CreateFromContainer(&(containers[i]));
 			if (eResultFail(result))

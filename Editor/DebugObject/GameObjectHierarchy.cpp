@@ -49,19 +49,10 @@ namespace ehw::editor
 
 	void GameObjectHierarchy::GameobjectSelectCallback(tDataPtr _data)
 	{
-		ASSERT(false, "미구현");
-
-		/*
-
-		auto gameObj = static_cast<GameObject*>(_data.pData)->shared_from_this_T<GameObject>();
-
-		
-		RenderManager::SetInspectorGameObject(gameObj);
+		GameObject* gameObj = static_cast<GameObject*>(_data.pData);
 
 		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(strKey::Inspector));
-		inspector->SetTargetGameObject(RenderManager::GetInspectorGameObject());
-
-		*/
+		inspector->SetTargetGameObject(gameObj);
 	}
 
 	void GameObjectHierarchy::InitializeScene()

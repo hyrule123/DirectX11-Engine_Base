@@ -5,6 +5,8 @@
 
 #include "Engine/Util/type_traits_Ex.h"
 
+#include "Engine/DefaultShader/Debug/Debug.hlsli"
+
 
 #include <unordered_map>
 #include <array>
@@ -27,6 +29,9 @@ namespace ehw
 	class iScene;
 	class Collision2D;
 	class Collision3D;
+	class StructBuffer;
+	class Mesh;
+	class Material;
 	class CollisionSystem
 	{
 		friend class iScene;
@@ -61,12 +66,18 @@ namespace ehw
 
 		inline iScene* GetOwnerScene() { return m_owner; }
 
+		
+
 		//Editor 프로젝트에서 호출됨.
 		void Render();
+
+		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData);
 
 	private:
 		void Update();
 		void FrameEnd();
+
+		void PrepareDebugRender();
 
 	private:
 		iScene* const m_owner;
@@ -77,6 +88,9 @@ namespace ehw
 
 		std::unique_ptr<Collision2D> m_col2DManager;
 		std::unique_ptr<Collision3D> m_col3DManager;
+
+		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;
+		std::shared_ptr<Material> m_debugMaterial;
 	};
 
 	template<type_traits_Ex::is_enum_class_v T>

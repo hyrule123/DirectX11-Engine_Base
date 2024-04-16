@@ -87,8 +87,10 @@ namespace ehw
 				STRKEY_DECLARE(PointMesh);
 				STRKEY_DECLARE(RectMesh);
 				STRKEY_DECLARE(DebugRectMesh);
+				STRKEY_DECLARE(DebugCubeMesh);
 				STRKEY_DECLARE(CircleMesh);
 				STRKEY_DECLARE(CubeMesh);
+
 				STRKEY_DECLARE(SphereMesh);
 			}
 

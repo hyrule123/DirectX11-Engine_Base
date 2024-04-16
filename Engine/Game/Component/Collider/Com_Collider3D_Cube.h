@@ -11,7 +11,7 @@ namespace ehw
         Com_Collider3D_Cube();
         virtual ~Com_Collider3D_Cube();
 
-        void Init() final;
+        void Awake() final;
 
         inline void SetOffsetPosition(const physx::PxVec3& _offsetPos) { m_offsetPosition.p = _offsetPos; }
     private:

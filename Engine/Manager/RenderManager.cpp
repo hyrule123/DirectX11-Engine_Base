@@ -58,6 +58,7 @@ namespace ehw
 	std::unique_ptr<StructBuffer>		RenderManager::m_lights_SBuffer{};
 	std::shared_ptr<Texture>			RenderManager::m_postProcessTexture{};
 	
+	bool RenderManager::m_isInitialized{ false };
 
 	void RenderManager::Init()
 	{
@@ -74,6 +75,12 @@ namespace ehw
 		CreateBuffer();
 		LoadDefaultTexture();
 		LoadDefaultMaterial();
+
+		uint2 res = GPUManager::GetResolution();
+		if (false == SetResolution(res.x, res.y))
+		{
+			ASSERT(false, "해상도 설정 실패");
+		}
 
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<iComputeShader>::Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
@@ -237,7 +244,7 @@ namespace ehw
 	{
 		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::Find(strKey::defaultRes::texture::RenderTarget);
 			
-		//renderTarget->UnBindData();
+		//renderTarget->UnbindData();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
 		//GPUManager::Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
@@ -497,11 +504,16 @@ namespace ehw
 			Vertex2D vtx2d = {};
 			std::shared_ptr<Mesh> pointMesh = std::make_shared<Mesh>();
 			pointMesh->SetEngineDefaultRes(true);
-			ResourceManager<Mesh>::Insert(strKey::defaultRes::mesh::PointMesh, pointMesh);
 
-			pointMesh->CreateVertexBuffer(&vtx2d, sizeof(Vertex2D), (size_t)1);
 			uint pointIndex = 0;
-			pointMesh->CreateIndexBuffer(&pointIndex, 1u);
+			bool result = false;
+			
+			result = pointMesh->CreateVertexBuffer(&vtx2d, sizeof(Vertex2D), (size_t)1);
+			result &= pointMesh->CreateIndexBuffer(&pointIndex, 1u);
+			ASSERT(result, "point mesh 생성 실패");
+			pointMesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+			ResourceManager<Mesh>::Insert(strKey::defaultRes::mesh::PointMesh, pointMesh);
 		}
 
 #pragma endregion
@@ -538,7 +550,7 @@ namespace ehw
 			RectMesh->CreateVertexBuffer(VecVtx2D.data(), sizeof(vtx2d), VecVtx2D.size());
 
 
-			std::vector<uint> indices = { 0u , 1u, 2u, 0u, 2u, 3u, 0u };
+			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 			RectMesh->CreateIndexBuffer(indices.data(), (uint)indices.size());
 
 			VecVtx2D.clear();
@@ -568,11 +580,14 @@ namespace ehw
 			
 			// Create Mesh
 			std::shared_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
+			debugmesh->SetEngineDefaultRes(true);
+			
 			ResourceManager<Mesh>::Insert(strKey::defaultRes::mesh::DebugRectMesh, debugmesh);
 			debugmesh->CreateVertexBuffer(VecVtx2D.data(), sizeof(Vertex2D), VecVtx2D.size());
 			debugmesh->CreateIndexBuffer(indices.data(), static_cast<uint>(indices.size()));
 		}
 #pragma endregion
+
 #pragma region CIRCLE MESH
 		{
 			std::vector<Vertex2D> VecVtx2D;
@@ -625,8 +640,9 @@ namespace ehw
 		{
 			Vertex3D vtx3d;
 			std::vector<Vertex3D> VecVtx3D;
-			VecVtx3D.reserve(24);
 
+			//24개 만드는 이유: UV 좌표가 다 다름
+			VecVtx3D.reserve(24);
 			
 			// 윗면
 			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
@@ -838,8 +854,58 @@ namespace ehw
 			ResourceManager<Mesh>::Insert(strKey::defaultRes::mesh::CubeMesh, cubMesh);
 			cubMesh->Create<Vertex3D>(VecVtx3D, indices);
 		}
-
 #pragma endregion
+
+#pragma region Debug Cube Mesh
+		{
+			VertexBase vertexBase{};
+			std::vector<VertexBase> vertices;
+			vertices.reserve(8);
+
+			//정점정보 생성
+			vertices.push_back(VertexBase{ float4(-0.5f, 0.5f, -0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(0.5f, 0.5f, -0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(0.5f, -0.5f, -0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(-0.5f, -0.5f, -0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(-0.5f, 0.5f, 0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(0.5f, 0.5f, 0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(0.5f, -0.5f, 0.5f, 1.f) });
+			vertices.push_back(VertexBase{ float4(-0.5f, -0.5f, 0.5f, 1.f) });
+
+			//인덱스 정보 생성
+			std::vector<UINT> indices = {
+				0, 1, 2,
+				0, 2, 3,
+
+				1, 5, 6,
+				1, 6, 2,
+
+				3, 2, 6,
+				3, 6, 7,
+
+				4, 0, 3,
+				4, 3, 7,
+
+				4, 5, 1,
+				4, 1, 0,
+
+				5, 4, 7,
+				5, 7, 6
+			};
+
+			// Crate Mesh
+			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
+			if (false == debugCubeMesh->Create(vertices, indices))
+			{
+				ASSERT(false, "debugCubeMesh 생성 실패");
+			}
+			debugCubeMesh->SetEngineDefaultRes(true);
+			ResourceManager<Mesh>::Insert(strKey::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
+			//debugCubeMesh->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		}
+#pragma endregion //Debug Cube Mesh
+
+
 #pragma region Sphere Mesh
 		{
 			Vertex3D vtx3d;
@@ -1042,19 +1108,31 @@ namespace ehw
 #pragma endregion
 #pragma region DEBUG SHADER
 		{
+			std::vector<D3D11_INPUT_ELEMENT_DESC> debugLayoutDesc;
+			D3D11_INPUT_ELEMENT_DESC LayoutDesc{};
+
+			LayoutDesc.AlignedByteOffset = 0;
+			LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			LayoutDesc.InputSlot = 0;
+			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			LayoutDesc.SemanticName = "POSITION";
+			LayoutDesc.SemanticIndex = 0;
+			debugLayoutDesc.push_back(LayoutDesc);
+			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+
 			std::shared_ptr<GraphicsShader> debugShader = std::make_shared<GraphicsShader>();
 			debugShader->SetEngineDefaultRes(true);
 			debugShader->CreateByHeader(eGSStage::Vertex, VS_Debug, sizeof(VS_Debug));
 			debugShader->CreateByHeader(eGSStage::Pixel, PS_Debug, sizeof(PS_Debug));
-			debugShader->SetInputLayoutDesc(vecLayoutDesc2D);
+
+			debugShader->SetInputLayoutDesc(debugLayoutDesc);
 			debugShader->CreateInputLayout();
 
 			//debugShader->Create(eShaderStage::Vertex, "DebugVS.hlsl", "main");
 			//debugShader->Create(eShaderStage::Pixel, "DebugPS.hlsl", "main");
-			debugShader->SetRSState(eRSType::SolidNone);
+			debugShader->SetRSState(eRSType::WireframeNone);
 			debugShader->SetDSState(eDSType::NoWrite);
 			debugShader->SetBSState(eBSType::AlphaBlend);
-			debugShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 			ResourceManager<GraphicsShader>::Insert(strKey::defaultRes::shader::graphics::DebugShader, debugShader);
 		}
@@ -1077,7 +1155,9 @@ namespace ehw
 			particleShader->SetRSState(eRSType::SolidNone);
 			particleShader->SetDSState(eDSType::NoWrite);
 			particleShader->SetBSState(eBSType::AlphaBlend);
-			particleShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+			//TODO: 파티클을 위한 토폴로지 설정 해줘야함
+			//particleShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 			ResourceManager<GraphicsShader>::Insert(strKey::defaultRes::shader::graphics::ParticleShader, particleShader);
 
 			std::shared_ptr<ParticleShader> particleCS = std::make_shared<ParticleShader>();

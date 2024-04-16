@@ -33,7 +33,7 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		void BindData();
-		void UnBindData();
+		static void UnbindData();
 
 		void SetShader(const std::shared_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
 		const std::shared_ptr<GraphicsShader>& GetShader() const { return m_shader; }

@@ -30,14 +30,6 @@ namespace ehw
 
 		void FinalUpdate() final {}
 
-		void OnCollisionEnter(iCollider2D* const _collider);
-		void OnCollisionStay(iCollider2D* const _collider);
-		void OnCollisionExit(iCollider2D* const _collider);
-
-		void OnTriggerEnter(iCollider2D* const _collider);
-		void OnTriggerStay(iCollider2D* const _collider);
-		void OnTriggerExit(iCollider2D* const _collider);
-
 	protected:
 		inline Collision2D* GetCollision2DManager() { return m_col2dManager; };
 

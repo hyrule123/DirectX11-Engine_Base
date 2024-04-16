@@ -15,11 +15,10 @@
 
 
 #include "RenderManager.h"
-#include "ResourceManager.h"
+//#include "ResourceManager.h"
 
 namespace ehw
 {
-
 	UINT GPUManager::mResolutionX{};
 	UINT GPUManager::mResolutionY{};
 	UINT GPUManager::mRefreshRate{};
@@ -46,24 +45,20 @@ namespace ehw
 		/// 5. Swapchain을 이용하여 최종 디바이스(디스플레이)에 화면을 그려줘야한다.
 		if (false == CreateDevice(mDevice.GetAddressOf(), mContext.GetAddressOf()))
 		{
-			ERROR_MESSAGE("GPU 초기화 작업 실패");
+			ASSERT(false, "GPU 초기화 작업 실패");
 			return false;
 		}
 
 		mResolutionX = _Desc.ResolutionX;
 		mResolutionY = _Desc.ResolutionY;
 
-		RenderManager::Init();
-
 		if (false == SetResoulution(mResolutionX, mResolutionY))
 		{
-			ERROR_MESSAGE("GPU 초기화 작업 실패");
+			ASSERT(false, "GPU 초기화 작업 실패");
 			return false;
 		}
 
 		CreateMainViewPort();
-
-
 
 		return true;
 	}
@@ -87,7 +82,11 @@ namespace ehw
 	{
 		bool Result = false;
 		// Device, Device Context
-		uint DeviceFlag = D3D11_CREATE_DEVICE_DEBUG;
+		uint DeviceFlag{};
+#ifdef _DEBUG
+		DeviceFlag = D3D11_CREATE_DEVICE_DEBUG;
+#endif // _DEBUG
+
 		D3D_FEATURE_LEVEL FeatureLevel = (D3D_FEATURE_LEVEL)0;
 
 		if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr
@@ -131,9 +130,13 @@ namespace ehw
 		mDepthStencilBufferTexture = DSTex;
 
 		//4. RenderMgr에서 해상도에 영향을 받는 요소들 값 변경
-		if (false == RenderManager::SetResolution(_ResolutionX, _ResolutionY))
+		//RenderManager가 초기화 된 이후(나중에 해상도 변경 시)에만 여기서 실행
+		if (RenderManager::IsInitialized())
 		{
-			return false;
+			if (false == RenderManager::SetResolution(_ResolutionX, _ResolutionY))
+			{
+				return false;
+			}
 		}
 
 		gGlobal.uResolution = uint2(_ResolutionX, _ResolutionY);

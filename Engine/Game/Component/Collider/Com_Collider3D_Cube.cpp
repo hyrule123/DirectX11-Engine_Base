@@ -13,17 +13,18 @@ namespace ehw
 {
 	Com_Collider3D_Cube::Com_Collider3D_Cube()
 		: Com_Collider3D_Rigid(eCollider3D_Shape::Cube)
-		, m_pxBoxGeometry(50.f, 50.f, 50.f)
+		, m_pxBoxGeometry(1.f)
 		, m_offsetPosition(physx::PxIdentity)
+		, m_offsetScale(1.f)
 	{
 	}
 	Com_Collider3D_Cube::~Com_Collider3D_Cube()
 	{
 	}
 
-	void Com_Collider3D_Cube::Init()
+	void Com_Collider3D_Cube::Awake()
 	{
-		Com_Collider3D_Rigid::Init();
+		Com_Collider3D_Rigid::Awake();
 
 		Com_Transform* tr = GetTransform();
 
@@ -38,13 +39,21 @@ namespace ehw
 
 		physx::PxMaterial* material = col3dmgr->GetDefaultPxMaterial();
 
-		PhysXSharedPtr<physx::PxShape> shape = PhysXInstance::GetInst().createShape(m_pxBoxGeometry, *material);
+		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_pxBoxGeometry, *material);
 
-		ASSERT_DEBUG(shape.Get(), "Shape 생성 실패.");
+		ASSERT_DEBUG(shape, "Shape 생성 실패.");
+
 		shape->setLocalPose(m_offsetPosition);
 
-		AttachShape(shape);
 
+		uint32 layer = GetOwner()->GetLayer();
+
+		physx::PxFilterData mask = col3dmgr->GetCollisionFilterData(layer);
+		shape->setSimulationFilterData(mask);
 		
+		mask = col3dmgr->GetRaycastFilterData(layer);
+		shape->setQueryFilterData(mask);
+
+		AttachShape(shape);
 	}
 }

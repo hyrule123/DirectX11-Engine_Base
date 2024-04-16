@@ -14,13 +14,21 @@ namespace ehw
 	{
 		friend class Collision2D;
 		friend class Collision3D;
-		friend class ContactPair2D;
+		friend class ContactPair;
 	public:
 		iCollider(eDimensionType _dimension);
 		iCollider(const iCollider& _collider) = default;
 		virtual ~iCollider();
 
+		virtual void Init() override;
 		virtual void Awake() override;
+
+		void OnCollisionEnter(iCollider* _collider, const float3& _contactPoint);
+		void OnCollisionStay(iCollider* _collider, const float3& _contactPoint);
+		void OnCollisionExit(iCollider* _collider);
+		void OnTriggerEnter(iCollider* _collider);
+		void OnTriggerStay(iCollider* _collider);
+		void OnTriggerExit(iCollider* _collider);
 
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
@@ -49,13 +57,11 @@ namespace ehw
 	inline void iCollider::SubCollisionCount()
 	{
 		--m_collisionCount;
-#ifdef _DEBUG
 		if (0 > m_collisionCount)
 		{
 			m_collisionCount = 0;
 			ASSERT_DEBUG(false, "Collision Count가 음수로 내려갔습니다.");
 		}
-#endif
 	}
 }
 

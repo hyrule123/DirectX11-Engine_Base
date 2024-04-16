@@ -36,7 +36,7 @@ namespace ehw
 	void iComponent::SetEnable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
-		if (IsDestroyed() || m_isEnabled == _bEnable)
+		if (m_isEnabled == _bEnable)
 		{
 			return;
 		}

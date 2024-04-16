@@ -137,23 +137,20 @@ namespace ehw::editor
 		};
 		constexpr const size_t DXGI_FORMAT_StringSize = sizeof(DXGI_FORMAT_String) / sizeof(const char*);
 
-		constexpr const char* D3D_PRIMITIVE_TOPOLOGY_String[] =
-		{
-			"D3D_PRIMITIVE_TOPOLOGY_UNDEFINED",
-			"D3D_PRIMITIVE_TOPOLOGY_POINTLIST",
-			"D3D_PRIMITIVE_TOPOLOGY_LINELIST",
-			"D3D_PRIMITIVE_TOPOLOGY_LINESTRIP",
-			"D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST",
-			"D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP",
-			"D3D_PRIMITIVE_TOPOLOGY_LINELIST_ADJ",
-			"D3D_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ",
-			"D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ",
-			"D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ",
-		};
-		constexpr const size_t D3D_PRIMITIVE_TOPOLOGY_StringSize = sizeof(D3D_PRIMITIVE_TOPOLOGY_String) / sizeof(const char*);
-
-
-
+		//constexpr const char* D3D_PRIMITIVE_TOPOLOGY_String[] =
+		//{
+		//	"D3D_PRIMITIVE_TOPOLOGY_UNDEFINED",
+		//	"D3D_PRIMITIVE_TOPOLOGY_POINTLIST",
+		//	"D3D_PRIMITIVE_TOPOLOGY_LINELIST",
+		//	"D3D_PRIMITIVE_TOPOLOGY_LINESTRIP",
+		//	"D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST",
+		//	"D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP",
+		//	"D3D_PRIMITIVE_TOPOLOGY_LINELIST_ADJ",
+		//	"D3D_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ",
+		//	"D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ",
+		//	"D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ",
+		//};
+		//constexpr const size_t D3D_PRIMITIVE_TOPOLOGY_StringSize = sizeof(D3D_PRIMITIVE_TOPOLOGY_String) / sizeof(const char*);
 	}
 
 
@@ -164,7 +161,7 @@ namespace ehw::editor
 		, mSemanticName{}
 		, mInputLayoutDescs{}
 		, mDXGIFormatCombo{}
-		, mTopologyCombo{}
+		//, mTopologyCombo{}
 		, mStageNames{}
 		, mRSTypeCombo{}
 		, mDSTypeCombo{}
@@ -193,16 +190,16 @@ namespace ehw::editor
 			mDXGIFormatCombo.SetStrKey("DXGI Format");
 		}
 
-		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
-			Items.reserve(strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize);
-			for (size_t i = 0; i < strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
-			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
-			}
-			mTopologyCombo.SetItems(Items);
-			mTopologyCombo.SetStrKey("Topology Type");
-		}
+		//{
+		//	std::vector<EditorWidget_ComboBox::tComboItem> Items;
+		//	Items.reserve(strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize);
+		//	for (size_t i = 0; i < strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
+		//	{
+		//		Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
+		//	}
+		//	mTopologyCombo.SetItems(Items);
+		//	mTopologyCombo.SetStrKey("Topology Type");
+		//}
 
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
@@ -330,7 +327,7 @@ namespace ehw::editor
 		ImGui::Separator();
 
 		//토폴로지 업데이트
-		mTopologyCombo.FinalUpdate();
+		//mTopologyCombo.FinalUpdate();
 
 		ImGui::Separator();
 
@@ -791,19 +788,19 @@ namespace ehw::editor
 		}
 		shader.SetInputLayoutDesc(mInputLayoutDescs);
 
-		{
-			int curSel = mTopologyCombo.GetCurrentIndex();
-			if (curSel >= 0)
-			{
-				D3D_PRIMITIVE_TOPOLOGY topology = (D3D_PRIMITIVE_TOPOLOGY)curSel;
-				shader.SetTopology(topology);
-			}
-			else
-			{
-				NOTIFICATION("Topology가 설정되지 않았습니다.");
-				return;
-			}
-		}
+		//{
+		//	int curSel = mTopologyCombo.GetCurrentIndex();
+		//	if (curSel >= 0)
+		//	{
+		//		D3D_PRIMITIVE_TOPOLOGY topology = (D3D_PRIMITIVE_TOPOLOGY)curSel;
+		//		shader.SetTopology(topology);
+		//	}
+		//	else
+		//	{
+		//		NOTIFICATION("Topology가 설정되지 않았습니다.");
+		//		return;
+		//	}
+		//}
 
 		{
 			for (size_t i = 0; i < mStageNames.size(); ++i)
@@ -891,7 +888,7 @@ namespace ehw::editor
 
 		mInputLayoutDescs = shader.GetInputLayoutDescs();
 		
-		mTopologyCombo.SetCurrentIndex((int)shader.GetTopology());
+		//mTopologyCombo.SetCurrentIndex((int)shader.GetTopology());
 
 		for (size_t i = 0; i < mStageNames.size(); ++i)
 		{	

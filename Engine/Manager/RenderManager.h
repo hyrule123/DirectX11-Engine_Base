@@ -27,6 +27,8 @@ namespace ehw
 		friend class GameEngine;
 		friend class GPUManager;
 	public:
+		static inline bool IsInitialized() { return m_isInitialized; }
+
 		static void Render();
 		static void FrameEnd();
 
@@ -34,9 +36,9 @@ namespace ehw
 		//static void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
 
 		static inline Com_Camera* GetMainCamera() { return GetCamera(m_mainCamIndex); }
-		static ComPtr<ID3D11RasterizerState>	GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type]; }
-		static ComPtr<ID3D11BlendState>		GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type]; }
-		static ComPtr<ID3D11DepthStencilState> GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type]; }
+		static ID3D11RasterizerState*	GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
+		static ID3D11BlendState*		GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
+		static ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
 		
 		static void SetMainCamera(Com_Camera* const _pCam);
 		static inline Com_Camera* GetCamera(size_t _Idx);
@@ -112,6 +114,8 @@ namespace ehw
 
 		static std::shared_ptr<Texture>				m_postProcessTexture;
 		static std::shared_ptr<Texture>				m_noiseTexture;
+
+		static bool m_isInitialized;
 	};
 
 

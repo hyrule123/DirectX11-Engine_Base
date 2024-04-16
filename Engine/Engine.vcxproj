@@ -228,7 +228,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Cube.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Rigid.h" />
-    <ClInclude Include="Game\Collision\ContactPair2D.h" />
+    <ClInclude Include="Game\Collision\ContactPair.h" />
     <ClInclude Include="Game\Collision\PhysX.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
     <ClInclude Include="Game\Collision\Collision2D.h" />
@@ -336,7 +336,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Capsule.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Cube.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Rigid.cpp" />
-    <ClCompile Include="Game\Collision\ContactPair2D.cpp" />
+    <ClCompile Include="Game\Collision\ContactPair.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
     <ClCompile Include="Game\Collision\Collision2D.cpp" />

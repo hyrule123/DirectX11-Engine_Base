@@ -45,9 +45,9 @@ namespace ehw
             = static_cast<float>((mCurFrequency.QuadPart - mPrevFrequency.QuadPart));
 
         mDeltaTime = differenceInFrequancy / static_cast<float>(mCpuFrequency.QuadPart);
-        if (g_deltatimeThreshold < mDeltaTime)
+        if (g_deltaTimeMaxCap < mDeltaTime)
         {
-            mDeltaTime = g_deltatimeThreshold;
+            mDeltaTime = g_deltaTimeMaxCap;
         }
 
         mPrevFrequency.QuadPart = mCurFrequency.QuadPart;

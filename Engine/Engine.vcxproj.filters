@@ -398,7 +398,7 @@
     <ClCompile Include="Game\Collision\Collision2D.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
-    <ClCompile Include="Game\Collision\ContactPair2D.cpp" />
+    <ClCompile Include="Game\Collision\ContactPair.cpp" />
     <ClCompile Include="Game\Collision\Collision3D.cpp" />
     <ClCompile Include="Game\Collision\temp.cpp" />
     <ClCompile Include="Game\Collision\PhysXConverter.cpp" />
@@ -672,7 +672,7 @@
     <ClInclude Include="Game\Collision\CollisionSystem.h" />
     <ClInclude Include="Game\Collision\Collision2D.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
-    <ClInclude Include="Game\Collision\ContactPair2D.h" />
+    <ClInclude Include="Game\Collision\ContactPair.h" />
     <ClInclude Include="Game\Collision\Collision3D.h" />
     <ClInclude Include="Game\Collision\temp.h" />
     <ClInclude Include="Game\Collision\PhysXConverter.h" />

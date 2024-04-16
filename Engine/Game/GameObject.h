@@ -134,6 +134,7 @@ namespace ehw
 		return static_cast<T*>(AddComponent(pCom));
 	}
 
+
 	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
 		std::unique_ptr<iComponent> pCom = ComponentManager::GetNewComponent(_strKey);

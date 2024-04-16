@@ -26,17 +26,14 @@ namespace ehw
 			Material* mtrl = GetCurrentMaterial(i);
 			if (mtrl)
 			{
-				//메쉬 바인딩
-				GetMesh()->BindBuffer(i);
+				//메쉬 바인딩 - Render 내부에서 진행하도록 변경
+				//GetMesh()->BindBuffer(i);
 
 				//재질 바인딩
-				GetCurrentMaterial(i)->BindData();
+				mtrl->BindData();
 
 				//메쉬 렌더링
 				GetMesh()->Render(i);
-
-				//데이터 연결 해제
-				GetCurrentMaterial(i)->UnBindData();
 			}
 		}
 	}

@@ -235,10 +235,10 @@ namespace ehw
 		cb->SetData(&data);
 		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		m_volumeMesh->BindBuffer();
+		//m_volumeMesh->BindBuffer();
 		m_lightMaterial->BindData();
 		m_volumeMesh->Render();
-		m_lightMaterial->UnBindData();
+		//m_lightMaterial->UnbindData();
 	}
 
 

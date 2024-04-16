@@ -34,10 +34,10 @@ namespace ehw::editor
 
 	void Inspector_Com_Renderer::Update()
 	{
-		if (false == GetTarget().expired())
+		if (GetTarget())
 		{
 			const auto& meshRenderer
-				= GetTarget().lock()->GetComponent<Com_Renderer_Mesh>();
+				= GetTarget()->GetComponent<Com_Renderer_Mesh>();
 
 			if (meshRenderer == nullptr)
 				return;
@@ -124,11 +124,11 @@ namespace ehw::editor
 
 		ASSERT_DEBUG(nullptr == inspector, "inspector가 nullptr 입니다.");
 
-		const auto& targetObj = inspector->GetTargetGameObject();
+		GameObject* targetObj = inspector->GetTargetGameObject();
 		
-		if (false == targetObj.expired())
+		if (targetObj)
 		{
-			targetObj.lock()->GetComponent<Com_Renderer_Mesh>()->SetMesh(mesh);
+			targetObj->GetComponent<Com_Renderer_Mesh>()->SetMesh(mesh);
 		}
 	}
 
@@ -140,11 +140,11 @@ namespace ehw::editor
 
 		ASSERT_DEBUG(nullptr == inspector, "inspector가 nullptr 입니다.");
 
-		const auto& targetObj = inspector->GetTargetGameObject();
+		GameObject* targetObj = inspector->GetTargetGameObject();
 
-		if (false == targetObj.expired())
+		if (targetObj)
 		{
-			targetObj.lock()->GetComponent<Com_Renderer_Mesh>()->SetMaterial(material, 0);
+			targetObj->GetComponent<Com_Renderer_Mesh>()->SetMaterial(material, 0);
 		}
 	}
 }

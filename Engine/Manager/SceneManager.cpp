@@ -7,8 +7,6 @@
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
-#include "Engine/Game/Collision/PhysXInstance.h"
-
 namespace ehw
 {
 	std::unique_ptr<iScene> SceneManager::m_activeScene = nullptr;
@@ -18,8 +16,10 @@ namespace ehw
 	void SceneManager::Init()
 	{
 		AtExit::AddFunc(Release);
+	}
 
-		PhysXInstance::Init();
+	void SceneManager::FixedUpdate()
+	{
 	}
 
 	void SceneManager::Update()

@@ -1,15 +1,18 @@
 #include "Editor/Inspector/InspectorBase.h"
 
-#include <Engine/Manager/RenderManager.h>
 #include "Editor/Resource/TextureEditor.h"
 
 #include "Editor/Inspector/Inspector_Com_Transform.h"
 #include "Editor/Inspector/Inspector_Com_Renderer.h"
 
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Game/GameObject.h>
+
 namespace ehw::editor
 {
 	InspectorBase::InspectorBase()
 		: EditorWindow(strKey::Inspector)
+		, mTargetGameObject()
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리
@@ -61,17 +64,20 @@ namespace ehw::editor
 
 	void InspectorBase::Update()
 	{
+		if (mTargetGameObject && mTargetGameObject->IsDestroyed())
+		{
+			mTargetGameObject = nullptr;
+		}
 
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
 			if (mGuiComponents[i])
 			{
-				if (false == mTargetGameObject.expired())
+				if (mTargetGameObject)
 				{
 					mGuiComponents[i]->SetTarget(mTargetGameObject);
 					mGuiComponents[i]->Update();
 				}
-					
 			}
 		}
 
@@ -97,7 +103,7 @@ namespace ehw::editor
 		{
 			IndicatorButton(::ehw::strKey::eComponentCategory_String[(UINT)i]);
 
-			if (false == mTargetGameObject.expired() && mGuiComponents[i])
+			if (mTargetGameObject && mGuiComponents[i])
 			{
 				mGuiComponents[i]->FinalUpdate();
 			}

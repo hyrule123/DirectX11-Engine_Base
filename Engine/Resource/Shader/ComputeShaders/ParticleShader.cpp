@@ -33,7 +33,7 @@ namespace ehw
 
 	void ParticleShader::UnBindData()
 	{
-		mBuffer->UnBindData();
-		mSharedBuffer->UnBindData();
+		mBuffer->UnbindData();
+		mSharedBuffer->UnbindData();
 	}
 }

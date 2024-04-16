@@ -46,6 +46,17 @@ namespace ehw
 		Exit
 	};
 
+	enum class eColliderShape
+	{
+		AABB,
+		OBB,
+		Circle,
+		Cube,
+		Sphere,
+		Capsule,
+		END
+	};
+
 	enum class eCollider2D_Shape
 	{
 		AABB,

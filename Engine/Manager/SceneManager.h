@@ -7,6 +7,7 @@ namespace ehw
 	{
 	public:
 		static void Init();
+		static void FixedUpdate();
 		static void Update();
 		static void FinalUpdate();
 		static void Render();

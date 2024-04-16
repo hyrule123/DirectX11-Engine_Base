@@ -10,8 +10,8 @@ namespace ehw
 		friend class GameEngine;
 
 	public:
-		__forceinline static ComPtr<ID3D11Device>			Device() { return mDevice; }
-		__forceinline static ComPtr<ID3D11DeviceContext>	Context() { return mContext; }
+		__forceinline static ID3D11Device*			Device() { return mDevice.Get(); }
+		__forceinline static ID3D11DeviceContext*	Context() { return mContext.Get(); }
 
 	public:
 		static void ClearRenderTarget();// 화면 지워주기
@@ -60,7 +60,6 @@ namespace ehw
 		
 		static std::shared_ptr<ehw::Texture> mRenderTargetTexture;
 		static std::shared_ptr<ehw::Texture> mDepthStencilBufferTexture;
-
 		
 		static D3D11_VIEWPORT mViewPort;
 	};

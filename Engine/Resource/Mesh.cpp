@@ -23,6 +23,7 @@ namespace ehw
 {
 	Mesh::Mesh()
 		: iResource(typeid(Mesh))
+		, m_topology(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, m_vertexInfo{}
 		, m_indexInfos{}
 		, m_skeleton{}
@@ -65,6 +66,9 @@ namespace ehw
 
 		BinarySerializer& ser = *_ser;
 
+		//토폴로지
+		ser << m_topology;
+
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
 		ser << m_vertexInfo.ByteStride;
 		ser << m_vertexInfo.Count;
@@ -93,6 +97,9 @@ namespace ehw
 		}
 
 		const BinarySerializer& ser = *_ser;
+
+		//토폴로지
+		ser >> m_topology;
 
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
 		ser >> m_vertexInfo.ByteStride;
@@ -200,8 +207,9 @@ namespace ehw
 		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
 		for (size_t i = 0; i < m_vertexInfo.SysMem.size(); i += m_vertexInfo.ByteStride)
 		{
-			//최대 size를 넘어가면 에러 발생시킴
-			ASSERT(m_vertexInfo.SysMem.size() > i + sizeof(VertexBase), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
+			//메모리의 끝 위치보다는 작아야 함
+			//ex)stride가 16이고 데이터 갯수가 1개일 경우 n + 16 - 1: 15를 넘어가면 안됨 
+			ASSERT(m_vertexInfo.SysMem.size() > (i + sizeof(VertexBase) - 1u), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
 
 			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(m_vertexInfo.SysMem[i]));
 
@@ -253,40 +261,82 @@ namespace ehw
 	bool Mesh::CreateIndexBuffer(const UINT* _data, size_t _dataCount)
 	{
 		if (nullptr == _data)
+		{
 			return false;
+		}
 
 		SetIndexBufferData(_data, _dataCount);
 
 		return CreateIndexBufferInternal();
 	}
 
-	void Mesh::BindBuffer(UINT _subSet) const
-	{
-		if ((UINT)m_indexInfos.size() <= _subSet)
-			return;
+	//void Mesh::BindBuffers(UINT _subSet) const
+	//{
+	//	auto context = GPUManager::Context();
 
-		// Input Assembeler 단계에 버텍스버퍼 정보 지정
-		uint offset = 0;
-		GPUManager::Context()->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
-		GPUManager::Context()->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	}
+	//	// Input Assembeler 단계에 버텍스버퍼 정보 지정
+	//	uint offset = 0;
+
+	//	context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+	//	context->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	//}
 
 	void Mesh::Render(UINT _subSet) const
 	{
-		GPUManager::Context()->DrawIndexed(m_indexInfos[_subSet].Count, 0, 0);
+		if ((UINT)m_indexInfos.size() <= _subSet)
+		{
+			return;
+		}
+
+		auto context = GPUManager::Context();
+
+		context->IASetPrimitiveTopology(m_topology);
+
+		// Input Assembeler 단계에 버텍스버퍼 정보 지정
+		uint offset = 0;
+
+		context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+		context->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		context->DrawIndexed(m_indexInfos[_subSet].Count, 0, 0);
 	}
 
 	void Mesh::RenderAllMeshes() const
 	{
-		for (size_t i = 0; i < m_indexInfos.size(); ++i)
+		auto context = GPUManager::Context();
+
+		context->IASetPrimitiveTopology(m_topology);
+		UINT size = (UINT)m_indexInfos.size();
+		for (UINT i = 0; i < size; ++i)
 		{
-			GPUManager::Context()->DrawIndexed(m_indexInfos[i].Count, 0, 0);
+			// Input Assembeler 단계에 버텍스버퍼 정보 지정
+			uint offset = 0;
+
+			context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+			context->IASetIndexBuffer(m_indexInfos[i].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+			context->DrawIndexed(m_indexInfos[i].Count, 0, 0);
 		}
 	}
 	
 	void Mesh::RenderInstanced(UINT _subSet, UINT _instanceCount) const
 	{
-		GPUManager::Context()->DrawIndexedInstanced(m_indexInfos[_subSet].Count, _instanceCount, 0, 0, 0);
+		if ((UINT)m_indexInfos.size() <= _subSet)
+		{
+			return;
+		}
+
+		auto context = GPUManager::Context();
+
+		context->IASetPrimitiveTopology(m_topology);
+
+		// Input Assembeler 단계에 버텍스버퍼 정보 지정
+		uint offset = 0;
+
+		context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+		context->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		context->DrawIndexedInstanced(m_indexInfos[_subSet].Count, _instanceCount, 0, 0, 0);
 	}
 
 

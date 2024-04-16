@@ -19,6 +19,9 @@ namespace ehw
 
 	iScene::~iScene()
 	{
+		m_gameObjects.clear();
+		m_delayedAddQueue.clear();
+		m_collisionSystem.reset();
 	}
 
 
@@ -56,13 +59,27 @@ namespace ehw
 			m_gameObjects[i]->Awake();
 		}
 	}
+
+	void iScene::SceneFixedUpdate()
+	{
+		FixedUpdate();
+
+		//for (size_t i = 0; i < m_gameObjects.size(); ++i)
+		//{
+		//	m_gameObjects[i]->FixedUpdate();
+		//}
+	}
+
 	void iScene::SceneUpdate()
 	{
 		Update();
 
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->Update();
+			if (m_gameObjects[i]->IsActive())
+			{
+				m_gameObjects[i]->Update();
+			}
 		}
 
 		if (m_collisionSystem)
@@ -77,7 +94,10 @@ namespace ehw
 		FinalUpdate();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->FinalUpdate();
+			if (m_gameObjects[i]->IsActive())
+			{
+				m_gameObjects[i]->FinalUpdate();
+			}
 		}
 	}
 	void iScene::SceneRender()
@@ -85,7 +105,10 @@ namespace ehw
 		Render();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->Render();
+			if (m_gameObjects[i]->IsActive())
+			{
+				m_gameObjects[i]->Render();
+			}
 		}
 	}
 
@@ -110,6 +133,8 @@ namespace ehw
 			m_FrameEndJobs[i]();
 		}
 		m_FrameEndJobs.clear();
+
+		RemoveDestroyed();
 
 		//마지막으로 Scene 작동 중 추가된 GameObject를 추가
 		AddGameObjectsInternal(m_delayedAddQueue);

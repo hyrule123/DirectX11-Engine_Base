@@ -10,12 +10,14 @@
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 
+#include <Engine/Game/Collision/CollisionSystem.h>
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/GPUManager.h>
 #include <Engine/Manager/InputManager.h>
 #include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/SceneManager.h>
 
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_impl_win32.h"
@@ -178,7 +180,16 @@ namespace ehw::editor
 
 	void EditorManager::Render()
 	{
-		ERROR_MESSAGE_W(L"충돌체 렌더링 코드 작성");
+		iScene* scene = SceneManager::GetActiveScene();
+		if (scene)
+		{
+			CollisionSystem* colsys = scene->GetCollisionSystem();
+			if (colsys)
+			{
+				colsys->Render();
+			}
+		}
+		
 		//CollisionSystem::Render();
 
 		for (const auto& obj : mEditorObjects)
@@ -322,8 +333,8 @@ namespace ehw::editor
 
 		// Setup Platform/Renderer backends
 		ImGui_ImplWin32_Init(GameEngine::GetHwnd());
-		ImGui_ImplDX11_Init(GPUManager::Device().Get()
-			, GPUManager::Context().Get());
+		ImGui_ImplDX11_Init(GPUManager::Device()
+			, GPUManager::Context());
 
 
 
@@ -419,16 +430,14 @@ namespace ehw::editor
 
 		mGuiWindows.insert(std::make_pair(_pBase->GetStrKey(), _pBase));
 
-		if (mbInitialized)
-		{
-			_pBase->InitRecursive();
+		_pBase->InitRecursive();
 
-			Json::Value* pJval = CheckJsonSaved(_pBase->GetName());
-			if (pJval)
-			{
-				_pBase->DeSerialize_Json(pJval);
-			}
+		Json::Value* pJval = CheckJsonSaved(_pBase->GetName());
+		if (pJval)
+		{
+			_pBase->DeSerialize_Json(pJval);
 		}
+
 
 		return true;
 	}

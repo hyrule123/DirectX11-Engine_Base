@@ -125,7 +125,9 @@ namespace ehw
 	inline void iComponent::Destroy()
 	{
 		if (IsDestroyed())
+		{
 			return;
+		}
 
 		m_state = eState::DestroyReserved;
 	}

@@ -79,13 +79,13 @@ namespace ehw
 	void Animation3D_ComputeShader::UnBindData()
 	{
 		// 전달한 구조화버퍼 전부 UnBind 하고 비워줌
-		m_desc.CurrentAnimKeyFrameBuffer->UnBindData();
+		m_desc.CurrentAnimKeyFrameBuffer->UnbindData();
 		if (m_desc.NextAnimKeyFrameBuffer)
 		{
-			m_desc.NextAnimKeyFrameBuffer->UnBindData();
+			m_desc.NextAnimKeyFrameBuffer->UnbindData();
 		}
-		m_desc.BoneOffsetMatrixBuffer->UnBindData();
-		m_desc.FinalBoneTranslationMatrixBuffer->UnBindData();
+		m_desc.BoneOffsetMatrixBuffer->UnbindData();
+		m_desc.FinalBoneTranslationMatrixBuffer->UnbindData();
 		
 		memset(&m_desc, 0, sizeof(Desc));
 	}

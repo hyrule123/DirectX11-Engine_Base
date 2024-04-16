@@ -21,12 +21,12 @@ namespace ehw::editor
 
 	void Inspector_Com_Transform::Update()
 	{
-		if (GetTarget().expired())
+		if (nullptr == GetTarget())
 		{
 			return;
 		}
 
-		const auto& tr = GetTarget().lock()->GetComponent<Com_Transform>();
+		const auto& tr = GetTarget()->GetComponent<Com_Transform>();
 
 		m_position = tr->GetLocalPosition();
 		m_rotation = tr->GetLocalRotation();
@@ -39,9 +39,9 @@ namespace ehw::editor
 		ImGui::DragFloat3("Rotation", (float*)&m_rotation);
 		ImGui::DragFloat3("Scale", (float*)&m_scale);
 
-		if (false == GetTarget().expired())
+		if (GetTarget())
 		{
-			const auto& tr = GetTarget().lock()->GetComponent<Com_Transform>();
+			const auto& tr = GetTarget()->GetComponent<Com_Transform>();
 
 			tr->SetLocalPosition(m_position);
 			tr->SetLocalRotation(m_rotation);

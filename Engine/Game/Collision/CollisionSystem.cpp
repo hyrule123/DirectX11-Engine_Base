@@ -6,6 +6,12 @@
 #include "Engine/Game/Collision/Collision2D.h"
 #include "Engine/Game/Collision/Collision3D.h"
 
+#include "Engine/Manager/ResourceManager.h"
+
+#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
+
+#include "Engine/GPU/StructBuffer.h"
 
 #include "Engine/Util/AtExit.h"
 
@@ -83,12 +89,52 @@ namespace ehw
 	void CollisionSystem::FrameEnd()
 	{
 		m_col2DManager->FrameEnd();
+		m_col3DManager->FrameEnd();
+	}
+
+	void CollisionSystem::PrepareDebugRender()
+	{
+		m_debugInfoSBuffer = std::make_unique<StructBuffer>();
+		StructBuffer::Desc desc{};
+		desc.eSBufferType = eStructBufferType::READ_ONLY;
+		desc.REGISLOT_t_SRV = Register_t_g_debugDrawData;
+		desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
+		m_debugInfoSBuffer->SetDesc(desc);
+		m_debugInfoSBuffer->Create<tDebugDrawData>(100, nullptr, 0);
+		ASSERT(m_debugInfoSBuffer.get(), "Debug용 Struct Buffer 생성 실패.");
+
+		m_debugMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::DebugMaterial);
+		ASSERT(m_debugMaterial.get(), "DebugMaterial 준비 실패");
 	}
 
 	void CollisionSystem::Render()
 	{
 		m_col2DManager->Render();
+		m_col3DManager->Render();
 	}
+
+	void CollisionSystem::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData)
+	{
+		if (nullptr == m_debugInfoSBuffer)
+		{
+			PrepareDebugRender();
+		}
+		else if (nullptr == _mesh || nullptr == m_debugMaterial || nullptr == m_debugInfoSBuffer)
+		{
+			return;
+		}
+		
+		
+		m_debugMaterial->BindData();
+
+		m_debugInfoSBuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
+		m_debugInfoSBuffer->BindDataSRV();
+
+		_mesh->RenderInstanced(0, (UINT)_debugData.size());
+
+		//m_debugMaterial->UnbindData();
+	}
+
 
 
 	//void CollisionSystem::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)

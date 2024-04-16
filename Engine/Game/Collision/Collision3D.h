@@ -2,6 +2,8 @@
 #include "Engine/CommonType.h"
 #include "Engine/define_Enum.h"
 
+#include "Engine/DefaultShader/Debug/Debug.hlsli"
+
 #include "Engine/Game/Collision/PhysX.h"
 
 //작동방식
@@ -14,6 +16,7 @@ namespace ehw
 	// 전방 선언
 	class iScene;
 	class GameObject;
+	class Com_Transform;
 	class iCollider3D;
 	class CollisionSystem;
 
@@ -55,6 +58,8 @@ namespace ehw
 		void FixedUpdate();
 		void GameSceneToPxScene();
 		void PxSceneToGameScene();
+		void Render();
+		void FrameEnd();
 
 		static constexpr float m_defaultDensity = 10.f;
 		static constexpr std::array<float, (int)UpdateInterval::END> m_physxUpdateIntervals
@@ -68,6 +73,9 @@ namespace ehw
 
 		inline physx::PxMaterial* GetDefaultPxMaterial() { return m_defaultPxMaterial; }
 
+		bool AddPxActor(physx::PxActor* _actor);
+		void RemovePxActor(physx::PxActor* _actor);
+
 		void EnableGravity(bool _enable, const float3& _gravity) const;
 
 		//void changeGeometry(iCollider3D* _collider, physx::PxShape* shape, eCollider3D_Shape type);
@@ -78,6 +86,8 @@ namespace ehw
 		physx::PxFilterData GetRaycastFilterData(uint32 _layer);
 
 	private:
+		void FetchTransformSyncDataFromPxActor();
+
 		static physx::PxFilterFlags FilterShader(
 			physx::PxFilterObjectAttributes _attributes0, physx::PxFilterData _filterData0,
 			physx::PxFilterObjectAttributes _attributes1, physx::PxFilterData _filterData1,
@@ -100,6 +110,13 @@ namespace ehw
 		static inline void PxRelease(T* _pxPtr) { if (_pxPtr) { _pxPtr->Release(); } }
 
 	private:
+		struct tTransformSyncData
+		{
+			Com_Transform* transform;
+			Quaternion LocalRotation;
+			float3 WorldPosition;
+		};
+
 		CollisionSystem* const m_collisionSystem;
 		physx::PxScene* m_pxScene;
 
@@ -109,6 +126,11 @@ namespace ehw
 		physx::PxMaterial* m_defaultPxMaterial;
 		UpdateInterval	m_curUpdateInterval;
 		float m_accumulatedDeltaTime;
+
+		bool m_isFixedUpdated;
+		std::vector<tTransformSyncData> m_transformSyncData;
+
+		std::array<std::vector<tDebugDrawData>, (int)eCollider3D_Shape::END> m_debugInstancingData;
 	};
 
 

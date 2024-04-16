@@ -62,29 +62,4 @@ namespace ehw
 		iCollider::FrameEnd();
 		m_isColliderUpdated = false;
 	}
-
-	void iCollider2D::OnCollisionEnter(iCollider2D* const _collider)
-	{
-		//DEBUG_BREAK;
-	}
-	void iCollider2D::OnCollisionStay(iCollider2D* const _collider)
-	{
-		//DEBUG_BREAK;
-	}
-	void iCollider2D::OnCollisionExit(iCollider2D* const _collider)
-	{
-		DEBUG_BREAK;
-	}
-	void iCollider2D::OnTriggerEnter(iCollider2D* const _collider)
-	{
-		//DEBUG_BREAK;
-	}
-	void iCollider2D::OnTriggerStay(iCollider2D* const _collider)
-	{
-		//DEBUG_BREAK;
-	}
-	void iCollider2D::OnTriggerExit(iCollider2D* const _collider)
-	{
-		DEBUG_BREAK;
-	}
 }

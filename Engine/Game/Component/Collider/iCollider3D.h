@@ -24,39 +24,25 @@ namespace ehw
 		
 		virtual ~iCollider3D();
 
-		void OnCollisionEnter(iCollider3D* const _collider, const float3& _contactPoint);
-		void OnCollisionStay(iCollider3D* const _collider, const float3& _contactPoint);
-		void OnCollisionExit(iCollider3D* const _collider);
-
-		void OnTriggerEnter(iCollider3D* const _collider);
-		void OnTriggerStay(iCollider3D* const _collider);
-		void OnTriggerExit(iCollider3D* const _collider);
-
 		eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); };
 		eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult(); };
 
 		void Init() override;
 		void Awake() override;
+		void OnEnable() override;
+		void OnDisable() override;
 		void OnDestroy() override;
-		
 
 		MATRIX GetColliderMatrix() override { return MATRIX{}; };
 
 		
-
-		//씬 변경시 dontdestroy에 의해 제거되지 않고 씬만 변경 되었을 경우
+		void			SetPxActor(physx::PxActor* const _actor);
 		void			SceneChanged();
 		void			EnableGravity(bool enable);
-		bool			isGravityEnabled() const { return m_isGravityEnable; }
-
-		
-		
-
-
+		bool			IsGravityEnabled() const;
 
 		//Start 호출 되기 전에만 동작함.
 		void SetSyncScaleToTransfom(bool enable) { m_isSyncScaleToTransform = enable; }
-		inline Com_Transform* GetTransform() { return m_myTransform; }
 
 	protected:
 		inline bool IsSyncScaleToTransform() const { return m_isSyncScaleToTransform; }
@@ -66,28 +52,27 @@ namespace ehw
 
 	private:
 		//각자 상속해서 자신에게 맞는 PxActor를 생성 후 반환한다.
-		//호출하는 함수: Init()
-		virtual physx::PxActor* CreateActor() = 0;
+		//호출하는 함수: Awake()
+		virtual physx::PxActor* CreatePxActor() = 0;
 
 	private:
 		eCollider3DType				m_colliderType;
-		Com_Transform*				m_myTransform;
 		Collision3D*				m_collision3D;
+		//생성시점: Init()
+		physx::PxActor* m_pxActor;
+
 		bool						m_isSyncScaleToTransform;
 		
-		//생성시점: Init()
-		physx::PxActor*		m_pxActor;
 
-		uint		 m_collisionCount;
 		
 
-		float		 m_mass;
-		float		 m_maxVelocity;
+		//float		 m_mass;
+		//float		 m_maxVelocity;
 
-		//renderer::WireFrameCB						_wireFrameData;
-		bool			m_isGravityEnable;
-		
-		bool			m_isKinematic;
+		////renderer::WireFrameCB						_wireFrameData;
+		//bool			m_isGravityEnable;
+		//
+		//bool			m_isKinematic;
 	};
 }
 

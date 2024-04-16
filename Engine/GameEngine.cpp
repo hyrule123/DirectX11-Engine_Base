@@ -2,6 +2,7 @@
 
 #include "Engine/Util/AtExit.h"
 
+#include "Engine/Game/Collision/PhysXInstance.h"
 #include "Engine/Game/Component/ComponentInitializer.h"
 
 #include "Engine/Manager/RenderManager.h"
@@ -14,6 +15,8 @@
 #include "Engine/Manager/PathManager.h"
 #include "Engine/Manager/ThreadPoolManager.h"
 #include "Engine/Manager/GPUManager.h"
+
+
 
 #include "Engine/MainWindow.h"
 
@@ -42,7 +45,6 @@ namespace ehw
 		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
 
 		PathManager::Init();
-		ResourceManagers::Init();
 
 		//RenderMgr은 GPUMgr에서
 		if (false == GPUManager::Init(_AppDesc.GPUDesc))
@@ -52,7 +54,9 @@ namespace ehw
 			return FALSE;
 		}
 
+		ResourceManagers::Init();
 
+		RenderManager::Init();
 		AudioManager::Init();
 		FontWrapper::Init();
 
@@ -61,6 +65,7 @@ namespace ehw
 		TimeManager::Init();
 		InputManager::Init();
 		
+		PhysXInstance::Init();
 		SceneManager::Init();
 
 		m_editorRunFunction = _AppDesc.EditorRunFunction;
@@ -104,8 +109,8 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{	
-		SceneManager::FrameEnd();
 		RenderManager::FrameEnd();
+		SceneManager::FrameEnd();
 	}
 
 	// Running main engine loop
@@ -168,9 +173,12 @@ namespace ehw
 	{
 		//Destroy() 호출 후
 		SceneManager::Destroy();
+		
+		Run();
+		FrameEnd();
 
 		//한 프레임 돌려주고(충돌체 해제 등의 작업 진행) 끝낸다
-		Run();
+		
 		mbInitialized = false;
 	}
 

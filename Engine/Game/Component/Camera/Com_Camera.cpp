@@ -73,12 +73,12 @@ namespace ehw
 
 	void Com_Camera::OnDisable()
 	{
-		DEBUG_BREAK;
+		int a = 3;
 	}
 
 	void Com_Camera::OnDestroy()
 	{
-		DEBUG_BREAK;
+		int a = 3;
 	}
 
 	void Com_Camera::RenderCamera()
@@ -114,10 +114,10 @@ namespace ehw
 		//// defferd + swapchain merge
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::MergeMaterial);
 		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
-		rectMesh->BindBuffer();
+		//rectMesh->BindBuffer();
 		mergeMaterial->BindData();
 		rectMesh->Render();
-
+		//mergeMaterial->UnbindData();
 
 		RenderForwardOpaque();
 		RenderCutout();

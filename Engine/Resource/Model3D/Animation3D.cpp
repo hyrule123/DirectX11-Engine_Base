@@ -57,7 +57,7 @@ namespace ehw
     }
     void Animation3D::UnBindData()
     {
-        m_SBufferKeyFrame->UnBindData();
+        m_SBufferKeyFrame->UnbindData();
     }
 
     eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const

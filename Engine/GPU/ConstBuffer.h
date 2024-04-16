@@ -20,9 +20,11 @@ namespace ehw
 		void SetData(void* _data, uint _dataCount = 1u);
 		void BindData(eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
+		void UnbindData();
+
 		void SetPresetTargetStage(eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
 	private:
-		const eCBType m_ComCategory;
+		const eCBType m_constBufferType;
 
 		uint				mDataSize;
 		uint				mDataCount;

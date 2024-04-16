@@ -1,25 +1,25 @@
-#include "Engine/Game/Collision/ContactPair2D.h"
+#include "Engine/Game/Collision/ContactPair.h"
 
-#include "Engine/Game/Component/Collider/iCollider2D.h"
+#include "Engine/Game/Component/Collider/iCollider.h"
 namespace ehw
 {
-	ContactPair2D::ContactPair2D(iCollider2D* const _left, iCollider2D* const _right)
+	ContactPair::ContactPair(iCollider* const _left, iCollider* const _right)
 		: m_left(_left)
 		, m_right(_right)
 	{
 	}
 
-	ContactPair2D::~ContactPair2D()
+	ContactPair::~ContactPair()
 	{
 	}
 
-	void ContactPair2D::operator=(const ContactPair2D& _other)
+	void ContactPair::operator=(const ContactPair& _other)
 	{
 		m_left = _other.m_left;
 		m_right = _other.m_right;
 	}
 
-	void ContactPair2D::Enter()
+	void ContactPair::Enter(const float3& _contactPoint)
 	{
 		m_left->AddCollisionCount();
 		m_right->AddCollisionCount();
@@ -40,11 +40,11 @@ namespace ehw
 			return;
 		}
 
-		m_left->OnCollisionEnter(m_right);
-		m_right->OnCollisionEnter(m_left);
+		m_left->OnCollisionEnter(m_right, _contactPoint);
+		m_right->OnCollisionEnter(m_left, _contactPoint);
 	}
 
-	void ContactPair2D::Stay()
+	void ContactPair::Stay(const float3& _contactPoint)
 	{
 		bool isTrigger = false;
 		if (m_left->IsTriggerMode())
@@ -62,11 +62,11 @@ namespace ehw
 			return;
 		}
 
-		m_left->OnCollisionStay(m_right);
-		m_right->OnCollisionStay(m_left);
+		m_left->OnCollisionStay(m_right, _contactPoint);
+		m_right->OnCollisionStay(m_left, _contactPoint);
 	}
 
-	void ContactPair2D::Exit()
+	void ContactPair::Exit()
 	{
 		m_left->SubCollisionCount();
 		m_right->SubCollisionCount();

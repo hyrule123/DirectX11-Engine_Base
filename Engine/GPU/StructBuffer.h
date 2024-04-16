@@ -91,7 +91,7 @@ namespace ehw
         //Bind buffer with UAV Mode to Compute shader 
         void BindDataUAV(int _UAVSlot = -1);
 
-        void UnBindData();
+        void UnbindData();
 
     private:
         

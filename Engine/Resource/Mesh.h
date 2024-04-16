@@ -56,7 +56,7 @@ namespace ehw
 
 
 		template <typename Vertex>
-		inline bool Create(const std::vector<Vertex>& _vecVtx, const std::vector<uint>& _vecIdx);
+		inline bool Create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx);
 
 		template <typename Vertex>
 		inline bool CreateVertexBuffer(const std::vector<Vertex>& _vecVtx);
@@ -65,10 +65,12 @@ namespace ehw
 		bool CreateIndexBuffer(const UINT* _data, size_t _dataCount);
 		inline bool CreateIndexBuffer(const std::vector<UINT>& _indices);
 
-		void BindBuffer(UINT _subSet = 0u) const;
+		void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) { m_topology = _topology; }
+		D3D11_PRIMITIVE_TOPOLOGY GetTopology() { return m_topology; }
+
+
 		void Render(UINT _subSet = 0u) const;
 		void RenderAllMeshes() const;
-		
 		void RenderInstanced(UINT _subSet, UINT _instanceCount) const;
 
 		UINT GetSubsetCount() const { return (UINT)m_indexInfos.size(); }
@@ -77,6 +79,8 @@ namespace ehw
 		void SetSkeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
 		std::shared_ptr<Skeleton> GetSkeleton() const { return m_skeleton; }
 
+	private:
+		//void BindBuffers(UINT _subSet = 0u) const;
 
 	private:
 		struct tVertexInfo
@@ -102,6 +106,7 @@ namespace ehw
 		};
 
 
+
 		//cf)아래 함수 나눠놓은 이유: 파일로부터 Load 할 때에는 아래 2개 함수만 호출함.
 		//버퍼를 만들지 않고 데이터만 집어넣음
 		void SetVertexBufferData(const void* _data, size_t _dataStride, size_t _dataCount);
@@ -114,6 +119,8 @@ namespace ehw
 		//Vector의 맨 뒤 데이터를 가지고 생성 시도. 실패시 m_IndexInfos의 맨 뒤 데이터를 빼버림.
 		bool CreateIndexBufferInternal();
 	private:
+		D3D11_PRIMITIVE_TOPOLOGY m_topology;
+
 		tVertexInfo m_vertexInfo;
 		std::vector<tIndexInfo>		m_indexInfos;
 
@@ -133,18 +140,11 @@ namespace ehw
 
 
 	template<typename Vertex>
-	inline bool Mesh::Create(const std::vector<Vertex>& _vecVtx, const std::vector<uint>& _vecIdx)
+	inline bool Mesh::Create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx)
 	{
-		bool bSuccess = false;
-		if (CreateVertexBuffer<Vertex>(_vecVtx))
-		{
-			bSuccess = true;
-		}
+		bool bSuccess = CreateVertexBuffer<Vertex>(_vecVtx);
 
-		if (CreateIndexBuffer((UINT*)_vecIdx.data(), _vecIdx.size()))
-		{
-			bSuccess = true;
-		}
+		bSuccess &= CreateIndexBuffer(_vecIdx.data(), _vecIdx.size());
 		
 		return bSuccess;
 	}

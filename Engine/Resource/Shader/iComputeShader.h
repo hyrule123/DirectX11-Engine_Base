@@ -26,7 +26,7 @@ namespace ehw
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
 		//다른 리소스와는 로드 방식이 다름.
 		//이 클래스를 상속한 뒤,
-		//Load 함수와 BindData, UnBindData 함수를 재정의 해준뒤
+		//Load 함수와 BindData, UnbindData 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;

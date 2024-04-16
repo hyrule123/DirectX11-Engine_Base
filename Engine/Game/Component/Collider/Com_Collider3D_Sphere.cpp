@@ -33,13 +33,13 @@ namespace ehw
 		const MATRIX& worldMat = tr->GetWorldMatrix();
 		m_sphereGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;
 
-		PhysXSharedPtr<physx::PxShape> shape = PhysXInstance::GetInst().createShape(m_sphereGeometry, *mtrl);
+		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_sphereGeometry, *mtrl);
 
-		ASSERT_DEBUG(shape.Get(), "PxShape 인스턴스 생성 실패.");
+		ASSERT_DEBUG(shape, "PxShape 인스턴스 생성 실패.");
 
 		shape->setLocalPose(m_offsetPosition);
-
-		AttachShape(shape);
+		ASSERT(false, "미구현");
+		//AttachShape(shape);
 
 		
 	}

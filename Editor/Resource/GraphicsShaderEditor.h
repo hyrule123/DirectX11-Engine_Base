@@ -50,7 +50,7 @@ namespace ehw::editor
 
 		EditorWidget_ComboBox mDXGIFormatCombo;
 
-		EditorWidget_ComboBox mTopologyCombo;
+		//EditorWidget_ComboBox mTopologyCombo;
 
 		std::array<std::string, (int)eGSStage::END> mStageNames;
 

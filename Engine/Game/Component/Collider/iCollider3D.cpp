@@ -5,8 +5,7 @@
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
-#include "Engine/Game/Collision/PhysXConverter.h"
-
+#include "Engine/Game/Collision/Collision3D.h"
 
 
 #include <PhysX/PxPhysicsAPI.h>
@@ -16,13 +15,7 @@ namespace ehw
 	iCollider3D::iCollider3D(eCollider3DType _col3dType)
 		: iCollider{eDimensionType::_3D}
 		, m_colliderType{ _col3dType }
-		, m_myTransform{nullptr}
 		, m_isSyncScaleToTransform(true)
-		, m_collisionCount{ 0 }
-		, m_isGravityEnable(true)
-		, m_mass(0.6f)
-		, m_maxVelocity(40.f)
-		, m_isKinematic(false)
 	{
 	}
 
@@ -32,19 +25,39 @@ namespace ehw
 
 	void iCollider3D::Init()
 	{
-		//Transform은 Init에서도 가져올 수 있음
-		m_myTransform = GetOwner()->Transform();
+		iCollider::Init();
 
-		m_pxActor = CreateActor();
-		ASSERT(m_pxActor, "Actor 생성 실패");
-		m_pxActor->userData = this;
-
-		m_collision3D = GetOwner()->GetScene()->GetCollisionSystem()->GetCollision3D();
+		physx::PxActor* actor = CreatePxActor();
+		ASSERT(actor, "Actor 생성 실패");
+		SetPxActor(actor);
 	}
 
 	void iCollider3D::Awake()
 	{
-		EnableGravity(m_isGravityEnable);
+		iCollider::Awake();
+
+		m_collision3D = GetCollisionSystem()->GetCollision3D();
+	}
+
+	void iCollider3D::OnEnable()
+	{
+		iCollider::OnEnable();
+
+		Collision3D* col3d = GetCollision3D();
+		if (col3d)
+		{
+			bool result = col3d->AddPxActor(m_pxActor);
+			ASSERT_DEBUG(result, "PxActor 삽입 실패");
+		}
+	}
+
+	void iCollider3D::OnDisable()
+	{
+		Collision3D* col3d = GetCollision3D();
+		if (col3d)
+		{
+			col3d->RemovePxActor(m_pxActor);
+		}
 	}
 
 	void iCollider3D::OnDestroy()
@@ -52,68 +65,31 @@ namespace ehw
 		PX_RELEASE(m_pxActor);
 	}
 
-	void iCollider3D::OnCollisionEnter(iCollider3D* other, const float3& collisionPosition)
-	{
-		++m_collisionCount;
 
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
-		{
-			script->OnCollisionEnter(other, collisionPosition);
-		}
-	}
-
-	void iCollider3D::OnCollisionStay(iCollider3D* const other, const float3& collisionPosition)
+	void iCollider3D::SetPxActor(physx::PxActor* const _pxActor)
 	{
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
+		if (nullptr == _pxActor)
 		{
-			script->OnCollisionStay(other, collisionPosition);
-		}
-	}
-
-	void iCollider3D::OnCollisionExit(iCollider3D* const other)
-	{
-		--m_collisionCount;
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
-		{
-			script->OnCollisionExit(other);
-		}
-	}
-
-	void iCollider3D::OnTriggerEnter(iCollider3D* const other)
-	{
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
-		{
-			script->OnTriggerEnter(other);
+			ASSERT_DEBUG(false, "PxActor가 nullptr 입니다.");
+			return;
 		}
 
-		//_wireFrameData.isTrigger = true;
-	}
-
-	void iCollider3D::OnTriggerStay(iCollider3D* const other)
-	{
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
+		if (m_pxActor)
 		{
-			script->OnTriggerEnter(other);
+			//씬에 들어가있을 경우 씬으로부터 제거
+			physx::PxScene* scene = m_pxActor->getScene();
+			if (scene)
+			{
+				scene->removeActor(*_pxActor);
+			}
+			
+			m_pxActor->release();
+			m_pxActor = nullptr;
 		}
+
+		m_pxActor = _pxActor;
+		m_pxActor->userData = this;
 	}
-
-
-
-	void iCollider3D::OnTriggerExit(iCollider3D* const other)
-	{
-		const auto& scripts = GetOwner()->GetScripts();
-		for (auto& script : scripts)
-		{
-			script->OnTriggerExit(other);
-		}
-	}
-
-
 
 	void iCollider3D::SceneChanged()
 	{
@@ -129,12 +105,10 @@ namespace ehw
 
 	void iCollider3D::EnableGravity(bool enable)
 	{
-		m_isGravityEnable = enable;
-
 		if (m_pxActor)
 		{
 			auto flags = m_pxActor->getActorFlags();
-			if (m_isGravityEnable)
+			if (enable)
 			{
 				flags &= ~physx::PxActorFlag::eDISABLE_GRAVITY;
 			}
@@ -145,6 +119,21 @@ namespace ehw
 
 			m_pxActor->setActorFlags(flags);
 		}
+	}
+
+	bool iCollider3D::IsGravityEnabled() const
+	{
+		if (m_pxActor)
+		{
+			auto flags = m_pxActor->getActorFlags();
+
+			if (!(physx::PxActorFlag::eDISABLE_GRAVITY & flags))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	//bool iCollider3D::isOverlapping(iCollider3D* other, float3* outDistance)

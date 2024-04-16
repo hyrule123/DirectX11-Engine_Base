@@ -27,32 +27,34 @@ namespace ehw
 	{
 	}
 
-	void Com_Collider3D_Rigid::OnEnable()
-	{
-		physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
-		ASSERT_DEBUG(rigidActor, "PxRigActor 인스턴스가 없음.");
+	//void Com_Collider3D_Rigid::OnEnable()
+	//{
+	//	iCollider3D::OnEnable();
+
+	//	physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
+	//	ASSERT_DEBUG(rigidActor, "PxRigActor 인스턴스가 없음.");
 
 
 
-		for (size_t i = 0; i < m_pxShapes.size(); ++i)
-		{
-			rigidActor->attachShape(*(m_pxShapes[i]));
-		}
+	//	for (size_t i = 0; i < m_pxShapes.size(); ++i)
+	//	{
+	//		rigidActor->attachShape(*(m_pxShapes[i]));
+	//	}
+	//}
 
-		iCollider3D::OnEnable();
-	}
+	//void Com_Collider3D_Rigid::OnDisable()
+	//{
+	//	iCollider3D::OnDisable();
 
-	void Com_Collider3D_Rigid::OnDisable()
-	{
-		physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
-		if (rigidActor)
-		{
-			for (size_t i = 0; i < m_pxShapes.size(); ++i)
-			{
-				rigidActor->detachShape(*(m_pxShapes[i]));
-			}
-		}
-	}
+	//	physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
+	//	if (rigidActor)
+	//	{
+	//		for (size_t i = 0; i < m_pxShapes.size(); ++i)
+	//		{
+	//			rigidActor->detachShape(*(m_pxShapes[i]));
+	//		}
+	//	}
+	//}
 
 	void Com_Collider3D_Rigid::Update()
 	{
@@ -74,8 +76,13 @@ namespace ehw
 
 	void Com_Collider3D_Rigid::OnDestroy()
 	{
-		m_pxShapes.clear();
 		iCollider3D::OnDestroy();
+
+		for (size_t i = 0; i < m_pxShapes.size(); ++i)
+		{
+			m_pxShapes[i]->release();
+		}
+		m_pxShapes.clear();
 	}
 
 
@@ -130,43 +137,49 @@ namespace ehw
 	//	}
 	//}
 
-	void Com_Collider3D_Rigid::AttachShape(const PhysXSharedPtr<physx::PxShape>& _pxShape)
+	void Com_Collider3D_Rigid::SetDynamic(bool _isDynamic)
 	{
-		if (nullptr == _pxShape.Get())
+		if (_isDynamic == m_isDynamic)
 		{
 			return;
 		}
-		else if (nullptr == GetCollision3D())
+
+		m_isDynamic = _isDynamic;
+		physx::PxRigidActor* actor = static_cast<physx::PxRigidActor*>(CreatePxActor());
+
+		for (size_t i = 0; i < m_pxShapes.size(); ++i)
+		{
+			actor->attachShape(*m_pxShapes[i]);
+		}
+		
+		SetPxActor(actor);
+	}
+
+	void Com_Collider3D_Rigid::AttachShape(physx::PxShape* const _pxShape)
+	{
+		if (nullptr == _pxShape)
 		{
 			return;
-		}
+		}	
 
 		m_pxShapes.push_back(_pxShape);
 
-		if (GetPxActor()->is<physx::PxRigidActor>())
+		physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
+		if (rigidActor)
 		{
-			physx::PxRigidActor* rigidActor = reinterpret_cast<physx::PxRigidActor*>(GetPxActor());
-
-			//이미 Scene에 들어가서 작동 중이라면 바로 넣어준다.
-			if (rigidActor->getScene())
-			{
-				if (false == rigidActor->attachShape(*(m_pxShapes.back())))
-				{
-					ASSERT_DEBUG(false, "attach 실패");
-				}
-			}
-				
+			bool result = rigidActor->attachShape(*(m_pxShapes.back()));
+			ASSERT_DEBUG(result, "attach 실패");
 		}
 	}
-	void Com_Collider3D_Rigid::DetachShape(physx::PxShape* _pxShape)
+	void Com_Collider3D_Rigid::DetachShape(physx::PxShape* const _pxShape)
 	{
 		for (auto iter = m_pxShapes.begin(); iter != m_pxShapes.end(); ++iter)
 		{
-			if (_pxShape == (*iter).Get())
+			if (_pxShape == (*iter))
 			{
-				if (GetPxActor()->is<physx::PxRigidActor>())
+				physx::PxRigidActor* rigidActor = GetPxActor()->is<physx::PxRigidActor>();
+				if (rigidActor)
 				{
-					physx::PxRigidActor* rigidActor = reinterpret_cast<physx::PxRigidActor*>(GetPxActor());
 					rigidActor->detachShape(*_pxShape);
 				}
 
@@ -175,7 +188,7 @@ namespace ehw
 			}
 		}
 	}
-	physx::PxActor* Com_Collider3D_Rigid::CreateActor()
+	physx::PxActor* Com_Collider3D_Rigid::CreatePxActor()
 	{
 		physx::PxActor* ret{};
 
@@ -193,6 +206,8 @@ namespace ehw
 		{
 			ret = PhysXInstance::GetInst().createRigidStatic(pxTr);
 		}
+
+		ASSERT_DEBUG(ret, "Actor가 생성되지 않았습니다.");
 
 		return ret;
 	}
@@ -247,6 +262,7 @@ namespace ehw
 	{
 		if (false == m_isDynamic)
 		{
+			DEBUG_LOG_W(L"Dynamic Actor가 아닌 충돌체에 ClearForce를 호출했습니다.");
 			return;
 		}
 
@@ -262,14 +278,18 @@ namespace ehw
 
 	void Com_Collider3D_Rigid::SetTrigger(bool _isTrigger)
 	{
-		m_isTrigger = _isTrigger;
+		if (m_isTrigger == _isTrigger)
+		{
+			return;
+		}
 
+		m_isTrigger = _isTrigger;
 
 		for (size_t i = 0; i < m_pxShapes.size(); ++i)
 		{
 			physx::PxShapeFlags flags = m_pxShapes[i]->getFlags();
 
-			if (_isTrigger)
+			if (m_isTrigger)
 			{
 				flags &= ~physx::PxShapeFlag::eSIMULATION_SHAPE;
 				flags |= physx::PxShapeFlag::eTRIGGER_SHAPE;
@@ -282,7 +302,6 @@ namespace ehw
 
 			m_pxShapes[i]->setFlags(flags);
 		}
-
 	}
 
 
@@ -337,7 +356,6 @@ namespace ehw
 		{
 			return ret;
 		}
-
 		const physx::PxRigidDynamic* dynamicRigid = GetPxActor()->is<physx::PxRigidDynamic>();
 		ASSERT_DEBUG(dynamicRigid, "PxRigidDynamic 인스턴스가 없음.");
 		if (dynamicRigid)

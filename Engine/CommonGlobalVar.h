@@ -13,6 +13,6 @@ namespace ehw
 	//c_str 저장용 컨테이너
 	extern std::unordered_set<std::string> g_stringArchive;
 
-	constexpr float g_deltatimeThreshold = 1.f;
+	constexpr float g_deltaTimeMaxCap = 1.f / 30.f;
 }
 

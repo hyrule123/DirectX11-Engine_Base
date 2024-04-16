@@ -9,11 +9,17 @@
 #include "Engine/Game/Component/Collider/Com_Collider3D_Rigid.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
+
 #include "Engine/Manager/TimeManager.h"
+#include "Engine/Manager/RenderManager.h"
+
+#include "Engine/Manager/ResourceManager.h"
+#include "Engine/Resource/Mesh.h"
 
 #include "Engine/Game/Collision/PhysXInstance.h"
 #include "Engine/Game/Collision/PhysXConverter.h"
 
+#include <chrono>
 
 namespace ehw
 {
@@ -25,6 +31,7 @@ namespace ehw
 		, m_defaultPxMaterial{}
 		, m_curUpdateInterval{ UpdateInterval::Frame_60 }
 		, m_accumulatedDeltaTime(0.f)
+		, m_transformSyncData()
 	{
 	}
 
@@ -57,7 +64,7 @@ namespace ehw
 	{
 		CreatePxScene();
 
-		physx::PxMaterial* m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
+		m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
 		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
 	}
 
@@ -75,39 +82,47 @@ namespace ehw
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
 		m_pxScene->setName(gameScene->GetStrKey().c_str());
+
+		m_pxScene->userData = this;
 	}
 
 	void Collision3D::FixedUpdate()
 	{
-		m_accumulatedDeltaTime += TimeManager::DeltaTime();
+		GameSceneToPxScene();
 
+		m_accumulatedDeltaTime += TimeManager::DeltaTime();
+		
 		int simulateCount = (int)(m_accumulatedDeltaTime / m_physxUpdateIntervals[(int)m_curUpdateInterval]);
+		simulateCount = 2;
 
 		//for문을 돌면서 여러번 충돌검사를 진행하면 절망의 늪 현상이 일어날 수 있다
 		//https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/BestPractices.html
-		if (0 < simulateCount)
+		for (int i = 0; i < simulateCount; ++i)
 		{
-			float simulateTime = (float)simulateCount * m_physxUpdateIntervals[(int)m_curUpdateInterval];
-			m_pxScene->simulate(simulateTime);
+			const auto start = std::chrono::steady_clock::now();
+			m_pxScene->simulate(m_physxUpdateIntervals[(int)m_curUpdateInterval]);
 
-			m_accumulatedDeltaTime -= simulateTime;
-			if (0.f > m_accumulatedDeltaTime)
+			m_isFixedUpdated = true;
+			if (m_pxScene->fetchResults(true))
 			{
-				m_accumulatedDeltaTime = 0.f;
+				//위치 갱신
+				PxSceneToGameScene();
+			}
+
+			const auto end = std::chrono::steady_clock::now();
+
+			//만약 1회 업데이트에 걸리는 시간이 fixed interval보다 클 경우 1회만 하고 중지한다.
+			const float simulateDeltatime = std::chrono::duration<float>(end - start).count();
+			if (simulateDeltatime > m_physxUpdateIntervals[(int)m_curUpdateInterval])
+			{
+				//break;
 			}
 		}
 
-		PxSceneToGameScene();
-		
-		ASSERT(false, "여기서 충돌결과 전달하는게아니라 충돌결과를 CollisionSystem에 받아놓은뒤 별도처리를 해야됨");
-		//충돌 결과 전달
-		if (m_pxScene->checkResults(true))
+		m_accumulatedDeltaTime -= m_physxUpdateIntervals[(int)m_curUpdateInterval] * simulateCount;
+		if (0.f > m_accumulatedDeltaTime)
 		{
-			//위치 갱신
-			
-
-			//충돌 콜백함수 호출
-			m_pxScene->fetchResults(false);
+			m_accumulatedDeltaTime = 0.f;
 		}
 	}
 
@@ -152,7 +167,38 @@ namespace ehw
 
 	void Collision3D::PxSceneToGameScene()
 	{
-		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		if (m_isFixedUpdated)
+		{
+			FetchTransformSyncDataFromPxActor();
+		}
+
+		for (size_t i = 0; i < m_transformSyncData.size(); ++i)
+		{
+			m_transformSyncData[i].transform->SetLocalRotation(m_transformSyncData[i].LocalRotation);
+			m_transformSyncData[i].transform->SetWorldPosition(m_transformSyncData[i].WorldPosition);
+		}
+	}
+
+	void Collision3D::Render()
+	{
+		//메인 카메라
+		Com_Camera* mainCam = RenderManager::GetMainCamera();
+		if (nullptr == mainCam)
+		{
+			return;
+		}
+		const MATRIX matView = mainCam->GetGpuViewMatrix();
+		const MATRIX matProj = mainCam->GetGpuProjectionMatrix();
+		const MATRIX matVP = matView * matProj;
+
+		//인스턴싱
+		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
+		{
+			m_debugInstancingData[i].clear();
+		}
+
+
+		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)
 		{
 			return;
@@ -160,28 +206,94 @@ namespace ehw
 
 		std::vector<PxRigidActor*> actors(actorCount);
 
-		//PxScene->Scene의 경우 Dynamic만
-		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
+			reinterpret_cast<PxActor**>(actors.data()), actorCount);
 
 		for (size_t i = 0; i < actors.size(); ++i)
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			const Com_Collider3D_Rigid* collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
-			if (collider == nullptr || collider->IsDestroyed())
-			{
-				continue;
-			}
-			// 충돌체에 대해서 일어난 변화이므로, 이를 Transform에도 반영해야 한다.
-			else if (collider->IsTrigger())
+			Com_Collider3D_Rigid* const collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
+			if (collider == nullptr || false == collider->IsEnabled())
 			{
 				continue;
 			}
 
-			Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
-			tr->SetWorldPosition(worldTransform.p);
-			tr->SetLocalRotation(worldTransform.q);
+			physx::PxRigidActor* rigidActor = static_cast<PxRigidActor*>(actors[i]);
+
+			const physx::PxTransform actorWorldTransform = rigidActor->getGlobalPose();
+			const MATRIX actorWorldMatrix = physx::PxMat44(actorWorldTransform);
+
+			physx::PxU32 numShapes = rigidActor->getNbShapes();
+			std::vector<physx::PxShape*> shapes(numShapes);
+
+			rigidActor->getShapes(shapes.data(), numShapes);
+			
+			for (size_t i = 0; i < numShapes; ++i)
+			{
+				const physx::PxGeometry& geometry = shapes[i]->getGeometry();
+				physx::PxGeometryType::Enum type = geometry.getType();
+
+				switch (type)
+				{
+				case PxGeometryType::Enum::eSPHERE:
+					break;
+				case PxGeometryType::Enum::ePLANE:
+					break;
+				case PxGeometryType::Enum::eCAPSULE:
+					break;
+				case PxGeometryType::Enum::eBOX:
+				{
+					m_debugInstancingData[(int)eCollider3D_Shape::Cube].push_back(tDebugDrawData{});
+					tDebugDrawData& data = m_debugInstancingData[(int)eCollider3D_Shape::Cube].back();
+
+					physx::PxGeometryHolder cubeHolder(geometry);
+					float3 scale = cubeHolder.box().halfExtents;
+					scale *= 2.f;
+
+					data.WVP = MATRIX::CreateScale(scale);
+					data.WVP *= physx::PxMat44(shapes[i]->getLocalPose());
+					data.WVP *= actorWorldMatrix;
+					data.WVP *= matVP;
+
+					data.isColliding = collider->IsColliding() ? TRUE : FALSE;
+					break;
+				}
+					
+				case PxGeometryType::Enum::eCONVEXMESH:
+					break;
+				case PxGeometryType::Enum::ePARTICLESYSTEM:
+					break;
+				case PxGeometryType::Enum::eTETRAHEDRONMESH:
+					break;
+				case PxGeometryType::Enum::eTRIANGLEMESH:
+					break;
+				case PxGeometryType::Enum::eHEIGHTFIELD:
+					break;
+				case PxGeometryType::Enum::eHAIRSYSTEM:
+					break;
+				case PxGeometryType::Enum::eCUSTOM:
+					break;
+				case PxGeometryType::Enum::eGEOMETRY_COUNT:	//!< internal use only:
+					break;
+				case PxGeometryType::Enum::eINVALID:		//!< internal use only:
+					break;
+				default:
+					break;	
+				}
+
+			}
 		}
+
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::DebugCubeMesh);
+
+		m_collisionSystem->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider3D_Shape::Cube]);
+	}
+
+	void Collision3D::FrameEnd()
+	{
+		m_isFixedUpdated = false;
 	}
 
 
@@ -300,7 +412,6 @@ namespace ehw
 			{
 				continue;
 			}
-			
 
 			PxContactPairPoint collisionPoint{};
 			const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
@@ -322,6 +433,24 @@ namespace ehw
 				leftCollider->OnCollisionExit(rightCollider);
 				rightCollider->OnCollisionExit(leftCollider);
 			}
+		}
+	}
+
+	bool Collision3D::AddPxActor(physx::PxActor* _actor)
+	{
+		bool ret = false;
+		if (_actor)
+		{
+			ret = m_pxScene->addActor(*_actor);
+		}
+		return ret;
+	}
+
+	void Collision3D::RemovePxActor(physx::PxActor* _actor)
+	{
+		if (_actor)
+		{
+			m_pxScene->removeActor(*_actor);
 		}
 	}
 
@@ -422,6 +551,47 @@ namespace ehw
 	//}
 
 
+	void Collision3D::FetchTransformSyncDataFromPxActor()
+	{
+		m_transformSyncData.clear();
+
+		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		if (actorCount == 0)
+		{
+			return;
+		}
+
+		std::vector<PxRigidActor*> actors(actorCount);
+
+		//PxScene->Scene의 경우 Dynamic만
+		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+		for (size_t i = 0; i < actors.size(); ++i)
+		{
+			const PxTransform worldTransform = actors[i]->getGlobalPose();
+
+			const Com_Collider3D_Rigid* collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
+			if (collider == nullptr || collider->IsDestroyed())
+			{
+				continue;
+			}
+			// 충돌체에 대해서 일어난 변화이므로, 이를 Transform에도 반영해야 한다.
+			else if (collider->IsTrigger())
+			{
+				continue;
+			}
+
+			m_transformSyncData.push_back(tTransformSyncData{});
+			m_transformSyncData.back().transform = collider->GetOwner()->GetComponent<Com_Transform>();
+			m_transformSyncData.back().LocalRotation = worldTransform.q;
+			m_transformSyncData.back().WorldPosition = worldTransform.p;
+			//Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
+			//tr->SetWorldPosition(worldTransform.p);
+			//tr->SetLocalRotation(worldTransform.q);
+		}
+	}
+
+
 	PxFilterFlags Collision3D::FilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
 		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
 		physx::PxPairFlags& pairFlags,
@@ -438,7 +608,6 @@ namespace ehw
 			{
 				return PxFilterFlag::eKILL;
 			}
-				
 
 			return PxFilterFlag::eDEFAULT;
 		}

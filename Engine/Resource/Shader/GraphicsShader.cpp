@@ -14,7 +14,6 @@ namespace ehw
 	GraphicsShader::GraphicsShader()
 		: iShader(typeid(GraphicsShader))
 		, m_arrShaderCode{}
-		, m_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, m_rasterizerType(eRSType::SolidBack)
 		, m_depthStencilType(eDSType::Less)
 		, m_blendType(eBSType::Default)
@@ -209,25 +208,39 @@ namespace ehw
 	void GraphicsShader::BindData()
 	{
 		auto pContext = GPUManager::Context();
-
-		pContext->IASetPrimitiveTopology(m_topology);
+		
 		pContext->IASetInputLayout(m_inputLayout.Get());
 		pContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
 		pContext->HSSetShader(m_hullShader.Get(), nullptr, 0);
 		pContext->DSSetShader(m_domainShader.Get(), nullptr, 0);
 		pContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
 		pContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-
 		
-		ID3D11RasterizerState*		rs = RenderManager::GetRasterizerState(m_rasterizerType).Get();
-		ID3D11DepthStencilState*	ds = RenderManager::GetDepthStencilState(m_depthStencilType).Get();
-		ID3D11BlendState*			bs = RenderManager::GetBlendState(m_blendType).Get();
+		ID3D11RasterizerState*		rs = RenderManager::GetRasterizerState(m_rasterizerType);
+		ID3D11DepthStencilState*	ds = RenderManager::GetDepthStencilState(m_depthStencilType);
+		ID3D11BlendState*			bs = RenderManager::GetBlendState(m_blendType);
 
 		pContext->RSSetState(rs);
 		pContext->OMSetDepthStencilState(ds, 10u);
 
 		constexpr float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
 		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
+	}
+
+	void GraphicsShader::UnbindData()
+	{
+		auto pContext = GPUManager::Context();
+
+		pContext->IASetInputLayout(nullptr);
+		pContext->VSSetShader(nullptr, nullptr, 0);
+		pContext->HSSetShader(nullptr, nullptr, 0);
+		pContext->DSSetShader(nullptr, nullptr, 0);
+		pContext->GSSetShader(nullptr, nullptr, 0);
+		pContext->PSSetShader(nullptr, nullptr, 0);
+
+		pContext->RSSetState(nullptr);
+		pContext->OMSetDepthStencilState(nullptr, 10u);
+		pContext->OMSetBlendState(nullptr, nullptr, UINT_MAX);
 	}
 
 	eResult GraphicsShader::Serialize_Json(JsonSerializer* _ser) const
@@ -273,8 +286,7 @@ namespace ehw
 
 		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(m_inputLayoutDescs));
 
-		//토폴로지
-		ser[JSON_KEY(m_topology)] << m_topology;
+
 
 
 		//쉐이더 파일명
@@ -348,11 +360,6 @@ namespace ehw
 				}
 			}
 		}
-
-
-
-		//토폴로지
-		ser[JSON_KEY(m_topology)] >> m_topology;
 
 		//쉐이더
 		{

@@ -89,7 +89,7 @@ namespace ehw
 
 	void GPUInitSetting::UnBindData()
 	{
-		mInitSBuffer->UnBindData();
+		mInitSBuffer->UnbindData();
 		mInitSBuffer->GetData(&gGPUInitSetting);
 		mInitSBuffer->BindDataSRV();
 	}

@@ -199,7 +199,7 @@ namespace ehw
 
 	void Animation3D_PlayData::UnBindData()
 	{
-		m_pBoneFinalMatBuffer->UnBindData();
+		m_pBoneFinalMatBuffer->UnbindData();
 	}
 
 	int Animation3D_PlayData::GetStartFrame() const

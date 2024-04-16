@@ -173,7 +173,7 @@ namespace ehw
             }
         }
 
-        static ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
+        ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
         CB->SetData(&m_constBufferData);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
@@ -182,13 +182,14 @@ namespace ehw
         m_shader->BindData();
     }
 
-    void Material::UnBindData()
+    void Material::UnbindData()
     {
-        for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
-        {
-            if (m_textures[slotIndex])
-                m_textures[slotIndex]->UnBindData();
-        }
+        GraphicsShader::UnbindData();
+
+        ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
+        CB->UnbindData();
+
+        Texture::ClearAll();
     }
 
     void Material::SetTexture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)

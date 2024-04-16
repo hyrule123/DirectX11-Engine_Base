@@ -52,8 +52,8 @@ namespace ehw
 		//재질 바인딩
 		mAnimator->BindData();
 
-		//메쉬 바인딩
-		GetMesh()->BindBuffer();
+		//메쉬 바인딩 - Render 내부에서 실행되도록 변경
+		//GetMesh()->BindBuffer();
 
 		//재질 바인딩
 		GetCurrentMaterial(0)->BindData();
@@ -62,9 +62,9 @@ namespace ehw
 		GetMesh()->Render();
 
 		//재질 언바인딩
-		GetCurrentMaterial(0)->UnBindData();
+		//GetCurrentMaterial(0)->UnbindData();
 
 		//애니메이터 언바인드
-		mAnimator->UnBindData();
+		//mAnimator->UnBindData();
 	}
 }

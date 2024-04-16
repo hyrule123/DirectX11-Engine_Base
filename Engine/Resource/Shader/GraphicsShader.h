@@ -47,8 +47,7 @@ namespace ehw
 		ID3D11InputLayout* GetInputLayout() { return m_inputLayout.Get(); }
 		ID3D11InputLayout** GetInputLayoutAddressOf() { return m_inputLayout.GetAddressOf(); }
 
-		void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) { m_topology = _topology; }
-		D3D11_PRIMITIVE_TOPOLOGY GetTopology() { return m_topology; }
+
 
 		void SetRSState(eRSType _state) { m_rasterizerType = _state; }
 		eRSType GetRSState() const { return m_rasterizerType; }
@@ -60,6 +59,7 @@ namespace ehw
 		eBSType GetBSState() const { return m_blendType; }
 
 		void BindData();
+		static void UnbindData();
 
 		//에디터용
 		inline void SetEditMode(bool _bEditMode) { m_bEditMode = _bEditMode; }
@@ -73,7 +73,6 @@ namespace ehw
 	private:
 		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputLayoutDescs;
 		ComPtr<ID3D11InputLayout> m_inputLayout;
-		D3D11_PRIMITIVE_TOPOLOGY m_topology;
 
 		std::array<tShaderCode, (int)eGSStage::END>  m_arrShaderCode;
 

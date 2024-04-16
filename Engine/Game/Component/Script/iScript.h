@@ -22,12 +22,12 @@ namespace ehw
 		virtual void Update() override {};
 		virtual void FinalUpdate() final {};
 
-		virtual void OnCollisionEnter(const iCollider* _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionStay(const iCollider* _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionExit(const iCollider* _collider) {};
+		virtual void OnCollisionEnter(iCollider* const _collider, const float3& _hitPoint) {};
+		virtual void OnCollisionStay(iCollider* const _collider, const float3& _hitPoint) {};
+		virtual void OnCollisionExit(iCollider* const _collider) {};
 
-		virtual void OnTriggerEnter(const iCollider* _collider) {};
-		virtual void OnTriggerStay(const iCollider* _collider) {};
-		virtual void OnTriggerExit(const iCollider* _collider) {};
+		virtual void OnTriggerEnter(iCollider* const _collider) {};
+		virtual void OnTriggerStay(iCollider* const _collider) {};
+		virtual void OnTriggerExit(iCollider* const _collider) {};
 	};
 }

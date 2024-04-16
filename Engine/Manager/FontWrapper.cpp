@@ -38,7 +38,7 @@ namespace ehw
 			return false;
 
 		auto pDevice = GPUManager::Device();
-		if (FAILED(mFW1Factory->CreateFontWrapper(pDevice.Get(), L"Arial", &mFontWrapper)))
+		if (FAILED(mFW1Factory->CreateFontWrapper(pDevice, L"Arial", &mFontWrapper)))
 			return false;
 
 		return true;
@@ -47,7 +47,7 @@ namespace ehw
 	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint _rgb)
 	{
 		auto context = GPUManager::Context();
-		mFontWrapper->DrawString(context.Get(),
+		mFontWrapper->DrawString(context,
 								 _string, // String
 								 _size,// Font size
 								 _x,// X position

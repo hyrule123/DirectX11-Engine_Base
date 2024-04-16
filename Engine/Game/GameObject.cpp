@@ -97,12 +97,6 @@ namespace ehw
 			iComponent* com = m_baseComponents[i];
 			if (com)
 			{
-				if (com->IsEnabled())
-				{
-					com->OnDisable();
-				}
-
-				com->OnDestroy();
 				delete com;
 			}
 		}
@@ -112,12 +106,6 @@ namespace ehw
 			iScript* script = m_scripts[i];
 			if (script)
 			{
-				if (script->IsEnabled())
-				{
-					script->OnDisable();
-				}
-
-				script->OnDestroy();
 				delete script;
 			}
 		}
@@ -207,11 +195,6 @@ namespace ehw
 
 	void GameObject::Update()
 	{
-		if (false == IsActive())
-		{
-			return;
-		}
-
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 
@@ -243,11 +226,6 @@ namespace ehw
 
 	void GameObject::FinalUpdate()
 	{
-		if (false == IsActive())
-		{
-			return;
-		}
-
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
@@ -268,11 +246,6 @@ namespace ehw
 
 	void GameObject::RemoveDestroyed()
 	{
-		if (IsDestroyed())
-		{
-			return;
-		}
-
 		auto needDestroyPred =
 			[](iComponent* const _com)->bool
 			{
@@ -280,12 +253,13 @@ namespace ehw
 
 				if (iComponent::eState::DestroyReserved == state)
 				{
+					_com->SetEnable(false);
 					_com->SetState(iComponent::eState::Destroy);
 					return false;
 				}
 				else if (iComponent::eState::Destroy == state)
 				{
-					_com->OnDisable();
+					_com->OnDestroy();
 					delete _com;
 					return true;
 				}
@@ -357,7 +331,7 @@ namespace ehw
 		ret = _pCom;
 		eComponentCategory ComType = _pCom->GetComponentCategory();
 
-		ASSERT(false == _pCom->GetStrKey().empty(),
+		ASSERT_DEBUG(false == _pCom->GetStrKey().empty(),
 			"컴포넌트에 String Key가 없습니다.\nAddComponent<T> 또는 ComponentManager::GetNewComponent()를 통해서 생성하세요.");
 
 		
@@ -383,7 +357,7 @@ namespace ehw
 			//컴포넌트가 들어가 있는데, 동일한 컴포넌트 ID가 아닐 경우 에러
 			else
 			{
-				ASSERT(nullptr == m_baseComponents[(int)ComType], "이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
+				ASSERT_DEBUG(nullptr == m_baseComponents[(int)ComType], "이미 중복된 타입의 컴포넌트가 들어가 있습니다.");
 			}
 		}
 
@@ -517,8 +491,6 @@ namespace ehw
 				}
 			}
 		}
-
-
 	}
 
 	iScript* GameObject::GetScript(const std::string_view _strKey)

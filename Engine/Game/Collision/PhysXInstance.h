@@ -13,14 +13,11 @@ namespace ehw
 		inline static physx::PxDefaultCpuDispatcher* GetCPUDispatcher() { return m_dispatcher; }
 
 
-
-	private:
 		//SceneManager에서 호출.
 		static void Init();
 		static void Release();
 
-		PhysXInstance() = delete;
-		~PhysXInstance() = delete;
+
 
 	private:
 		static physx::PxDefaultAllocator		m_allocator;
@@ -37,6 +34,10 @@ namespace ehw
 		//Physx Visualization Debugger
 		static physx::PxPvd* m_PVD;
 #endif
+
+	private:
+		PhysXInstance() = delete;
+		~PhysXInstance() = delete;
 	};
 }
 

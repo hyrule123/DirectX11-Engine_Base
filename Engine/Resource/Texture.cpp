@@ -49,6 +49,7 @@ namespace ehw
 		ID3D11ShaderResourceView* srv = nullptr;
 
 		auto pContext = GPUManager::Context();
+
 		pContext->VSSetShaderResources(_startSlot, 1u, &srv);
 		pContext->HSSetShaderResources(_startSlot, 1u, &srv);
 		pContext->DSSetShaderResources(_startSlot, 1u, &srv);
@@ -234,7 +235,7 @@ namespace ehw
 		std::wstring Extension = _fullPath.extension().wstring();
 		
 		DirectX::ScratchImage img{};
-		if (FAILED(DirectX::CaptureTexture(GPUManager::Device().Get(), GPUManager::Context().Get(), mTexture.Get(), img)))
+		if (FAILED(DirectX::CaptureTexture(GPUManager::Device(), GPUManager::Context(), mTexture.Get(), img)))
 		{
 			ERROR_MESSAGE("Texture를 Scratch Image로 가져오는 데 실패했습니다.");
 			return eResult::Fail_Create;
@@ -270,7 +271,7 @@ namespace ehw
 	{
 		CreateShaderResourceView
 		(
-			GPUManager::Device().Get(),
+			GPUManager::Device(),
 			mImage.GetImages(),
 			mImage.GetImageCount(),
 			mImage.GetMetadata(),

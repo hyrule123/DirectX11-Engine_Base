@@ -21,8 +21,8 @@ namespace ehw
 			virtual void Update() override;
 			virtual void UpdateUI() override;
 
-			void SetTargetGameObject(const std::shared_ptr<GameObject>& _targetObj) { mTargetGameObject = _targetObj; }
-			const std::weak_ptr<GameObject>& GetTargetGameObject() const { return mTargetGameObject; }
+			void SetTargetGameObject(GameObject* _targetObj) { mTargetGameObject = _targetObj; }
+			GameObject* GetTargetGameObject() { return mTargetGameObject; }
 
 			void SetTargetResource(const std::weak_ptr<iResource>& _targetRes) { mTargetResource = _targetRes; }
 			const std::weak_ptr<iResource>& GetTargetResource() const { return mTargetResource; }
@@ -32,7 +32,7 @@ namespace ehw
 			void IndicatorButton(const char* _strButtonName);
 
 		private:
-			std::weak_ptr<GameObject> mTargetGameObject;
+			GameObject* mTargetGameObject;
 			std::weak_ptr<iResource> mTargetResource;
 
 			std::vector<editor::Inspector_Component*> mGuiComponents;

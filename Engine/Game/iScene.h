@@ -38,6 +38,7 @@ namespace ehw
 
 		void SceneInit();
 		void SceneAwake();
+		void SceneFixedUpdate();
 		void SceneUpdate();
 		void SceneFinalUpdate();
 		void SceneRender();
@@ -47,6 +48,7 @@ namespace ehw
 		virtual void Init(tDesc& _desc) = 0;//tDesc를 통해 세부 설정
 		virtual void OnEnter() = 0;//리소스 로드
 
+		virtual void FixedUpdate() {}
 		virtual void Update() {}
 		virtual void FinalUpdate() {}
 		virtual void Render() {}
@@ -94,10 +96,11 @@ namespace ehw
 	};
 
 
-
+	//템플릿의 &&는 상황에 따라서 맞춰서 전달된다.
 	template<class F, class ...Args>
 	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)
 	{
+		//forward: 들어온 인자의 레퍼런스에 맞는 타입으로 전달
 		m_FrameEndJobs.push_back(std::bind(std::forward<F>(_func), std::forward<Args>(_args)...));
 	}
 }

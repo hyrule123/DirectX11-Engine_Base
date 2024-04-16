@@ -181,6 +181,6 @@ namespace ehw
 		GetCurrentMaterial(0)->BindData();
 		GetMesh()->RenderInstanced(0u, mMaxParticles);
 
-		mBuffer->UnBindData();
+		mBuffer->UnbindData();
 	}
 }

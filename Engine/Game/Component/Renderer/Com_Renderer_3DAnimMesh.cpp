@@ -48,8 +48,8 @@ namespace ehw
 			Material* mtrl = GetCurrentMaterial(i);
 			if (mtrl)
 			{
-				//메쉬 바인딩
-				GetMesh()->BindBuffer(i);
+				//메쉬 바인딩 - Render 내부에서 실행되도록 변경
+				//GetMesh()->BindBuffer(i);
 
 				//재질에 애니메이션 정보 넣어주고 바인딩
 				mtrl->SetAnim3D(true);
@@ -59,7 +59,7 @@ namespace ehw
 				// 사용할 메쉬 업데이트 및 렌더링
 				GetMesh()->Render(i);
 
-				mtrl->UnBindData();
+				//mtrl->UnbindData();
 				mtrl->SetBoneCount(0);
 				mtrl->SetAnim3D(false);
 			}
