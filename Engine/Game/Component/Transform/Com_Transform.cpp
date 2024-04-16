@@ -8,10 +8,7 @@
 
 #include "Engine/GameEngine.h"
 
-
-
-
-
+#include <PhysX/PxPhysicsAPI.h>
 
 namespace ehw
 {
@@ -32,6 +29,7 @@ namespace ehw
 		, m_bTransformUpdated(true)
 		, m_parent()
 		, m_childs()
+		, m_pxActor()
 	{
 	}
 
@@ -239,9 +237,21 @@ namespace ehw
 		return true;
 	}
 
+	void Com_Transform::SetPxActor(physx::PxActor* const _pxActor)
+	{
+		if (m_pxActor)
+		{
+			physx::PxScene* scene = m_pxActor->getScene();
+			if (scene)
+			{
+				scene->removeActor(*m_pxActor);
+			}
+			m_pxActor->release();
+			m_pxActor = nullptr;
+		}
 
-
-
+		m_pxActor = _pxActor;
+	}
 
 
 	void Com_Transform::SetWorldScale(const float3& _worldScale)

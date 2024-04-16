@@ -27,6 +27,10 @@
 //Local Matrix: 요청 시 or FinalUpdate 호출 시 반영
 //World Value: 요청 시 or FinalUpdate 호출 시 반영
 //World Matrix: 요청 시 or FinalUpdate 호출 시 반영
+namespace physx
+{
+	class PxActor;
+}
 
 namespace ehw
 {
@@ -129,6 +133,9 @@ namespace ehw
 		//_bSilencedUpdate가 true일 경우: m_bInternalUpdated 값을 변경하지 않고 업데이트 함.
 		//-> FinalUpdate 단계에서 다시 상태 업데이트가 진행된다
 
+		void SetPxActor(physx::PxActor* const _pxActor);
+		physx::PxActor* GetPxActor() { return m_pxActor; }
+
 	private:
 #pragma region LOCAL
 		//크기
@@ -191,6 +198,9 @@ namespace ehw
 // It feels a little weird to walk from sub - object to sub - object, but it works fine.Esp. for people who prefer using: public Transform cow; as the primary way to link to gameObjects.
 		Com_Transform* m_parent;
 		std::vector<Com_Transform*> m_childs;
+
+		//Physx 사용 시 붙이는 용도
+		physx::PxActor* m_pxActor;
 	};
 
 	inline void Com_Transform::SetLocalScale(const float3& _localScale)
