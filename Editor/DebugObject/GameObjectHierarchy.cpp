@@ -4,7 +4,7 @@
 #include "Editor/Inspector/InspectorBase.h"
 
 #include <Engine/Game/iScene.h>
-#include <Engine/Game/Layer.h>
+
 #include <Engine/Game/GameObject.h>
 
 #include <Engine/Manager/SceneManager.h>

@@ -3,10 +3,10 @@
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/iScene.h"
 #include "Engine/Game/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Rigidbody/Com_Rigidbody_Static.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Game/Collision/Collision3D.h"
-
 
 #include <PhysX/PxPhysicsAPI.h>
 
@@ -26,115 +26,20 @@ namespace ehw
 	void iCollider3D::Init()
 	{
 		iCollider::Init();
-
-		physx::PxActor* actor = CreatePxActor();
-		ASSERT(actor, "Actor 생성 실패");
-		SetPxActor(actor);
 	}
 
 	void iCollider3D::Awake()
 	{
 		iCollider::Awake();
 
-		m_collision3D = GetCollisionSystem()->GetCollision3D();
-	}
-
-	void iCollider3D::OnEnable()
-	{
-		iCollider::OnEnable();
-
-		Collision3D* col3d = GetCollision3D();
-		if (col3d)
+		CollisionSystem* colsys = GetCollisionSystem();
+		if (colsys)
 		{
-			bool result = col3d->AddPxActor(m_pxActor);
-			ASSERT_DEBUG(result, "PxActor 삽입 실패");
+			m_col3dMgr = colsys->GetCollision3D();
 		}
 	}
 
-	void iCollider3D::OnDisable()
-	{
-		Collision3D* col3d = GetCollision3D();
-		if (col3d)
-		{
-			col3d->RemovePxActor(m_pxActor);
-		}
-	}
 
-	void iCollider3D::OnDestroy()
-	{
-		PX_RELEASE(m_pxActor);
-	}
-
-
-	void iCollider3D::SetPxActor(physx::PxActor* const _pxActor)
-	{
-		if (nullptr == _pxActor)
-		{
-			ASSERT_DEBUG(false, "PxActor가 nullptr 입니다.");
-			return;
-		}
-
-		if (m_pxActor)
-		{
-			//씬에 들어가있을 경우 씬으로부터 제거
-			physx::PxScene* scene = m_pxActor->getScene();
-			if (scene)
-			{
-				scene->removeActor(*_pxActor);
-			}
-			
-			m_pxActor->release();
-			m_pxActor = nullptr;
-		}
-
-		m_pxActor = _pxActor;
-		m_pxActor->userData = this;
-	}
-
-	void iCollider3D::SceneChanged()
-	{
-		//if (m_pxShape)
-		//{
-		//	physx::PxActor* actor = m_pxShape->getActor();
-		//	actor->userData = nullptr;
-		//	actor->release();
-		//	m_pxShape = nullptr;
-		//}
-		//SetType(GetCollider3DType(), m_isStatic);
-	}
-
-	void iCollider3D::EnableGravity(bool enable)
-	{
-		if (m_pxActor)
-		{
-			auto flags = m_pxActor->getActorFlags();
-			if (enable)
-			{
-				flags &= ~physx::PxActorFlag::eDISABLE_GRAVITY;
-			}
-			else
-			{
-				flags |= physx::PxActorFlag::eDISABLE_GRAVITY;
-			}
-
-			m_pxActor->setActorFlags(flags);
-		}
-	}
-
-	bool iCollider3D::IsGravityEnabled() const
-	{
-		if (m_pxActor)
-		{
-			auto flags = m_pxActor->getActorFlags();
-
-			if (!(physx::PxActorFlag::eDISABLE_GRAVITY & flags))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	//bool iCollider3D::isOverlapping(iCollider3D* other, float3* outDistance)
 	//{

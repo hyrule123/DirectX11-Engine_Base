@@ -12,8 +12,8 @@
 namespace ehw
 {
 	Com_Collider3D_Cube::Com_Collider3D_Cube()
-		: Com_Collider3D_Rigid(eCollider3D_Shape::Cube)
-		, m_pxBoxGeometry(1.f)
+		: Com_Collider3D_Shapes(eCollider3D_Shape::Cube)
+		, m_offsetHalfScale(1.f)
 		, m_offsetPosition(physx::PxIdentity)
 		, m_offsetScale(1.f)
 	{
@@ -22,38 +22,31 @@ namespace ehw
 	{
 	}
 
-	void Com_Collider3D_Cube::Awake()
+	std::vector<physx::PxShape*> Com_Collider3D_Cube::AddShapeFromChild()
 	{
-		Com_Collider3D_Rigid::Awake();
+		std::vector<physx::PxShape*> ret{};
 
 		Com_Transform* tr = GetTransform();
 
-		m_pxBoxGeometry.halfExtents = (tr->GetWorldScale() * m_offsetScale) * 0.5f;
+		m_offsetHalfScale.halfExtents = (tr->GetWorldScale() * m_offsetScale) * 0.5f;
 
 		Collision3D* col3dmgr = GetCollision3D();
 		if (nullptr == col3dmgr)
 		{
 			ASSERT_DEBUG(nullptr, "Collision3D Manager이 존재하지 않음.");
-			return;
+			return ret;
 		}
 
 		physx::PxMaterial* material = col3dmgr->GetDefaultPxMaterial();
 
-		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_pxBoxGeometry, *material);
+		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_offsetHalfScale, *material);
 
 		ASSERT_DEBUG(shape, "Shape 생성 실패.");
 
+		ret.push_back(shape);
+
 		shape->setLocalPose(m_offsetPosition);
 
-
-		uint32 layer = GetOwner()->GetLayer();
-
-		physx::PxFilterData mask = col3dmgr->GetCollisionFilterData(layer);
-		shape->setSimulationFilterData(mask);
-		
-		mask = col3dmgr->GetRaycastFilterData(layer);
-		shape->setQueryFilterData(mask);
-
-		AttachShape(shape);
+		return ret;
 	}
 }

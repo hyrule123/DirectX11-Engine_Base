@@ -225,19 +225,22 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
+    <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Static.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Cube.h" />
-    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Rigid.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Shapes.h" />
     <ClInclude Include="Game\Collision\ContactPair.h" />
     <ClInclude Include="Game\Collision\PhysX.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
     <ClInclude Include="Game\Collision\Collision2D.h" />
     <ClInclude Include="Game\Component\Animator\Animation3D_PlayData.h" />
     <ClInclude Include="Game\Collision\Collision3D.h" />
-    <ClInclude Include="Game\Collision\temp.h" />
+    <ClInclude Include="Game\Collision\PxActorWrapper.h" />
     <ClInclude Include="Game\Collision\PhysXConverter.h" />
     <ClInclude Include="Game\Collision\PhysXInstance.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Sphere.h" />
+    <ClInclude Include="Game\Component\Rigidbody\iRigidbody.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="CommonType.h" />
@@ -306,7 +309,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\Singleton.h" />
     <ClInclude Include="Util\Serialize\json-forwards.h" />
     <ClInclude Include="Util\Serialize\json.h" />
-    <ClInclude Include="Game\Layer.h" />
     <ClInclude Include="Game\Component\Light\Com_Light3D.h" />
     <ClInclude Include="Resource\Material.h" />
     <ClInclude Include="Manager\PathManager.h" />
@@ -333,19 +335,21 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
+    <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Capsule.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Cube.cpp" />
-    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Rigid.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Shapes.cpp" />
     <ClCompile Include="Game\Collision\ContactPair.cpp" />
     <ClCompile Include="CommonStruct.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
     <ClCompile Include="Game\Collision\Collision2D.cpp" />
     <ClCompile Include="Game\Component\Animator\Animation3D_PlayData.cpp" />
     <ClCompile Include="Game\Collision\Collision3D.cpp" />
-    <ClCompile Include="Game\Collision\temp.cpp" />
     <ClCompile Include="Game\Collision\PhysXConverter.cpp" />
     <ClCompile Include="Game\Collision\PhysXInstance.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Sphere.cpp" />
+    <ClCompile Include="Game\Component\Rigidbody\iRigidbody.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\iStateMachine.cpp" />
@@ -416,7 +420,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Game\Layer.cpp" />
     <ClCompile Include="Game\Component\Light\Com_Light3D.cpp" />
     <ClCompile Include="Resource\Material.cpp" />
     <ClCompile Include="Resource\Model3D\Model3D.cpp" />

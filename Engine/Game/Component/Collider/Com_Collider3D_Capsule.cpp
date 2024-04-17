@@ -8,7 +8,7 @@
 namespace ehw
 {
 	Com_Collider3D_Capsule::Com_Collider3D_Capsule()
-		: Com_Collider3D_Rigid(eCollider3D_Shape::Capsule)
+		: Com_Collider3D_Shapes(eCollider3D_Shape::Capsule)
 		, m_offsetPosition()
 		, m_offsetRatio_Radius(1.f)
 		, m_offsetRatio_HalfHeight(1.f)
@@ -19,7 +19,7 @@ namespace ehw
 	}
 	void Com_Collider3D_Capsule::Init()
 	{
-		Com_Collider3D_Rigid::Init();
+		Com_Collider3D_Shapes::Init();
 
 		Collision3D* col3dMgr = GetCollision3D();
 		if (nullptr == col3dMgr)

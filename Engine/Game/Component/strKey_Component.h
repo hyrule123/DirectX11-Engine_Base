@@ -22,7 +22,7 @@ namespace ehw::strKey::component
 	STRKEY Com_Collider2D_AABB = "Com_Collider2D_AABB";
 	STRKEY Com_Collider3D_Capsule = "Com_Collider3D_Capsule";
 	STRKEY Com_Collider3D_Cube = "Com_Collider3D_Cube";
-	STRKEY Com_Collider3D_Rigid = "Com_Collider3D_Rigid";
+	STRKEY Com_Collider3D_Shapes = "Com_Collider3D_Shapes";
 	STRKEY Com_Collider3D_Sphere = "Com_Collider3D_Sphere";
 	STRKEY Com_Light3D = "Com_Light3D";
 	STRKEY Com_Renderer_3DAnimMesh = "Com_Renderer_3DAnimMesh";
@@ -30,6 +30,8 @@ namespace ehw::strKey::component
 	STRKEY Com_Renderer_ParticleSystem = "Com_Renderer_ParticleSystem";
 	STRKEY Com_Renderer_Sprite = "Com_Renderer_Sprite";
 	STRKEY Com_Renderer_UIBase = "Com_Renderer_UIBase";
+	STRKEY Com_Rigidbody_Dynamic = "Com_Rigidbody_Dynamic";
+	STRKEY Com_Rigidbody_Static = "Com_Rigidbody_Static";
 	STRKEY Com_BehaviorTree = "Com_BehaviorTree";
 	STRKEY Com_Transform = "Com_Transform";
 }

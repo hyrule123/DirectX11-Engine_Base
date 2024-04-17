@@ -12,6 +12,7 @@ namespace ehw
 	enum class eComponentCategory
 	{
 		Transform,
+		Rigidbody,
 		Collider,
 		Animator,
 		Light,
@@ -39,6 +40,7 @@ namespace ehw
 		STRKEY eComponentCategory_String[(int)eComponentCategory::END] =
 		{
 			"Transform",
+			"Rigidbody",
 			"Collider",
 			"Animator",
 			"Light",

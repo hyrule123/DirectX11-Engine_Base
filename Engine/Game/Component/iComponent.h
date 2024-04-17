@@ -47,6 +47,9 @@ namespace ehw
 		virtual void OnDisable() {};
 		virtual void OnDestroy() {};
 
+		//레이어 변경시 호출됨. GameObject::Awake() 때 한번 호출됨.
+		virtual void OnLayerChange(uint32 _layer) {}
+
 		inline GameObject* GetOwner() { return m_ownerGameObject; }
 		inline GameObject* GetOwner() const { return m_ownerGameObject; }
 		inline void SetOwner(GameObject* _owner) { m_ownerGameObject = _owner; }
@@ -67,7 +70,6 @@ namespace ehw
 		inline void Destroy();
 
 		inline eState GetState() const { return m_state; }
-		
 
 		inline bool UpdateDestroyState();
 

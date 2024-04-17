@@ -3,6 +3,8 @@
 
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
+#include "Engine/Game/Collision/PxActorWrapper.h"
+
 //Transform 업데이트 로직
 //1. 모든 변경사항은 FinalUpdate 로직 때 반영됨(지연 적용).
 //2. 그러나 스크립트에서 호출할 가능성이 있는 함수 중, Get/Set World 함수의 경우에는 업데이트된 내용을 바로 갱신해야할 필요성이 있음.
@@ -51,14 +53,11 @@ namespace ehw
 
 		virtual ~Com_Transform();
 
-		
-		
-
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); }
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) { return eResult(); }
-	
+		
 		virtual void FinalUpdate() override;
-		void BindData(); 
+		void BindData();
 
 #pragma region //Hierarchy
 		inline Com_Transform* GetParent() const { return m_parent; }
@@ -133,9 +132,6 @@ namespace ehw
 		//_bSilencedUpdate가 true일 경우: m_bInternalUpdated 값을 변경하지 않고 업데이트 함.
 		//-> FinalUpdate 단계에서 다시 상태 업데이트가 진행된다
 
-		void SetPxActor(physx::PxActor* const _pxActor);
-		physx::PxActor* GetPxActor() { return m_pxActor; }
-
 	private:
 #pragma region LOCAL
 		//크기
@@ -198,9 +194,6 @@ namespace ehw
 // It feels a little weird to walk from sub - object to sub - object, but it works fine.Esp. for people who prefer using: public Transform cow; as the primary way to link to gameObjects.
 		Com_Transform* m_parent;
 		std::vector<Com_Transform*> m_childs;
-
-		//Physx 사용 시 붙이는 용도
-		physx::PxActor* m_pxActor;
 	};
 
 	inline void Com_Transform::SetLocalScale(const float3& _localScale)

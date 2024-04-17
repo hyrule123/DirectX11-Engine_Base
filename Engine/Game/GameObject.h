@@ -83,11 +83,10 @@ namespace ehw
 		
 		iScene* GetScene() { return m_ownerScene; }
 		iScene* GetScene() const { return m_ownerScene; }
-
 		void SetScene(iScene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
-		void SetLayer(uint32 _type) { m_layer = _type; }
+		void SetLayer(uint32 _layer);
 		uint32 GetLayer() const { return m_layer; }
 
 		bool IsAwaken() const { return m_isAwakeCalled; }

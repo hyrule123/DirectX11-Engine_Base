@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Game/Component/Collider/Com_Collider3D_Rigid.h"
+#include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
 
 namespace ehw
 {
     class Com_Collider3D_Sphere :
-        public Com_Collider3D_Rigid
+        public Com_Collider3D_Shapes
     {
     public:
         Com_Collider3D_Sphere();

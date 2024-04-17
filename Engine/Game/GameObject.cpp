@@ -8,8 +8,6 @@
 
 #include "Engine/Game/Component/Renderer/iRenderer.h"
 
-#include "Engine/Game/Layer.h"
-
 #include "Engine/Util/StringConverter.h"
 
 namespace ehw
@@ -26,7 +24,7 @@ namespace ehw
 	GameObject::GameObject()
 		: m_baseComponents()
 		, m_ownerScene()
-		, m_layer()
+		, m_layer(UINT_MAX)
 		, m_name()
 		, m_state(eState::Active)
 		, m_isAwakeCalled(false)
@@ -183,6 +181,8 @@ namespace ehw
 				m_scripts[i]->OnEnable();
 			}
 		}
+
+		//OnLayerChange 호출
 		SetLayer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
@@ -434,6 +434,27 @@ namespace ehw
 		Com_Transform* const tr = Transform();
 		tr->UnlinkParent();
 		tr->DestroyChildsRecursive();
+	}
+
+	void GameObject::SetLayer(uint32 _layer)
+	{
+
+		m_layer = _layer;
+
+		if (m_isAwakeCalled)
+		{
+			for (size_t i = 0; i < m_baseComponents.size(); ++i)
+			{
+				if (m_baseComponents[i])
+				{
+					m_baseComponents[i]->OnLayerChange(_layer);
+				}
+			}
+			for (size_t i = 0; i < m_scripts.size(); ++i)
+			{
+				m_scripts[i]->OnLayerChange(_layer);
+			}
+		}
 	}
 
 	void GameObject::SwapBaseComponents(GameObject& _other)

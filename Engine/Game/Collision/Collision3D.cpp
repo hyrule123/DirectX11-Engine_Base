@@ -6,7 +6,7 @@
 
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 #include "Engine/Game/Component/Collider/iCollider3D.h"
-#include "Engine/Game/Component/Collider/Com_Collider3D_Rigid.h"
+#include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 
@@ -92,7 +92,7 @@ namespace ehw
 
 		m_accumulatedDeltaTime += TimeManager::DeltaTime();
 		
-		int simulateCount = (int)(m_accumulatedDeltaTime / m_physxUpdateIntervals[(int)m_curUpdateInterval]);
+		int simulateCount = (int)(m_accumulatedDeltaTime / m_fixedTimeStep[(int)m_curUpdateInterval]);
 		simulateCount = 2;
 
 		//for문을 돌면서 여러번 충돌검사를 진행하면 절망의 늪 현상이 일어날 수 있다
@@ -100,7 +100,7 @@ namespace ehw
 		for (int i = 0; i < simulateCount; ++i)
 		{
 			const auto start = std::chrono::steady_clock::now();
-			m_pxScene->simulate(m_physxUpdateIntervals[(int)m_curUpdateInterval]);
+			m_pxScene->simulate(m_fixedTimeStep[(int)m_curUpdateInterval]);
 
 			m_isFixedUpdated = true;
 			if (m_pxScene->fetchResults(true))
@@ -113,13 +113,13 @@ namespace ehw
 
 			//만약 1회 업데이트에 걸리는 시간이 fixed interval보다 클 경우 1회만 하고 중지한다.
 			const float simulateDeltatime = std::chrono::duration<float>(end - start).count();
-			if (simulateDeltatime > m_physxUpdateIntervals[(int)m_curUpdateInterval])
+			if (simulateDeltatime > m_fixedTimeStep[(int)m_curUpdateInterval])
 			{
 				//break;
 			}
 		}
 
-		m_accumulatedDeltaTime -= m_physxUpdateIntervals[(int)m_curUpdateInterval] * simulateCount;
+		m_accumulatedDeltaTime -= m_fixedTimeStep[(int)m_curUpdateInterval] * simulateCount;
 		if (0.f > m_accumulatedDeltaTime)
 		{
 			m_accumulatedDeltaTime = 0.f;
@@ -128,7 +128,8 @@ namespace ehw
 
 	void Collision3D::GameSceneToPxScene()
 	{
-		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		const PxU32 actorCount = 
+			m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)
 		{
 			return;
@@ -144,24 +145,13 @@ namespace ehw
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			Com_Collider3D_Rigid* const collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
-			if (collider == nullptr || collider->IsDestroyed())
+			iRigidbody* const rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			if (rigidbody == nullptr || rigidbody->IsDestroyed())
 			{
 				continue;
 			}
 
-			Com_Transform* tr = collider->GetTransform();
-			if (false == tr->IsTransformUpdated())
-			{
-				continue;
-			}
-			physx::PxRigidActor* rigidActor = static_cast<PxRigidActor*>(actors[i]);
-
-			physx::PxTransformT<float> transform{};
-			transform.p = tr->GetWorldPosition();
-			transform.q = tr->GetLocalRotation();
-
-			rigidActor->setGlobalPose(transform);
+			rigidbody->UpdateGlobalPose();
 		}
 	}
 
@@ -214,7 +204,7 @@ namespace ehw
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			Com_Collider3D_Rigid* const collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
+			Com_Collider3D_Shapes* const collider = static_cast<Com_Collider3D_Shapes*>(actors[i]->userData);
 			if (collider == nullptr || false == collider->IsEnabled())
 			{
 				continue;
@@ -513,7 +503,6 @@ namespace ehw
 			ret.word1 = m_collisionSystem->GetLayerCollisionMask(_layer).to_ulong();
 		}
 
-
 		return ret;
 	}
 
@@ -570,19 +559,19 @@ namespace ehw
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			const Com_Collider3D_Rigid* collider = static_cast<Com_Collider3D_Rigid*>(actors[i]->userData);
-			if (collider == nullptr || collider->IsDestroyed())
+			const iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			if (rigidbody == nullptr || rigidbody->IsDestroyed())
 			{
 				continue;
 			}
-			// 충돌체에 대해서 일어난 변화이므로, 이를 Transform에도 반영해야 한다.
-			else if (collider->IsTrigger())
-			{
-				continue;
-			}
+			
+			//else if (rigidbody->IsTrigger())
+			//{
+			//	continue;
+			//}
 
 			m_transformSyncData.push_back(tTransformSyncData{});
-			m_transformSyncData.back().transform = collider->GetOwner()->GetComponent<Com_Transform>();
+			m_transformSyncData.back().transform = rigidbody->GetOwner()->GetComponent<Com_Transform>();
 			m_transformSyncData.back().LocalRotation = worldTransform.q;
 			m_transformSyncData.back().WorldPosition = worldTransform.p;
 			//Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();

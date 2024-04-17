@@ -8,7 +8,7 @@
 namespace ehw
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Rigid(eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}
@@ -18,7 +18,7 @@ namespace ehw
 
 	void Com_Collider3D_Sphere::Init()
 	{
-		Com_Collider3D_Rigid::Init();
+		Com_Collider3D_Shapes::Init();
 
 		Collision3D* col3dMgr = GetCollision3D();
 		if (nullptr == col3dMgr)

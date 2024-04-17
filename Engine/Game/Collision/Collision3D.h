@@ -62,7 +62,7 @@ namespace ehw
 		void FrameEnd();
 
 		static constexpr float m_defaultDensity = 10.f;
-		static constexpr std::array<float, (int)UpdateInterval::END> m_physxUpdateIntervals
+		static constexpr std::array<float, (int)UpdateInterval::END> m_fixedTimeStep
 		{
 			1.f / 30.f,
 			1.f / 60.f,
@@ -95,7 +95,7 @@ namespace ehw
 			const void* _constantBlock, physx::PxU32 _constantBlockSize);
 
 		inline void setUpdateInterval(UpdateInterval _interval) { m_curUpdateInterval = _interval; }
-		inline float getUpdateInterval() const { return m_physxUpdateIntervals[static_cast<uint8>(m_curUpdateInterval)]; }
+		inline float getUpdateInterval() const { return m_fixedTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* _constraints, physx::PxU32 _count) override;
@@ -104,10 +104,6 @@ namespace ehw
 		void onContact(const physx::PxContactPairHeader& _pairHeader, const physx::PxContactPair* _pairs, physx::PxU32 _nbPairs) override;
 		void onTrigger(physx::PxTriggerPair* _pairs, physx::PxU32 _count) override;
 		void onAdvance(const physx::PxRigidBody* const* _bodyBuffer, const physx::PxTransform* _poseBuffer, const physx::PxU32 _count) override;
-
-	private:
-		template <typename T>
-		static inline void PxRelease(T* _pxPtr) { if (_pxPtr) { _pxPtr->Release(); } }
 
 	private:
 		struct tTransformSyncData
