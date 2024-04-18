@@ -7,50 +7,47 @@
 
 namespace ehw
 {
-    
+    float	            TimeManager::m_deltaTime{};
 
-    float	            TimeManager::mDeltaTime{};
-    LARGE_INTEGER	    TimeManager::mCpuFrequency{};
-    LARGE_INTEGER       TimeManager::mPrevFrequency{};
-    LARGE_INTEGER	    TimeManager::mCurFrequency{};
+    std::chrono::steady_clock::time_point TimeManager::m_prevTime{};
+    std::chrono::steady_clock::time_point TimeManager::m_currentTime{};
+
     float			    TimeManager::mOneSecond{};
 
     void TimeManager::Init()
     {
+        auto start = std::chrono::high_resolution_clock::now();
+
         AtExit::AddFunc(Release);
 
-        //CPU 의 초당 반복되는 주파수를 얻어온다.
-        QueryPerformanceFrequency(&mCpuFrequency);
-
-        //프로그램을 시작했을때의 CPU 클럭 수
-        QueryPerformanceCounter(&mPrevFrequency);
+        m_prevTime = std::chrono::high_resolution_clock::now();
     }
 
 
     void TimeManager::Release()
     {
-        mDeltaTime = {};
-        mCpuFrequency = {};
-        mPrevFrequency = {};
-        mCurFrequency = {};
+        m_deltaTime = {};
+
+        m_prevTime = {};
+        m_currentTime = {};
+
         mOneSecond = {};
     }
 
 
     void TimeManager::Update()
     {
-        QueryPerformanceCounter(&mCurFrequency);
+        m_currentTime = std::chrono::high_resolution_clock::now();
 
-        float differenceInFrequancy 
-            = static_cast<float>((mCurFrequency.QuadPart - mPrevFrequency.QuadPart));
+        std::chrono::duration<float> duration = m_currentTime - m_prevTime;
+        m_deltaTime = duration.count();
 
-        mDeltaTime = differenceInFrequancy / static_cast<float>(mCpuFrequency.QuadPart);
-        if (g_deltaTimeMaxCap < mDeltaTime)
+        if (g_deltaTimeMaxCap < m_deltaTime)
         {
-            mDeltaTime = g_deltaTimeMaxCap;
+            m_deltaTime = g_deltaTimeMaxCap;
         }
 
-        mPrevFrequency.QuadPart = mCurFrequency.QuadPart;
+        m_prevTime = m_currentTime;
     }
 
     void TimeManager::Render(HDC _hdc)
@@ -60,13 +57,13 @@ namespace ehw
 
 
         // 1 초에 한번
-        mOneSecond += mDeltaTime;
+        mOneSecond += m_deltaTime;
         if (1.0f < mOneSecond)
         {
             HWND hWnd = GameEngine::GetHwnd();
 
             wchar_t szFloat[50] = {};
-            float FPS = 1.f / mDeltaTime;
+            float FPS = 1.f / m_deltaTime;
             swprintf_s(szFloat, 50, L"DeltaTime : %d", iCount);
             int iLen = static_cast<int>(wcsnlen_s(szFloat, 50));
             //TextOut(_dc, 10, 10, szFloat, iLen);

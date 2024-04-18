@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 
 namespace ehw
 {
@@ -6,8 +7,7 @@ namespace ehw
 	{
 		friend class GameEngine;
 	public:
-		static __forceinline float DeltaTime() { return mDeltaTime; }
-		static __forceinline LARGE_INTEGER CurrentFrenquency() { return mCurFrequency; }
+		static __forceinline float DeltaTime() { return m_deltaTime; }
 
 		static void Update();
 		static void Render(HDC _hdc);
@@ -17,11 +17,11 @@ namespace ehw
 		static void Release();
 
 	private:
-		static float	mDeltaTime;
+		static float	m_deltaTime;
 
-		static LARGE_INTEGER	mCpuFrequency;
-		static LARGE_INTEGER    mPrevFrequency;
-		static LARGE_INTEGER	mCurFrequency;
+		static std::chrono::steady_clock::time_point m_prevTime;
+		static std::chrono::steady_clock::time_point m_currentTime;
+
 		static float			mOneSecond;
 
 	private:
