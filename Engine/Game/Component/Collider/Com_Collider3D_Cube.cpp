@@ -43,9 +43,9 @@ namespace ehw
 
 		ASSERT_DEBUG(shape, "Shape 생성 실패.");
 
-		ret.push_back(shape);
-
 		shape->setLocalPose(m_offsetPosition);
+
+		ret.push_back(shape);
 
 		return ret;
 	}

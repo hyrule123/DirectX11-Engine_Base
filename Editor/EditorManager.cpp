@@ -54,6 +54,7 @@ namespace ehw::editor
 
 	bool EditorManager::mbEnable{};
 	bool EditorManager::mbInitialized{};
+	bool EditorManager::m_IsOpenEditorAsDefault{};
 
 	std::unique_ptr<Json::Value> EditorManager::mJsonUIData{};
 
@@ -124,6 +125,12 @@ namespace ehw::editor
 
 	void EditorManager::Run()
 	{
+		if (m_IsOpenEditorAsDefault)
+		{
+			m_IsOpenEditorAsDefault = false;
+			SetEnable(true);
+		}
+
 		if (
 			InputManager::GetKeyPress(eKeyCode::LCTRL)
 			&&
@@ -136,7 +143,9 @@ namespace ehw::editor
 		}
 
 		if (false == mbEnable)
+		{
 			return;
+		}
 
 		Update();
 		FinalUpdate();

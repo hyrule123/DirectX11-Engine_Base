@@ -26,6 +26,7 @@ namespace ehw::editor
 		static inline void SetEnable(bool _bEnable);
 		static inline bool GetEnable() { return mbEnable; }
 		static inline void ToggleEnable() { SetEnable(!mbEnable); }
+		static void OpenEditorAsDefault(bool _enable) { m_IsOpenEditorAsDefault = _enable; }
 
 		static std::shared_ptr<EditorBase> FindGuiWindow(const std::string_view _strKey);
 
@@ -44,7 +45,7 @@ namespace ehw::editor
 		static void Update();
 		static void FinalUpdate();
 		static void Render();
-		
+
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
 		static Json::Value* CheckJsonSaved(const std::string& _strKey);
 
@@ -72,6 +73,8 @@ namespace ehw::editor
 
 		//GUI가 최초 1회 초기화 되었는지 여부
 		static bool mbInitialized;
+
+		static bool m_IsOpenEditorAsDefault;
 
 		static std::unique_ptr<Json::Value> mJsonUIData;
 

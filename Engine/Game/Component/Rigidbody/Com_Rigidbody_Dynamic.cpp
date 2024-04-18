@@ -123,16 +123,7 @@ namespace ehw
 		physx::PxRigidDynamic* rigidActor = static_cast<physx::PxRigidDynamic*>(GetPxActor());
 		if (rigidActor)
 		{
-			physx::PxRigidDynamicLockFlags flags = rigidActor->getRigidDynamicLockFlags();
-			if (_enable)
-			{
-				flags |= _flag;
-			}
-			else
-			{
-				flags &= ~_flag;
-			}
-			rigidActor->setRigidDynamicLockFlags(flags);
+			rigidActor->setRigidDynamicLockFlag(_flag, _enable);
 		}
 	}
 

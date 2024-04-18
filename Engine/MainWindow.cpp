@@ -103,8 +103,12 @@ namespace ehw
         for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
         {
             if (_Desc.ExternalInitFuncs[i])
+            {
                 _Desc.ExternalInitFuncs[i]();
+            }
         }
+
+
 
         mHAccelTable = LoadAccelerators(mInstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
         return true;
