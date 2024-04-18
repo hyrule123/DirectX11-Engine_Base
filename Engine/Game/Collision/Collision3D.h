@@ -29,23 +29,6 @@ namespace ehw
 		float		hitDistance;
 	};
 
-	enum class eFilterType
-	{
-		Collision,
-		Raycast
-	};
-
-	enum class UpdateInterval
-	{
-		Frame_30,
-		Frame_60,
-		Frame_120,
-		Frame_144,
-		Frame_240,
-
-		END
-	};
-
 	class Collision3D final : public ::physx::PxSimulationEventCallback
 	{
 		friend class CollisionSystem;
@@ -61,15 +44,6 @@ namespace ehw
 		void Render();
 		void FrameEnd();
 
-		static constexpr float m_defaultDensity = 10.f;
-		static constexpr std::array<float, (int)UpdateInterval::END> m_fixedTimeStep
-		{
-			1.f / 30.f,
-			1.f / 60.f,
-			1.f / 120.f,
-			1.f / 144.f,
-			1.f / 240.f,
-		};
 
 		inline physx::PxMaterial* GetDefaultPxMaterial() { return m_defaultPxMaterial; }
 
@@ -94,8 +68,8 @@ namespace ehw
 			physx::PxPairFlags& _pairFlags,
 			const void* _constantBlock, physx::PxU32 _constantBlockSize);
 
-		inline void setUpdateInterval(UpdateInterval _interval) { m_curUpdateInterval = _interval; }
-		inline float getUpdateInterval() const { return m_fixedTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
+		inline void setUpdateInterval(eFrameTimeStep _interval) { m_curUpdateInterval = _interval; }
+		inline float getUpdateInterval() const { return g_fixedTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* _constraints, physx::PxU32 _count) override;
@@ -120,7 +94,7 @@ namespace ehw
 		//->정적 마찰력, 동적 마찰력, 반발력 프리셋.
 		//충돌체(PxShape 생성 시 필요), 프리셋 값을 변경 시 해당 material을 사용한 모든 충돌체의 프리셋 설정이 변경됨.
 		physx::PxMaterial* m_defaultPxMaterial;
-		UpdateInterval	m_curUpdateInterval;
+		eFrameTimeStep	m_curUpdateInterval;
 		float m_accumulatedDeltaTime;
 
 		bool m_isFixedUpdated;

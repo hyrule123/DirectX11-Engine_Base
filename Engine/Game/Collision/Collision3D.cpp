@@ -29,7 +29,7 @@ namespace ehw
 		: m_collisionSystem(_owner)
 		, m_pxScene{ nullptr }
 		, m_defaultPxMaterial{}
-		, m_curUpdateInterval{ UpdateInterval::Frame_60 }
+		, m_curUpdateInterval{ eFrameTimeStep::Frame_60 }
 		, m_accumulatedDeltaTime(0.f)
 		, m_transformSyncData()
 	{
@@ -92,7 +92,7 @@ namespace ehw
 
 		m_accumulatedDeltaTime += TimeManager::DeltaTime();
 		
-		int simulateCount = (int)(m_accumulatedDeltaTime / m_fixedTimeStep[(int)m_curUpdateInterval]);
+		int simulateCount = (int)(m_accumulatedDeltaTime / g_fixedTimeStep[(int)m_curUpdateInterval]);
 		simulateCount = 2;
 
 		//for문을 돌면서 여러번 충돌검사를 진행하면 절망의 늪 현상이 일어날 수 있다
@@ -100,7 +100,7 @@ namespace ehw
 		for (int i = 0; i < simulateCount; ++i)
 		{
 			const auto start = std::chrono::steady_clock::now();
-			m_pxScene->simulate(m_fixedTimeStep[(int)m_curUpdateInterval]);
+			m_pxScene->simulate(g_fixedTimeStep[(int)m_curUpdateInterval]);
 
 			m_isFixedUpdated = true;
 			if (m_pxScene->fetchResults(true))
@@ -113,13 +113,13 @@ namespace ehw
 
 			//만약 1회 업데이트에 걸리는 시간이 fixed interval보다 클 경우 1회만 하고 중지한다.
 			const float simulateDeltatime = std::chrono::duration<float>(end - start).count();
-			if (simulateDeltatime > m_fixedTimeStep[(int)m_curUpdateInterval])
+			if (simulateDeltatime > g_fixedTimeStep[(int)m_curUpdateInterval])
 			{
 				//break;
 			}
 		}
 
-		m_accumulatedDeltaTime -= m_fixedTimeStep[(int)m_curUpdateInterval] * simulateCount;
+		m_accumulatedDeltaTime -= g_fixedTimeStep[(int)m_curUpdateInterval] * simulateCount;
 		if (0.f > m_accumulatedDeltaTime)
 		{
 			m_accumulatedDeltaTime = 0.f;

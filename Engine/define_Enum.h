@@ -39,6 +39,31 @@ namespace ehw
 	template <type_traits_Ex::is_enum_class_v T>
 	constexpr inline bool IsLayerValid(T _layer) { return (g_maxLayer > static_cast<unsigned int>(_layer)); }
 
+	enum class eFrameTimeStep
+	{
+		Frame_1,
+		Frame_10,
+		Frame_15,
+		Frame_30,
+		Frame_60,
+		Frame_120,
+		Frame_144,
+		Frame_240,
+
+		END
+	};
+	static constexpr std::array<float, (int)eFrameTimeStep::END> g_fixedTimeStep
+	{
+		1.f,
+		1.f / 10.f,
+		1.f / 15.f,
+		1.f / 30.f,
+		1.f / 60.f,
+		1.f / 120.f,
+		1.f / 144.f,
+		1.f / 240.f,
+	};
+
 	enum class eCollisionStatus
 	{
 		Enter,

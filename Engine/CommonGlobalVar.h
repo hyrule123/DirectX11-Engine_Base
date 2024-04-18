@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
 #include <unordered_set>
