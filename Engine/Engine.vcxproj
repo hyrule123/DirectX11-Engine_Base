@@ -225,6 +225,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DefaultSettingVar.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Static.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
@@ -267,7 +268,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
     <ClInclude Include="Game\Component\ComponentInitializer.h" />
-    <ClInclude Include="CommonGlobalVar.h" />
+    <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Manager\GPUManager.h" />
@@ -377,7 +378,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
-    <ClCompile Include="CommonGlobalVar.cpp" />
+    <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Manager\GPUManager.cpp" />

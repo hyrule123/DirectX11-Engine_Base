@@ -35,17 +35,18 @@ namespace ehw
 
 		virtual ~iComponent();
 
-		virtual void Init() {};
-		virtual void Awake() {};
-		virtual void OnEnable() {};
-		virtual void Start() {};
-		virtual void Update() {};
-		virtual void FinalUpdate() = 0;
+		virtual void Init() {}
+		virtual void Awake() {}
+		virtual void OnEnable() {}
+		virtual void Start() {}
+		virtual void FixedUpdate() {}
+		virtual void Update() {}
+		virtual void FinalUpdate() {}
 
-		virtual void FrameEnd() {};
+		virtual void FrameEnd() {}
 
-		virtual void OnDisable() {};
-		virtual void OnDestroy() {};
+		virtual void OnDisable() {}
+		virtual void OnDestroy() {}
 
 		//레이어 변경시 호출됨. GameObject::Awake() 때 한번 호출됨.
 		virtual void OnLayerChange(uint32 _layer) {}

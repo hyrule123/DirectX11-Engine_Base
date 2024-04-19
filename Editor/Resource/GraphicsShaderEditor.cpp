@@ -3,7 +3,7 @@
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Resource/Shader/GraphicsShader.h>
-#include <Engine/CommonGlobalVar.h>
+#include <Engine/GlobalVariable.h>
 #include <Engine/Util/Serialize/json.h>
 
 namespace ehw::editor

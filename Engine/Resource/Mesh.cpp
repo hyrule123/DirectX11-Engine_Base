@@ -1,6 +1,6 @@
 #include "Engine/Resource/Mesh.h"
 
-#include "Engine/CommonGlobalVar.h"
+#include "Engine/GlobalVariable.h"
 
 #include "Engine/GPU/StructBuffer.h"
 

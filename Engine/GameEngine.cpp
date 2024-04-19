@@ -20,7 +20,7 @@
 
 #include "Engine/MainWindow.h"
 
-#include "Engine/CommonGlobalVar.h"
+#include "Engine/GlobalVariable.h"
 
 namespace ehw
 {
@@ -81,6 +81,7 @@ namespace ehw
 	{
 		TimeManager::Update();
 		InputManager::Update();
+		SceneManager::FixedUpdate();
 		SceneManager::Update();
 	}
 

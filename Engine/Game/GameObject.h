@@ -37,8 +37,8 @@ namespace ehw
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		void Awake();
+		void FixedUpdate();
 		void Update();
-		void CollisionUpdate();
 		void FinalUpdate();
 		void Render();
 		void FrameEnd();

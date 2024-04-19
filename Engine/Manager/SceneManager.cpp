@@ -6,6 +6,9 @@
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/TimeManager.h"
+
+#include <chrono>
 
 namespace ehw
 {
@@ -20,6 +23,30 @@ namespace ehw
 
 	void SceneManager::FixedUpdate()
 	{
+		if (m_activeScene)
+		{
+			int fixedUpdateCount = TimeManager::GetFixedUpdateCount();
+
+			float averageFixedUpdateDuration = 0.f;
+
+			for(int i = 0; i < fixedUpdateCount; ++i)
+			{
+				auto start = std::chrono::high_resolution_clock::now();
+				m_activeScene->SceneFixedUpdate();
+				auto end = std::chrono::high_resolution_clock::now();
+
+				std::chrono::duration<float> duration = end - start;
+
+				averageFixedUpdateDuration += duration.count();
+			}
+
+			//횟수 계산
+			if (0 < fixedUpdateCount)
+			{
+				averageFixedUpdateDuration /= (float)fixedUpdateCount;
+				TimeManager::AdjustFixedUpdateTimeStep(averageFixedUpdateDuration);
+			}
+		}
 	}
 
 	void SceneManager::Update()

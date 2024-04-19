@@ -1,5 +1,4 @@
-
-#include "Engine/CommonGlobalVar.h"
+#include "Engine/GlobalVariable.h"
 
 namespace ehw
 {

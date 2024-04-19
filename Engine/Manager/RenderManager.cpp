@@ -27,7 +27,7 @@
 
 #include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
-#include "Engine/CommonGlobalVar.h"
+#include "Engine/GlobalVariable.h"
 
 
 #include "ResourceManager.h"

@@ -193,15 +193,14 @@ namespace ehw
 		}
 	}
 
-	void GameObject::Update()
+	void GameObject::FixedUpdate()
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
 				m_baseComponents[i]->CallStart();
-				m_baseComponents[i]->Update();
+				m_baseComponents[i]->FixedUpdate();
 			}
 		}
 
@@ -210,17 +209,28 @@ namespace ehw
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
 				m_scripts[i]->CallStart();
-				m_scripts[i]->Update();
+				m_scripts[i]->FixedUpdate();
 			}
 		}
 	}
 
-	void GameObject::CollisionUpdate()
+	void GameObject::Update()
 	{
-		if (m_baseComponents[(int)eComponentCategory::Collider])
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			//std::static_pointer_cast<iCollider>(m_baseComponents[(int)eComponentCategory::Collider])
-				//->CollisionUpdate();
+
+			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			{
+				m_baseComponents[i]->Update();
+			}
+		}
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			{
+				m_scripts[i]->Update();
+			}
 		}
 	}
 

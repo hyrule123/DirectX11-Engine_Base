@@ -64,10 +64,10 @@ namespace ehw
 	{
 		FixedUpdate();
 
-		//for (size_t i = 0; i < m_gameObjects.size(); ++i)
-		//{
-		//	m_gameObjects[i]->FixedUpdate();
-		//}
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
+		{
+			m_gameObjects[i]->FixedUpdate();
+		}
 	}
 
 	void iScene::SceneUpdate()

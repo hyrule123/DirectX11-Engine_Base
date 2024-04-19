@@ -1,6 +1,6 @@
 #include "Engine/Resource/Shader/GraphicsShader.h"
 
-#include "Engine/CommonGlobalVar.h"
+#include "Engine/GlobalVariable.h"
 
 #include "Engine/Manager/GPUManager.h"
 #include "Engine/Manager/ResourceManager.h"

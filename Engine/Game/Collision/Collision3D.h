@@ -69,7 +69,7 @@ namespace ehw
 			const void* _constantBlock, physx::PxU32 _constantBlockSize);
 
 		inline void setUpdateInterval(eFrameTimeStep _interval) { m_curUpdateInterval = _interval; }
-		inline float getUpdateInterval() const { return g_fixedTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
+		inline float getUpdateInterval() const { return g_frameTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* _constraints, physx::PxU32 _count) override;

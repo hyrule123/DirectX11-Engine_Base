@@ -17,6 +17,7 @@ namespace ehw
 		//};
 		static BOOL Init(const tGameEngineDesc& _AppDesc);
 
+		static void FixedUpdate();
 		static void Update();
 		static void FinalUpdate();
 		static void Render();
