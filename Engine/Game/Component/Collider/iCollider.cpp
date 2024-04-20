@@ -32,6 +32,8 @@ namespace ehw
 
 	void iCollider::OnCollisionEnter(iCollider* _collider, const float3& _contactPoint)
 	{
+		AddCollisionCount();
+
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
@@ -52,6 +54,8 @@ namespace ehw
 
 	void iCollider::OnCollisionExit(iCollider* _collider)
 	{
+		SubCollisionCount();
+
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
@@ -62,6 +66,8 @@ namespace ehw
 
 	void iCollider::OnTriggerEnter(iCollider* _collider)
 	{
+		AddCollisionCount();
+
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
@@ -82,6 +88,8 @@ namespace ehw
 
 	void iCollider::OnTriggerExit(iCollider* _collider)
 	{
+		SubCollisionCount();
+
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)

@@ -57,7 +57,7 @@ namespace ehw
 	inline void iCollider::SubCollisionCount()
 	{
 		--m_collisionCount;
-		if (0 > m_collisionCount)
+		if (m_collisionCount < 0)
 		{
 			m_collisionCount = 0;
 			ASSERT_DEBUG(false, "Collision Count가 음수로 내려갔습니다.");

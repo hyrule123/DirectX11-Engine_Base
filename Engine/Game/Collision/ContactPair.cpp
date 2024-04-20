@@ -21,74 +21,44 @@ namespace ehw
 
 	void ContactPair::Enter(const float3& _contactPoint)
 	{
-		m_left->AddCollisionCount();
-		m_right->AddCollisionCount();
-
-		bool isTrigger = false;
-		if (m_left->IsTriggerMode())
+		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
 		{
 			m_left->OnTriggerEnter(m_right);
-			isTrigger = true;
-		}
-		if (m_right->IsTriggerMode())
-		{
 			m_right->OnTriggerEnter(m_left);
-			isTrigger = true;
 		}
-		if (isTrigger)
+		else
 		{
-			return;
+			m_left->OnCollisionEnter(m_right, _contactPoint);
+			m_right->OnCollisionEnter(m_left, _contactPoint);
 		}
-
-		m_left->OnCollisionEnter(m_right, _contactPoint);
-		m_right->OnCollisionEnter(m_left, _contactPoint);
 	}
 
 	void ContactPair::Stay(const float3& _contactPoint)
 	{
-		bool isTrigger = false;
-		if (m_left->IsTriggerMode())
+		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
 		{
 			m_left->OnTriggerStay(m_right);
-			isTrigger = true;
-		}
-		if (m_right->IsTriggerMode())
-		{
 			m_right->OnTriggerStay(m_left);
-			isTrigger = true;
 		}
-		if (isTrigger)
+		else
 		{
-			return;
+			m_left->OnCollisionStay(m_right, _contactPoint);
+			m_right->OnCollisionStay(m_left, _contactPoint);
 		}
-
-		m_left->OnCollisionStay(m_right, _contactPoint);
-		m_right->OnCollisionStay(m_left, _contactPoint);
 	}
 
 	void ContactPair::Exit()
 	{
-		m_left->SubCollisionCount();
-		m_right->SubCollisionCount();
-
-		bool isTrigger = false;
-		if (m_left->IsTriggerMode())
+		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
 		{
 			m_left->OnTriggerExit(m_right);
-			isTrigger = true;
-		}
-		if (m_right->IsTriggerMode())
-		{
 			m_right->OnTriggerExit(m_left);
-			isTrigger = true;
 		}
-		if (isTrigger)
+		else
 		{
-			return;
+			m_left->OnCollisionExit(m_right);
+			m_right->OnCollisionExit(m_left);
 		}
-
-		m_left->OnCollisionExit(m_right);
-		m_right->OnCollisionExit(m_left);
 	}
 }
 

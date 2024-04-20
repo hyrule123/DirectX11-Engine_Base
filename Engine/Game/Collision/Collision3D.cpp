@@ -85,7 +85,6 @@ namespace ehw
 
 	void Collision3D::FixedUpdate()
 	{
-
 		GameSceneToPxScene();
 
 		m_pxScene->simulate(TimeManager::FixedDeltaTime());
@@ -186,20 +185,12 @@ namespace ehw
 		}
 
 		std::vector<PxRigidActor*> actors(actorCount);
-
-
 		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC,
 			reinterpret_cast<PxActor**>(actors.data()), actorCount);
 
 		for (size_t i = 0; i < actors.size(); ++i)
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
-
-			Com_Collider3D_Shapes* const collider = static_cast<Com_Collider3D_Shapes*>(actors[i]->userData);
-			if (collider == nullptr || false == collider->IsEnabled())
-			{
-				continue;
-			}
 
 			physx::PxRigidActor* rigidActor = static_cast<PxRigidActor*>(actors[i]);
 
@@ -238,7 +229,12 @@ namespace ehw
 					data.WVP *= actorWorldMatrix;
 					data.WVP *= matVP;
 
-					data.isColliding = collider->IsColliding() ? TRUE : FALSE;
+					iCollider* col = static_cast<iCollider*>(shapes[i]->userData);
+
+					if (col)
+					{
+						data.isColliding = col->IsColliding() ? TRUE : FALSE;
+					}
 					break;
 				}
 					
@@ -329,7 +325,6 @@ namespace ehw
 
 	void Collision3D::onTrigger(PxTriggerPair* pairs, PxU32 count)
 	{
-		ASSERT(false, "리팩토링 미진행");
 		for (PxU32 i = 0; i < count; ++i)
 		{
 			const PxTriggerPair& contactpair = pairs[i];
@@ -402,12 +397,9 @@ namespace ehw
 
 			GameObject* rightObj = static_cast<iRigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
 			iCollider* rightCol = rightObj->GetComponent<iCollider>();
-			
-			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
-			{
-				continue;
-			}
-			else if (leftCol == rightCol)
+		
+
+			if (leftCol == rightCol)
 			{
 				continue;
 			}
@@ -431,8 +423,11 @@ namespace ehw
 				const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
 				const float3	   collisionPosition = collisionPoint.position;
 
-				leftCol->OnCollisionStay(rightCol, collisionPosition);
-				rightCol->OnCollisionStay(leftCol, collisionPosition);
+				if (false == leftCol->IsDestroyed() && false == rightCol->IsDestroyed())
+				{
+					leftCol->OnCollisionStay(rightCol, collisionPosition);
+					rightCol->OnCollisionStay(leftCol, collisionPosition);
+				}
 			}
 			else if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
