@@ -5,6 +5,8 @@
 
 #include "Engine/GlobalVariable.h"
 
+#include "Engine/define_Macro.h"
+
 namespace ehw
 {
     float	            TimeManager::m_deltaTime{};
@@ -73,7 +75,27 @@ namespace ehw
                 m_accumulatedDeltaTime = 0.f;
             }
         }
+
+
+        //static std::chrono::steady_clock::time_point end{};
+        //static std::chrono::steady_clock::time_point start{};
         
+
+        //if (m_fixedUpdateCount)
+        //{
+        //    end = std::chrono::high_resolution_clock::now();
+        //    
+        //    std::stringstream stream{};
+        //    static std::chrono::duration<float> dur = end - start;
+
+
+        //    stream << std::to_string(FixedDeltaTime()) << "\n";
+        //    DEBUG_LOG_A(stream.str().c_str());
+        //}
+        //else
+        //{
+        //    start = std::chrono::high_resolution_clock::now();
+        //}
     }
 
     void TimeManager::Render(HDC _hdc)
@@ -117,6 +139,11 @@ namespace ehw
         for (minTimeStep; minTimeStep < (int)eFrameTimeStep::END; ++minTimeStep)
         {
             if ((minTimeStep + 1) == (int)eFrameTimeStep::END)
+            {
+                break;
+            }
+
+            else if (_fixedUpdateDuration <= GetFrameTimeStep(minTimeStep))
             {
                 break;
             }

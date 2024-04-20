@@ -68,6 +68,11 @@ namespace ehw
 		{
 			m_gameObjects[i]->FixedUpdate();
 		}
+
+		if (m_collisionSystem)
+		{
+			m_collisionSystem->FixedUpdate();
+		}
 	}
 
 	void iScene::SceneUpdate()
@@ -82,10 +87,7 @@ namespace ehw
 			}
 		}
 
-		if (m_collisionSystem)
-		{
-			m_collisionSystem->Update();
-		}
+
 	}
 
 

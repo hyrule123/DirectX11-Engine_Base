@@ -55,11 +55,11 @@ namespace ehw
 		return m_col3DManager.get();
 	}
 
-	void CollisionSystem::Update()
+	void CollisionSystem::FixedUpdate()
 	{
 		if (m_col2DManager)
 		{
-			m_col2DManager->Update();
+			m_col2DManager->FixedUpdate();
 		}
 		
 		if (m_col3DManager)

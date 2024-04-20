@@ -74,7 +74,7 @@ namespace ehw
 		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData);
 
 	private:
-		void Update();
+		void FixedUpdate();
 		void FrameEnd();
 
 		void PrepareDebugRender();

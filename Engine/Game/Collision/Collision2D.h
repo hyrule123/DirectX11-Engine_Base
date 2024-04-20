@@ -35,7 +35,7 @@ namespace ehw
 		Collision2D(CollisionSystem* const _owner);
 		~Collision2D();
 
-		void Update();
+		void FixedUpdate();
 		void Render();
 		void FrameEnd();
 

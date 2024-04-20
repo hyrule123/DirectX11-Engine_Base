@@ -29,9 +29,6 @@ namespace ehw
 		: m_collisionSystem(_owner)
 		, m_pxScene{ nullptr }
 		, m_defaultPxMaterial{}
-		, m_curUpdateInterval{ eFrameTimeStep::Frame_60 }
-		, m_accumulatedDeltaTime(0.f)
-		, m_transformSyncData()
 	{
 	}
 
@@ -88,42 +85,13 @@ namespace ehw
 
 	void Collision3D::FixedUpdate()
 	{
+
 		GameSceneToPxScene();
 
-		m_accumulatedDeltaTime += TimeManager::DeltaTime();
-		
-		int simulateCount = (int)(m_accumulatedDeltaTime / g_frameTimeStep[(int)m_curUpdateInterval]);
-		simulateCount = 2;
-
-		//for문을 돌면서 여러번 충돌검사를 진행하면 절망의 늪 현상이 일어날 수 있다
-		//https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/BestPractices.html
-		for (int i = 0; i < simulateCount; ++i)
-		{
-			const auto start = std::chrono::steady_clock::now();
-			m_pxScene->simulate(g_frameTimeStep[(int)m_curUpdateInterval]);
-
-			m_isFixedUpdated = true;
-			if (m_pxScene->fetchResults(true))
-			{
-				//위치 갱신
-				PxSceneToGameScene();
-			}
-
-			const auto end = std::chrono::steady_clock::now();
-
-			//만약 1회 업데이트에 걸리는 시간이 fixed interval보다 클 경우 1회만 하고 중지한다.
-			const float simulateDeltatime = std::chrono::duration<float>(end - start).count();
-			if (simulateDeltatime > g_frameTimeStep[(int)m_curUpdateInterval])
-			{
-				//break;
-			}
-		}
-
-		m_accumulatedDeltaTime -= g_frameTimeStep[(int)m_curUpdateInterval] * simulateCount;
-		if (0.f > m_accumulatedDeltaTime)
-		{
-			m_accumulatedDeltaTime = 0.f;
-		}
+		m_pxScene->simulate(TimeManager::FixedDeltaTime());
+		m_pxScene->fetchResults(true);
+		//위치 갱신
+		PxSceneToGameScene();
 	}
 
 	void Collision3D::GameSceneToPxScene()
@@ -157,15 +125,38 @@ namespace ehw
 
 	void Collision3D::PxSceneToGameScene()
 	{
-		if (m_isFixedUpdated)
+		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
+		if (actorCount == 0)
 		{
-			FetchTransformSyncDataFromPxActor();
+			return;
 		}
 
-		for (size_t i = 0; i < m_transformSyncData.size(); ++i)
+		std::vector<PxRigidActor*> actors(actorCount);
+
+		//PxScene->Scene의 경우 Dynamic만
+		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
+
+		for (size_t i = 0; i < actors.size(); ++i)
 		{
-			m_transformSyncData[i].transform->SetLocalRotation(m_transformSyncData[i].LocalRotation);
-			m_transformSyncData[i].transform->SetWorldPosition(m_transformSyncData[i].WorldPosition);
+			const PxTransform worldTransform = actors[i]->getGlobalPose();
+
+			const iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			if (rigidbody == nullptr || rigidbody->IsDestroyed())
+			{
+				continue;
+			}
+
+			//else if (rigidbody->IsTrigger())
+			//{
+			//	continue;
+			//}
+
+			Com_Transform* tr = rigidbody->GetOwner()->GetComponent<Com_Transform>();
+			tr->SetLocalRotation(worldTransform.q);
+			tr->SetWorldPosition(worldTransform.p);
+			//Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
+			//tr->SetWorldPosition(worldTransform.p);
+			//tr->SetLocalRotation(worldTransform.q);
 		}
 	}
 
@@ -283,7 +274,6 @@ namespace ehw
 
 	void Collision3D::FrameEnd()
 	{
-		m_isFixedUpdated = false;
 	}
 
 
@@ -345,37 +335,52 @@ namespace ehw
 			const PxTriggerPair& contactpair = pairs[i];
 
 			if (contactpair.flags & (PxTriggerPairFlag::eREMOVED_SHAPE_TRIGGER | PxTriggerPairFlag::eREMOVED_SHAPE_OTHER))
+			{
 				continue;
+			}
 
 			// if these actors do not exist in the scene anymore due to deallocation, do not process
-			if (contactpair.triggerActor->userData == nullptr || contactpair.otherActor->userData == nullptr)
+			else if (contactpair.triggerActor->userData == nullptr || contactpair.otherActor->userData == nullptr)
 			{
 				continue;
 			}
 
-			GameObject* triggerObject = static_cast<GameObject*>(contactpair.triggerActor->userData);
-			assert(triggerObject);
-			GameObject* otherObject = static_cast<GameObject*>(contactpair.otherActor->userData);
-			assert(otherObject);
-			if (triggerObject->IsDestroyed() || otherObject->IsDestroyed())
+			GameObject* leftObj = static_cast<iRigidbody*>(contactpair.triggerActor->userData)->GetOwner();
+			iCollider* leftCol = leftObj->GetComponent<iCollider>();
+
+			GameObject* rightObj = static_cast<iRigidbody*>(contactpair.otherActor->userData)->GetOwner();
+			iCollider* rightCol = rightObj->GetComponent<iCollider>();
+
+			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
 			{
 				continue;
 			}
-				
-
-			iCollider3D* triggerCollider = triggerObject->GetComponent<iCollider3D>();
-			iCollider3D* otherCollider = otherObject->GetComponent<iCollider3D>();
+			else if (leftCol == rightCol)
+			{
+				continue;
+			}
 
 			// process events
 			if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_FOUND))
 			{
-				triggerCollider->OnTriggerEnter(otherCollider);
-				otherCollider->OnTriggerEnter(triggerCollider);
+				leftCol->AddCollisionCount();
+				rightCol->AddCollisionCount();
+
+				leftCol->OnTriggerEnter(rightCol);
+				rightCol->OnTriggerEnter(leftCol);
+			}
+			else if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_PERSISTS))
+			{
+				leftCol->OnTriggerStay(rightCol);
+				rightCol->OnTriggerStay(leftCol);
 			}
 			else if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_LOST))
 			{
-				triggerCollider->OnTriggerExit(otherCollider);
-				otherCollider->OnTriggerExit(triggerCollider);
+				leftCol->SubCollisionCount();
+				rightCol->SubCollisionCount();
+
+				leftCol->OnTriggerExit(rightCol);
+				rightCol->OnTriggerExit(leftCol);
 			}
 		}
 	}
@@ -392,36 +397,50 @@ namespace ehw
 				continue;
 			}
 
-			iCollider3D* leftCollider = static_cast<iCollider3D*>(pairHeader.actors[0]->userData);
-			iCollider3D* rightCollider = static_cast<iCollider3D*>(pairHeader.actors[1]->userData);
-			if (leftCollider->IsDestroyed() || rightCollider->IsDestroyed())
-			{
-				continue;
-			}
-			else if (leftCollider == rightCollider)
-			{
-				continue;
-			}
+			GameObject* leftObj = static_cast<iRigidbody*>(pairHeader.actors[0]->userData)->GetOwner();
+			iCollider* leftCol = leftObj->GetComponent<iCollider>();
 
-			PxContactPairPoint collisionPoint{};
-			const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
-			const float3	   collisionPosition = collisionPoint.position;
+			GameObject* rightObj = static_cast<iRigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
+			iCollider* rightCol = rightObj->GetComponent<iCollider>();
+			
+			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
+			{
+				continue;
+			}
+			else if (leftCol == rightCol)
+			{
+				continue;
+			}
 
 			// invoke events
 			if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
-				leftCollider->OnCollisionEnter(rightCollider, collisionPosition);
-				rightCollider->OnCollisionEnter(leftCollider, collisionPosition);
+				leftCol->AddCollisionCount();
+				rightCol->AddCollisionCount();
+
+				PxContactPairPoint collisionPoint{};
+				const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
+				const float3	   collisionPosition = collisionPoint.position;
+
+				leftCol->OnCollisionEnter(rightCol, collisionPosition);
+				rightCol->OnCollisionEnter(leftCol, collisionPosition);
 			}
 			else if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
-				leftCollider->OnCollisionStay(rightCollider, collisionPosition);
-				rightCollider->OnCollisionStay(leftCollider, collisionPosition);
+				PxContactPairPoint collisionPoint{};
+				const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
+				const float3	   collisionPosition = collisionPoint.position;
+
+				leftCol->OnCollisionStay(rightCol, collisionPosition);
+				rightCol->OnCollisionStay(leftCol, collisionPosition);
 			}
 			else if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
-				leftCollider->OnCollisionExit(rightCollider);
-				rightCollider->OnCollisionExit(leftCollider);
+				leftCol->SubCollisionCount();
+				rightCol->SubCollisionCount();
+
+				leftCol->OnCollisionExit(rightCol);
+				rightCol->OnCollisionExit(leftCol);
 			}
 		}
 	}
@@ -499,7 +518,9 @@ namespace ehw
 
 		if (_layer < g_maxLayer)
 		{
-			ret.word0 = _layer;
+			std::bitset<g_maxLayer> layerBit{};
+			layerBit[_layer] = true;
+			ret.word0 = layerBit.to_ulong();
 			ret.word1 = m_collisionSystem->GetLayerCollisionMask(_layer).to_ulong();
 		}
 
@@ -512,7 +533,9 @@ namespace ehw
 
 		if (_layer < g_maxLayer)
 		{
-			ret.word0 = _layer;
+			std::bitset<g_maxLayer> layerBit{};
+			layerBit[_layer] = true;
+			ret.word0 = layerBit.to_ulong();
 			ret.word1 = m_collisionSystem->GetLayerRaycastMask(_layer).to_ulong();
 		}
 
@@ -538,47 +561,6 @@ namespace ehw
 	//	
 	//	m_pxScene = pxScene;
 	//}
-
-
-	void Collision3D::FetchTransformSyncDataFromPxActor()
-	{
-		m_transformSyncData.clear();
-
-		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC);
-		if (actorCount == 0)
-		{
-			return;
-		}
-
-		std::vector<PxRigidActor*> actors(actorCount);
-
-		//PxScene->Scene의 경우 Dynamic만
-		m_pxScene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC, reinterpret_cast<PxActor**>(actors.data()), actorCount);
-
-		for (size_t i = 0; i < actors.size(); ++i)
-		{
-			const PxTransform worldTransform = actors[i]->getGlobalPose();
-
-			const iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
-			if (rigidbody == nullptr || rigidbody->IsDestroyed())
-			{
-				continue;
-			}
-			
-			//else if (rigidbody->IsTrigger())
-			//{
-			//	continue;
-			//}
-
-			m_transformSyncData.push_back(tTransformSyncData{});
-			m_transformSyncData.back().transform = rigidbody->GetOwner()->GetComponent<Com_Transform>();
-			m_transformSyncData.back().LocalRotation = worldTransform.q;
-			m_transformSyncData.back().WorldPosition = worldTransform.p;
-			//Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
-			//tr->SetWorldPosition(worldTransform.p);
-			//tr->SetLocalRotation(worldTransform.q);
-		}
-	}
 
 
 	PxFilterFlags Collision3D::FilterShader(physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,

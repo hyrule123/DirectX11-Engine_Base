@@ -31,6 +31,30 @@ namespace ehw
 
 			for(int i = 0; i < fixedUpdateCount; ++i)
 			{
+				//if (i == 0)
+				//{
+				//	static bool toggle = true;
+				//	static auto start = std::chrono::high_resolution_clock::now();
+				//	static auto end = std::chrono::high_resolution_clock::now();
+
+				//	if (toggle)
+				//	{
+				//		start = std::chrono::high_resolution_clock::now();
+				//		toggle = !toggle;
+				//	}
+				//	else
+				//	{
+				//		end = std::chrono::high_resolution_clock::now();
+				//		toggle = !toggle;
+
+				//		
+				//		std::chrono::duration<float> dur = end - start;
+				//		std::stringstream str{};
+				//		str << std::to_string(dur.count()) << "\n";
+				//		DEBUG_LOG_A(str.str().c_str());
+				//	}
+				//}
+
 				auto start = std::chrono::high_resolution_clock::now();
 				m_activeScene->SceneFixedUpdate();
 				auto end = std::chrono::high_resolution_clock::now();
@@ -39,6 +63,7 @@ namespace ehw
 
 				averageFixedUpdateDuration += duration.count();
 			}
+
 
 			//횟수 계산
 			if (0 < fixedUpdateCount)

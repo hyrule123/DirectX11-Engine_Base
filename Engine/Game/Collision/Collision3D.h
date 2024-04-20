@@ -60,16 +60,11 @@ namespace ehw
 		physx::PxFilterData GetRaycastFilterData(uint32 _layer);
 
 	private:
-		void FetchTransformSyncDataFromPxActor();
-
 		static physx::PxFilterFlags FilterShader(
 			physx::PxFilterObjectAttributes _attributes0, physx::PxFilterData _filterData0,
 			physx::PxFilterObjectAttributes _attributes1, physx::PxFilterData _filterData1,
 			physx::PxPairFlags& _pairFlags,
 			const void* _constantBlock, physx::PxU32 _constantBlockSize);
-
-		inline void setUpdateInterval(eFrameTimeStep _interval) { m_curUpdateInterval = _interval; }
-		inline float getUpdateInterval() const { return g_frameTimeStep[static_cast<uint8>(m_curUpdateInterval)]; }
 
 		// PxSimulationEventCallback을(를) 통해 상속됨
 		void onConstraintBreak(physx::PxConstraintInfo* _constraints, physx::PxU32 _count) override;
@@ -80,12 +75,12 @@ namespace ehw
 		void onAdvance(const physx::PxRigidBody* const* _bodyBuffer, const physx::PxTransform* _poseBuffer, const physx::PxU32 _count) override;
 
 	private:
-		struct tTransformSyncData
-		{
-			Com_Transform* transform;
-			Quaternion LocalRotation;
-			float3 WorldPosition;
-		};
+		//struct tTransformSyncData
+		//{
+		//	Com_Transform* transform;
+		//	Quaternion LocalRotation;
+		//	float3 WorldPosition;
+		//};
 
 		CollisionSystem* const m_collisionSystem;
 		physx::PxScene* m_pxScene;
@@ -94,11 +89,7 @@ namespace ehw
 		//->정적 마찰력, 동적 마찰력, 반발력 프리셋.
 		//충돌체(PxShape 생성 시 필요), 프리셋 값을 변경 시 해당 material을 사용한 모든 충돌체의 프리셋 설정이 변경됨.
 		physx::PxMaterial* m_defaultPxMaterial;
-		eFrameTimeStep	m_curUpdateInterval;
-		float m_accumulatedDeltaTime;
-
-		bool m_isFixedUpdated;
-		std::vector<tTransformSyncData> m_transformSyncData;
+		//std::vector<tTransformSyncData> m_transformSyncData;
 
 		std::array<std::vector<tDebugDrawData>, (int)eCollider3D_Shape::END> m_debugInstancingData;
 	};

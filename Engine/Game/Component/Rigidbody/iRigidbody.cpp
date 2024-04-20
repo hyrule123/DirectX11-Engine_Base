@@ -20,9 +20,6 @@ namespace ehw
 
 	void iRigidbody::Init()
 	{
-		std::shared_ptr<int> i;
-		
-
 		m_rigidActor.Set(CreateRigidbody());
 		ASSERT_DEBUG(m_rigidActor, "PxActor 생성되지 않음.");
 		
