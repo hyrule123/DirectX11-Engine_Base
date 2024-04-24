@@ -572,7 +572,7 @@ namespace ehw
 			}
 			else
 			{
-				return PxFilterFlag::eKILL;
+				return PxFilterFlag::eSUPPRESS;
 			}
 
 			return PxFilterFlag::eDEFAULT;
@@ -588,7 +588,7 @@ namespace ehw
 			return PxFilterFlag::eDEFAULT;
 		}
 
-		return PxFilterFlag::eKILL;
+		return PxFilterFlag::eSUPPRESS;
 	}
 
 #pragma region NOT IMPLEMENTED
