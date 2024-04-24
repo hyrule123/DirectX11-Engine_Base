@@ -12,6 +12,8 @@ namespace ehw
         Com_Rigidbody_Dynamic();
         virtual ~Com_Rigidbody_Dynamic();
 
+        void FixedUpdate() final;
+
 #pragma region //Dynamic
         void SetVelocity(const float3& _velocity);
         float3 GetVelocity();
@@ -24,6 +26,8 @@ namespace ehw
         void SetMass(float _mass);
         float GetMass() const;
 
+        void SetDensity(float _density);
+
         void SetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag, bool _enable);
         bool GetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag) const;
         void SetRigidDynamicLockFlags(physx::PxRigidDynamicLockFlags _flags);
@@ -35,5 +39,24 @@ namespace ehw
 
     protected:
         physx::PxRigidActor* CreateRigidbody() final;
+
+    private:
+        inline void SetDensityOrMass();
+
+        bool m_isMassMode;
+
+        physx::PxReal m_densityOrMass;
     };
+
+    inline void Com_Rigidbody_Dynamic::SetDensityOrMass()
+    {
+        if (m_isMassMode)
+        {
+            SetMass(m_densityOrMass);
+        }
+        else
+        {
+            SetDensity(m_densityOrMass);
+        }
+    }
 }

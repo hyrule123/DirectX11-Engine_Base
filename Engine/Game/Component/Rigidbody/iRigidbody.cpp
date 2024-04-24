@@ -11,6 +11,7 @@ namespace ehw
 {
 	iRigidbody::iRigidbody()
 		: m_rigidActor{}
+		, m_ShapesModified{true}
 	{
 	}
 
@@ -55,12 +56,14 @@ namespace ehw
 		m_rigidActor.Reset();
 	}
 
+
 	bool iRigidbody::AttachColliderShape(physx::PxShape* _pxShape)
 	{
 		bool ret = false;
 		if (m_rigidActor)
 		{
 			ret = m_rigidActor->attachShape(*_pxShape);
+			m_ShapesModified = true;
 		}
 		return ret;
 	}
@@ -69,6 +72,7 @@ namespace ehw
 		if (m_rigidActor)
 		{
 			m_rigidActor->detachShape(*_pxShape);
+			m_ShapesModified = true;
 		}
 	}
 	void iRigidbody::UpdateGlobalPose()

@@ -89,6 +89,7 @@ namespace ehw
 
 		m_pxScene->simulate(TimeManager::FixedDeltaTime());
 		m_pxScene->fetchResults(true);
+
 		//위치 갱신
 		PxSceneToGameScene();
 	}

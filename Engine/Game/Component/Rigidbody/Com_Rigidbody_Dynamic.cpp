@@ -5,17 +5,27 @@
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Component/Transform/Com_Transform.h"
 
+#include "Engine/DefaultSettingVar.h"
+
 namespace ehw
 {
-
-
-
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
+		: m_isMassMode {false}
+		, m_densityOrMass {g_defaultDensity}
 	{
 	}
 
 	Com_Rigidbody_Dynamic::~Com_Rigidbody_Dynamic()
 	{
+	}
+
+	void Com_Rigidbody_Dynamic::FixedUpdate()
+	{
+		if (IsShapesModified())
+		{
+			SetDensityOrMass();
+			SetShapesModified(false);
+		}
 	}
 
 	physx::PxRigidActor* Com_Rigidbody_Dynamic::CreateRigidbody()
@@ -48,8 +58,6 @@ namespace ehw
 		if (rigidActor)
 		{
 			rigidActor->clearForce();
-			//Com_Transform* transform = GetOwner()->GetComponent<Com_Transform>();
-			//physx::PxRigidDynamic*Ext::addForceAtPos(*rigidActor, PhysXConverter::ToPxVec3(force), PhysXConverter::ToPxVec3(transform->GetWorldPosition()));
 		}
 	}
 
@@ -111,10 +119,13 @@ namespace ehw
 
 	void Com_Rigidbody_Dynamic::SetMass(float _mass)
 	{
+		m_isMassMode = true;
+		m_densityOrMass = _mass;
+
 		physx::PxRigidDynamic* dynamicRigid = static_cast<physx::PxRigidDynamic*>(GetPxActor());
 		if (dynamicRigid)
 		{
-			dynamicRigid->setMass(_mass);
+			physx::PxRigidBodyExt::setMassAndUpdateInertia(*dynamicRigid, _mass);
 		}
 	}
 
@@ -128,6 +139,18 @@ namespace ehw
 			ret = dynamicRigid->getMass();
 		}
 		return ret;
+	}
+
+	void Com_Rigidbody_Dynamic::SetDensity(float _density)
+	{
+		m_isMassMode = false;
+		m_densityOrMass = _density;
+
+		physx::PxRigidDynamic* dynamicRigid = static_cast<physx::PxRigidDynamic*>(GetPxActor());
+		if (dynamicRigid)
+		{
+			physx::PxRigidBodyExt::updateMassAndInertia(*dynamicRigid, _density);
+		}
 	}
 
 	void Com_Rigidbody_Dynamic::SetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag, bool _enable)
@@ -173,5 +196,7 @@ namespace ehw
 		}
 		return ret;
 	}
+
+
 }
 
