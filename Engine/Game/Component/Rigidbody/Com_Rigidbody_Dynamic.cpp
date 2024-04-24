@@ -118,6 +118,18 @@ namespace ehw
 		}
 	}
 
+	float Com_Rigidbody_Dynamic::GetMass() const
+	{
+		float ret = 0.f;
+
+		const physx::PxRigidDynamic* dynamicRigid = static_cast<const physx::PxRigidDynamic*>(GetPxActor());
+		if (dynamicRigid)
+		{
+			ret = dynamicRigid->getMass();
+		}
+		return ret;
+	}
+
 	void Com_Rigidbody_Dynamic::SetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag, bool _enable)
 	{
 		physx::PxRigidDynamic* rigidActor = static_cast<physx::PxRigidDynamic*>(GetPxActor());

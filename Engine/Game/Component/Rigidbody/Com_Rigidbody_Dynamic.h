@@ -22,6 +22,7 @@ namespace ehw
         void SetKinematic(bool _enable);
 
         void SetMass(float _mass);
+        float GetMass() const;
 
         void SetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag, bool _enable);
         bool GetRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::Enum _flag) const;
