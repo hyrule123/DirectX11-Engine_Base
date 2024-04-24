@@ -72,7 +72,7 @@ namespace ehw
 		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().getTolerancesScale() };
 		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
 		sceneDescription.cpuDispatcher = PhysXInstance::GetCPUDispatcher();
-		sceneDescription.filterShader = &Collision3D::FilterShader;
+		sceneDescription.filterShader = Collision3D::FilterShader;
 		sceneDescription.simulationEventCallback = this;
 
 		m_pxScene = PhysXInstance::GetInst().createScene(sceneDescription);
