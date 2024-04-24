@@ -39,7 +39,7 @@ namespace ehw
 
 		physx::PxMaterial* material = col3dmgr->GetDefaultPxMaterial();
 
-		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_offsetHalfScale, *material);
+		physx::PxShape* shape = PhysXInstance::GetInst().createShape(m_offsetHalfScale, *material, true);
 
 		ASSERT_DEBUG(shape, "Shape 생성 실패.");
 
