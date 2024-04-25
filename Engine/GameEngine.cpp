@@ -63,7 +63,6 @@ namespace ehw
 		ComponentInitializer::Init();
 		
 		TimeManager::Init();
-		TimeManager::SetRefreshRate(_desc.FPS_Limit);
 
 		InputManager::Init();
 		
@@ -105,7 +104,7 @@ namespace ehw
 			m_editorRunFunction();
 		}
 
-		TimeManager::LimitRefreshRate();
+		TimeManager::RenderFPS();
 
 		GPUManager::Present(true);
 	}

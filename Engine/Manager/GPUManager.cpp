@@ -51,8 +51,9 @@ namespace ehw
 
 		mResolutionX = _Desc.ResolutionX;
 		mResolutionY = _Desc.ResolutionY;
+		mRefreshRate = _Desc.RefreshRate;
 
-		if (false == SetResoulution(mResolutionX, mResolutionY))
+		if (false == SetResolution(mResolutionX, mResolutionY))
 		{
 			ASSERT(false, "GPU 초기화 작업 실패");
 			return false;
@@ -108,7 +109,7 @@ namespace ehw
 		return Result;
 	}
 
-	bool GPUManager::SetResoulution(UINT _ResolutionX, UINT _ResolutionY)
+	bool GPUManager::SetResolution(UINT _ResolutionX, UINT _ResolutionY)
 	{
 		bool bResult = false;
 		//1. 스왑체인 및 최종 렌더타겟 생성
@@ -160,7 +161,8 @@ namespace ehw
 		swapChainDesc.BufferDesc.Height = _ResolutionY;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 		swapChainDesc.BufferDesc.RefreshRate.Numerator = _RefreshRate;
-		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1u;
+
 		swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 

@@ -29,7 +29,8 @@ namespace ehw
 		void DetachColliderShape(physx::PxShape* _pxShape);
 
 		//Collision3D에서 호출
-		void UpdateGlobalPose();
+		void SyncToPhysXGlobalPose();
+		void FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform);
 
 		void			EnableGravity(bool enable);
 		bool			IsGravityEnabled() const;

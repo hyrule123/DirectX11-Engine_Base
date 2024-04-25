@@ -19,7 +19,7 @@ namespace ehw
 		static uint GetFixedUpdateCount();
 		inline static void SetFixedUpdateMode(bool _enable);
 
-		static void LimitRefreshRate();
+		static void RenderFPS();
 		
 		//0으로 설정시 실시간
 		static void SetFixedDeltaTime(float _fixedDeltaTime);
@@ -27,8 +27,6 @@ namespace ehw
 		//최대 FixedUpdate 횟수를 설정할 수 있음.
 		//UINT_MAX로 설정시 무제한
 		static void SetMaxFixedUpdatesPerFrame(uint _max);
-
-		static void SetRefreshRate(eFrameTimeStep _refreshRate);
 
 	private:
 		static void Init();
@@ -51,10 +49,6 @@ namespace ehw
 		static uint				m_maxFixedUpdatesPerFrame;
 
 		static float			m_accumulatedDeltaTime;
-		//
-
-		// FPS Limit 관련
-		static eFrameTimeStep m_refreshRate;
 		//
 
 		static float			mOneSecond;

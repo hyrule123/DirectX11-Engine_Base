@@ -119,7 +119,7 @@ namespace ehw
 				continue;
 			}
 
-			rigidbody->UpdateGlobalPose();
+			rigidbody->SyncToPhysXGlobalPose();
 		}
 	}
 
@@ -138,9 +138,7 @@ namespace ehw
 
 		for (size_t i = 0; i < actors.size(); ++i)
 		{
-			const PxTransform worldTransform = actors[i]->getGlobalPose();
-
-			const iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
 			if (rigidbody == nullptr || rigidbody->IsDestroyed())
 			{
 				continue;
@@ -151,12 +149,9 @@ namespace ehw
 			//	continue;
 			//}
 
-			Com_Transform* tr = rigidbody->GetOwner()->GetComponent<Com_Transform>();
-			tr->SetLocalRotation(worldTransform.q);
-			tr->SetWorldPosition(worldTransform.p);
-			//Com_Transform* tr = collider->GetOwner()->GetComponent<Com_Transform>();
-			//tr->SetWorldPosition(worldTransform.p);
-			//tr->SetLocalRotation(worldTransform.q);
+			const PxTransform worldTransform = actors[i]->getGlobalPose();
+
+			rigidbody->FetchFromPhysXGlobalPose(worldTransform);
 		}
 	}
 

@@ -20,7 +20,7 @@ namespace ehw
 		static inline std::shared_ptr<Texture> GetRenderTargetTex();
 		static inline std::shared_ptr<Texture> GetDepthStencilBufferTex();
 
-		static bool SetResoulution(UINT _ResolutionX, UINT _ResolutionY);
+		static bool SetResolution(UINT _ResolutionX, UINT _ResolutionY);
 		static UINT GetResolutionX() { return mResolutionX; }
 		static UINT GetResolutionY() { return mResolutionY; }
 		static uint2 GetResolution() { return uint2{ mResolutionX, mResolutionY }; }

@@ -22,8 +22,6 @@ namespace ehw
 
     float			                        TimeManager::m_accumulatedDeltaTime{};
 
-    eFrameTimeStep                          TimeManager::m_refreshRate{ g_defaultRefreshRate };
-
     float			                        TimeManager::mOneSecond{};
 
     void TimeManager::Init()
@@ -34,7 +32,6 @@ namespace ehw
 
         SetMaxFixedUpdatesPerFrame(g_maxFixedUpdatesPerFrame);
         SetFixedDeltaTime(g_defaultFixedUpdateDeltaTime);
-        SetRefreshRate(g_defaultRefreshRate);
     }
 
 
@@ -57,8 +54,6 @@ namespace ehw
 
         m_accumulatedDeltaTime = {};
         //
-
-        m_refreshRate = {};
 
         mOneSecond = {};
     }
@@ -134,7 +129,7 @@ namespace ehw
 
 
 
-    void TimeManager::LimitRefreshRate()
+    void TimeManager::RenderFPS()
     {
 #ifdef _DEBUG
         static int iCount = 0;
@@ -160,19 +155,6 @@ namespace ehw
         }
 #endif //_DEBUG
 
-        if (m_refreshRate != eFrameTimeStep::UNLIMITED)
-        {
-            auto now = std::chrono::high_resolution_clock::now();
-
-            std::chrono::duration<float> dur = now - m_prevTime;
-
-            float sleepTime = GetFrameTimeStep(m_refreshRate) - dur.count() - 0.000001f;
-
-            if (0.f < sleepTime)
-            {
-                std::this_thread::sleep_for(std::chrono::duration<float>(sleepTime));
-            }
-        }
 
     }
     void TimeManager::SetFixedDeltaTime(float _fixedDeltaTime)
@@ -187,12 +169,4 @@ namespace ehw
 
         m_maxFixedUpdatesPerFrame = _max;
     }
-
-    void TimeManager::SetRefreshRate(eFrameTimeStep _refreshRate)
-    {
-        ASSERT(_refreshRate < eFrameTimeStep::END, "FrameTimeStep 범위 에러");
-           
-        m_refreshRate = _refreshRate;
-    }
-
 }

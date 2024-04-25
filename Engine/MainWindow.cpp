@@ -18,7 +18,6 @@ namespace ehw
 
     BOOL MainWindow::Run(const tDesc_GameMainWindow& _Desc)
     {
-
         BOOL bResult = FALSE;
         bResult = Init(_Desc);
 
@@ -97,7 +96,6 @@ namespace ehw
         engineDesc.TopWindowPos = _Desc.TopPos;
         engineDesc.GPUDesc = _Desc.GPUDesc;
         engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
-        engineDesc.FPS_Limit = _Desc.FPS_Limit;
 
         ehw::GameEngine::Init(engineDesc);
 

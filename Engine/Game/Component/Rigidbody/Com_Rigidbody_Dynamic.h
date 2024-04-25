@@ -37,6 +37,8 @@ namespace ehw
         void ClearForce();
 #pragma endregion //Dynamic
 
+        
+
     protected:
         physx::PxRigidActor* CreateRigidbody() final;
 

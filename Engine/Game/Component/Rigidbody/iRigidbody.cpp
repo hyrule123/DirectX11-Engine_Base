@@ -75,7 +75,7 @@ namespace ehw
 			m_ShapesModified = true;
 		}
 	}
-	void iRigidbody::UpdateGlobalPose()
+	void iRigidbody::SyncToPhysXGlobalPose()
 	{
 		Com_Transform* tr = GetOwner()->Transform();
 		if (false == tr->IsTransformUpdated())
@@ -89,6 +89,16 @@ namespace ehw
 
 		m_rigidActor->setGlobalPose(transform);
 	}
+
+	void iRigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
+	{
+		Com_Transform* tr = GetOwner()->Transform();
+
+		tr->SetWorldPosition(_pxTransform.p);
+		tr->SetLocalRotation(_pxTransform.q);
+	}
+
+
 	void iRigidbody::EnableGravity(bool enable)
 	{
 		if (m_rigidActor)
