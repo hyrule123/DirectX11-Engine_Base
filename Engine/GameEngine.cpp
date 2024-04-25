@@ -29,27 +29,27 @@ namespace ehw
 	bool			GameEngine::mbInitialized = false;
 	std::function<void()> GameEngine::m_editorRunFunction = nullptr;
 
-	BOOL GameEngine::Init(const tGameEngineDesc& _AppDesc)
+	BOOL GameEngine::Init(const tGameEngineDesc& _desc)
 	{
 		AtExit::AddFunc(Release);
 
-		if (nullptr == _AppDesc.Hwnd)
+		if (nullptr == _desc.Hwnd)
 		{
 			return FALSE;
 		}
-		mHwnd = _AppDesc.Hwnd;
+		mHwnd = _desc.Hwnd;
 
-		SetWindowPos(_AppDesc.LeftWindowPos, _AppDesc.TopWindowPos);
-		SetWindowSize(_AppDesc.Width, _AppDesc.Height);
+		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
+		SetWindowSize(_desc.Width, _desc.Height);
 
 		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
 
 		PathManager::Init();
 
 		//RenderMgr은 GPUMgr에서
-		if (false == GPUManager::Init(_AppDesc.GPUDesc))
+		if (false == GPUManager::Init(_desc.GPUDesc))
 		{
-			mHdc = GetDC(_AppDesc.Hwnd);
+			mHdc = GetDC(_desc.Hwnd);
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
 		}
@@ -63,12 +63,14 @@ namespace ehw
 		ComponentInitializer::Init();
 		
 		TimeManager::Init();
+		TimeManager::SetRefreshRate(_desc.FPS_Limit);
+
 		InputManager::Init();
 		
 		PhysXInstance::Init();
 		SceneManager::Init();
 
-		m_editorRunFunction = _AppDesc.EditorRunFunction;
+		m_editorRunFunction = _desc.EditorRunFunction;
 
 		mbInitialized = true;
 
@@ -93,8 +95,6 @@ namespace ehw
 
 	void GameEngine::Render()
 	{
-		TimeManager::Render(mHdc);
-
 		//최종 렌더타겟 Clear
 		GPUManager::ClearRenderTarget();
 
@@ -104,6 +104,8 @@ namespace ehw
 		{
 			m_editorRunFunction();
 		}
+
+		TimeManager::LimitRefreshRate();
 
 		GPUManager::Present(true);
 	}

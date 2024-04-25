@@ -18,6 +18,7 @@ namespace ehw
 		int TopPos;
 		int Width;
 		int Height;
+		eFrameTimeStep FPS_Limit;
 
 		std::vector<std::function<void()>> ExternalInitFuncs;
 

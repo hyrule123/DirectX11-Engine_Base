@@ -25,6 +25,8 @@ namespace ehw
 	private:
 		static std::unique_ptr<iScene>				m_activeScene;
 		static std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene> ()>> m_umapSceneConstructor;
+
+		static bool m_isFixedUpdating;
 	};
 
 	template<typename T> requires std::is_base_of_v<iScene, T>

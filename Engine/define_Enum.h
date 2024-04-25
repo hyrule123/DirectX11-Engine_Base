@@ -41,6 +41,7 @@ namespace ehw
 
 	enum class eFrameTimeStep
 	{
+		UNLIMITED,
 		Frame_240,
 		Frame_144,
 		Frame_120,
@@ -56,6 +57,7 @@ namespace ehw
 	};
 	static constexpr std::array<float, (int)eFrameTimeStep::END> g_frameTimeStep
 	{
+		0.f,
 		1.f / 240.f,
 		1.f / 144.f,
 		1.f / 120.f,

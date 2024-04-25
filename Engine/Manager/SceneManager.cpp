@@ -25,52 +25,16 @@ namespace ehw
 	{
 		if (m_activeScene)
 		{
-			int fixedUpdateCount = TimeManager::GetFixedUpdateCount();
+			TimeManager::SetFixedUpdateMode(true);
 
-			float averageFixedUpdateDuration = 0.f;
+			uint fixedUpdateCount = TimeManager::GetFixedUpdateCount();
 
-			for(int i = 0; i < fixedUpdateCount; ++i)
+			for(uint i = 0; i < fixedUpdateCount; ++i)
 			{
-				//if (i == 0)
-				//{
-				//	static bool toggle = true;
-				//	static auto start = std::chrono::high_resolution_clock::now();
-				//	static auto end = std::chrono::high_resolution_clock::now();
-
-				//	if (toggle)
-				//	{
-				//		start = std::chrono::high_resolution_clock::now();
-				//		toggle = !toggle;
-				//	}
-				//	else
-				//	{
-				//		end = std::chrono::high_resolution_clock::now();
-				//		toggle = !toggle;
-
-				//		
-				//		std::chrono::duration<float> dur = end - start;
-				//		std::stringstream str{};
-				//		str << std::to_string(dur.count()) << "\n";
-				//		DEBUG_LOG_A(str.str().c_str());
-				//	}
-				//}
-
-				auto start = std::chrono::high_resolution_clock::now();
 				m_activeScene->SceneFixedUpdate();
-				auto end = std::chrono::high_resolution_clock::now();
-
-				std::chrono::duration<float> duration = end - start;
-
-				averageFixedUpdateDuration += duration.count();
 			}
 
-
-			//횟수 계산
-			if (0 < fixedUpdateCount)
-			{
-				averageFixedUpdateDuration /= (float)fixedUpdateCount;
-				TimeManager::AdjustFixedUpdateTimeStep(averageFixedUpdateDuration);
-			}
+			TimeManager::SetFixedUpdateMode(false);
 		}
 	}
 

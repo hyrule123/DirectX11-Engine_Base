@@ -26,7 +26,6 @@ namespace ehw
 	{
 		UINT ResolutionX;
 		UINT ResolutionY;
-		UINT RefreshRate;
 	};
 
 	struct tGameEngineDesc
@@ -36,6 +35,7 @@ namespace ehw
 		int	 TopWindowPos;
 		int  Width;
 		int  Height;
+		eFrameTimeStep FPS_Limit;
 		tGPUManagerDesc GPUDesc;
 		WNDCLASSEX WinClassDesc;
 

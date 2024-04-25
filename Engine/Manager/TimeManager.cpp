@@ -9,34 +9,56 @@
 
 namespace ehw
 {
-    float	            TimeManager::m_deltaTime{};
-    float               TimeManager::m_delatTime_max_cap_per_frame{ g_default_deltatime_max_cap };
+    float                                   TimeManager::m_currentDeltaTime{};
 
-    float			    TimeManager::m_accumulatedDeltaTime{};
-    eFrameTimeStep	    TimeManager::m_minFixedUpdateTimeStep{ g_default_FixedUpdate_TimeStep };
-    eFrameTimeStep	    TimeManager::m_currentTimeStep{ g_default_FixedUpdate_TimeStep };
-    int				TimeManager::m_fixedUpdateCount{};
-    int				TimeManager::m_maxFixedUpdatesPerFrame{ g_default_FixedUpdate_max_count_per_frame } ;
+    float	                                TimeManager::m_deltaTime{};
+    float                                   TimeManager::m_delatTime_max_cap_per_frame{ g_default_deltatime_max_cap };
 
-    std::chrono::steady_clock::time_point TimeManager::m_prevTime{};
-    std::chrono::steady_clock::time_point TimeManager::m_currentTime{};
+    std::chrono::steady_clock::time_point   TimeManager::m_prevTime{};
+    std::chrono::steady_clock::time_point   TimeManager::m_currentTime{};
 
-    float			    TimeManager::mOneSecond{};
+    float                                   TimeManager::m_fixedDeltaTime{ g_defaultFixedUpdateDeltaTime };
+    uint				                    TimeManager::m_maxFixedUpdatesPerFrame{ g_maxFixedUpdatesPerFrame };
+
+    float			                        TimeManager::m_accumulatedDeltaTime{};
+
+    eFrameTimeStep                          TimeManager::m_refreshRate{ g_defaultRefreshRate };
+
+    float			                        TimeManager::mOneSecond{};
 
     void TimeManager::Init()
     {
         AtExit::AddFunc(Release);
 
         m_prevTime = std::chrono::high_resolution_clock::now();
+
+        SetMaxFixedUpdatesPerFrame(g_maxFixedUpdatesPerFrame);
+        SetFixedDeltaTime(g_defaultFixedUpdateDeltaTime);
+        SetRefreshRate(g_defaultRefreshRate);
     }
 
 
     void TimeManager::Release()
     {
+        m_currentDeltaTime = {};
+
+        
         m_deltaTime = {};
+        m_delatTime_max_cap_per_frame = {};
 
         m_prevTime = {};
         m_currentTime = {};
+        //
+
+
+        // FixedUpdate 관련
+        m_fixedDeltaTime = {};
+        m_maxFixedUpdatesPerFrame = {};
+
+        m_accumulatedDeltaTime = {};
+        //
+
+        m_refreshRate = {};
 
         mOneSecond = {};
     }
@@ -59,22 +81,7 @@ namespace ehw
             m_prevTime = m_currentTime;
         }
 
-        //FixedUpdate 횟수 계산
-        {
-            m_accumulatedDeltaTime += m_deltaTime;
-            
-            m_fixedUpdateCount = (int)(m_accumulatedDeltaTime / GetFrameTimeStep(m_currentTimeStep));
-            if (m_maxFixedUpdatesPerFrame < m_fixedUpdateCount)
-            {
-                m_fixedUpdateCount = m_maxFixedUpdatesPerFrame;
-            }
-            
-            m_accumulatedDeltaTime -= GetFrameTimeStep(m_currentTimeStep) * (float)m_fixedUpdateCount;
-            if (m_accumulatedDeltaTime < 0.f)
-            {
-                m_accumulatedDeltaTime = 0.f;
-            }
-        }
+        m_currentDeltaTime = m_deltaTime;
 
 
         //static std::chrono::steady_clock::time_point end{};
@@ -98,11 +105,40 @@ namespace ehw
         //}
     }
 
-    void TimeManager::Render(HDC _hdc)
+    uint TimeManager::GetFixedUpdateCount()
     {
+        //FixedUpdate 횟수 계산
+        uint count = 0u;
+
+        if (m_fixedDeltaTime == 0.f)
+        {
+            count = 1u;
+            m_accumulatedDeltaTime = 0.f;
+        }
+        else
+        {
+            m_accumulatedDeltaTime += m_deltaTime;
+            count = (uint)(m_accumulatedDeltaTime / m_fixedDeltaTime);
+
+            m_accumulatedDeltaTime -= ((float)count * m_fixedDeltaTime);
+            if (m_accumulatedDeltaTime < 0.f)
+            {
+                m_accumulatedDeltaTime = 0.f;
+            }
+
+            count = m_maxFixedUpdatesPerFrame < count ? m_maxFixedUpdatesPerFrame : count;
+        }
+
+        return count;
+    }
+
+
+
+    void TimeManager::LimitRefreshRate()
+    {
+#ifdef _DEBUG
         static int iCount = 0;
         ++iCount;
-
 
         // 1 초에 한번
         mOneSecond += m_deltaTime;
@@ -122,40 +158,41 @@ namespace ehw
             mOneSecond = 0.f;
             iCount = 0;
         }
+#endif //_DEBUG
+
+        if (m_refreshRate != eFrameTimeStep::UNLIMITED)
+        {
+            auto now = std::chrono::high_resolution_clock::now();
+
+            std::chrono::duration<float> dur = now - m_prevTime;
+
+            float sleepTime = GetFrameTimeStep(m_refreshRate) - dur.count() - 0.000001f;
+
+            if (0.f < sleepTime)
+            {
+                std::this_thread::sleep_for(std::chrono::duration<float>(sleepTime));
+            }
+        }
+
     }
-    void TimeManager::AdjustFixedUpdateTimeStep(const float _fixedUpdateDuration)
+    void TimeManager::SetFixedDeltaTime(float _fixedDeltaTime)
     {
-#ifdef _DEBUG
-        if (1.f < _fixedUpdateDuration)
-        {
-            return;
-        }
-#endif
+        ASSERT(0.f < _fixedDeltaTime, "Fixed Delta Time은 음수가 될 수 없음.");
 
-        int minTimeStep = (int)m_minFixedUpdateTimeStep;
-        int currentTimeStep = (int)m_currentTimeStep;
-
-        //최소 TimeStep부터 최대 TimeStep까지 순회 돌아주면서 현재 FixedUpdate에 걸리는 시간에 맞게 조정한다.
-        for (minTimeStep; minTimeStep < (int)eFrameTimeStep::END; ++minTimeStep)
-        {
-            if ((minTimeStep + 1) == (int)eFrameTimeStep::END)
-            {
-                break;
-            }
-
-            else if (_fixedUpdateDuration <= GetFrameTimeStep(minTimeStep))
-            {
-                break;
-            }
-
-            else if (
-                GetFrameTimeStep(minTimeStep) <= _fixedUpdateDuration
-                && _fixedUpdateDuration <= GetFrameTimeStep(minTimeStep + 1))
-            {
-                break;
-            }
-        }
-
-        m_currentTimeStep = (eFrameTimeStep)minTimeStep;
+        m_fixedDeltaTime = _fixedDeltaTime;
     }
+    void TimeManager::SetMaxFixedUpdatesPerFrame(uint _max)
+    {
+        ASSERT(0u < _max, "0으로는 설정할 수 없습니다.");
+
+        m_maxFixedUpdatesPerFrame = _max;
+    }
+
+    void TimeManager::SetRefreshRate(eFrameTimeStep _refreshRate)
+    {
+        ASSERT(_refreshRate < eFrameTimeStep::END, "FrameTimeStep 범위 에러");
+           
+        m_refreshRate = _refreshRate;
+    }
+
 }
