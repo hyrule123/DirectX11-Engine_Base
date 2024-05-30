@@ -2,7 +2,7 @@
 
 #include "Engine/Util/Serialize/json.h"
 
-#include "Engine/Game/GameObject.h"
+#include "Engine/Scene/GameObject.h"
 
 #include "Engine/Manager/ResourceManager.h"
 

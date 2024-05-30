@@ -2,8 +2,8 @@
 
 #include "Engine/Util/AtExit.h"
 
-#include "Engine/Game/Collision/PhysXInstance.h"
-#include "Engine/Game/Component/ComponentInitializer.h"
+#include "Engine/Scene/Collision/PhysXInstance.h"
+#include "Engine/Scene/Component/ComponentInitializer.h"
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/TimeManager.h"

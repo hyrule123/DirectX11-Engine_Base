@@ -66,8 +66,7 @@ namespace ehw
 
 	inline void GPUManager::Present(bool _bVSync)
 	{
-		int VSync = _bVSync ? 1 : 0;
-		mSwapChain->Present(VSync, 0u);
+		mSwapChain->Present(_bVSync ? 1 : 0, 0u);
 	}
 
 	inline std::shared_ptr<ehw::Texture> GPUManager::GetRenderTargetTex()
