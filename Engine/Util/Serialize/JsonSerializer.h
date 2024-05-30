@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GlobalVariable.h"
-#include "Engine/CommonType.h"
+#include "Engine/Common.h"
 
 #include "Engine/Util/type_traits_Ex.h"
 #include "Engine/Util/StringConverter.h"

@@ -203,12 +203,12 @@ void CreateEngineComponentKey()
         Desc.OwnerClassName = "ComponentInitializer";
         
         Desc.BaseType = "iComponent";
-        Desc.BasePath_FoundHeader = "Engine\\Game\\Component";
+        Desc.BasePath_FoundHeader = "Engine/Scene/Component";
 
-        Desc.IncludePath_OwnerClass = R"("Engine/Game/Component/ComponentInitializer.h")";
-        Desc.IncludePath_BaseTypeHeader = R"("Engine/Game/Component/iComponent.h")";
+        Desc.IncludePath_OwnerClass = R"("Engine/Scene/Component/ComponentInitializer.h")";
+        Desc.IncludePath_BaseTypeHeader = R"("Engine/Scene/Component/iComponent.h")";
         Desc.IncludePath_PreCompiledHeader = R"("Engine/PCH_Engine.h")";
-        Desc.IncludePath_StrKeyHeader = R"("Engine/Game/Component/strKey_Component.h")";
+        Desc.IncludePath_StrKeyHeader = R"("Engine/Scene/Component/strKey_Component.h")";
         Desc.IncludePath_ManagerHeader = R"("Engine/Manager/ComponentManager.h")";
 
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
@@ -259,7 +259,7 @@ void CreateUserComponentKey()
 
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_UserComponent.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/iComponent.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/iComponent.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
         Desc.IncludePath_ManagerHeader = R"(<Engine/Manager/ComponentManager.h>)";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
@@ -312,7 +312,7 @@ void CreateScriptKey()
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
 
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/Script/iScript.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/Script/iScript.h>)";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Script.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
@@ -361,7 +361,7 @@ void CreateSceneKey()
         Desc.OwnerClassName = "ContentsInitializer";
 
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/iScene.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/iScene.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("Contents/PCH_Contents.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Scene.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/SceneManager.h>";

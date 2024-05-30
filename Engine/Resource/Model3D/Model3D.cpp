@@ -6,11 +6,11 @@
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/PathManager.h"
 
-#include "Engine/Game/iScene.h"
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
-#include "Engine/Game/Component/Animator/Com_Animator3D.h"
-#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
+#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/GameObject.h"
+#include "Engine/Scene/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "Engine/Scene/Component/Animator/Com_Animator3D.h"
+#include "Engine/Scene/Component/Animator/Animation3D_PlayData.h"
 
 #include "Engine/Resource/Shader/GraphicsShader.h"
 

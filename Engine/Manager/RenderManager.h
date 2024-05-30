@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GPU/CommonGPU.h"
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 #include "Engine/Util/SimpleMath.h"
 
 

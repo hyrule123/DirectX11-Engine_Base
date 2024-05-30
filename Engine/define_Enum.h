@@ -4,7 +4,6 @@
 
 namespace ehw
 {
-
 	enum class eResult
 	{
 		//음수 = 성공

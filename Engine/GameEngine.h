@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 
 namespace ehw
 {

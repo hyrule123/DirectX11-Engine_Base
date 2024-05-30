@@ -21,7 +21,7 @@ namespace define_Preset
 	{
 		PRESET(ContentsProj, "./Project/Contents");
 		PRESET(EngineProj, "./Project/Base/Engine");
-		PRESET(EngineComponent, "./Project/Base/Engine/Game/Component");
+		PRESET(EngineComponent, "./Project/Base/Engine/Scene/Component");
 		PRESET(Shader_Proj, "./Project/Shader");
 
 

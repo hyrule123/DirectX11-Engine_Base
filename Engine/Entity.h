@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/define_Enum.h"
 #include "Engine/define_Macro.h"
-#include "Engine/CommonType.h"
+#include "Engine/Common.h"
 
 #include <memory>
 

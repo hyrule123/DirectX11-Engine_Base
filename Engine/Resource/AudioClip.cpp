@@ -1,7 +1,7 @@
 #include "Engine/Resource/AudioClip.h"
 
 
-#include "Engine/Game/Component/Transform/Com_Transform.h"
+#include "Engine/Scene/Component/Transform/Com_Transform.h"
 
 #include "Engine/Manager/ResourceManager.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GPU/define_GPU.h"
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
 #include "Engine/DefaultShader/Resource.hlsli"

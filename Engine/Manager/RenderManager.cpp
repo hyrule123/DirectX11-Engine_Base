@@ -18,9 +18,9 @@
 #include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/MultiRenderTarget.h"
 
-#include "Engine/Game/Component/Light/Com_Light3D.h"
-#include "Engine/Game/Component/Camera/Com_Camera.h"
-#include "Engine/Game/Component/Renderer/iRenderer.h"
+#include "Engine/Scene/Component/Light/Com_Light3D.h"
+#include "Engine/Scene/Component/Camera/Com_Camera.h"
+#include "Engine/Scene/Component/Renderer/iRenderer.h"
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"

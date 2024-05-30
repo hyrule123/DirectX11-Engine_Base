@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/CommonType.h"
+#include "Engine/Common.h"
 
 //전방선언
 namespace FMOD

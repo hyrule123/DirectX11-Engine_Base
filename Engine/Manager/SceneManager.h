@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/iScene.h"
+#include "Engine/Scene/iScene.h"
 
 namespace ehw
 {

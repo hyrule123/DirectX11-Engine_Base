@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/CommonType.h"
+#include "Engine/Common.h"
 #include "Engine/define_Enum.h"
 
 namespace ehw

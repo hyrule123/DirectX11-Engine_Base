@@ -4,7 +4,7 @@
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/Util/Serialize/Serializable.h"
 
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 
 namespace ehw
 {

@@ -1,9 +1,8 @@
 #pragma once
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 
 #include <vector>
 #include <functional>
-
 
 //설명: 윈도우 인스턴스 초기화 및 GameEngine 루프를 실행하는곳
 namespace ehw

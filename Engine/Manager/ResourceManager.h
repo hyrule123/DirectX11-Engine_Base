@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Util/AtExit.h"
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 #include "Engine/Resource/iResource.h"
 
 #include "ResourceManagers.h"

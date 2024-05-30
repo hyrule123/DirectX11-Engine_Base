@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/iResource.h"
 
-#include "Engine/CommonStruct.h"
+#include "Engine/Common.h"
 #include "Engine/GPU/CommonGPU.h"
 
 #include "Engine/Util/Serialize/Serializable.h"

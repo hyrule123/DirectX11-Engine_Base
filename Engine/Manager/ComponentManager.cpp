@@ -2,7 +2,7 @@
 
 #include "Engine/Util/AtExit.h"
 
-#include "Engine/Game/Component/iComponent.h"
+#include "Engine/Scene/Component/iComponent.h"
 
 namespace ehw
 {
