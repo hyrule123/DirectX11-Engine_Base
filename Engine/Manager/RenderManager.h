@@ -18,7 +18,6 @@ namespace ehw
 	class iLight;
 	class Com_Light3D;
 	class GameObject;
-	
 
 	class MultiRenderTarget;
 

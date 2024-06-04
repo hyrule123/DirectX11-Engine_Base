@@ -31,22 +31,22 @@ namespace ehw
 
 	void iScene::SceneInit()
 	{
-		tDesc desc{};
-		Init(desc);
+		//tDesc desc{};
+		//Init(desc);
 
-		if (desc.EnableCollision2D || desc.EnableCollision3D)
-		{
-			m_collisionSystem = std::make_unique<CollisionSystem>(this);
+		//if (desc.EnableCollision2D || desc.EnableCollision3D)
+		//{
+		//	m_collisionSystem = std::make_unique<CollisionSystem>(this);
 
-			if (desc.EnableCollision2D)
-			{
-				m_collisionSystem->CreateCollision2D();
-			}
-			if (desc.EnableCollision3D)
-			{
-				m_collisionSystem->CreateCollision3D();
-			}
-		}
+		//	if (desc.EnableCollision2D)
+		//	{
+		//		m_collisionSystem->CreateCollision2D();
+		//	}
+		//	if (desc.EnableCollision3D)
+		//	{
+		//		m_collisionSystem->CreateCollision3D();
+		//	}
+		//}
 	}
 
 	void iScene::SceneAwake()
@@ -237,6 +237,16 @@ namespace ehw
 		m_gameObjects.resize(iterPos);
 
 		return dontGameObjs;
+	}
+
+	void iScene::CreateCollisionSystem()
+	{
+		m_collisionSystem = std::make_unique<CollisionSystem>(this);
+	}
+
+	void iScene::CreateSceneRenderer()
+	{
+		m_sceneRenderer = std::make_unique<SceneRenderer>(this);
 	}
 
 	void iScene::RemoveDestroyed()

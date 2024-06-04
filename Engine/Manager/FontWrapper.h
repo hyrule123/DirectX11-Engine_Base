@@ -9,7 +9,6 @@
 
 namespace ehw
 {
-
 	class FontWrapper
 	{
 		friend class GameEngine;

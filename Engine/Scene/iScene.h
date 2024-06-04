@@ -3,7 +3,6 @@
 #include "Engine/Common.h"
 #include "Engine/Util/type_traits_Ex.h"
 
-
 namespace ehw
 {
 	class GameObject;
@@ -13,12 +12,6 @@ namespace ehw
 		: public Entity
 	{
 	public:
-		struct tDesc
-		{
-			bool EnableCollision2D;
-			bool EnableCollision3D;
-		};
-
 		iScene();
 		virtual ~iScene();
 
@@ -31,7 +24,7 @@ namespace ehw
 		void SceneFrameEnd();
 
 		//로직 재정의
-		virtual void Init(tDesc& _desc) = 0;//tDesc를 통해 세부 설정
+		virtual void Init() {}
 		virtual void OnEnter() = 0;//리소스 로드
 
 		virtual void FixedUpdate() {}
@@ -52,16 +45,25 @@ namespace ehw
 		GameObjects		GetDontDestroyGameObjects();
 		const GameObjects& GetGameObjects() { return m_gameObjects; }
 
-		CollisionSystem* GetCollisionSystem() { return m_collisionSystem.get(); }
-		CollisionSystem* GetCollisionSystem() const { return m_collisionSystem.get(); }
+		CollisionSystem* GetCollisionSystem() { 
+			if (nullptr == m_collisionSystem) { CreateCollisionSystem(); }
+			return m_collisionSystem.get(); 
+		}
+
+		SceneRenderer* GetSceneRenderer() {
+			if(nullptr == m_sceneRenderer) { CreateSceneRenderer(); }
+			return m_sceneRenderer.get();
+		}
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
 
 	private:
+		void CreateCollisionSystem();
+		void CreateSceneRenderer();
 		void RemoveDestroyed();
 
-		//true: 문제 있음, false: 문제 없음
+		//true: 문제 발생, false: 문제 없음 - stl pred func에 필요함
 		bool SetGameObjectInfo(std::unique_ptr<GameObject>& _obj, const uint _layer);
 		void AddGameObjectInternal(std::unique_ptr<GameObject>& _obj);
 		void AddGameObjectsInternal(GameObjects& _from);

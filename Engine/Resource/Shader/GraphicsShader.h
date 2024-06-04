@@ -47,8 +47,6 @@ namespace ehw
 		ID3D11InputLayout* GetInputLayout() { return m_inputLayout.Get(); }
 		ID3D11InputLayout** GetInputLayoutAddressOf() { return m_inputLayout.GetAddressOf(); }
 
-
-
 		void SetRSState(eRSType _state) { m_rasterizerType = _state; }
 		eRSType GetRSState() const { return m_rasterizerType; }
 
@@ -65,7 +63,6 @@ namespace ehw
 		inline void SetEditMode(bool _bEditMode) { m_bEditMode = _bEditMode; }
 		inline void SetShaderKey(eGSStage _stage, const std::string_view _strKey);
 		inline const std::string& GetShaderKey(eGSStage _stage) { return m_arrShaderCode[(int)_stage].strKey; }
-		
 
 	private:
 		eResult CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
