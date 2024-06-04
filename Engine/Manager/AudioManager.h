@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Common.h"
 
-#include "Engine/Util/Singleton.h"
+#include "Engine/Util/StaticSingleton.h"
 
 //전방선언
 namespace FMOD
@@ -17,13 +17,17 @@ namespace FMOD
 
 namespace ehw
 {
-	class AudioManager : public Singleton<AudioManager>
+	class AudioManager final : public StaticSingleton<AudioManager>
 	{
-		friend class Singleton<AudioManager>;
 		friend class GameEngine;
+		friend class StaticSingleton<AudioManager>;
+
 	protected:
 		AudioManager();
-		virtual ~AudioManager();
+		~AudioManager();
+
+		virtual bool Init() final;
+		virtual void Release() final;
 
 	public:
 		bool CreateSound(const std::filesystem::path& _fullPath, FMOD::Sound** _sound);

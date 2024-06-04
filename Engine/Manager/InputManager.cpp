@@ -11,13 +11,11 @@
 
 namespace ehw
 {
-	
-
-	std::vector<InputManager::tKey> InputManager::mKeys{};
+	std::vector<InputManager::tKey> InputManager::mKeys;
 	float2 InputManager::mMousePos{};
 	float2 InputManager::mMousePosPrev{};
 	float2 InputManager::mMouseDir{};
-	int ASCII[(uint)eKeyCode::END] =
+	constexpr int ASCII[(uint)eKeyCode::END] =
 	{
 		//Alphabet
 		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',

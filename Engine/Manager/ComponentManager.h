@@ -23,17 +23,9 @@ namespace ehw
         static const std::string_view GetComponentName();
         inline static const std::string_view GetComponentName(uint32 _ComID);
 
-        //template <typename T>
-        //static inline constexpr eComponentCategory GetComponentCategory();
-
-        //template <typename T>
-        //static inline constexpr bool IsBaseComponent();
-
     private:
         static void Init();
         static void Release();
-
-        
 
     private:
         static std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> mUmapComConstructor;

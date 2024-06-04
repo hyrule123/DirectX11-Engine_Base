@@ -1,14 +1,16 @@
-
 #include "AtExit.h"
 
-std::stack<std::function<void()>> AtExit::mAtExitFuncs;
+namespace ehw {
+	std::stack<std::function<void()>> AtExit::mAtExitFuncs;
 
-void AtExit::CallAtExit()
-{
-	while (false == mAtExitFuncs.empty())
+	void AtExit::CallAtExit()
 	{
-		mAtExitFuncs.top()();
-		mAtExitFuncs.pop();
+		while (false == mAtExitFuncs.empty())
+		{
+			mAtExitFuncs.top()();
+			mAtExitFuncs.pop();
+		}
 	}
 }
+
 

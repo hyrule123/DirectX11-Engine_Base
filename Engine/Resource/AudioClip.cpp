@@ -55,7 +55,7 @@ namespace ehw
 			mSound->setMode(FMOD_LOOP_OFF);
 
 		AudioManager::GetInst().SoundPlay(mSound, &mChannel);
-	}
+	} 
 
 	void AudioClip::Stop()
 	{

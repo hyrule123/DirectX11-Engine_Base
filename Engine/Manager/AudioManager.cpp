@@ -16,6 +16,14 @@ namespace ehw
 		: mSystem{}
 		, mCoreSystem{}
 	{
+	}
+
+	AudioManager::~AudioManager()
+	{
+	}
+
+	bool AudioManager::Init()
+	{
 		void* extraDriverData = NULL;
 
 		FMOD::Studio::System::create(&mSystem);
@@ -25,9 +33,11 @@ namespace ehw
 		mCoreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0);
 
 		mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
+
+		return true;
 	}
 
-	AudioManager::~AudioManager()
+	void AudioManager::Release()
 	{
 		mSystem->release();
 		mSystem = nullptr;

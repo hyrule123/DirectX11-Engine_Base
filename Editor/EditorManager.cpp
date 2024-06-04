@@ -1,7 +1,8 @@
 #include "Editor/EditorManager.h"
 
+#include <Engine/EngineMain.h>
 #include <Engine/GameEngine.h>
-#include <Engine/MainWindow.h>
+
 #include <Engine/Util/AtExit.h>
 #include <Engine/Util/Serialize/JsonSerializer.h>
 #include <Engine/Resource/Mesh.h>
@@ -66,7 +67,7 @@ namespace ehw::editor
 	{
 		AtExit::AddFunc(EditorManager::Release);
 
-		MainWindow::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
+		EngineMain::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		//mDebugObjects.resize((UINT)eColliderType::END);

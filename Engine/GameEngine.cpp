@@ -16,9 +16,9 @@
 #include "Engine/Manager/ThreadPoolManager.h"
 #include "Engine/Manager/GPUManager.h"
 
+#include "Engine/Util/StaticSingleton.h"
 
-
-#include "Engine/MainWindow.h"
+#include "Engine/EngineMain.h"
 
 #include "Engine/GlobalVariable.h"
 

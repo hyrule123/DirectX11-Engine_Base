@@ -3,10 +3,10 @@
 #include "Engine/Common.h"
 
 template<typename T>
-class Singleton {
+class LazySingleton {
 protected:
-	Singleton() {}
-	virtual ~Singleton() {}
+	LazySingleton() {}
+	virtual ~LazySingleton() {}
 
 private:
 	static T* m_instance;
@@ -17,10 +17,10 @@ public:
 };
 
 template<typename T>
-T* Singleton<T>::m_instance = nullptr;
+T* LazySingleton<T>::m_instance = nullptr;
 
 template<typename T>
-inline T& Singleton<T>::GetInst()
+inline T& LazySingleton<T>::GetInst()
 {
 	if (nullptr == m_instance)
 	{
@@ -32,6 +32,6 @@ inline T& Singleton<T>::GetInst()
 }
 
 template<typename T>
-inline void Singleton<T>::Destroy() { SAFE_DELETE(m_instance); }
+inline void LazySingleton<T>::Destroy() { SAFE_DELETE(m_instance); }
 
 

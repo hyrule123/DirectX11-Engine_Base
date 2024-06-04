@@ -315,7 +315,7 @@
     <ClCompile Include="Manager\SceneManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
+    <ClCompile Include="EngineMain.cpp">
       <Filter>High Level Interface</Filter>
     </ClCompile>
     <ClCompile Include="Util\Serialize\base64.cpp">
@@ -493,7 +493,7 @@
     <ClInclude Include="Util\AtExit.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Singleton.h">
+    <ClInclude Include="Util\LazySingleton.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h">
@@ -577,7 +577,7 @@
     <ClInclude Include="Manager\SceneManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="MainWindow.h">
+    <ClInclude Include="EngineMain.h">
       <Filter>High Level Interface</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -681,6 +681,7 @@
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="DefaultSettingVar.h" />
     <ClInclude Include="Scene\SceneRenderer.h" />
+    <ClInclude Include="Util\StaticSingleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

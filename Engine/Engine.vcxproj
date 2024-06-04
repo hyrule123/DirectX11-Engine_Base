@@ -243,6 +243,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Scene\Component\Rigidbody\iRigidbody.h" />
     <ClInclude Include="Scene\SceneRenderer.h" />
+    <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Common.h" />
@@ -271,7 +272,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Scene\Component\ComponentInitializer.h" />
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
-    <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="EngineMain.h" />
     <ClInclude Include="Manager\GPUManager.h" />
     <ClInclude Include="Resource\iAnimation.h" />
     <ClInclude Include="Scene\Component\Animator\iAnimator.h" />
@@ -307,7 +308,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Model3D\Model3D.h" />
     <ClInclude Include="Resource\Shader\iShader.h" />
     <ClInclude Include="Util\SimpleMath.h" />
-    <ClInclude Include="Util\Singleton.h" />
+    <ClInclude Include="Util\LazySingleton.h" />
     <ClInclude Include="Util\Serialize\json-forwards.h" />
     <ClInclude Include="Util\Serialize\json.h" />
     <ClInclude Include="Scene\Component\Light\Com_Light3D.h" />
@@ -381,7 +382,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Scene\Component\Renderer\Com_Renderer_UIBase.cpp" />
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="EngineMain.cpp" />
     <ClCompile Include="Manager\GPUManager.cpp" />
     <ClCompile Include="Resource\iAnimation.cpp" />
     <ClCompile Include="Scene\Component\Animator\iAnimator.cpp" />
