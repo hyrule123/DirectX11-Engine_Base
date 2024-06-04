@@ -39,13 +39,18 @@ namespace ehw
 		CollisionSystem(iScene* const _ownerScene);
 		~CollisionSystem();
 
-		Collision2D* CreateCollision2D();
-		Collision3D* CreateCollision3D();
-
-		inline Collision2D* GetCollision2D() { return m_col2DManager.get(); }
-		inline Collision2D* GetCollision2D() const { return m_col2DManager.get(); }
-		inline Collision3D* GetCollision3D() { return m_col3DManager.get(); }
-		inline Collision3D* GetCollision3D() const { return m_col3DManager.get(); }
+		inline Collision2D* GetCollision2D() {
+			if (nullptr == m_col2DManager) {
+				CreateCollision2D();
+			}
+			return m_col2DManager.get(); 
+		}
+		inline Collision3D* GetCollision3D() { 
+			if (nullptr == m_col3DManager) {
+				CreateCollision3D();
+			}
+			return m_col3DManager.get(); 
+		}
 
 
 		template <type_traits_Ex::is_enum_class_v T>
@@ -74,6 +79,9 @@ namespace ehw
 		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData);
 
 	private:
+		void CreateCollision2D();
+		void CreateCollision3D();
+
 		void FixedUpdate();
 		void FrameEnd();
 

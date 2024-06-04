@@ -12,15 +12,10 @@
 
 namespace ehw
 {
-	
-
-	FMOD::Studio::System* AudioManager::mSystem = nullptr;
-	FMOD::System* AudioManager::mCoreSystem = nullptr;
-
-	void AudioManager::Init()
+	AudioManager::AudioManager()
+		: mSystem{}
+		, mCoreSystem{}
 	{
-		AtExit::AddFunc(Release);
-
 		void* extraDriverData = NULL;
 
 		FMOD::Studio::System::create(&mSystem);
@@ -28,11 +23,11 @@ namespace ehw
 		// The example Studio project is authored for 5.1 sound, so set up the system output mode to match
 		mSystem->getCoreSystem(&mCoreSystem);
 		mCoreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0);
-		
+
 		mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
 	}
 
-	void AudioManager::Release()
+	AudioManager::~AudioManager()
 	{
 		mSystem->release();
 		mSystem = nullptr;

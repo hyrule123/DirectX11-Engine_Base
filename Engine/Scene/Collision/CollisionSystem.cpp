@@ -32,27 +32,14 @@ namespace ehw
 	{
 	}
 
-	Collision2D* CollisionSystem::CreateCollision2D()
+	void CollisionSystem::CreateCollision2D()
 	{
-		if (m_col2DManager)
-		{
-			return m_col2DManager.get();
-		}
-
 		m_col2DManager = std::make_unique<Collision2D>(this);
-		return m_col2DManager.get();
 	}
 
-	Collision3D* CollisionSystem::CreateCollision3D()
+	void CollisionSystem::CreateCollision3D()
 	{
-		if (m_col3DManager)
-		{
-			return m_col3DManager.get();
-		}
-
 		m_col3DManager = std::make_unique<Collision3D>(this);
-		m_col3DManager->Init();
-		return m_col3DManager.get();
 	}
 
 	void CollisionSystem::FixedUpdate()
@@ -88,8 +75,13 @@ namespace ehw
 
 	void CollisionSystem::FrameEnd()
 	{
-		m_col2DManager->FrameEnd();
-		m_col3DManager->FrameEnd();
+		if (m_col2DManager) {
+			m_col2DManager->FrameEnd();
+		}
+		
+		if (m_col3DManager) {
+			m_col3DManager->FrameEnd();
+		}
 	}
 
 	void CollisionSystem::PrepareDebugRender()
@@ -107,10 +99,13 @@ namespace ehw
 		ASSERT(m_debugMaterial.get(), "DebugMaterial 준비 실패");
 	}
 
-	void CollisionSystem::Render()
-	{
-		m_col2DManager->Render();
-		m_col3DManager->Render();
+	void CollisionSystem::Render() {
+		if (m_col2DManager) {
+			m_col2DManager->Render();
+		}
+		if (m_col3DManager) {
+			m_col3DManager->Render();
+		}
 	}
 
 	void CollisionSystem::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData)

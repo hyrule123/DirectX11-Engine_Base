@@ -36,7 +36,6 @@ namespace ehw
 		Collision3D(CollisionSystem* const _owner);
 		virtual ~Collision3D();
 
-		void Init();
 		void CreatePxScene();
 		void FixedUpdate();
 		void GameSceneToPxScene();

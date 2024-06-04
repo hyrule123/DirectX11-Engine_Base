@@ -30,6 +30,10 @@ namespace ehw
 		, m_pxScene{ nullptr }
 		, m_defaultPxMaterial{}
 	{
+		CreatePxScene();
+
+		m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
+		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
 	}
 
 	Collision3D::~Collision3D()
@@ -55,14 +59,6 @@ namespace ehw
 		PX_RELEASE(m_defaultPxMaterial);
 
 		PX_RELEASE(m_pxScene);
-	}
-
-	void Collision3D::Init()
-	{
-		CreatePxScene();
-
-		m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
-		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
 	}
 
 	void Collision3D::CreatePxScene()

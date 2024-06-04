@@ -14,8 +14,6 @@
 
 namespace ehw
 {
-	
-
 	Com_AudioListener::Com_AudioListener()
 	{
 
@@ -38,12 +36,10 @@ namespace ehw
 
 	void Com_AudioListener::Awake()
 	{
-
 	}
 
 	void Com_AudioListener::Update()
 	{
-
 	}
 
 	void Com_AudioListener::FinalUpdate()
@@ -55,7 +51,7 @@ namespace ehw
 		float3 up = tr->GetWorldDirection(eDirection::Up);
 
 		float3 vel = { 0.0f, 0.0f, 0.0f };
-		AudioManager::Set3DListenerAttributes(&pos, &vel, &foward, &up);
+		AudioManager::GetInst().Set3DListenerAttributes(&pos, &vel, &foward, &up);
 	}
 
 }
