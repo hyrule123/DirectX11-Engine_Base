@@ -1,54 +1,37 @@
 #pragma once
-#include "AtExit.h"
-
-
-
-#include <memory>
-
-#define SINGLETON(_Type) \
-friend class Singleton<_Type>;\
-friend std::unique_ptr<_Type> std::make_unique<_Type>();\
-friend std::unique_ptr<_Type>::deleter_type;\
-private:\
-_Type();\
-~_Type()
-
+#include "Engine/Util/AtExit.h"
+#include "Engine/Common.h"
 
 template<typename T>
-class Singleton
-{
-	friend class std::unique_ptr<T>;
+class Singleton {
 protected:
 	Singleton() {}
 	virtual ~Singleton() {}
 
 private:
-	static std::unique_ptr<T> m_Inst;
+	static T* m_instance;
 
 public:
-	static T* GetInst();
+	static T& GetInst();
 	static void Destroy();
 };
 
 template<typename T>
-std::unique_ptr<T> Singleton<T>::m_Inst = nullptr;
+T* Singleton<T>::m_instance = nullptr;
 
 template<typename T>
-inline T* Singleton<T>::GetInst()
+inline T& Singleton<T>::GetInst()
 {
-	if (nullptr == m_Inst)
+	if (nullptr == m_instance)
 	{
-		m_Inst = std::make_unique<T>();
+		m_instance = new T;
 		AtExit::AddFunc(Destroy);
 	}
 
-	return m_Inst.get();
+	return *(m_instance);
 }
 
 template<typename T>
-inline void Singleton<T>::Destroy()
-{
-	m_Inst.reset();
-}
+inline void Singleton<T>::Destroy() { SAFE_DELETE(m_instance); }
 
 
