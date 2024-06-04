@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Base/EditorWindow.h"
 
-#include <Engine/CommonStruct.h>
+#include <Engine/Common.h>
 
 namespace ehw
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Base/EditorChild.h"
 
-#include <Engine/Game/Component/define_Component.h>
+#include <Engine/Scene/Component/define_Component.h>
 
 namespace ehw
 {

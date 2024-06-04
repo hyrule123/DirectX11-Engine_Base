@@ -6,7 +6,7 @@
 #include "Editor/Inspector/Inspector_Com_Renderer.h"
 
 #include <Engine/Manager/RenderManager.h>
-#include <Engine/Game/GameObject.h>
+#include <Engine/Scene/GameObject.h>
 
 namespace ehw::editor
 {

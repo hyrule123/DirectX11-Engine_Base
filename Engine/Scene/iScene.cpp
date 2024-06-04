@@ -107,6 +107,7 @@ namespace ehw
 	void iScene::SceneRender()
 	{
 		Render();
+
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
@@ -115,7 +116,7 @@ namespace ehw
 			}
 		}
 
-		
+		m_sceneRenderer->Render();
 	}
 
 	void iScene::SceneFrameEnd()

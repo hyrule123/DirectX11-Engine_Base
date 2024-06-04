@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/CommonStruct.h>
+#include <Engine/Common.h>
 #include <Engine/define_Macro.h>
 
 #include <Engine/GPU/CommonGPU.h>

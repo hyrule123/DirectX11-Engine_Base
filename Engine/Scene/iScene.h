@@ -19,8 +19,6 @@ namespace ehw
 			bool EnableCollision3D;
 		};
 
-		
-
 		iScene();
 		virtual ~iScene();
 

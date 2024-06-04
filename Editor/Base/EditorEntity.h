@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/CommonStruct.h>
+#include <Engine/Common.h>
 #include <Engine/define_Enum.h>
 
 #include "Editor/imgui/imgui.h"

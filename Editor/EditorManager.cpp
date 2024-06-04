@@ -6,11 +6,11 @@
 #include <Engine/Util/Serialize/JsonSerializer.h>
 #include <Engine/Resource/Mesh.h>
 #include <Engine/Resource/Material.h>
-#include <Engine/Game/Component/Transform/Com_Transform.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Scene/Component/Transform/Com_Transform.h>
+#include <Engine/Scene/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Scene/Component/Renderer/Com_Renderer_Mesh.h>
 
-#include <Engine/Game/Collision/CollisionSystem.h>
+#include <Engine/Scene/Collision/CollisionSystem.h>
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>

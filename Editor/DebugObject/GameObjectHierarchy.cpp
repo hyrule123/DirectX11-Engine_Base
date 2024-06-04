@@ -3,9 +3,9 @@
 #include "Editor/EditorManager.h"
 #include "Editor/Inspector/InspectorBase.h"
 
-#include <Engine/Game/iScene.h>
+#include <Engine/Scene/iScene.h>
 
-#include <Engine/Game/GameObject.h>
+#include <Engine/Scene/GameObject.h>
 
 #include <Engine/Manager/SceneManager.h>
 #include <Engine/Manager/RenderManager.h>
@@ -64,7 +64,7 @@ namespace ehw::editor
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, tDataPtr{}, true);
 
-		const iScene::GameObjects& gameObjects = scene->GetGameObjects();
+		const GameObjects& gameObjects = scene->GetGameObjects();
 
 		for (size_t i = 0; i < gameObjects.size(); ++i)
 		{

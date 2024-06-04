@@ -1,5 +1,7 @@
 #include "Engine/Scene/SceneRenderer.h"
 
+#include "Engine/Scene/GameObject.h"
+
 namespace ehw {
 	SceneRenderer::SceneRenderer(iScene* _scene)
 		: m_scene(_scene)
@@ -14,5 +16,6 @@ namespace ehw {
 
 	void SceneRenderer::Render()
 	{
+
 	}
 }

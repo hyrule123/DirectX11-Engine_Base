@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Base/EditorBase.h"
 
-#include <Engine/CommonStruct.h>
+#include <Engine/Common.h>
 
 #include <functional>
 

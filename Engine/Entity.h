@@ -1,9 +1,5 @@
 #pragma once
-#include "Engine/define_Enum.h"
-#include "Engine/define_Macro.h"
 #include "Engine/Common.h"
-
-#include <memory>
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_ABLE(_type) \
