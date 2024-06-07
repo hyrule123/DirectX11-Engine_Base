@@ -90,7 +90,7 @@ namespace ehw
 
 			POINT mousePos = {};
 			GetCursorPos(&mousePos);
-			ScreenToClient(GameEngine::GetHwnd(), &mousePos);
+			ScreenToClient(GameEngine::GetInst().GetHwnd(), &mousePos);
 			mMousePos.x = static_cast<float>(mousePos.x);
 			mMousePos.y = static_cast<float>(mousePos.y);
 

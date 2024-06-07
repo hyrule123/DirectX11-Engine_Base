@@ -54,7 +54,7 @@ namespace ehw
 		float scale = mCamera->GetScale();
 
 		RECT winRect;
-		GetClientRect(GameEngine::GetHwnd(), &winRect);
+		GetClientRect(GameEngine::GetInst().GetHwnd(), &winRect);
 		float width = static_cast<float>(winRect.right - winRect.left);
 		float height = static_cast<float>(winRect.bottom - winRect.top);
 		float2 resolution(width, height);

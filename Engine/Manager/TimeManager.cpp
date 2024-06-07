@@ -139,7 +139,7 @@ namespace ehw
         mOneSecond += m_deltaTime;
         if (1.0f < mOneSecond)
         {
-            HWND hWnd = GameEngine::GetHwnd();
+            HWND hWnd = GameEngine::GetInst().GetHwnd();
 
             wchar_t szFloat[50] = {};
             float FPS = 1.f / m_deltaTime;

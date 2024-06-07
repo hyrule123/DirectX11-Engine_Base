@@ -7,41 +7,42 @@ namespace ehw
 	class GameEngine : public StaticSingleton<GameEngine>
 	{
 		friend class StaticSingleton<GameEngine>;
-	public:
-		static BOOL Init(const tGameEngineDesc& _AppDesc);
 
-		static void Update();
-		static void FinalUpdate();
-		static void Render();
+	public:
+		BOOL Init(const tGameEngineDesc& _AppDesc);
+
+		void Update();
+		void FinalUpdate();
+		void Render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨
-		static void FrameEnd();
+		void FrameEnd();
 
 		// Running main engine loop
-		static bool Run();
+		bool Run();
 
-		static void Release();
+		void Release();
 
 		//사이즈를 입력하면 조절
-		static void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);
-		static void SetWindowSize(int _Width, int _Height);
-		static int2 GetWindowSize();
+		void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);
+		void SetWindowSize(int _Width, int _Height);
+		int2 GetWindowSize();
 
-		static HWND GetHwnd() { return mHwnd; }
+		HWND GetHwnd() { return m_hwnd; }
 
-		static void Destroy();
-		static void ShutDown() { mbInitialized = false; }
+		void Destroy();
+		void ShutDown() { m_bRunning = false; }
+
+	protected:
+		GameEngine();
+		~GameEngine();
 
 	private:
-		static HWND mHwnd;
-		static HDC  mHdc;
+		HWND m_hwnd;
+		HDC  m_hdc;
 
-		static bool mbInitialized;
+		std::function<void()> m_editorRunFunction;
 
-		static std::function<void()> m_editorRunFunction;
-		
-	public:
-		GameEngine() = delete;
-		~GameEngine() = delete;
+		bool m_bRunning;
 	};
 }

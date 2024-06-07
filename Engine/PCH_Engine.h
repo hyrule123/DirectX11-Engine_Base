@@ -6,7 +6,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <commdlg.h>
-#include <assert.h>
+#include <combaseapi.h>
 
 #include <array>
 #include <vector>
@@ -29,13 +29,12 @@
 #include <thread>
 #include <chrono>
 #include <future>
+#include <cassert>
 
-#include <combaseapi.h>
 
 #include "Engine/Util/EnumFlags.h"
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/Util/Serialize/json.h"
-
 
 //PhysX
 #if defined (_WIN64) && (_DEBUG)

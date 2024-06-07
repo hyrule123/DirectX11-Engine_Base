@@ -13,7 +13,7 @@ namespace ehw
 
     EngineMain::EngineMain(const tDesc_EngineMain& _Desc)
     : mInstance{}
-    , mHwnd{}
+    , m_hwnd{}
     , mHAccelTable{}
     {
         s_engineMainInst = this;
@@ -25,11 +25,11 @@ namespace ehw
         ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
         ASSERT(InitInstance(_Desc), "창 생성 실패");
 
-        ShowWindow(mHwnd, SW_HIDE);
-        UpdateWindow(mHwnd);
+        ShowWindow(m_hwnd, SW_HIDE);
+        UpdateWindow(m_hwnd);
 
         ehw::tGameEngineDesc engineDesc;
-        engineDesc.Hwnd = mHwnd;
+        engineDesc.Hwnd = m_hwnd;
         engineDesc.Height = _Desc.Height;
         engineDesc.Width = _Desc.Width;
         engineDesc.LeftWindowPos = _Desc.LeftPos;
@@ -37,7 +37,7 @@ namespace ehw
         engineDesc.GPUDesc = _Desc.GPUDesc;
         engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
 
-        ehw::GameEngine::Init(engineDesc);
+        ehw::GameEngine::GetInst().Init(engineDesc);
 
         for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
         {
@@ -57,7 +57,7 @@ namespace ehw
         AtExit::CallAtExit();
 
         mInstance = {};
-        mHwnd = {};
+        m_hwnd = {};
 
         m_commonMsgHandleFunctions.clear();
     }
@@ -89,7 +89,7 @@ namespace ehw
             }
             else
             {
-                bReturn = ehw::GameEngine::Run();
+                bReturn = ehw::GameEngine::GetInst().Run();
             }
         }
 
@@ -140,9 +140,9 @@ namespace ehw
 
     BOOL EngineMain::InitInstance(const tDesc_EngineMain& _Desc)
     {
-        mHwnd = CreateWindowW(_Desc.ClassName, _Desc.TitleName, WS_OVERLAPPEDWINDOW,
+        m_hwnd = CreateWindowW(_Desc.ClassName, _Desc.TitleName, WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _Desc.Inst, nullptr);
-        if (!mHwnd)
+        if (!m_hwnd)
         {
             return FALSE;
         }
@@ -172,7 +172,7 @@ namespace ehw
     {
         LRESULT ret = 0;
         if (message == WM_DESTROY) {
-            GameEngine::Destroy();
+            GameEngine::GetInst().Destroy();
             PostQuitMessage(0);
             ret = 1;
         }

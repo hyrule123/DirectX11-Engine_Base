@@ -44,7 +44,7 @@ namespace ehw
 
 	private:
 		HINSTANCE mInstance;
-		HWND mHwnd;
+		HWND m_hwnd;
 		HACCEL mHAccelTable;
 
 		//여러가지 메시지를 한번에 처리하는 함수는 여기 들어감(얘는 내부에서 뭘 처리할지 모르니 일단 호출)

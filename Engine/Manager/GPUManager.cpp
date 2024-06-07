@@ -150,7 +150,7 @@ namespace ehw
 	{
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 
-		swapChainDesc.OutputWindow = GameEngine::GetHwnd();
+		swapChainDesc.OutputWindow = GameEngine::GetInst().GetHwnd();
 		swapChainDesc.Windowed = true;
 		swapChainDesc.BufferCount = 2;
 		//DXGI WARNING: IDXGIFactory::CreateSwapChain: Blt-model swap effects (DXGI_SWAP_EFFECT_DISCARD and DXGI_SWAP_EFFECT_SEQUENTIAL) are legacy swap effects that are predominantly superceded by their flip-model counterparts (DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL and DXGI_SWAP_EFFECT_FLIP_DISCARD)
@@ -239,7 +239,7 @@ namespace ehw
 		mViewPort.MinDepth = (FLOAT)0.f;
 		mViewPort.MaxDepth = (FLOAT)1.f;
 
-		int2 winSize = GameEngine::GetWindowSize();
+		int2 winSize = GameEngine::GetInst().GetWindowSize();
 
 		mViewPort.Width = (FLOAT)winSize.x;
 		mViewPort.Height = (FLOAT)winSize.y;

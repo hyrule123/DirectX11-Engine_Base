@@ -24,20 +24,27 @@
 
 namespace ehw
 {
-	HWND			GameEngine::mHwnd{};
-	HDC				GameEngine::mHdc{};
-	bool			GameEngine::mbInitialized = false;
-	std::function<void()> GameEngine::m_editorRunFunction = nullptr;
+	GameEngine::GameEngine()
+		: m_hwnd{ nullptr }
+		, m_hdc{ nullptr }
+		, m_editorRunFunction { nullptr }
+		, m_bRunning { false }
+	{
+	}
+
+	GameEngine::~GameEngine()
+	{
+	}
 
 	BOOL GameEngine::Init(const tGameEngineDesc& _desc)
 	{
-		AtExit::AddFunc(Release);
+		AtExit::AddFunc(std::bind(&GameEngine::Release, this));
 
 		if (nullptr == _desc.Hwnd)
 		{
 			return FALSE;
 		}
-		mHwnd = _desc.Hwnd;
+		m_hwnd = _desc.Hwnd;
 
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
@@ -49,7 +56,7 @@ namespace ehw
 		//RenderMgr은 GPUMgr에서
 		if (false == GPUManager::Init(_desc.GPUDesc))
 		{
-			mHdc = GetDC(_desc.Hwnd);
+			m_hdc = GetDC(_desc.Hwnd);
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
 		}
@@ -71,7 +78,7 @@ namespace ehw
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
-		mbInitialized = true;
+		m_bRunning = true;
 
 		return TRUE;
 	}
@@ -124,16 +131,16 @@ namespace ehw
 
 		FrameEnd();
 		
-		return mbInitialized;
+		return m_bRunning;
 	}
 
 	void GameEngine::Release()
 	{
-		::ReleaseDC(mHwnd, mHdc);
+		::ReleaseDC(m_hwnd, m_hdc);
 
-		mHwnd = {};
-		mHdc = {};
-		mbInitialized = false;
+		m_hwnd = {};
+		m_hdc = {};
+		m_bRunning = false;
 		m_editorRunFunction = nullptr;
 	}
 
@@ -141,24 +148,24 @@ namespace ehw
 	{
 		//가로세로 길이는 유지하고 위치만 변경
 		UINT flag = SWP_NOSIZE | SWP_NOZORDER;
-		::SetWindowPos(mHwnd, nullptr, _LeftWindowPos, _TopWindowPos, 0, 0, flag);
+		::SetWindowPos(m_hwnd, nullptr, _LeftWindowPos, _TopWindowPos, 0, 0, flag);
 	}
 	void GameEngine::SetWindowSize(int _width, int _height)
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcWindow, rcClient;
-		::GetWindowRect(mHwnd, &rcWindow);
-		::GetClientRect(mHwnd, &rcClient);
+		::GetWindowRect(m_hwnd, &rcWindow);
+		::GetClientRect(m_hwnd, &rcClient);
 
 		// calculate size of non-client area
 		int xExtra = rcWindow.right - rcWindow.left - rcClient.right;
 		int yExtra = rcWindow.bottom - rcWindow.top - rcClient.bottom;
 
 		// now resize based on desired client size
-		::SetWindowPos(mHwnd, 0, 0u, 0u, _width + xExtra, _height + yExtra, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+		::SetWindowPos(m_hwnd, 0, 0u, 0u, _width + xExtra, _height + yExtra, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 
-		::ShowWindow(mHwnd, true);
-		::UpdateWindow(mHwnd);
+		::ShowWindow(m_hwnd, true);
+		::UpdateWindow(m_hwnd);
 	}
 	
 
@@ -166,7 +173,7 @@ namespace ehw
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcClient{};
-		::GetClientRect(mHwnd, &rcClient);
+		::GetClientRect(m_hwnd, &rcClient);
 
 		return int2{ rcClient.right, rcClient.bottom };
 	}
@@ -181,7 +188,7 @@ namespace ehw
 
 		//한 프레임 돌려주고(충돌체 해제 등의 작업 진행) 끝낸다
 		
-		mbInitialized = false;
+		m_bRunning = false;
 	}
 
 }
