@@ -9,13 +9,17 @@
 namespace ehw
 {
     std::vector<WindowMsgHandleFunc> EngineMain::m_commonMsgHandleFunctions;
+    EngineMain* EngineMain::s_engineMainInst = nullptr;
 
     EngineMain::EngineMain(const tDesc_EngineMain& _Desc)
     : mInstance{}
     , mHwnd{}
     , mHAccelTable{}
     {
+        s_engineMainInst = this;
+
         mInstance = _Desc.Inst;
+
         AddCommonMsgHandleFunc(&Wm_Destroy);
 
         ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
@@ -48,6 +52,8 @@ namespace ehw
 
     EngineMain::~EngineMain()
     {
+        s_engineMainInst = nullptr;
+
         AtExit::CallAtExit();
 
         mInstance = {};
@@ -57,36 +63,6 @@ namespace ehw
     }
 
     BOOL EngineMain::Run()
-    {
-        BOOL bResult = TRUE;
-        while (bResult)
-        {
-            bResult = Loop();
-        }
-        return bResult;
-    }
-
-    void EngineMain::AddCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
-    {
-        if (_handleFunc)
-        {
-            m_commonMsgHandleFunctions.push_back(_handleFunc);
-        }
-    }
-
-    void EngineMain::RemoveCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
-    {
-        for (auto iter = m_commonMsgHandleFunctions.begin(); m_commonMsgHandleFunctions.end() != iter; ++iter)
-        {
-            if (iter->target<void(*)>() == _handleFunc.target<void(*)>())
-            {
-                m_commonMsgHandleFunctions.erase(iter);
-                break;
-            }
-        }
-    }
-
-    BOOL EngineMain::Loop()
     {
         BOOL bReturn = TRUE;
         MSG msg{};
@@ -118,6 +94,26 @@ namespace ehw
         }
 
         return bReturn;
+    }
+
+    void EngineMain::AddCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
+    {
+        if (_handleFunc)
+        {
+            m_commonMsgHandleFunctions.push_back(_handleFunc);
+        }
+    }
+
+    void EngineMain::RemoveCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
+    {
+        for (auto iter = m_commonMsgHandleFunctions.begin(); m_commonMsgHandleFunctions.end() != iter; ++iter)
+        {
+            if (iter->target<void(*)>() == _handleFunc.target<void(*)>())
+            {
+                m_commonMsgHandleFunctions.erase(iter);
+                break;
+            }
+        }
     }
 
     ATOM EngineMain::RegisterClientClass(const tDesc_EngineMain& _Desc)

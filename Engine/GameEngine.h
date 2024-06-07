@@ -1,20 +1,13 @@
 #pragma once
 #include "Engine/Common.h"
+#include "Engine/Util/StaticSingleton.h"
 
 namespace ehw
 {
-	class GameEngine
+	class GameEngine : public StaticSingleton<GameEngine>
 	{
+		friend class StaticSingleton<GameEngine>;
 	public:
-		//struct tGameEngineDesc
-		//{
-		//	HWND Hwnd;
-		//	int  LeftWindowPos;
-		//	int	 TopWindowPos;
-		//	int  Width;
-		//	int  Height;
-		//	tGPUManagerDesc GPUDesc;
-		//};
 		static BOOL Init(const tGameEngineDesc& _AppDesc);
 
 		static void Update();

@@ -2,13 +2,12 @@
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
 
-
 namespace ehw {
 	template <class T>
 	class StaticSingleton
 	{
 	public:
-		static T& GetInst() noexcept { return m_inst; }
+		static inline T& GetInst() noexcept { return m_inst; }
 	protected:
 		StaticSingleton() {};
 		~StaticSingleton() {};

@@ -29,14 +29,14 @@ namespace ehw
 		EngineMain(const tDesc_EngineMain& _Desc);
 		~EngineMain();
 
+		static inline EngineMain& GetInst() noexcept { return *s_engineMainInst; }
+
 		BOOL Run();
 
 		static void AddCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc);
 		static void RemoveCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc);
 
 	private:
-
-		BOOL Loop();
 		ATOM RegisterClientClass(const tDesc_EngineMain& _Desc);
 		BOOL InitInstance(const tDesc_EngineMain& _Desc);
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -49,11 +49,9 @@ namespace ehw
 
 		//여러가지 메시지를 한번에 처리하는 함수는 여기 들어감(얘는 내부에서 뭘 처리할지 모르니 일단 호출)
 		static std::vector<WindowMsgHandleFunc> m_commonMsgHandleFunctions;
+
+		static EngineMain* s_engineMainInst;
 	};
-
-
-
-
 }
 
 

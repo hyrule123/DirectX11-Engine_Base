@@ -57,8 +57,7 @@ namespace ehw
 		ResourceManagers::Init();
 
 		RenderManager::Init();
-		AudioManager::GetInst();
-		//AudioManager::Init();
+		AudioManager::GetInst().Init();
 		FontWrapper::Init();
 
 		ComponentInitializer::Init();
