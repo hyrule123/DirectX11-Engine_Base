@@ -342,7 +342,7 @@ namespace ehw::editor
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(GameEngine::GetHwnd());
+		ImGui_ImplWin32_Init(GameEngine::GetInst().GetHwnd());
 		ImGui_ImplDX11_Init(GPUManager::Device()
 			, GPUManager::Context());
 

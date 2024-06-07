@@ -127,7 +127,7 @@ namespace ehw
 
 		std::unique_ptr<iComponent> pCom = std::make_unique<T>();
 		pCom->SetComponentTypeID(iComponent::GetComponentTypeID<T>());
-		pCom->SetStrKey(ComponentManager::GetComponentName<T>());
+		pCom->SetStrKey(ComponentManager::GetInst().GetComponentName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
 		return static_cast<T*>(AddComponent(pCom));
@@ -136,7 +136,7 @@ namespace ehw
 
 	inline iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
-		std::unique_ptr<iComponent> pCom = ComponentManager::GetNewComponent(_strKey);
+		std::unique_ptr<iComponent> pCom = ComponentManager::GetInst().GetNewComponent(_strKey);
 
 		if (nullptr == pCom)
 		{

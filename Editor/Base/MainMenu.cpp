@@ -39,7 +39,7 @@ namespace ehw::editor
 			bool p_open = GetEnable();
 			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
 			{
-				GameEngine::ShutDown();
+				GameEngine::GetInst().ShutDown();
 			}
 
 			ImGui::EndMenu();

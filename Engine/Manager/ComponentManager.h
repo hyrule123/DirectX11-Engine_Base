@@ -2,6 +2,7 @@
 #include "Engine/Common.h"
 
 #include "Engine/Scene/Component/BaseComponents.h"
+#include "Engine/Util/StaticSingleton.h"
 
 #include <unordered_map>
 #include <typeindex>
@@ -10,30 +11,34 @@
 
 namespace ehw
 {
-    class ComponentManager
+    class ComponentManager : public StaticSingleton<ComponentManager>
     {
+        friend class StaticSingleton<ComponentManager>;
         friend class GameEngine;
     public:
-        template <typename T>
-        static inline void AddComponentConstructor(const std::string_view _strKey);
-
-        static std::unique_ptr<iComponent> GetNewComponent(const std::string_view _strKey);
+        void Init();
+        void Release();
 
         template <typename T>
-        static const std::string_view GetComponentName();
-        inline static const std::string_view GetComponentName(uint32 _ComID);
+        inline void AddComponentConstructor(const std::string_view _strKey);
+
+        std::unique_ptr<iComponent> GetNewComponent(const std::string_view _strKey);
+
+        template <typename T>
+        const std::string_view GetComponentName();
+        inline const std::string_view GetComponentName(uint32 _ComID);
+
+    protected:
+        ComponentManager();
+        ~ComponentManager();
 
     private:
-        static void Init();
-        static void Release();
-
-    private:
-        static std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> mUmapComConstructor;
-        static std::vector<std::string_view> mComNamesByID;
+        std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> mUmapComConstructor;
+        std::vector<std::string_view> mComNamesByID;
     };
 
     template <typename T>
-    static inline void ComponentManager::AddComponentConstructor(const std::string_view _strKey)
+    inline void ComponentManager::AddComponentConstructor(const std::string_view _strKey)
     {
         static_assert(std::is_base_of_v<iComponent, T>);
         uint32 ComIDIndex = iComponent::GetComponentTypeID<T>();
@@ -64,110 +69,13 @@ namespace ehw
     }
 
 
+
+
     template<typename T>
-    static inline const std::string_view ComponentManager::GetComponentName()
+    inline const std::string_view ComponentManager::GetComponentName()
     {
         return GetComponentName(iComponent::GetComponentTypeID<T>());
     }
-
-
-    //template<typename T>
-    //inline constexpr eComponentCategory ComponentManager::GetComponentCategory()
-    //{
-    //    if constexpr (std::is_base_of_v<Com_Transform, T>)
-    //    {
-    //        return eComponentCategory::Transform;
-    //    }
-    //    else if constexpr (std::is_base_of_v<iCollider, T>)
-    //    {
-    //        return eComponentCategory::Collider;
-    //    }
-    //    else if constexpr (std::is_base_of_v<iAnimator, T>)
-    //    {
-    //        return eComponentCategory::Animator;
-    //    }
-    //    else if constexpr (std::is_base_of_v<iLight, T>)
-    //    {
-    //        return eComponentCategory::Light;
-    //    }
-    //    else if constexpr (std::is_base_of_v<Com_Camera, T>)
-    //    {
-    //        return eComponentCategory::Camera;
-    //    }
-    //    else if constexpr (std::is_base_of_v<Com_AudioSource, T>)
-    //    {
-    //        return eComponentCategory::AudioSource;
-    //    }
-    //    else if constexpr (std::is_base_of_v<Com_AudioListener, T>)
-    //    {
-    //        return eComponentCategory::AudioListener;
-    //    }
-    //    else if constexpr (std::is_base_of_v<iRenderer, T>)
-    //    {
-    //        return eComponentCategory::Renderer;
-    //    }
-    //    else if constexpr (std::is_base_of_v<Com_BehaviorTree, T>)
-    //    {
-    //        return eComponentCategory::BehaviorTree;
-    //    }
-    //    else if constexpr (std::is_base_of_v<iScript, T>)
-    //    {
-    //        return eComponentCategory::Scripts;
-    //    }
-
-    //    return eComponentCategory::UNKNOWN;
-    //}
-
-    //template<typename T>
-    //inline constexpr bool ComponentManager::IsBaseComponent()
-    //{
-    //    if constexpr (std::is_same_v<iComponent, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<Com_Transform, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<iCollider, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<iAnimator, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<iLight, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<Com_Camera, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<Com_AudioSource, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<Com_AudioListener, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<iRenderer, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<Com_BehaviorTree, T>)
-    //    {
-    //        return true;
-    //    }
-    //    else if constexpr (std::is_same_v<iScript, T>)
-    //    {
-    //        return true;
-    //    }
-
-    //    return false;
-    //}
 }
 
 

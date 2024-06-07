@@ -214,7 +214,7 @@ void CreateEngineComponentKey()
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = 
-            R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
+            R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "Init()";
 
         DirTree.CreateComponentManagerInitCode(Desc);
@@ -264,7 +264,7 @@ void CreateUserComponentKey()
         Desc.IncludePath_ManagerHeader = R"(<Engine/Manager/ComponentManager.h>)";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
-        Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::component::##T))";
+        Desc.Constructor_T_MacroDefine = R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
         
 
@@ -317,7 +317,7 @@ void CreateScriptKey()
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
-        Desc.Constructor_T_MacroDefine = R"(ComponentManager::AddComponentConstructor<T>(strKey::script::##T))";
+        Desc.Constructor_T_MacroDefine = R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::script::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScript()";
         
 

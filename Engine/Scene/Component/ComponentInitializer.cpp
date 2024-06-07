@@ -32,7 +32,7 @@
 #include "Engine/Scene/Component\StateMachine\Com_BehaviorTree.h"
 #include "Engine/Scene/Component\Transform\Com_Transform.h"
 
-#define CONSTRUCTOR_T(T) ComponentManager::AddComponentConstructor<T>(strKey::component::##T)
+#define CONSTRUCTOR_T(T) ComponentManager::GetInst().AddComponentConstructor<T>(strKey::component::##T)
 
 namespace ehw
 {

@@ -6,8 +6,15 @@
 
 namespace ehw
 {
-	std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> ComponentManager::mUmapComConstructor{};
-	std::vector<std::string_view> ComponentManager::mComNamesByID{};
+	ComponentManager::ComponentManager()
+		: mUmapComConstructor{}
+		, mComNamesByID{}
+	{
+	}
+
+	ComponentManager::~ComponentManager()
+	{
+	}
 
 	std::unique_ptr<iComponent> ComponentManager::GetNewComponent(const std::string_view _strKey)
 	{
@@ -21,10 +28,9 @@ namespace ehw
 		return com;
 	}
 
-
 	void ComponentManager::Init()
 	{
-		AtExit::AddFunc(ComponentManager::Release);
+		AtExit::AddFunc(std::bind(&ComponentManager::Release, this));
 	}
 	void ComponentManager::Release()
 	{
