@@ -57,8 +57,8 @@ namespace ehw
 
 		eComponentCategory GetComponentCategory() const { return m_ComCategory; };
 
-		inline void SetComponentTypeID(UINT32 _comTypeID) { m_ComTypeID = _comTypeID; }
-		UINT32 GetComponentTypeID() const { return m_ComTypeID; };
+		inline void SetComponentTypeID(size_t _comTypeID) { m_ComTypeID = _comTypeID; }
+		size_t GetComponentTypeID() const { return m_ComTypeID; };
 
 		inline void CallStart() { if (false == m_isStarted) { Start(); m_isStarted = true; } }
 
@@ -75,13 +75,13 @@ namespace ehw
 		inline bool UpdateDestroyState();
 
 		template <typename T>
-		static inline UINT32 GetComponentTypeID();
+		static inline size_t GetComponentTypeID();
 	private:
-		static inline UINT32 GetNextComponentTypeID();
+		static inline size_t GetNextComponentTypeID();
 		inline void SetState(eState _state) { m_state = _state; }
 
 		const eComponentCategory m_ComCategory;
-		UINT32 m_ComTypeID;
+		size_t m_ComTypeID;
 		GameObject* m_ownerGameObject;
 
 		eState m_state;
@@ -91,18 +91,21 @@ namespace ehw
 
 
 	template<typename T>
-	inline UINT32 iComponent::GetComponentTypeID()
+	inline size_t iComponent::GetComponentTypeID()
 	{
 		static_assert(std::is_base_of_v<iComponent, T>);
-		static UINT32 typeId = GetNextComponentTypeID();
+		static size_t typeId = GetNextComponentTypeID();
 		return typeId;
 	}
 
-	inline UINT32 iComponent::GetNextComponentTypeID()
+#pragma push_macro("max")
+#undef max
+	inline size_t iComponent::GetNextComponentTypeID()
 	{
-		static UINT32 lastID = UINT32_MAX;
+		static size_t lastID = std::numeric_limits<size_t>::max();
 		return ++lastID;
 	}
+#pragma pop_macro("max")
 
 	//제한적인 업캐스팅 지원을 위한 클래스 - 상속받는 클래스들은 이 클래스를 상속
 	//(iComponent를 직접 상속하지 말것)

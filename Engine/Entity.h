@@ -45,8 +45,8 @@ namespace ehw
 
 
 	private:
-		std::string m_strKey;
 		const uint32 m_ID;
+		std::string m_strKey;
 
 		static uint32 g_nextID;
 	};

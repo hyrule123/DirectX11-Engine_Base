@@ -7,25 +7,13 @@
 namespace ehw
 {
 	ComponentManager::ComponentManager()
-		: mUmapComConstructor{}
-		, mComNamesByID{}
+		: m_comNamesToID{}
+		, m_comIDtoInfo{}
 	{
 	}
 
 	ComponentManager::~ComponentManager()
 	{
-	}
-
-	std::unique_ptr<iComponent> ComponentManager::GetNewComponent(const std::string_view _strKey)
-	{
-		std::unique_ptr<iComponent> com{};
-		const auto& iter = mUmapComConstructor.find(_strKey);
-		if (iter != mUmapComConstructor.end())
-		{
-			com = iter->second();
-			com->SetStrKey(iter->first);
-		}
-		return com;
 	}
 
 	void ComponentManager::Init()
@@ -34,11 +22,21 @@ namespace ehw
 	}
 	void ComponentManager::Release()
 	{
-		mUmapComConstructor.clear();
-		mComNamesByID.clear();
+		m_comNamesToID.clear();
+		m_comIDtoInfo.clear();
 	}
 
-
+	std::unique_ptr<iComponent> ComponentManager::GetNewComponent(const std::string_view _strKey)
+	{
+		std::unique_ptr<iComponent> com{};
+		const auto& iter = m_comNamesToID.find(_strKey);
+		if (iter != m_comNamesToID.end())
+		{
+			com = m_comIDtoInfo[iter->second].ctor();
+			com->SetStrKey(iter->first);
+		}
+		return com;
+	}
 
 }
 

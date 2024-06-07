@@ -629,7 +629,7 @@ namespace ehw
 			const std::shared_ptr<Texture>& tex = _mtrl->GetTexture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey = tex->GetStrKey();
+				std::string texKey{ tex->GetStrKey() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{

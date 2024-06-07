@@ -20,6 +20,7 @@
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 //SimpleMath, float2~4, int2~4, uint2~4, BOOL, TRUE, FALSE 등 정의
 #include "Engine/DefaultShader/Common.hlsli"
+#include "Engine/Util/type_traits_Ex.h"
 
 //https://stackoverflow.com/questions/10170087/how-does-stdfunction-know-about-calling-convention
 using WindowMsgHandleFunc = std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)>;
@@ -65,17 +66,7 @@ namespace ehw
 		std::function<void()> EditorRunFunction;
 	};
 
-	template<typename T>
-	struct tFastHasher
-	{
-		std::size_t operator()(const T& _uKey) const
-		{
-			return static_cast<std::size_t>(_uKey);
-		}
-	};
-
-	struct tHashFunc_StringView
-	{
+	struct tHasher_StringView {
 		using hash_type = std::hash<std::string_view>;
 		using is_transparent = void;
 

@@ -33,7 +33,7 @@ namespace ehw
 		template <typename DerivedResType = ResourceTypes>
 		static inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
 
-		static const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
 		static inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
@@ -50,7 +50,7 @@ namespace ehw
 		static bool m_bInitialized;
 		static std::fs::path m_BaseDir;
 
-		static std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>> m_Resources;
+		static std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> m_Resources;
 
 	private:
 		ResourceManager() = delete;
@@ -64,7 +64,7 @@ namespace ehw
 	std::fs::path ResourceManager<ResourceTypes>::m_BaseDir{};
 
 	template <typename ResourceTypes>
-	std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHashFunc_StringView, std::equal_to<>> ResourceManager<ResourceTypes>::m_Resources{};
+	std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> ResourceManager<ResourceTypes>::m_Resources{};
 
 	template<typename ResourceTypes>
 	template<typename DerivedResType>
@@ -202,7 +202,7 @@ namespace ehw
 		}
 
 		//기존 키값 임시 저장
-		std::string tempStr = _resPtr->GetStrKey();
+		std::string tempStr{ _resPtr->GetStrKey() };
 		_resPtr->SetStrKey(_strKeyPath.string());
 
 		//저장하고

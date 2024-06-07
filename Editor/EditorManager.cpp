@@ -48,7 +48,7 @@ namespace ehw::editor
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHashFunc_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHasher_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
 	//std::vector<EditorBase*> EditorManager::mGuiWindows{};
 	std::vector<std::shared_ptr<EditorObject>> EditorManager::mEditorObjects{};
 	std::vector<std::shared_ptr<DebugObject>> EditorManager::mDebugObjects{};

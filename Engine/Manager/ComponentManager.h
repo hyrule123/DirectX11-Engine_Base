@@ -26,50 +26,54 @@ namespace ehw
 
         template <typename T>
         const std::string_view GetComponentName();
-        inline const std::string_view GetComponentName(uint32 _ComID);
+        inline const std::string_view GetComponentName(size_t _ComID);
 
     protected:
         ComponentManager();
         ~ComponentManager();
 
     private:
-        std::unordered_map<std::string_view, std::function<std::unique_ptr<iComponent>()>> mUmapComConstructor;
-        std::vector<std::string_view> mComNamesByID;
+        size_t m_curComponentID;
+
+        struct ClassInfo {
+            std::string_view name;
+            std::function<std::unique_ptr<iComponent>()> ctor;
+        };
+        //Idx: ID, data: 이름과 생성자 호출 함수
+        std::vector<ClassInfo> m_comIDtoInfo;
+        std::unordered_map<std::string_view, size_t, tHasher_StringView, std::equal_to<>> m_comNamesToID;
     };
 
     template <typename T>
     inline void ComponentManager::AddComponentConstructor(const std::string_view _strKey)
     {
         static_assert(std::is_base_of_v<iComponent, T>);
-        uint32 ComIDIndex = iComponent::GetComponentTypeID<T>();
-        if ((uint32)mComNamesByID.size() <= ComIDIndex)
-        {
-            mComNamesByID.resize(ComIDIndex + 1);
-        }
+        size_t id = iComponent::GetComponentTypeID<T>();
+        ASSERT(id == m_comIDtoInfo.size(), "id와 vector index 불일치");
 
-        mComNamesByID[ComIDIndex] = _strKey;
-        mUmapComConstructor.insert(std::make_pair(_strKey,
+        //name, ctor
+        m_comIDtoInfo.push_back({ 
+            _strKey,
             []()->std::unique_ptr<iComponent>
             {
                 std::unique_ptr<iComponent> com = std::make_unique<T>();
                 com->SetComponentTypeID(iComponent::GetComponentTypeID<T>());
                 return com;
             }
-        ));
+            });
+
+        m_comNamesToID.insert({ _strKey, id });
     }
 
-    inline const std::string_view ComponentManager::GetComponentName(uint32 _ComID)
+    inline const std::string_view ComponentManager::GetComponentName(size_t _ComID)
     {
         std::string_view retStr{};
-        if (_ComID < (uint32)mComNamesByID.size())
+        if (_ComID < m_comIDtoInfo.size())
         {
-            retStr = mComNamesByID[_ComID];
+            retStr = m_comIDtoInfo[_ComID].name;
         }
         return retStr;
     }
-
-
-
 
     template<typename T>
     inline const std::string_view ComponentManager::GetComponentName()

@@ -1,16 +1,17 @@
-
 #include "Engine/Scene/Component/iComponent.h"
-
-
 
 #include "Engine/Scene/GameObject.h"
 #include "Engine/Scene/iScene.h"
+
+#ifdef max
+#undef max
+#endif
 
 namespace ehw
 {
 	iComponent::iComponent(eComponentCategory _type)
 		: m_ComCategory(_type)
-		, m_ComTypeID()
+		, m_ComTypeID(std::numeric_limits<size_t>::max())
 		, m_ownerGameObject()
 		, m_state(eState::NotInitialzed)
 		, m_isStarted(false)
