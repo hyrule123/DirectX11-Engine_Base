@@ -18,8 +18,6 @@
 
 namespace ehw
 {
-	std::vector<std::function<void()>> ResourceManagers::m_CleanUnusedResourcesFunction{};
-
 	void ResourceManagers::CleanUnusedResources()
 	{
 		//거꾸로 실행
@@ -29,9 +27,18 @@ namespace ehw
 		}
 	}
 
+	ResourceManagers::ResourceManagers()
+		: m_CleanUnusedResourcesFunction{}
+	{
+	}
+
+	ResourceManagers::~ResourceManagers()
+	{
+	}
+
 	void ResourceManagers::Init()
 	{
-		AtExit::AddFunc(Release);
+		AtExit::AddFunc(std::bind(&ResourceManagers::Release, this));
 
 		//기본 Resource들 init
 		const std::fs::path& baseDir = PathManager::GetResPathRelative();

@@ -156,7 +156,7 @@ namespace ehw
 
 		SetBaseDir(_baseDir);
 
-		ResourceManagers::AddUnusedResourceCleanFunc(CleanUnusedResources);
+		ResourceManagers::GetInst().AddUnusedResourceCleanFunc(CleanUnusedResources);
 
 		AtExit::AddFunc(Release);
 	}

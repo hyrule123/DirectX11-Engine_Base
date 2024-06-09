@@ -61,7 +61,7 @@ namespace ehw
 			return FALSE;
 		}
 
-		ResourceManagers::Init();
+		ResourceManagers::GetInst().Init();
 
 		RenderManager::Init();
 		AudioManager::GetInst().Init();

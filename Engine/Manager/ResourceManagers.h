@@ -1,25 +1,29 @@
 #pragma once
 #include "Engine/define_Macro.h"
+#include "Engine/Util/StaticSingleton.h"
 
 #include <functional>
 
 
 namespace ehw
 {
-	class ResourceManagers
+	class ResourceManagers : public StaticSingleton<ResourceManagers>
 	{
+		friend class StaticSingleton<ResourceManagers>;
 		friend class GameEngine;
 
 	public:
-		static void CleanUnusedResources();
+		void CleanUnusedResources();
 
-		static inline void AddUnusedResourceCleanFunc(std::function<void()>&& _func);
+		inline void AddUnusedResourceCleanFunc(std::function<void()>&& _func);
 		
 	private:
-		static void Init();
-		static void Release();
+		ResourceManagers();
+		~ResourceManagers();
+		void Init();
+		void Release();
 
-		static std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
+		std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
 	};
 
 	inline void ResourceManagers::AddUnusedResourceCleanFunc(std::function<void()>&& _func)
