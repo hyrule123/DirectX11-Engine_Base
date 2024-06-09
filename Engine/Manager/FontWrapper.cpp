@@ -27,27 +27,34 @@
 
 namespace ehw
 {
-	IFW1Factory* FontWrapper::mFW1Factory = nullptr;
-	IFW1FontWrapper* FontWrapper::mFontWrapper = nullptr;
+	FontWrapper::FontWrapper()
+		: m_FW1Factory{ nullptr }
+		, m_fontWrapper{ nullptr }
+	{
+	}
+
+	FontWrapper::~FontWrapper()
+	{
+	}
 
 	bool FontWrapper::Init()
 	{
-		AtExit::AddFunc(Release);
+		AtExit::AddFunc(std::bind(&FontWrapper::Release, this));
 
-		if (FAILED(FW1CreateFactory(FW1_VERSION, &mFW1Factory)))
+		if (FAILED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory)))
 			return false;
 
 		auto pDevice = GPUManager::Device();
-		if (FAILED(mFW1Factory->CreateFontWrapper(pDevice, L"Arial", &mFontWrapper)))
+		if (FAILED(m_FW1Factory->CreateFontWrapper(pDevice, L"Arial", &m_fontWrapper)))
 			return false;
 
 		return true;
 	}
 
-	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint _rgb)
+	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb)
 	{
 		auto context = GPUManager::Context();
-		mFontWrapper->DrawString(context,
+		m_fontWrapper->DrawString(context,
 								 _string, // String
 								 _size,// Font size
 								 _x,// X position
@@ -59,10 +66,10 @@ namespace ehw
 
 	void FontWrapper::Release()
 	{
-		mFW1Factory->Release();
-		mFW1Factory = nullptr;
+		m_FW1Factory->Release();
+		m_FW1Factory = nullptr;
 
-		mFontWrapper->Release();
-		mFontWrapper = nullptr;
+		m_fontWrapper->Release();
+		m_fontWrapper = nullptr;
 	}
 }

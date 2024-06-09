@@ -1,26 +1,25 @@
 #pragma once
-
-
+#include "Engine/Util/StaticSingleton.h"
 
 #include <FW1FontWrapper/FW1FontWrapper.h>
 #include <FW1FontWrapper/FW1CompileSettings.h>
-
-
-
 namespace ehw
 {
-	class FontWrapper
+	class FontWrapper : public StaticSingleton<FontWrapper>
 	{
+		friend class StaticSingleton<FontWrapper>;
 		friend class GameEngine;
 	public:
-		static void DrawFont(const wchar_t* _string, float _x, float _y, float _size, UINT32 _rgb);
+		void DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
 
 	private:
-		static bool Init();
-		static void Release();
+		FontWrapper();
+		~FontWrapper();
+		bool Init();
+		void Release();
 
 	private:
-		static IFW1Factory* mFW1Factory;
-		static IFW1FontWrapper* mFontWrapper;
+		IFW1Factory* m_FW1Factory;
+		IFW1FontWrapper* m_fontWrapper;
 	};
 }
