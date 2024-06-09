@@ -2,12 +2,13 @@
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
 #include "Engine/Resource/iResource.h"
+#include "Engine/Util/StaticSingleton.h"
 
 #include "ResourceManagers.h"
 
 #include <concepts>
 
-#define LOAD_COMPUTESHADER(_type) ResourceManager<iComputeShader>::Load<_type>(#_type)
+#define LOAD_COMPUTESHADER(_type) ResourceManager<iComputeShader>::GetInst().Load<_type>(#_type)
 
 namespace ehw
 {
@@ -15,56 +16,47 @@ namespace ehw
 	concept ResourceTypes = std::is_base_of_v<iResource, T>;
 
 	template <typename ResourceTypes> 
-	class ResourceManager
+	class ResourceManager : public StaticSingleton<ResourceManager<ResourceTypes>>
 	{
+		friend class StaticSingleton<ResourceManager<ResourceTypes>>;
+
 	public:
-		static inline void Init(const std::fs::path& _baseDir);
+		void Init(const std::fs::path& _baseDir);
+		void Release();
 
-		static inline eResult Save(const std::string_view _strKey);
-		static inline eResult Save(ResourceTypes* _resPtr);
-		static inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath);
-
-		template <typename DerivedResType = ResourceTypes>
-		static inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _strKeyPath);
+		inline eResult Save(const std::string_view _strKey);
+		inline eResult Save(ResourceTypes* _resPtr);
+		inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath);
 
 		template <typename DerivedResType = ResourceTypes>
-		static inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
+		inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _strKeyPath);
 
 		template <typename DerivedResType = ResourceTypes>
-		static inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
+		inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
 
-		static const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>>&
+		template <typename DerivedResType = ResourceTypes>
+		inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
+
+		const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
-		static inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
+		inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
 
-		static inline void CleanUnusedResources();
+		inline void CleanUnusedResources();
 
-		static inline void SetBaseDir(const std::fs::path& _baseDir);
-		static const std::fs::path& GetBaseDir() { return m_BaseDir; }
-
-	private:
-		static void Release();
+		inline void SetBaseDir(const std::fs::path& _baseDir);
+		const std::fs::path& GetBaseDir() { return m_BaseDir; }
 
 	private:
-		static bool m_bInitialized;
-		static std::fs::path m_BaseDir;
-
-		static std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> m_Resources;
+		ResourceManager();
+		~ResourceManager();
 
 	private:
-		ResourceManager() = delete;
-		~ResourceManager() = delete;
+		bool m_bInitialized;
+		std::fs::path m_BaseDir;
+
+		std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> m_Resources;
 	};
-
-	template <typename ResourceTypes>
-	bool ResourceManager<ResourceTypes>::m_bInitialized = false;
-
-	template <typename ResourceTypes>
-	std::fs::path ResourceManager<ResourceTypes>::m_BaseDir{};
-
-	template <typename ResourceTypes>
-	std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> ResourceManager<ResourceTypes>::m_Resources{};
 
 	template<typename ResourceTypes>
 	template<typename DerivedResType>
@@ -150,15 +142,28 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
+	inline ResourceManager<ResourceTypes>::ResourceManager()
+		: m_bInitialized{false}
+		, m_BaseDir{}
+		, m_Resources{}
+	{
+	}
+
+	template<typename ResourceTypes>
+	inline ResourceManager<ResourceTypes>::~ResourceManager()
+	{
+	}
+
+	template<typename ResourceTypes>
 	inline void ResourceManager<ResourceTypes>::Init(const std::fs::path& _baseDir)
 	{
 		m_bInitialized = true;
 
 		SetBaseDir(_baseDir);
 
-		ResourceManagers::GetInst().AddUnusedResourceCleanFunc(CleanUnusedResources);
+		ResourceManagers::GetInst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<ResourceTypes>::CleanUnusedResources, this));
 
-		AtExit::AddFunc(Release);
+		AtExit::AddFunc(std::bind(&ResourceManager<ResourceTypes>::Release, this));
 	}
 
 	template<typename ResourceTypes>
@@ -169,7 +174,6 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-
 		
 		return savedFile->Save(m_BaseDir, _strKey);
 	}

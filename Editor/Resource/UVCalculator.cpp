@@ -49,14 +49,14 @@ namespace ehw::editor
 				extensions[i] = ::ehw::strKey::path::extension::Texture[i];
 			}
 
-			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::GetBaseDir());
+			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::GetInst().GetBaseDir());
 
 			std::fs::path texPath = WinAPI::FileDialog(absTexPath, extensions);
 
 
 			texPath = PathManager::MakePathStrKey(texPath);
 
-			mTexture = ResourceManager<Texture>::Load(texPath);
+			mTexture = ResourceManager<Texture>::GetInst().Load(texPath);
 
 			if (mTexture)
 			{

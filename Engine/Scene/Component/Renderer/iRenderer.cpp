@@ -125,7 +125,7 @@ namespace ehw
 			{
 				std::string strKey{};
 				renderer[JSON_KEY(m_mesh)] >> strKey;
-				m_mesh = ResourceManager<Mesh>::Load(strKey);
+				m_mesh = ResourceManager<Mesh>::GetInst().Load(strKey);
 			}
 			
 
@@ -138,7 +138,7 @@ namespace ehw
 				{
 					std::string strKey{};
 					materials[i] >> strKey;
-					m_materials[i].SharedMaterial = ResourceManager<Material>::Load(strKey);
+					m_materials[i].SharedMaterial = ResourceManager<Material>::GetInst().Load(strKey);
 				}
 			}
 

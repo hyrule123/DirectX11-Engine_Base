@@ -90,14 +90,14 @@ namespace ehw
 		using namespace strKey::defaultRes;
 		mCS = LOAD_COMPUTESHADER(ParticleShader);
 
-		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::Find(mesh::PointMesh);
+		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::GetInst().Find(mesh::PointMesh);
 		SetMesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceManager<Material>::Find(material::ParticleMaterial);
+		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(material::ParticleMaterial);
 		SetMaterial(material, 0);
 
-		std::shared_ptr<Texture> tex = ResourceManager<Texture>::Find(texture::CartoonSmoke);
+		std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().Find(texture::CartoonSmoke);
 		material->SetTexture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};

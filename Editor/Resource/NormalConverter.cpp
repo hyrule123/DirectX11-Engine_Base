@@ -76,13 +76,13 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 		vecExt.push_back(::ehw::strKey::path::extension::Texture[i]);
 	}
 
-	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::GetBaseDir());
+	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::GetInst().GetBaseDir());
 
 	std::fs::path texPath = WinAPI::FileDialog(absTexPath, vecExt);
 
 	texPath = PathManager::MakePathStrKey(texPath);
 
-	mTextureSrc = ResourceManager<Texture>::Load(texPath);
+	mTextureSrc = ResourceManager<Texture>::GetInst().Load(texPath);
 }
 
 ImGui::SameLine();
@@ -123,7 +123,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				vecExt.push_back(::ehw::strKey::path::extension::Texture[i]);
 			}
 
-			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::GetBaseDir());
+			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::GetInst().GetBaseDir());
 
 			if (mTextureSrc)
 			{
@@ -158,7 +158,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<NormalConvertShader> converter = ResourceManager<iComputeShader>::Load<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
+			std::shared_ptr<NormalConvertShader> converter = ResourceManager<iComputeShader>::GetInst().Load<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
 
 			std::shared_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
 
@@ -179,7 +179,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				eResult result = ResourceManager<Texture>::Save(convertedTex.get(), savePath);
+				eResult result = ResourceManager<Texture>::GetInst().Save(convertedTex.get(), savePath);
 				if (eResultFail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");

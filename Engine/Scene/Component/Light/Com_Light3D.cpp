@@ -133,11 +133,11 @@ namespace ehw
 			std::string strKey{};
 			light3d[JSON_KEY(m_volumeMesh)] >> strKey;
 
-			m_volumeMesh = ResourceManager<Mesh>::Load(strKey);
+			m_volumeMesh = ResourceManager<Mesh>::GetInst().Load(strKey);
 			strKey.clear();
 
 			light3d[JSON_KEY(m_lightMaterial)] >> strKey;
-			m_lightMaterial = ResourceManager<Material>::Load(strKey);
+			m_lightMaterial = ResourceManager<Material>::GetInst().Load(strKey);
 		}
 		catch (const std::exception& _err)
 		{
@@ -247,13 +247,13 @@ namespace ehw
 		m_attribute.lightType = (int)type;
 		if (m_attribute.lightType == (int)eLightType::Directional)
 		{
-			m_volumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
-			m_lightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightDirMaterial);
+			m_volumeMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
+			m_lightMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::LightDirMaterial);
 		}
 		else if (m_attribute.lightType == (int)eLightType::Point)
 		{
-			m_volumeMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::SphereMesh);
-			m_lightMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::LightPointMaterial);
+			m_volumeMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::SphereMesh);
+			m_lightMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::LightPointMaterial);
 		}
 		else if (m_attribute.lightType == (int)eLightType::Spot)
 		{

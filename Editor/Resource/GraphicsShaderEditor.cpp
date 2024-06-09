@@ -426,7 +426,7 @@ namespace ehw::editor
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<std::string> vecNewShaderGroup;
-		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::GetBaseDir();
+		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -501,7 +501,7 @@ namespace ehw::editor
 
 	void EditorGraphicsShader::LoadShaderSettingComboBox()
 	{
-		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::GetBaseDir();
+		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{
@@ -859,7 +859,7 @@ namespace ehw::editor
 		}
 
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		
 		if (eResultSuccess(shader.Save(baseDir, _filePath)))
 		{
@@ -877,7 +877,7 @@ namespace ehw::editor
 		GraphicsShader shader{};
 		shader.SetEditMode(true);
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		if (eResultFail(shader.Load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");

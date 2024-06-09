@@ -68,7 +68,7 @@ namespace ehw::editor
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::Load(shaderName);
+				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::GetInst().Load(shaderName);
 			}
 		}
 	}
@@ -102,7 +102,7 @@ namespace ehw::editor
 	}
 	void EditorMaterial::RefreshShaderSettingFiles()
 	{
-		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::GetBaseDir();
+		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -147,7 +147,7 @@ namespace ehw::editor
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::Load(shaderKey);
+				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::GetInst().Load(shaderKey);
 				mTargetMaterial->SetShader(GS);
 			}
 		}
@@ -192,7 +192,7 @@ namespace ehw::editor
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ResourceManager<Texture>::GetBaseDir();
+				const std::fs::path& texPath = ResourceManager<Texture>::GetInst().GetBaseDir();
 				
 				std::vector<std::fs::path> vecExt{};
 				for (size_t i = 0; i < ::ehw::strKey::path::extension::Texture_ArrSize; ++i)
@@ -204,7 +204,7 @@ namespace ehw::editor
 				{
 					std::fs::path PathstrKey = PathManager::MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::Load(PathstrKey);
+					std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().Load(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->SetTexture((eTextureSlot)i, tex);
@@ -294,7 +294,7 @@ namespace ehw::editor
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = ResourceManager<Material>::GetResources();
+			const auto& materials = ResourceManager<Material>::GetInst().GetResources();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->GetStrKey());
@@ -323,7 +323,7 @@ namespace ehw::editor
 	}
 	void EditorMaterial::SaveToFile()
 	{
-		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::GetBaseDir());
+		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::GetInst().GetBaseDir());
 			
 		outputPath /= mSaveLoadFileName;
 		outputPath = WinAPI::FileDialog(outputPath, ::ehw::strKey::path::extension::Material);
@@ -340,7 +340,7 @@ namespace ehw::editor
 		std::string strKey = outputPath.filename().string();
 		mTargetMaterial->SetStrKey(strKey);
 
-		ResourceManager<Material>::Save(mTargetMaterial.get());
+		ResourceManager<Material>::GetInst().Save(mTargetMaterial.get());
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -363,7 +363,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						std::shared_ptr<Material> mtrl = ResourceManager<Material>::Find(mtrlKey);
+						std::shared_ptr<Material> mtrl = ResourceManager<Material>::GetInst().Find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
@@ -397,7 +397,7 @@ namespace ehw::editor
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::GetBaseDir());
+					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::GetInst().GetBaseDir());
 
 					//Res 폴더
 					const std::fs::path& resDir = PathManager::GetResPathAbsolute();
@@ -409,7 +409,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::Load(filePath.filename());
+						mTargetMaterial = ResourceManager<Material>::GetInst().Load(filePath.filename());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

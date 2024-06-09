@@ -74,7 +74,7 @@ namespace ehw::editor
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= ResourceManager<Mesh>::GetResources();
+				= ResourceManager<Mesh>::GetInst().GetResources();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -100,7 +100,7 @@ namespace ehw::editor
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ResourceManager<Material>::GetResources();
+				= ResourceManager<Material>::GetInst().GetResources();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -117,7 +117,7 @@ namespace ehw::editor
 
 	void Inspector_Com_Renderer::SetMesh(const std::string& _strKey)
 	{
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(_strKey);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(_strKey);
 
 		std::shared_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
@@ -134,7 +134,7 @@ namespace ehw::editor
 
 	void Inspector_Com_Renderer::SetMaterial(const std::string& _strKey)
 	{
-		std::shared_ptr<Material> material = ResourceManager<Material>::Find(_strKey);
+		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(_strKey);
 
 		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
 

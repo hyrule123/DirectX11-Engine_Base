@@ -78,7 +78,7 @@ namespace ehw
 				std::string skeletonStrKey{};
 				if (m_skeleton)
 				{
-					eResult result = ResourceManager<Skeleton>::Save(m_skeleton.get());
+					eResult result = ResourceManager<Skeleton>::GetInst().Save(m_skeleton.get());
 					if (eResultFail(result))
 					{
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
@@ -103,7 +103,7 @@ namespace ehw
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				eResult result = ResourceManager<Mesh>::Save(m_meshContainers[i].mesh.get());
+				eResult result = ResourceManager<Mesh>::GetInst().Save(m_meshContainers[i].mesh.get());
 				if (eResultFail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
@@ -120,7 +120,7 @@ namespace ehw
 						return eResult::Fail_Nullptr;
 					}
 
-					eResult result = ResourceManager<Material>::Save(m_meshContainers[i].materials[j].get());
+					eResult result = ResourceManager<Material>::GetInst().Save(m_meshContainers[i].materials[j].get());
 					if (eResultFail(result))
 					{
 						ERROR_MESSAGE("재질 정보 저장 실패");
@@ -161,7 +161,7 @@ namespace ehw
 
 			if (false == skeletonStrKey.empty())
 			{
-				m_skeleton = ResourceManager<Skeleton>::Load(skeletonStrKey);
+				m_skeleton = ResourceManager<Skeleton>::GetInst().Load(skeletonStrKey);
 				if (nullptr == m_skeleton)
 				{
 					ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
@@ -196,7 +196,7 @@ namespace ehw
 				//Mesh
 				std::string meshStrkey{};
 				meshContainer["mesh"] >> meshStrkey;
-				m_meshContainers[i].mesh = ResourceManager<Mesh>::Load(meshStrkey);
+				m_meshContainers[i].mesh = ResourceManager<Mesh>::GetInst().Load(meshStrkey);
 				if (nullptr == m_meshContainers[i].mesh)
 				{
 					ERROR_MESSAGE("메쉬 로드 실패");
@@ -212,7 +212,7 @@ namespace ehw
 				{
 					std::string materialStrKey{};
 					materials[j] >> materialStrKey;
-					m_meshContainers[i].materials[j] = ResourceManager<Material>::Load(materialStrKey);
+					m_meshContainers[i].materials[j] = ResourceManager<Material>::GetInst().Load(materialStrKey);
 
 					if (nullptr == m_meshContainers[i].materials[j])
 					{
@@ -346,7 +346,7 @@ namespace ehw
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::Save(this, _dirAndFileName);
+		result = ResourceManager<Model3D>::GetInst().Save(this, _dirAndFileName);
 		if (eResultFail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -493,7 +493,7 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::Load(_meshDataName / _meshDataName);
+		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::GetInst().Load(_meshDataName / _meshDataName);
 
 		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResultFail(result))
@@ -527,7 +527,7 @@ namespace ehw
 
 		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
 
-		std::fs::path texDir = ResourceManager<Texture>::GetBaseDir();
+		std::fs::path texDir = ResourceManager<Texture>::GetInst().GetBaseDir();
 		texDir /= _texDestDir;
 
 		//media directory(텍스처같은 파일들) 옮겨졌는지 여부 저장 변수
@@ -567,7 +567,7 @@ namespace ehw
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
-				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::Load(texKey);
+				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::GetInst().Load(texKey);
 				//바로 Texture Load. 로드 실패 시 false 반환
 				if (nullptr == newTex)
 				{
@@ -582,7 +582,7 @@ namespace ehw
 		mtrl->SetTexture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->SetTexture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::Find(strKey::defaultRes::shader::graphics::DefferedShader);
+		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
 		mtrl->SetShader(defferedShader);
 
 		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);
@@ -683,7 +683,7 @@ namespace ehw
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
 
-									newTex = ResourceManager<Texture>::Load(texKey);
+									newTex = ResourceManager<Texture>::GetInst().Load(texKey);
 
 
 									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");

@@ -203,7 +203,7 @@ namespace ehw::editor
 	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetStrKey("Model3D List");
-		const std::fs::path& meshPath = ResourceManager<Model3D>::GetBaseDir();
+		const std::fs::path& meshPath = ResourceManager<Model3D>::GetInst().GetBaseDir();
 
 		try
 		{

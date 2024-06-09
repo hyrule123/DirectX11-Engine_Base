@@ -119,7 +119,7 @@ namespace ehw
             {
                 std::string strKey{};
                 ser[JSON_KEY(m_shader)] >> strKey;
-                m_shader = ResourceManager<GraphicsShader>::Load(strKey);
+                m_shader = ResourceManager<GraphicsShader>::GetInst().Load(strKey);
             }
 
 
@@ -129,7 +129,7 @@ namespace ehw
             {
                 std::string strKey{};
                 textures[i] >> strKey;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::Load(strKey);
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().Load(strKey);
                 if (tex)
                 {
                     SetTexture((eTextureSlot)i, tex);

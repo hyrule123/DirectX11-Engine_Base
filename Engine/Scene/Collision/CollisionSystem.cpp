@@ -95,7 +95,7 @@ namespace ehw
 		m_debugInfoSBuffer->Create<tDebugDrawData>(100, nullptr, 0);
 		ASSERT(m_debugInfoSBuffer.get(), "Debug용 Struct Buffer 생성 실패.");
 
-		m_debugMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::DebugMaterial);
+		m_debugMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::DebugMaterial);
 		ASSERT(m_debugMaterial.get(), "DebugMaterial 준비 실패");
 	}
 

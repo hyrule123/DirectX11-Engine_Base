@@ -44,18 +44,18 @@ namespace ehw
 		const std::fs::path& baseDir = PathManager::GetResPathRelative();
 
 		//기본 리소스를 먼저 등록
-		ResourceManager<Texture>::Init(baseDir / strKey::path::directory::resource::Texture);
-		ResourceManager<Mesh>::Init(baseDir / strKey::path::directory::resource::Mesh);
-		ResourceManager<AudioClip>::Init(baseDir / strKey::path::directory::resource::AudioClip);
-		ResourceManager<GraphicsShader>::Init(baseDir / strKey::path::directory::resource::GraphicsShader);
-		ResourceManager<iComputeShader>::Init(baseDir / strKey::path::directory::resource::ComputeShader);
+		ResourceManager<Texture>::GetInst().Init(baseDir / strKey::path::directory::resource::Texture);
+		ResourceManager<Mesh>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
+		ResourceManager<AudioClip>::GetInst().Init(baseDir / strKey::path::directory::resource::AudioClip);
+		ResourceManager<GraphicsShader>::GetInst().Init(baseDir / strKey::path::directory::resource::GraphicsShader);
+		ResourceManager<iComputeShader>::GetInst().Init(baseDir / strKey::path::directory::resource::ComputeShader);
 
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록
-		ResourceManager<Material>::Init(baseDir / strKey::path::directory::resource::Material);
-		ResourceManager<Animation2D>::Init(baseDir / strKey::path::directory::resource::Animation2D);
-		ResourceManager<Model3D>::Init(baseDir / strKey::path::directory::resource::Model3D);
-		ResourceManager<Skeleton>::Init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Material>::GetInst().Init(baseDir / strKey::path::directory::resource::Material);
+		ResourceManager<Animation2D>::GetInst().Init(baseDir / strKey::path::directory::resource::Animation2D);
+		ResourceManager<Model3D>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Skeleton>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
 	}
 
 	void ResourceManagers::Release()

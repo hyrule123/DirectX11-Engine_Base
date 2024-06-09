@@ -255,7 +255,7 @@ namespace ehw
 			}
 		}
 
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::DebugCubeMesh);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugCubeMesh);
 
 		m_collisionSystem->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider3D_Shape::Cube]);
 	}

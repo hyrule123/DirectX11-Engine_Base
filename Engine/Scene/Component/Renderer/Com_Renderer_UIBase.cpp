@@ -12,10 +12,10 @@ namespace ehw
 		: mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::RectMesh);
+		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
 		SetMesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::Find(strKey::defaultRes::material::UIMaterial);
+		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::UIMaterial);
 		SetMaterial(uiMaterial, 0u);
 		SetMaterialMode(0u, eMaterialMode::Dynamic);
 	}

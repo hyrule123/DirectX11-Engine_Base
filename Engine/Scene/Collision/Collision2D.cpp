@@ -218,14 +218,14 @@ namespace ehw
 			}
 		}
 
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::DebugRectMesh);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugRectMesh);
 
 
 		m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB]);
 
 		m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
 
-		//mesh = ResourceManager<Mesh>::Find(strKey::defaultRes::mesh::CircleMesh);
+		//mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::CircleMesh);
 		//::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debugInfoSBuffer.get());
 
 		
