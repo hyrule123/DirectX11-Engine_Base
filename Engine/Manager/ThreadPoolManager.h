@@ -1,4 +1,6 @@
 #pragma once
+#include "Engine/Util/StaticSingleton.h"
+
 #include <chrono>
 #include <condition_variable>
 #include <cstdio>
@@ -11,41 +13,38 @@
 
 namespace ehw
 {
-    class ThreadPoolManager 
+    class ThreadPoolManager : public StaticSingleton<ThreadPoolManager>
     {
+        friend class StaticSingleton<ThreadPoolManager>;
         friend class GameEngine;
     public:
         // job 을 추가한다.
         template <class F, class... Args>
-        static std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F&& f, Args&&... args);
+        std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F&& f, Args&&... args);
 
     private:
-        static void Init(size_t _numThread);
-        static void Release();
+        ThreadPoolManager();
+        ~ThreadPoolManager();
+        void Init(size_t _numThread);
+        void Release();
 
     private:
         // Worker 쓰레드
-        static void WorkerThread();
+        void WorkerThread();
 
     private:
         // 총 Worker 쓰레드의 개수.
-        static size_t mNumThread;
+        size_t mNumThread;
         // Worker 쓰레드를 보관하는 벡터.
-        static std::vector<std::thread> mWorkerThreads;
+        std::vector<std::thread> mWorkerThreads;
         // 할일들을 보관하는 job 큐.
-        static std::queue<std::function<void()>> mJobs;
+        std::queue<std::function<void()>> mJobs;
         // 위의 job 큐를 위한 cv 와 m.
-        static std::condition_variable mCVJobqueue;
-        static std::mutex mMtxJobQueue;
+        std::condition_variable mCVJobqueue;
+        std::mutex mMtxJobQueue;
 
         // 모든 쓰레드 종료
-        static bool mStopAll;
-
-
-
-    private:
-        ThreadPoolManager() = delete;
-        ~ThreadPoolManager() = delete;
+        bool mStopAll;
     };
 
 

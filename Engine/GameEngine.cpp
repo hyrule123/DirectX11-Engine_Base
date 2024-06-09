@@ -49,7 +49,7 @@ namespace ehw
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
 
-		ThreadPoolManager::Init((size_t)std::thread::hardware_concurrency());
+		ThreadPoolManager::GetInst().Init((size_t)std::thread::hardware_concurrency());
 
 		PathManager::Init();
 

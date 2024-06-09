@@ -52,9 +52,11 @@ namespace ehw
 
     EngineMain::~EngineMain()
     {
+        AtExit::CallAtExit();
+
         s_engineMainInst = nullptr;
 
-        AtExit::CallAtExit();
+        
 
         mInstance = {};
         m_hwnd = {};

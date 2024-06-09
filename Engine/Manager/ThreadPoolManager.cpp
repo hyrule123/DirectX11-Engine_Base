@@ -7,17 +7,20 @@
 
 namespace ehw
 {
-    size_t                                  ThreadPoolManager::mNumThread{};
-    std::vector<std::thread>                ThreadPoolManager::mWorkerThreads{};
-    std::queue<std::function<void()>>       ThreadPoolManager::mJobs{};
-    std::condition_variable                 ThreadPoolManager::mCVJobqueue{};
-    std::mutex                              ThreadPoolManager::mMtxJobQueue{};
-    bool                                    ThreadPoolManager::mStopAll{};
-
-
+    ThreadPoolManager::ThreadPoolManager()
+        : mNumThread{}
+        , mWorkerThreads{}
+        , mJobs{}
+        , mCVJobqueue{}
+        , mMtxJobQueue{}
+    {
+    }
+    ThreadPoolManager::~ThreadPoolManager()
+    {
+    }
     void ThreadPoolManager::Init(size_t _numThread)
     {
-        AtExit::AddFunc(Release);
+        AtExit::AddFunc(std::bind(&ThreadPoolManager::Release, this));
 
         mNumThread = _numThread;
         mWorkerThreads.reserve(mNumThread);
@@ -38,7 +41,7 @@ namespace ehw
                 threadDesc.pop_back();
             }
             threadDesc += std::to_wstring(i);
-            std::thread thread([]() { WorkerThread(); });
+            std::thread thread([this]() { WorkerThread(); });
             SetThreadDescription(thread.native_handle(), threadDesc.c_str());
             mWorkerThreads.emplace_back(std::move(thread));
         }
@@ -67,8 +70,8 @@ namespace ehw
         while (true) 
         {
             std::unique_lock<std::mutex> lock(mMtxJobQueue);
-            mCVJobqueue.wait(lock, []() { return false == mJobs.empty() || mStopAll; });
-            if (mStopAll && mJobs.empty()) 
+            mCVJobqueue.wait(lock, [this]() { return false == mJobs.empty() || mStopAll; });
+            if (mStopAll && mJobs.empty())
             {
                 return;
             }

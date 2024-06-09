@@ -154,7 +154,7 @@ namespace ehw::editor
 				return;
 			}
 			
-			mFutureConvertResult = ThreadPoolManager::EnqueueJob(
+			mFutureConvertResult = ThreadPoolManager::GetInst().EnqueueJob(
 				[this]()->eResult
 				{
 					Model3D meshData{};
