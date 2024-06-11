@@ -54,7 +54,7 @@ namespace ehw
 		PathManager::Init();
 
 		//RenderMgr은 GPUMgr에서
-		if (false == GPUManager::Init(_desc.GPUDesc))
+		if (false == GPUManager::GetInst().Init(_desc.GPUDesc))
 		{
 			m_hdc = GetDC(_desc.Hwnd);
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
@@ -102,7 +102,7 @@ namespace ehw
 	void GameEngine::Render()
 	{
 		//최종 렌더타겟 Clear
-		GPUManager::ClearRenderTarget();
+		GPUManager::GetInst().ClearRenderTarget();
 
 		RenderManager::Render();
 
@@ -113,7 +113,7 @@ namespace ehw
 
 		TimeManager::RenderFPS();
 
-		GPUManager::Present(true);
+		GPUManager::GetInst().Present(true);
 	}
 
 	void GameEngine::FrameEnd()

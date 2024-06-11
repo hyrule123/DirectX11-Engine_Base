@@ -19,24 +19,24 @@
 
 namespace ehw
 {
-	UINT GPUManager::mResolutionX{};
-	UINT GPUManager::mResolutionY{};
-	UINT GPUManager::mRefreshRate{};
-
-	ComPtr<ID3D11Device>			GPUManager::mDevice{};
-	ComPtr<ID3D11DeviceContext>		GPUManager::mContext{};
-
-	ComPtr<IDXGISwapChain>			GPUManager::mSwapChain{};
-
-	std::shared_ptr<ehw::Texture>	GPUManager::mRenderTargetTexture{};
-	std::shared_ptr<ehw::Texture>	GPUManager::mDepthStencilBufferTexture{};
-
-	D3D11_VIEWPORT GPUManager::mViewPort{};
-
-
+	GPUManager::GPUManager()
+		: mResolutionX{}
+		, mResolutionY{}
+		, mRefreshRate{}
+		, mDevice{}
+		, mContext{}
+		, mSwapChain{}
+		, mRenderTargetTexture{}
+		, mDepthStencilBufferTexture{}
+		, mViewPort{}
+	{
+	}
+	GPUManager::~GPUManager()
+	{
+	}
 	bool GPUManager::Init(const tGPUManagerDesc& _Desc)
 	{
-		AtExit::AddFunc(GPUManager::Release);
+		AtExit::AddFunc(std::bind(&GPUManager::Release, this));
 
 		/// 1. Device 와 SwapChain 생성한다.
 		/// 2. 백버퍼에 실제로 렌더링할 렌더타겟 뷰를 생성해야한다.

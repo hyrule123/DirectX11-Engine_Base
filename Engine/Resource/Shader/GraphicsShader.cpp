@@ -189,7 +189,7 @@ namespace ehw
 			return eResult::Fail_Create;
 		}
 
-		if (FAILED(GPUManager::Device()->CreateInputLayout(
+		if (FAILED(GPUManager::GetInst().Device()->CreateInputLayout(
 			m_inputLayoutDescs.data(),
 			(uint)m_inputLayoutDescs.size(),
 			VSBlobData->GetBufferPointer(),
@@ -207,7 +207,7 @@ namespace ehw
 
 	void GraphicsShader::BindData()
 	{
-		auto pContext = GPUManager::Context();
+		auto pContext = GPUManager::GetInst().Context();
 		
 		pContext->IASetInputLayout(m_inputLayout.Get());
 		pContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
@@ -229,7 +229,7 @@ namespace ehw
 
 	void GraphicsShader::UnbindData()
 	{
-		auto pContext = GPUManager::Context();
+		auto pContext = GPUManager::GetInst().Context();
 
 		pContext->IASetInputLayout(nullptr);
 		pContext->VSSetShader(nullptr, nullptr, 0);
@@ -420,7 +420,7 @@ namespace ehw
 		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
 		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");
 
-		auto pDevice = GPUManager::Device();
+		auto pDevice = GPUManager::GetInst().Device();
 		switch (_stage)
 		{
 		case eGSStage::Vertex:
