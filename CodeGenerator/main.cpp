@@ -368,7 +368,7 @@ void CreateSceneKey()
 
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
         Desc.UsingNamespace = "";
-        Desc.Constructor_T_MacroDefine = R"(SceneManager::AddSceneConstructor<T>(strKey::scene::##T))";
+        Desc.Constructor_T_MacroDefine = R"(SceneManager::GetInst().AddSceneConstructor<T>(strKey::scene::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScene()";
         
 

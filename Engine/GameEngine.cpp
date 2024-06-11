@@ -73,7 +73,7 @@ namespace ehw
 		InputManager::Init();
 		
 		PhysXInstance::Init();
-		SceneManager::Init();
+		SceneManager::GetInst().Init();
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
@@ -88,14 +88,14 @@ namespace ehw
 	{
 		TimeManager::GetInst().Update();
 		InputManager::Update();
-		SceneManager::FixedUpdate();
-		SceneManager::Update();
+		SceneManager::GetInst().FixedUpdate();
+		SceneManager::GetInst().Update();
 	}
 
 	// GPU에 보내기 위한 최종 정보 정리
 	void GameEngine::FinalUpdate()
 	{
-		SceneManager::FinalUpdate();
+		SceneManager::GetInst().FinalUpdate();
 	}
 
 	void GameEngine::Render()
@@ -118,7 +118,7 @@ namespace ehw
 	void GameEngine::FrameEnd()
 	{	
 		RenderManager::GetInst().FrameEnd();
-		SceneManager::FrameEnd();
+		SceneManager::GetInst().FrameEnd();
 	}
 
 	// Running main engine loop
@@ -180,7 +180,7 @@ namespace ehw
 	void GameEngine::Destroy()
 	{
 		//Destroy() 호출 후
-		SceneManager::Destroy();
+		SceneManager::GetInst().Destroy();
 		
 		Run();
 		FrameEnd();

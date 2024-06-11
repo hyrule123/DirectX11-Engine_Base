@@ -12,13 +12,19 @@
 
 namespace ehw
 {
-	std::unique_ptr<iScene> SceneManager::m_activeScene = nullptr;
+	SceneManager::SceneManager()
+		: m_activeScene{nullptr}
+		, m_umapSceneConstructor{}
+	{
+	}
 
-	std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene>()>> SceneManager::m_umapSceneConstructor{};
+	SceneManager::~SceneManager()
+	{
+	}
 
 	void SceneManager::Init()
 	{
-		AtExit::AddFunc(Release);
+		AtExit::AddFunc(std::bind(&SceneManager::Release, this));
 	}
 
 	void SceneManager::FixedUpdate()

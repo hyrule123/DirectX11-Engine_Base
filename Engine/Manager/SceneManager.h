@@ -1,32 +1,40 @@
 #pragma once
+#include "Engine/Util/StaticSingleton.h"
+
 #include "Engine/Scene/iScene.h"
 
 namespace ehw
 {
-	class SceneManager
+	class SceneManager : public StaticSingleton<SceneManager>
 	{
+		friend class StaticSingleton<SceneManager>;
+	private:
+		SceneManager();
+		~SceneManager();
+
 	public:
-		static void Init();
-		static void FixedUpdate();
-		static void Update();
-		static void FinalUpdate();
-		static void Render();
-		static void FrameEnd();
-		static void Release();
+		
+		void Init();
+		void FixedUpdate();
+		void Update();
+		void FinalUpdate();
+		void Render();
+		void FrameEnd();
+		void Release();
 
-		static void Destroy();
+		void Destroy();
 
-		static void		LoadScene(const std::string_view _strKey);
-		static iScene*	GetActiveScene() { return m_activeScene.get(); }
+		void		LoadScene(const std::string_view _strKey);
+		iScene*	GetActiveScene() { return m_activeScene.get(); }
 
 		template <typename T> requires std::is_base_of_v<iScene, T>
-		static void AddSceneConstructor(const std::string_view _strKey);
+		void AddSceneConstructor(const std::string_view _strKey);
 
 	private:
-		static std::unique_ptr<iScene>				m_activeScene;
-		static std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene> ()>> m_umapSceneConstructor;
+		std::unique_ptr<iScene>				m_activeScene;
+		std::unordered_map<std::string_view, std::function<std::unique_ptr<iScene>()>> m_umapSceneConstructor;
 
-		static bool m_isFixedUpdating;
+		bool m_isFixedUpdating;
 	};
 
 	template<typename T> requires std::is_base_of_v<iScene, T>
