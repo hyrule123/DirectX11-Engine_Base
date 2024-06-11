@@ -23,6 +23,6 @@ namespace ehw
 		pxTr.p = tr->GetWorldPosition();
 		pxTr.q = tr->GetLocalRotation();
 
-		return PhysXInstance::GetInst().createRigidStatic(pxTr);
+		return PhysXInstance::GetInst().GetPhysX().createRigidStatic(pxTr);
 	}
 }

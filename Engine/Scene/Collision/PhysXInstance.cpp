@@ -8,22 +8,23 @@
 
 namespace ehw
 {
-	physx::PxDefaultAllocator		PhysXInstance::m_allocator{};
-	physx::PxDefaultErrorCallback	PhysXInstance::m_errorCallback{};
+	PhysXInstance::PhysXInstance()
+		: m_allocator{}
+		, m_errorCallback{}
+		, m_foundation{ nullptr }
+		, m_physics{ nullptr }
+		, m_dispatcher{ nullptr }
+		, m_PVD{ nullptr }	//PhysX Visualization Debugger
+	{}
 
-	physx::PxFoundation* PhysXInstance::m_foundation{ nullptr };
-	physx::PxPhysics* PhysXInstance::m_physics{ nullptr };
-	physx::PxDefaultCpuDispatcher* PhysXInstance::m_dispatcher{ nullptr };
-
-#ifdef _DEBUG
-	//Physx Visualization Debugger
-	physx::PxPvd* PhysXInstance::m_PVD{ nullptr };
-#endif
+	PhysXInstance::~PhysXInstance()
+	{
+	}
 
 	void PhysXInstance::Init()
 	{
 		using namespace physx;
-		AtExit::AddFunc(PhysXInstance::Release);
+		AtExit::AddFunc(std::bind(&PhysXInstance::Release, this));
 
 
 		//Create PxFoundation

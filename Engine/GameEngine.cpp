@@ -72,7 +72,7 @@ namespace ehw
 
 		InputManager::Init();
 		
-		PhysXInstance::Init();
+		PhysXInstance::GetInst().Init();
 		SceneManager::GetInst().Init();
 
 		m_editorRunFunction = _desc.EditorRunFunction;

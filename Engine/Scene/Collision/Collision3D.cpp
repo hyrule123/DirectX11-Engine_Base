@@ -32,7 +32,7 @@ namespace ehw
 	{
 		CreatePxScene();
 
-		m_defaultPxMaterial = PhysXInstance::GetInst().createMaterial(0.5f, 0.5f, 0.6f);
+		m_defaultPxMaterial = PhysXInstance::GetInst().GetPhysX().createMaterial(0.5f, 0.5f, 0.6f);
 		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
 	}
 
@@ -65,13 +65,13 @@ namespace ehw
 	{
 		iScene* gameScene = m_collisionSystem->GetOwnerScene();
 
-		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().getTolerancesScale() };
+		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().GetPhysX().getTolerancesScale()};
 		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
-		sceneDescription.cpuDispatcher = PhysXInstance::GetCPUDispatcher();
+		sceneDescription.cpuDispatcher = PhysXInstance::GetInst().GetCPUDispatcher();
 		sceneDescription.filterShader = Collision3D::FilterShader;
 		sceneDescription.simulationEventCallback = this;
 
-		m_pxScene = PhysXInstance::GetInst().createScene(sceneDescription);
+		m_pxScene = PhysXInstance::GetInst().GetPhysX().createScene(sceneDescription);
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
 		m_pxScene->setName(gameScene->GetStrKey().c_str());
