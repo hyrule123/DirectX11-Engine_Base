@@ -37,12 +37,12 @@ namespace ehw
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
-		RenderManager::RegisterCamera(this);
+		RenderManager::GetInst().RegisterCamera(this);
 	}
 
 	Com_Camera::~Com_Camera()
 	{
-		RenderManager::RemoveCamera(this);
+		RenderManager::GetInst().RemoveCamera(this);
 	}
 
 	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser) const
@@ -90,15 +90,15 @@ namespace ehw
 		SortRenderersByMode();
 
 		//deffered opaque render
-		RenderManager::GetMultiRenderTarget(eMRTType::Deffered)->Bind();
+		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
 		RenderDeffered();
 
 		//// deffered light 
-		RenderManager::GetMultiRenderTarget(eMRTType::Light)->Bind();
+		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Light)->Bind();
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 		// 붙여버리자
 
-		const auto& Lights = RenderManager::GetLights();
+		const auto& Lights = RenderManager::GetInst().GetLights();
 		for (size_t i = 0; i < Lights.size(); ++i)
 		{
 			if (Lights[i]->IsEnabled())
@@ -108,7 +108,7 @@ namespace ehw
 		}
 
 		// Forward render
-		RenderManager::GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
 
 
 		//// defferd + swapchain merge
@@ -383,7 +383,7 @@ namespace ehw
 		{
 			if (m_postProcess[i])
 			{
-				RenderManager::CopyRenderTarget();
+				RenderManager::GetInst().CopyRenderTarget();
 				m_postProcess[i]->Render();
 			}
 		}
@@ -439,7 +439,7 @@ namespace ehw
 
 	void Com_Camera::SortRenderersByMode()
 	{
-		const auto& renderers = RenderManager::GetRenderers();
+		const auto& renderers = RenderManager::GetInst().GetRenderers();
 
 		for (size_t i = 0; i < renderers.size(); ++i)
 		{

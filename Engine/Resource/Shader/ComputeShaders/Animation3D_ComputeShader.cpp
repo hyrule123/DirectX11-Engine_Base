@@ -59,7 +59,7 @@ namespace ehw
 		m_desc.FinalBoneTranslationMatrixBuffer->BindDataUAV(Register_u_g_FinalBoneMatrixArrayRW); // u0
 		
 		//애니메이션 3D 상수버퍼 바인드
-		ConstBuffer* pAnimCB = RenderManager::GetConstBuffer(eCBType::Animation3D);
+		ConstBuffer* pAnimCB = RenderManager::GetInst().GetConstBuffer(eCBType::Animation3D);
 		pAnimCB->SetData(m_desc.Anim3DData);
 		pAnimCB->BindData();
 

@@ -173,7 +173,7 @@ namespace ehw
             }
         }
 
-        ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
+        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
         CB->SetData(&m_constBufferData);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
@@ -186,7 +186,7 @@ namespace ehw
     {
         GraphicsShader::UnbindData();
 
-        ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Material);
+        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
         CB->UnbindData();
 
         Texture::ClearAll();

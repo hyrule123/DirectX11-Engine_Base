@@ -208,8 +208,8 @@ namespace ehw
 		float3 position = tr->GetLocalPosition();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		RenderManager::RegisterLight(this);
-		RenderManager::PushLightAttribute(m_attribute);
+		RenderManager::GetInst().RegisterLight(this);
+		RenderManager::GetInst().PushLightAttribute(m_attribute);
 	}
 
 
@@ -227,9 +227,9 @@ namespace ehw
 		tr->BindData();
 
 		//Light
-		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::numberOfLight);
+		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::numberOfLight);
 		tCB_NumberOfLight data = {};
-		data.numberOfLight = (uint)RenderManager::GetLights().size();
+		data.numberOfLight = (uint)RenderManager::GetInst().GetLights().size();
 		data.indexOfLight = m_index;
 
 		cb->SetData(&data);

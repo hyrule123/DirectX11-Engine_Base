@@ -2,6 +2,7 @@
 #include "Engine/GPU/CommonGPU.h"
 #include "Engine/Common.h"
 #include "Engine/Util/SimpleMath.h"
+#include "Engine/Util/StaticSingleton.h"
 
 
 #include "Engine/DefaultShader/Light/Func_Light.hlsli"
@@ -21,100 +22,103 @@ namespace ehw
 
 	class MultiRenderTarget;
 
-	class RenderManager
+	class RenderManager : public StaticSingleton<RenderManager>
 	{
+		friend class StaticSingleton<RenderManager>;
 		friend class GameEngine;
 		friend class GPUManager;
 	public:
-		static inline bool IsInitialized() { return m_isInitialized; }
+		inline bool IsInitialized() { return m_isInitialized; }
 
-		static void Render();
-		static void FrameEnd();
+		void Render();
+		void FrameEnd();
 
-		static ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
-		//static void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
+		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
+		//void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
 
-		static inline Com_Camera* GetMainCamera() { return GetCamera(m_mainCamIndex); }
-		static ID3D11RasterizerState*	GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
-		static ID3D11BlendState*		GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
-		static ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
+		inline Com_Camera* GetMainCamera() { return GetCamera(m_mainCamIndex); }
+		ID3D11RasterizerState*	GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
+		ID3D11BlendState*		GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
+		ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
 		
-		static void SetMainCamera(Com_Camera* const _pCam);
-		static inline Com_Camera* GetCamera(size_t _Idx);
+		void SetMainCamera(Com_Camera* const _pCam);
+		inline Com_Camera* GetCamera(size_t _Idx);
 
-		static void RegisterCamera(Com_Camera* const _pCam);
-		static void RemoveCamera(Com_Camera* const _pCam);
+		void RegisterCamera(Com_Camera* const _pCam);
+		void RemoveCamera(Com_Camera* const _pCam);
 
-		inline static void EnqueueRenderer(iRenderer* const _renderer);
-		inline static const std::vector<iRenderer*>& GetRenderers() { return m_renderers; }
+		inline void EnqueueRenderer(iRenderer* const _renderer);
+		inline const std::vector<iRenderer*>& GetRenderers() { return m_renderers; }
 
-		inline static MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type);
+		inline MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type);
 
 		//Renderer
-		static void PushLightAttribute(const tLightAttribute& lightAttribute) { m_lightAttributes.push_back(lightAttribute); }
-		static inline void RegisterLight(Com_Light3D* const _pComLight);
-		static void RemoveLight(Com_Light3D* const _pComLight);
+		void PushLightAttribute(const tLightAttribute& lightAttribute) { m_lightAttributes.push_back(lightAttribute); }
+		inline void RegisterLight(Com_Light3D* const _pComLight);
+		void RemoveLight(Com_Light3D* const _pComLight);
 
-		static const std::vector<Com_Light3D*>& GetLights() { return m_lights_3D; }
+		const std::vector<Com_Light3D*>& GetLights() { return m_lights_3D; }
 
-		static void BindLights();
-		static void BindNoiseTexture();
-		static void CopyRenderTarget();
+		void BindLights();
+		void BindNoiseTexture();
+		void CopyRenderTarget();
 
-		static void ClearMultiRenderTargets();
+		void ClearMultiRenderTargets();
 		
 
-		//static void EraseIfDestroyed_Renderer();
-		static void EraseIfDestroyed_Camera(bool _callRender);
+		//void EraseIfDestroyed_Renderer();
+		void EraseIfDestroyed_Camera(bool _callRender);
 
 	private:
-		static void UpdateGlobalCBuffer();
+		RenderManager();
+		~RenderManager();
+		void Init();
+		void Release();
+
+		void UpdateGlobalCBuffer();
 
 		//해상도 변경 시 GPUMgr에서 호출
-		static bool SetResolution(UINT _ResolutionX, UINT _ResolutionY);
+		bool SetResolution(UINT _ResolutionX, UINT _ResolutionY);
 
-		static bool CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY);
-		static void SetTexturesToDefferedMaterials();
+		bool CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY);
+		void SetTexturesToDefferedMaterials();
 
-		static void LoadDefaultMesh();
-		static void LoadDefaultMaterial();
-		static void LoadDefaultShader();
-		static void LoadDefaultTexture();
+		void LoadDefaultMesh();
+		void LoadDefaultMaterial();
+		void LoadDefaultShader();
+		void LoadDefaultTexture();
 
 
-		static void CreateSamplerStates();
-		static void CreateRasterizerStates();
-		static void CreateDepthStencilStates();
-		static void CreateBlendStates();
+		void CreateSamplerStates();
+		void CreateRasterizerStates();
+		void CreateDepthStencilStates();
+		void CreateBlendStates();
 		
-		static void CreateBuffer();
-
-		static void Init();
-		static void Release();
+		void CreateBuffer();
 
 	private:
-		static std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_constBuffers;
-		static std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_samplerStates;
-		static std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		m_rasterizerStates;
-		static std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	m_depthStencilStates;
-		static std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			m_blendStates;
+		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_constBuffers;
+		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_samplerStates;
+		std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		m_rasterizerStates;
+		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	m_depthStencilStates;
+		std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			m_blendStates;
 		
-		static std::vector<Com_Camera*>			m_cameras;
-		static size_t							m_mainCamIndex;
+		std::vector<Com_Camera*>			m_cameras;
+		size_t							m_mainCamIndex;
 
-		static std::vector<iRenderer*>			m_renderers;
+		std::vector<iRenderer*>			m_renderers;
 
-		static std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multiRenderTargets;
+		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multiRenderTargets;
 
 		//생성자-소멸자에서 여기에 등록하기 떄문에 raw pointer를 사용해야 함
-		static std::vector<Com_Light3D*>			m_lights_3D;
-		static std::vector<tLightAttribute>			m_lightAttributes;
-		static std::unique_ptr<StructBuffer>		m_lights_SBuffer;
+		std::vector<Com_Light3D*>			m_lights_3D;
+		std::vector<tLightAttribute>			m_lightAttributes;
+		std::unique_ptr<StructBuffer>		m_lights_SBuffer;
 
-		static std::shared_ptr<Texture>				m_postProcessTexture;
-		static std::shared_ptr<Texture>				m_noiseTexture;
+		std::shared_ptr<Texture>				m_postProcessTexture;
+		std::shared_ptr<Texture>				m_noiseTexture;
 
-		static bool m_isInitialized;
+		bool m_isInitialized;
 	};
 
 

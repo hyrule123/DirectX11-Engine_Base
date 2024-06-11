@@ -30,7 +30,7 @@ namespace ehw
 	void GridScript::Awake()
 	{
 		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
-		mCamera = RenderManager::GetCamera(0);
+		mCamera = RenderManager::GetInst().GetCamera(0);
 	}
 
 	void GridScript::Update()
@@ -60,7 +60,7 @@ namespace ehw
 		float2 resolution(width, height);
 
 		// Constant buffer
-		ConstBuffer* CB = RenderManager::GetConstBuffer(eCBType::Grid);
+		ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Grid);
 		tCB_Grid data;
 		data.cameraPosition = position;
 		data.cameraScale = float2(scale, scale);

@@ -40,91 +40,6 @@
 
 namespace ehw
 {
-	std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>			RenderManager::m_constBuffers{};
-	std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>		RenderManager::m_samplerStates{};
-	std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		RenderManager::m_rasterizerStates{};
-	std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>		RenderManager::m_depthStencilStates{};
-	std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>				RenderManager::m_blendStates{};
-
-	std::vector<Com_Camera*>			RenderManager::m_cameras{};
-	size_t								RenderManager::m_mainCamIndex(0u);
-
-	std::vector<iRenderer*>				RenderManager::m_renderers{};
-
-	std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> 	RenderManager::m_multiRenderTargets{};
-
-	std::vector<Com_Light3D*>			RenderManager::m_lights_3D{};
-	std::vector<tLightAttribute>		RenderManager::m_lightAttributes{};
-	std::unique_ptr<StructBuffer>		RenderManager::m_lights_SBuffer{};
-	std::shared_ptr<Texture>			RenderManager::m_postProcessTexture{};
-	
-	bool RenderManager::m_isInitialized{ false };
-
-	void RenderManager::Init()
-	{
-		AtExit::AddFunc(Release);
-
-		LoadDefaultMesh();
-		LoadDefaultShader();
-		
-		CreateSamplerStates();
-		CreateRasterizerStates();
-		CreateDepthStencilStates();
-		CreateBlendStates();
-
-		CreateBuffer();
-		LoadDefaultTexture();
-		LoadDefaultMaterial();
-
-		uint2 res = GPUManager::GetInst().GetResolution();
-		if (false == SetResolution(res.x, res.y))
-		{
-			ASSERT(false, "해상도 설정 실패");
-		}
-
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<iComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
-		initSetting->OnExcute();
-	}
-
-	void RenderManager::Release()
-	{
-		for (int i = 0; i < (int)eCBType::END; ++i)
-		{
-			m_constBuffers[i].reset();
-		}
-		for (int i = 0; i < (int)eSamplerType::END; ++i)
-		{
-			m_samplerStates[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eRSType::END; ++i)
-		{
-			m_rasterizerStates[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eDSType::END; ++i)
-		{
-			m_depthStencilStates[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eBSType::END; ++i)
-		{
-			m_blendStates[i] = nullptr;
-		}
-
-		m_cameras.clear();
-		m_mainCamIndex = 0u;
-
-		m_renderers.clear();
-
-		m_lightAttributes.clear();
-		m_lights_SBuffer.reset();
-		m_postProcessTexture = nullptr;
-
-		for (int i = 0; i < (int)eMRTType::END; ++i)
-		{
-			m_multiRenderTargets[i].reset();
-		}
-		
-	}
-
 	void RenderManager::Render()
 	{
 		ClearMultiRenderTargets();
@@ -274,6 +189,92 @@ namespace ehw
 				return false;
 			}
 		);
+	}
+
+	RenderManager::RenderManager()
+		: m_constBuffers{}
+		, m_samplerStates{}
+		, m_rasterizerStates{}
+		, m_depthStencilStates{}
+		, m_blendStates{}
+		, m_cameras{}
+		, m_mainCamIndex(0u)
+		, m_renderers{}
+		, m_multiRenderTargets{}
+		, m_lights_3D{}
+		, m_lightAttributes{}
+		, m_lights_SBuffer{}
+		, m_postProcessTexture{}
+		, m_isInitialized{ false }
+	{
+	}
+
+	RenderManager::~RenderManager()
+	{
+	}
+
+	void RenderManager::Init()
+	{
+		AtExit::AddFunc(std::bind(&RenderManager::Release, this));
+
+		LoadDefaultMesh();
+		LoadDefaultShader();
+
+		CreateSamplerStates();
+		CreateRasterizerStates();
+		CreateDepthStencilStates();
+		CreateBlendStates();
+
+		CreateBuffer();
+		LoadDefaultTexture();
+		LoadDefaultMaterial();
+
+		uint2 res = GPUManager::GetInst().GetResolution();
+		if (false == SetResolution(res.x, res.y))
+		{
+			ASSERT(false, "해상도 설정 실패");
+		}
+
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<iComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
+		initSetting->OnExcute();
+	}
+
+	void RenderManager::Release()
+	{
+		for (int i = 0; i < (int)eCBType::END; ++i)
+		{
+			m_constBuffers[i].reset();
+		}
+		for (int i = 0; i < (int)eSamplerType::END; ++i)
+		{
+			m_samplerStates[i] = nullptr;
+		}
+		for (int i = 0; i < (int)eRSType::END; ++i)
+		{
+			m_rasterizerStates[i] = nullptr;
+		}
+		for (int i = 0; i < (int)eDSType::END; ++i)
+		{
+			m_depthStencilStates[i] = nullptr;
+		}
+		for (int i = 0; i < (int)eBSType::END; ++i)
+		{
+			m_blendStates[i] = nullptr;
+		}
+
+		m_cameras.clear();
+		m_mainCamIndex = 0u;
+
+		m_renderers.clear();
+
+		m_lightAttributes.clear();
+		m_lights_SBuffer.reset();
+		m_postProcessTexture = nullptr;
+
+		for (int i = 0; i < (int)eMRTType::END; ++i)
+		{
+			m_multiRenderTargets[i].reset();
+		}
 	}
 
 	void RenderManager::ClearMultiRenderTargets()

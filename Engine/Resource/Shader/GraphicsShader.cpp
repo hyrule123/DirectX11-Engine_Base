@@ -216,9 +216,9 @@ namespace ehw
 		pContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
 		pContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 		
-		ID3D11RasterizerState*		rs = RenderManager::GetRasterizerState(m_rasterizerType);
-		ID3D11DepthStencilState*	ds = RenderManager::GetDepthStencilState(m_depthStencilType);
-		ID3D11BlendState*			bs = RenderManager::GetBlendState(m_blendType);
+		ID3D11RasterizerState*		rs = RenderManager::GetInst().GetRasterizerState(m_rasterizerType);
+		ID3D11DepthStencilState*	ds = RenderManager::GetInst().GetDepthStencilState(m_depthStencilType);
+		ID3D11BlendState*			bs = RenderManager::GetInst().GetBlendState(m_blendType);
 
 		pContext->RSSetState(rs);
 		pContext->OMSetDepthStencilState(ds, 10u);

@@ -180,7 +180,7 @@ namespace ehw
 	void Collision2D::Render()
 	{
 		//메인 카메라
-		Com_Camera* mainCam = RenderManager::GetMainCamera();
+		Com_Camera* mainCam = RenderManager::GetInst().GetMainCamera();
 		if (nullptr == mainCam)
 		{
 			return;

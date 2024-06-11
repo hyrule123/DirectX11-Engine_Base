@@ -62,7 +62,7 @@ namespace ehw
 
 		ResourceManagers::GetInst().Init();
 
-		RenderManager::Init();
+		RenderManager::GetInst().Init();
 		AudioManager::GetInst().Init();
 		FontWrapper::GetInst().Init();
 
@@ -103,7 +103,7 @@ namespace ehw
 		//최종 렌더타겟 Clear
 		GPUManager::GetInst().ClearRenderTarget();
 
-		RenderManager::Render();
+		RenderManager::GetInst().Render();
 
 		if (m_editorRunFunction)
 		{
@@ -117,7 +117,7 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{	
-		RenderManager::FrameEnd();
+		RenderManager::GetInst().FrameEnd();
 		SceneManager::FrameEnd();
 	}
 

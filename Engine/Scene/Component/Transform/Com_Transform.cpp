@@ -57,7 +57,7 @@ namespace ehw
 		cbData.WorldView = cbData.World * cbData.View;
 		cbData.WVP = cbData.WorldView * cbData.Projection;
 
-		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::Transform);
+		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Transform);
 		cb->SetData(&cbData);
 		cb->BindData(eShaderStageFlag::ALL);
 	}

@@ -132,9 +132,9 @@ namespace ehw
 
 		//4. RenderMgr에서 해상도에 영향을 받는 요소들 값 변경
 		//RenderManager가 초기화 된 이후(나중에 해상도 변경 시)에만 여기서 실행
-		if (RenderManager::IsInitialized())
+		if (RenderManager::GetInst().IsInitialized())
 		{
-			if (false == RenderManager::SetResolution(_ResolutionX, _ResolutionY))
+			if (false == RenderManager::GetInst().SetResolution(_ResolutionX, _ResolutionY))
 			{
 				return false;
 			}

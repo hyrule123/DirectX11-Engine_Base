@@ -26,7 +26,7 @@ namespace ehw
 
 	void Com_Renderer_UIBase::Render()
 	{
-		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::CustomData);
+		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
 		cb->SetData(&mUIData);
 		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
