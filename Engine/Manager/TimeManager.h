@@ -2,60 +2,60 @@
 #include "Engine/define_Enum.h"
 #include "Engine/DefaultSettingVar.h"
 #include "Engine/GlobalVariable.h"
+#include "Engine/Util/StaticSingleton.h"
 
 #include <chrono>
 
 namespace ehw
 {
-	class TimeManager
+	class TimeManager : public StaticSingleton<TimeManager>
 	{
+		friend class StaticSingleton<TimeManager>;
 		friend class GameEngine;
 	public:
-		static __forceinline float DeltaTime() { return m_currentDeltaTime; }
-		static __forceinline float FixedDeltaTime() { return m_fixedDeltaTime; }
+		__forceinline float DeltaTime() { return m_currentDeltaTime; }
+		__forceinline float FixedDeltaTime() { return m_fixedDeltaTime; }
 
-		static void Update();
+		void Update();
 		
-		static uint GetFixedUpdateCount();
-		inline static void SetFixedUpdateMode(bool _enable);
+		uint GetFixedUpdateCount();
+		inline void SetFixedUpdateMode(bool _enable);
 
-		static void RenderFPS();
+		void RenderFPS();
 		
 		//0으로 설정시 실시간
-		static void SetFixedDeltaTime(float _fixedDeltaTime);
+		void SetFixedDeltaTime(float _fixedDeltaTime);
 
 		//최대 FixedUpdate 횟수를 설정할 수 있음.
 		//UINT_MAX로 설정시 무제한
-		static void SetMaxFixedUpdatesPerFrame(uint _max);
+		void SetMaxFixedUpdatesPerFrame(uint _max);
 
 	private:
-		static void Init();
-		static void Release();
+		TimeManager();
+		~TimeManager();
+		void Init();
+		void Release();
 
 	private:
-		static float			m_currentDeltaTime;
+		float			m_currentDeltaTime;
 
 		//DeltaTime 측정 관련
-		static float			m_deltaTime;
-		static float			m_delatTime_max_cap_per_frame;
+		float			m_deltaTime;
+		float			m_delatTime_max_cap_per_frame;
 
-		static std::chrono::steady_clock::time_point m_prevTime;
-		static std::chrono::steady_clock::time_point m_currentTime;
+		std::chrono::steady_clock::time_point m_prevTime;
+		std::chrono::steady_clock::time_point m_currentTime;
 		//
 
 
 		// FixedUpdate 관련
-		static float			m_fixedDeltaTime;
-		static uint				m_maxFixedUpdatesPerFrame;
+		float			m_fixedDeltaTime;
+		uint				m_maxFixedUpdatesPerFrame;
 
-		static float			m_accumulatedDeltaTime;
+		float			m_accumulatedDeltaTime;
 		//
 
-		static float			mOneSecond;
-
-	private:
-		TimeManager() = delete;
-		~TimeManager() = delete;
+		float			mOneSecond;
 	};
 
 	inline void TimeManager::SetFixedUpdateMode(bool _enable)

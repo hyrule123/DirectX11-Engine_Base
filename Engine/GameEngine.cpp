@@ -68,7 +68,7 @@ namespace ehw
 
 		ComponentInitializer::Init();
 		
-		TimeManager::Init();
+		TimeManager::GetInst().Init();
 
 		InputManager::Init();
 		
@@ -86,7 +86,7 @@ namespace ehw
 	// CPU UPDATE
 	void GameEngine::Update()
 	{
-		TimeManager::Update();
+		TimeManager::GetInst().Update();
 		InputManager::Update();
 		SceneManager::FixedUpdate();
 		SceneManager::Update();
@@ -110,7 +110,7 @@ namespace ehw
 			m_editorRunFunction();
 		}
 
-		TimeManager::RenderFPS();
+		TimeManager::GetInst().RenderFPS();
 
 		GPUManager::GetInst().Present(true);
 	}

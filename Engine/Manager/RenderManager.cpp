@@ -233,7 +233,7 @@ namespace ehw
 		info.NoiseSize.y = (float)noise->GetHeight();
 
 		static float noiseTime = 10.f;
-		noiseTime -= TimeManager::DeltaTime();
+		noiseTime -= TimeManager::GetInst().DeltaTime();
 		info.NoiseTime = noiseTime;
 
 		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
@@ -309,7 +309,7 @@ namespace ehw
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{
-		gGlobal.DeltaTime = TimeManager::DeltaTime();
+		gGlobal.DeltaTime = TimeManager::GetInst().DeltaTime();
 		gGlobal.AccFramePrev = gGlobal.AccFrame;
 		gGlobal.AccFrame += 1u;
 		

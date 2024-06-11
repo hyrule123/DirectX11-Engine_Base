@@ -131,7 +131,7 @@ namespace ehw
 		float aliveTime = 1.0f / mFrequency;
 
 		//누적시간
-		mTime += TimeManager::DeltaTime();
+		mTime += TimeManager::GetInst().DeltaTime();
 		if (aliveTime < mTime)
 		{
 			float f = (mTime / aliveTime);
@@ -157,8 +157,8 @@ namespace ehw
 		mCBData.startSize = mStartSize;
 		mCBData.startColor = mStartColor;
 		mCBData.startLifeTime = mStartLifeTime;
-		mCBData.deltaTime = TimeManager::DeltaTime();
-		mCBData.elapsedTime += TimeManager::DeltaTime();
+		mCBData.deltaTime = TimeManager::GetInst().DeltaTime();
+		mCBData.elapsedTime += TimeManager::GetInst().DeltaTime();
 
 
 		ConstBuffer* cb = RenderManager::GetConstBuffer(eCBType::ParticleSystem);

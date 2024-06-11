@@ -91,7 +91,7 @@ namespace ehw
 	eResult iComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.(뒤에서부터)

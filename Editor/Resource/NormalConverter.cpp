@@ -80,7 +80,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	std::fs::path texPath = WinAPI::FileDialog(absTexPath, vecExt);
 
-	texPath = PathManager::MakePathStrKey(texPath);
+	texPath = PathManager::GetInst().MakePathStrKey(texPath);
 
 	mTextureSrc = ResourceManager<Texture>::GetInst().Load(texPath);
 }

@@ -217,7 +217,7 @@ namespace ehw::editor
 		mbInitialized = false;
 
 		//IMGUI 내부 세팅 저장
-		const std::fs::path& saveDir = PathManager::GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::GetInst().GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		ImGui::SaveIniSettingsToDisk(savePath.string().c_str());
 
@@ -321,7 +321,7 @@ namespace ehw::editor
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = PathManager::GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::GetInst().GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{

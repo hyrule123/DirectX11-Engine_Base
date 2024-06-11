@@ -41,7 +41,7 @@ namespace ehw
 		AtExit::AddFunc(std::bind(&ResourceManagers::Release, this));
 
 		//기본 Resource들 init
-		const std::fs::path& baseDir = PathManager::GetResPathRelative();
+		const std::fs::path& baseDir = PathManager::GetInst().GetResPathRelative();
 
 		//기본 리소스를 먼저 등록
 		ResourceManager<Texture>::GetInst().Init(baseDir / strKey::path::directory::resource::Texture);

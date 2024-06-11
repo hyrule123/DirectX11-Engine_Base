@@ -84,7 +84,7 @@ namespace ehw
 		bool bChangeEnd = false;
 		if (m_Anim3DCBuffer.bChangingAnim)
 		{
-			m_fChangeTimeAccumulate += TimeManager::DeltaTime();
+			m_fChangeTimeAccumulate += TimeManager::GetInst().DeltaTime();
 
 			if (m_fChangeTimeLength < m_fChangeTimeAccumulate)
 			{
@@ -98,7 +98,7 @@ namespace ehw
 		{
 			double curTime = 0.f;
 			// 현재 재생중인 Clip 의 시간을 진행한다.
-			m_fClipUpdateTime += TimeManager::DeltaTime();
+			m_fClipUpdateTime += TimeManager::GetInst().DeltaTime();
 
 			//애니메이션 재생이 끝났으면 -> 첫 프레임으로
 			//m_fClipUpdateTime = 애니메이션 시작 이후 누적 시간

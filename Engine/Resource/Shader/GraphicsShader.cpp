@@ -102,7 +102,7 @@ namespace ehw
 	eResult GraphicsShader::CreateByCSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		if (false == std::fs::exists(shaderBinPath))

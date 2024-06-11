@@ -86,7 +86,7 @@ namespace ehw::editor
 			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
-			waitDot += TimeManager::DeltaTime();
+			waitDot += TimeManager::GetInst().DeltaTime();
 			if (1.f < waitDot)
 			{
 				waitDot = 0.f;

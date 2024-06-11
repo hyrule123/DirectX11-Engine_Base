@@ -9,24 +9,24 @@
 
 namespace ehw
 {
-    float                                   TimeManager::m_currentDeltaTime{};
-
-    float	                                TimeManager::m_deltaTime{};
-    float                                   TimeManager::m_delatTime_max_cap_per_frame{ g_default_deltatime_max_cap };
-
-    std::chrono::steady_clock::time_point   TimeManager::m_prevTime{};
-    std::chrono::steady_clock::time_point   TimeManager::m_currentTime{};
-
-    float                                   TimeManager::m_fixedDeltaTime{ g_defaultFixedUpdateDeltaTime };
-    uint				                    TimeManager::m_maxFixedUpdatesPerFrame{ g_maxFixedUpdatesPerFrame };
-
-    float			                        TimeManager::m_accumulatedDeltaTime{};
-
-    float			                        TimeManager::mOneSecond{};
-
+    TimeManager::TimeManager()
+        : m_currentDeltaTime{}
+        , m_deltaTime{}
+        , m_delatTime_max_cap_per_frame{ g_default_deltatime_max_cap }
+        , m_prevTime{}
+        , m_currentTime{}
+        , m_fixedDeltaTime{ g_defaultFixedUpdateDeltaTime }
+        , m_maxFixedUpdatesPerFrame{ g_maxFixedUpdatesPerFrame }
+        , m_accumulatedDeltaTime{}
+        , mOneSecond{}
+    {
+    }
+    TimeManager::~TimeManager()
+    {
+    }
     void TimeManager::Init()
     {
-        AtExit::AddFunc(Release);
+        AtExit::AddFunc(std::bind(&TimeManager::Release, this));
 
         m_prevTime = std::chrono::high_resolution_clock::now();
 
@@ -34,19 +34,14 @@ namespace ehw
         SetFixedDeltaTime(g_defaultFixedUpdateDeltaTime);
     }
 
-
     void TimeManager::Release()
     {
         m_currentDeltaTime = {};
-
-        
         m_deltaTime = {};
         m_delatTime_max_cap_per_frame = {};
 
         m_prevTime = {};
         m_currentTime = {};
-        //
-
 
         // FixedUpdate 관련
         m_fixedDeltaTime = {};

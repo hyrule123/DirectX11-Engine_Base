@@ -54,7 +54,7 @@ namespace ehw::editor
 			std::fs::path texPath = WinAPI::FileDialog(absTexPath, extensions);
 
 
-			texPath = PathManager::MakePathStrKey(texPath);
+			texPath = PathManager::GetInst().MakePathStrKey(texPath);
 
 			mTexture = ResourceManager<Texture>::GetInst().Load(texPath);
 

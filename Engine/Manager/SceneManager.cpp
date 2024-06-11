@@ -25,16 +25,16 @@ namespace ehw
 	{
 		if (m_activeScene)
 		{
-			TimeManager::SetFixedUpdateMode(true);
+			TimeManager::GetInst().SetFixedUpdateMode(true);
 
-			uint fixedUpdateCount = TimeManager::GetFixedUpdateCount();
+			uint fixedUpdateCount = TimeManager::GetInst().GetFixedUpdateCount();
 
 			for(uint i = 0; i < fixedUpdateCount; ++i)
 			{
 				m_activeScene->SceneFixedUpdate();
 			}
 
-			TimeManager::SetFixedUpdateMode(false);
+			TimeManager::GetInst().SetFixedUpdateMode(false);
 		}
 	}
 

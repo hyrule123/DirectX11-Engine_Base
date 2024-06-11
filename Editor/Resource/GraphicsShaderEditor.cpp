@@ -389,7 +389,7 @@ namespace ehw::editor
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
-		std::fs::path shaderPath = PathManager::GetShaderCSOPath();
+		std::fs::path shaderPath = PathManager::GetInst().GetShaderCSOPath();
 
 		//쉐이더 바이트코드 경로 확인
 		if (false == std::fs::exists(shaderPath))

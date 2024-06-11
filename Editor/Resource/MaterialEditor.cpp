@@ -202,7 +202,7 @@ namespace ehw::editor
 				std::fs::path receivedPath = WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey = PathManager::MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey = PathManager::GetInst().MakePathStrKey(receivedPath);
 
 					std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().Load(PathstrKey);
 					if (tex)
@@ -400,7 +400,7 @@ namespace ehw::editor
 					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::GetInst().GetBaseDir());
 
 					//Res 폴더
-					const std::fs::path& resDir = PathManager::GetResPathAbsolute();
+					const std::fs::path& resDir = PathManager::GetInst().GetResPathAbsolute();
 
 					std::fs::path filePath = WinAPI::FileDialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
