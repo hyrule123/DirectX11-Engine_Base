@@ -50,8 +50,7 @@ namespace ehw
 		SetWindowSize(_desc.Width, _desc.Height);
 
 		ThreadPoolManager::GetInst().Init((size_t)std::thread::hardware_concurrency());
-
-		PathManager::Init();
+		PathManager::GetInst().Init();
 
 		//RenderMgr은 GPUMgr에서
 		if (false == GPUManager::GetInst().Init(_desc.GPUDesc))

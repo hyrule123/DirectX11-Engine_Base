@@ -1,8 +1,6 @@
 #pragma once
-
-
-
 #include "Engine/Resource/define_Resource.h"
+#include "Engine/Util/StaticSingleton.h"
 
 
 #include <filesystem>
@@ -13,28 +11,28 @@ namespace std
 
 namespace ehw
 {
-	class PathManager
+	class PathManager : public StaticSingleton<PathManager>
 	{
+		friend class StaticSingleton<PathManager>;
 		friend class GameEngine;
 	public:
-		static void Init();
-		
-	public:
-		static const std::fs::path& GetResPathAbsolute() { return m_absoluteResourceDir; }
-		static const std::fs::path& GetResPathRelative() { return m_relativeResourceDir; }
+		const std::fs::path& GetResPathAbsolute() { return m_absoluteResourceDir; }
+		const std::fs::path& GetResPathRelative() { return m_relativeResourceDir; }
 
-		static const std::fs::path& GetShaderCSOPath() { return m_relativeDir_ShaderCSO; }
+		const std::fs::path& GetShaderCSOPath() { return m_relativeDir_ShaderCSO; }
 
-		static std::fs::path MakePathStrKey(const std::fs::path& _fullPath);
+		std::fs::path MakePathStrKey(const std::fs::path& _fullPath);
 
 	private:
-		static void Release();
+		PathManager();
+		~PathManager();
+		void Init();
+		void Release();
 
 	private:
-		static std::filesystem::path m_absoluteResourceDir;
-		static std::filesystem::path m_relativeResourceDir;
-		
-		static std::filesystem::path m_relativeDir_ShaderCSO;
+		std::filesystem::path m_absoluteResourceDir;
+		std::filesystem::path m_relativeResourceDir;
+		std::filesystem::path m_relativeDir_ShaderCSO;
 	};
 
 

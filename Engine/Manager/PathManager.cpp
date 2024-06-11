@@ -1,19 +1,20 @@
-
 #include "PathManager.h"
-
-
-
 #include "Engine/Util/AtExit.h"
 
 namespace ehw
 {
-	std::filesystem::path PathManager::m_absoluteResourceDir{};
-	std::filesystem::path PathManager::m_relativeResourceDir{};
-	std::filesystem::path PathManager::m_relativeDir_ShaderCSO{};
-
+	PathManager::PathManager()
+		: m_absoluteResourceDir{}
+		, m_relativeResourceDir{}
+		, m_relativeDir_ShaderCSO{}
+	{
+	}
+	PathManager::~PathManager()
+	{
+	}
 	void PathManager::Init()
 	{
-		AtExit::AddFunc(PathManager::Release);
+		AtExit::AddFunc(std::bind(&PathManager::Release, this));
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
