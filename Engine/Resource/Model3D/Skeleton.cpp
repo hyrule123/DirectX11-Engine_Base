@@ -63,7 +63,7 @@ namespace ehw
 
 			for (const auto& iter : m_animations)
 			{
-				result = iter.second->SaveFile_Binary(fullPath / iter.first);
+				result = iter.second->SaveFile_Binary(fullPath / iter.first / strKey::path::extension::Anim3D);
 				if (eResultFail(result))
 				{
 					std::wstringstream errmsg{};
