@@ -388,6 +388,11 @@ namespace ehw
 		return ret;
 	}
 
+	void GameObject::SetComponentData(iComponent* _pCom)
+	{
+		//private 함수이므로 null check는 했다고 가정함
+	}
+
 
 
 	void GameObject::SetActive(bool _bActive)

@@ -45,14 +45,18 @@ namespace ehw
 		void RemoveDestroyed();
 
 	public:
-		template <typename T>
+		template <typename T> requires std::is_base_of_v<iComponent, T>
 		inline T* AddComponent();
-
-		inline iComponent* AddComponent(std::unique_ptr<iComponent>& _pCom);
+		inline iComponent* AddComponent(std::unique_ptr<iComponent>&& _pCom);
 		inline iComponent* AddComponent(const std::string_view _strKey);
 
 		template <typename T>
 		inline T* GetComponent();
+
+		template <typename T> requires std::is_base_of_v<iScript, T>
+		inline T* AddScript();
+		inline iScript* AddScript(std::unique_ptr<iScript>&& _pCom);
+		inline iScript* AddScript(const std::string_view _strKey);
 
 		template <typename T>
 		inline T* GetScript();
@@ -98,6 +102,8 @@ namespace ehw
 
 	private:
 		iComponent* AddComponent(iComponent* _pCom);
+		void SetComponentData(iComponent* _pCom);
+
 
 	private:
 		std::string m_name;
@@ -115,7 +121,7 @@ namespace ehw
 	};
 
 
-	template <typename T>
+	template <typename T> requires std::is_base_of_v<iComponent, T>
 	T* GameObject::AddComponent()
 	{
 		eComponentCategory order = T::GetComponentCategoryStatic();
@@ -130,7 +136,7 @@ namespace ehw
 		pCom->SetStrKey(ComponentManager::GetInst().GetComponentName<T>());
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return static_cast<T*>(AddComponent(pCom));
+		return static_cast<T*>(AddComponent(std::move(pCom)));
 	}
 
 
@@ -143,11 +149,11 @@ namespace ehw
 			return nullptr;
 		}
 
-		return AddComponent(pCom);
+		return AddComponent(std::move(pCom));
 	}
 
 
-	inline iComponent* GameObject::AddComponent(std::unique_ptr<iComponent>& _pCom)
+	inline iComponent* GameObject::AddComponent(std::unique_ptr<iComponent>&& _pCom)
 	{
 		iComponent* ret = AddComponent(_pCom.get());
 
@@ -215,6 +221,31 @@ namespace ehw
 		return pCom;
 	}
 
+	template<typename T> requires std::is_base_of_v<iScript, T>
+	inline T* GameObject::AddScript()
+	{
+		return AddComponent<T>();
+	};
+
+	inline iScript* GameObject::AddScript(std::unique_ptr<iScript>&& _pCom)
+	{
+		return static_cast<iScript*>(AddComponent(std::move(_pCom)));
+	}
+
+	inline iScript* GameObject::AddScript(const std::string_view _strKey)
+	{
+		std::unique_ptr<iComponent> pCom = ComponentManager::GetInst().GetNewComponent(_strKey);
+
+		if (nullptr == pCom)
+		{
+			return nullptr;
+		}
+		else if (pCom->GetComponentCategory() != eComponentCategory::Scripts) {
+			return nullptr;
+		}
+
+		return static_cast<iScript*>(AddComponent(std::move(pCom)));
+	}
 
 	template<typename T>
 	inline T* GameObject::GetScript()
