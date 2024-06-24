@@ -23,9 +23,8 @@ CBUFFER(CB_Animation2D, tCB_Animation2D, b, 5);
 CBUFFER(CB_NumberOfLight, tCB_NumberOfLight, b, 6);
 CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 7);
 CBUFFER(CB_Noise, tCB_Noise, b, 8);
-CBUFFER(CB_SBufferCount, tCB_SBufferCount, b, 9);
-CBUFFER(CB_Animation3D, tCB_Animation3D, b, 10);
-CBUFFER(CB_CustomData, tCB_CustomData, b, 11);
+CBUFFER(CB_Animation3D, tCB_Animation3D, b, 9);
+CBUFFER(CB_CustomData, tCB_CustomData, b, 10);
 
 
 #ifdef __cplusplus
@@ -34,18 +33,17 @@ namespace ehw
 {
 	enum class eCBType
 	{
-		Global = Register_b_CB_Global,	
-		Transform = Register_b_CB_Transform,	
-		Material = Register_b_CB_MaterialData,	
-		ComputeShader = Register_b_CB_ComputeShader,	
-		Grid = Register_b_CB_Grid,		
-		Animation2D = Register_b_CB_Animation2D,	
-		numberOfLight = Register_b_CB_NumberOfLight,
-		ParticleSystem = Register_b_CB_ParticleSystem,
-		Noise = Register_b_CB_Noise,	
-		SBufferCount = Register_b_CB_SBufferCount,
-		Animation3D = Register_b_CB_Animation3D,
-		CustomData = Register_b_CB_CustomData,
+		Global,	
+		Transform,	
+		Material,	
+		ComputeShader,	
+		Grid,		
+		Animation2D,	
+		numberOfLight,
+		ParticleSystem,
+		Noise,
+		Animation3D,
+		CustomData,
 		END
 	};
 };

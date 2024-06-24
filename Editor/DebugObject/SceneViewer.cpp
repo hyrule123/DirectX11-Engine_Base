@@ -29,11 +29,11 @@ namespace ehw::editor
 		//61 번 셰이더 리소스 뷰 null초기화
 		ID3D11ShaderResourceView* gameSRV = nullptr;
 		auto pContext = GPUManager::GetInst().Context();
-		pContext->PSSetShaderResources(Register_t_guiGameTexture, 1u, &gameSRV);
+		pContext->PSSetShaderResources(GPU::Register::t::guiGameTexture, 1u, &gameSRV);
 		pContext->CopyResource(gameTex->GetTexture().Get()
 			, renderTarget->GetTexture().Get());
 
-		gameTex->BindDataSRV(Register_t_guiGameTexture, eShaderStageFlag::Pixel);
+		gameTex->BindDataSRV(GPU::Register::t::guiGameTexture, eShaderStageFlag::Pixel);
 
 		ImGuiIO io = ImGui::GetIO();
 		ImVec2 panelSize = ImGui::GetWindowSize();

@@ -36,9 +36,9 @@ namespace ehw
 		m_animationComputeShader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
 
 		StructBuffer::Desc desc{};
-		desc.REGISLOT_t_SRV = Register_t_g_FinalBoneMatrixArray;
+		desc.REGISLOT_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex;
-		desc.REGISLOT_u_UAV = Register_u_g_FinalBoneMatrixArrayRW;
+		desc.REGISLOT_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
 		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>(desc);
 	}

@@ -89,7 +89,7 @@ namespace ehw
 		m_debugInfoSBuffer = std::make_unique<StructBuffer>();
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.REGISLOT_t_SRV = Register_t_g_debugDrawData;
+		desc.REGISLOT_t_SRV = GPU::Register::t::g_debugDrawData;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 		m_debugInfoSBuffer->SetDesc(desc);
 		m_debugInfoSBuffer->Create<tDebugDrawData>(100, nullptr, 0);

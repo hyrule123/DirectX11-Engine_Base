@@ -176,7 +176,7 @@ namespace ehw
 			return;
 		
 		GetOwner()->GetComponent<Com_Transform>()->BindData();
-		mBuffer->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::Geometry);
+		mBuffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->BindData();
 		GetMesh()->RenderInstanced(0u, mMaxParticles);

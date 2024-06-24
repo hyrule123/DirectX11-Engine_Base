@@ -35,11 +35,9 @@
 #include "ResourceManager.h"
 #include "Engine/Manager/TimeManager.h"
 
-
-
-
 namespace ehw
 {
+
 	void RenderManager::Render()
 	{
 		ClearMultiRenderTargets();
@@ -107,9 +105,7 @@ namespace ehw
 
 		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 
-		m_lights_SBuffer->BindDataSRV(Register_t_lightAttributes, Flag);
-
-		
+		m_lights_SBuffer->BindDataSRV(GPU::Register::t::lightAttributes, Flag);
 
 		tCB_NumberOfLight trCb = {};
 		trCb.numberOfLight = (uint)m_lightAttributes.size();
@@ -141,7 +137,7 @@ namespace ehw
 	void RenderManager::BindNoiseTexture()
 	{
 		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::noise_03);
-		noise->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::ALL);
+		noise->BindDataSRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
 		info.NoiseSize.x = (float)noise->GetWidth();
@@ -169,7 +165,7 @@ namespace ehw
 
 		GPUManager::GetInst().Context()->CopyResource(dest, source);
 
-		m_postProcessTexture->BindDataSRV(Register_t_postProcessTexture, eShaderStageFlag::Pixel);
+		m_postProcessTexture->BindDataSRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
 	void RenderManager::EraseIfDestroyed_Camera(bool _callRenderFunction = false)
@@ -1364,11 +1360,10 @@ namespace ehw
 		m_constBuffers[(uint)eCBType::Noise] = std::make_unique<ConstBuffer>(eCBType::Noise);
 		m_constBuffers[(uint)eCBType::Noise]->Create(sizeof(tCB_Noise));
 
-		m_constBuffers[(uint)eCBType::SBufferCount] = std::make_unique<ConstBuffer>(eCBType::SBufferCount);
-		m_constBuffers[(uint)eCBType::SBufferCount]->Create<tCB_SBufferCount>();
-
 		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
 		m_constBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
+		
+		
 
 		m_constBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
 		m_constBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
@@ -1414,7 +1409,7 @@ namespace ehw
 		//noise
 		std::shared_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
 		m_noiseTexture->Create(GPUManager::GetInst().GetResolutionX(), GPUManager::GetInst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
-		m_noiseTexture->BindDataSRV(Register_t_NoiseTexture, eShaderStageFlag::Pixel);
+		m_noiseTexture->BindDataSRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::Pixel);
 	}
 
 

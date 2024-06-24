@@ -113,7 +113,8 @@
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).txt</ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -183,7 +184,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).txt</ObjectFileOutput>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

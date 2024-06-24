@@ -23,6 +23,7 @@ namespace Microsoft::WRL
 
 namespace ehw
 {
+	
 	enum class eTextureSlot
 	{
 		//기본 이름(최대 8장)
@@ -36,21 +37,21 @@ namespace ehw
 		Tex_7,
 
 		//명칭
-		Albedo = Register_t_AlbedoTexture,
-		Normal = Register_t_NormalTexture,
-		Specular = Register_t_SpecularTexture,
-		Emissive = Register_t_EmissiveTexture,
-		RoughnessAndMetalic = Register_t_RoughnessMetalicTexture,
+		Albedo = GPU::Register::t::AlbedoTexture,
+		Normal = GPU::Register::t::NormalTexture,
+		Specular = GPU::Register::t::SpecularTexture,
+		Emissive = GPU::Register::t::EmissiveTexture,
+		RoughnessAndMetalic = GPU::Register::t::RoughnessMetalicTexture,
 
-		AlbedoTarget = Register_t_AlbedoTarget,
-		NormalTarget = Register_t_NormalTarget,
-		SpecularTarget = Register_t_SpecularTarget,
-		EmissiveTarget = Register_t_EmissiveTarget,
-		RoughnessAndMetalicTarget = Register_t_RoughnessMetalicTarget,
-		PositionTarget = Register_t_PositionTarget,
+		AlbedoTarget = GPU::Register::t::AlbedoTarget,
+		NormalTarget = GPU::Register::t::NormalTarget,
+		SpecularTarget = GPU::Register::t::SpecularTarget,
+		EmissiveTarget = GPU::Register::t::EmissiveTarget,
+		RoughnessAndMetalicTarget = GPU::Register::t::RoughnessMetalicTarget,
+		PositionTarget = GPU::Register::t::PositionTarget,
 
-		DiffuseLightTarget = Register_t_DiffuseLightTarget,
-		SpecularLightTarget = Register_t_SpecularLightTarget,
+		DiffuseLightTarget = GPU::Register::t::DiffuseLightTarget,
+		SpecularLightTarget = GPU::Register::t::SpecularLightTarget,
 
 		//CubeT8,
 		//CubeT9,
@@ -58,7 +59,7 @@ namespace ehw
 		//Array2DT10,
 		//Array2DT11,
 
-		END = SpecularLightTarget + 1,
+		END
 	};
 
 }

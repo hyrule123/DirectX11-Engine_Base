@@ -91,52 +91,50 @@ struct uintx16 { uint u[16]; };
 //Register Slot 관련
 #ifdef __cplusplus
 
-#define REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)\
-constexpr int Register_##_registerType##_##_bufferName = _registerNumber
 
-#define CBUFFER(_bufferName, _structName, _registerType, _registerNumber)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber);\
-constexpr int CBUFFER_##_bufferName = _registerNumber
+#define REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER)\
+namespace GPU::Register::REGISTER_TYPE {\
+constexpr int BUFFER_NAME = REGISTER_NUMBER;\
+}
 
-#define TEXTURE2D(_bufferName, _registerType, _registerNumber)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)
+#define CBUFFER(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
-#define TEXTURE2D_RW(_bufferName, _registerType, _registerNumber, _format)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)
+#define TEXTURE2D(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
-#define SBUFFER(_bufferName, _structName, _registerType, _registerNumber)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)
+#define TEXTURE2D_RW(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER, _format)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
-#define SBUFFER_RW(_bufferName, _structName, _registerType, _registerNumber)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)
+#define SBUFFER(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
-#define SAMPLER(_bufferName, _registerType, _registerNumber)\
-REGISTER_DECLARE(_bufferName, _registerType, _registerNumber)
+#define SBUFFER_RW(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
-//#define REGISTER(_Type)
-//#define REGISTER_SLOT(_RegisterType, _iSlotIdx) _iSlotIdx
-
+#define SAMPLER(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER)\
+REGISTER_DECLARE(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER);\
 
 #else//HLSL
 
-#define CBUFFER(_bufferName, _structName, _registerType, _registerNumber)\
-cbuffer _bufferName : register(_registerType##_registerNumber)\
-{ _structName _bufferName; }
+#define CBUFFER(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+cbuffer BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)\
+{ STRUCT_TYPE BUFFER_NAME; }
 
-#define TEXTURE2D(_bufferName, _registerType, _registerNumber)\
-Texture2D _bufferName : register(_registerType##_registerNumber)
+#define TEXTURE2D(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER)\
+Texture2D BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)
 
-#define TEXTURE2D_RW(_bufferName, _registerType, _registerNumber, _format)\
-RWTexture2D<_format> _bufferName : register(_registerType##_registerNumber)
+#define TEXTURE2D_RW(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER, _format)\
+RWTexture2D<_format> BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)
 
-#define SBUFFER(_bufferName, _structName, _registerType, _registerNumber)\
-StructuredBuffer<_structName> _bufferName : register(_registerType##_registerNumber)
+#define SBUFFER(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+StructuredBuffer<STRUCT_TYPE> BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)
 
-#define SBUFFER_RW(_bufferName, _structName, _registerType, _registerNumber)\
-RWStructuredBuffer<_structName> _bufferName : register(_registerType##_registerNumber)
+#define SBUFFER_RW(BUFFER_NAME, STRUCT_TYPE, REGISTER_TYPE, REGISTER_NUMBER)\
+RWStructuredBuffer<STRUCT_TYPE> BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)
 
-#define SAMPLER(_bufferName, _registerType, _registerNumber)\
-SamplerState _bufferName : register(_registerType##_registerNumber)
+#define SAMPLER(BUFFER_NAME, REGISTER_TYPE, REGISTER_NUMBER)\
+SamplerState BUFFER_NAME : register(REGISTER_TYPE##REGISTER_NUMBER)
 
 #define alignas(_Num) 
 

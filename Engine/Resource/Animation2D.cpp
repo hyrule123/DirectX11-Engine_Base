@@ -144,7 +144,7 @@ namespace ehw
 
 	void Animation2D::BindData()
 	{
-		mAtlas->BindDataSRV(Register_t_AtlasTexture, eShaderStageFlag::Pixel);
+		mAtlas->BindDataSRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Animation2D);
 
@@ -169,7 +169,7 @@ namespace ehw
 	void Animation2D::UnBindData()
 	{
 		//Texture clear
-		Texture::ClearSRV(Register_t_AtlasTexture);
+		Texture::ClearSRV(GPU::Register::t::AtlasTexture);
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Animation2D);
 

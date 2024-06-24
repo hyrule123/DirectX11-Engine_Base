@@ -9,8 +9,8 @@
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
 SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 0);
 
-//Debug -> Debug.hlsli
-//SBUFFER(g_Debug, tDebug, t, 126);
+//디버그 데이터 주고받기용 버퍼
+SBUFFER_RW(g_debugData, tCB_CustomData, u, 0);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);
@@ -56,22 +56,18 @@ SBUFFER(g_BoneOffsetArray, Matrix, t, 18);
 
 //최종 행렬이 저장되는 구조화버퍼
 SBUFFER(g_FinalBoneMatrixArray, Matrix, t, 19);
-SBUFFER_RW(g_FinalBoneMatrixArrayRW, Matrix, u, 0);
+SBUFFER_RW(g_FinalBoneMatrixArrayRW, Matrix, u, 1);
 
 //본 인스턴싱용
-//SBUFFER(g_InstancingBoneMatrixArray, Matrix, t, 18);
-SBUFFER_RW(g_BoneSocketMatrixArray, tOutputBoneInfo, u, 1);
-SBUFFER_RW(g_InstancingBoneMatrixArray, Matrix, u, 2);
+SBUFFER_RW(g_BoneSocketMatrixArray, tOutputBoneInfo, u, 2);
+SBUFFER_RW(g_InstancingBoneMatrixArray, Matrix, u, 3);
 
 
 // Light
 SBUFFER(lightAttributes, tLightAttribute, t, 14);
 
-
 // noise
 TEXTURE2D(NoiseTexture, t, 16);
-
-
 
 // postProcess
 TEXTURE2D(postProcessTexture, t, 60);

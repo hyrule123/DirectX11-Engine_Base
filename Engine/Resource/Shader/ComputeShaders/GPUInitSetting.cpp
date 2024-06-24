@@ -73,8 +73,8 @@ namespace ehw
 		//SBuffer
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
-		desc.REGISLOT_t_SRV = Register_t_gInitSetting;
-		desc.REGISLOT_u_UAV = Register_u_gInitSettingRW;
+		desc.REGISLOT_t_SRV = GPU::Register::t::gInitSetting;
+		desc.REGISLOT_u_UAV = GPU::Register::u::gInitSettingRW;
 		mInitSBuffer = std::make_unique<StructBuffer>(desc);
 
 		HRESULT result = mInitSBuffer->Create<tGPUInitSetting>(1ui64, &gGPUInitSetting, 1ui64);

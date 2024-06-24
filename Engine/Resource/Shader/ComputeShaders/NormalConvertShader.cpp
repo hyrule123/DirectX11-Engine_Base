@@ -71,10 +71,10 @@ namespace ehw
 		mDestTex->SetStrKey(mSrcTex->GetStrKey());
 
 		//원본
-		mSrcTex->BindDataSRV(Register_t_SrcNormalTex, eShaderStageFlag::Compute);
+		mSrcTex->BindDataSRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
-		mDestTex->BindDataUAV(Register_u_DestNormalTex);
+		mDestTex->BindDataUAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
 		iComputeShader::CalculateGroupCount(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
