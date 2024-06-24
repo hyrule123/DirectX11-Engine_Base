@@ -17,6 +17,8 @@ namespace ehw
 {
 	struct tShaderCode
 	{
+		const void* pData;
+		size_t dataSize;
 		ComPtr<ID3DBlob> blob;
 		std::string strKey;
 	};

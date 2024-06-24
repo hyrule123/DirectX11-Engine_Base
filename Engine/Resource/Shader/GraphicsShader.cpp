@@ -24,10 +24,7 @@ namespace ehw
 
 	GraphicsShader::~GraphicsShader()
 	{
-
 	}
-
-
 
 	eResult GraphicsShader::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
 	{
@@ -62,12 +59,13 @@ namespace ehw
 			ErrMsg += static_cast<const char*>(m_errorBlob->GetBufferPointer());
 			ERROR_MESSAGE_A(ErrMsg.c_str());
 
-
 			m_errorBlob = nullptr;
 
 			return eResult::Fail_Open;
 		}
 
+		m_arrShaderCode[(int)_stage].pData = 
+			m_arrShaderCode[(int)_stage].blob.Get()->GetBufferPointer();
 		return eResult::Success;
 	}
 
@@ -79,24 +77,10 @@ namespace ehw
 		SetEngineDefaultRes(true);
 
 		tShaderCode& code = m_arrShaderCode[(int)_stage];
+		code.pData = _pByteCode;
+		code.dataSize = _ByteCodeSize;
 
-		HRESULT hr = D3DCreateBlob(_ByteCodeSize, code.blob.ReleaseAndGetAddressOf());
-		if (FAILED(hr))
-		{
-			ERROR_MESSAGE("GraphicsShader를 저장할 Blob 생성에 실패했습니다.");
-			
-			return eResult::Fail_Create;
-		}
-
-		unsigned char* pCode = reinterpret_cast<unsigned char*>(code.blob->GetBufferPointer());
-		//할당된 메모리 사이즈는 무조건 같아야 함
-		size_t DestSize = code.blob->GetBufferSize();
-		ASSERT(_ByteCodeSize == DestSize, "Shader 데이터 사이즈와 할당된 blob의 데이터 사이즈가 다릅니다.");
-
-		//데이터 복사
-		memcpy_s(pCode, DestSize, _pByteCode, _ByteCodeSize);
-
-		return CreateShader(_stage, pCode, DestSize);
+		return CreateShader(_stage, code.pData, code.dataSize);
 	}
 
 	eResult GraphicsShader::CreateByCSO(eGSStage _stage, const std::fs::path& _FileName)
@@ -111,7 +95,7 @@ namespace ehw
 		}
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.
-		std::ios_base::openmode openFlag = std::ios_base::ate | std::ios_base::binary; std::ios_base::in;
+		std::ios_base::openmode openFlag = std::ios_base::ate | std::ios_base::binary | std::ios_base::in;
 		std::ifstream sFile(shaderBinPath, openFlag);
 
 		if (false == sFile.is_open())
@@ -122,31 +106,35 @@ namespace ehw
 		}
 
 		//파일이 열리면 지역변수 Blob을 만들어서 데이터를 옮긴다.
-		tShaderCode sCode = {};
-		sCode.strKey = _FileName.string();
+		tShaderCode& code = m_arrShaderCode[(int)_stage];
+		code = {};
+		code.strKey = _FileName.string();
+		code.dataSize = sFile.tellg();
 
 		//Blob 내부에 공간을 할당.
-		if (FAILED(D3DCreateBlob(sFile.tellg(), sCode.blob.GetAddressOf())))
+		if (FAILED(D3DCreateBlob(code.dataSize, code.blob.GetAddressOf())))
 		{
+			code = {};
 			ERROR_MESSAGE("쉐이더를 저장할 공간 할당에 실패했습니다.");
 			return eResult::Fail_Create;
 		}
 
 		//커서를 처음으로 돌린 후 파일을 읽어준다.
 		sFile.seekg(0, std::ios_base::beg);
-		sFile.read((char*)sCode.blob->GetBufferPointer(), sCode.blob->GetBufferSize());
+		sFile.read((char*)code.blob->GetBufferPointer(), code.blob->GetBufferSize());
 		sFile.close();
 
 		//읽어온 바이트 코드로부터 쉐이더를 로딩해준다.
 		//실패시 동적할당 해제하고 오류 발생
-		eResult Result = CreateShader(_stage, sCode.blob->GetBufferPointer(), sCode.blob->GetBufferSize());
+		eResult Result = CreateShader(_stage, code.blob->GetBufferPointer(), code.blob->GetBufferSize());
 		if (eResultFail(Result))
 		{
+			code = {};
 			ERROR_MESSAGE("쉐이더 생성 실패.");
 			return Result;
 		}
  
-		m_arrShaderCode[(int)_stage] = sCode;
+		code.pData = code.blob->GetBufferPointer();
 
 		return Result;
 	}
@@ -176,9 +164,9 @@ namespace ehw
 
 	eResult GraphicsShader::CreateInputLayout()
 	{
-		ID3DBlob* VSBlobData = m_arrShaderCode[(int)eGSStage::Vertex].blob.Get();
+		const tShaderCode& VS = m_arrShaderCode[(int)eGSStage::Vertex];
 
-		if (nullptr == VSBlobData)
+		if (nullptr == VS.pData)
 		{
 			ERROR_MESSAGE("정점 쉐이더가 준비되지 않아서 Input Layout을 생성할 수 없습니다.");
 			return eResult::Fail_Create;
@@ -192,8 +180,8 @@ namespace ehw
 		if (FAILED(GPUManager::GetInst().Device()->CreateInputLayout(
 			m_inputLayoutDescs.data(),
 			(uint)m_inputLayoutDescs.size(),
-			VSBlobData->GetBufferPointer(),
-			VSBlobData->GetBufferSize(),
+			VS.pData,
+			VS.dataSize,
 			m_inputLayout.ReleaseAndGetAddressOf()
 		)))
 		{

@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{6dafa788-499e-4b34-98ec-f4075a483b9e}</ProjectGuid>
     <RootNamespace>EngineSOURCE</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -113,7 +113,7 @@
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput />
+      <ObjectFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).txt</ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -183,7 +183,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput />
+      <ObjectFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).txt</ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
       <VariableName>%(Filename)</VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
