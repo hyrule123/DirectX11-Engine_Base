@@ -20,7 +20,7 @@
 
 #include "Engine/Scene/Component/Light/Com_Light3D.h"
 #include "Engine/Scene/Component/Camera/Com_Camera.h"
-#include "Engine/Scene/Component/Renderer/iRenderer.h"
+#include "Engine/Scene/Component/Renderer/Renderer.h"
 
 //컴파일된 쉐이더 헤더 모아놓은 헤더
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"
@@ -231,7 +231,7 @@ namespace ehw
 			ASSERT(false, "해상도 설정 실패");
 		}
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<iComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
 	}
 
@@ -297,7 +297,7 @@ namespace ehw
 	//void RenderManager::EraseIfDestroyed_Renderer()
 	//{
 	//	std::erase_if(m_renderers,
-	//		[](iRenderer* _renderer)->bool
+	//		[](Renderer* _renderer)->bool
 	//		{
 	//			return _renderer->IsDestroyed();
 	//		}
@@ -1159,7 +1159,7 @@ namespace ehw
 
 			std::shared_ptr<ParticleShader> particleCS = std::make_shared<ParticleShader>();
 			particleCS->SetEngineDefaultRes(true);
-			ResourceManager<iComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::ParticleCS, particleCS);
+			ResourceManager<ComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::ParticleCS, particleCS);
 			particleCS->CreateByHeader(CS_Particle, sizeof(CS_Particle));
 		}
 #pragma endregion
@@ -1322,7 +1322,7 @@ namespace ehw
 		Anim3DShader->SetEngineDefaultRes(true);
 		Anim3DShader->CreateByHeader(CS_Animation3D, sizeof(CS_Animation3D));
 
-		ResourceManager<iComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::Animation3D, Anim3DShader);
+		ResourceManager<ComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::Animation3D, Anim3DShader);
 #pragma endregion
 	}
 

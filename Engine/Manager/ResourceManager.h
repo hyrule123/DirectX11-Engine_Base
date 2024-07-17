@@ -1,19 +1,19 @@
 #pragma once
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 #include "Engine/Util/StaticSingleton.h"
 
 #include "ResourceManagers.h"
 
 #include <concepts>
 
-#define LOAD_COMPUTESHADER(_type) ResourceManager<iComputeShader>::GetInst().Load<_type>(#_type)
+#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::GetInst().Load<_type>(#_type)
 
 namespace ehw
 {
 	template <typename T>
-	concept ResourceTypes = std::is_base_of_v<iResource, T>;
+	concept ResourceTypes = std::is_base_of_v<Resource, T>;
 
 	template <typename ResourceTypes> 
 	class ResourceManager : public StaticSingleton<ResourceManager<ResourceTypes>>
@@ -40,7 +40,7 @@ namespace ehw
 		const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
-		inline std::vector<std::shared_ptr<iResource>> GetResourcesVector();
+		inline std::vector<std::shared_ptr<Resource>> GetResourcesVector();
 
 		inline void CleanUnusedResources();
 
@@ -227,13 +227,13 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline std::vector<std::shared_ptr<iResource>> ResourceManager<ResourceTypes>::GetResourcesVector()
+	inline std::vector<std::shared_ptr<Resource>> ResourceManager<ResourceTypes>::GetResourcesVector()
 	{
-		std::vector<std::shared_ptr<iResource>> retVec{};
+		std::vector<std::shared_ptr<Resource>> retVec{};
 
 		for (const auto& iter : m_Resources)
 		{
-			retVec.emplace_back(std::static_pointer_cast<iResource>(iter.second));
+			retVec.emplace_back(std::static_pointer_cast<Resource>(iter.second));
 		}
 
 		return retVec;

@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Scene/Component/StateMachine/iStateMachine.h"
+#include "Engine/Scene/Component/StateMachine/StateMachine.h"
 
 namespace ehw
 {
 	class Com_BehaviorTree 
-		: public iStateMachine
+		: public StateMachine
 	{
 	public:
 		Com_BehaviorTree();

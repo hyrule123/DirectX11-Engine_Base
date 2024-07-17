@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 
 #include "Engine/Common.h"
 
@@ -9,26 +9,26 @@ namespace ehw
 {
 	class Com_Transform;
 	class CollisionSystem;
-	class iCollider
-		: public Component<iCollider, eComponentCategory::Collider>
+	class Collider
+		: public Component<Collider, eComponentCategory::Collider>
 	{
 		friend class Collision2D;
 		friend class Collision3D;
 		friend class ContactPair;
 	public:
-		iCollider(eDimensionType _dimension);
-		iCollider(const iCollider& _collider) = default;
-		virtual ~iCollider();
+		Collider(eDimensionType _dimension);
+		Collider(const Collider& _collider) = default;
+		virtual ~Collider();
 
 		virtual void Init() override;
 		virtual void Awake() override;
 
-		void OnCollisionEnter(iCollider* _collider, const float3& _contactPoint);
-		void OnCollisionStay(iCollider* _collider, const float3& _contactPoint);
-		void OnCollisionExit(iCollider* _collider);
-		void OnTriggerEnter(iCollider* _collider);
-		void OnTriggerStay(iCollider* _collider);
-		void OnTriggerExit(iCollider* _collider);
+		void OnCollisionEnter(Collider* _collider, const float3& _contactPoint);
+		void OnCollisionStay(Collider* _collider, const float3& _contactPoint);
+		void OnCollisionExit(Collider* _collider);
+		void OnTriggerEnter(Collider* _collider);
+		void OnTriggerStay(Collider* _collider);
+		void OnTriggerExit(Collider* _collider);
 
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
@@ -54,7 +54,7 @@ namespace ehw
 		int m_collisionCount;
 	};
 
-	inline void iCollider::SubCollisionCount()
+	inline void Collider::SubCollisionCount()
 	{
 		--m_collisionCount;
 		if (m_collisionCount < 0)

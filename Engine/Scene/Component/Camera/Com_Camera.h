@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 
 #include "Engine/define_Enum.h"
 
@@ -7,7 +7,7 @@
 
 namespace  ehw
 {
-	class iRenderer;
+	class Renderer;
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
@@ -83,11 +83,11 @@ namespace  ehw
 		float m_scale;
 
 		std::bitset<g_maxLayer> m_layerMasks;
-		std::vector<iRenderer*> m_defferedOpaque;
-		std::vector<iRenderer*> m_forwardOpaque;
-		std::vector<iRenderer*> m_alphaTest;		//CutOut
-		std::vector<iRenderer*> m_alphaBlend;	//Transparent
-		std::vector<iRenderer*> m_postProcess;
+		std::vector<Renderer*> m_defferedOpaque;
+		std::vector<Renderer*> m_forwardOpaque;
+		std::vector<Renderer*> m_alphaTest;		//CutOut
+		std::vector<Renderer*> m_alphaBlend;	//Transparent
+		std::vector<Renderer*> m_postProcess;
 
 
 		class CullingAgent : public Entity

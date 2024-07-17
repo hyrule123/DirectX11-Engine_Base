@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
@@ -7,7 +7,7 @@ namespace ehw
 {
     class GameObject;
 	class Prefab final
-		: public iResource
+		: public Resource
 	{
     public:
         Prefab();

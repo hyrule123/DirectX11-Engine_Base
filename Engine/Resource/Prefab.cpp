@@ -16,7 +16,7 @@ namespace ehw
 	
 
 	Prefab::Prefab()
-		: iResource(typeid(Prefab))
+		: Resource(typeid(Prefab))
 		, m_prefab()
 	{
 	}

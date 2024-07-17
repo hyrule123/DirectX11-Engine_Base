@@ -22,7 +22,7 @@
 namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
-		: iComputeShader(typeid(NormalConvertShader), uint3{32, 32, 1})
+		: ComputeShader(typeid(NormalConvertShader), uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		
@@ -36,7 +36,7 @@ namespace ehw
 
 	eResult NormalConvertShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
-		return iComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
+		return ComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
 	}
 
 	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)
@@ -77,7 +77,7 @@ namespace ehw
 		mDestTex->BindDataUAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
-		iComputeShader::CalculateGroupCount(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
+		ComputeShader::CalculateGroupCount(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
 
 		return true;
 	}

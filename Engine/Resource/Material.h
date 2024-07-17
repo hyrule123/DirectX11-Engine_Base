@@ -5,7 +5,7 @@
 
 #include "Engine/Util/Serialize/Serializable.h"
 
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 
 #include <array>
 
@@ -15,7 +15,7 @@ namespace ehw
 	class Texture;
 	class GraphicsShader;
 	class Material final 
-		: public iResource
+		: public Resource
 		, public Serializable_Json
 	{
 	public:

@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Scene/Component/Rigidbody/iRigidbody.h"
+#include "Engine/Scene/Component/Rigidbody/Rigidbody.h"
 
 namespace ehw
 {
 	class Com_Rigidbody_Static :
-		public iRigidbody
+		public Rigidbody
 	{
 	public:
 		Com_Rigidbody_Static();

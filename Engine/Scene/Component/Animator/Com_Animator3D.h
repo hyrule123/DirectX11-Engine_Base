@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/Animator/iAnimator.h"
+#include "Engine/Scene/Component/Animator/Animator.h"
 
 namespace ehw
 {
@@ -7,7 +7,7 @@ namespace ehw
 	class Animation3D_PlayData;
 	class Skeleton;
 	class Com_Animator3D :
-		public iAnimator
+		public Animator
 	{
 	public:
 		Com_Animator3D();

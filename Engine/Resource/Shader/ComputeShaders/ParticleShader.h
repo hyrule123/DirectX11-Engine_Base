@@ -1,11 +1,11 @@
 #pragma once
-#include "Engine/Resource/Shader/iComputeShader.h"
+#include "Engine/Resource/Shader/ComputeShader.h"
 
 namespace ehw
 {
 	class StructBuffer;
 	class ParticleShader 
-		: public iComputeShader
+		: public ComputeShader
 	{
 	public:
 		ParticleShader();

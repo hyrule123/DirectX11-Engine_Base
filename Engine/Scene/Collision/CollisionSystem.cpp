@@ -1,8 +1,8 @@
 #include "Engine/Scene/Collision/CollisionSystem.h"
 
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Component/Transform/Com_Transform.h"
-#include "Engine/Scene/Component/Collider/iCollider2D.h"
+#include "Engine/Scene/Component/Collider/Collider2D.h"
 #include "Engine/Scene/Collision/Collision2D.h"
 #include "Engine/Scene/Collision/Collision3D.h"
 
@@ -19,7 +19,7 @@
 
 namespace ehw
 {
-	CollisionSystem::CollisionSystem(iScene* const _ownerScene)
+	CollisionSystem::CollisionSystem(Scene* const _ownerScene)
 		: m_owner{ _ownerScene }
 		, m_collisionMask{}
 		, m_raycastMask{}
@@ -55,7 +55,7 @@ namespace ehw
 		}
 
 		
-		//iScene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::GetActiveScene();
 		//if (nullptr == scene)
 		//{
 		//	return;
@@ -132,7 +132,7 @@ namespace ehw
 
 
 
-	//void CollisionSystem::LayerCollision(iScene* _scene, uint32 _left, uint32 _right)
+	//void CollisionSystem::LayerCollision(Scene* _scene, uint32 _left, uint32 _right)
 	//{
 		//const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
 		//const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
@@ -141,19 +141,19 @@ namespace ehw
 		//{
 		//	if (false == left->IsActive())
 		//		continue;
-		//	if (left->GetComponent<iCollider2D>() == nullptr)
+		//	if (left->GetComponent<Collider2D>() == nullptr)
 		//		continue;
 
 		//	for (const std::shared_ptr<GameObject>& right : rights)
 		//	{
 		//		if (false == left->IsActive())
 		//			continue;
-		//		if (right->GetComponent<iCollider2D>() == nullptr)
+		//		if (right->GetComponent<Collider2D>() == nullptr)
 		//			continue;
 		//		/*if (left == right) //지워도 상관없어서 주석처리 (오류나면 수정)
 		//			continue;*/
 
-		//		ColliderCollision(left->GetComponent<iCollider2D>(), right->GetComponent<iCollider2D>());
+		//		ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
 		//	}
 
 		//	/*if ((uint)left == (uint)right)  
@@ -162,7 +162,7 @@ namespace ehw
 
 	//}
 
-	//void CollisionSystem::ColliderCollision(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//void CollisionSystem::ColliderCollision(const std::shared_ptr<Collider2D>& _left, const std::shared_ptr<Collider2D>& _right)
 	//{
 		//// 두 충돌체 레이어로 구성된 ID 확인
 		//union_ColliderID colliderID;
@@ -249,7 +249,7 @@ namespace ehw
 		//}
 	//}
 
-	//bool CollisionSystem::Intersect(const std::shared_ptr<iCollider2D>& _left, const std::shared_ptr<iCollider2D>& _right)
+	//bool CollisionSystem::Intersect(const std::shared_ptr<Collider2D>& _left, const std::shared_ptr<Collider2D>& _right)
 	//{
 		//// Rect vs Rect 
 		//// 0 --- 1

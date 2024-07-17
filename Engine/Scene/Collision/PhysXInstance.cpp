@@ -4,7 +4,7 @@
 
 #include "Engine/define_Macro.h"
 
-#include "Engine/Scene/Component/Collider/iCollider3D.h"
+#include "Engine/Scene/Component/Collider/Collider3D.h"
 
 namespace ehw
 {

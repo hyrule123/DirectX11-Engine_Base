@@ -1,11 +1,11 @@
 #include "Collision3D.h"
 
 
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/GameObject.h"
 
 #include "Engine/Scene/Component/Transform/Com_Transform.h"
-#include "Engine/Scene/Component/Collider/iCollider3D.h"
+#include "Engine/Scene/Component/Collider/Collider3D.h"
 #include "Engine/Scene/Component/Collider/Com_Collider3D_Shapes.h"
 
 #include "Engine/Scene/Collision/CollisionSystem.h"
@@ -48,7 +48,7 @@ namespace ehw
 
 		//	for (const auto& actor : actors)
 		//	{
-		//		iCollider3D* collider = static_cast<iCollider3D*>(actor->userData);
+		//		Collider3D* collider = static_cast<Collider3D*>(actor->userData);
 		//		if (collider)
 		//		{
 		//			collider->DestroyShape();
@@ -63,7 +63,7 @@ namespace ehw
 
 	void Collision3D::CreatePxScene()
 	{
-		iScene* gameScene = m_collisionSystem->GetOwnerScene();
+		Scene* gameScene = m_collisionSystem->GetOwnerScene();
 
 		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().GetPhysX().getTolerancesScale()};
 		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
@@ -109,7 +109,7 @@ namespace ehw
 		{
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			iRigidbody* const rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			Rigidbody* const rigidbody = static_cast<Rigidbody*>(actors[i]->userData);
 			if (rigidbody == nullptr || rigidbody->IsDestroyed())
 			{
 				continue;
@@ -134,7 +134,7 @@ namespace ehw
 
 		for (size_t i = 0; i < actors.size(); ++i)
 		{
-			iRigidbody* rigidbody = static_cast<iRigidbody*>(actors[i]->userData);
+			Rigidbody* rigidbody = static_cast<Rigidbody*>(actors[i]->userData);
 			if (rigidbody == nullptr || rigidbody->IsDestroyed())
 			{
 				continue;
@@ -221,7 +221,7 @@ namespace ehw
 					data.WVP *= actorWorldMatrix;
 					data.WVP *= matVP;
 
-					iCollider* col = static_cast<iCollider*>(shapes[i]->userData);
+					Collider* col = static_cast<Collider*>(shapes[i]->userData);
 
 					if (col)
 					{
@@ -281,7 +281,7 @@ namespace ehw
 	//	{
 	//		const PxTransform worldTransform = actor->getGlobalPose();
 
-	//		iCollider3D* collider = static_cast<iCollider3D*>(actor->userData);
+	//		Collider3D* collider = static_cast<Collider3D*>(actor->userData);
 
 	//		if (collider == nullptr || collider->IsDestroyed())
 	//		{
@@ -332,11 +332,11 @@ namespace ehw
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<iRigidbody*>(contactpair.triggerActor->userData)->GetOwner();
-			iCollider* leftCol = leftObj->GetComponent<iCollider>();
+			GameObject* leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->GetOwner();
+			Collider* leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<iRigidbody*>(contactpair.otherActor->userData)->GetOwner();
-			iCollider* rightCol = rightObj->GetComponent<iCollider>();
+			GameObject* rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->GetOwner();
+			Collider* rightCol = rightObj->GetComponent<Collider>();
 
 			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
 			{
@@ -384,11 +384,11 @@ namespace ehw
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<iRigidbody*>(pairHeader.actors[0]->userData)->GetOwner();
-			iCollider* leftCol = leftObj->GetComponent<iCollider>();
+			GameObject* leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->GetOwner();
+			Collider* leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<iRigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
-			iCollider* rightCol = rightObj->GetComponent<iCollider>();
+			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
+			Collider* rightCol = rightObj->GetComponent<Collider>();
 		
 
 			if (leftCol == rightCol)
@@ -462,7 +462,7 @@ namespace ehw
 		}
 	}
 
-	//void Collision3D::changeGeometry(iCollider3D* collider, physx::PxShape* shape, eCollider3D_Shape type)
+	//void Collision3D::changeGeometry(Collider3D* collider, physx::PxShape* shape, eCollider3D_Shape type)
 	//{
 	//	const float3 scale = collider->GetWorldScale();
 	//	switch (type)
@@ -490,7 +490,7 @@ namespace ehw
 		PxRaycastBuffer hit{};
 		const bool		result = m_pxScene->raycast(origin, direction, maxDistance, hit, hitFlag, filter);
 
-		outHit->hitCollider = (hit.hasBlock) ? static_cast<iCollider3D*>(hit.block.actor->userData) : nullptr;
+		outHit->hitCollider = (hit.hasBlock) ? static_cast<Collider3D*>(hit.block.actor->userData) : nullptr;
 		outHit->hasBlocking = hit.hasBlock;
 		outHit->hitDistance = hit.block.distance;
 		outHit->hitPosition = hit.block.position;
@@ -531,7 +531,7 @@ namespace ehw
 
 
 
-	//void Collision3D::changeScene(iScene* scene)
+	//void Collision3D::changeScene(Scene* scene)
 	//{
 	//	const auto iter = m_physxScenes.find(scene);
 	//		//std::find_if(m_physxScenes.begin(), m_physxScenes.end(), [scene](const PxScene* pxScene) {

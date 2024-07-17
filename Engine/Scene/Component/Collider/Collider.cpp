@@ -1,12 +1,12 @@
-#include "Engine/Scene/Component/Collider/iCollider.h"
+#include "Engine/Scene/Component/Collider/Collider.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Collision/CollisionSystem.h"
 
 namespace ehw
 {
-	iCollider::iCollider(eDimensionType _dimension)
+	Collider::Collider(eDimensionType _dimension)
 		: m_dimension(_dimension)
 		, m_isTriggerMode(false)
 		, m_transform(nullptr)
@@ -15,22 +15,22 @@ namespace ehw
 	{
 	}
 
-	iCollider::~iCollider()
+	Collider::~Collider()
 	{
 
 	}
 
-	void iCollider::Init()
+	void Collider::Init()
 	{
 		m_transform = GetOwner()->Transform();
 	}
 
-	void iCollider::Awake()
+	void Collider::Awake()
 	{
 		m_collisionSystem = GetOwner()->GetScene()->GetCollisionSystem();
 	}
 
-	void iCollider::OnCollisionEnter(iCollider* _collider, const float3& _contactPoint)
+	void Collider::OnCollisionEnter(Collider* _collider, const float3& _contactPoint)
 	{
 		AddCollisionCount();
 
@@ -42,7 +42,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider::OnCollisionStay(iCollider* _collider, const float3& _contactPoint)
+	void Collider::OnCollisionStay(Collider* _collider, const float3& _contactPoint)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
@@ -52,7 +52,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider::OnCollisionExit(iCollider* _collider)
+	void Collider::OnCollisionExit(Collider* _collider)
 	{
 		SubCollisionCount();
 
@@ -64,7 +64,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider::OnTriggerEnter(iCollider* _collider)
+	void Collider::OnTriggerEnter(Collider* _collider)
 	{
 		AddCollisionCount();
 
@@ -76,7 +76,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider::OnTriggerStay(iCollider* _collider)
+	void Collider::OnTriggerStay(Collider* _collider)
 	{
 		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
 
@@ -86,7 +86,7 @@ namespace ehw
 		}
 	}
 
-	void iCollider::OnTriggerExit(iCollider* _collider)
+	void Collider::OnTriggerExit(Collider* _collider)
 	{
 		SubCollisionCount();
 

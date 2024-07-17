@@ -1,6 +1,6 @@
 #include "Engine/Scene/Component/Animator/Animation3D_PlayData.h"
 
-#include "Engine/Scene/Component/Animator/iAnimator.h"
+#include "Engine/Scene/Component/Animator/Animator.h"
 
 #include "Engine/GPU/StructBuffer.h"
 

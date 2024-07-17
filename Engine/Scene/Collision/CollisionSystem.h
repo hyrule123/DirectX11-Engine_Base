@@ -26,7 +26,7 @@
 
 namespace ehw
 {
-	class iScene;
+	class Scene;
 	class Collision2D;
 	class Collision3D;
 	class StructBuffer;
@@ -34,9 +34,9 @@ namespace ehw
 	class Material;
 	class CollisionSystem
 	{
-		friend class iScene;
+		friend class Scene;
 	public:
-		CollisionSystem(iScene* const _ownerScene);
+		CollisionSystem(Scene* const _ownerScene);
 		~CollisionSystem();
 
 		inline Collision2D* GetCollision2D() {
@@ -69,7 +69,7 @@ namespace ehw
 			GetRaycastMask() { return m_raycastMask; };
 		inline std::bitset<g_maxLayer> GetLayerRaycastMask(uint _layer) const;
 
-		inline iScene* GetOwnerScene() { return m_owner; }
+		inline Scene* GetOwnerScene() { return m_owner; }
 
 		
 
@@ -88,7 +88,7 @@ namespace ehw
 		void PrepareDebugRender();
 
 	private:
-		iScene* const m_owner;
+		Scene* const m_owner;
 
 		//레이어끼리의 상호작용 여부를 담아놓은 이차원 배열
 		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collisionMask;

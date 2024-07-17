@@ -102,7 +102,7 @@ namespace ehw
 			return;
 		}
 
-		std::unique_ptr<iScene> NewScene = Func->second();
+		std::unique_ptr<Scene> NewScene = Func->second();
 		if (nullptr == NewScene)
 		{
 			ERROR_MESSAGE("씬 생성 실패");

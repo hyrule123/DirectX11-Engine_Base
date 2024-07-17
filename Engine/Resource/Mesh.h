@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 
 #include "Engine/Util/Serialize/Serializable.h"
 #include "Engine/GPU/CommonGPU.h"
@@ -39,7 +39,7 @@ namespace ehw
 	class Skeleton;
 	struct tFBXContainer;
 	class Mesh final 
-		: public iResource 
+		: public Resource 
 		, Serializable_Binary
 	{
 	public:

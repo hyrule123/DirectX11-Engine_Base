@@ -306,13 +306,13 @@ void CreateScriptKey()
         Desc.SaveFilePath = DirPath / "ContentsInitializer_Script.cpp";
         Desc.BasePath_FoundHeader = "Contents";
 
-        Desc.BaseType = "iScript";
+        Desc.BaseType = "Script";
         
         Desc.OwnerClassName = "ContentsInitializer";
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
 
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/Script/iScript.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/Script/Script.h>)";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Script.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/ComponentManager.h>";
         Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
@@ -357,11 +357,11 @@ void CreateSceneKey()
         Desc.SaveFilePath = DirPath / "ContentsInitializer_Scene.cpp";
         Desc.BasePath_FoundHeader = "Contents";
 
-        Desc.BaseType = "iScene";
+        Desc.BaseType = "Scene";
         Desc.OwnerClassName = "ContentsInitializer";
 
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/iScene.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Scene.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("Contents/PCH_Contents.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Scene.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/SceneManager.h>";

@@ -80,7 +80,7 @@ namespace ehw::editor
 
 	void EditorResources::ToInspectorTexture(tDataPtr _data)
 	{
-		const auto& resource = static_cast<iResource*>(_data.pData)->shared_from_this_T<iResource>();
+		const auto& resource = static_cast<Resource*>(_data.pData)->shared_from_this_T<Resource>();
 
 		
 

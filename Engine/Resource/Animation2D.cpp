@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Animation2D::Animation2D()
-		: iAnimation(typeid(iAnimation))
+		: Animation(typeid(Animation))
 		, mAnimator(nullptr)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}
@@ -21,7 +21,7 @@ namespace ehw
 	}
 
 	Animation2D::Animation2D(const Animation2D& _other)
-		: iAnimation(_other)
+		: Animation(_other)
 		, mAnimator() //이건 이 애니메이션을 복사해서 가져가는 주인이 새로 설정해줘야함
 		, mAnimationName(_other.mAnimationName)
 		, mAtlas(_other.mAtlas) //Atlas == Texture -> 공유하는 리소스

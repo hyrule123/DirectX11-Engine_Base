@@ -1,14 +1,13 @@
 #include "Engine/Scene/Component/iComponent.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 
 #ifdef max
 #undef max
 #endif
 
-namespace ehw
-{
+namespace ehw {
 	iComponent::iComponent(eComponentCategory _type)
 		: m_ComCategory(_type)
 		, m_ComTypeID(std::numeric_limits<size_t>::max())
@@ -56,7 +55,7 @@ namespace ehw
 				}
 			};
 
-		iScene* scene = m_ownerGameObject->GetScene();
+		Scene* scene = m_ownerGameObject->GetScene();
 		if (scene->IsAwaken())
 		{
 			scene->AddFrameEndJob(onEnableDisable);
@@ -67,7 +66,4 @@ namespace ehw
 		}
 
 	}
-
-
-
 }

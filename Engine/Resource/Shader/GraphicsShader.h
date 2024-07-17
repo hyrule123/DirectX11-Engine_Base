@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/Shader/iShader.h"
+#include "Engine/Resource/Shader/Shader.h"
 
 #include "Engine/GPU/CommonGPU.h"
 #include "Engine/Util/Serialize/Serializable.h"
@@ -24,7 +24,7 @@ namespace ehw
 	};
 
 	class GraphicsShader final 
-		: public iShader
+		: public Shader
 		, public Serializable_Json
 	{
 	public:

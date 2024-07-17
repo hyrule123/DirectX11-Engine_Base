@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 
 namespace ehw
 {
@@ -19,15 +19,15 @@ namespace ehw
 		eMaterialMode MaterialMode;
 	};
 
-	class iRenderer 
-		: public Component<iRenderer, eComponentCategory::Renderer>
+	class Renderer 
+		: public Component<Renderer, eComponentCategory::Renderer>
 	{
 	public:
-		iRenderer();
+		Renderer();
 
-		iRenderer(const iRenderer& _other);
+		Renderer(const Renderer& _other);
 
-		virtual ~iRenderer();
+		virtual ~Renderer();
 
 		//virtual void Init() override;
 		//virtual void Update() override;
@@ -66,7 +66,7 @@ namespace ehw
 	};
 
 
-	inline Material* iRenderer::GetCurrentMaterial(UINT _idx)
+	inline Material* Renderer::GetCurrentMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
 		if ((UINT)m_materials.size() > _idx)
@@ -76,7 +76,7 @@ namespace ehw
 		return retMtrl;
 	}
 
-	inline std::shared_ptr<Material> iRenderer::GetSharedMaterial(UINT _idx)
+	inline std::shared_ptr<Material> Renderer::GetSharedMaterial(UINT _idx)
 	{
 		std::shared_ptr<Material> retMtrl = nullptr;
 		if ((UINT)m_materials.size() > _idx)
@@ -86,7 +86,7 @@ namespace ehw
 		return retMtrl;
 	}
 
-	inline Material* iRenderer::GetDynamicMaterial(UINT _idx)
+	inline Material* Renderer::GetDynamicMaterial(UINT _idx)
 	{
 		Material* retMtrl = nullptr;
 		if ((UINT)m_materials.size() > _idx)
@@ -97,7 +97,7 @@ namespace ehw
 	}
 
 
-	inline tMaterialSet* iRenderer::GetMaterialSet(UINT _idx)
+	inline tMaterialSet* Renderer::GetMaterialSet(UINT _idx)
 	{
 		tMaterialSet* mtrlSet = nullptr;
 		if ((UINT)m_materials.size() > _idx)

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 #include "Engine/Scene/Collision/PxActorWrapper.h"
 
 //이 클래스가 담당하는일
@@ -8,12 +8,12 @@
 
 namespace ehw
 {
-	class iRigidbody :
-		public Component<iRigidbody, eComponentCategory::Rigidbody>
+	class Rigidbody :
+		public Component<Rigidbody, eComponentCategory::Rigidbody>
 	{
 	public:
-		iRigidbody();
-		virtual ~iRigidbody();
+		Rigidbody();
+		virtual ~Rigidbody();
 
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const final { return eResult{}; };
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) final { return eResult{}; };

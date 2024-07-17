@@ -16,7 +16,7 @@
 namespace ehw
 {
 	GPUInitSetting::GPUInitSetting()
-		: iComputeShader(typeid(GPUInitSetting), uint3(1u, 1u, 1u))
+		: ComputeShader(typeid(GPUInitSetting), uint3(1u, 1u, 1u))
 	{
 		SetEngineDefaultRes(true);
 	}
@@ -82,7 +82,7 @@ namespace ehw
 
 		mInitSBuffer->BindDataUAV();
 
-		iComputeShader::CalculateGroupCount(uint3(1u, 1u, 1u));
+		ComputeShader::CalculateGroupCount(uint3(1u, 1u, 1u));
 
 		return true;
 	}

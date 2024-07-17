@@ -1,4 +1,4 @@
-#include "Engine/Scene/Component/Renderer/iRenderer.h"
+#include "Engine/Scene/Component/Renderer/Renderer.h"
 
 #include "Engine/Scene/Component/Transform/Com_Transform.h"
 #include "Engine/Scene/Component/Animator/Com_Animator2D.h"
@@ -17,18 +17,18 @@
 
 namespace ehw
 {
-	iRenderer::iRenderer()
+	Renderer::Renderer()
 		: m_mesh(nullptr)
 		, m_materials(1)
 		, m_bCullingEnable(true)
 	{
 	}
 
-	iRenderer::~iRenderer()
+	Renderer::~Renderer()
 	{
 	}
 
-	iRenderer::iRenderer(const iRenderer& _other)
+	Renderer::Renderer(const Renderer& _other)
 		: Component(_other)
 		, m_mesh(_other.m_mesh)
 		, m_materials{}
@@ -48,12 +48,12 @@ namespace ehw
 		}
 	}
 
-	void iRenderer::FinalUpdate()
+	void Renderer::FinalUpdate()
 	{
 		RenderManager::GetInst().EnqueueRenderer(this);
 	}
 
-	eResult iRenderer::Serialize_Json(JsonSerializer* _ser) const
+	eResult Renderer::Serialize_Json(JsonSerializer* _ser) const
 	{
 		SERIALIZER_CHECK_PTR(_ser);
 
@@ -111,7 +111,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult iRenderer::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Renderer::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		SERIALIZER_CHECK_PTR(_ser);
 
@@ -155,7 +155,7 @@ namespace ehw
 		return eResult();
 	}
 
-	void iRenderer::SetMesh(const std::shared_ptr<Mesh> _mesh)
+	void Renderer::SetMesh(const std::shared_ptr<Mesh> _mesh)
 	{
 		m_mesh = _mesh;
 
@@ -170,7 +170,7 @@ namespace ehw
 			m_materials.resize(m_mesh->GetSubsetCount());
 	}
 
-	void iRenderer::SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx)
+	void Renderer::SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx)
 	{
 		if ((UINT)m_materials.size() <= _idx)
 			m_materials.resize(_idx + 1u);
@@ -180,7 +180,7 @@ namespace ehw
 		m_materials[_idx].CurrentMaterial = m_materials[_idx].SharedMaterial.get();
 	}
 
-	Material* iRenderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)
+	Material* Renderer::SetMaterialMode(UINT _idx, eMaterialMode _mode)
 	{
 		tMaterialSet* mtrlSet = GetMaterialSet(_idx);
 		Material* mtrl = nullptr;

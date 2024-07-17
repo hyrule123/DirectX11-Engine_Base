@@ -1,12 +1,12 @@
 #pragma once
-#include "Engine/Scene/Component/Light/iLight.h"
+#include "Engine/Scene/Component/Light/Light.h"
 #include "Engine/GPU/CommonGPU.h"
 
 namespace ehw
 {
 	class Mesh;
 	class Material;
-	class Com_Light3D : public iLight
+	class Com_Light3D : public Light
 	{
 	public:
 		Com_Light3D();

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/Collider/iCollider3D.h"
+#include "Engine/Scene/Component/Collider/Collider3D.h"
 
 //RigidStatic 또는 RigidDynamic을 가진 Collider
 //기본적으로 Static으로 생성, SetDynamic(true)를 할 시 Dynamic으로 변경
@@ -15,7 +15,7 @@
 namespace ehw
 {
     class Com_Collider3D_Shapes :
-        public iCollider3D
+        public Collider3D
     {
     public:
         Com_Collider3D_Shapes();

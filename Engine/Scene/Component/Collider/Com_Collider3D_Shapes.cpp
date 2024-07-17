@@ -9,18 +9,18 @@
 
 #include "Engine/Scene/Component/Rigidbody/Com_Rigidbody_Static.h"
 
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/GameObject.h"
 
 namespace ehw
 {
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes()
-		: iCollider3D(eCollider3DType::Rigid)
+		: Collider3D(eCollider3DType::Rigid)
 		, m_pxShapes{}
 	{
 	}
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes(eCollider3D_Shape _shape)
-		: iCollider3D(eCollider3DType::Rigid)
+		: Collider3D(eCollider3DType::Rigid)
 		, m_pxShapes{}
 	{
 	}
@@ -30,10 +30,10 @@ namespace ehw
 
 	void Com_Collider3D_Shapes::Awake()
 	{
-		iCollider3D::Awake();
+		Collider3D::Awake();
 
-		iRigidbody* rigidbody = 
-			static_cast<iRigidbody*>(GetOwner()->GetComponent(eComponentCategory::Rigidbody));
+		Rigidbody* rigidbody = 
+			static_cast<Rigidbody*>(GetOwner()->GetComponent(eComponentCategory::Rigidbody));
 
 		if (nullptr == rigidbody)
 		{
@@ -65,7 +65,7 @@ namespace ehw
 
 	void Com_Collider3D_Shapes::OnDestroy()
 	{
-		iCollider3D::OnDestroy();
+		Collider3D::OnDestroy();
 
 		for (size_t i = 0; i < m_pxShapes.size(); ++i)
 		{

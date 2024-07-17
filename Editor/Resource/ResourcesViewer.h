@@ -19,7 +19,7 @@ namespace ehw::editor
 		template <typename T>
 		void AddResources(const char* name)
 		{
-			//const std::vector<std::shared_ptr<iResource>>& resources
+			//const std::vector<std::shared_ptr<Resource>>& resources
 			//	= ResourceManager<T>::GetInst().GetResourcesVector();
 
 			//EditorWidget_Tree::tNode* stemNode

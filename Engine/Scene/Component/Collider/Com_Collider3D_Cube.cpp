@@ -7,7 +7,7 @@
 #include "Engine/Scene/Collision/PhysXInstance.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 
 namespace ehw
 {

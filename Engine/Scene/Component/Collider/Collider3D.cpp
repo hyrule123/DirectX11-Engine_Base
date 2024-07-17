@@ -1,7 +1,7 @@
-#include "Engine/Scene/Component/Collider/iCollider3D.h"
+#include "Engine/Scene/Component/Collider/Collider3D.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Component/Transform/Com_Transform.h"
 #include "Engine/Scene/Component/Rigidbody/Com_Rigidbody_Static.h"
 
@@ -12,25 +12,25 @@
 
 namespace ehw
 {
-	iCollider3D::iCollider3D(eCollider3DType _col3dType)
-		: iCollider{eDimensionType::_3D}
+	Collider3D::Collider3D(eCollider3DType _col3dType)
+		: Collider{eDimensionType::_3D}
 		, m_colliderType{ _col3dType }
 		, m_isSyncScaleToTransform(true)
 	{
 	}
 
-	iCollider3D::~iCollider3D()
+	Collider3D::~Collider3D()
 	{
 	}
 
-	void iCollider3D::Init()
+	void Collider3D::Init()
 	{
-		iCollider::Init();
+		Collider::Init();
 	}
 
-	void iCollider3D::Awake()
+	void Collider3D::Awake()
 	{
-		iCollider::Awake();
+		Collider::Awake();
 
 		CollisionSystem* colsys = GetCollisionSystem();
 		if (colsys)
@@ -41,12 +41,12 @@ namespace ehw
 
 
 
-	//bool iCollider3D::isOverlapping(iCollider3D* other, float3* outDistance)
+	//bool Collider3D::isOverlapping(Collider3D* other, float3* outDistance)
 	//{
 		//physx::PxVec3 direction{};
 		//physx::PxF32  depth{};
 
-		//iCollider3D* otherCollider = other->GetComponent<iCollider3D>();
+		//Collider3D* otherCollider = other->GetComponent<Collider3D>();
 		//const bool		  isPenetrating = physx::PxGeometryQuery::computePenetration(direction, depth,
 		//	m_shape->getGeometry(),
 		//	m_shape->getActor()->getGlobalPose(),
@@ -65,7 +65,7 @@ namespace ehw
 
 
 
-	//void iCollider3D::UpdateMatrix()
+	//void Collider3D::UpdateMatrix()
 	//{
 	//	//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 MATRIX를 만들어줘야 한다.
 	//	_localMatrix = MATRIX::CreateScale(m_offsetScale);

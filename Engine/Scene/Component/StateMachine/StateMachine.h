@@ -1,14 +1,14 @@
 #pragma once
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 
 namespace ehw
 {
-    class iStateMachine :
-        public Component <iStateMachine, eComponentCategory::BehaviorTree>
+    class StateMachine :
+        public Component <StateMachine, eComponentCategory::BehaviorTree>
     {
     public:
-        iStateMachine();
-        virtual ~iStateMachine();
+        StateMachine();
+        virtual ~StateMachine();
 
         virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult::Success; }
         virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult::Success; }

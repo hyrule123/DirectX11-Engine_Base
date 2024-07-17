@@ -1,25 +1,23 @@
-#include "Engine/Scene/Component/Rigidbody/iRigidbody.h"
+#include "Engine/Scene/Component/Rigidbody/Rigidbody.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/Collision/CollisionSystem.h"
 #include "Engine/Scene/Collision/Collision3D.h"
 
-
-
 namespace ehw
 {
-	iRigidbody::iRigidbody()
+	Rigidbody::Rigidbody()
 		: m_rigidActor{}
 		, m_ShapesModified{true}
 	{
 	}
 
-	iRigidbody::~iRigidbody()
+	Rigidbody::~Rigidbody()
 	{
 	}
 
-	void iRigidbody::Init()
+	void Rigidbody::Init()
 	{
 		m_rigidActor.Set(CreateRigidbody());
 		ASSERT_DEBUG(m_rigidActor, "PxActor 생성되지 않음.");
@@ -29,7 +27,7 @@ namespace ehw
 			m_rigidActor->userData = this;
 		}
 	}
-	void iRigidbody::OnEnable()
+	void Rigidbody::OnEnable()
 	{
 		CollisionSystem* colsys = GetOwner()->GetScene()->GetCollisionSystem();
 		if (colsys)
@@ -42,7 +40,7 @@ namespace ehw
 			}
 		}
 	}
-	void iRigidbody::OnDisable()
+	void Rigidbody::OnDisable()
 	{
 		physx::PxScene* scene = m_rigidActor->getScene();
 		if (scene)
@@ -51,13 +49,13 @@ namespace ehw
 		}
 	}
 
-	void iRigidbody::OnDestroy()
+	void Rigidbody::OnDestroy()
 	{
 		m_rigidActor.Reset();
 	}
 
 
-	bool iRigidbody::AttachColliderShape(physx::PxShape* _pxShape)
+	bool Rigidbody::AttachColliderShape(physx::PxShape* _pxShape)
 	{
 		bool ret = false;
 		if (m_rigidActor)
@@ -67,7 +65,7 @@ namespace ehw
 		}
 		return ret;
 	}
-	void iRigidbody::DetachColliderShape(physx::PxShape* _pxShape)
+	void Rigidbody::DetachColliderShape(physx::PxShape* _pxShape)
 	{
 		if (m_rigidActor)
 		{
@@ -75,7 +73,7 @@ namespace ehw
 			m_ShapesModified = true;
 		}
 	}
-	void iRigidbody::SyncToPhysXGlobalPose()
+	void Rigidbody::SyncToPhysXGlobalPose()
 	{
 		Com_Transform* tr = GetOwner()->Transform();
 		if (false == tr->IsTransformUpdated())
@@ -90,7 +88,7 @@ namespace ehw
 		m_rigidActor->setGlobalPose(transform);
 	}
 
-	void iRigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
+	void Rigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
 	{
 		Com_Transform* tr = GetOwner()->Transform();
 
@@ -99,7 +97,7 @@ namespace ehw
 	}
 
 
-	void iRigidbody::EnableGravity(bool enable)
+	void Rigidbody::EnableGravity(bool enable)
 	{
 		if (m_rigidActor)
 		{
@@ -117,7 +115,7 @@ namespace ehw
 		}
 	}
 
-	bool iRigidbody::IsGravityEnabled() const
+	bool Rigidbody::IsGravityEnabled() const
 	{
 		if (m_rigidActor)
 		{

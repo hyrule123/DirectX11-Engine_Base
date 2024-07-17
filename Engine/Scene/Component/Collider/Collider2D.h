@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/Collider/iCollider.h"
+#include "Engine/Scene/Component/Collider/Collider.h"
 
 
 
@@ -7,16 +7,16 @@ namespace ehw
 {
 	class Com_Transform;
 	class Collision2D;
-	class iCollider2D : public iCollider
+	class Collider2D : public Collider
 	{
 	public:
 		eCollider2D_Shape GetColliderShape() const { return m_collider2DShape; }
 
-		iCollider2D(eCollider2D_Shape _type);
-		iCollider2D(const iCollider2D& _collider);
-		CLONE_DISABLE(iCollider2D);
+		Collider2D(eCollider2D_Shape _type);
+		Collider2D(const Collider2D& _collider);
+		CLONE_DISABLE(Collider2D);
 
-		virtual ~iCollider2D();
+		virtual ~Collider2D();
 
 		eResult Serialize_Json(JsonSerializer* _ser) const override;
 		eResult DeSerialize_Json(const JsonSerializer* _ser) override;
@@ -39,7 +39,7 @@ namespace ehw
 		bool m_isColliderUpdated;
 	};
 
-	inline void iCollider2D::ColliderUpdate()
+	inline void Collider2D::ColliderUpdate()
 	{
 		if (m_isColliderUpdated)
 		{

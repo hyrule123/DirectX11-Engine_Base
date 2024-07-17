@@ -14,7 +14,7 @@
 namespace ehw
 {
     Material::Material()
-        : iResource(typeid(Material))
+        : Resource(typeid(Material))
         , m_constBufferData{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}
@@ -23,7 +23,7 @@ namespace ehw
     }
 
     Material::Material(const Material& _other)
-        : iResource(_other)
+        : Resource(_other)
         , m_shader(_other.m_shader)
         , m_textures(_other.m_textures)
         , m_constBufferData(_other.m_constBufferData)

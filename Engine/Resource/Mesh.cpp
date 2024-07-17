@@ -22,7 +22,7 @@
 namespace ehw
 {
 	Mesh::Mesh()
-		: iResource(typeid(Mesh))
+		: Resource(typeid(Mesh))
 		, m_topology(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, m_vertexInfo{}
 		, m_indexInfos{}

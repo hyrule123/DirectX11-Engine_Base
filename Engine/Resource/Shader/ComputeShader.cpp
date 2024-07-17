@@ -1,4 +1,4 @@
-#include "Engine/Resource/Shader/iComputeShader.h"
+#include "Engine/Resource/Shader/ComputeShader.h"
 
 
 #include "Engine/Manager/ResourceManager.h"
@@ -16,8 +16,8 @@
 
 namespace ehw
 {
-	iComputeShader::iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
-		: iShader(_typeID)
+	ComputeShader::ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
+		: Shader(_typeID)
 		, m_CSBlob(nullptr)
 		, m_CS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }
@@ -26,16 +26,16 @@ namespace ehw
 		ASSERT(_threadsPerGroup.x && _threadsPerGroup.y && _threadsPerGroup.z, "컴퓨트쉐이더 Thread Axis 중 하나에 0이 들어가 있습니다.");
 	}
 
-	iComputeShader::~iComputeShader()
+	ComputeShader::~ComputeShader()
 	{
 	}
 
-	eResult iComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
 	{
 		return CreateByCSO(_baseDir / _strKeyPath);
 	}
 
-	eResult iComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)
+	eResult ComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)
 	{
 		Microsoft::WRL::ComPtr<ID3DBlob> mErrorBlob = nullptr;
 
@@ -64,7 +64,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult iComputeShader::CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize)
+	eResult ComputeShader::CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
 		SetEngineDefaultRes(true);
@@ -88,7 +88,7 @@ namespace ehw
 		return CreateShader(pCode, DestSize);
 	}
 
-	eResult iComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
+	eResult ComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
 		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
@@ -120,7 +120,7 @@ namespace ehw
 		return CreateShader(pCode, m_CSBlob->GetBufferSize());
 	}
 
-	void iComputeShader::OnExcute()
+	void ComputeShader::OnExcute()
 	{
 		if (false == BindData())
 			return;
@@ -154,7 +154,7 @@ namespace ehw
 
 
 
-	eResult iComputeShader::CreateShader(const void* _pByteCode, size_t _ByteCodeSize)
+	eResult ComputeShader::CreateShader(const void* _pByteCode, size_t _ByteCodeSize)
 	{
 		eResult result = eResult::Fail_Create;
 

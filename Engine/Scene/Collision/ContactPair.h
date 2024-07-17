@@ -5,12 +5,12 @@
 
 namespace ehw
 {
-	class iCollider;
+	class Collider;
 	class ContactPair
 	{
 	public:
 		ContactPair() = delete;
-		ContactPair(iCollider* const _left, iCollider* const _right);
+		ContactPair(Collider* const _left, Collider* const _right);
 		ContactPair(const ContactPair& _other) = default;
 		ContactPair(ContactPair&& _right) noexcept = default;
 		~ContactPair();
@@ -22,8 +22,8 @@ namespace ehw
 		void Exit();
 
 	private:
-		iCollider* m_left;
-		iCollider* m_right;
+		Collider* m_left;
+		Collider* m_right;
 
 	};
 }

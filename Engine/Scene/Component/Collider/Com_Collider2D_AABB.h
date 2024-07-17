@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Scene/Component/Collider/iCollider2D.h"
+#include "Engine/Scene/Component/Collider/Collider2D.h"
 
 namespace ehw
 {
     class Com_Collider2D_AABB :
-        public iCollider2D
+        public Collider2D
     {
     public:
         Com_Collider2D_AABB();

@@ -1,12 +1,12 @@
 #pragma once
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 #include "Engine/Manager/GPUManager.h"
 
 #include <DirectXTex/DirectXTex.h>
 
 namespace ehw
 {
-	class Texture final : public iResource
+	class Texture final : public Resource
 	{
 	public:
 		Texture();

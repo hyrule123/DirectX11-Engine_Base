@@ -24,7 +24,7 @@ namespace ehw
 {
 	
 	Skeleton::Skeleton()
-		: iResource(typeid(Skeleton))
+		: Resource(typeid(Skeleton))
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}

@@ -17,7 +17,7 @@
 namespace ehw
 {
 	class CollisionSystem;
-	class iCollider2D;
+	class Collider2D;
 	class StructBuffer;
 	class GameObject;
 	class Mesh;
@@ -25,11 +25,11 @@ namespace ehw
 
 	class Collision2D
 	{
-		friend class iCollider2D;
+		friend class Collider2D;
 		friend class CollisionSystem;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
 		using CheckIntersectFunction = 
-			std::function<bool(iCollider2D* const, iCollider2D* const, float2& _contactPoint)>;
+			std::function<bool(Collider2D* const, Collider2D* const, float2& _contactPoint)>;
 
 	public:
 		Collision2D(CollisionSystem* const _owner);
@@ -40,26 +40,26 @@ namespace ehw
 		void FrameEnd();
 
 	private:
-		void Enqueue(iCollider2D* const _obj);
+		void Enqueue(Collider2D* const _obj);
 
 		static bool CheckIntersect_AABB_AABB(
-			iCollider2D* const _AABB1, iCollider2D* const _AABB2, float2& _contactPoint);
+			Collider2D* const _AABB1, Collider2D* const _AABB2, float2& _contactPoint);
 		static bool CheckIntersect_AABB_OBB(
-			iCollider2D* const _AABB, iCollider2D* const _OBB, float2& _contactPoint);
+			Collider2D* const _AABB, Collider2D* const _OBB, float2& _contactPoint);
 		static bool CheckIntersect_AABB_Circle(
-			iCollider2D* const _AABB, iCollider2D* const _circle, float2& _contactPoint);
+			Collider2D* const _AABB, Collider2D* const _circle, float2& _contactPoint);
 		static bool CheckIntersect_OBB_OBB(
-			iCollider2D* const _OBB1, iCollider2D* const _OBB2, float2& _contactPoint);
+			Collider2D* const _OBB1, Collider2D* const _OBB2, float2& _contactPoint);
 		static bool CheckIntersect_OBB_Circle(
-			iCollider2D* const _OBB, iCollider2D* const _circle, float2& _contactPoint);
+			Collider2D* const _OBB, Collider2D* const _circle, float2& _contactPoint);
 		static bool CheckIntersect_Circle_Circle(
-			iCollider2D* const _circle1, iCollider2D* const _circle2, float2& _contactPoint);
+			Collider2D* const _circle1, Collider2D* const _circle2, float2& _contactPoint);
 
 
 	private:
 		CollisionSystem* const m_owner;
 
-		std::array<std::vector<iCollider2D*>, g_maxLayer> m_collidersInLayer;
+		std::array<std::vector<Collider2D*>, g_maxLayer> m_collidersInLayer;
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
 		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯

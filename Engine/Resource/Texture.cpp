@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: iResource(typeid(Texture))
+		: Resource(typeid(Texture))
 		, mDesc()
 		, mTexture()
 		, mImage()

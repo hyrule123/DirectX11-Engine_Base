@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Scene/Component/Animator/iAnimator.h"
+#include "Engine/Scene/Component/Animator/Animator.h"
 
 #include "Engine/Common.h"
 
@@ -8,7 +8,7 @@
 namespace ehw
 {
 	class Com_Animator2D 
-		: public iAnimator
+		: public Animator
 	{
 	public:
 		struct tEvents

@@ -1,9 +1,9 @@
 #include "Engine/Scene/Collision/ContactPair.h"
 
-#include "Engine/Scene/Component/Collider/iCollider.h"
+#include "Engine/Scene/Component/Collider/Collider.h"
 namespace ehw
 {
-	ContactPair::ContactPair(iCollider* const _left, iCollider* const _right)
+	ContactPair::ContactPair(Collider* const _left, Collider* const _right)
 		: m_left(_left)
 		, m_right(_right)
 	{

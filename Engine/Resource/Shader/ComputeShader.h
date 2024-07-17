@@ -1,11 +1,7 @@
 #pragma once
-#include "Engine/Resource/Shader/iShader.h"
-
-
+#include "Engine/Resource/Shader/Shader.h"
 
 #include "Engine/GPU/CommonGPU.h"
-
-
 
 //1. BindData() 함수를 재정의해서 필요한 데이터를 바인딩하도록 설정
 //2. Clear() 함수를 재정의해서 데이터 바인딩을 해제하는 함수도 재정의
@@ -15,13 +11,12 @@
 
 namespace ehw
 {
-
-	class iComputeShader 
-		: public iShader
+	class ComputeShader 
+		: public Shader
 	{
 	public:
-		iComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
-		virtual ~iComputeShader();
+		ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
+		virtual ~ComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
 		//다른 리소스와는 로드 방식이 다름.
@@ -54,7 +49,7 @@ namespace ehw
 		tCB_ComputeShader mCB_ComputeShader;
 	};
 
-	void iComputeShader::CalculateGroupCount(const uint3& _dataCounts)
+	void ComputeShader::CalculateGroupCount(const uint3& _dataCounts)
 	{
 		mCB_ComputeShader.TotalDataCount = _dataCounts;
 

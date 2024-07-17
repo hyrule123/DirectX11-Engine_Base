@@ -198,10 +198,10 @@
     <ClCompile Include="Resource\Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Script\iScript.cpp">
+    <ClCompile Include="Scene\Component\Script\Script.cpp">
       <Filter>Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Renderer\iRenderer.cpp">
+    <ClCompile Include="Scene\Component\Renderer\Renderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component\Camera\Com_Camera.cpp">
@@ -210,25 +210,25 @@
     <ClCompile Include="Scene\Component\Renderer\Com_Renderer_Sprite.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\iScene.cpp">
+    <ClCompile Include="Scene\Scene.cpp">
       <Filter>Scene\Base</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Prefab.cpp">
       <Filter>Resource\Prefab</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Collider\iCollider2D.cpp">
+    <ClCompile Include="Scene\Component\Collider\Collider2D.cpp">
       <Filter>Component\Collider\2D</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Collider\iCollider3D.cpp">
+    <ClCompile Include="Scene\Component\Collider\Collider3D.cpp">
       <Filter>Component\Collider\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Collider\iCollider.cpp">
+    <ClCompile Include="Scene\Component\Collider\Collider.cpp">
       <Filter>Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component\Animator\Com_Animator2D.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\iComputeShader.cpp">
+    <ClCompile Include="Resource\Shader\ComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component\Light\Com_Light3D.cpp">
@@ -258,14 +258,11 @@
     <ClCompile Include="Util\AtExit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\iShader.cpp">
+    <ClCompile Include="Resource\Shader\Shader.cpp">
       <Filter>Resource\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Shader\GraphicsShader.cpp">
       <Filter>Resource\Shaders\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Component\iComponent.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Manager\TimeManager.cpp">
       <Filter>Manager</Filter>
@@ -276,7 +273,7 @@
     <ClCompile Include="Scene\Component\Renderer\Com_Renderer_ParticleSystem.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\iResource.cpp">
+    <ClCompile Include="Resource\Resource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="Manager\ComponentManager.cpp">
@@ -321,7 +318,7 @@
     <ClCompile Include="Util\Serialize\base64.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Animator\iAnimator.cpp">
+    <ClCompile Include="Scene\Component\Animator\Animator.cpp">
       <Filter>Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component\Animator\Com_Animator3D.cpp">
@@ -345,7 +342,7 @@
     <ClCompile Include="Scene\Component\StateMachine\Com_BehaviorTree.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Light\iLight.cpp">
+    <ClCompile Include="Scene\Component\Light\Light.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp">
@@ -372,7 +369,7 @@
     <ClCompile Include="Resource\Model3D\Animation3D.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\iAnimation.cpp">
+    <ClCompile Include="Resource\Animation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Component\Script\GridScript.cpp">
@@ -385,7 +382,7 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Manager\ResourceManagers.cpp" />
-    <ClCompile Include="Scene\Component\StateMachine\iStateMachine.cpp" />
+    <ClCompile Include="Scene\Component\StateMachine\StateMachine.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
@@ -403,10 +400,11 @@
     <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Capsule.cpp" />
     <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Cube.cpp" />
     <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Sphere.cpp" />
-    <ClCompile Include="Scene\Component\Rigidbody\iRigidbody.cpp" />
+    <ClCompile Include="Scene\Component\Rigidbody\Rigidbody.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
     <ClCompile Include="Scene\SceneRenderer.cpp" />
+    <ClCompile Include="Scene\Component\iComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -424,7 +422,7 @@
     <ClInclude Include="Resource\Mesh.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\iComponent.h">
+    <ClInclude Include="Scene\Component\Component.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Material.h">
@@ -433,10 +431,10 @@
     <ClInclude Include="Resource\Texture.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Script\iScript.h">
+    <ClInclude Include="Scene\Component\Script\Script.h">
       <Filter>Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Renderer\iRenderer.h">
+    <ClInclude Include="Scene\Component\Renderer\Renderer.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component\Camera\Com_Camera.h">
@@ -445,25 +443,25 @@
     <ClInclude Include="Scene\Component\Renderer\Com_Renderer_Sprite.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\iScene.h">
+    <ClInclude Include="Scene\Scene.h">
       <Filter>Scene\Base</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Prefab.h">
       <Filter>Resource\Prefab</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Collider\iCollider2D.h">
+    <ClInclude Include="Scene\Component\Collider\Collider2D.h">
       <Filter>Component\Collider\2D</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Collider\iCollider3D.h">
+    <ClInclude Include="Scene\Component\Collider\Collider3D.h">
       <Filter>Component\Collider\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Collider\iCollider.h">
+    <ClInclude Include="Scene\Component\Collider\Collider.h">
       <Filter>Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component\Animator\Com_Animator2D.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\iComputeShader.h">
+    <ClInclude Include="Resource\Shader\ComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component\Light\Com_Light3D.h">
@@ -499,7 +497,7 @@
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\iShader.h">
+    <ClInclude Include="Resource\Shader\Shader.h">
       <Filter>Resource\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Shader\GraphicsShader.h">
@@ -531,9 +529,6 @@
     </ClInclude>
     <ClInclude Include="Scene\Component\Renderer\Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource\iResource.h">
-      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="Manager\ComponentManager.h">
       <Filter>Manager</Filter>
@@ -586,7 +581,7 @@
     <ClInclude Include="Util\Serialize\base64.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Animator\iAnimator.h">
+    <ClInclude Include="Scene\Component\Animator\Animator.h">
       <Filter>Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component\Animator\Com_Animator3D.h">
@@ -610,7 +605,7 @@
     <ClInclude Include="Scene\Component\StateMachine\Com_BehaviorTree.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Component\Light\iLight.h">
+    <ClInclude Include="Scene\Component\Light\Light.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h">
@@ -643,7 +638,7 @@
     <ClInclude Include="Resource\Model3D\Animation3D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\iAnimation.h">
+    <ClInclude Include="Resource\Animation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Component\Script\GridScript.h">
@@ -655,7 +650,7 @@
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
-    <ClInclude Include="Scene\Component\StateMachine\iStateMachine.h" />
+    <ClInclude Include="Scene\Component\StateMachine\StateMachine.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
     <ClInclude Include="Util\Serialize\Serializable.h" />
@@ -676,12 +671,14 @@
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Capsule.h" />
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Cube.h" />
-    <ClInclude Include="Scene\Component\Rigidbody\iRigidbody.h" />
+    <ClInclude Include="Scene\Component\Rigidbody\Rigidbody.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="DefaultSettingVar.h" />
     <ClInclude Include="Scene\SceneRenderer.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
+    <ClInclude Include="Resource\Resource.h" />
+    <ClInclude Include="Scene\Component\iComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

@@ -4,7 +4,7 @@
 
 namespace ehw
 {
-	class iCollider3D;
+	class Collider3D;
 	class PhysXInstance : public StaticSingleton<PhysXInstance>
 	{
 		friend class StaticSingleton<PhysXInstance>;

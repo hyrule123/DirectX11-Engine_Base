@@ -1,4 +1,4 @@
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/GameObject.h"
 
 #include "Engine/Scene/Collision/CollisionSystem.h"
@@ -6,7 +6,7 @@
 
 namespace ehw
 {
-	iScene::iScene()
+	Scene::Scene()
 		: m_gameObjects{}
 		, m_delayedAddQueue{}
 		, m_FrameEndJobs{}
@@ -20,7 +20,7 @@ namespace ehw
 		m_sceneRenderer = std::make_unique<SceneRenderer>(this);
 	}
 
-	iScene::~iScene()
+	Scene::~Scene()
 	{
 		m_gameObjects.clear();
 		m_delayedAddQueue.clear();
@@ -29,7 +29,7 @@ namespace ehw
 	}
 
 
-	void iScene::SceneInit()
+	void Scene::SceneInit()
 	{
 		//tDesc desc{};
 		//Init(desc);
@@ -49,7 +49,7 @@ namespace ehw
 		//}
 	}
 
-	void iScene::SceneAwake()
+	void Scene::SceneAwake()
 	{
 		if (m_bAwake)
 		{
@@ -64,7 +64,7 @@ namespace ehw
 		}
 	}
 
-	void iScene::SceneFixedUpdate()
+	void Scene::SceneFixedUpdate()
 	{
 		FixedUpdate();
 
@@ -79,7 +79,7 @@ namespace ehw
 		}
 	}
 
-	void iScene::SceneUpdate()
+	void Scene::SceneUpdate()
 	{
 		Update();
 
@@ -93,7 +93,7 @@ namespace ehw
 	}
 
 
-	void iScene::SceneFinalUpdate()
+	void Scene::SceneFinalUpdate()
 	{
 		FinalUpdate();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
@@ -104,7 +104,7 @@ namespace ehw
 			}
 		}
 	}
-	void iScene::SceneRender()
+	void Scene::SceneRender()
 	{
 		Render();
 
@@ -119,7 +119,7 @@ namespace ehw
 		m_sceneRenderer->Render();
 	}
 
-	void iScene::SceneFrameEnd()
+	void Scene::SceneFrameEnd()
 	{
 		FrameEnd();
 
@@ -148,7 +148,7 @@ namespace ehw
 	}
 
 
-	void iScene::Destroy()
+	void Scene::Destroy()
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
@@ -156,7 +156,7 @@ namespace ehw
 		}
 	}
 
-	GameObject* iScene::AddGameObject(std::unique_ptr<GameObject>& _newObject, const uint _layer)
+	GameObject* Scene::AddGameObject(std::unique_ptr<GameObject>& _newObject, const uint _layer)
 	{
 		GameObject* ret = nullptr;
 		//true가 반환되면 에러 있다는 뜻
@@ -183,7 +183,7 @@ namespace ehw
 		return ret;
 	}
 
-	size_t iScene::AddGameObjects(GameObjects& _gameObjects, const uint _layer)
+	size_t Scene::AddGameObjects(GameObjects& _gameObjects, const uint _layer)
 	{
 		size_t inserted = 0;
 
@@ -192,7 +192,7 @@ namespace ehw
 		gameObjects.swap(_gameObjects);
 
 		std::function<bool(std::unique_ptr<GameObject>&)> predFunc =
-			std::bind(&iScene::SetGameObjectInfo, this, std::placeholders::_1, _layer);
+			std::bind(&Scene::SetGameObjectInfo, this, std::placeholders::_1, _layer);
 		
 		std::erase_if(gameObjects, predFunc);
 
@@ -213,7 +213,7 @@ namespace ehw
 		return inserted;
 	}
 
-	std::vector<std::unique_ptr<GameObject>> iScene::GetDontDestroyGameObjects()
+	std::vector<std::unique_ptr<GameObject>> Scene::GetDontDestroyGameObjects()
 	{
 		std::vector<std::unique_ptr<GameObject>> dontGameObjs{};
 
@@ -239,17 +239,17 @@ namespace ehw
 		return dontGameObjs;
 	}
 
-	void iScene::CreateCollisionSystem()
+	void Scene::CreateCollisionSystem()
 	{
 		m_collisionSystem = std::make_unique<CollisionSystem>(this);
 	}
 
-	void iScene::CreateSceneRenderer()
+	void Scene::CreateSceneRenderer()
 	{
 		m_sceneRenderer = std::make_unique<SceneRenderer>(this);
 	}
 
-	void iScene::RemoveDestroyed()
+	void Scene::RemoveDestroyed()
 	{
 		//Destroy 상태의 Object 제거
 		std::erase_if(m_gameObjects,
@@ -270,7 +270,7 @@ namespace ehw
 		);
 	}
 
-	bool iScene::SetGameObjectInfo(std::unique_ptr<GameObject>& _obj, const uint _layer)
+	bool Scene::SetGameObjectInfo(std::unique_ptr<GameObject>& _obj, const uint _layer)
 	{
 		if (nullptr == _obj)
 		{
@@ -299,7 +299,7 @@ namespace ehw
 		return false;
 	}
 
-	void iScene::AddGameObjectInternal(std::unique_ptr<GameObject>& _obj)
+	void Scene::AddGameObjectInternal(std::unique_ptr<GameObject>& _obj)
 	{
 		std::unique_ptr<GameObject> temp{};
 		temp.swap(_obj);
@@ -310,7 +310,7 @@ namespace ehw
 		}
 	}
 
-	void iScene::AddGameObjectsInternal(GameObjects& _from)
+	void Scene::AddGameObjectsInternal(GameObjects& _from)
 	{
 		auto iter = m_gameObjects.insert(m_gameObjects.end()
 			, std::make_move_iterator(_from.begin())

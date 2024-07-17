@@ -3,7 +3,7 @@
 #include "Engine/GameEngine.h"
 
 #include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/SceneManager.h"
@@ -16,7 +16,7 @@
 #include "Engine/GPU/MultiRenderTarget.h"
 
 #include "Engine/Scene/Component/Transform/Com_Transform.h"
-#include "Engine/Scene/Component/Renderer/iRenderer.h"
+#include "Engine/Scene/Component/Renderer/Renderer.h"
 #include "Engine/Scene/Component/Light/Com_Light3D.h"
 
 namespace ehw
@@ -317,7 +317,7 @@ namespace ehw
 	void Com_Camera::SortGameObjects()
 	{
 		ASSERT_DEBUG(GetOwner(), "Owner 주소가 없음");
-		iScene* scene = GetOwner()->GetScene();
+		Scene* scene = GetOwner()->GetScene();
 		ASSERT(scene, "Scene 주소가 없음.");
 
 		
@@ -394,7 +394,7 @@ namespace ehw
 		//if (nullptr == _gameObj || false == _gameObj->IsActive())
 		//	return;
 
-		//const auto& renderer = _gameObj->GetComponent<iRenderer>();
+		//const auto& renderer = _gameObj->GetComponent<Renderer>();
 
 		//if (nullptr == renderer)
 		//	return;
@@ -443,7 +443,7 @@ namespace ehw
 
 		for (size_t i = 0; i < renderers.size(); ++i)
 		{
-			iRenderer* const renderer = renderers[i];
+			Renderer* const renderer = renderers[i];
 
 			if ((nullptr == renderer) || (false == renderer->IsEnabled()))
 			{

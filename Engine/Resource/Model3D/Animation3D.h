@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iAnimation.h"
+#include "Engine/Resource/Animation.h"
 
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/Util/Serialize/Serializable.h"
@@ -28,7 +28,7 @@ namespace ehw
     class StructBuffer;
     class Skeleton;
 	class Animation3D final
-        : public iAnimation
+        : public Animation
         , public Serializable_Binary
 	{
         friend class Skeleton;

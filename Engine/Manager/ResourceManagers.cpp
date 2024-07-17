@@ -13,7 +13,7 @@
 #include "Engine/Resource/AudioClip.h"
 #include "Engine/Resource/Animation2D.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/Resource/Shader/iComputeShader.h"
+#include "Engine/Resource/Shader/ComputeShader.h"
 
 
 namespace ehw
@@ -48,7 +48,7 @@ namespace ehw
 		ResourceManager<Mesh>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
 		ResourceManager<AudioClip>::GetInst().Init(baseDir / strKey::path::directory::resource::AudioClip);
 		ResourceManager<GraphicsShader>::GetInst().Init(baseDir / strKey::path::directory::resource::GraphicsShader);
-		ResourceManager<iComputeShader>::GetInst().Init(baseDir / strKey::path::directory::resource::ComputeShader);
+		ResourceManager<ComputeShader>::GetInst().Init(baseDir / strKey::path::directory::resource::ComputeShader);
 
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록

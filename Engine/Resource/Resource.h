@@ -5,16 +5,16 @@
 
 namespace ehw
 {
-	class iResource 
+	class Resource 
 		: public Entity
 		, public std::enable_shared_from_this<Entity>
 	{
 	public:
-		iResource(const std::type_info& _info);
+		Resource(const std::type_info& _info);
 
-		iResource(const iResource& _other) = default;
+		Resource(const Resource& _other) = default;
 
-		virtual ~iResource();
+		virtual ~Resource();
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
@@ -39,15 +39,15 @@ namespace ehw
 	};
 
 	template<class ResourceType>
-	inline bool iResource::Is()
+	inline bool Resource::Is()
 	{
 		return (typeid(ResourceType) == m_ResourceTypeInfo);
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> iResource::shared_from_this_T()
+	inline std::shared_ptr<T> Resource::shared_from_this_T()
 	{
-		static_assert(std::is_base_of_v<iResource, T>);
+		static_assert(std::is_base_of_v<Resource, T>);
 		return std::static_pointer_cast<T>(shared_from_this());
 	}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iAnimation.h"
+#include "Engine/Resource/Animation.h"
 
 #include "Engine/Resource/Texture.h"
 #include "Engine/Util/Serialize/Serializable.h"
@@ -9,7 +9,7 @@ namespace ehw
 	using ehw::Texture;
 
 	class Animation2D final
-		: public iAnimation
+		: public Animation
 		, public Serializable_Json
 	{
 	public:

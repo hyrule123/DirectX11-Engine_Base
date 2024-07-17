@@ -1,11 +1,11 @@
 #pragma once
-#include "Engine/Scene/Component/Script/iScript.h"
+#include "Engine/Scene/Component/Script/Script.h"
 
 
 namespace ehw
 {
 	class Com_Camera;
-	class GridScript : public iScript
+	class GridScript : public Script
 	{
 	public:
 		GridScript();

@@ -7,8 +7,8 @@
 
 namespace ehw
 {
-	class iScene;
-	class iScript;
+	class Scene;
+	class Script;
 	class GameObject
 		: public Entity
 		, public Serializable_Json
@@ -16,7 +16,7 @@ namespace ehw
 		friend class GameObject;
 	public:
 		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
-		using Scripts = std::vector<iScript*>;
+		using Scripts = std::vector<Script*>;
 
 		enum class eState
 		{
@@ -53,15 +53,15 @@ namespace ehw
 		template <typename T>
 		inline T* GetComponent();
 
-		template <typename T> requires std::is_base_of_v<iScript, T>
+		template <typename T> requires std::is_base_of_v<Script, T>
 		inline T* AddScript();
-		inline iScript* AddScript(std::unique_ptr<iScript>&& _pCom);
-		inline iScript* AddScript(const std::string_view _strKey);
+		inline Script* AddScript(std::unique_ptr<Script>&& _pCom);
+		inline Script* AddScript(const std::string_view _strKey);
 
 		template <typename T>
 		inline T* GetScript();
 
-		iScript* GetScript(const std::string_view _strKey);
+		Script* GetScript(const std::string_view _strKey);
 
 		inline iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 		inline Com_Transform* Transform();
@@ -85,9 +85,9 @@ namespace ehw
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		iScene* GetScene() { return m_ownerScene; }
-		iScene* GetScene() const { return m_ownerScene; }
-		void SetScene(iScene* _scene) { m_ownerScene = _scene; }
+		Scene* GetScene() { return m_ownerScene; }
+		Scene* GetScene() const { return m_ownerScene; }
+		void SetScene(Scene* _scene) { m_ownerScene = _scene; }
 		bool IsInScene() const { return (nullptr != m_ownerScene); }
 
 		void SetLayer(uint32 _layer);
@@ -108,7 +108,7 @@ namespace ehw
 	private:
 		std::string m_name;
 
-		iScene* m_ownerScene;
+		Scene* m_ownerScene;
 		uint32 m_layer;
 
 		BaseComponents	m_baseComponents;
@@ -175,7 +175,7 @@ namespace ehw
 	{
 		T* pCom = nullptr;
 
-		if constexpr (std::is_base_of_v<iScript, T>)
+		if constexpr (std::is_base_of_v<Script, T>)
 		{
 			UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
 			for (size_t i = 0; i < m_scripts.size(); ++i)
@@ -221,18 +221,18 @@ namespace ehw
 		return pCom;
 	}
 
-	template<typename T> requires std::is_base_of_v<iScript, T>
+	template<typename T> requires std::is_base_of_v<Script, T>
 	inline T* GameObject::AddScript()
 	{
 		return AddComponent<T>();
 	};
 
-	inline iScript* GameObject::AddScript(std::unique_ptr<iScript>&& _pCom)
+	inline Script* GameObject::AddScript(std::unique_ptr<Script>&& _pCom)
 	{
-		return static_cast<iScript*>(AddComponent(std::move(_pCom)));
+		return static_cast<Script*>(AddComponent(std::move(_pCom)));
 	}
 
-	inline iScript* GameObject::AddScript(const std::string_view _strKey)
+	inline Script* GameObject::AddScript(const std::string_view _strKey)
 	{
 		std::unique_ptr<iComponent> pCom = ComponentManager::GetInst().GetNewComponent(_strKey);
 
@@ -244,7 +244,7 @@ namespace ehw
 			return nullptr;
 		}
 
-		return static_cast<iScript*>(AddComponent(std::move(pCom)));
+		return static_cast<Script*>(AddComponent(std::move(pCom)));
 	}
 
 	template<typename T>

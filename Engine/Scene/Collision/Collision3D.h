@@ -14,15 +14,15 @@
 namespace ehw
 {
 	// 전방 선언
-	class iScene;
+	class Scene;
 	class GameObject;
 	class Com_Transform;
-	class iCollider3D;
+	class Collider3D;
 	class CollisionSystem;
 
 	struct RaycastHit
 	{
-		iCollider3D* hitCollider;
+		Collider3D* hitCollider;
 		bool		hasBlocking;
 		float3		hitPosition;
 		float3		hitNormal;
@@ -51,7 +51,7 @@ namespace ehw
 
 		void EnableGravity(bool _enable, const float3& _gravity) const;
 
-		//void changeGeometry(iCollider3D* _collider, physx::PxShape* shape, eCollider3D_Shape type);
+		//void changeGeometry(Collider3D* _collider, physx::PxShape* shape, eCollider3D_Shape type);
 
 		bool Raycast(uint32 _srcLayerIndex, const float3& _origin, const float3& _direction, float _maxDistance, RaycastHit* _outHit) const;
 		

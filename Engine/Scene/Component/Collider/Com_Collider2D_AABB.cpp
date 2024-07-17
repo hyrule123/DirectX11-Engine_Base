@@ -5,7 +5,7 @@
 namespace ehw
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
-		: iCollider2D(eCollider2D_Shape::AABB)
+		: Collider2D(eCollider2D_Shape::AABB)
 		, m_offsetScale(100.f)
 		, m_leftBottom(0.f, 0.f)
 		, m_rightTop(100.f, 100.f)
@@ -42,7 +42,7 @@ namespace ehw
 
 	void Com_Collider2D_AABB::FrameEnd()
 	{
-		iCollider2D::FrameEnd();
+		Collider2D::FrameEnd();
 		m_isOffsetScaleUpdated = false;
 	}
 

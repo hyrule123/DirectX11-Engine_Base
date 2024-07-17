@@ -14,9 +14,9 @@ namespace ehw
 	class Texture;
 	
 	class Com_Camera;
-	class iRenderer;
+	class Renderer;
 
-	class iLight;
+	class Light;
 	class Com_Light3D;
 	class GameObject;
 
@@ -47,8 +47,8 @@ namespace ehw
 		void RegisterCamera(Com_Camera* const _pCam);
 		void RemoveCamera(Com_Camera* const _pCam);
 
-		inline void EnqueueRenderer(iRenderer* const _renderer);
-		inline const std::vector<iRenderer*>& GetRenderers() { return m_renderers; }
+		inline void EnqueueRenderer(Renderer* const _renderer);
+		inline const std::vector<Renderer*>& GetRenderers() { return m_renderers; }
 
 		inline MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type);
 
@@ -106,7 +106,7 @@ namespace ehw
 		std::vector<Com_Camera*>			m_cameras;
 		size_t							m_mainCamIndex;
 
-		std::vector<iRenderer*>			m_renderers;
+		std::vector<Renderer*>			m_renderers;
 
 		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multiRenderTargets;
 
@@ -142,7 +142,7 @@ namespace ehw
 		}
 	}
 
-	inline void RenderManager::EnqueueRenderer(iRenderer* const _renderer)
+	inline void RenderManager::EnqueueRenderer(Renderer* const _renderer)
 	{
 		if (_renderer) { m_renderers.push_back(_renderer); }
 	};

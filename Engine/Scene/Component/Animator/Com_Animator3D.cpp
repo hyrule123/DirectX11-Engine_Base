@@ -20,13 +20,13 @@
 namespace ehw
 {
 	Com_Animator3D::Com_Animator3D()
-		: iAnimator(eDimensionType::_3D)
+		: Animator(eDimensionType::_3D)
 		, m_sharedPlayData()
 	{
 	}
 
 	Com_Animator3D::Com_Animator3D(const Com_Animator3D& _other)
-		: iAnimator(_other)
+		: Animator(_other)
 		, m_sharedPlayData()
 	{
 		if (_other.m_sharedPlayData)
@@ -72,7 +72,7 @@ namespace ehw
 			const std::shared_ptr<Animation3D>& curAnim = m_sharedPlayData->GetCurrentAnimation();
 
 
-			iAnimator::CallEvent(static_cast<iAnimation*>(curAnim.get()), m_sharedPlayData->GetCurrentFrame() - curAnim->GetStartFrame());
+			Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_sharedPlayData->GetCurrentFrame() - curAnim->GetStartFrame());
 		}
 	}
 
@@ -113,7 +113,7 @@ namespace ehw
 			_frameIdx = anim->GetFrameLength() - 1;
 		}
 
-		iAnimator::AddEvent(static_cast<iAnimation*>(anim.get()), _frameIdx, _func);
+		Animator::AddEvent(static_cast<Animation*>(anim.get()), _frameIdx, _func);
 
 		return true;
 	}

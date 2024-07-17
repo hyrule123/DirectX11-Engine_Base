@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 
 #include "Engine/Common.h"
 
@@ -12,7 +12,7 @@ namespace ehw
 	class StructBuffer;
 	class Animation3D;
 	class Skeleton final
-		: public iResource
+		: public Resource
 		, public Serializable_Binary
 	{
 	public:

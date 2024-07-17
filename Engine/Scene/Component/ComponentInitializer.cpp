@@ -8,7 +8,7 @@
 #include "Engine/Scene/Component/ComponentInitializer.h"
 
 #include "Engine/Manager/ComponentManager.h"
-#include "Engine/Scene/Component/iComponent.h"
+#include "Engine/Scene/Component/Component.h"
 #include "Engine/Scene/Component/strKey_Component.h"
 
 #include "Engine/Scene/Component\Audio\Com_AudioListener.h"

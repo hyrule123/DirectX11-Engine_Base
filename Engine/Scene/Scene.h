@@ -8,12 +8,12 @@ namespace ehw
 	class GameObject;
 	class CollisionSystem;
 	class SceneRenderer;
-	class iScene 
+	class Scene 
 		: public Entity
 	{
 	public:
-		iScene();
-		virtual ~iScene();
+		Scene();
+		virtual ~Scene();
 
 		void SceneInit();
 		void SceneAwake();
@@ -87,7 +87,7 @@ namespace ehw
 
 	//템플릿의 &&는 상황에 따라서 맞춰서 전달된다.
 	template<class F, class ...Args>
-	inline void iScene::AddFrameEndJob(F&& _func, Args && ..._args)
+	inline void Scene::AddFrameEndJob(F&& _func, Args && ..._args)
 	{
 		//forward: 들어온 인자의 레퍼런스에 맞는 타입으로 전달
 		m_FrameEndJobs.push_back(std::bind(std::forward<F>(_func), std::forward<Args>(_args)...));

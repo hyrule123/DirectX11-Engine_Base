@@ -6,7 +6,7 @@
 
 #include "Engine/Resource/Prefab.h"
 
-#include "Engine/Scene/Component/Renderer/iRenderer.h"
+#include "Engine/Scene/Component/Renderer/Renderer.h"
 
 #include "Engine/Util/StringConverter.h"
 
@@ -69,7 +69,7 @@ namespace ehw
 		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
 		for (size_t i = 0; i < _other.m_scripts.size(); ++i)
 		{
-			iScript* cloned = static_cast<iScript*>(_other.m_scripts[i]->Clone());
+			Script* cloned = static_cast<Script*>(_other.m_scripts[i]->Clone());
 			if (cloned)
 			{
 				m_scripts.push_back(cloned);
@@ -101,7 +101,7 @@ namespace ehw
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			iScript* script = m_scripts[i];
+			Script* script = m_scripts[i];
 			if (script)
 			{
 				delete script;
@@ -301,7 +301,7 @@ namespace ehw
 		if (m_baseComponents[(int)eComponentCategory::Renderer] && 
 			m_baseComponents[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<iRenderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->Render();
+			static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->Render();
 		}
 	}
 
@@ -347,7 +347,7 @@ namespace ehw
 		
 		if (eComponentCategory::Scripts == ComType)
 		{
-			m_scripts.push_back(static_cast<iScript*>(_pCom));
+			m_scripts.push_back(static_cast<Script*>(_pCom));
 		}
 		else
 		{
@@ -529,9 +529,9 @@ namespace ehw
 		}
 	}
 
-	iScript* GameObject::GetScript(const std::string_view _strKey)
+	Script* GameObject::GetScript(const std::string_view _strKey)
 	{
-		iScript* retScript = nullptr;
+		Script* retScript = nullptr;
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{

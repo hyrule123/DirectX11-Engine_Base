@@ -17,7 +17,7 @@
 namespace ehw
 {
 	Com_Light3D::Com_Light3D()
-		: iLight(eDimensionType::_3D)
+		: Light(eDimensionType::_3D)
 		, m_volumeMesh()
 		, m_lightMaterial()
 		, m_index()
@@ -25,7 +25,7 @@ namespace ehw
 	}
 
 	Com_Light3D::Com_Light3D(const Com_Light3D& _other)
-		: iLight(_other)
+		: Light(_other)
 		, m_index(_other.m_index)
 		, m_attribute(_other.m_attribute)
 		, m_volumeMesh(_other.m_volumeMesh)

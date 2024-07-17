@@ -1,12 +1,12 @@
 #pragma once
-#include "Engine/Scene/Component/Rigidbody/iRigidbody.h"
+#include "Engine/Scene/Component/Rigidbody/Rigidbody.h"
 
 #include "Engine/define_Enum.h"
 
 namespace ehw
 {
     class Com_Rigidbody_Dynamic :
-        public iRigidbody
+        public Rigidbody
     {
     public:
         Com_Rigidbody_Dynamic();

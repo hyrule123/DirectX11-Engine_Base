@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/iResource.h"
+#include "Engine/Resource/Resource.h"
 
 #include "Engine/Common.h"
 #include "Engine/GPU/CommonGPU.h"
@@ -29,7 +29,7 @@ namespace ehw
 	};
 
     class Model3D final 
-		: public iResource
+		: public Resource
 		, public Serializable_Json
     {
 		friend class editor::EditorFBXConverter;

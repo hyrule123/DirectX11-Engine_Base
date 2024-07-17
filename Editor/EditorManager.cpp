@@ -190,7 +190,7 @@ namespace ehw::editor
 
 	void EditorManager::Render()
 	{
-		iScene* scene = SceneManager::GetInst().GetActiveScene();
+		Scene* scene = SceneManager::GetInst().GetActiveScene();
 		if (scene)
 		{
 			CollisionSystem* colsys = scene->GetCollisionSystem();

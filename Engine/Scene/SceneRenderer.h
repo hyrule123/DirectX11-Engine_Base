@@ -2,18 +2,18 @@
 #include "Engine/Entity.h"
 
 namespace ehw {
-	class iScene;
+	class Scene;
 	class SceneRenderer
 		: public Entity
 	{
 	public:
-		SceneRenderer(iScene* _scene);
+		SceneRenderer(Scene* _scene);
 		virtual ~SceneRenderer();
 
 		void Render();
 
 	private:
-		iScene* m_scene;
+		Scene* m_scene;
 	};
 }
 

@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : iAnimation(typeid(Animation3D))
+        : Animation(typeid(Animation3D))
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}
@@ -30,7 +30,7 @@ namespace ehw
 	}
 
     Animation3D::Animation3D(const Animation3D& _other)
-        : iAnimation(_other)
+        : Animation(_other)
         , m_OwnerSkeleton{ _other.m_OwnerSkeleton }
         , m_StartFrame{ _other.m_StartFrame }
         , m_EndFrame{ _other.m_EndFrame}

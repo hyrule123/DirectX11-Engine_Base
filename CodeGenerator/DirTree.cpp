@@ -4,7 +4,7 @@
 
 #include "Engine/Resource/define_Resource.h"
 //#include "../Engine/Resource/Shader/GraphicsShader.h"
-//#include "../Engine/Resource/Shader/iComputeShader.h"
+//#include "../Engine/Resource/Shader/ComputeShader.h"
 
 
 #include "CodeGenerator/define_Util.h"

@@ -6,7 +6,7 @@
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/PathManager.h"
 
-#include "Engine/Scene/iScene.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Scene/GameObject.h"
 #include "Engine/Scene/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "Engine/Scene/Component/Animator/Com_Animator3D.h"
@@ -25,7 +25,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: iResource(typeid(Model3D))
+		: Resource(typeid(Model3D))
 	{
 	}
 
