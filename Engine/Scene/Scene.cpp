@@ -2,7 +2,7 @@
 #include "Engine/Scene/GameObject.h"
 
 #include "Engine/Scene/Collision/CollisionSystem.h"
-#include "Engine/Scene/SceneRenderer.h"
+#include "Engine/Scene/SceneRender.h"
 
 namespace ehw
 {
@@ -13,11 +13,9 @@ namespace ehw
 		, m_bAwake{false}
 		, m_layerNames{}
 		, m_collisionSystem{}
-		, m_sceneRenderer{}
+		, m_sceneRender(this)
 	{
 		m_layerNames[0] = "Default";
-
-		m_sceneRenderer = std::make_unique<SceneRenderer>(this);
 	}
 
 	Scene::~Scene()
@@ -25,7 +23,7 @@ namespace ehw
 		m_gameObjects.clear();
 		m_delayedAddQueue.clear();
 		m_collisionSystem.reset();
-		m_sceneRenderer.reset();
+		m_sceneRender.reset();
 	}
 
 
@@ -116,7 +114,7 @@ namespace ehw
 			}
 		}
 
-		m_sceneRenderer->Render();
+		m_sceneRender->Render();
 	}
 
 	void Scene::SceneFrameEnd()
@@ -246,7 +244,7 @@ namespace ehw
 
 	void Scene::CreateSceneRenderer()
 	{
-		m_sceneRenderer = std::make_unique<SceneRenderer>(this);
+		m_sceneRender = std::make_unique<SceneRender>(this);
 	}
 
 	void Scene::RemoveDestroyed()

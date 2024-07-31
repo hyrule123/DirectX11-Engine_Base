@@ -12,9 +12,6 @@ void CreateUserComponentKey();
 void CreateScriptKey();
 void CreateSceneKey();
 
-
-
-
 //시작 지점 = $(SolutionDir) : 상대 경로로 작업해주면 된다.
 int main(int argc, char* argv[])
 {

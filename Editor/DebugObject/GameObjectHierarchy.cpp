@@ -3,7 +3,7 @@
 #include "Editor/EditorManager.h"
 #include "Editor/Inspector/InspectorBase.h"
 
-#include <Engine/Scene/iScene.h>
+#include <Engine/Scene/Scene.h>
 
 #include <Engine/Scene/GameObject.h>
 

@@ -3,12 +3,12 @@
 
 namespace ehw {
 	class Scene;
-	class SceneRenderer
+	class SceneRender
 		: public Entity
 	{
 	public:
-		SceneRenderer(Scene* _scene);
-		virtual ~SceneRenderer();
+		SceneRender(Scene* _scene);
+		virtual ~SceneRender();
 
 		void Render();
 

@@ -3,11 +3,12 @@
 #include "Engine/Common.h"
 #include "Engine/Util/type_traits_Ex.h"
 
+#include "Engine/Scene/SceneRender.h"
+
 namespace ehw
 {
 	class GameObject;
 	class CollisionSystem;
-	class SceneRenderer;
 	class Scene 
 		: public Entity
 	{
@@ -50,11 +51,6 @@ namespace ehw
 			return m_collisionSystem.get(); 
 		}
 
-		SceneRenderer* GetSceneRenderer() {
-			if(nullptr == m_sceneRenderer) { CreateSceneRenderer(); }
-			return m_sceneRenderer.get();
-		}
-
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
 
@@ -81,7 +77,7 @@ namespace ehw
 		std::array<std::string, g_maxLayer>				m_layerNames;
 
 		std::unique_ptr<CollisionSystem> m_collisionSystem;
-		std::unique_ptr<SceneRenderer> m_sceneRenderer;
+		SceneRender	m_sceneRender;
 	};
 
 
