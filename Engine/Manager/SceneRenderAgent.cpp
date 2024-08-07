@@ -15,7 +15,7 @@ namespace ehw {
 		, m_renderers{}
 		, m_lights_3D{}
 		, m_lightAttributes{}
-		, m_lights_SBuffer{}
+		
 	{
 	}
 	SceneRenderAgent::~SceneRenderAgent()
@@ -24,10 +24,7 @@ namespace ehw {
 
 	void SceneRenderAgent::Init()
 	{
-		StructBuffer::Desc SDesc{};
-		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		m_lights_SBuffer = std::make_unique<StructBuffer>(SDesc);
-		m_lights_SBuffer->Create<tLightAttribute>(128u, nullptr, 0);
+
 	}
 
 	void SceneRenderAgent::Release()
@@ -38,7 +35,6 @@ namespace ehw {
 		m_renderers.clear();
 
 		m_lightAttributes.clear();
-		m_lights_SBuffer.reset();
 	}
 
 	void SceneRenderAgent::FrameEnd()
@@ -122,15 +118,16 @@ namespace ehw {
 
 	void SceneRenderAgent::BindLights()
 	{
-		m_lights_SBuffer->SetData(m_lightAttributes.data(), m_lightAttributes.size());
+		StructBuffer* sbuf = RenderManager::GetInst().GetLightSBuffer();
+
+		sbuf->SetData(m_lightAttributes.data(), m_lightAttributes.size());
 
 		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 
-		m_lights_SBuffer->BindDataSRV(GPU::Register::t::lightAttributes, Flag);
+		sbuf->BindDataSRV(GPU::Register::t::lightAttributes, Flag);
 
 		tCB_NumberOfLight trCb = {};
 		trCb.numberOfLight = (uint)m_lightAttributes.size();
-
 
 		//Destroy된 light 포인터 제거
 		std::erase_if(m_lights_3D,

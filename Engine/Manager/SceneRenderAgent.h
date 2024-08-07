@@ -53,7 +53,7 @@ namespace ehw {
 		//생성자-소멸자에서 여기에 등록하기 떄문에 raw pointer를 사용해야 함
 		std::vector<Com_Light3D*>			m_lights_3D;
 		std::vector<tLightAttribute>		m_lightAttributes;
-		std::unique_ptr<StructBuffer>		m_lights_SBuffer;
+		
 	};
 
 

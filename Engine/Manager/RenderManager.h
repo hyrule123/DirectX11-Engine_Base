@@ -50,9 +50,7 @@ namespace ehw
 
 		void ClearMultiRenderTargets();
 
-
-		//void EraseIfDestroyed_Renderer();
-
+		StructBuffer* GetLightSBuffer() { return m_lights_SBuffer.get(); }
 
 	private:
 		RenderManager();
@@ -91,6 +89,7 @@ namespace ehw
 
 		std::shared_ptr<Texture>				m_postProcessTexture;
 		std::shared_ptr<Texture>				m_noiseTexture;
+		std::unique_ptr<StructBuffer>			m_lights_SBuffer;
 
 		SceneRenderAgent m_sceneRenderAgent;
 

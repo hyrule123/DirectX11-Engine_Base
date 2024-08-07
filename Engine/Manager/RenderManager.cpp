@@ -95,6 +95,7 @@ namespace ehw
 		, m_postProcessTexture{}
 		, m_isInitialized{ false }
 		, m_sceneRenderAgent{}
+		, m_lights_SBuffer{}
 	{
 	}
 
@@ -127,11 +128,18 @@ namespace ehw
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
 
+		StructBuffer::Desc SDesc{};
+		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
+		m_lights_SBuffer = std::make_unique<StructBuffer>(SDesc);
+		m_lights_SBuffer->Create<tLightAttribute>(128u, nullptr, 0);
+
 		m_sceneRenderAgent.Init();
 	}
 
 	void RenderManager::Release()
 	{
+		m_lights_SBuffer.reset();
+
 		m_sceneRenderAgent.Release();
 
 		for (int i = 0; i < (int)eCBType::END; ++i)
