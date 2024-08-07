@@ -12,9 +12,8 @@
 
 #include "Engine/Manager/TimeManager.h"
 #include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/SceneManager.h"
 
+#include "Engine/Manager/ResourceManager.h"
 #include "Engine/Resource/Mesh.h"
 
 #include "Engine/Scene/Collision/PhysXInstance.h"
@@ -66,7 +65,7 @@ namespace ehw
 	{
 		Scene* gameScene = m_collisionSystem->GetOwnerScene();
 
-		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().GetPhysX().getTolerancesScale()};
+		PxSceneDesc sceneDescription = PxSceneDesc{ PhysXInstance::GetInst().GetPhysX().getTolerancesScale() };
 		sceneDescription.gravity = PxVec3{ 0.f, -9.8f, 0.f };
 		sceneDescription.cpuDispatcher = PhysXInstance::GetInst().GetCPUDispatcher();
 		sceneDescription.filterShader = Collision3D::FilterShader;
@@ -93,7 +92,7 @@ namespace ehw
 
 	void Collision3D::GameSceneToPxScene()
 	{
-		const PxU32 actorCount = 
+		const PxU32 actorCount =
 			m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)
 		{
@@ -154,13 +153,12 @@ namespace ehw
 
 	void Collision3D::Render()
 	{
-		Scene* scene = SceneManager::GetInst().GetActiveScene();
-		if (nullptr == scene) { return; }
 		//메인 카메라
-		Com_Camera* mainCam = scene->GetSceneRendererInst().Get_main_camera();
-
-		if (nullptr == mainCam) { return; }
-
+		Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();
+		if (nullptr == mainCam)
+		{
+			return;
+		}
 		const MATRIX matView = mainCam->GetGpuViewMatrix();
 		const MATRIX matProj = mainCam->GetGpuProjectionMatrix();
 		const MATRIX matVP = matView * matProj;
@@ -170,6 +168,7 @@ namespace ehw
 		{
 			m_debugInstancingData[i].clear();
 		}
+
 
 		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)
@@ -194,7 +193,7 @@ namespace ehw
 			std::vector<physx::PxShape*> shapes(numShapes);
 
 			rigidActor->getShapes(shapes.data(), numShapes);
-			
+
 			for (size_t i = 0; i < numShapes; ++i)
 			{
 				const physx::PxGeometry& geometry = shapes[i]->getGeometry();
@@ -230,7 +229,7 @@ namespace ehw
 					}
 					break;
 				}
-					
+
 				case PxGeometryType::Enum::eCONVEXMESH:
 					break;
 				case PxGeometryType::Enum::ePARTICLESYSTEM:
@@ -250,7 +249,7 @@ namespace ehw
 				case PxGeometryType::Enum::eINVALID:		//!< internal use only:
 					break;
 				default:
-					break;	
+					break;
 				}
 
 			}
@@ -390,7 +389,7 @@ namespace ehw
 
 			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
 			Collider* rightCol = rightObj->GetComponent<Collider>();
-		
+
 
 			if (leftCol == rightCol)
 			{

@@ -5,7 +5,6 @@
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
 #include "Engine/DefaultShader/Resource.hlsli"
 
-
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #pragma comment (lib, "d3d11.lib")

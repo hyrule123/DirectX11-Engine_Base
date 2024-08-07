@@ -403,8 +403,8 @@
     <ClCompile Include="Scene\Component\Rigidbody\Rigidbody.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
-    <ClCompile Include="Scene\SceneRenderer.cpp" />
     <ClCompile Include="Scene\Component\iComponent.cpp" />
+    <ClCompile Include="Manager\SceneRenderAgent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -675,10 +675,10 @@
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="DefaultSettingVar.h" />
-    <ClInclude Include="Scene\SceneRenderer.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Scene\Component\iComponent.h" />
+    <ClInclude Include="Manager\SceneRenderAgent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

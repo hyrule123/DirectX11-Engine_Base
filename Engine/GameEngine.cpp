@@ -119,7 +119,7 @@ namespace ehw
 
 	void GameEngine::FrameEnd()
 	{	
-		RenderManager::GetInst().FrameEnd();
+		RenderManager::GetInst().sceneRenderAgent().FrameEnd();
 		SceneManager::GetInst().FrameEnd();
 	}
 

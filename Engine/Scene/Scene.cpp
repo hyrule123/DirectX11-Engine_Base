@@ -2,7 +2,6 @@
 #include "Engine/Scene/GameObject.h"
 
 #include "Engine/Scene/Collision/CollisionSystem.h"
-#include "Engine/Scene/SceneRenderer.h"
 
 namespace ehw
 {
@@ -13,7 +12,6 @@ namespace ehw
 		, m_bAwake{false}
 		, m_layerNames{}
 		, m_collisionSystem{}
-		, m_sceneRenderer(this)
 	{
 		m_layerNames[0] = "Default";
 	}
@@ -103,7 +101,6 @@ namespace ehw
 	void Scene::SceneRender()
 	{
 		Render();
-		m_sceneRenderer.Render();
 	}
 
 	void Scene::SceneFrameEnd()

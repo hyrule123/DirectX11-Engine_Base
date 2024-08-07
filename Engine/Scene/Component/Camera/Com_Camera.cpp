@@ -37,12 +37,12 @@ namespace ehw
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
-		
+		RenderManager::GetInst().sceneRenderAgent().RegisterCamera(this);
 	}
 
 	Com_Camera::~Com_Camera()
 	{
-		RenderManager::GetInst().RemoveCamera(this);
+		RenderManager::GetInst().sceneRenderAgent().RemoveCamera(this);
 	}
 
 	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser) const
@@ -53,11 +53,6 @@ namespace ehw
 	eResult Com_Camera::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
-	}
-
-	void Com_Camera::Init()
-	{
-		GetOwner()->GetScene()->GetSceneRendererInst().Register_camera(this);
 	}
 
 	void Com_Camera::FinalUpdate()
@@ -78,14 +73,15 @@ namespace ehw
 
 	void Com_Camera::OnDisable()
 	{
+		int a = 3;
 	}
 
 	void Com_Camera::OnDestroy()
 	{
-		GetOwner()->GetScene()->GetSceneRendererInst().Unregister_camera(this);
+		int a = 3;
 	}
 
-	void Com_Camera::RenderCamera(SceneRenderer* _sceneRenderer)
+	void Com_Camera::RenderCamera()
 	{
 		s_viewMatrix = m_viewMatrix;
 		s_viewInverseMatrix = m_viewMatrix.Invert();
@@ -102,19 +98,18 @@ namespace ehw
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 		// 붙여버리자
 
-		if (_sceneRenderer) {
-			const auto& Lights = _sceneRenderer->GetLights3D();
-			for (size_t i = 0; i < Lights.size(); ++i)
+		const auto& Lights = RenderManager::GetInst().sceneRenderAgent().GetLights();
+		for (size_t i = 0; i < Lights.size(); ++i)
+		{
+			if (Lights[i]->IsEnabled())
 			{
-				if (Lights[i]->IsEnabled())
-				{
-					Lights[i]->Render();
-				}
+				Lights[i]->Render();
 			}
 		}
 
 		// Forward render
 		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+
 
 		//// defferd + swapchain merge
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
@@ -262,7 +257,7 @@ namespace ehw
 				, m_nearDistance
 				, m_farDistance
 			);
-			
+
 
 			break;
 		case eProjectionType::Orthographic:
@@ -325,7 +320,7 @@ namespace ehw
 		Scene* scene = GetOwner()->GetScene();
 		ASSERT(scene, "Scene 주소가 없음.");
 
-		
+
 
 		//const std::vector<std::shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
@@ -444,7 +439,7 @@ namespace ehw
 
 	void Com_Camera::SortRenderersByMode()
 	{
-		const auto& renderers = RenderManager::GetInst().GetRenderers();
+		const auto& renderers = RenderManager::GetInst().sceneRenderAgent().GetRenderers();
 
 		for (size_t i = 0; i < renderers.size(); ++i)
 		{

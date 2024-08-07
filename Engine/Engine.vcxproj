@@ -228,6 +228,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DefaultSettingVar.h" />
+    <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Scene\Component\iComponent.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.h" />
@@ -245,7 +246,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Scene\Collision\PhysXInstance.h" />
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Rigidbody.h" />
-    <ClInclude Include="Scene\SceneRenderer.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
@@ -340,6 +340,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Scene\Component\iComponent.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
@@ -356,7 +357,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Scene\Collision\PhysXInstance.cpp" />
     <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Sphere.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Rigidbody.cpp" />
-    <ClCompile Include="Scene\SceneRenderer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Scene\Component\StateMachine\StateMachine.cpp" />

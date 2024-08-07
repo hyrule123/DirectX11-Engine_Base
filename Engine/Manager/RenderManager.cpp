@@ -29,21 +29,27 @@
 
 #include "Engine/GlobalVariable.h"
 
-#include "Engine/Scene/Scene.h"
 
-#include "Engine/Manager/ResourceManager.h"
+#include "ResourceManager.h"
 #include "Engine/Manager/SceneManager.h"
+#include "ResourceManager.h"
 #include "Engine/Manager/TimeManager.h"
-
 
 namespace ehw
 {
+
 	void RenderManager::Render()
 	{
 		ClearMultiRenderTargets();
+
 		UpdateGlobalCBuffer();
+
 		BindNoiseTexture();
+
+		m_sceneRenderAgent.BindLights();
+		m_sceneRenderAgent.EraseIfDestroyed_Camera(true);
 	}
+
 
 	void RenderManager::BindNoiseTexture()
 	{
@@ -65,7 +71,7 @@ namespace ehw
 	void RenderManager::CopyRenderTarget()
 	{
 		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::RenderTarget);
-			
+
 		//renderTarget->UnbindData();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
@@ -79,8 +85,6 @@ namespace ehw
 		m_postProcessTexture->BindDataSRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
-
-
 	RenderManager::RenderManager()
 		: m_constBuffers{}
 		, m_samplerStates{}
@@ -90,6 +94,7 @@ namespace ehw
 		, m_multiRenderTargets{}
 		, m_postProcessTexture{}
 		, m_isInitialized{ false }
+		, m_sceneRenderAgent{}
 	{
 	}
 
@@ -121,10 +126,14 @@ namespace ehw
 
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
+
+		m_sceneRenderAgent.Init();
 	}
 
 	void RenderManager::Release()
 	{
+		m_sceneRenderAgent.Release();
+
 		for (int i = 0; i < (int)eCBType::END; ++i)
 		{
 			m_constBuffers[i].reset();
@@ -169,44 +178,46 @@ namespace ehw
 					m_multiRenderTargets[i]->Clear(float4(0.f));
 				}
 			}
-				
+
 		}
 	}
 
+
+
+	//void RenderManager::EraseIfDestroyed_Renderer()
+	//{
+	//	std::erase_if(m_renderers,
+	//		[](Renderer* _renderer)->bool
+	//		{
+	//			return _renderer->IsDestroyed();
+	//		}
+	//	);
+	//}
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{
 		gGlobal.DeltaTime = TimeManager::GetInst().DeltaTime();
 		gGlobal.AccFramePrev = gGlobal.AccFrame;
 		gGlobal.AccFrame += 1u;
-		
+
 		ConstBuffer* global = GetConstBuffer(eCBType::Global);
 		global->SetData(&gGlobal);
 		global->BindData();
 	}
 
-	bool RenderManager::SetResolution(UINT _resolutionX, UINT _resolutionY)
+	bool RenderManager::SetResolution(UINT _resX, UINT _resY)
 	{
-		if (false == CreateMultiRenderTargets(_resolutionX, _resolutionY))
+		if (false == CreateMultiRenderTargets(_resX, _resY))
 		{
 			ERROR_MESSAGE("해상도 변경 실패");
 			return false;
 		}
 
-		Scene* scene = SceneManager::GetInst().GetActiveScene();
-
-		if (scene) {
-			SceneRenderer& sr = scene->GetSceneRendererInst();
-			const std::vector<Com_Camera*>& cams = sr.GetCameras();
-			for (auto* cam : cams) {
-				if (cam) { cam->CreateProjectionMatrix(_resolutionX, _resolutionY); }
-			}
-		}
-
+		m_sceneRenderAgent.SetResolution(_resX, _resY);
 		return true;
 	}
 
-	bool RenderManager::CreateMultiRenderTargets(UINT _ResolutionX, UINT _ResolutionY)
+	bool RenderManager::CreateMultiRenderTargets(UINT _resX, UINT _resY)
 	{
 		{
 			//Swapchain MRT
@@ -229,20 +240,21 @@ namespace ehw
 		{
 			std::shared_ptr<Texture> arrRTTex[MRT_MAX] = {};
 			std::shared_ptr<Texture> dsTex = nullptr;
-			
+
 			for (int i = 0; i < (int)eMRT_Deffered::END; ++i)
 			{
 				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
-				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
+				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->SetStrKey(strKey::eMRT_Deffered_String[i]);
 			}
 
+
 			dsTex = GPUManager::GetInst().GetDepthStencilBufferTex();
 
 			m_multiRenderTargets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
-			if(false == m_multiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
+			if (false == m_multiRenderTargets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
 			{
 				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
@@ -258,7 +270,7 @@ namespace ehw
 			{
 				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
-				arrRTTex[i]->Create(_ResolutionX, _ResolutionY, DXGI_FORMAT_R32G32B32A32_FLOAT
+				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->SetStrKey(strKey::eMRT_Light_String[i]);
 			}
@@ -268,7 +280,7 @@ namespace ehw
 		}
 
 		SetTexturesToDefferedMaterials();
-		
+
 		return true;
 	}
 
@@ -284,7 +296,7 @@ namespace ehw
 
 			{
 				//Position Target
-				std::shared_ptr<Texture> positionTarget = 
+				std::shared_ptr<Texture> positionTarget =
 					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
 				lightDirMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
 				lightPointMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
@@ -294,7 +306,7 @@ namespace ehw
 				//Normal Target
 				std::shared_ptr<Texture> normalTarget =
 					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
-					
+
 				lightDirMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
 				lightPointMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
 			}
@@ -363,8 +375,8 @@ namespace ehw
 
 	void RenderManager::LoadDefaultMesh()
 	{
-		
-		
+
+
 
 #pragma region POINT MESH
 		{
@@ -375,7 +387,7 @@ namespace ehw
 
 			uint pointIndex = 0;
 			bool result = false;
-			
+
 			result = pointMesh->CreateVertexBuffer(&vtx2d, sizeof(Vertex2D), (size_t)1);
 			result &= pointMesh->CreateIndexBuffer(&pointIndex, 1u);
 			ASSERT(result, "point mesh 생성 실패");
@@ -445,11 +457,11 @@ namespace ehw
 			vtx2d.UV = float2(0.0f, 1.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
-			
+
 			// Create Mesh
 			std::shared_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
 			debugmesh->SetEngineDefaultRes(true);
-			
+
 			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::DebugRectMesh, debugmesh);
 			debugmesh->CreateVertexBuffer(VecVtx2D.data(), sizeof(Vertex2D), VecVtx2D.size());
 			debugmesh->CreateIndexBuffer(indices.data(), static_cast<uint>(indices.size()));
@@ -511,7 +523,7 @@ namespace ehw
 
 			//24개 만드는 이유: UV 좌표가 다 다름
 			VecVtx3D.reserve(24);
-			
+
 			// 윗면
 			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
@@ -1059,7 +1071,7 @@ namespace ehw
 		LayoutDesc.SemanticName = "TANGENT";
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
-		
+
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 		LayoutDesc.AlignedByteOffset = 36;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -1068,7 +1080,7 @@ namespace ehw
 		LayoutDesc.SemanticName = "BINORMAL";
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
-		
+
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 		LayoutDesc.AlignedByteOffset = 48;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -1233,18 +1245,12 @@ namespace ehw
 
 		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
 		m_constBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
-		
-		
+
+
 
 		m_constBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
 		m_constBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
 
-#pragma endregion
-#pragma region STRUCTED BUFFER
-		StructBuffer::Desc SDesc{};
-		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		m_light3D_Sbuffer = std::make_unique<StructBuffer>(SDesc);
-		m_light3D_Sbuffer->Create<tLightAttribute>(128u, nullptr, 0);
 #pragma endregion
 	}
 

@@ -50,7 +50,7 @@ namespace ehw
 
 	void Renderer::FinalUpdate()
 	{
-		RenderManager::GetInst().EnqueueRenderer(this);
+		RenderManager::GetInst().sceneRenderAgent().EnqueueRenderer(this);
 	}
 
 	eResult Renderer::Serialize_Json(JsonSerializer* _ser) const

@@ -30,7 +30,7 @@ namespace ehw
 	void GridScript::Awake()
 	{
 		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
-		mCamera = RenderManager::GetInst().GetCamera(0);
+		mCamera = RenderManager::GetInst().sceneRenderAgent().GetCamera(0);
 	}
 
 	void GridScript::Update()

@@ -1,24 +1,25 @@
 #pragma once
-#include "Engine/GPU/CommonGPU.h"
 #include "Engine/Common.h"
+#include "Engine/GPU/CommonGPU.h"
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/Util/StaticSingleton.h"
 
 #include "Engine/DefaultShader/Light/Func_Light.hlsli"
+
+#include "Engine/Manager/SceneRenderAgent.h"
 
 namespace ehw
 {
 	class ConstBuffer;
 	class StructBuffer;
 	class Texture;
-	
+
 	class Com_Camera;
 	class Renderer;
 
 	class Light;
 	class Com_Light3D;
 	class GameObject;
-	class Scene;
 
 	class MultiRenderTarget;
 
@@ -32,23 +33,27 @@ namespace ehw
 
 		void Render();
 
+		SceneRenderAgent& sceneRenderAgent() { return m_sceneRenderAgent; }
+
 		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
 		//void SetDataToConstBuffer(eCBType _Type, void* _pData, uint _dataCount = 1u);
 
-		ID3D11RasterizerState*	GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
-		ID3D11BlendState*		GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
+		ID3D11RasterizerState* GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
+		ID3D11BlendState* GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
 		ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
 
 		inline MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type);
 
-		//Renderer
+
 		void BindNoiseTexture();
 		void CopyRenderTarget();
 
 		void ClearMultiRenderTargets();
 
-		StructBuffer* GetLight3DStructBuffer() { return m_light3D_Sbuffer.get(); }
-		
+
+		//void EraseIfDestroyed_Renderer();
+
+
 	private:
 		RenderManager();
 		~RenderManager();
@@ -68,33 +73,29 @@ namespace ehw
 		void LoadDefaultShader();
 		void LoadDefaultTexture();
 
-
 		void CreateSamplerStates();
 		void CreateRasterizerStates();
 		void CreateDepthStencilStates();
 		void CreateBlendStates();
-		
+
 		void CreateBuffer();
 
 	private:
 		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_constBuffers;
 		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_samplerStates;
-		std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>		m_rasterizerStates;
+		std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>	m_rasterizerStates;
 		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	m_depthStencilStates;
 		std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			m_blendStates;
 
 		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multiRenderTargets;
 
-		std::unique_ptr<StructBuffer>			m_light3D_Sbuffer;
-
 		std::shared_ptr<Texture>				m_postProcessTexture;
 		std::shared_ptr<Texture>				m_noiseTexture;
 
-		Com_Camera* m_debugCam;
+		SceneRenderAgent m_sceneRenderAgent;
 
 		bool m_isInitialized;
 	};
-
 
 	inline MultiRenderTarget* RenderManager::GetMultiRenderTarget(eMRTType _Type)
 	{
