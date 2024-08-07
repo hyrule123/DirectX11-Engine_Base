@@ -9,7 +9,7 @@ namespace ehw
 		: m_gameObjects{}
 		, m_delayedAddQueue{}
 		, m_FrameEndJobs{}
-		, m_bAwake{false}
+		, m_bAwake{ false }
 		, m_layerNames{}
 		, m_collisionSystem{}
 	{
@@ -52,7 +52,7 @@ namespace ehw
 		}
 
 		m_bAwake = true;
-		
+
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			m_gameObjects[i]->Awake();
@@ -77,6 +77,7 @@ namespace ehw
 	void Scene::SceneUpdate()
 	{
 		Update();
+
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
@@ -85,6 +86,7 @@ namespace ehw
 			}
 		}
 	}
+
 
 	void Scene::SceneFinalUpdate()
 	{
@@ -97,10 +99,17 @@ namespace ehw
 			}
 		}
 	}
-
 	void Scene::SceneRender()
 	{
 		Render();
+
+		for (size_t i = 0; i < m_gameObjects.size(); ++i)
+		{
+			if (m_gameObjects[i]->IsActive())
+			{
+				m_gameObjects[i]->Render();
+			}
+		}
 	}
 
 	void Scene::SceneFrameEnd()
@@ -113,7 +122,7 @@ namespace ehw
 			m_gameObjects[i]->FrameEnd();
 		}
 
-		if(m_collisionSystem)
+		if (m_collisionSystem)
 		{
 			m_collisionSystem->FrameEnd();
 		}
@@ -177,7 +186,7 @@ namespace ehw
 
 		std::function<bool(std::unique_ptr<GameObject>&)> predFunc =
 			std::bind(&Scene::SetGameObjectInfo, this, std::placeholders::_1, _layer);
-		
+
 		std::erase_if(gameObjects, predFunc);
 
 		inserted = gameObjects.size();
@@ -227,7 +236,6 @@ namespace ehw
 	{
 		m_collisionSystem = std::make_unique<CollisionSystem>(this);
 	}
-
 
 	void Scene::RemoveDestroyed()
 	{

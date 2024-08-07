@@ -54,7 +54,6 @@ namespace ehw {
 		std::vector<Com_Light3D*>			m_lights_3D;
 		std::vector<tLightAttribute>		m_lightAttributes;
 		std::unique_ptr<StructBuffer>		m_lights_SBuffer;
-
 	};
 
 
