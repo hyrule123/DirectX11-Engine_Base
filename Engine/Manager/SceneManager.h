@@ -13,7 +13,6 @@ namespace ehw
 		~SceneManager();
 
 	public:
-		
 		void Init();
 		void FixedUpdate();
 		void Update();
@@ -25,7 +24,7 @@ namespace ehw
 		void Destroy();
 
 		void		LoadScene(const std::string_view _strKey);
-		Scene*	GetActiveScene() { return m_activeScene.get(); }
+		Scene*		GetActiveScene() { return m_activeScene.get(); }
 
 		template <typename T> requires std::is_base_of_v<Scene, T>
 		void AddSceneConstructor(const std::string_view _strKey);

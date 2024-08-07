@@ -37,7 +37,7 @@ namespace ehw
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
-		RenderManager::GetInst().RegisterCamera(this);
+		
 	}
 
 	Com_Camera::~Com_Camera()
@@ -53,6 +53,11 @@ namespace ehw
 	eResult Com_Camera::DeSerialize_Json(const JsonSerializer* _ser)
 	{
 		return eResult();
+	}
+
+	void Com_Camera::Init()
+	{
+		GetOwner()->GetScene()->GetSceneRendererInst().Register_camera(this);
 	}
 
 	void Com_Camera::FinalUpdate()
@@ -73,15 +78,14 @@ namespace ehw
 
 	void Com_Camera::OnDisable()
 	{
-		int a = 3;
 	}
 
 	void Com_Camera::OnDestroy()
 	{
-		int a = 3;
+		GetOwner()->GetScene()->GetSceneRendererInst().Unregister_camera(this);
 	}
 
-	void Com_Camera::RenderCamera()
+	void Com_Camera::RenderCamera(SceneRenderer* _sceneRenderer)
 	{
 		s_viewMatrix = m_viewMatrix;
 		s_viewInverseMatrix = m_viewMatrix.Invert();
@@ -98,18 +102,19 @@ namespace ehw
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 		// 붙여버리자
 
-		const auto& Lights = RenderManager::GetInst().GetLights();
-		for (size_t i = 0; i < Lights.size(); ++i)
-		{
-			if (Lights[i]->IsEnabled())
+		if (_sceneRenderer) {
+			const auto& Lights = _sceneRenderer->GetLights3D();
+			for (size_t i = 0; i < Lights.size(); ++i)
 			{
-				Lights[i]->Render();
+				if (Lights[i]->IsEnabled())
+				{
+					Lights[i]->Render();
+				}
 			}
 		}
 
 		// Forward render
 		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
-
 
 		//// defferd + swapchain merge
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);

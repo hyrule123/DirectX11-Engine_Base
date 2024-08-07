@@ -4,7 +4,6 @@
 
 namespace ehw
 {
-
 	class iComponent;
 
 	//제한적인 업캐스팅 지원을 위한 클래스 - 상속받는 클래스들은 이 클래스를 상속

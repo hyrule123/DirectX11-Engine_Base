@@ -245,7 +245,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Scene\Collision\PhysXInstance.h" />
     <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Scene\Component\Rigidbody\Rigidbody.h" />
-    <ClInclude Include="Scene\SceneRender.h" />
+    <ClInclude Include="Scene\SceneRenderer.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
@@ -356,7 +356,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Scene\Collision\PhysXInstance.cpp" />
     <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Sphere.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Rigidbody.cpp" />
-    <ClCompile Include="Scene\SceneRender.cpp" />
+    <ClCompile Include="Scene\SceneRenderer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Scene\Component\StateMachine\StateMachine.cpp" />

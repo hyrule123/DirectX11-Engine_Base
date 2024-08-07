@@ -26,7 +26,7 @@ namespace ehw
 			Material* mtrl = GetCurrentMaterial(i);
 			if (mtrl)
 			{
-				//메쉬 바인딩 - Render 내부에서 진행하도록 변경
+				//메쉬 바인딩 - Mesh::Render 내부에서 진행하도록 변경
 				//GetMesh()->BindBuffer(i);
 
 				//재질 바인딩

@@ -12,8 +12,9 @@
 
 #include "Engine/Manager/TimeManager.h"
 #include "Engine/Manager/RenderManager.h"
-
 #include "Engine/Manager/ResourceManager.h"
+#include "Engine/Manager/SceneManager.h"
+
 #include "Engine/Resource/Mesh.h"
 
 #include "Engine/Scene/Collision/PhysXInstance.h"
@@ -153,12 +154,13 @@ namespace ehw
 
 	void Collision3D::Render()
 	{
+		Scene* scene = SceneManager::GetInst().GetActiveScene();
+		if (nullptr == scene) { return; }
 		//메인 카메라
-		Com_Camera* mainCam = RenderManager::GetInst().GetMainCamera();
-		if (nullptr == mainCam)
-		{
-			return;
-		}
+		Com_Camera* mainCam = scene->GetSceneRendererInst().Get_main_camera();
+
+		if (nullptr == mainCam) { return; }
+
 		const MATRIX matView = mainCam->GetGpuViewMatrix();
 		const MATRIX matProj = mainCam->GetGpuProjectionMatrix();
 		const MATRIX matVP = matView * matProj;
@@ -168,7 +170,6 @@ namespace ehw
 		{
 			m_debugInstancingData[i].clear();
 		}
-
 
 		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)

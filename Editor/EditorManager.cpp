@@ -460,7 +460,7 @@ namespace ehw::editor
 			return;
 		}
 
-		const auto& mainCam = RenderManager::GetMainCam();
+		const auto& mainCam = RenderManager::Get_main_camera();
 
 		if (!mainCam)
 		{

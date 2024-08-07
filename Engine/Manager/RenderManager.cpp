@@ -29,111 +29,22 @@
 
 #include "Engine/GlobalVariable.h"
 
+#include "Engine/Scene/Scene.h"
 
-#include "ResourceManager.h"
+#include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/SceneManager.h"
-#include "ResourceManager.h"
 #include "Engine/Manager/TimeManager.h"
+
 
 namespace ehw
 {
-
 	void RenderManager::Render()
 	{
 		ClearMultiRenderTargets();
-
 		UpdateGlobalCBuffer();
-
 		BindNoiseTexture();
-		BindLights();
-
-		EraseIfDestroyed_Camera(true);
 	}
 
-	void RenderManager::FrameEnd()
-	{
-		m_renderers.clear();
-		m_lightAttributes.clear();
-		m_lights_3D.clear();
-	}
-
-	void RenderManager::SetMainCamera(Com_Camera* const _pCam)
-	{
-		for (size_t i = 0; i < m_cameras.size(); ++i)
-		{
-			if (_pCam == m_cameras[i])
-			{
-				m_mainCamIndex = i;
-				return;
-			}
-		}
-	}
-
-	void RenderManager::RegisterCamera(Com_Camera* const _pCam)
-	{
-		ASSERT(_pCam, "nullptr"); m_cameras.push_back(_pCam);
-	}
-
-	void RenderManager::RemoveCamera(Com_Camera* const _pCam)
-	{
-		for (auto iter = m_cameras.begin(); iter != m_cameras.end(); ++iter)
-		{
-			if (_pCam == (*iter))
-			{
-				m_cameras.erase(iter);
-				return;
-			}
-		}
-	}
-
-
-	void RenderManager::RemoveLight(Com_Light3D* const _pComLight)
-	{
-		for (auto iter = m_lights_3D.begin(); iter != m_lights_3D.end(); ++iter)
-		{
-			if (_pComLight == (*iter))
-			{
-				m_lights_3D.erase(iter);
-				break;
-			}
-		}
-	}
-
-	void RenderManager::BindLights()
-	{
-		m_lights_SBuffer->SetData(m_lightAttributes.data(), m_lightAttributes.size());
-
-		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
-
-		m_lights_SBuffer->BindDataSRV(GPU::Register::t::lightAttributes, Flag);
-
-		tCB_NumberOfLight trCb = {};
-		trCb.numberOfLight = (uint)m_lightAttributes.size();
-
-
-		//Destroy된 light 포인터 제거
-		std::erase_if(m_lights_3D,
-			[](Com_Light3D* const iter)->bool
-			{
-				return iter->IsDestroyed();
-			}
-		);
-
-		//light index 지정
-		for (size_t i = 0; i < m_lights_3D.size(); i++)
-		{
-			if (m_lights_3D[i]->IsEnabled())
-			{
-				m_lights_3D[i]->SetIndex((uint)i);
-			}
-		}
-		
-
-
-		const auto& cb = m_constBuffers[(uint)eCBType::numberOfLight];
-		cb->SetData(&trCb);
-		cb->BindData(Flag);
-	}
 	void RenderManager::BindNoiseTexture()
 	{
 		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::noise_03);
@@ -168,24 +79,7 @@ namespace ehw
 		m_postProcessTexture->BindDataSRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
-	void RenderManager::EraseIfDestroyed_Camera(bool _callRenderFunction = false)
-	{
-		std::erase_if(m_cameras,
-			[_callRenderFunction](Com_Camera* _cam)->bool
-			{
-				if (_cam->IsDestroyed())
-				{
-					return true;
-				}
-				else if (_callRenderFunction && _cam->IsEnabled())
-				{
-					_cam->RenderCamera();
-				}
 
-				return false;
-			}
-		);
-	}
 
 	RenderManager::RenderManager()
 		: m_constBuffers{}
@@ -193,13 +87,7 @@ namespace ehw
 		, m_rasterizerStates{}
 		, m_depthStencilStates{}
 		, m_blendStates{}
-		, m_cameras{}
-		, m_mainCamIndex(0u)
-		, m_renderers{}
 		, m_multiRenderTargets{}
-		, m_lights_3D{}
-		, m_lightAttributes{}
-		, m_lights_SBuffer{}
 		, m_postProcessTexture{}
 		, m_isInitialized{ false }
 	{
@@ -258,13 +146,6 @@ namespace ehw
 			m_blendStates[i] = nullptr;
 		}
 
-		m_cameras.clear();
-		m_mainCamIndex = 0u;
-
-		m_renderers.clear();
-
-		m_lightAttributes.clear();
-		m_lights_SBuffer.reset();
 		m_postProcessTexture = nullptr;
 
 		for (int i = 0; i < (int)eMRTType::END; ++i)
@@ -293,17 +174,6 @@ namespace ehw
 	}
 
 
-
-	//void RenderManager::EraseIfDestroyed_Renderer()
-	//{
-	//	std::erase_if(m_renderers,
-	//		[](Renderer* _renderer)->bool
-	//		{
-	//			return _renderer->IsDestroyed();
-	//		}
-	//	);
-	//}
-
 	void RenderManager::UpdateGlobalCBuffer()
 	{
 		gGlobal.DeltaTime = TimeManager::GetInst().DeltaTime();
@@ -315,19 +185,21 @@ namespace ehw
 		global->BindData();
 	}
 
-	bool RenderManager::SetResolution(UINT _ResolutionX, UINT _ResolutionY)
+	bool RenderManager::SetResolution(UINT _resolutionX, UINT _resolutionY)
 	{
-		if (false == CreateMultiRenderTargets(_ResolutionX, _ResolutionY))
+		if (false == CreateMultiRenderTargets(_resolutionX, _resolutionY))
 		{
 			ERROR_MESSAGE("해상도 변경 실패");
 			return false;
 		}
 
-		for (const auto& iter : m_cameras)
-		{
-			if (iter)
-			{
-				iter->CreateProjectionMatrix(_ResolutionX, _ResolutionY);
+		Scene* scene = SceneManager::GetInst().GetActiveScene();
+
+		if (scene) {
+			SceneRenderer& sr = scene->GetSceneRendererInst();
+			const std::vector<Com_Camera*>& cams = sr.GetCameras();
+			for (auto* cam : cams) {
+				if (cam) { cam->CreateProjectionMatrix(_resolutionX, _resolutionY); }
 			}
 		}
 
@@ -366,7 +238,6 @@ namespace ehw
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->SetStrKey(strKey::eMRT_Deffered_String[i]);
 			}
-			
 
 			dsTex = GPUManager::GetInst().GetDepthStencilBufferTex();
 
@@ -1372,8 +1243,8 @@ namespace ehw
 #pragma region STRUCTED BUFFER
 		StructBuffer::Desc SDesc{};
 		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		m_lights_SBuffer = std::make_unique<StructBuffer>(SDesc);
-		m_lights_SBuffer->Create<tLightAttribute>(128u, nullptr, 0);
+		m_light3D_Sbuffer = std::make_unique<StructBuffer>(SDesc);
+		m_light3D_Sbuffer->Create<tLightAttribute>(128u, nullptr, 0);
 #pragma endregion
 	}
 

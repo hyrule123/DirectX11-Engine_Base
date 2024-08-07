@@ -3,7 +3,7 @@
 #include "Engine/Common.h"
 #include "Engine/Util/type_traits_Ex.h"
 
-#include "Engine/Scene/SceneRender.h"
+#include "Engine/Scene/SceneRenderer.h"
 
 namespace ehw
 {
@@ -51,12 +51,13 @@ namespace ehw
 			return m_collisionSystem.get(); 
 		}
 
+		SceneRenderer& GetSceneRendererInst() { return m_sceneRenderer; }
+
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
 
 	private:
 		void CreateCollisionSystem();
-		void CreateSceneRenderer();
 		void RemoveDestroyed();
 
 		//true: 문제 발생, false: 문제 없음 - stl pred func에 필요함
@@ -77,7 +78,7 @@ namespace ehw
 		std::array<std::string, g_maxLayer>				m_layerNames;
 
 		std::unique_ptr<CollisionSystem> m_collisionSystem;
-		SceneRender	m_sceneRender;
+		SceneRenderer	m_sceneRenderer;
 	};
 
 

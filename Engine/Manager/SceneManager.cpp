@@ -63,8 +63,7 @@ namespace ehw
 
 	void SceneManager::Render()
 	{
-		if (m_activeScene)
-		{
+		if (m_activeScene) {
 			m_activeScene->SceneRender();
 		}
 	}

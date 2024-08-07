@@ -8,6 +8,7 @@
 namespace  ehw
 {
 	class Renderer;
+	class SceneRenderer;
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
@@ -25,13 +26,13 @@ namespace  ehw
 		__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
 		__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
 
+		void Init() override;
 		void FinalUpdate() override;
 		void FrameEnd() override;
 		void OnDisable() override;
 		void OnDestroy() override;
 
-		//이 함수는 RenderMgr가 호출
-		void RenderCamera();
+		void RenderCamera(SceneRenderer* _sceneRenderer);
 
 		void CreateViewMatrix();
 
