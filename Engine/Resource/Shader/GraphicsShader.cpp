@@ -127,7 +127,7 @@ namespace ehw
 		//읽어온 바이트 코드로부터 쉐이더를 로딩해준다.
 		//실패시 동적할당 해제하고 오류 발생
 		eResult Result = CreateShader(_stage, code.blob->GetBufferPointer(), code.blob->GetBufferSize());
-		if (eResultFail(Result))
+		if (eResult_fail(Result))
 		{
 			code = {};
 			ERROR_MESSAGE("쉐이더 생성 실패.");
@@ -374,7 +374,7 @@ namespace ehw
 				if (false == m_bEditMode && false == m_arrShaderCode[i].strKey.empty())
 				{
 					eResult result = CreateByCSO((eGSStage)i, m_arrShaderCode[i].strKey);
-					if (eResultFail(result))
+					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("쉐이더 코드 생성 실패");
 						return result;
@@ -392,7 +392,7 @@ namespace ehw
 		if (false == m_bEditMode)
 		{
 			eResult result = CreateInputLayout();
-			if (eResultFail(result))
+			if (eResult_fail(result))
 			{
 				ERROR_MESSAGE("INPUT LAYOUT 생성 실패");
 				return result;

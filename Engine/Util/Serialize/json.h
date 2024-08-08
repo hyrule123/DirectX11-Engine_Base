@@ -825,7 +825,7 @@ namespace Json {
 
     public:
         /**
-         * \brief Create a default Value of the given type.
+         * \brief CreateBuffer a default Value of the given type.
          *
          * This is a very useful constructor.
          * To create an empty array, pass arrayValue.

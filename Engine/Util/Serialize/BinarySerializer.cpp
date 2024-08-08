@@ -93,7 +93,7 @@ namespace ehw
 
 	std::ostream& operator<<(std::ostream& _os, const BinarySerializer& _ser)
 	{
-		if (eResultFail(_ser.SaveFile(_os)))
+		if (eResult_fail(_ser.SaveFile(_os)))
 		{
 			ERROR_MESSAGE("저장 실패.");
 		}
@@ -102,7 +102,7 @@ namespace ehw
 
 	std::istream& operator>>(std::istream& _is, BinarySerializer& _ser)
 	{
-		if (eResultFail(_ser.LoadFile(_is)))
+		if (eResult_fail(_ser.LoadFile(_is)))
 		{
 			ERROR_MESSAGE("불러오기 실패.");
 		}

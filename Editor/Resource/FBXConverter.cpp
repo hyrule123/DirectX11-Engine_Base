@@ -101,7 +101,7 @@ namespace ehw::editor
 			if (status == std::future_status::ready)
 			{
 				eResult result = mFutureConvertResult.get();
-				if (eResultSuccess(result))
+				if (eResult_success(result))
 				{
 					NOTIFICATION("저장 성공");
 				}
@@ -159,7 +159,7 @@ namespace ehw::editor
 				{
 					Model3D meshData{};
 					eResult result = meshData.ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
-					if (eResultSuccess(result))
+					if (eResult_success(result))
 					{
 						result = meshData.Save(mOutputDirName, meshData.GetStrKey());
 					}

@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
 void CreateTextureKey()
 {
-    //Create variable name restraints regex
+    //CreateBuffer variable name restraints regex
     define_Preset::Regex::g_VarForbiddenChars::CreateVarForbiddenRegex();
 
     constexpr const char* TexExt[] = { ".bmp", ".png", ".jpg", ".tga", ".dds" };

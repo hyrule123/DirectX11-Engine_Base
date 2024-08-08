@@ -106,8 +106,8 @@ namespace ehw
 
 		StructBuffer::Desc SDesc{};
 		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		m_lights_SBuffer = std::make_unique<StructBuffer>(SDesc);
-		m_lights_SBuffer->Create<tLightAttribute>(128u, nullptr, 0);
+		m_lights_SBuffer = std::make_unique<StructBuffer>();
+		m_lights_SBuffer->Init<tLightAttribute>(SDesc, 128u, nullptr, 0);
 
 		m_sceneRenderAgent.Init();
 
@@ -128,8 +128,7 @@ namespace ehw
 		SDesc.REGISLOT_t_SRV = GPU::Register::t::NONE;
 		SDesc.REGISLOT_u_UAV = GPU::Register::u::g_debugData;
 		m_debug_data_buffer = std::make_unique<StructBuffer>();
-		m_debug_data_buffer->SetDesc(SDesc);
-		m_debug_data_buffer->Create<tCB_CustomData>(1, nullptr, 0);
+		m_debug_data_buffer->Init<tCB_CustomData>(SDesc);
 
 		return true;
 	}

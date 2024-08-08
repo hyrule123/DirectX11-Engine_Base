@@ -51,7 +51,7 @@ namespace ehw
 		std::fs::path fullPath = _basePath / _strKeyPath;
 		//Skeleton
 		eResult result = SaveFile_Binary(fullPath);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
 			return eResult::Fail;
@@ -64,7 +64,7 @@ namespace ehw
 			for (const auto& iter : m_animations)
 			{
 				result = iter.second->SaveFile_Binary(fullPath / iter.first / strKey::path::extension::Anim3D);
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg{};
 					errmsg << L"애니메이션 저장 실패\b실패한 애니메이션 이름: ";
@@ -85,7 +85,7 @@ namespace ehw
 
 		//Skeleton
 		eResult result = LoadFile_Binary(fullPath);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
 			return eResult::Fail;
@@ -119,7 +119,7 @@ namespace ehw
 				
 				std::shared_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
 				eResult result = a3d->LoadFile_Binary(filePath);
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg;
 					errmsg << L"3D 애니메이션 로드 실패\n경로: ";
@@ -240,7 +240,7 @@ namespace ehw
 
 			eResult result = anim->LoadFromFBX(sklt, &animClip[i]);
 
-			if (eResultFail(result))
+			if (eResult_fail(result))
 			{
 				ERROR_MESSAGE("애니메이션 생성 실패");
 				return result;
@@ -324,7 +324,7 @@ namespace ehw
 			std::fs::path filePath = _saveDir.filename();
 			filePath /= strKey;
 			
-			if (eResultFail(ourAnim->SaveFile_Binary(filePath)))
+			if (eResult_fail(ourAnim->SaveFile_Binary(filePath)))
 				return false;
 
 			//우리 애니메이션 쪽에 등록
@@ -363,12 +363,15 @@ namespace ehw
 			vecOffset.push_back(m_vecBones[i].matOffset);
 		}
 
-		//Create
+		//CreateBuffer
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
 		desc.REGISLOT_t_SRV = GPU::Register::t::g_BoneOffsetArray;
-		m_pBoneOffset = std::make_shared<StructBuffer>(desc);
-		m_pBoneOffset->Create<MATRIX>(vecOffset.size(), vecOffset.data(), vecOffset.size());
+		m_pBoneOffset = std::make_shared<StructBuffer>();
+
+		eResult result = m_pBoneOffset->Init<MATRIX>(desc, (uint)vecOffset.size(), vecOffset.data(), vecOffset.size());
+		
+		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}
 
 	std::shared_ptr<Animation3D> Skeleton::FindAnimation(const std::string_view _strAnimName)

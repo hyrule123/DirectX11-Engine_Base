@@ -81,7 +81,7 @@ namespace ehw
 
 			eResult result = returnPtr->Load(m_BaseDir, _strKeyPath);
 
-			if (eResultSuccess(result))
+			if (eResult_success(result))
 			{
 				Insert(_strKeyPath.string(), static_pointer_cast<ResourceTypes>(returnPtr));
 			}

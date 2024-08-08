@@ -79,7 +79,7 @@ namespace ehw
 				if (m_skeleton)
 				{
 					eResult result = ResourceManager<Skeleton>::GetInst().Save(m_skeleton.get());
-					if (eResultFail(result))
+					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
@@ -104,7 +104,7 @@ namespace ehw
 
 				//Mesh
 				eResult result = ResourceManager<Mesh>::GetInst().Save(m_meshContainers[i].mesh.get());
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
@@ -121,7 +121,7 @@ namespace ehw
 					}
 
 					eResult result = ResourceManager<Material>::GetInst().Save(m_meshContainers[i].materials[j].get());
-					if (eResultFail(result))
+					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("재질 정보 저장 실패");
 						return result;
@@ -337,7 +337,7 @@ namespace ehw
 	)
 	{
 		eResult result = LoadFromFBX(_fbxPath, _bStatic, _dirAndFileName);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX로부터 로드 실패.");
 			return result;
@@ -347,7 +347,7 @@ namespace ehw
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
 		result = ResourceManager<Model3D>::GetInst().Save(this, _dirAndFileName);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
 			return result;
@@ -371,7 +371,7 @@ namespace ehw
 
 		FBXLoader loader{};
 		eResult result = loader.LoadFbx(_fbxPath, _bStatic);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX 불러오기 실패.");
 			return result;
@@ -400,7 +400,7 @@ namespace ehw
 			m_skeleton = nullptr;
 		}
 		//그 외의 이유로 실패했을 경우에는 에러
-		else if (eResultFail(result))
+		else if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Skeleton 로드 실패.");
 			return result;
@@ -416,7 +416,7 @@ namespace ehw
 			meshCont.mesh->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 			result = meshCont.mesh->CreateFromContainer(&(containers[i]));
-			if (eResultFail(result))
+			if (eResult_fail(result))
 			{
 				ERROR_MESSAGE("FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
 				return eResult::Fail;
@@ -478,7 +478,7 @@ namespace ehw
 
 		FBXLoader loader{};
 		eResult result = loader.LoadFbx(_fbxPath, false);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX 불러오기 실패.");
 			return result;
@@ -486,7 +486,7 @@ namespace ehw
 
 		std::shared_ptr<Skeleton> skeletonOfFBX = std::make_shared<Skeleton>();
 		result = skeletonOfFBX->CreateFromFBX(&loader);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX로부터 스켈레톤 로딩 실패.");
 			return result;
@@ -496,7 +496,7 @@ namespace ehw
 		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::GetInst().Load(_meshDataName / _meshDataName);
 
 		//Skeleton의 실제 경로 예시: Player/Player
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("프로젝트 스켈레톤 불러오기 실패.");
 			return result;

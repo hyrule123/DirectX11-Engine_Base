@@ -38,7 +38,7 @@ namespace ehw
 		m_prefab = std::make_shared<GameObject>();
 
 		eResult result = m_prefab->LoadFile_Json(_baseDir / _strKeyPath);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			m_prefab = nullptr;
 		}

@@ -27,7 +27,7 @@ namespace ehw
 	//		return eResult::Fail;
 	//	}
 	//	eResult result = iComponent::SaveJson(_pJson);
-	//	if (eResultFail(result))
+	//	if (eResult_fail(result))
 	//	{
 	//		return result;
 	//	}
@@ -48,7 +48,7 @@ namespace ehw
 	//		return eResult::Fail;
 	//	}
 	//	eResult result = iComponent::LoadJson(_pJson);
-	//	if (eResultFail(result))
+	//	if (eResult_fail(result))
 	//	{
 	//		return result;
 	//	}

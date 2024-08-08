@@ -180,7 +180,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				}
 
 				eResult result = ResourceManager<Texture>::GetInst().Save(convertedTex.get(), savePath);
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");
 				}

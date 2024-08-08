@@ -53,13 +53,13 @@ namespace ehw
 		, mStartSpeed(_other.mStartSpeed)
 		, mElapsedTime(_other.mElapsedTime)
 	{
-		if (_other.mBuffer != nullptr)
+		if (_other.m_buffer != nullptr)
 		{
-			//mBuffer = _other.mBuffer->Clone();
+			//m_buffer = _other.m_buffer->Clone();
 		}
-		if (_other.mSharedBuffer != nullptr)
+		if (_other.m_shared_buffer != nullptr)
 		{
-			//mSharedBuffer = _other.mSharedBuffer->Clone();
+			//m_shared_buffer = _other.m_shared_buffer->Clone();
 		}
 
 
@@ -67,11 +67,11 @@ namespace ehw
 
 	Com_Renderer_ParticleSystem::~Com_Renderer_ParticleSystem()
 	{
-		delete mBuffer;
-		mBuffer = nullptr;
+		delete m_buffer;
+		m_buffer = nullptr;
 
-		delete mSharedBuffer;
-		mSharedBuffer = nullptr;
+		delete m_shared_buffer;
+		m_shared_buffer = nullptr;
 	}
 
 
@@ -116,11 +116,11 @@ namespace ehw
 		StructBuffer::Desc sDesc{};
 		sDesc.eSBufferType = eStructBufferType::READ_WRITE;
 
-		mBuffer = new StructBuffer(sDesc);
-		mBuffer->Create<tParticle>(mMaxParticles, particles, 100u);
+		m_buffer = new StructBuffer;
+		m_buffer->Init<tParticle>(sDesc, mMaxParticles, particles, 100u);
 
-		mSharedBuffer = new StructBuffer(sDesc);
-		mSharedBuffer->Create<tParticleShared>(1, nullptr, 0u);
+		m_shared_buffer = new StructBuffer;
+		m_shared_buffer->Init<tParticleShared>(sDesc, 1, nullptr, 0u);
 	}
 
 	void Com_Renderer_ParticleSystem::FinalUpdate()
@@ -139,15 +139,15 @@ namespace ehw
 			mTime = f - std::floor(f);
 
 			tParticleShared shared = { 5, };
-			mSharedBuffer->SetData(&shared, 1);
+			m_shared_buffer->SetData(&shared, 1);
 		}
 		else
 		{
 			tParticleShared shared = {  };
-			mSharedBuffer->SetData(&shared, 1);
+			m_shared_buffer->SetData(&shared, 1);
 		}
 
-		mMaxParticles = mBuffer->GetStride();
+		mMaxParticles = m_buffer->GetStride();
 		float3 pos = GetOwner()->GetComponent<Com_Transform>()->GetLocalPosition();
 		mCBData.worldPosition = float4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
@@ -165,8 +165,8 @@ namespace ehw
 		cb->SetData(&mCBData);
 		cb->BindData(eShaderStageFlag::ALL);
 
-		mCS->SetSharedStrutedBuffer(mSharedBuffer);
-		mCS->SetStrcutedBuffer(mBuffer);
+		mCS->SetSharedStrutedBuffer(m_shared_buffer);
+		mCS->SetStrcutedBuffer(m_buffer);
 		mCS->OnExcute();
 	}
 
@@ -176,11 +176,11 @@ namespace ehw
 			return;
 		
 		GetOwner()->GetComponent<Com_Transform>()->BindData();
-		mBuffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
+		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->BindData();
 		GetMesh()->RenderInstanced(0u, mMaxParticles);
 
-		mBuffer->UnbindData();
+		m_buffer->UnbindData();
 	}
 }

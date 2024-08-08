@@ -27,13 +27,13 @@ namespace ehw
 		AtExit::AddFunc(std::bind(&PhysXInstance::Release, this));
 
 
-		//Create PxFoundation
+		//CreateBuffer PxFoundation
 		m_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_allocator, m_errorCallback);
 		ASSERT(m_foundation, "PxFoundation 생성 실패");
 
 		bool enable = false;
 
-		//Create PVD
+		//CreateBuffer PVD
 #ifdef _DEBUG
 		enable = true;
 
@@ -44,7 +44,7 @@ namespace ehw
 		m_PVD->connect(*transport, PxPvdInstrumentationFlag::eALL);
 #endif
 
-		//Create PhysX instance
+		//CreateBuffer PhysX instance
 		m_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_foundation, PxTolerancesScale{}, enable, m_PVD);
 
 		ASSERT(m_physics, "PhysX 인스턴스 생성 실패");
@@ -57,7 +57,7 @@ namespace ehw
 		}
 #endif
 
-		//Create dispatcher 
+		//CreateBuffer dispatcher 
 		constexpr uint32 kThreadCount = 2;
 		m_dispatcher = PxDefaultCpuDispatcherCreate(kThreadCount);
 		ASSERT(m_dispatcher, "physx dispatcher 생성 실패");

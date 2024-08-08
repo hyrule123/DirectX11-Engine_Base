@@ -80,7 +80,7 @@ namespace ehw
 		//Serialize
 		BinarySerializer ser{};
 		eResult result = Serialize_Binary(&ser);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			return result;
 		}
@@ -129,7 +129,7 @@ namespace ehw
 		//Serialize
 		Json::Value ser{};
 		eResult result = Serialize_Json(&ser);
-		if (eResultFail(result))
+		if (eResult_fail(result))
 		{
 			return result;
 		}

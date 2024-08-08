@@ -704,7 +704,7 @@ namespace ehw
 
 				eResult result = ResourceManager<Material>::GetInst().Save(pMaterial.get());
 
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 				}

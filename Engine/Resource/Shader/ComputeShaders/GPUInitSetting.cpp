@@ -28,7 +28,7 @@ namespace ehw
 	{
 		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 
-		ASSERT(eResultSuccess(result), "GPU 초기화 작업 실패");
+		ASSERT(eResult_success(result), "GPU 초기화 작업 실패");
 
 		return result;
 	}
@@ -75,10 +75,9 @@ namespace ehw
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
 		desc.REGISLOT_t_SRV = GPU::Register::t::gInitSetting;
 		desc.REGISLOT_u_UAV = GPU::Register::u::gInitSettingRW;
-		mInitSBuffer = std::make_unique<StructBuffer>(desc);
-
-		HRESULT result = mInitSBuffer->Create<tGPUInitSetting>(1ui64, &gGPUInitSetting, 1ui64);
-		ASSERT(SUCCEEDED(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
+		mInitSBuffer = std::make_unique<StructBuffer>();
+		eResult result = mInitSBuffer->Init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
+		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
 		mInitSBuffer->BindDataUAV();
 

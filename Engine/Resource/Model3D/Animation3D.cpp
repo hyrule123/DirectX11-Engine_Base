@@ -324,11 +324,11 @@ namespace ehw
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.REGISLOT_t_SRV = GPU::Register::t::g_FrameTransArray;
         desc.TargetStageSRV = eShaderStageFlag::Compute;
-        m_SBufferKeyFrame = std::make_shared<StructBuffer>(desc);
+        m_SBufferKeyFrame = std::make_shared<StructBuffer>();
 
-        if (FAILED(m_SBufferKeyFrame->Create<tAnimKeyframeTranslation>
-            (vecFrameTrans.size(), vecFrameTrans.data(), vecFrameTrans.size())))
-        {
+        eResult result = 
+            m_SBufferKeyFrame->Init<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());
+        if (eResult_fail(result)) {
             return false;
         }
 

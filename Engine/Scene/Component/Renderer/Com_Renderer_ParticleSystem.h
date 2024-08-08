@@ -31,8 +31,8 @@ namespace ehw
 
 	private:
 #pragma region Buffer 선언
-		StructBuffer* mBuffer;
-		StructBuffer* mSharedBuffer;
+		StructBuffer* m_buffer;
+		StructBuffer* m_shared_buffer;
 #pragma endregion
 
 #pragma region tParticle GraphicsShader 관련 변수 선언

@@ -100,7 +100,7 @@ namespace ehw {
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			// Create Mesh
+			// CreateBuffer Mesh
 			std::shared_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
 			debugmesh->SetEngineDefaultRes(true);
 
@@ -650,8 +650,8 @@ namespace ehw {
 			debugShader->SetInputLayoutDesc(debugLayoutDesc);
 			debugShader->CreateInputLayout();
 
-			//debugShader->Create(eShaderStage::Vertex, "DebugVS.hlsl", "main");
-			//debugShader->Create(eShaderStage::Pixel, "DebugPS.hlsl", "main");
+			//debugShader->CreateBuffer(eShaderStage::Vertex, "DebugVS.hlsl", "main");
+			//debugShader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
 			debugShader->SetRSState(eRSType::WireframeNone);
 			debugShader->SetDSState(eDSType::NoWrite);
 			debugShader->SetBSState(eBSType::AlphaBlend);
@@ -925,7 +925,7 @@ namespace ehw {
 
 		//noise
 		//std::shared_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
-		//m_noiseTexture->Create(RenderManager::GetInst().GetResolutionX(), RenderManager::GetInst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+		//m_noiseTexture->CreateBuffer(RenderManager::GetInst().GetResolutionX(), RenderManager::GetInst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 		//m_noiseTexture->BindDataSRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::Pixel);
 	}
 

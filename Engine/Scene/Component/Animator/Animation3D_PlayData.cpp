@@ -40,7 +40,8 @@ namespace ehw
 		desc.TargetStageSRV = eShaderStageFlag::Vertex;
 		desc.REGISLOT_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
-		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>(desc);
+		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>();
+		m_pBoneFinalMatBuffer->Init<MATRIX>(desc);
 	}
 
 	Animation3D_PlayData::Animation3D_PlayData(const Animation3D_PlayData& _other)
@@ -329,17 +330,17 @@ namespace ehw
 
 	bool Animation3D_PlayData::CheckMesh()
 	{
-		bool result = false;
 		if (m_skeleton)
 		{
 			UINT iBoneCount = m_skeleton->GetBoneCount();
 			if (m_pBoneFinalMatBuffer->GetElemCount() != iBoneCount)
 			{
-				if (SUCCEEDED(m_pBoneFinalMatBuffer->Create<MATRIX>((size_t)iBoneCount, nullptr, 0)))
-					result = true;
+				if (eResult_fail(m_pBoneFinalMatBuffer->Resize((size_t)iBoneCount, nullptr, 0))) {
+					return false;
+				}
 			}
 		}
-		return result;
+		return true;
 	}
 
 }

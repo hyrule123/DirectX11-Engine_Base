@@ -352,7 +352,7 @@ namespace ehw::editor
 		ImGui::Spacing();
 		ImGui::Separator();
 
-		if (ImGui::Button("Create Default Shaders", ImVec2(0.f, 50.f)))
+		if (ImGui::Button("CreateBuffer Default Shaders", ImVec2(0.f, 50.f)))
 		{
 			CreateDefaultShaders();
 		}
@@ -461,7 +461,7 @@ namespace ehw::editor
 
 					
 					eResult result = DummyGS.Serialize_Json(&jVal);
-					if (eResultFail(result))
+					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("json 파일 저장에 실패했습니다.");
 						return false;
@@ -861,7 +861,7 @@ namespace ehw::editor
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		
-		if (eResultSuccess(shader.Save(baseDir, _filePath)))
+		if (eResult_success(shader.Save(baseDir, _filePath)))
 		{
 			LoadShaderSettingComboBox();
 		}
@@ -878,7 +878,7 @@ namespace ehw::editor
 		shader.SetEditMode(true);
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
-		if (eResultFail(shader.Load(baseDir, _filePath)))
+		if (eResult_fail(shader.Load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;

@@ -38,7 +38,7 @@ namespace ehw::editor
 				JsonSerializer& child = childs.append(Json::Value());
 				
 				eResult result = m_childs[i]->Serialize_Json(&child);
-				if (eResultFail(result))
+				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("Child 저장 실패");
 					return result;
@@ -74,7 +74,7 @@ namespace ehw::editor
 					const JsonSerializer& child = childs[i];
 
 					eResult result = m_childs[i]->DeSerialize_Json(&child);
-					if (eResultFail(result))
+					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("Child 저장 실패");
 						return result;

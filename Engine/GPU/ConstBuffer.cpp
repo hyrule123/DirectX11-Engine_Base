@@ -13,7 +13,6 @@ namespace ehw
 		, mDataCount()
 		, mPresetTargetStage(eShaderStageFlag::ALL)
 	{
-
 	}
 
 	ConstBuffer::~ConstBuffer()

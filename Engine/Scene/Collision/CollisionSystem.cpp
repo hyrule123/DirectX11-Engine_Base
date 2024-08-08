@@ -91,8 +91,8 @@ namespace ehw
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
 		desc.REGISLOT_t_SRV = GPU::Register::t::g_debugDrawData;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
-		m_debugInfoSBuffer->SetDesc(desc);
-		m_debugInfoSBuffer->Create<tDebugDrawData>(100, nullptr, 0);
+
+		m_debugInfoSBuffer->Init<tDebugDrawData>(desc, 100, nullptr, 0);
 		ASSERT(m_debugInfoSBuffer.get(), "Debug용 Struct Buffer 생성 실패.");
 
 		m_debugMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::DebugMaterial);

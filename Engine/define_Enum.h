@@ -29,8 +29,8 @@ namespace ehw
 
 		Fail_Empty
 	};
-	inline bool eResultSuccess(eResult _result) { return ((int)_result < 0); }
-	inline bool eResultFail(eResult _result) { return ((int)_result >= 0); }
+	inline bool eResult_success(eResult _result) { return ((int)_result < 0); }
+	inline bool eResult_fail(eResult _result) { return ((int)_result >= 0); }
 
 
 	constexpr const unsigned int g_maxLayer = 32u;
