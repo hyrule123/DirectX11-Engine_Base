@@ -7,7 +7,7 @@
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/SceneManager.h"
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Material.h"
@@ -194,7 +194,7 @@ namespace ehw
 
 
 		////===========
-		////투영 -> 사실 이건 한번만 구해줘도 됨 -> Init()으로 이동함
+		////투영 -> 사실 이건 한번만 구해줘도 됨 -> Setting()으로 이동함
 		////===========
 		//
 		////1. 투영 행렬 생성
@@ -234,7 +234,7 @@ namespace ehw
 
 	void Com_Camera::CreateProjectionMatrix()
 	{
-		uint2 resolution = GPUManager::GetInst().GetResolution();
+		uint2 resolution = RenderManager::GetInst().GetResolution();
 		CreateProjectionMatrix(resolution.x, resolution.y);
 	}
 

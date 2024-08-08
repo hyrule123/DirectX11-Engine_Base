@@ -15,7 +15,7 @@
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>
-#include <Engine/Manager/GPUManager.h>
+#include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/InputManager.h>
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/SceneManager.h>
@@ -343,8 +343,8 @@ namespace ehw::editor
 
 		// Setup Platform/Renderer backends
 		ImGui_ImplWin32_Init(GameEngine::GetInst().GetHwnd());
-		ImGui_ImplDX11_Init(GPUManager::GetInst().Device()
-			, GPUManager::GetInst().Context());
+		ImGui_ImplDX11_Init(RenderManager::GetInst().Device()
+			, RenderManager::GetInst().Context());
 
 
 

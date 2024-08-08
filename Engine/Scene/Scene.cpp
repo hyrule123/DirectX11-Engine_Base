@@ -27,7 +27,7 @@ namespace ehw
 	void Scene::SceneInit()
 	{
 		//tDesc desc{};
-		//Init(desc);
+		//Setting(desc);
 
 		//if (desc.EnableCollision2D || desc.EnableCollision3D)
 		//{

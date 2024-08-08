@@ -7,7 +7,7 @@
 
 
 //생성 순서
-//Init: PxActor 인스턴스 생성
+//Setting: PxActor 인스턴스 생성
 //Awake: PxActor와 Shape 연결
 //OnEnable: PxScene에 Actor 연결
 //OnDisable: PxScene으로부터 Actor 연결 해제

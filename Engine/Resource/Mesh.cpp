@@ -6,7 +6,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/PathManager.h"
 
 #include "Engine/Util/define_Util.h"
@@ -192,7 +192,7 @@ namespace ehw
 		subData.pSysMem = m_vertexInfo.SysMem.data();
 
 		if (
-			FAILED(GPUManager::GetInst().Device()->CreateBuffer(&m_vertexInfo.Desc, &subData, m_vertexInfo.Buffer.GetAddressOf()))
+			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&m_vertexInfo.Desc, &subData, m_vertexInfo.Buffer.GetAddressOf()))
 			)
 		{
 			//실패시 내용 초기화
@@ -248,7 +248,7 @@ namespace ehw
 		subData.pSysMem = indexInfo.SysMem.data();
 
 		if (
-			FAILED(GPUManager::GetInst().Device()->CreateBuffer(&indexInfo.Desc, &subData, indexInfo.Buffer.GetAddressOf()))
+			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&indexInfo.Desc, &subData, indexInfo.Buffer.GetAddressOf()))
 			)
 		{
 			m_indexInfos.pop_back();
@@ -272,7 +272,7 @@ namespace ehw
 
 	//void Mesh::BindBuffers(UINT _subSet) const
 	//{
-	//	auto context = GPUManager::GetInst().Context();
+	//	auto context = RenderManager::GetInst().Context();
 
 	//	// Input Assembeler 단계에 버텍스버퍼 정보 지정
 	//	uint offset = 0;
@@ -288,7 +288,7 @@ namespace ehw
 			return;
 		}
 
-		auto context = GPUManager::GetInst().Context();
+		auto context = RenderManager::GetInst().Context();
 
 		context->IASetPrimitiveTopology(m_topology);
 
@@ -303,7 +303,7 @@ namespace ehw
 
 	void Mesh::RenderAllMeshes() const
 	{
-		auto context = GPUManager::GetInst().Context();
+		auto context = RenderManager::GetInst().Context();
 
 		context->IASetPrimitiveTopology(m_topology);
 		UINT size = (UINT)m_indexInfos.size();
@@ -326,7 +326,7 @@ namespace ehw
 			return;
 		}
 
-		auto context = GPUManager::GetInst().Context();
+		auto context = RenderManager::GetInst().Context();
 
 		context->IASetPrimitiveTopology(m_topology);
 

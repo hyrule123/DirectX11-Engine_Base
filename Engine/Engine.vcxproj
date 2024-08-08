@@ -276,7 +276,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="EngineMain.h" />
-    <ClInclude Include="Manager\GPUManager.h" />
+    <ClInclude Include="Manager\RenderManager.h" />
     <ClInclude Include="Resource\Animation.h" />
     <ClInclude Include="Scene\Component\Animator\Animator.h" />
     <ClInclude Include="Scene\Component\Collider\Collider3D.h" />
@@ -288,7 +288,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h" />
     <ClInclude Include="Util\Serialize\jsonSaveLoad.h" />
     <ClInclude Include="GPU\MultiRenderTarget.h" />
-    <ClInclude Include="Manager\RenderManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene\Component\Collider\Collider.h" />
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h" />
@@ -340,6 +339,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Scene\Component\iComponent.cpp" />
     <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
@@ -387,7 +387,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="EngineMain.cpp" />
-    <ClCompile Include="Manager\GPUManager.cpp" />
+    <ClCompile Include="Manager\RenderManager.cpp" />
     <ClCompile Include="Resource\Animation.cpp" />
     <ClCompile Include="Scene\Component\Animator\Animator.cpp" />
     <ClCompile Include="Scene\Component\Collider\Collider3D.cpp" />
@@ -398,7 +398,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Scene\Component\Camera\Com_Camera.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp" />
     <ClCompile Include="GPU\MultiRenderTarget.cpp" />
-    <ClCompile Include="Manager\RenderManager.cpp" />
     <ClCompile Include="Scene\Component\Collider\Collider.cpp" />
     <ClCompile Include="PCH_Engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

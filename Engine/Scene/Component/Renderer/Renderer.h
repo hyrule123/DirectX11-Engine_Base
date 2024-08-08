@@ -29,7 +29,7 @@ namespace ehw
 
 		virtual ~Renderer();
 
-		//virtual void Init() override;
+		//virtual void Setting() override;
 		//virtual void Update() override;
 		virtual void FinalUpdate() override;
 		virtual void Render() = 0;

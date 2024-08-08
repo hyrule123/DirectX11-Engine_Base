@@ -51,7 +51,7 @@ namespace ehw
 			pDSView = mDSTexture->GetDSV().Get();
 		}
 
-		GPUManager::GetInst().Context()->OMSetRenderTargets(mRenderTargetCount, mRenderTargetViews, pDSView);
+		RenderManager::GetInst().Context()->OMSetRenderTargets(mRenderTargetCount, mRenderTargetViews, pDSView);
 	}
 
 
@@ -63,14 +63,14 @@ namespace ehw
 		{
 			if (mRenderTargetViews[i])
 			{
-				GPUManager::GetInst().Context()->ClearRenderTargetView(mRenderTargetViews[i], (FLOAT*)&_clearColor);
+				RenderManager::GetInst().Context()->ClearRenderTargetView(mRenderTargetViews[i], (FLOAT*)&_clearColor);
 			}
 		}
 
 		if (mDSTexture)
 		{
 			constexpr uint ClearFlag = D3D11_CLEAR_FLAG::D3D11_CLEAR_DEPTH | D3D11_CLEAR_FLAG::D3D11_CLEAR_STENCIL;
-			GPUManager::GetInst().Context()->ClearDepthStencilView(mDSTexture->GetDSV().Get(), ClearFlag, 1.f, (UINT8)0);
+			RenderManager::GetInst().Context()->ClearDepthStencilView(mDSTexture->GetDSV().Get(), ClearFlag, 1.f, (UINT8)0);
 		}
 	}
 

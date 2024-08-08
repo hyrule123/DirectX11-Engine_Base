@@ -2,7 +2,7 @@
 
 
 
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 
 namespace ehw
 {
@@ -34,7 +34,7 @@ namespace ehw
 		bufferDesc.MiscFlags = 0;
 		bufferDesc.StructureByteStride = 0;
 
-		bool bResult = SUCCEEDED(GPUManager::GetInst().Device()->CreateBuffer(&GetBufferDescRef(), nullptr, GetBufferRef().GetAddressOf()));
+		bool bResult = SUCCEEDED(RenderManager::GetInst().Device()->CreateBuffer(&GetBufferDescRef(), nullptr, GetBufferRef().GetAddressOf()));
 		if (false == bResult)
 		{
 			Clear();
@@ -49,7 +49,7 @@ namespace ehw
 		ASSERT(_dataCount <= mDataCount, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
 	
 
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 		D3D11_MAPPED_SUBRESOURCE tSubRes{};
 
 		if (SUCCEEDED(pContext->Map(GetBufferRef().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
@@ -66,7 +66,7 @@ namespace ehw
 			_stageFlag = mPresetTargetStage;
 		}
 
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
@@ -94,7 +94,7 @@ namespace ehw
 	}
 	void ConstBuffer::UnbindData()
 	{
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 
 		pContext->VSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
 		pContext->HSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);

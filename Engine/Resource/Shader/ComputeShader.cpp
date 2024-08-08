@@ -3,7 +3,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/PathManager.h"
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/RenderManager.h"
 
 #include "Engine/GPU/ConstBuffer.h"
@@ -142,8 +142,8 @@ namespace ehw
 		pCB->BindData();
 
 		//쉐이더 바인딩
-		GPUManager::GetInst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);
-		GPUManager::GetInst().Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
+		RenderManager::GetInst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);
+		RenderManager::GetInst().Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
 
 		//데이터 정리
 		UnBindData();
@@ -158,7 +158,7 @@ namespace ehw
 	{
 		eResult result = eResult::Fail_Create;
 
-		if (SUCCEEDED(GPUManager::GetInst().Device()->CreateComputeShader(
+		if (SUCCEEDED(RenderManager::GetInst().Device()->CreateComputeShader(
 			_pByteCode,
 			_ByteCodeSize,
 			nullptr,

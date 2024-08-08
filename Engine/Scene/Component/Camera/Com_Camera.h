@@ -26,7 +26,7 @@ namespace  ehw
 		__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
 		__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
 
-		//void Init() override;
+		//void Setting() override;
 		void FinalUpdate() override;
 		void FrameEnd() override;
 		void OnDisable() override;

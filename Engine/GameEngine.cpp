@@ -14,7 +14,7 @@
 #include "Engine/Manager/FontWrapper.h"
 #include "Engine/Manager/PathManager.h"
 #include "Engine/Manager/ThreadPoolManager.h"
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 
 #include "Engine/Util/StaticSingleton.h"
 
@@ -45,24 +45,24 @@ namespace ehw
 			return FALSE;
 		}
 		m_hwnd = _desc.Hwnd;
+		m_hdc = GetDC(_desc.Hwnd);
 
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
 
 		ThreadPoolManager::GetInst().Init((size_t)std::thread::hardware_concurrency());
 		PathManager::GetInst().Init();
+		
+		RenderManager::GetInst().Init();
+		
+		ResourceManagers::GetInst().Init();
 
-		//RenderMgr은 GPUMgr에서
-		if (false == GPUManager::GetInst().Init(_desc.GPUDesc))
+		if (false == RenderManager::GetInst().Setting(_desc.GPUDesc))
 		{
-			m_hdc = GetDC(_desc.Hwnd);
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
 		}
-
-		ResourceManagers::GetInst().Init();
-
-		RenderManager::GetInst().Init();
+		
 		AudioManager::GetInst().Init();
 		FontWrapper::GetInst().Init();
 
@@ -101,7 +101,7 @@ namespace ehw
 	void GameEngine::Render()
 	{
 		//최종 렌더타겟 Clear
-		GPUManager::GetInst().ClearRenderTarget();
+		RenderManager::GetInst().ClearRenderTarget();
 
 		RenderManager::GetInst().Render();
 
@@ -114,7 +114,7 @@ namespace ehw
 
 		TimeManager::GetInst().RenderFPS();
 
-		GPUManager::GetInst().Present(true);
+		RenderManager::GetInst().Present(true);
 	}
 
 	void GameEngine::FrameEnd()

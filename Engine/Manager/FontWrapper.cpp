@@ -6,7 +6,7 @@
 #include "Engine/Util/AtExit.h"
 
 
-#include "GPUManager.h"
+#include "RenderManager.h"
 
 
 #ifdef _WIN64
@@ -44,7 +44,7 @@ namespace ehw
 		if (FAILED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory)))
 			return false;
 
-		auto pDevice = GPUManager::GetInst().Device();
+		auto pDevice = RenderManager::GetInst().Device();
 		if (FAILED(m_FW1Factory->CreateFontWrapper(pDevice, L"Arial", &m_fontWrapper)))
 			return false;
 
@@ -53,7 +53,7 @@ namespace ehw
 
 	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb)
 	{
-		auto context = GPUManager::GetInst().Context();
+		auto context = RenderManager::GetInst().Context();
 		m_fontWrapper->DrawString(context,
 								 _string, // String
 								 _size,// Font size

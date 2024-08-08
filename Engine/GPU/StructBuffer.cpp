@@ -1,6 +1,6 @@
 #include "Engine/GPU/StructBuffer.h"
 
-#include "Engine/Manager/GPUManager.h"
+#include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/RenderManager.h"
 
 
@@ -59,7 +59,7 @@ namespace ehw
 		Create(_other.m_elementStride, _other.m_elementCapacity, nullptr, 0u);
 
 		//리소스 내용 복사
-		GPUManager::GetInst().Context()->CopyResource(GetBufferRef().Get(), _other.GetBufferRef().Get());
+		RenderManager::GetInst().Context()->CopyResource(GetBufferRef().Get(), _other.GetBufferRef().Get());
 	}
 
 	StructBuffer::~StructBuffer()
@@ -118,7 +118,7 @@ namespace ehw
 
 
 			//구조화버퍼 생성. ReleaseAndGetAddressOf() 함수를 통해서 기존 구조화 버퍼가 있다면 날려버리고 생성
-			if (FAILED(GPUManager::GetInst().Device()->CreateBuffer(&bufferDesc, pData, GetBufferRef().ReleaseAndGetAddressOf())))
+			if (FAILED(RenderManager::GetInst().Device()->CreateBuffer(&bufferDesc, pData, GetBufferRef().ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE_A("Failed to create Structured Buffer!");
 				return E_FAIL;
@@ -146,7 +146,7 @@ namespace ehw
 			}
 
 			//구조화버퍼 생성
-			if (FAILED(GPUManager::GetInst().Device()->CreateBuffer(&bufferDesc, pData, GetBufferRef().ReleaseAndGetAddressOf())))
+			if (FAILED(RenderManager::GetInst().Device()->CreateBuffer(&bufferDesc, pData, GetBufferRef().ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE_A("Failed to create Structured Buffer!");
 				return E_FAIL;
@@ -184,7 +184,7 @@ namespace ehw
 		}
 
 
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 		switch (m_SbufferDesc.eSBufferType)
 		{
 		case eStructBufferType::READ_ONLY:
@@ -235,7 +235,7 @@ namespace ehw
 
 	void StructBuffer::GetData(void* _pDest, size_t _uDestByteCapacity)
 	{
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 
 		switch (m_SbufferDesc.eSBufferType)
 		{
@@ -308,7 +308,7 @@ namespace ehw
 		}
 
 
-		auto pContext = GPUManager::GetInst().Context();
+		auto pContext = RenderManager::GetInst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
@@ -356,7 +356,7 @@ namespace ehw
 		m_curBoundRegister = _UAVSlot;
 
 		uint Offset = -1;
-		GPUManager::GetInst().Context()->CSSetUnorderedAccessViews(_UAVSlot, 1, m_UAV.GetAddressOf(), &Offset);
+		RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(_UAVSlot, 1, m_UAV.GetAddressOf(), &Offset);
 	}
 
 	void StructBuffer::SetDefaultDesc()
@@ -411,7 +411,7 @@ namespace ehw
 		Desc.BindFlags = 0;
 		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 
-		bool bResult = SUCCEEDED(GPUManager::GetInst().Device()->CreateBuffer(&Desc, nullptr, m_stagingBuffer.ReleaseAndGetAddressOf()));
+		bool bResult = SUCCEEDED(RenderManager::GetInst().Device()->CreateBuffer(&Desc, nullptr, m_stagingBuffer.ReleaseAndGetAddressOf()));
 
 		if(false == bResult)
 		{
@@ -428,7 +428,7 @@ namespace ehw
 		SRVDesc.ViewDimension = D3D_SRV_DIMENSION_BUFFEREX;
 		SRVDesc.BufferEx.NumElements = m_elementCapacity;
 
-		bool bResult = SUCCEEDED(GPUManager::GetInst().Device()->CreateShaderResourceView(GetBufferRef().Get(), &SRVDesc, m_SRV.ReleaseAndGetAddressOf()));
+		bool bResult = SUCCEEDED(RenderManager::GetInst().Device()->CreateShaderResourceView(GetBufferRef().Get(), &SRVDesc, m_SRV.ReleaseAndGetAddressOf()));
 		
 		if (false == bResult)
 		{
@@ -445,7 +445,7 @@ namespace ehw
 		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		UAVDesc.Buffer.NumElements = m_elementCapacity;
 
-		bool bResult = SUCCEEDED(GPUManager::GetInst().Device()->CreateUnorderedAccessView(GetBufferRef().Get(), &UAVDesc, m_UAV.ReleaseAndGetAddressOf()));
+		bool bResult = SUCCEEDED(RenderManager::GetInst().Device()->CreateUnorderedAccessView(GetBufferRef().Get(), &UAVDesc, m_UAV.ReleaseAndGetAddressOf()));
 		if (false == bResult)
 		{
 			ERROR_MESSAGE("구조화 버퍼의 Unordered Access View 생성에 실패했습니다.");
@@ -462,8 +462,7 @@ namespace ehw
 			break;
 		case ehw::eBufferViewType::SRV:
 		{
-
-			auto pContext = GPUManager::GetInst().Context();
+			auto pContext = RenderManager::GetInst().Context();
 
 			ID3D11ShaderResourceView* pView = nullptr;
 			if (eShaderStageFlag::Vertex & m_SbufferDesc.TargetStageSRV)
@@ -503,7 +502,7 @@ namespace ehw
 		{
 			static const uint v2_Offset = -1;
 			ID3D11UnorderedAccessView* pUAV = nullptr;
-			GPUManager::GetInst().Context()->CSSetUnorderedAccessViews(m_curBoundRegister, 1, &pUAV, &v2_Offset);
+			RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(m_curBoundRegister, 1, &pUAV, &v2_Offset);
 			break;
 		}
 
