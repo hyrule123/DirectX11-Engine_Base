@@ -307,7 +307,6 @@ namespace ehw
 			_stageFlag = m_SbufferDesc.TargetStageSRV;
 		}
 
-
 		auto pContext = RenderManager::GetInst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{

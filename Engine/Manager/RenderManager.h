@@ -29,6 +29,8 @@ namespace ehw
 		__forceinline ID3D11Device*			Device() { return m_device.Get(); }
 		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
 
+		void Render();
+
 		void ClearRenderTarget();// 화면 지워주기
 		inline void Present(bool _bVSync = false);
 
@@ -39,6 +41,28 @@ namespace ehw
 		UINT GetResolutionX() { return m_resolution_x; }
 		UINT GetResolutionY() { return m_resolution_y; }
 		uint2 GetResolution() { return uint2{ m_resolution_x, m_resolution_y }; }
+
+		SceneRenderAgent& sceneRenderAgent() { return m_sceneRenderAgent; }
+
+		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
+
+		ID3D11RasterizerState* GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
+		ID3D11BlendState* GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
+		ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
+
+		MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type) {
+			return m_multi_render_targets[(int)_Type].get();
+		}
+
+		void BindNoiseTexture();
+		void CopyRenderTarget();
+
+		void ClearMultiRenderTargets();
+
+		void SetDebugData(const tCB_CustomData& _debugData);
+		tCB_CustomData GetDebugData();
+
+		StructBuffer* GetLightSBuffer() { return m_lights_SBuffer.get(); }
 
 	private:
 		RenderManager();
@@ -54,29 +78,6 @@ namespace ehw
 
 		//Application의 창 크기를 따라감
 		void CreateMainViewPort();
-
-	public:
-		void Render();
-
-		SceneRenderAgent& sceneRenderAgent() { return m_sceneRenderAgent; }
-
-		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
-
-		ID3D11RasterizerState* GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
-		ID3D11BlendState* GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
-		ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
-
-		MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type) {
-			return m_multi_render_targets[(int)_Type].get();
-		}
-
-
-		void BindNoiseTexture();
-		void CopyRenderTarget();
-
-		void ClearMultiRenderTargets();
-
-		StructBuffer* GetLightSBuffer() { return m_lights_SBuffer.get(); }
 
 	private:
 		void UpdateGlobalCBuffer();
@@ -124,6 +125,8 @@ namespace ehw
 		std::unique_ptr<StructBuffer>			m_lights_SBuffer;
 
 		SceneRenderAgent m_sceneRenderAgent;
+
+		std::unique_ptr<StructBuffer> m_debug_data_buffer;
 	};
 
 	inline void RenderManager::Present(bool _bVSync)

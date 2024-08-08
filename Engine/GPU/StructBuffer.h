@@ -73,9 +73,9 @@ namespace ehw
         uint GetStride() const { return m_elementStride; }
 
         template <typename T>
-        HRESULT Create(size_t _ElementCapacity, const void* _pInitialData, size_t _ElemCount);
+        HRESULT Create(size_t _ElementCapacity, const void* _pInitialData = nullptr, size_t _ElemCount = 0);
         //처음 생성할 때 반드시 목표 파이프라인 타겟과 레지스터 번호를 설정해줄 것
-        HRESULT Create(size_t _ElementStride, size_t _ElementCapacity, const void* _pInitialData, size_t _ElemCount);
+        HRESULT Create(size_t _ElementStride, size_t _ElementCapacity, const void* _pInitialData = nullptr, size_t _ElemCount = 0);
 
         //데이터를 버퍼로 전송
         void SetData(const void* _pData, size_t _uCount);

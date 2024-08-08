@@ -3,6 +3,11 @@
 
 #include "Engine/DefaultShader/CommonStruct.hlsli"
 
+#ifdef __cplusplus
+REGISTER_DECLARE(NONE, t, -1);
+REGISTER_DECLARE(NONE, u, -1);
+#endif
+
 //t 버퍼
 
 //GPU Initalize Setting: 처음 1회만 사용.

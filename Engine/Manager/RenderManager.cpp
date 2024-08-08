@@ -41,6 +41,7 @@ namespace ehw
 		, m_postProcessTexture{}
 		, m_sceneRenderAgent{}
 		, m_lights_SBuffer{}
+		, m_debug_data_buffer{}
 	{
 	}
 	RenderManager::~RenderManager()
@@ -121,6 +122,14 @@ namespace ehw
 		}
 
 		CreateMainViewPort();
+
+		SDesc = {};
+		SDesc.eSBufferType = eStructBufferType::READ_WRITE;
+		SDesc.REGISLOT_t_SRV = GPU::Register::t::NONE;
+		SDesc.REGISLOT_u_UAV = GPU::Register::u::g_debugData;
+		m_debug_data_buffer = std::make_unique<StructBuffer>();
+		m_debug_data_buffer->SetDesc(SDesc);
+		m_debug_data_buffer->Create<tCB_CustomData>(1, nullptr, 0);
 
 		return true;
 	}
@@ -327,7 +336,6 @@ namespace ehw
 		m_sceneRenderAgent.EraseIfDestroyed_Camera(true);
 	}
 
-
 	void RenderManager::BindNoiseTexture()
 	{
 		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::noise_03);
@@ -379,6 +387,21 @@ namespace ehw
 			}
 
 		}
+	}
+
+	void RenderManager::SetDebugData(const tCB_CustomData& _debugData)
+	{
+		m_debug_data_buffer->SetData(&_debugData, 1);
+		m_debug_data_buffer->BindDataUAV();
+	}
+
+	tCB_CustomData RenderManager::GetDebugData()
+	{
+		tCB_CustomData ret{ };
+
+		m_debug_data_buffer->GetData(&ret);
+
+		return ret;
 	}
 
 
