@@ -260,7 +260,7 @@ namespace ehw
 
 		//OwnerScene이 이미 this가 되었다는건 이미 m_gameObjects에 들어왔다는 뜻
 		//release를 통해서 자동 메모리 관리를 해제하고 true를 반환한다.
-		if (this == _obj->GetScene())
+		if (this == _obj->scene())
 		{
 			_obj.release();
 			return true;

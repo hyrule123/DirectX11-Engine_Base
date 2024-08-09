@@ -12,10 +12,15 @@ namespace ehw {
 	class SceneRenderAgent
 	{
 		friend class RenderManager;
-
-	public:
+	private:
+		SceneRenderAgent();
+		~SceneRenderAgent();
 		void Init();
 		void Release();
+
+		void Render();
+
+	public:
 		void FrameEnd();
 
 		void SetResolution(UINT _resX, UINT _resY);
@@ -25,26 +30,27 @@ namespace ehw {
 		inline Com_Camera* GetMainCamera() { return GetCamera(m_mainCamIndex); }
 
 		void SetMainCamera(Com_Camera* const _pCam);
-		inline Com_Camera* GetCamera(size_t _Idx);
+		Com_Camera* GetCamera(size_t _Idx);
 
-		void RegisterCamera(Com_Camera* const _pCam);
-		void RemoveCamera(Com_Camera* const _pCam);
+		void Register_camera(Com_Camera* const _pCam);
+		void Unregister_camera(Com_Camera* const _pCam);
 
-		void EraseIfDestroyed_Camera(bool _callRender);
-
-		inline void EnqueueRenderer(Renderer* const _renderer);
-		inline const std::vector<Renderer*>& GetRenderers() { return m_renderers; }
+		void EnqueueRenderer(Renderer* const _renderer) {
+			if (_renderer) { m_renderers.push_back(_renderer); }
+		}
+		
 		//Renderer
-		void PushLightAttribute(const tLightAttribute& lightAttribute) { m_lightAttributes.push_back(lightAttribute); }
-		inline void RegisterLight(Com_Light3D* const _pComLight);
+		void PushLightAttribute(const tLightAttribute& lightAttribute) { 
+			m_lightAttributes.push_back(lightAttribute); 
+		}
+		void RegisterLight(Com_Light3D* const _pComLight) {
+			if (_pComLight) { m_lights_3D.push_back(_pComLight); }
+		}
 		void RemoveLight(Com_Light3D* const _pComLight);
 
 		const std::vector<Com_Light3D*>& GetLights() { return m_lights_3D; }
 
 	private:
-		SceneRenderAgent();
-		~SceneRenderAgent();
-
 		std::vector<Com_Camera*>			m_cameras;
 		size_t							m_mainCamIndex;
 
@@ -53,33 +59,6 @@ namespace ehw {
 		//생성자-소멸자에서 여기에 등록하기 떄문에 raw pointer를 사용해야 함
 		std::vector<Com_Light3D*>			m_lights_3D;
 		std::vector<tLightAttribute>		m_lightAttributes;
-		
-	};
-
-
-	inline Com_Camera* SceneRenderAgent::GetCamera(size_t _Idx)
-	{
-		Com_Camera* pCam = nullptr;
-		if (m_cameras.size() > (size_t)_Idx)
-		{
-			pCam = m_cameras[_Idx];
-		}
-
-
-		return pCam;
-	}
-
-	inline void SceneRenderAgent::RegisterLight(Com_Light3D* const _pComLight)
-	{
-		if (_pComLight)
-		{
-			m_lights_3D.push_back(_pComLight);
-		}
-	}
-
-	inline void SceneRenderAgent::EnqueueRenderer(Renderer* const _renderer)
-	{
-		if (_renderer) { m_renderers.push_back(_renderer); }
 	};
 }
 

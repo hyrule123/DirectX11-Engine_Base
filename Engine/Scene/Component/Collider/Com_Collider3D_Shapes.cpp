@@ -33,17 +33,17 @@ namespace ehw
 		Collider3D::Awake();
 
 		Rigidbody* rigidbody = 
-			static_cast<Rigidbody*>(GetOwner()->GetComponent(eComponentCategory::Rigidbody));
+			static_cast<Rigidbody*>(gameObject()->GetComponent(eComponentCategory::Rigidbody));
 
 		if (nullptr == rigidbody)
 		{
-			rigidbody = GetOwner()->AddComponent<Com_Rigidbody_Static>();
+			rigidbody = gameObject()->AddComponent<Com_Rigidbody_Static>();
 			ASSERT_DEBUG(rigidbody, "rigidbody 생성되지 않음.");
 		}
 
 		Collision3D* col3d = GetCollision3D();
 		
-		uint32 layer = GetOwner()->GetLayer();
+		uint32 layer = gameObject()->GetLayer();
 		if (col3d)
 		{
 			m_collisionMask = col3d->GetCollisionFilterData(layer);

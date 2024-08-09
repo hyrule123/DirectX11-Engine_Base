@@ -37,12 +37,10 @@ namespace ehw
 		, m_scale(1.0f)
 	{
 		EnableLayerMasks();
-		RenderManager::GetInst().sceneRenderAgent().RegisterCamera(this);
 	}
 
 	Com_Camera::~Com_Camera()
 	{
-		RenderManager::GetInst().sceneRenderAgent().RemoveCamera(this);
 	}
 
 	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser) const
@@ -71,23 +69,23 @@ namespace ehw
 		m_postProcess.clear();
 	}
 
+	void Com_Camera::OnEnable()
+	{
+		RenderManager::GetInst().sceneRenderAgent().Register_camera(this);
+	}
+
 	void Com_Camera::OnDisable()
 	{
-		int a = 3;
+		RenderManager::GetInst().sceneRenderAgent().Unregister_camera(this);
 	}
 
-	void Com_Camera::OnDestroy()
-	{
-		int a = 3;
-	}
-
-	void Com_Camera::RenderCamera()
+	void Com_Camera::RenderCamera(const std::vector<Renderer*>& _renderers)
 	{
 		s_viewMatrix = m_viewMatrix;
 		s_viewInverseMatrix = m_viewMatrix.Invert();
 		s_projectionMatrix = m_projectionMatrix;
 
-		SortRenderersByMode();
+		SortRenderersByMode(_renderers);
 
 		//deffered opaque render
 		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
@@ -126,7 +124,7 @@ namespace ehw
 
 	void Com_Camera::CreateViewMatrix()
 	{
-		auto tr = GetOwner()->Transform();
+		auto tr = gameObject()->Transform();
 
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
 		if (false == tr->IsTransformUpdated())
@@ -315,8 +313,8 @@ namespace ehw
 
 	void Com_Camera::SortGameObjects()
 	{
-		ASSERT_DEBUG(GetOwner(), "Owner 주소가 없음");
-		Scene* scene = GetOwner()->GetScene();
+		ASSERT_DEBUG(gameObject(), "Owner 주소가 없음");
+		Scene* scene = gameObject()->scene();
 		ASSERT(scene, "Scene 주소가 없음.");
 
 
@@ -436,13 +434,12 @@ namespace ehw
 		//}
 	}
 
-	void Com_Camera::SortRenderersByMode()
+	void Com_Camera::SortRenderersByMode(const std::vector<Renderer*>& _renderers)
 	{
-		const auto& renderers = RenderManager::GetInst().sceneRenderAgent().GetRenderers();
 
-		for (size_t i = 0; i < renderers.size(); ++i)
+		for (size_t i = 0; i < _renderers.size(); ++i)
 		{
-			Renderer* const renderer = renderers[i];
+			Renderer* const renderer = _renderers[i];
 
 			if ((nullptr == renderer) || (false == renderer->IsEnabled()))
 			{

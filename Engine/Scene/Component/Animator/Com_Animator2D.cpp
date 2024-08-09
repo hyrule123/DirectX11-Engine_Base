@@ -172,7 +172,7 @@ namespace ehw
 		
 
 		//사이즈 수정
-		const auto& tr = GetOwner()->GetComponent<Com_Transform>(); 
+		const auto& tr = gameObject()->GetComponent<Com_Transform>(); 
 		if (tr)
 		{
 			float2 size = animation->GetSpriteSize(0u);

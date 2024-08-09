@@ -29,7 +29,7 @@ namespace ehw
 	}
 	void Rigidbody::OnEnable()
 	{
-		CollisionSystem* colsys = GetOwner()->GetScene()->GetCollisionSystem();
+		CollisionSystem* colsys = gameObject()->scene()->GetCollisionSystem();
 		if (colsys)
 		{
 			Collision3D* col3d = colsys->GetCollision3D();
@@ -75,7 +75,7 @@ namespace ehw
 	}
 	void Rigidbody::SyncToPhysXGlobalPose()
 	{
-		Com_Transform* tr = GetOwner()->Transform();
+		Com_Transform* tr = gameObject()->Transform();
 		if (false == tr->IsTransformUpdated())
 		{
 			return;
@@ -90,7 +90,7 @@ namespace ehw
 
 	void Rigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
 	{
-		Com_Transform* tr = GetOwner()->Transform();
+		Com_Transform* tr = gameObject()->Transform();
 
 		tr->SetWorldPosition(_pxTransform.p);
 		tr->SetLocalRotation(_pxTransform.q);

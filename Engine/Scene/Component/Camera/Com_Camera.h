@@ -29,10 +29,10 @@ namespace  ehw
 		//void Setting() override;
 		void FinalUpdate() override;
 		void FrameEnd() override;
+		void OnEnable() override;
 		void OnDisable() override;
-		void OnDestroy() override;
 
-		void RenderCamera();
+		void RenderCamera(const std::vector<Renderer*>& _renderers);
 
 		void CreateViewMatrix();
 
@@ -62,7 +62,7 @@ namespace  ehw
 		void RenderTransparent();
 		void RenderPostProcess();
 		void PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj);
-		void SortRenderersByMode();
+		void SortRenderersByMode(const std::vector<Renderer*>& _renderers);
 
 	private:
 		static MATRIX s_viewMatrix;

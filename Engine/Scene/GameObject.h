@@ -85,15 +85,15 @@ namespace ehw
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		Scene* GetScene() { return m_ownerScene; }
-		Scene* GetScene() const { return m_ownerScene; }
-		void SetScene(Scene* _scene) { m_ownerScene = _scene; }
-		bool IsInScene() const { return (nullptr != m_ownerScene); }
+		Scene* scene() { return m_scene; }
+		Scene* scene() const { return m_scene; }
+		void SetScene(Scene* _scene) { m_scene = _scene; }
+		bool IsInScene() const { return (nullptr != m_scene); }
 
 		void SetLayer(uint32 _layer);
 		uint32 GetLayer() const { return m_layer; }
 
-		bool IsAwaken() const { return m_isAwakeCalled; }
+		bool IsAwaken() const { return m_isAwaken; }
 
 		void SwapBaseComponents(GameObject& _other);
 
@@ -108,7 +108,7 @@ namespace ehw
 	private:
 		std::string m_name;
 
-		Scene* m_ownerScene;
+		Scene* m_scene;
 		uint32 m_layer;
 
 		BaseComponents	m_baseComponents;
@@ -116,7 +116,7 @@ namespace ehw
 		
 		eState m_state;
 
-		bool m_isAwakeCalled;
+		bool m_isAwaken;
 		bool m_bDontDestroyOnLoad;
 	};
 

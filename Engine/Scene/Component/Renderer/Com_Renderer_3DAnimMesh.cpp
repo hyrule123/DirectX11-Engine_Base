@@ -24,7 +24,7 @@ namespace ehw
 		//3D 애니메이터가 아니거나
 		//재생 중이 아니거나
 		//->일반 Mesh 타입으로 렌더링
-		auto animator = GetOwner()->GetComponent<Com_Animator3D>();
+		auto animator = gameObject()->GetComponent<Com_Animator3D>();
 		if (
 			nullptr == animator ||
 			false == animator->IsPlaying()
@@ -37,7 +37,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Com_Transform>();
 		tr->BindData();
 
 		animator->BindData();

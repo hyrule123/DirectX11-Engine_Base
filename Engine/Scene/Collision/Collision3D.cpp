@@ -332,10 +332,10 @@ namespace ehw
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->GetOwner();
+			GameObject* leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->gameObject();
 			Collider* leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->GetOwner();
+			GameObject* rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->gameObject();
 			Collider* rightCol = rightObj->GetComponent<Collider>();
 
 			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
@@ -384,10 +384,10 @@ namespace ehw
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->GetOwner();
+			GameObject* leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->gameObject();
 			Collider* leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->GetOwner();
+			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->gameObject();
 			Collider* rightCol = rightObj->GetComponent<Collider>();
 
 

@@ -152,7 +152,7 @@ namespace ehw
 	void Com_Light3D::Update()
 	{
 		
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 			return;
 
@@ -178,7 +178,7 @@ namespace ehw
 
 	void Com_Light3D::FinalUpdate()
 	{
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 		{
 			return;
@@ -221,7 +221,7 @@ namespace ehw
 		}
 
 		//Transform
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Com_Transform>();
 		if (nullptr == tr)
 			return;
 		tr->BindData();

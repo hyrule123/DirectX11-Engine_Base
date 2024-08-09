@@ -57,7 +57,7 @@ namespace ehw
 		
 		ResourceManagers::GetInst().Init();
 
-		if (false == RenderManager::GetInst().Setting(_desc.GPUDesc))
+		if (false == RenderManager::GetInst().Settings(_desc.GPUDesc))
 		{
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
@@ -104,8 +104,6 @@ namespace ehw
 		RenderManager::GetInst().ClearRenderTarget();
 
 		RenderManager::GetInst().Render();
-
-		//SceneManager::GetInst().Render();
 
 		if (m_editorRunFunction)
 		{

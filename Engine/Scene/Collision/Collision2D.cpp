@@ -88,7 +88,7 @@ namespace ehw
 	{
 		if (_obj)
 		{
-			m_collidersInLayer[_obj->GetOwner()->GetLayer()].push_back(_obj);
+			m_collidersInLayer[_obj->gameObject()->GetLayer()].push_back(_obj);
 		}
 	}
 

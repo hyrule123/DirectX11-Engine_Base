@@ -76,12 +76,14 @@ namespace ehw
 		return true;
 	}
 
-	bool RenderManager::Setting(const tGPUManagerDesc& _Desc)
+	bool RenderManager::Settings(const tGPUManagerDesc& _Desc)
 	{
 		if (nullptr == m_device || nullptr == m_context) {
 			ASSERT(false, "Device Context가 생성되지 않았습니다. Init()를 먼저 호출하세요.");
 			return false;
 		}
+
+		AtExit::AddFunc(std::bind(&RenderManager::ReleaseResources, this));
 
 		/// 1. Device 와 SwapChain 생성한다.
 		/// 2. 백버퍼에 실제로 렌더링할 렌더타겟 뷰를 생성해야한다.
@@ -133,7 +135,7 @@ namespace ehw
 		return true;
 	}
 
-	void RenderManager::Release()
+	void RenderManager::ReleaseResources()
 	{
 		m_lights_SBuffer.reset();
 
@@ -171,6 +173,10 @@ namespace ehw
 		m_depth_stencil_buffer_texture = nullptr;
 		m_renderTarget_texture = nullptr;
 		m_swapChain = nullptr;
+	}
+
+	void RenderManager::Release()
+	{
 		m_context = nullptr;
 		m_device = nullptr;
 	}
@@ -332,7 +338,7 @@ namespace ehw
 		BindNoiseTexture();
 
 		m_sceneRenderAgent.BindLights();
-		m_sceneRenderAgent.EraseIfDestroyed_Camera(true);
+		m_sceneRenderAgent.Render();
 	}
 
 	void RenderManager::BindNoiseTexture()

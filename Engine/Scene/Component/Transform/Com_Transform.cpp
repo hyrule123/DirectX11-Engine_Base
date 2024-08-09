@@ -100,7 +100,7 @@ namespace ehw
 
 	void Com_Transform::GetGameObjectHierarchy_Recursive(std::vector<GameObject*>& _retObjects)
 	{
-		_retObjects.push_back(GetOwner());
+		_retObjects.push_back(gameObject());
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
 			m_childs[i]->GetGameObjectHierarchy_Recursive(_retObjects);
@@ -322,7 +322,7 @@ namespace ehw
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
 			childs[i]->SetParent(nullptr);
-			childs[i]->GetOwner()->Destroy();
+			childs[i]->gameObject()->Destroy();
 		}
 	}
 }

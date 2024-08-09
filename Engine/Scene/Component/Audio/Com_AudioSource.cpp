@@ -81,7 +81,7 @@ namespace ehw
 
 	void Com_AudioSource::FinalUpdate()
 	{
-		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
+		const auto& tr = gameObject()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetLocalPosition();
 		float3 foward = tr->GetLocalDirection(eDirection::Forward);
 

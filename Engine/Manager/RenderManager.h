@@ -69,7 +69,8 @@ namespace ehw
 		~RenderManager();
 		
 		bool Init();
-		bool Setting(const tGPUManagerDesc& _Desc);
+		bool Settings(const tGPUManagerDesc& _Desc);
+		void ReleaseResources();
 		void Release();
 		
 		//스왑체인 + 렌더타겟 생성하여 반환

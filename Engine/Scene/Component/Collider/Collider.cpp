@@ -22,19 +22,19 @@ namespace ehw
 
 	void Collider::Init()
 	{
-		m_transform = GetOwner()->Transform();
+		m_transform = gameObject()->Transform();
 	}
 
 	void Collider::Awake()
 	{
-		m_collisionSystem = GetOwner()->GetScene()->GetCollisionSystem();
+		m_collisionSystem = gameObject()->scene()->GetCollisionSystem();
 	}
 
 	void Collider::OnCollisionEnter(Collider* _collider, const float3& _contactPoint)
 	{
 		AddCollisionCount();
 
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -44,7 +44,7 @@ namespace ehw
 
 	void Collider::OnCollisionStay(Collider* _collider, const float3& _contactPoint)
 	{
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -56,7 +56,7 @@ namespace ehw
 	{
 		SubCollisionCount();
 
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -68,7 +68,7 @@ namespace ehw
 	{
 		AddCollisionCount();
 
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -78,7 +78,7 @@ namespace ehw
 
 	void Collider::OnTriggerStay(Collider* _collider)
 	{
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -90,7 +90,7 @@ namespace ehw
 	{
 		SubCollisionCount();
 
-		const GameObject::Scripts& scripts = GetOwner()->GetScripts();
+		const GameObject::Scripts& scripts = gameObject()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{

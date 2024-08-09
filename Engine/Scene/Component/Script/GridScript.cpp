@@ -45,7 +45,7 @@ namespace ehw
 			return;
 		}
 
-		const auto& gameObj = mCamera->GetOwner();
+		const auto& gameObj = mCamera->gameObject();
 		const auto& TR = gameObj->GetComponent<Com_Transform>();
 		
 		float3 cameraPosition = TR->GetLocalPosition();

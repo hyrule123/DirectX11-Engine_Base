@@ -44,7 +44,7 @@ namespace ehw
 
 	void Com_AudioListener::FinalUpdate()
 	{
-		const auto& tr = GetOwner()->GetComponent<Com_Transform>();
+		const auto& tr = gameObject()->GetComponent<Com_Transform>();
 		float3 pos = tr->GetWorldPosition();
 
 		float3 foward = tr->GetWorldDirection(eDirection::Forward);

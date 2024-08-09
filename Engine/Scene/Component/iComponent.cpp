@@ -21,7 +21,7 @@ namespace ehw {
 	iComponent::iComponent(const iComponent& _other)
 		: Entity(_other)
 		, m_ComCategory(_other.m_ComCategory)
-		, m_ComTypeID()
+		, m_ComTypeID(_other.m_ComTypeID)
 		, m_ownerGameObject()
 		, m_state(_other.m_state)
 		, m_isStarted(_other.m_isStarted)
@@ -55,7 +55,7 @@ namespace ehw {
 				}
 			};
 
-		Scene* scene = m_ownerGameObject->GetScene();
+		Scene* scene = m_ownerGameObject->scene();
 		if (scene->IsAwaken())
 		{
 			scene->AddFrameEndJob(onEnableDisable);
@@ -64,6 +64,5 @@ namespace ehw {
 		{
 			onEnableDisable();
 		}
-
 	}
 }

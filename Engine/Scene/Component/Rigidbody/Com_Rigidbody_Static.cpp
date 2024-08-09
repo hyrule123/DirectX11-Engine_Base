@@ -17,7 +17,7 @@ namespace ehw
 
 	physx::PxRigidActor* Com_Rigidbody_Static::CreateRigidbody()
 	{
-		Com_Transform* tr = GetOwner()->Transform();
+		Com_Transform* tr = gameObject()->Transform();
 
 		physx::PxTransform pxTr{};
 		pxTr.p = tr->GetWorldPosition();

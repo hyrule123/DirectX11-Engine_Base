@@ -7,6 +7,8 @@
 
 #include "Engine/Scene/Component/Light/Com_Light3D.h"
 #include "Engine/Scene/Component/Camera/Com_Camera.h"
+#include "Engine/Scene/Component/Renderer/Renderer.h"
+#include "Engine/Scene/GameObject.h"
 
 namespace ehw {
 	SceneRenderAgent::SceneRenderAgent()
@@ -31,10 +33,17 @@ namespace ehw {
 	{
 		m_cameras.clear();
 		m_mainCamIndex = 0u;
-
 		m_renderers.clear();
-
 		m_lightAttributes.clear();
+	}
+
+	void SceneRenderAgent::Render()
+	{
+		for (Com_Camera* cam : m_cameras) {
+			if (cam->IsEnabled()) {
+				cam->RenderCamera(m_renderers);
+			}
+		}
 	}
 
 	void SceneRenderAgent::FrameEnd()
@@ -55,24 +64,6 @@ namespace ehw {
 		}
 	}
 
-	void SceneRenderAgent::EraseIfDestroyed_Camera(bool _callRenderFunction = false)
-	{
-		std::erase_if(m_cameras,
-			[_callRenderFunction](Com_Camera* _cam)->bool
-			{
-				if (_cam->IsDestroyed())
-				{
-					return true;
-				}
-				else if (_callRenderFunction && _cam->IsEnabled())
-				{
-					_cam->RenderCamera();
-				}
-
-				return false;
-			}
-		);
-	}
 
 	void SceneRenderAgent::SetMainCamera(Com_Camera* const _pCam)
 	{
@@ -86,12 +77,22 @@ namespace ehw {
 		}
 	}
 
-	void SceneRenderAgent::RegisterCamera(Com_Camera* const _pCam)
+	Com_Camera* SceneRenderAgent::GetCamera(size_t _Idx) {
+		Com_Camera* pCam = nullptr;
+		if (m_cameras.size() > (size_t)_Idx)
+		{
+			pCam = m_cameras[_Idx];
+		}
+
+		return pCam;
+	}
+
+	void SceneRenderAgent::Register_camera(Com_Camera* const _pCam)
 	{
 		ASSERT(_pCam, "nullptr"); m_cameras.push_back(_pCam);
 	}
 
-	void SceneRenderAgent::RemoveCamera(Com_Camera* const _pCam)
+	void SceneRenderAgent::Unregister_camera(Com_Camera* const _pCam)
 	{
 		for (auto iter = m_cameras.begin(); iter != m_cameras.end(); ++iter)
 		{

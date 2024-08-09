@@ -148,7 +148,7 @@ namespace ehw
 		}
 
 		mMaxParticles = m_buffer->GetStride();
-		float3 pos = GetOwner()->GetComponent<Com_Transform>()->GetLocalPosition();
+		float3 pos = gameObject()->GetComponent<Com_Transform>()->GetLocalPosition();
 		mCBData.worldPosition = float4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
 		mCBData.radius = mRadius;
@@ -175,7 +175,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 		
-		GetOwner()->GetComponent<Com_Transform>()->BindData();
+		gameObject()->GetComponent<Com_Transform>()->BindData();
 		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->BindData();

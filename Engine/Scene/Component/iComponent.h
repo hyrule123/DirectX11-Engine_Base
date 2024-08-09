@@ -46,16 +46,16 @@ namespace ehw {
 		//레이어 변경시 호출됨. GameObject::Awake() 때 한번 호출됨.
 		virtual void OnLayerChange(uint32 _layer) {}
 
-		inline GameObject* GetOwner() { return m_ownerGameObject; }
-		inline GameObject* GetOwner() const { return m_ownerGameObject; }
-		inline void SetOwner(GameObject* _owner) { m_ownerGameObject = _owner; }
+		inline GameObject* gameObject() { return m_ownerGameObject; }
+		inline GameObject* gameObject() const { return m_ownerGameObject; }
+		inline void Set_gameObject(GameObject* _owner) { m_ownerGameObject = _owner; }
 
 		eComponentCategory GetComponentCategory() const { return m_ComCategory; };
 
 		inline void SetComponentTypeID(size_t _comTypeID) { m_ComTypeID = _comTypeID; }
 		size_t GetComponentTypeID() const { return m_ComTypeID; };
 
-		inline void CallStart() { if (false == m_isStarted) { Start(); m_isStarted = true; } }
+		bool IsStarted() const { return m_isStarted; }
 
 		inline bool IsInitialized() const { return eState::NotInitialzed < m_state; }
 

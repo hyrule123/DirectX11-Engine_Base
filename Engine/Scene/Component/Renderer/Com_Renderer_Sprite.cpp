@@ -41,7 +41,7 @@ namespace ehw
 
 	void Com_Renderer_Sprite::Awake()
 	{
-		mAnimator = GetOwner()->GetComponent<Com_Animator2D>();
+		mAnimator = gameObject()->GetComponent<Com_Animator2D>();
 	}
 
 	void Com_Renderer_Sprite::Render()

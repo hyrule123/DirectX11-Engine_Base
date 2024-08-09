@@ -23,11 +23,11 @@ namespace ehw
 
 	GameObject::GameObject()
 		: m_baseComponents()
-		, m_ownerScene()
+		, m_scene()
 		, m_layer(UINT_MAX)
 		, m_name()
 		, m_state(eState::Active)
-		, m_isAwakeCalled(false)
+		, m_isAwaken(false)
 		, m_bDontDestroyOnLoad(false)
 	{
 		AddComponent<Com_Transform>();
@@ -42,11 +42,11 @@ namespace ehw
 	GameObject::GameObject(const GameObject& _other)
 		: Entity(_other)
 		, m_baseComponents()
-		, m_ownerScene(_other.m_ownerScene)
+		, m_scene(_other.m_scene)
 		, m_layer(_other.m_layer)
 		, m_name(_other.m_name)
 		, m_state(_other.m_state)
-		, m_isAwakeCalled(_other.m_isAwakeCalled)
+		, m_isAwaken(_other.m_isAwaken)
 		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
 	{
 		//1. 컴포넌트 목록 복사
@@ -60,7 +60,7 @@ namespace ehw
 
 				if (m_baseComponents[i])
 				{
-					m_baseComponents[i]->SetOwner(this);
+					m_baseComponents[i]->Set_gameObject(this);
 				}
 			}
 		}
@@ -73,7 +73,7 @@ namespace ehw
 			if (cloned)
 			{
 				m_scripts.push_back(cloned);
-				m_scripts.back()->SetOwner(this);
+				m_scripts.back()->Set_gameObject(this);
 			}
 #ifdef _DEBUG
 			else
@@ -147,12 +147,12 @@ namespace ehw
 
 	void GameObject::Awake()
 	{
-		if (m_isAwakeCalled || false == IsActive())
+		if (m_isAwaken || false == IsActive())
 		{
 			return;
 		}
 
-		m_isAwakeCalled = true;
+		m_isAwaken = true;
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i])
@@ -189,7 +189,32 @@ namespace ehw
 		const std::vector<Com_Transform*>& childs = GetComponent<Com_Transform>()->GetChilds();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
-			childs[i]->GetOwner()->Awake();
+			childs[i]->gameObject()->Awake();
+		}
+	}
+
+	void GameObject::Update()
+	{
+		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		{
+			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			{
+				if (false == m_baseComponents[i]->IsStarted()) {
+					m_baseComponents[i]->Start();
+				}
+				m_baseComponents[i]->Update();
+			}
+		}
+
+		for (size_t i = 0; i < m_scripts.size(); ++i)
+		{
+			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			{
+				if (false == m_scripts[i]->IsStarted()) {
+					m_scripts[i]->Start();
+				}
+				m_scripts[i]->Update();
+			}
 		}
 	}
 
@@ -199,7 +224,6 @@ namespace ehw
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->CallStart();
 				m_baseComponents[i]->FixedUpdate();
 			}
 		}
@@ -208,31 +232,12 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->CallStart();
 				m_scripts[i]->FixedUpdate();
 			}
 		}
 	}
 
-	void GameObject::Update()
-	{
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
-		{
 
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
-			{
-				m_baseComponents[i]->Update();
-			}
-		}
-
-		for (size_t i = 0; i < m_scripts.size(); ++i)
-		{
-			if (m_scripts[i] && m_scripts[i]->IsEnabled())
-			{
-				m_scripts[i]->Update();
-			}
-		}
-	}
 
 	void GameObject::FinalUpdate()
 	{
@@ -371,7 +376,7 @@ namespace ehw
 			}
 		}
 
-		ret->SetOwner(this);
+		ret->Set_gameObject(this);
 
 		if (false == ret->IsInitialized())
 		{
@@ -380,7 +385,7 @@ namespace ehw
 		}
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
-		if (IsActive() && m_isAwakeCalled)
+		if (IsActive() && m_isAwaken)
 		{
 			ret->Awake();
 		}
@@ -403,9 +408,9 @@ namespace ehw
 		}
 
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
-		if (m_ownerScene->IsAwaken())
+		if (m_scene->IsAwaken())
 		{
-			m_ownerScene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
+			m_scene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
@@ -456,7 +461,7 @@ namespace ehw
 
 		m_layer = _layer;
 
-		if (m_isAwakeCalled)
+		if (m_isAwaken)
 		{
 			for (size_t i = 0; i < m_baseComponents.size(); ++i)
 			{
@@ -479,8 +484,8 @@ namespace ehw
 		m_baseComponents.swap(_other.m_baseComponents);
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			m_baseComponents[i]->SetOwner(this);
-			_other.m_baseComponents[i]->SetOwner(&_other);
+			m_baseComponents[i]->Set_gameObject(this);
+			_other.m_baseComponents[i]->Set_gameObject(&_other);
 		}
 	}
 
@@ -494,9 +499,9 @@ namespace ehw
 				m_state = eState::Active;
 
 				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
-				if (m_ownerScene->IsAwaken() && false == m_isAwakeCalled)
+				if (m_scene->IsAwaken() && false == m_isAwaken)
 				{
-					m_isAwakeCalled = true;
+					m_isAwaken = true;
 
 					for (size_t i = 0; i < m_baseComponents.size(); ++i)
 					{

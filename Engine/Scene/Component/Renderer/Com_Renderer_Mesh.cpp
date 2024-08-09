@@ -16,7 +16,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		auto tr = GetOwner()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Com_Transform>();
 		tr->BindData();
 
 		//Render
