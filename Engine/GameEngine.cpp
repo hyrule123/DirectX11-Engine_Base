@@ -105,7 +105,7 @@ namespace ehw
 
 		RenderManager::GetInst().Render();
 
-		SceneManager::GetInst().Render();
+		//SceneManager::GetInst().Render();
 
 		if (m_editorRunFunction)
 		{

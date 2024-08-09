@@ -61,13 +61,6 @@ namespace ehw
 		}
 	}
 
-	void SceneManager::Render()
-	{
-		if (m_activeScene) {
-			m_activeScene->SceneRender();
-		}
-	}
-
 	void SceneManager::FrameEnd()
 	{
 		if (m_activeScene)

@@ -19,7 +19,6 @@ namespace ehw
 		void SceneFixedUpdate();
 		void SceneUpdate();
 		void SceneFinalUpdate();
-		void SceneRender();
 		void SceneFrameEnd();
 
 		//로직 재정의
@@ -29,7 +28,6 @@ namespace ehw
 		virtual void FixedUpdate() {}
 		virtual void Update() {}
 		virtual void FinalUpdate() {}
-		virtual void Render() {}
 		virtual void FrameEnd() {}
 
 		void Destroy();

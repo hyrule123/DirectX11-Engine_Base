@@ -110,7 +110,6 @@ namespace ehw
 		// Forward render
 		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
 
-
 		//// defferd + swapchain merge
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
 		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);

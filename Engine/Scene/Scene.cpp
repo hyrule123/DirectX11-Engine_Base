@@ -23,7 +23,6 @@ namespace ehw
 		m_collisionSystem.reset();
 	}
 
-
 	void Scene::SceneInit()
 	{
 		//tDesc desc{};
@@ -87,7 +86,6 @@ namespace ehw
 		}
 	}
 
-
 	void Scene::SceneFinalUpdate()
 	{
 		FinalUpdate();
@@ -96,18 +94,6 @@ namespace ehw
 			if (m_gameObjects[i]->IsActive())
 			{
 				m_gameObjects[i]->FinalUpdate();
-			}
-		}
-	}
-	void Scene::SceneRender()
-	{
-		Render();
-
-		for (size_t i = 0; i < m_gameObjects.size(); ++i)
-		{
-			if (m_gameObjects[i]->IsActive())
-			{
-				m_gameObjects[i]->Render();
 			}
 		}
 	}
