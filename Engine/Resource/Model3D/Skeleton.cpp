@@ -5,7 +5,7 @@
 #include "Engine/Util/StringConverter.h"
 #include "Engine/Util/Serialize/BinarySerializer.h"
 
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 
 #include "Engine/GPU/StructBuffer.h"
 

@@ -1,7 +1,7 @@
 #ifndef S_H_FUNC_BITWISE
 #define S_H_FUNC_BITWISE
 
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 
 #ifdef __HLSL
 

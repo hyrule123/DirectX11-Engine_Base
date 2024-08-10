@@ -2,7 +2,7 @@
 
 
 
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 #include "Engine/DefaultShader/NormalConverter/NormalConverter.hlsli"
 
 #if defined (_WIN64) && !(NDEBUG)

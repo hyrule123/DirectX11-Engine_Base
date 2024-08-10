@@ -694,7 +694,7 @@
     <None Include="DefaultShader\Globals.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Resource.hlsli">
+    <None Include="DefaultShader\Common_register.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\Sampler.hlsli">

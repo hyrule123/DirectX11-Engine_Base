@@ -471,7 +471,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <None Include="DefaultShader\NormalConverter\NormalConverter.hlsli" />
     <None Include="DefaultShader\Particle\Particle.hlsli" />
     <None Include="DefaultShader\PostProcess\PostProcess.hlsli" />
-    <None Include="DefaultShader\Resource.hlsli" />
+    <None Include="DefaultShader\Common_register.hlsli" />
     <None Include="DefaultShader\Sampler.hlsli" />
     <None Include="DefaultShader\UI\UserInterface.hlsli" />
     <None Include="Util\SimpleMath.inl" />

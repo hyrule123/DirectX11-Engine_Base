@@ -1,7 +1,7 @@
 #ifndef SH_FUNC_BLUR
 #define SH_FUNC_BLUR
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 
 #ifdef __HLSL
 static float GaussianFilter[5][5] =

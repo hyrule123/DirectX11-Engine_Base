@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 #include "Engine/DefaultShader/Func_Bitwise.hlsli"
 
 //초기화해야 하는 값이 있으면 여기서 초기화.

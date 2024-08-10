@@ -5,7 +5,7 @@
 #include "Engine/GPU/ConstBuffer.h"
 #include "Engine/GPU/StructBuffer.h"
 
-#include "Engine/DefaultShader/Resource.hlsli"
+#include "Engine/DefaultShader/Common_register.hlsli"
 
 #if defined (_WIN64) && (_DEBUG)
 #include "Engine/CompiledShaderHeader/CS_Animation3D_x64_Debug.h"
