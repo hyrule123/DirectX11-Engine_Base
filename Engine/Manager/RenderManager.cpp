@@ -125,18 +125,21 @@ namespace ehw
 
 		CreateMainViewPort();
 
+		//Debug Buffer 연결
 		SDesc = {};
 		SDesc.eSBufferType = eStructBufferType::READ_WRITE;
 		SDesc.REGISLOT_t_SRV = GPU::Register::t::NONE;
 		SDesc.REGISLOT_u_UAV = GPU::Register::u::g_debugData;
 		m_debug_data_buffer = std::make_unique<StructBuffer>();
 		m_debug_data_buffer->Init<tCB_CustomData>(SDesc);
+		m_debug_data_buffer->BindDataUAV();
 
 		return true;
 	}
 
 	void RenderManager::ReleaseResources()
 	{
+		m_debug_data_buffer.reset();
 		m_lights_SBuffer.reset();
 
 		m_sceneRenderAgent.Release();

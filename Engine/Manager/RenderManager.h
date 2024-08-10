@@ -80,7 +80,6 @@ namespace ehw
 		//Application의 창 크기를 따라감
 		void CreateMainViewPort();
 
-	private:
 		void UpdateGlobalCBuffer();
 
 		bool CreateMultiRenderTargets(UINT _resX, UINT _resY);
