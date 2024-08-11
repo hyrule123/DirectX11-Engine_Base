@@ -74,7 +74,7 @@ namespace ehw
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
 		desc.REGISLOT_t_SRV = GPU::Register::t::gInitSetting;
-		desc.REGISLOT_u_UAV = GPU::Register::u::gInitSettingRW;
+		desc.REGISLOT_u_UAV = GPU::Register::u::g_initSettings_RW;
 		mInitSBuffer = std::make_unique<StructBuffer>();
 		eResult result = mInitSBuffer->Init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
 		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");

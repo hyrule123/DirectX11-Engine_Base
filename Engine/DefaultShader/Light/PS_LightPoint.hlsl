@@ -36,7 +36,6 @@ PS_OUT main(VSOut_LightPoint _in)
 		}
 		//discard;
 	}
-
     
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
 	

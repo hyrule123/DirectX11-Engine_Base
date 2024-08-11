@@ -14,9 +14,9 @@ REGISTER_DECLARE(NONE, u, -1);
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
 
 //디버그 데이터 주고받기용 버퍼
-SBUFFER_RW(g_debugData, tCB_CustomData, u, 0);
+SBUFFER_RW(g_debugData, tCB_CustomData, u, 8);
 
-SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 3);
+SBUFFER_RW(g_initSettings_RW, tGPUInitSetting, u, 3);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);

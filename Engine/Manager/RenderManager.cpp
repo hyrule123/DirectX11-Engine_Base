@@ -58,14 +58,28 @@ namespace ehw
 		DeviceFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif // _DEBUG
 
-		D3D_FEATURE_LEVEL FeatureLevel = (D3D_FEATURE_LEVEL)0;
+		D3D_FEATURE_LEVEL MaxSupportedFeatureLevel = D3D_FEATURE_LEVEL_11_1;
+		D3D_FEATURE_LEVEL FeatureLevels[] = {
+			D3D_FEATURE_LEVEL_11_1,
+			D3D_FEATURE_LEVEL_11_0,
+			D3D_FEATURE_LEVEL_10_1,
+			D3D_FEATURE_LEVEL_10_0,
+			D3D_FEATURE_LEVEL_9_3,
+			D3D_FEATURE_LEVEL_9_2,
+			D3D_FEATURE_LEVEL_9_1
+		};
 
-		if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr
-			, DeviceFlag, nullptr, 0
-			, D3D11_SDK_VERSION
-			, m_device.ReleaseAndGetAddressOf()
-			, &FeatureLevel
-			, m_context.ReleaseAndGetAddressOf())))
+		if (FAILED(D3D11CreateDevice(
+			nullptr, 
+			D3D_DRIVER_TYPE_HARDWARE, 
+			nullptr, 
+			DeviceFlag, 
+			FeatureLevels,
+			sizeof(FeatureLevels) / sizeof(D3D_FEATURE_LEVEL),
+			D3D11_SDK_VERSION, 
+			m_device.ReleaseAndGetAddressOf(), 
+			&MaxSupportedFeatureLevel,
+			m_context.ReleaseAndGetAddressOf())))
 		{
 			m_device.Reset();
 			m_context.Reset();
