@@ -4,7 +4,7 @@
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
 
 TEXTURE2D(SrcNormalTex, t, 0);
-TEXTURE2D_RW(DestNormalTex, u, 0, float4);
+TEXTURE2D_RW(DestNormalTex, u, 1, float4);
 
 #define TexWidth TotalDataCount.x
 #define TexHeight TotalDataCount.y

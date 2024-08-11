@@ -1,7 +1,7 @@
 #ifndef ANIMATION_2D_HLSLI
 #define ANIMATION_2D_HLSLI
 
-#include "Engine/DefaultShader/Common.hlsli"
+#include "Engine/DefaultShader/Common_define.hlsli"
 
 
 //Atlas texture(Animation 2D)

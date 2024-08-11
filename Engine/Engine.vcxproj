@@ -460,11 +460,11 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <None Include="DefaultShader\Functions.hlsli" />
     <None Include="DefaultShader\Animation\Func_Animation3D.hlsli" />
     <None Include="DefaultShader\Func_Blur.hlsli" />
-    <None Include="DefaultShader\Common.hlsli" />
-    <None Include="DefaultShader\CommonStruct.hlsli" />
+    <None Include="DefaultShader\Common_define.hlsli" />
+    <None Include="DefaultShader\Common_struct.hlsli" />
     <None Include="DefaultShader\ConstBuffer.hlsli" />
     <None Include="DefaultShader\Func_DecodeColor.hlsli" />
-    <None Include="DefaultShader\Globals.hlsli" />
+    <None Include="DefaultShader\Commons.hlsli" />
     <None Include="DefaultShader\Debug\Grid.hlsli" />
     <None Include="DefaultShader\Light\Func_Light.hlsli" />
     <None Include="DefaultShader\Light\Light.hlsli" />

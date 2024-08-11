@@ -682,7 +682,7 @@
     <None Include="DefaultShader\Func_Blur.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Common.hlsli">
+    <None Include="DefaultShader\Common_define.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\ConstBuffer.hlsli">
@@ -691,7 +691,7 @@
     <None Include="DefaultShader\Func_DecodeColor.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
-    <None Include="DefaultShader\Globals.hlsli">
+    <None Include="DefaultShader\Commons.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\Common_register.hlsli">
@@ -715,7 +715,7 @@
     <None Include="Util\SimpleMath.inl">
       <Filter>Common\Math</Filter>
     </None>
-    <None Include="DefaultShader\CommonStruct.hlsli">
+    <None Include="DefaultShader\Common_struct.hlsli">
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\Functions.hlsli">

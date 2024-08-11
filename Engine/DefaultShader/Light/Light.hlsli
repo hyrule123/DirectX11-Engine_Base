@@ -1,7 +1,7 @@
 #ifndef LIGHT_HLSLI
 #define LIGHT_HLSLI
 #ifndef __cplusplus//HLSL
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Commons.hlsli"
 #include "Engine/DefaultShader/Func_DecodeColor.hlsli"
 
 #include "Engine/DefaultShader/Light/Func_Light.hlsli"

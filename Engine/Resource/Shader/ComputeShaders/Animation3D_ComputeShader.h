@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Shader/ComputeShader.h"
 
-#include "Engine/DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/Common_struct.hlsli"
 
 //설명: 3D 애니메이션을 처리하기 위한 컴퓨트쉐이더
 //사용법

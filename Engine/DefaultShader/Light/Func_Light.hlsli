@@ -3,7 +3,7 @@
 
 
 #ifndef __cplusplus//HLSL
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Commons.hlsli"
 //StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
 
 //2D

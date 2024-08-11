@@ -2,7 +2,7 @@
 
 #include "Engine/GPU/StructBuffer.h"
 
-#include "Engine/DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/Common_struct.hlsli"
 
 
 #if defined (_WIN64) && !(NDEBUG)

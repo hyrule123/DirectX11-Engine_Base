@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Commons.hlsli"
 struct VSIn
 {
     float4 Pos : POSITION;

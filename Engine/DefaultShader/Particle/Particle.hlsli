@@ -1,6 +1,6 @@
 #ifndef PARTICLE_HLSLI
 #define PARTICLE_HLSLI
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Commons.hlsli"
 
 
 struct alignas(16)   tParticle
@@ -24,8 +24,8 @@ struct alignas(16)    tParticleShared
 //RWStructuredBuffer<Particle> ParticleBuffer : register(u0);
 //RWStructuredBuffer<ParticleShared> ParticleSharedBuffer : register(u1);
 SBUFFER(ParticleBuffer, tParticle, t, 15);
-SBUFFER_RW(RW_ParticleBuffer, tParticle, u, 0);
-SBUFFER_RW(RW_SharedParticleBuffer, tParticleShared, u, 1);
+SBUFFER_RW(RW_ParticleBuffer, tParticle, u, 1);
+SBUFFER_RW(RW_SharedParticleBuffer, tParticleShared, u, 2);
 
 //HLSL
 #ifndef __cplusplus

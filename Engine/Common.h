@@ -17,9 +17,9 @@
 #include "Engine/define_Macro.h"
 
 #include "Engine/Util/SimpleMath.h"
-#include "Engine/DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/Common_struct.hlsli"
 //SimpleMath, float2~4, int2~4, uint2~4, BOOL, TRUE, FALSE 등 정의
-#include "Engine/DefaultShader/Common.hlsli"
+#include "Engine/DefaultShader/Common_define.hlsli"
 #include "Engine/Util/type_traits_Ex.h"
 
 //https://stackoverflow.com/questions/10170087/how-does-stdfunction-know-about-calling-convention

@@ -1,7 +1,7 @@
 #ifndef POSTPROCESS_HLSLI
 #define POSTPROCESS_HLSLI
 
-#include "Engine/DefaultShader/Globals.hlsli"
+#include "Engine/DefaultShader/Commons.hlsli"
 
 struct VSIn
 {

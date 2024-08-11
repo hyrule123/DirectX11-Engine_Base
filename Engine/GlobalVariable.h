@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/Common_struct.hlsli"
 
 #include <unordered_set>
 #include <string>

@@ -1,7 +1,7 @@
-#ifndef RESOURCE_HLSLI
-#define RESOURCE_HLSLI
+#ifndef COMMON_REGISTER_HLSLI
+#define COMMON_REGISTER_HLSLI
 
-#include "Engine/DefaultShader/CommonStruct.hlsli"
+#include "Engine/DefaultShader/Common_struct.hlsli"
 
 #ifdef __cplusplus
 REGISTER_DECLARE(NONE, t, -1);
@@ -12,10 +12,11 @@ REGISTER_DECLARE(NONE, u, -1);
 
 //GPU Initalize Setting: 처음 1회만 사용.
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
-SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 0);
 
 //디버그 데이터 주고받기용 버퍼
 SBUFFER_RW(g_debugData, tCB_CustomData, u, 0);
+
+SBUFFER_RW(gInitSettingRW, tGPUInitSetting, u, 3);
 
 //Material Default Texture
 TEXTURE2D(Tex_0, t, 0);
