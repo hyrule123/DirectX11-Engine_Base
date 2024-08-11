@@ -120,6 +120,10 @@ namespace ehw
 		RenderCutout();
 		RenderTransparent();
 		RenderPostProcess();
+
+		auto d = RenderManager::GetInst().GetDebugData();
+
+		int a = 3;
 	}
 
 	void Com_Camera::CreateViewMatrix()

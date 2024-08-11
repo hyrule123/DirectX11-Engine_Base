@@ -377,6 +377,9 @@ namespace ehw
 		m_curBoundRegister = _UAVSlot;
 
 		uint Offset = -1;
+		
+		static_assert(false, "DX11.1 -> 11.0으로 되돌릴것 Pixel Shader에서 UAV 사용 불가임.");
+		RenderManager::GetInst().Context()->PSSet
 		RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(_UAVSlot, 1, m_UAV.GetAddressOf(), &Offset);
 	}
 
