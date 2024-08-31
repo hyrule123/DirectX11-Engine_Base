@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Entity.h"
+#include "Engine/Instance.h"
 
 #include "CommonGPU.h"
 
@@ -16,7 +16,7 @@ namespace ehw
 		: public Entity
 	{
 	public:
-		GPUBuffer(eBufferType _Type);
+		GPUBuffer(const std::string_view key, eBufferType _Type);
 
 		//버퍼까지 복사하지는 않으므로 주의할것
 		GPUBuffer(const GPUBuffer& _other);

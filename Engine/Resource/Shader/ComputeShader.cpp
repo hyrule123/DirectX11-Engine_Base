@@ -16,8 +16,8 @@
 
 namespace ehw
 {
-	ComputeShader::ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup)
-		: Shader(_typeID)
+	ComputeShader::ComputeShader(const std::string_view key, const std::type_info& _typeID, uint3 _threadsPerGroup)
+		: Shader(key, _typeID)
 		, m_CSBlob(nullptr)
 		, m_CS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }

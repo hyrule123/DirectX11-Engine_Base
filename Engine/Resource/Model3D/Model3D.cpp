@@ -6,11 +6,11 @@
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/PathManager.h"
 
-#include "Engine/Scene/Scene.h"
-#include "Engine/Scene/GameObject.h"
-#include "Engine/Scene/Component/Renderer/Com_Renderer_3DAnimMesh.h"
-#include "Engine/Scene/Component/Animator/Com_Animator3D.h"
-#include "Engine/Scene/Component/Animator/Animation3D_PlayData.h"
+#include "Engine/Game/Scene.h"
+#include "Engine/Game/GameObject.h"
+#include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
+#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
 #include "Engine/Resource/Shader/GraphicsShader.h"
 
@@ -25,7 +25,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: Resource(typeid(Model3D))
+		: Resource(REGISTER_INSTANCE(Model3D), typeid(Model3D))
 	{
 	}
 
@@ -84,7 +84,7 @@ namespace ehw
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					skeletonStrKey = m_skeleton->GetStrKey();
+					skeletonStrKey = m_skeleton->get_strkey();
 				}
 
 				ser[JSON_KEY(m_skeleton)] << skeletonStrKey;
@@ -109,7 +109,7 @@ namespace ehw
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"] << m_meshContainers[i].mesh->GetStrKey();
+				meshContainer["mesh"] << m_meshContainers[i].mesh->get_strkey();
 
 				//Materials
 				Json::Value& materials = meshContainer["materials"];
@@ -127,7 +127,7 @@ namespace ehw
 						return result;
 					}
 
-					materials[j] << m_meshContainers[i].materials[j]->GetStrKey();
+					materials[j] << m_meshContainers[i].materials[j]->get_strkey();
 				}
 			}
 		}
@@ -232,7 +232,7 @@ namespace ehw
 		newObjects.push_back(std::make_unique<GameObject>());
 		GameObject* root = newObjects.back().get();
 
-		root->SetName(GetStrKey());
+		root->SetName(get_strkey());
 
 		Com_Transform* rootTransform = root->GetComponent<Com_Transform>();
 		
@@ -629,7 +629,7 @@ namespace ehw
 			const std::shared_ptr<Texture>& tex = _mtrl->GetTexture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->GetStrKey() };
+				std::string texKey{ tex->get_strkey() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -661,7 +661,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey = tex->GetStrKey();
+							std::string texKey = tex->get_strkey();
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");

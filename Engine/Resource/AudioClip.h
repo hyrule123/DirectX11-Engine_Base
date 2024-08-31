@@ -5,8 +5,6 @@
 
 namespace ehw
 {
-	
-
 	class AudioClip final : public Resource
 	{
 	public:

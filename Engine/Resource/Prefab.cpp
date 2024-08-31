@@ -2,21 +2,14 @@
 
 #include "Engine/Util/Serialize/json.h"
 
-#include "Engine/Scene/GameObject.h"
+#include "Engine/Game/GameObject.h"
 
 #include "Engine/Manager/ResourceManager.h"
 
 namespace ehw
 {
-	namespace strKey::Json::Prefab
-	{
-		STRKEY_DECLARE(m_prefab);
-	}
-
-	
-
 	Prefab::Prefab()
-		: Resource(typeid(Prefab))
+		: Resource(REGISTER_INSTANCE(Prefab), typeid(Prefab))
 		, m_prefab()
 	{
 	}

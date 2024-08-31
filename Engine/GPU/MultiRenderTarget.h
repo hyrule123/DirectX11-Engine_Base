@@ -1,7 +1,5 @@
 #pragma once
-#include "Engine/Entity.h"
-
-
+#include "Engine/Instance.h"
 
 #include "CommonGPU.h"
 

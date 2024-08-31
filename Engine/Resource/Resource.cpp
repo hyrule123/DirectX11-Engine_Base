@@ -4,16 +4,9 @@
 
 namespace ehw
 {
-	namespace strKey::Json::Resource
-	{
-		STRKEY_DECLARE(m_ComCategory);
-	}
-
-	
-
-
-	Resource::Resource(const std::type_info& _info)
-		: mbEngineDefaultRes()
+	Resource::Resource(const std::string_view key, const std::type_info& _info)
+		: Entity(key)
+		, mbEngineDefaultRes()
 		, m_ResourceTypeInfo(typeid(Resource))
 	{
 	}

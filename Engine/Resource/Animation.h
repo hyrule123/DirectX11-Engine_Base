@@ -7,7 +7,7 @@ namespace ehw
         public Resource
     {
     protected:
-        Animation(const std::type_info& _typeInfo);
+        Animation(const std::string_view key, const std::type_info& _typeInfo);
         virtual ~Animation();
     };
 }

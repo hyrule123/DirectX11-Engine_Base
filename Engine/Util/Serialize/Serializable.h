@@ -12,6 +12,7 @@ namespace std
 #include <fstream>
 #include <string>
 
+//다중상속용 Interface Class
 //===================================================================================================
 //사용법
 // 데이터 직렬화가 필요한 클래스의 헤더에서 이 헤더를 include 한다. 
@@ -48,16 +49,12 @@ namespace ehw
 
 		eResult SaveFile_Binary(std::fs::path const& _fullPath) const;
 		eResult LoadFile_Binary(std::fs::path const& _fullPath);
-
 		
 		virtual eResult Serialize_Binary(BinarySerializer* _ser) const = 0;
 		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) = 0;
 	};
 #pragma endregion //BINARY
 }
-
-
-
 
 #pragma region JSON
 #include "json-forwards.h"

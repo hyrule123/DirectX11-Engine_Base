@@ -173,8 +173,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>
@@ -228,30 +228,32 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DefaultSettingVar.h" />
+    <ClInclude Include="Instance.h" />
+    <ClInclude Include="Manager\InstanceManager.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
-    <ClInclude Include="Scene\Component\iComponent.h" />
-    <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
-    <ClInclude Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.h" />
-    <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Capsule.h" />
-    <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Cube.h" />
-    <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Shapes.h" />
-    <ClInclude Include="Scene\Collision\ContactPair.h" />
-    <ClInclude Include="Scene\Collision\PhysX.h" />
-    <ClInclude Include="Scene\Component\Collider\Com_Collider2D_AABB.h" />
-    <ClInclude Include="Scene\Collision\Collision2D.h" />
-    <ClInclude Include="Scene\Component\Animator\Animation3D_PlayData.h" />
-    <ClInclude Include="Scene\Collision\Collision3D.h" />
-    <ClInclude Include="Scene\Collision\PxActorWrapper.h" />
-    <ClInclude Include="Scene\Collision\PhysXConverter.h" />
-    <ClInclude Include="Scene\Collision\PhysXInstance.h" />
-    <ClInclude Include="Scene\Component\Collider\Com_Collider3D_Sphere.h" />
-    <ClInclude Include="Scene\Component\Rigidbody\Rigidbody.h" />
+    <ClInclude Include="Game\Component\iComponent.h" />
+    <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
+    <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Static.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Cube.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Shapes.h" />
+    <ClInclude Include="Game\Collision\ContactPair.h" />
+    <ClInclude Include="Game\Collision\PhysX.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider2D_AABB.h" />
+    <ClInclude Include="Game\Collision\Collision2D.h" />
+    <ClInclude Include="Game\Component\Animator\Animation3D_PlayData.h" />
+    <ClInclude Include="Game\Collision\Collision3D.h" />
+    <ClInclude Include="Game\Collision\PxActorWrapper.h" />
+    <ClInclude Include="Game\Collision\PhysXConverter.h" />
+    <ClInclude Include="Game\Collision\PhysXInstance.h" />
+    <ClInclude Include="Game\Component\Collider\Com_Collider3D_Sphere.h" />
+    <ClInclude Include="Game\Component\Rigidbody\Rigidbody.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
-    <ClInclude Include="Scene\Component\StateMachine\StateMachine.h" />
+    <ClInclude Include="Game\Component\StateMachine\StateMachine.h" />
     <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Resource\Animation2D.h" />
     <ClInclude Include="Resource\Model3D\Animation3D.h" />
@@ -260,42 +262,40 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\Serialize\Serializable.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\Serialize\base64.h" />
-    <ClInclude Include="Manager\ComponentManager.h" />
-    <ClInclude Include="Scene\Component\BaseComponents.h" />
-    <ClInclude Include="Scene\Component\Animator\Com_Animator2D.h" />
+    <ClInclude Include="Game\Component\BaseComponents.h" />
+    <ClInclude Include="Game\Component\Animator\Com_Animator2D.h" />
     <ClInclude Include="Util\AtExit.h" />
     <ClInclude Include="Resource\AudioClip.h" />
-    <ClInclude Include="Scene\Component\Animator\Com_Animator3D.h" />
-    <ClInclude Include="Scene\Component\Audio\Com_AudioListener.h" />
-    <ClInclude Include="Scene\Component\Audio\Com_AudioSource.h" />
-    <ClInclude Include="Scene\Component\StateMachine\Com_BehaviorTree.h" />
-    <ClInclude Include="Scene\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
-    <ClInclude Include="Scene\Component\Renderer\Com_Renderer_Mesh.h" />
-    <ClInclude Include="Scene\Component\Renderer\Com_Renderer_UIBase.h" />
-    <ClInclude Include="Scene\Component\ComponentInitializer.h" />
+    <ClInclude Include="Game\Component\Animator\Com_Animator3D.h" />
+    <ClInclude Include="Game\Component\Audio\Com_AudioListener.h" />
+    <ClInclude Include="Game\Component\Audio\Com_AudioSource.h" />
+    <ClInclude Include="Game\Component\StateMachine\Com_BehaviorTree.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
     <ClInclude Include="GlobalVariable.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="EngineMain.h" />
     <ClInclude Include="Manager\RenderManager.h" />
     <ClInclude Include="Resource\Animation.h" />
-    <ClInclude Include="Scene\Component\Animator\Animator.h" />
-    <ClInclude Include="Scene\Component\Collider\Collider3D.h" />
-    <ClInclude Include="Scene\Component\Collider\Collider2D.h" />
-    <ClInclude Include="Scene\Collision\CollisionSystem.h" />
+    <ClInclude Include="Game\Component\Animator\Animator.h" />
+    <ClInclude Include="Game\Component\Collider\Collider3D.h" />
+    <ClInclude Include="Game\Component\Collider\Collider2D.h" />
+    <ClInclude Include="Game\Collision\CollisionSystem.h" />
     <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="Scene\Component\Light\Light.h" />
-    <ClInclude Include="Scene\Component\Camera\Com_Camera.h" />
+    <ClInclude Include="Game\Component\Light\Light.h" />
+    <ClInclude Include="Game\Component\Camera\Com_Camera.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h" />
     <ClInclude Include="Util\Serialize\jsonSaveLoad.h" />
     <ClInclude Include="GPU\MultiRenderTarget.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Scene\Component\Collider\Collider.h" />
+    <ClInclude Include="Game\Component\Collider\Collider.h" />
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h" />
-    <ClInclude Include="Scene\Component\define_Component.h" />
+    <ClInclude Include="Game\Component\define_Component.h" />
     <ClInclude Include="define_Macro.h" />
     <ClInclude Include="Resource\define_Resource.h" />
     <ClInclude Include="GPU\GPUBuffer.h" />
-    <ClInclude Include="Scene\Component\Component.h" />
+    <ClInclude Include="Game\Component\Component.h" />
     <ClInclude Include="Resource\Shader\ComputeShader.h" />
     <ClInclude Include="GPU\ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
@@ -303,9 +303,9 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="define_Enum.h" />
     <ClInclude Include="Manager\AudioManager.h" />
     <ClInclude Include="Manager\FontWrapper.h" />
-    <ClInclude Include="Scene\GameObject.h" />
+    <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="GPU\define_GPU.h" />
-    <ClInclude Include="Scene\Component\Script\GridScript.h" />
+    <ClInclude Include="Game\Component\Script\GridScript.h" />
     <ClInclude Include="Manager\InputManager.h" />
     <ClInclude Include="Resource\Model3D\Model3D.h" />
     <ClInclude Include="Resource\Shader\Shader.h" />
@@ -313,53 +313,54 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\LazySingleton.h" />
     <ClInclude Include="Util\Serialize\json-forwards.h" />
     <ClInclude Include="Util\Serialize\json.h" />
-    <ClInclude Include="Scene\Component\Light\Com_Light3D.h" />
+    <ClInclude Include="Game\Component\Light\Com_Light3D.h" />
     <ClInclude Include="Resource\Material.h" />
     <ClInclude Include="Manager\PathManager.h" />
     <ClInclude Include="Resource\Mesh.h" />
-    <ClInclude Include="Scene\Component\Renderer\Renderer.h" />
+    <ClInclude Include="Game\Component\Renderer\Renderer.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h" />
-    <ClInclude Include="Scene\Component\Renderer\Com_Renderer_ParticleSystem.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.h" />
     <ClInclude Include="Resource\Prefab.h" />
     <ClInclude Include="Resource\Resource.h" />
-    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Game\Scene.h" />
     <ClInclude Include="Manager\SceneManager.h" />
-    <ClInclude Include="Scene\Component\Script\Script.h" />
+    <ClInclude Include="Game\Component\Script\Script.h" />
     <ClInclude Include="Resource\Shader\GraphicsShader.h" />
-    <ClInclude Include="Scene\Component\Renderer\Com_Renderer_Sprite.h" />
+    <ClInclude Include="Game\Component\Renderer\Com_Renderer_Sprite.h" />
     <ClInclude Include="Resource\Model3D\Skeleton.h" />
-    <ClInclude Include="Scene\Component\strKey_Component.h" />
+    <ClInclude Include="Game\Component\strKey_Component.h" />
     <ClInclude Include="GPU\StructBuffer.h" />
     <ClInclude Include="Resource\Texture.h" />
     <ClInclude Include="Manager\ThreadPoolManager.h" />
     <ClInclude Include="Manager\TimeManager.h" />
-    <ClInclude Include="Scene\Component\Transform\Com_Transform.h" />
+    <ClInclude Include="Game\Component\Com_Transform.h" />
     <ClInclude Include="Util\define_Util.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
-    <ClCompile Include="Scene\Component\iComponent.cpp" />
-    <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
-    <ClCompile Include="Scene\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Capsule.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Cube.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Shapes.cpp" />
-    <ClCompile Include="Scene\Collision\ContactPair.cpp" />
+    <ClCompile Include="Game\Component\iComponent.cpp" />
+    <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
+    <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Capsule.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Cube.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Shapes.cpp" />
+    <ClCompile Include="Game\Collision\ContactPair.cpp" />
     <ClCompile Include="Common.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Com_Collider2D_AABB.cpp" />
-    <ClCompile Include="Scene\Collision\Collision2D.cpp" />
-    <ClCompile Include="Scene\Component\Animator\Animation3D_PlayData.cpp" />
-    <ClCompile Include="Scene\Collision\Collision3D.cpp" />
-    <ClCompile Include="Scene\Collision\PhysXConverter.cpp" />
-    <ClCompile Include="Scene\Collision\PhysXInstance.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Com_Collider3D_Sphere.cpp" />
-    <ClCompile Include="Scene\Component\Rigidbody\Rigidbody.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider2D_AABB.cpp" />
+    <ClCompile Include="Game\Collision\Collision2D.cpp" />
+    <ClCompile Include="Game\Component\Animator\Animation3D_PlayData.cpp" />
+    <ClCompile Include="Game\Collision\Collision3D.cpp" />
+    <ClCompile Include="Game\Collision\PhysXConverter.cpp" />
+    <ClCompile Include="Game\Collision\PhysXInstance.cpp" />
+    <ClCompile Include="Game\Component\Collider\Com_Collider3D_Sphere.cpp" />
+    <ClCompile Include="Game\Component\Rigidbody\Rigidbody.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
-    <ClCompile Include="Scene\Component\StateMachine\StateMachine.cpp" />
+    <ClCompile Include="Game\Component\StateMachine\StateMachine.cpp" />
     <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
@@ -372,33 +373,31 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Manager\ComponentManager.cpp" />
-    <ClCompile Include="Scene\Component\ComponentInitializer.cpp" />
-    <ClCompile Include="Scene\Component\Animator\Com_Animator2D.cpp" />
+    <ClCompile Include="Game\Component\Animator\Com_Animator2D.cpp" />
     <ClCompile Include="Util\AtExit.cpp" />
     <ClCompile Include="Resource\AudioClip.cpp" />
-    <ClCompile Include="Scene\Component\Animator\Com_Animator3D.cpp" />
-    <ClCompile Include="Scene\Component\Audio\Com_AudioListener.cpp" />
-    <ClCompile Include="Scene\Component\Audio\Com_AudioSource.cpp" />
-    <ClCompile Include="Scene\Component\StateMachine\Com_BehaviorTree.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Com_Renderer_Mesh.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Com_Renderer_UIBase.cpp" />
+    <ClCompile Include="Game\Component\Animator\Com_Animator3D.cpp" />
+    <ClCompile Include="Game\Component\Audio\Com_AudioListener.cpp" />
+    <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp" />
+    <ClCompile Include="Game\Component\StateMachine\Com_BehaviorTree.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
     <ClCompile Include="GlobalVariable.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="EngineMain.cpp" />
     <ClCompile Include="Manager\RenderManager.cpp" />
     <ClCompile Include="Resource\Animation.cpp" />
-    <ClCompile Include="Scene\Component\Animator\Animator.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Collider3D.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Collider2D.cpp" />
-    <ClCompile Include="Scene\Collision\CollisionSystem.cpp" />
+    <ClCompile Include="Game\Component\Animator\Animator.cpp" />
+    <ClCompile Include="Game\Component\Collider\Collider3D.cpp" />
+    <ClCompile Include="Game\Component\Collider\Collider2D.cpp" />
+    <ClCompile Include="Game\Collision\CollisionSystem.cpp" />
     <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="Scene\Component\Light\Light.cpp" />
-    <ClCompile Include="Scene\Component\Camera\Com_Camera.cpp" />
+    <ClCompile Include="Game\Component\Light\Light.cpp" />
+    <ClCompile Include="Game\Component\Camera\Com_Camera.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp" />
     <ClCompile Include="GPU\MultiRenderTarget.cpp" />
-    <ClCompile Include="Scene\Component\Collider\Collider.cpp" />
+    <ClCompile Include="Game\Component\Collider\Collider.cpp" />
     <ClCompile Include="PCH_Engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -416,8 +415,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Manager\FontWrapper.cpp" />
-    <ClCompile Include="Scene\GameObject.cpp" />
-    <ClCompile Include="Scene\Component\Script\GridScript.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\Component\Script\GridScript.cpp" />
     <ClCompile Include="Manager\InputManager.cpp" />
     <ClCompile Include="Util\Serialize\json.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -425,30 +424,30 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Scene\Component\Light\Com_Light3D.cpp" />
+    <ClCompile Include="Game\Component\Light\Com_Light3D.cpp" />
     <ClCompile Include="Resource\Material.cpp" />
     <ClCompile Include="Resource\Model3D\Model3D.cpp" />
     <ClCompile Include="Manager\PathManager.cpp" />
     <ClCompile Include="Resource\Shader\Shader.cpp" />
     <ClCompile Include="Resource\Mesh.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Renderer.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Renderer.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Com_Renderer_ParticleSystem.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.cpp" />
     <ClCompile Include="Resource\Prefab.cpp" />
     <ClCompile Include="Resource\Resource.cpp" />
-    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Game\Scene.cpp" />
     <ClCompile Include="Manager\SceneManager.cpp" />
-    <ClCompile Include="Scene\Component\Script\Script.cpp" />
+    <ClCompile Include="Game\Component\Script\Script.cpp" />
     <ClCompile Include="Resource\Shader\GraphicsShader.cpp" />
-    <ClCompile Include="Scene\Component\Renderer\Com_Renderer_Sprite.cpp" />
+    <ClCompile Include="Game\Component\Renderer\Com_Renderer_Sprite.cpp" />
     <ClCompile Include="Util\SimpleMath.cpp" />
     <ClCompile Include="Resource\Model3D\Skeleton.cpp" />
     <ClCompile Include="GPU\StructBuffer.cpp" />
     <ClCompile Include="Resource\Texture.cpp" />
     <ClCompile Include="Manager\ThreadPoolManager.cpp" />
     <ClCompile Include="Manager\TimeManager.cpp" />
-    <ClCompile Include="Scene\Component\Transform\Com_Transform.cpp" />
+    <ClCompile Include="Game\Component\Com_Transform.cpp" />
     <ClCompile Include="Util\define_Util.cpp" />
   </ItemGroup>
   <ItemGroup>

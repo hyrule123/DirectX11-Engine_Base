@@ -5,11 +5,11 @@
 namespace ehw::editor::strKey
 {
 	STRKEY_DECLARE(MainMenu);
-	STRKEY EditorGraphicsShader = "Graphics Shader Editor";
-	STRKEY GameViewer = "Game Viewer";
-	STRKEY Inspector = "GameObject Inspector";
-	STRKEY ResourceViewer = "Resource Viewer";
-	STRKEY GameObjects = "GameObject Viewer";
-	STRKEY ListBox = "List Box";
-	STRKEY EditorWidget_Tree = "Tree Widget";
+	STR_KEY EditorGraphicsShader = "Graphics Shader Editor";
+	STR_KEY GameViewer = "Game Viewer";
+	STR_KEY Inspector = "GameObject Inspector";
+	STR_KEY ResourceViewer = "Resource Viewer";
+	STR_KEY GameObjects = "GameObject Viewer";
+	STR_KEY ListBox = "List Box";
+	STR_KEY EditorWidget_Tree = "Tree Widget";
 }

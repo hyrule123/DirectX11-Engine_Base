@@ -17,7 +17,8 @@ namespace ehw
 	
 
 	FBXLoader::FBXLoader()
-		: mManager()
+		: Entity(REGISTER_INSTANCE(FBXLoader))
+		, mManager()
 		, mScene()
 		, mBones{}
 		, mAnimNames{}
@@ -709,7 +710,7 @@ namespace ehw
 					ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 				}
 
-				ResourceManager<Material>::GetInst().Insert(pMaterial->GetStrKey(), pMaterial);
+				ResourceManager<Material>::GetInst().Insert(pMaterial->get_strkey(), pMaterial);
 				
 			}
 		}

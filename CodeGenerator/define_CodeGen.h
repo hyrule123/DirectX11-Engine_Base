@@ -2,26 +2,19 @@
 
 #include <regex>
 #include <filesystem>
+#include <string_view>
 
 namespace stdfs = std::filesystem;
 
-
-//#define PRESET constexpr const char*
-
-#define PRESET(_VarNameBase, _String) \
-namespace _VarNameBase {\
-constexpr const char* A = _String;\
-constexpr const wchar_t* W = L##_String;\
-}
-
+#define PRESET(_var_name_base, _string) constexpr const std::string_view _var_name_base = _string
 
 namespace define_Preset
-{
+{	
 	namespace Path
 	{
 		PRESET(ContentsProj, "./Project/Contents");
 		PRESET(EngineProj, "./Project/Base/Engine");
-		PRESET(EngineComponent, "./Project/Base/Engine/Scene/Component");
+		PRESET(EngineComponent, "./Project/Base/Engine/Game/Component");
 		PRESET(Shader_Proj, "./Project/Shader");
 
 
@@ -66,9 +59,6 @@ R"(//=========================================================
 		PRESET(Constructor_T, "CONSTRUCTOR_T(");
 	}
 
-
-
-
 	namespace Regex
 	{
 
@@ -85,7 +75,7 @@ R"(//=========================================================
 		{
 			extern std::regex A;
 			extern std::wregex W;
-			void CreateVarForbiddenRegex();
+			void create_forbidden_regex();
 		}
 
 		PRESET(AllShader, R"(\w+\.hlsl$)");

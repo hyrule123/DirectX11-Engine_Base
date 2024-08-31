@@ -60,19 +60,15 @@
 
 #endif _DEBUG
 
-
 #define NOTIFICATION_W(_c_str) MessageBoxW(nullptr, _c_str, L"Notification", MB_OK)
 #define NOTIFICATION_A(_c_str) MessageBoxA(nullptr, _c_str, "Notification", MB_OK)
-
 
 #define ERROR_MESSAGE(_literalString) ERROR_MESSAGE_W(L##_literalString)
 #define NOTIFICATION(_literalString) NOTIFICATION_W(L##_literalString)
 #define DEBUG_MESSAGE(_literalString) DEBUG_MESSAGE_W(L##_literalString)
 
-
-#define STRKEY constexpr const char*
-#define STRKEY_DECLARE(_AStr) STRKEY _AStr = #_AStr
-
+#define STR_KEY constexpr const std::string_view
+#define STR_KEY_DECLARE(_key) STR_KEY _key = #_key
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
 

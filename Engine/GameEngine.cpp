@@ -2,9 +2,9 @@
 
 #include "Engine/Util/AtExit.h"
 
-#include "Engine/Scene/Collision/PhysXInstance.h"
-#include "Engine/Scene/Component/ComponentInitializer.h"
+#include "Engine/Game/Collision/PhysXInstance.h"
 
+#include "Engine/Manager/InstanceManager.h"
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/TimeManager.h"
 #include "Engine/Manager/InputManager.h"
@@ -66,7 +66,7 @@ namespace ehw
 		AudioManager::GetInst().Init();
 		FontWrapper::GetInst().Init();
 
-		ComponentInitializer::Init();
+		InstanceManager::GetInst().init();
 		
 		TimeManager::GetInst().Init();
 

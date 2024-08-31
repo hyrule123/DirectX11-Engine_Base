@@ -5,10 +5,10 @@
 #include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/ConstBuffer.h"
 
-#include "Engine/Scene/Component/Light/Com_Light3D.h"
-#include "Engine/Scene/Component/Camera/Com_Camera.h"
-#include "Engine/Scene/Component/Renderer/Renderer.h"
-#include "Engine/Scene/GameObject.h"
+#include "Engine/Game/Component/Light/Com_Light3D.h"
+#include "Engine/Game/Component/Camera/Com_Camera.h"
+#include "Engine/Game/Component/Renderer/Renderer.h"
+#include "Engine/Game/GameObject.h"
 
 namespace ehw {
 	SceneRenderAgent::SceneRenderAgent()

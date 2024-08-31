@@ -4,27 +4,6 @@
 
 namespace ehw
 {
-	//enum class eResourceType
-	//{
-	//	UNKNOWN = -1,
-	//	Mesh,
-	//	Model3D,
-
-	//	Texture,
-	//	Material,
-	//	//Sound,
-	//	/*Font,*/
-	//	Animation,
-
-	//	AudioClip,
-	//	Prefab,
-	//	
-	//	GraphicsShader,
-	//	ComputeShader,
-	//	END,
-
-	//};
-
 	namespace strKey
 	{
 		namespace path
@@ -33,39 +12,39 @@ namespace ehw
 			{
 				namespace resource
 				{
-					STRKEY Resource = "Res";
+					STR_KEY Resource = "Res";
 
-					STRKEY Texture = "Texture";
-					STRKEY Mesh = "Mesh";
+					STR_KEY Texture = "Texture";
+					STR_KEY Mesh = "Mesh";
 
-					STRKEY Material = "Material";
+					STR_KEY Material = "Material";
 
-					STRKEY Animation2D = "Animation2D";
+					STR_KEY Animation2D = "Animation2D";
 
 					//모델링 설정에 따라 애니메이션을 사용할수도 안할수도 있음
-					STRKEY Model3D = "Model3D";
-					STRKEY Skeleton = "Engine/Resource/Model3D/Skeleton";
+					STR_KEY Model3D = "Model3D";
+					STR_KEY Skeleton = "Engine/Resource/Model3D/Skeleton";
 
-					STRKEY AudioClip = "AudioClip";
+					STR_KEY AudioClip = "AudioClip";
 
-					STRKEY GraphicsShader = "Shader/Graphics";
-					STRKEY ComputeShader = "Shader/Compute";
+					STR_KEY GraphicsShader = "Shader/Graphics";
+					STR_KEY ComputeShader = "Shader/Compute";
 				}
 
 
-				STRKEY CompiledShader = "Shader";
+				STR_KEY CompiledShader = "Shader";
 			}
 
 			namespace extension
 			{
-				STRKEY CompiledShader = ".cso";
-				STRKEY Mesh = ".mesh";
-				STRKEY Model3D = ".json";
-				STRKEY Material = ".json";
-				STRKEY Skeleton = ".sklt";
-				STRKEY Anim3D = ".a3d";
-				STRKEY ShaderSetting = ".json";
-				STRKEY Texture[] =
+				STR_KEY CompiledShader = ".cso";
+				STR_KEY Mesh = ".mesh";
+				STR_KEY Model3D = ".json";
+				STR_KEY Material = ".json";
+				STR_KEY Skeleton = ".sklt";
+				STR_KEY Anim3D = ".a3d";
+				STR_KEY ShaderSetting = ".json";
+				STR_KEY Texture[] =
 				{
 					".png",
 					".dds",
@@ -84,74 +63,74 @@ namespace ehw
 		{
 			namespace mesh
 			{
-				STRKEY_DECLARE(PointMesh);
-				STRKEY_DECLARE(RectMesh);
-				STRKEY_DECLARE(DebugRectMesh);
-				STRKEY_DECLARE(DebugCubeMesh);
-				STRKEY_DECLARE(CircleMesh);
-				STRKEY_DECLARE(CubeMesh);
+				STR_KEY_DECLARE(PointMesh);
+				STR_KEY_DECLARE(RectMesh);
+				STR_KEY_DECLARE(DebugRectMesh);
+				STR_KEY_DECLARE(DebugCubeMesh);
+				STR_KEY_DECLARE(CircleMesh);
+				STR_KEY_DECLARE(CubeMesh);
 
-				STRKEY_DECLARE(SphereMesh);
+				STR_KEY_DECLARE(SphereMesh);
 			}
 
 			namespace material
 			{
-				STRKEY_DECLARE(RectMaterial);
-				STRKEY_DECLARE(SpriteMaterial);
-				STRKEY_DECLARE(UIMaterial);
-				STRKEY_DECLARE(GridMaterial);
-				STRKEY_DECLARE(DebugMaterial);
-				STRKEY_DECLARE(ParticleMaterial);
-				STRKEY_DECLARE(Basic3DMaterial);
-				STRKEY_DECLARE(PostProcessMaterial);
-				STRKEY_DECLARE(DefferedMaterial);
-				STRKEY_DECLARE(MergeMaterial);
-				STRKEY_DECLARE(LightDirMaterial);
-				STRKEY_DECLARE(LightPointMaterial);
+				STR_KEY_DECLARE(RectMaterial);
+				STR_KEY_DECLARE(SpriteMaterial);
+				STR_KEY_DECLARE(UIMaterial);
+				STR_KEY_DECLARE(GridMaterial);
+				STR_KEY_DECLARE(DebugMaterial);
+				STR_KEY_DECLARE(ParticleMaterial);
+				STR_KEY_DECLARE(Basic3DMaterial);
+				STR_KEY_DECLARE(PostProcessMaterial);
+				STR_KEY_DECLARE(DefferedMaterial);
+				STR_KEY_DECLARE(MergeMaterial);
+				STR_KEY_DECLARE(LightDirMaterial);
+				STR_KEY_DECLARE(LightPointMaterial);
 			}
 
 			namespace texture
 			{
-				STRKEY DefaultSprite = "DefaultSprite.png";
-				STRKEY CartoonSmoke = "particle\\CartoonSmoke.png";
-				STRKEY noise_01 = "noise\\noise_01.png";
-				STRKEY noise_02 = "noise\\noise_02.png";
-				STRKEY noise_03 = "noise\\noise_03.jpg";
-				STRKEY BasicCube = "Cube\\TILE_01.tga";
-				STRKEY BasicCubeNormal = "Cube\\TILE_01_N.tga";
-				STRKEY Brick = "Cube\\Brick.jpg";
-				STRKEY Brick_N = "Cube\\Brick_N.jpg";
-				STRKEY PaintTexture = "PaintTexture";
-				STRKEY RenderTarget = "RenderTarget";
+				STR_KEY DefaultSprite = "DefaultSprite.png";
+				STR_KEY CartoonSmoke = "particle\\CartoonSmoke.png";
+				STR_KEY noise_01 = "noise\\noise_01.png";
+				STR_KEY noise_02 = "noise\\noise_02.png";
+				STR_KEY noise_03 = "noise\\noise_03.jpg";
+				STR_KEY BasicCube = "Cube\\TILE_01.tga";
+				STR_KEY BasicCubeNormal = "Cube\\TILE_01_N.tga";
+				STR_KEY Brick = "Cube\\Brick.jpg";
+				STR_KEY Brick_N = "Cube\\Brick_N.jpg";
+				STR_KEY PaintTexture = "PaintTexture";
+				STR_KEY RenderTarget = "RenderTarget";
 			}
 
 			namespace shader
 			{
 				namespace graphics
 				{
-					STRKEY_DECLARE(RectShader);
-					STRKEY_DECLARE(SpriteShader);
-					STRKEY_DECLARE(UIShader);
-					STRKEY_DECLARE(GridShader);
-					STRKEY_DECLARE(DebugShader);
-					STRKEY_DECLARE(NormalConvertShader);
-					STRKEY_DECLARE(ParticleShader);
-					STRKEY_DECLARE(PostProcessShader);
-					STRKEY_DECLARE(Basic3DShader);
-					STRKEY_DECLARE(DefferedShader);
-					//STRKEY_DECLARE(LightShader);
-					STRKEY_DECLARE(LightDirShader);
-					STRKEY_DECLARE(LightPointShader);
-					STRKEY_DECLARE(MergeShader);
+					STR_KEY_DECLARE(RectShader);
+					STR_KEY_DECLARE(SpriteShader);
+					STR_KEY_DECLARE(UIShader);
+					STR_KEY_DECLARE(GridShader);
+					STR_KEY_DECLARE(DebugShader);
+					STR_KEY_DECLARE(NormalConvertShader);
+					STR_KEY_DECLARE(ParticleShader);
+					STR_KEY_DECLARE(PostProcessShader);
+					STR_KEY_DECLARE(Basic3DShader);
+					STR_KEY_DECLARE(DefferedShader);
+					//STR_KEY_DECLARE(LightShader);
+					STR_KEY_DECLARE(LightDirShader);
+					STR_KEY_DECLARE(LightPointShader);
+					STR_KEY_DECLARE(MergeShader);
 				}
 				namespace compute
 				{
-					STRKEY_DECLARE(ParticleCS);
-					STRKEY_DECLARE(PostProcessShader);
-					STRKEY_DECLARE(BasicShader);
-					STRKEY_DECLARE(Animation3D);
-					STRKEY_DECLARE(NormalConvert);
-					STRKEY_DECLARE(GPUInitSetting);
+					STR_KEY_DECLARE(ParticleCS);
+					STR_KEY_DECLARE(PostProcessShader);
+					STR_KEY_DECLARE(BasicShader);
+					STR_KEY_DECLARE(Animation3D);
+					STR_KEY_DECLARE(NormalConvert);
+					STR_KEY_DECLARE(GPUInitSetting);
 				}
 			}
 		}

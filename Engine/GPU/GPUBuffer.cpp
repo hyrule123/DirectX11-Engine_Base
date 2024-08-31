@@ -3,14 +3,16 @@
 
 namespace ehw
 {
-	GPUBuffer::GPUBuffer(eBufferType _Type)
-		: m_bufferType(_Type)
+	GPUBuffer::GPUBuffer(const std::string_view key, eBufferType _Type)
+		: Entity(key)
+		, m_bufferType(_Type)
 		, m_bufferDesc{}
 		, m_buffer{}
 	{
 	}
 	GPUBuffer::GPUBuffer(const GPUBuffer& _other)
-		: m_bufferType(_other.m_bufferType)
+		: Entity(_other)
+		, m_bufferType(_other.m_bufferType)
 		, m_bufferDesc{_other.m_bufferDesc}
 		, m_buffer{}
 	{

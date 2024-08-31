@@ -24,7 +24,7 @@ namespace ehw
 {
 	
 	Skeleton::Skeleton()
-		: Resource(typeid(Skeleton))
+		: Resource(REGISTER_INSTANCE(Skeleton), typeid(Skeleton))
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
@@ -246,7 +246,7 @@ namespace ehw
 				return result;
 			}
 			
-			std::string animName = anim->GetStrKey();
+			std::string animName = anim->get_strkey();
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정

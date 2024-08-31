@@ -4,18 +4,17 @@
 
 #include <iostream>
 
-void ManualInput(std::vector<std::string>& _args);
-void CreateTextureKey();
-void CreateShaderKey();
-void CreateEngineComponentKey();
-void CreateUserComponentKey();
-void CreateScriptKey();
-void CreateSceneKey();
+void manual_input(std::vector<std::string>& _args);
+void create_texture_key();
+void create_shader_key();
+void create_engine_component_key();
+void create_user_component_key();
+void create_script_key();
+void create_scene_key();
 
 //시작 지점 = $(SolutionDir) : 상대 경로로 작업해주면 된다.
 int main(int argc, char* argv[])
 {
-
     std::vector<std::string>args{};
     for (int i = 1; i < argc; ++i)
     {
@@ -25,9 +24,8 @@ int main(int argc, char* argv[])
     //argument가 들어오지 않았을 경우 직접 입력 받는다
     if (args.empty())
     {
-        ManualInput(args);
+        manual_input(args);
     }
-
 
     for (size_t i = 0; i < args.size(); ++i)
     {
@@ -35,38 +33,34 @@ int main(int argc, char* argv[])
 
         if ("ENGINECOMPONENT" == args[i])
         {
-            CreateEngineComponentKey();
+            create_engine_component_key();
         }
         else if ("USERCOMPONENT" == args[i])
         {
-            CreateUserComponentKey();
+            create_user_component_key();
         }
-        //else if ("TEXTURE" == args[i])
-        //{
-        //    CreateTextureKey();
-        //}
         else if ("SHADER" == args[i])
         {
-            CreateShaderKey();
+            create_shader_key();
         }
 
         else if ("SCRIPT" == args[i])
         {
-            CreateScriptKey();
+            create_script_key();
         }
         else if ("SCENE" == args[i])
         {
-            CreateSceneKey();
+            create_scene_key();
         }
     }
     
     return 0;
 }
 
-void CreateTextureKey()
+void create_texture_key()
 {
     //CreateBuffer variable name restraints regex
-    define_Preset::Regex::g_VarForbiddenChars::CreateVarForbiddenRegex();
+    define_Preset::Regex::g_VarForbiddenChars::create_forbidden_regex();
 
     constexpr const char* TexExt[] = { ".bmp", ".png", ".jpg", ".tga", ".dds" };
     constexpr const size_t TexExtSize = sizeof(TexExt) / sizeof(TexExt[0]);
@@ -99,7 +93,7 @@ void CreateTextureKey()
     //탐색
     {
         DirTree::tSearchDesc desc{};
-        desc.rootPath = define_Preset::Path::Resources::A;
+        desc.rootPath = define_Preset::Path::Resources;
         desc.rootPath /= ehw::strKey::path::directory::resource::Texture;
         desc.regex = reg;
         desc.prevTextFileName = "FoundTextures";
@@ -110,7 +104,7 @@ void CreateTextureKey()
     //strKey 작성
     {
         DirTree::tStrKeyWriteDesc desc{};
-        desc.filePath = define_Preset::Path::ContentsProj::A;
+        desc.filePath = define_Preset::Path::ContentsProj;
         desc.filePath /= "strKey_Texture.h";
         desc.rootNamespace = "texture";
         desc.bEraseExtension = false;
@@ -121,7 +115,7 @@ void CreateTextureKey()
     }
 }
 
-void ManualInput(std::vector<std::string>& _args)
+void manual_input(std::vector<std::string>& _args)
 {
     std::cout << "[[Manual Mode]]" << std::endl;
 
@@ -145,37 +139,37 @@ void ManualInput(std::vector<std::string>& _args)
     }
 }
 
-void CreateShaderKey()
+void create_shader_key()
 {
     DirTree DirTree;
 
     //탐색
     {
         DirTree::tSearchDesc desc{};
-        desc.rootPath = define_Preset::Path::Shader_Proj::A;
-        desc.regex = std::regex(define_Preset::Regex::AllShader::A);
+        desc.rootPath = define_Preset::Path::Shader_Proj;
+        desc.regex = std::regex(define_Preset::Regex::AllShader.data());
         desc.prevTextFileName = "FoundShaders";
         DirTree.SearchRecursive(desc);
     }
     
     //쉐이더 StrKey 작성
     {
-        stdfs::path strKeyPath = define_Preset::Path::ContentsProj::A;
+        stdfs::path strKeyPath = define_Preset::Path::ContentsProj;
         strKeyPath /= "strKey_Shader.h";
         DirTree.CreateShaderStrKey(strKeyPath);
     }
 }
 
-void CreateEngineComponentKey()
+void create_engine_component_key()
 {
     DirTree DirTree;
-    stdfs::path DirPath = define_Preset::Path::EngineComponent::A;
+    stdfs::path DirPath = define_Preset::Path::EngineComponent;
 
     //탐색
     {
         DirTree::tSearchDesc desc{};
         desc.rootPath = DirPath;
-        desc.regex = std::regex(define_Preset::Regex::ComponentRegex::A);
+        desc.regex = std::regex(define_Preset::Regex::ComponentRegex.data());
         desc.prevTextFileName = "FoundEngineComponents";
         DirTree.SearchRecursive(desc);
     }
@@ -200,15 +194,15 @@ void CreateEngineComponentKey()
         Desc.OwnerClassName = "ComponentInitializer";
         
         Desc.BaseType = "iComponent";
-        Desc.BasePath_FoundHeader = "Engine/Scene/Component";
+        Desc.BasePath_FoundHeader = "Engine/Game/Component";
 
-        Desc.IncludePath_OwnerClass = R"("Engine/Scene/Component/ComponentInitializer.h")";
-        Desc.IncludePath_BaseTypeHeader = R"("Engine/Scene/Component/iComponent.h")";
+        Desc.IncludePath_OwnerClass = R"("Engine/Game/Component/ComponentInitializer.h")";
+        Desc.IncludePath_BaseTypeHeader = R"("Engine/Game/Component/iComponent.h")";
         Desc.IncludePath_PreCompiledHeader = R"("Engine/PCH_Engine.h")";
-        Desc.IncludePath_StrKeyHeader = R"("Engine/Scene/Component/strKey_Component.h")";
+        Desc.IncludePath_StrKeyHeader = R"("Engine/Game/Component/strKey_Component.h")";
         Desc.IncludePath_ManagerHeader = R"("Engine/Manager/ComponentManager.h")";
 
-        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
+        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = 
             R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::component::##T))";
@@ -218,16 +212,16 @@ void CreateEngineComponentKey()
     }
 }
 
-void CreateUserComponentKey()
+void create_user_component_key()
 {
     DirTree DirTree;
-    stdfs::path DirPath = define_Preset::Path::ContentsProj::A;
+    stdfs::path DirPath = define_Preset::Path::ContentsProj;
 
     //탐색
     {
         DirTree::tSearchDesc desc{};
         desc.rootPath = DirPath;
-        desc.regex = std::regex(define_Preset::Regex::ComponentRegex::A);
+        desc.regex = std::regex(define_Preset::Regex::ComponentRegex.data());
         desc.prevTextFileName = "FoundUserComponents";
         DirTree.SearchRecursive(desc);
     }
@@ -256,10 +250,10 @@ void CreateUserComponentKey()
 
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_UserComponent.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/iComponent.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/iComponent.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
         Desc.IncludePath_ManagerHeader = R"(<Engine/Manager/ComponentManager.h>)";
-        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
+        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::component::##T))";
         Desc.UserClassMgr_InitFuncName = "InitUserComponent()";
@@ -270,16 +264,16 @@ void CreateUserComponentKey()
 
 }
 
-void CreateScriptKey()
+void create_script_key()
 {
     DirTree DirTree;
-    stdfs::path DirPath = define_Preset::Path::ContentsProj::A;
+    stdfs::path DirPath = define_Preset::Path::ContentsProj;
 
     //탐색
     {
         DirTree::tSearchDesc desc{};
         desc.rootPath = DirPath;
-        desc.regex = define_Preset::Regex::ScriptRegex::A;
+        desc.regex = define_Preset::Regex::ScriptRegex.data();
         desc.prevTextFileName = "FoundScripts";
         DirTree.SearchRecursive(desc);
     }
@@ -309,10 +303,10 @@ void CreateScriptKey()
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
 
         Desc.IncludePath_PreCompiledHeader = R"("PCH_Contents.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Component/Script/Script.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Component/Script/Script.h>)";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Script.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/ComponentManager.h>";
-        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
+        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(ComponentManager::GetInst().AddComponentConstructor<T>(strKey::script::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScript()";
@@ -322,17 +316,17 @@ void CreateScriptKey()
     }
 }
 
-void CreateSceneKey()
+void create_scene_key()
 
 //Generate Scene
 {
     DirTree DirTree;
-    stdfs::path DirPath = define_Preset::Path::ContentsProj::A;
+    stdfs::path DirPath = define_Preset::Path::ContentsProj;
 
     {
         DirTree::tSearchDesc desc{};
         desc.rootPath = DirPath;
-        desc.regex = std::regex(define_Preset::Regex::SceneRegex::A);
+        desc.regex = std::regex(define_Preset::Regex::SceneRegex.data());
         desc.prevTextFileName = "FoundScenes";
         DirTree.SearchRecursive(desc);
     }
@@ -358,12 +352,12 @@ void CreateSceneKey()
         Desc.OwnerClassName = "ContentsInitializer";
 
         Desc.IncludePath_OwnerClass = R"("Contents/ContentsInitializer.h")";
-        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Scene/Scene.h>)";
+        Desc.IncludePath_BaseTypeHeader = R"(<Engine/Game/Scene.h>)";
         Desc.IncludePath_PreCompiledHeader = R"("Contents/PCH_Contents.h")";
         Desc.IncludePath_StrKeyHeader = R"("Contents/strKey_Scene.h")";
         Desc.IncludePath_ManagerHeader = "<Engine/Manager/SceneManager.h>";
 
-        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace::A;
+        Desc.MasterNamespace = define_Preset::Keyword::EngineMasterNamespace;
         Desc.UsingNamespace = "";
         Desc.Constructor_T_MacroDefine = R"(SceneManager::GetInst().AddSceneConstructor<T>(strKey::scene::##T))";
         Desc.UserClassMgr_InitFuncName = "InitScene()";

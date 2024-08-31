@@ -22,7 +22,7 @@
 namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(typeid(NormalConvertShader), uint3{32, 32, 1})
+		: ComputeShader(REGISTER_INSTANCE(NormalConvertShader), typeid(NormalConvertShader), uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		
@@ -68,7 +68,7 @@ namespace ehw
 			return false;
 		}
 		
-		mDestTex->SetStrKey(mSrcTex->GetStrKey());
+		mDestTex->SetStrKey(mSrcTex->get_strkey());
 
 		//원본
 		mSrcTex->BindDataSRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);

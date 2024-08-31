@@ -15,7 +15,7 @@ namespace ehw
 		: public Shader
 	{
 	public:
-		ComputeShader(const std::type_info& _typeID, uint3 _threadsPerGroup);
+		ComputeShader(const std::string_view key, const std::type_info& _typeID, uint3 _threadsPerGroup);
 		virtual ~ComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에

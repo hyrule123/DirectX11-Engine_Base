@@ -14,11 +14,16 @@
 namespace ehw
 {
     Material::Material()
-        : Resource(typeid(Material))
+        : Resource(REGISTER_INSTANCE(Material), typeid(Material))
         , m_constBufferData{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}
         , m_textures{}
+    {
+    }
+
+    Material::Material(std::string_view key)
+        : Resource(key, typeid(Material))
     {
     }
 
@@ -59,7 +64,7 @@ namespace ehw
             //shader
             if (m_shader)
             {
-                ser[JSON_KEY(m_shader)] << m_shader->GetStrKey();
+                ser[JSON_KEY(m_shader)] << m_shader->get_strkey();
             }
             else
             {
@@ -73,7 +78,7 @@ namespace ehw
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->GetStrKey();
+                    textures[i] << m_textures[i]->get_strkey();
                 }
                 else
                 {

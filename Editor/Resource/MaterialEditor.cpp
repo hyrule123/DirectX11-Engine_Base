@@ -16,7 +16,7 @@
 
 namespace ehw::editor
 {
-	STRKEY eRenderingMode_String[(int)eRenderingMode::END] =
+	STR_KEY eRenderingMode_String[(int)eRenderingMode::END] =
 	{
 		//Deffered
 		"DefferdOpaque",

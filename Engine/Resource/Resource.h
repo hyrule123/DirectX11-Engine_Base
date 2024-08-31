@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Entity.h"
+#include "Engine/Instance.h"
 
 #include "Engine/Resource/define_Resource.h"
 
@@ -10,7 +10,7 @@ namespace ehw
 		, public std::enable_shared_from_this<Entity>
 	{
 	public:
-		Resource(const std::type_info& _info);
+		Resource(const std::string_view key, const std::type_info& _info);
 
 		Resource(const Resource& _other) = default;
 

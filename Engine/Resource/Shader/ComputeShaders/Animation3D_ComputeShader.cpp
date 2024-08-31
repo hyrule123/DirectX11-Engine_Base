@@ -13,12 +13,10 @@
 #error 헤더 include 해주세요
 #endif
 
-
-
 namespace ehw
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(typeid(Animation3D_ComputeShader), uint3(256u, 1u, 1u))
+		: ComputeShader(REGISTER_INSTANCE(Animation3D_ComputeShader), typeid(Animation3D_ComputeShader), uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}

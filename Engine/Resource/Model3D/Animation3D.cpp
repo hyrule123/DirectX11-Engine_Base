@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : Animation(typeid(Animation3D))
+        : Animation(REGISTER_INSTANCE(Animation3D), typeid(Animation3D))
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}

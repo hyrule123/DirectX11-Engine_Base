@@ -26,7 +26,7 @@ namespace ehw
 
 	namespace strKey
 	{
-		STRKEY ArrGSPrefix[(int)eGSStage::END] =
+		STR_KEY ArrGSPrefix[(int)eGSStage::END] =
 		{
 			"VS_",
 			"HS_",
@@ -34,7 +34,7 @@ namespace ehw
 			"GS_",
 			"PS_",
 		};
-		STRKEY CSPrefix = "CS_";
+		STR_KEY CSPrefix = "CS_";
 	}
 
 
@@ -209,7 +209,7 @@ namespace ehw
 	};
 	namespace strKey
 	{
-		STRKEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
+		STR_KEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
 		{
 			"AlbedoTarget",
 			"NormalTarget",
@@ -228,7 +228,7 @@ namespace ehw
 	};
 	namespace strKey
 	{
-		STRKEY eMRT_Light_String[(int)eMRT_Light::END]
+		STR_KEY eMRT_Light_String[(int)eMRT_Light::END]
 		{
 			"DiffuseLightTarget",
 			"SpecularLightTarget",

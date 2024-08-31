@@ -68,10 +68,10 @@ HRESULT DirTree::CreateStrKeyHeader(const tStrKeyWriteDesc& _desc)
 
 	CodeWriter Writer;
 
-	Writer.WriteCode(0, define_Preset::Keyword::PragmaOnce::A);
-	Writer.WriteCode(0, define_Preset::Keyword::Head::A);
+	Writer.WriteCode(0, define_Preset::Keyword::PragmaOnce);
+	Writer.WriteCode(0, define_Preset::Keyword::Head);
 
-	Writer.WriteCode(0, define_Preset::Keyword::DefineSTRKEY::A);
+	Writer.WriteCode(0, define_Preset::Keyword::DefineSTRKEY);
 
 	//루트 노드의 경우 이름도 알맞게 바꿔줘야 함.
 	Writer.WriteCode(0);
@@ -79,7 +79,7 @@ HRESULT DirTree::CreateStrKeyHeader(const tStrKeyWriteDesc& _desc)
 
 	{
 		std::stringstream strCode{};
-		strCode << "namespace " << define_Preset::Keyword::EngineMasterNamespace::A;
+		strCode << "namespace " << define_Preset::Keyword::EngineMasterNamespace;
 		strCode << "::strKey::";
 		strCode << _desc.rootNamespace;
 		Writer.WriteCode(0, strCode.view());
@@ -113,7 +113,7 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 	}
 
 	CodeWriter Writer{};
-	Writer.WriteCode(0, define_Preset::Keyword::Head::A);
+	Writer.WriteCode(0, define_Preset::Keyword::Head);
 
 	{
 		if(false == _Desc.IncludePath_PreCompiledHeader.empty())
@@ -174,7 +174,7 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 			}
 			//CONSTRUCTOR_T(T) 
 			std::stringstream strCode{};
-			strCode << define_Preset::Keyword::Define_Constructor_T::A << _Desc.Constructor_T_MacroDefine;
+			strCode << define_Preset::Keyword::Define_Constructor_T << _Desc.Constructor_T_MacroDefine;
 			Writer.WriteCode(1, strCode.view());
 
 			Writer.WriteCode(1, "");
@@ -227,7 +227,7 @@ HRESULT DirTree::CreateComponentManagerInitCode(tAddBaseClassDesc const& _Desc)
 			const std::string& ClassName = iter.first.filename().replace_extension("").string();
 
 			std::stringstream strCode{};
-			strCode << define_Preset::Keyword::Constructor_T::A << ClassName << ");";
+			strCode << define_Preset::Keyword::Constructor_T << ClassName << ");";
 			Writer.WriteCode(1, strCode.view());
 		}
 	}
@@ -269,7 +269,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	std::unordered_map<stdfs::path, tShaderGroup> umapGSGroup;
 
 	std::vector<stdfs::path> vecCS;
-	std::regex CSRegex(define_Preset::Regex::CShaderRegex::A);
+	std::regex CSRegex(define_Preset::Regex::CShaderRegex.data());
 	
 
 
@@ -315,9 +315,9 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 
 
 	//코드 작성 시작
-	Writer.WriteCode(0, define_Preset::Keyword::PragmaOnce::A);
-	Writer.WriteCode(0, define_Preset::Keyword::Head::A);
-	Writer.WriteCode(0, define_Preset::Keyword::DefineSTRKEY::A);
+	Writer.WriteCode(0, define_Preset::Keyword::PragmaOnce);
+	Writer.WriteCode(0, define_Preset::Keyword::Head);
+	Writer.WriteCode(0, define_Preset::Keyword::DefineSTRKEY);
 
 	Writer.WriteCode(0);
 	Writer.WriteCode(0);
@@ -325,7 +325,7 @@ HRESULT DirTree::CreateShaderStrKey(stdfs::path const& _FilePath)
 	{
 		std::string strCode;
 		strCode +=  "namespace ";
-		strCode += define_Preset::Keyword::strKey::A;
+		strCode += define_Preset::Keyword::strKey;
 		strCode += "Shader";
 		Writer.WriteCode(0, strCode);
 		Writer.OpenBracket(0);

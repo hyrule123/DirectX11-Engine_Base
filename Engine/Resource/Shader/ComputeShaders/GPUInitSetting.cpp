@@ -16,7 +16,7 @@
 namespace ehw
 {
 	GPUInitSetting::GPUInitSetting()
-		: ComputeShader(typeid(GPUInitSetting), uint3(1u, 1u, 1u))
+		: ComputeShader(REGISTER_INSTANCE(GPUInitSetting), typeid(GPUInitSetting), uint3(1u, 1u, 1u))
 	{
 		SetEngineDefaultRes(true);
 	}

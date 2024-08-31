@@ -20,6 +20,7 @@ namespace ehw
 	{
 	public:
 		Material();
+		Material(std::string_view key);
 
 		Material(const Material& _other);
 		CLONE_ABLE(Material);

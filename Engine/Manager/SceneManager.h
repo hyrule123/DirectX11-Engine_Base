@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Util/StaticSingleton.h"
 
-#include "Engine/Scene/Scene.h"
+#include "Engine/Game/Scene.h"
 
 namespace ehw
 {
@@ -17,7 +17,6 @@ namespace ehw
 		void FixedUpdate();
 		void Update();
 		void FinalUpdate();
-		void Render();
 		void FrameEnd();
 		void Release();
 

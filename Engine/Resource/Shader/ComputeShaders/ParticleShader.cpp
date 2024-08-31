@@ -10,7 +10,7 @@
 namespace ehw
 {
 	ParticleShader::ParticleShader()
-		: ComputeShader(typeid(ParticleShader), uint3(128, 1, 1))
+		: ComputeShader(REGISTER_INSTANCE(ParticleShader), typeid(ParticleShader), uint3(128, 1, 1))
 		, mBuffer(nullptr)
 		, mSharedBuffer(nullptr)
 	{

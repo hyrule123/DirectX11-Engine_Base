@@ -1,7 +1,7 @@
 #include "Engine/Resource/AudioClip.h"
 
 
-#include "Engine/Scene/Component/Transform/Com_Transform.h"
+#include "Engine/Game/Component/Com_Transform.h"
 
 #include "Engine/Manager/ResourceManager.h"
 
@@ -13,7 +13,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: Resource(typeid(AudioClip))
+		: Resource(REGISTER_INSTANCE(AudioClip), typeid(AudioClip))
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)

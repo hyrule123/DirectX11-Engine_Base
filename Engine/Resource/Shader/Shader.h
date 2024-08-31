@@ -7,7 +7,7 @@ namespace ehw
 		public Resource
 	{
 	public:
-		Shader(const std::type_info& _typeInfo);
+		Shader(const std::string_view key, const std::type_info& _typeInfo);
 		virtual ~Shader();
 	};
 }

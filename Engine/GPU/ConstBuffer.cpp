@@ -1,13 +1,11 @@
 #include "Engine/GPU/ConstBuffer.h"
 
-
-
 #include "Engine/Manager/RenderManager.h"
 
 namespace ehw
 {
 	ConstBuffer::ConstBuffer(eCBType _type)
-		: GPUBuffer(eBufferType::Const)
+		: GPUBuffer(REGISTER_INSTANCE(ConstBuffer), eBufferType::Const)
 		, m_constBufferType(_type)
 		, mDataSize()
 		, mDataCount()
