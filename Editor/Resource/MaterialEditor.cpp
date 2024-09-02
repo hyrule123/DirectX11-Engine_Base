@@ -179,7 +179,7 @@ namespace ehw::editor
 			auto Tex = mTargetMaterial->GetTexture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_keypath().c_str());
+				ImGui::Text(Tex->get_keypath().data());
 			}
 			else
 			{
@@ -338,7 +338,7 @@ namespace ehw::editor
 		mTargetMaterial = std::shared_ptr<Material>(mTargetMaterial->Clone());
 
 		std::string strKey = outputPath.filename().string();
-		mTargetMaterial->SetStrKey(strKey);
+		mTargetMaterial->set_keypath(strKey);
 
 		ResourceManager<Material>::GetInst().Save(mTargetMaterial.get());
 	}

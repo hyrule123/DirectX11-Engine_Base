@@ -24,7 +24,6 @@ namespace ehw
 	{
 	}
 
-
 	void Com_Renderer_UIBase::Render()
 	{
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);

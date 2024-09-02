@@ -334,7 +334,7 @@ namespace ehw::editor
 
 		for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 		{
-			ImGui::InputText(::ehw::strKey::ArrGSPrefix[i], &mStageNames[i]);
+			ImGui::InputText(::ehw::strKey::ArrGSPrefix[i].data(), &mStageNames[i]);
 		}
 
 		ImGui::Separator();
@@ -414,7 +414,7 @@ namespace ehw::editor
 				if (std::string::npos != pos)
 				{
 					std::string baseFileName = entry.path().filename().replace_extension(::ehw::strKey::path::extension::ShaderSetting).string();
-					baseFileName.erase(pos, std::strlen(::ehw::strKey::ArrGSPrefix[i]));
+					baseFileName.erase(pos, std::strlen(::ehw::strKey::ArrGSPrefix[i].data()));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
 					break;
@@ -450,7 +450,7 @@ namespace ehw::editor
 				Json::Value jVal;
 				{
 					GraphicsShader DummyGS;
-					DummyGS.SetStrKey(iter.first.string());
+					DummyGS.set_keypath(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 

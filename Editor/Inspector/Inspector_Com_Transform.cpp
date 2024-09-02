@@ -3,7 +3,7 @@
 #include "Editor/Inspector/InspectorBase.h"
 
 #include <Engine/Game/GameObject.h>
-#include <Engine/Game/Component/Transform/Com_Transform.h>
+#include <Engine/Game/Component/Com_Transform.h>
 
 namespace ehw::editor
 {

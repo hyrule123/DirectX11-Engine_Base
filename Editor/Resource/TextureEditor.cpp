@@ -25,11 +25,11 @@ namespace ehw::editor
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		const std::string& key = targetTex->get_keypath();
+		const std::string_view key = targetTex->get_keypath();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"
-			, (char*)key.c_str(), key.size(), ImGuiInputTextFlags_ReadOnly);
+			, (char*)key.data(), key.size(), ImGuiInputTextFlags_ReadOnly);
 
 		//ImGui::Text("Path	"); ImGui::SameLine();
 		//ImGui::InputText("##TexPath"

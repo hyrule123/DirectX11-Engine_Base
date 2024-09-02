@@ -1,5 +1,6 @@
 #include "Editor/DebugObject/DebugObject.h"
 
+#include <Engine/Game/Component/Component.h>
 
 namespace ehw::editor
 {

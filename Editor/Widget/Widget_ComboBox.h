@@ -18,7 +18,7 @@ namespace ehw::editor
 
 			tComboItem() : strName(), pData() {};
 
-			tComboItem(const std::string& _strName, tDataPtr _pData = {})
+			tComboItem(const std::string_view _strName, tDataPtr _pData = {})
 				: strName(_strName)
 				, pData(_pData)
 			{}

@@ -101,7 +101,7 @@ namespace ehw::editor
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(::ehw::strKey::eComponentCategory_String[(UINT)i]);
+			IndicatorButton(::ehw::strKey::eComponentCategory_String[(UINT)i].data());
 
 			if (mTargetGameObject && mGuiComponents[i])
 			{
