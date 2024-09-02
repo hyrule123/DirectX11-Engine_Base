@@ -24,7 +24,7 @@ namespace ehw
 {
 	
 	Skeleton::Skeleton()
-		: Resource(REGISTER_INSTANCE(Skeleton), typeid(Skeleton))
+		: Resource(INSTANCE_ABLE(Skeleton))
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
@@ -35,11 +35,11 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _strKeyPath) const
+	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _key_path) const
 	{
 		//상위 디렉토리 있는지 테스트
 		{
-			std::fs::path checkDir = _strKeyPath;
+			std::fs::path checkDir = _key_path;
 			checkDir.remove_filename();
 			if (false == std::fs::is_directory(checkDir))
 			{
@@ -48,7 +48,7 @@ namespace ehw
 			}
 		}
 
-		std::fs::path fullPath = _basePath / _strKeyPath;
+		std::fs::path fullPath = _basePath / _key_path;
 		//Skeleton
 		eResult result = SaveFile_Binary(fullPath);
 		if (eResult_fail(result))
@@ -77,11 +77,11 @@ namespace ehw
 		}
 
 
-		return SaveFile_Binary(_basePath / _strKeyPath);
+		return SaveFile_Binary(_basePath / _key_path);
 	}
-	eResult Skeleton::Load(const std::fs::path& _basePath, const std::fs::path& _strKeyPath)
+	eResult Skeleton::Load(const std::fs::path& _basePath, const std::fs::path& _key_path)
 	{
-		std::fs::path fullPath = _basePath / _strKeyPath;
+		std::fs::path fullPath = _basePath / _key_path;
 
 		//Skeleton
 		eResult result = LoadFile_Binary(fullPath);
@@ -246,7 +246,7 @@ namespace ehw
 				return result;
 			}
 			
-			std::string animName = anim->get_strkey();
+			std::string animName(anim->get_strkey());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정

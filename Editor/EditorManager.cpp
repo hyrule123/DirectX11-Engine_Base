@@ -7,11 +7,11 @@
 #include <Engine/Util/Serialize/JsonSerializer.h>
 #include <Engine/Resource/Mesh.h>
 #include <Engine/Resource/Material.h>
-#include <Engine/Scene/Component/Transform/Com_Transform.h>
-#include <Engine/Scene/Component/Renderer/Com_Renderer_Mesh.h>
-#include <Engine/Scene/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Game/Component/Transform/Com_Transform.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 
-#include <Engine/Scene/Collision/CollisionSystem.h>
+#include <Engine/Game/Collision/CollisionSystem.h>
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>
@@ -426,7 +426,7 @@ namespace ehw::editor
 	bool EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
-		const std::string_view guiName = _pBase->GetStrKey();
+		const std::string_view guiName = _pBase->get_keypath();
 
 		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
 		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
@@ -438,7 +438,7 @@ namespace ehw::editor
 			//_pBase->MakeUniqueKeyByName();
 		}
 
-		mGuiWindows.insert(std::make_pair(_pBase->GetStrKey(), _pBase));
+		mGuiWindows.insert(std::make_pair(_pBase->get_keypath(), _pBase));
 
 		_pBase->InitRecursive();
 

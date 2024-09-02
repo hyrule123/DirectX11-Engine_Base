@@ -16,8 +16,8 @@
 
 namespace ehw
 {
-	ComputeShader::ComputeShader(const std::string_view key, const std::type_info& _typeID, uint3 _threadsPerGroup)
-		: Shader(key, _typeID)
+	ComputeShader::ComputeShader(const std::string_view key, uint3 _threadsPerGroup)
+		: Shader(key)
 		, m_CSBlob(nullptr)
 		, m_CS(nullptr)
 		, mCB_ComputeShader{ _threadsPerGroup,  }
@@ -30,9 +30,9 @@ namespace ehw
 	{
 	}
 
-	eResult ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		return CreateByCSO(_baseDir / _strKeyPath);
+		return CreateByCSO(_baseDir / _key_path);
 	}
 
 	eResult ComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)

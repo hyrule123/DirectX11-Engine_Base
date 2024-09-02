@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Animation2D::Animation2D()
-		: Animation(REGISTER_INSTANCE(Animation2D), typeid(Animation2D))
+		: Animation(INSTANCE_ABLE(Animation2D))
 		, mAnimator(nullptr)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}

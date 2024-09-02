@@ -16,7 +16,7 @@
 namespace ehw
 {
 	GameObject::GameObject()
-		: Entity(REGISTER_INSTANCE(GameObject))
+		: Entity(INSTANCE_ABLE(GameObject))
 		, m_baseComponents()
 		, m_scene()
 		, m_layer(UINT_MAX)

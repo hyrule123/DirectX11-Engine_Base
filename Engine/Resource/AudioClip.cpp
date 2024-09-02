@@ -13,7 +13,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: Resource(REGISTER_INSTANCE(AudioClip), typeid(AudioClip))
+		: Resource(INSTANCE_ABLE(AudioClip))
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)
@@ -30,9 +30,9 @@ namespace ehw
 	}
 
 
-	eResult AudioClip::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult AudioClip::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		std::fs::path fullPath = _baseDir / _strKeyPath;
+		std::fs::path fullPath = _baseDir / _key_path;
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE("파일이 없습니다.");

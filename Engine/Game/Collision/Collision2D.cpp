@@ -3,6 +3,8 @@
 #include "Engine/Game/Collision/CollisionSystem.h"
 
 #include "Engine/Game/GameObject.h"
+
+#include "Engine/Game/Component/Camera/Com_Camera.h"
 #include "Engine/Game/Component/Collider/Collider2D.h"
 #include "Engine/Game/Component/Collider/Com_Collider2D_AABB.h"
 

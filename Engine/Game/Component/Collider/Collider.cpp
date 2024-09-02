@@ -1,6 +1,7 @@
 #include "Engine/Game/Component/Collider/Collider.h"
 
 #include "Engine/Game/GameObject.h"
+#include "Engine/Game/Component/Script/Script.h"
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/Collision/CollisionSystem.h"
 

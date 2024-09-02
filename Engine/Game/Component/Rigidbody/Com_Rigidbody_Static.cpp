@@ -8,7 +8,7 @@
 namespace ehw
 {
 	Com_Rigidbody_Static::Com_Rigidbody_Static()
-		: Rigidbody(REGISTER_INSTANCE(Com_Rigidbody_Static))
+		: Rigidbody(INSTANCE_ABLE(Com_Rigidbody_Static))
 	{
 	}
 

@@ -22,7 +22,7 @@
 namespace ehw
 {
 	Mesh::Mesh()
-		: Resource(REGISTER_INSTANCE(Mesh), typeid(Mesh))
+		: Resource(INSTANCE_ABLE(Mesh))
 		, m_topology(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 		, m_vertexInfo{}
 		, m_indexInfos{}
@@ -41,18 +41,17 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
-		std::fs::path filePath = _baseDir / _strKeyPath;
+		std::fs::path filePath = _baseDir / _key_path;
 		filePath.replace_extension(strKey::path::extension::Mesh);
 		return SaveFile_Binary(filePath);
 	}
 
-	eResult Mesh::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Mesh::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		std::fs::path filePath = _baseDir / _strKeyPath;
+		std::fs::path filePath = _baseDir / _key_path;
 		filePath.replace_extension(strKey::path::extension::Mesh);
-		SetStrKey(_strKeyPath.string());
 		return LoadFile_Binary(filePath);
 	}
 

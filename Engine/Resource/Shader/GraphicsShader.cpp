@@ -12,7 +12,7 @@
 namespace ehw
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(REGISTER_INSTANCE(GraphicsShader), typeid(GraphicsShader))
+		: Shader(INSTANCE_ABLE(GraphicsShader))
 		, m_arrShaderCode{}
 		, m_rasterizerType(eRSType::SolidBack)
 		, m_depthStencilType(eDSType::Less)
@@ -26,14 +26,14 @@ namespace ehw
 	{
 	}
 
-	eResult GraphicsShader::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+	eResult GraphicsShader::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
-		return SaveFile_Json(_baseDir / _strKeyPath);
+		return SaveFile_Json(_baseDir / _key_path);
 	}
 
-	eResult GraphicsShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult GraphicsShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		return LoadFile_Json(_baseDir / _strKeyPath);
+		return LoadFile_Json(_baseDir / _key_path);
 	}
 
 	eResult GraphicsShader::CreateByCompile(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)

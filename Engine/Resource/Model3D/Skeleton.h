@@ -19,8 +19,8 @@ namespace ehw
 		Skeleton();
 		virtual ~Skeleton();
 
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 		virtual eResult Serialize_Binary(BinarySerializer* _ser) const override;
 		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) override;

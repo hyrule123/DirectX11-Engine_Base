@@ -58,7 +58,7 @@ namespace ehw::editor
 			std::string curText = "* Current: ";
 			if (mTextureSrc)
 			{
-				curText += mTextureSrc->GetStrKey();
+				curText += mTextureSrc->get_keypath();
 			}
 			else
 			{
@@ -127,7 +127,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 			if (mTextureSrc)
 			{
-				texFile /= mTextureSrc->GetStrKey();
+				texFile /= mTextureSrc->get_keypath();
 			}
 
 			mTextureDestDir = WinAPI::FileDialog(texFile, vecExt);
@@ -165,7 +165,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 			if (convertedTex)
 			{
 				std::fs::path savePath = mTextureDestDir;
-				std::fs::path texKey = convertedTex->GetStrKey();
+				std::fs::path texKey = convertedTex->get_keypath();
 				savePath /= texKey.filename();
 
 				if (std::fs::exists(savePath))

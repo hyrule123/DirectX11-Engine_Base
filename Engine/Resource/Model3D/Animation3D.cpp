@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : Animation(REGISTER_INSTANCE(Animation3D), typeid(Animation3D))
+        : Animation(INSTANCE_ABLE(Animation3D))
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}
@@ -60,13 +60,13 @@ namespace ehw
         m_SBufferKeyFrame->UnbindData();
     }
 
-    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    eResult Animation3D::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
@@ -153,7 +153,7 @@ namespace ehw
 
         m_OwnerSkeleton = _skeleton;
 
-        SetStrKey(_clip->strName);
+        set_keypath(_clip->strName);
 
         switch (_clip->TimeMode)
         {

@@ -7,7 +7,7 @@
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
-		: Animator(REGISTER_INSTANCE(Com_Animator2D), eDimensionType::_2D)
+		: Animator(INSTANCE_ABLE(Com_Animator2D), eDimensionType::_2D)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)

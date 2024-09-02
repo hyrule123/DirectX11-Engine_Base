@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes()
-		: Collider3D(REGISTER_INSTANCE(Com_Collider3D_Shapes), eCollider3DType::Rigid)
+		: Collider3D(INSTANCE_ABLE(Com_Collider3D_Shapes), eCollider3DType::Rigid)
 		, m_pxShapes{}
 	{
 	}

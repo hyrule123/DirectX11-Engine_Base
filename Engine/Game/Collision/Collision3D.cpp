@@ -7,6 +7,8 @@
 #include "Engine/Game/Component/Com_Transform.h"
 #include "Engine/Game/Component/Collider/Collider3D.h"
 #include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
+#include "Engine/Game/Component/Rigidbody/Rigidbody.h"
+#include "Engine/Game/Component/Camera/Com_Camera.h"
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 
@@ -74,7 +76,7 @@ namespace ehw
 		m_pxScene = PhysXInstance::GetInst().GetPhysX().createScene(sceneDescription);
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
-		m_pxScene->setName(gameScene->get_strkey().c_str());
+		m_pxScene->setName(gameScene->get_strkey().data());
 
 		m_pxScene->userData = this;
 	}

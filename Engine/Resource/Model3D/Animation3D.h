@@ -44,8 +44,8 @@ namespace ehw
         void BindData();
         void UnBindData();
 
-        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
-        virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+        virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
         eResult Serialize_Binary(BinarySerializer* _ser) const override;
         eResult DeSerialize_Binary(const BinarySerializer* _ser) override;

@@ -4,11 +4,12 @@
 #include "Engine/Game/Collision/Collision3D.h"
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
+#include "Engine/Game/Component/Com_Transform.h"
 
 namespace ehw
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Shapes(REGISTER_INSTANCE(Com_Collider3D_Sphere), eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(INSTANCE_ABLE(Com_Collider3D_Sphere), eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}

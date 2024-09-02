@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_AudioListener::Com_AudioListener()
-		: Component(REGISTER_INSTANCE(Com_AudioListener))
+		: Component(INSTANCE_ABLE(Com_AudioListener))
 	{
 	}
 

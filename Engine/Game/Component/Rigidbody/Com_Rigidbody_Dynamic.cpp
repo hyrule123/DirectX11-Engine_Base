@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
-		: Rigidbody(REGISTER_INSTANCE(Com_Rigidbody_Dynamic))
+		: Rigidbody(INSTANCE_ABLE(Com_Rigidbody_Dynamic))
 		, m_isMassMode {false}
 		, m_densityOrMass {g_defaultDensity}
 	{

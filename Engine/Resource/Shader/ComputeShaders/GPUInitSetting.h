@@ -14,7 +14,7 @@ namespace ehw
 		GPUInitSetting();
 		virtual ~GPUInitSetting();
 
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 	protected:
 		virtual bool BindData() override;

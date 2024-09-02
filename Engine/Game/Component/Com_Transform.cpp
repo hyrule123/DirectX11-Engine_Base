@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_Transform::Com_Transform()
-		: Component(REGISTER_INSTANCE(Com_Transform))
+		: Component(INSTANCE_ABLE(Com_Transform))
 		, m_localScale(float3::One)
 		, m_localSize(float3::One)
 		, m_localRotation(Quaternion::Identity)

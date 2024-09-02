@@ -15,7 +15,7 @@ namespace ehw
 		: public Shader
 	{
 	public:
-		ComputeShader(const std::string_view key, const std::type_info& _typeID, uint3 _threadsPerGroup);
+		ComputeShader(const std::string_view key, uint3 _threadsPerGroup);
 		virtual ~ComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
@@ -24,7 +24,7 @@ namespace ehw
 		//Load 함수와 BindData, UnbindData 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 		eResult CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize);

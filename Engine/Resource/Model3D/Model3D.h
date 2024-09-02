@@ -39,18 +39,13 @@ namespace ehw
 		virtual ~Model3D();
 
 		//Model3D의 경로명 = 폴더명
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) override;
+		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 		
 		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
 		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
 
 		std::vector<std::unique_ptr<GameObject>> Instantiate();
-
-		//Instantiate(GetOwner());
-		//자신의 포인터는 리턴되는 값의 0번에 들어감.
-		//기존의 BaseComponent는 전부 제거되므로 주의할것.
-		std::vector<std::unique_ptr<GameObject>> Instantiate(GameObject* const _obj);
 
 	private:
 		eResult ConvertFBX(

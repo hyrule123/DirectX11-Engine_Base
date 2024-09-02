@@ -11,9 +11,9 @@
 #include <Engine/Manager/ResourceManager.h>
 
 
-#include <Engine/Scene/GameObject.h>
-#include <Engine/Scene/Component/Renderer/Com_Renderer_Mesh.h>
-#include <Engine/Scene/Component/Renderer/Com_Renderer_Sprite.h>
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Game/Component/Renderer/Com_Renderer_Sprite.h>
 
 #include <Engine/Resource/Mesh.h>
 #include <Engine/Resource/Material.h>
@@ -58,9 +58,9 @@ namespace ehw::editor
 			return;
 
 		std::string meshName
-			= mMesh->GetStrKey();
+			= mMesh->get_keypath();
 		std::string materialName
-			= mMaterial->GetStrKey();
+			= mMaterial->get_keypath();
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()

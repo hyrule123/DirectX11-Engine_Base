@@ -131,13 +131,13 @@ namespace ehw
 
 		if (false == IsComponentCategoryValid(order))
 		{
-			delete T;
+			delete ret;
 			ret = nullptr;
 			return ret;
 		}
 
 		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return AddComponent(ret);
+		return static_cast<T*>(AddComponent(ret));
 	}
 
 	template <typename T>
@@ -148,14 +148,7 @@ namespace ehw
 		//Script는 이름을 통한 비교
 		if constexpr (std::is_base_of_v<Script, T>)
 		{
-			const std::string_view key = Instance<T>::get_strkey();
-			for (size_t i = 0; i < m_scripts.size(); ++i)
-			{
-				if (key == m_scripts[i]->get_strkey()) {
-					pCom = m_scripts[i];
-					break;
-				}
-			}
+			pCom = GetScript<T>();
 		}
 
 		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
@@ -187,23 +180,11 @@ namespace ehw
 	template<typename T>
 	inline T* GameObject::GetScript()
 	{
-		std::shared_ptr<T> ret = nullptr;
-		UINT32 comTypeID = iComponent::GetComponentTypeID<T>;
-		for (size_t i = 0; i < m_scripts.size(); ++i)
-		{
-			if (comTypeID == m_scripts[i]->GetComponentTypeID())
-			{
-				ret = std::static_pointer_cast<T>(m_scripts[i]);
-				break;
-			}
-		}
-
-		return ret;
-	}
+		return static_cast<T*>(GetScript(ClassInfo<T>::get_name()));
+	};
 
 	inline Com_Transform* GameObject::Transform()
 	{
 		return (Com_Transform*)m_baseComponents[(int)eComponentCategory::Transform];
 	};
 }
-

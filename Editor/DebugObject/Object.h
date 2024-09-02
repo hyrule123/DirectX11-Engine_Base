@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/Scene/GameObject.h>
+#include <Engine/Game/GameObject.h>
 
 namespace ehw::editor
 {

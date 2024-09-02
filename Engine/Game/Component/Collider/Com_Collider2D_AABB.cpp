@@ -2,10 +2,12 @@
 
 #include "Engine/Game/GameObject.h"
 
+#include "Engine/Game/Component/Com_Transform.h"
+
 namespace ehw
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
-		: Collider2D(REGISTER_INSTANCE(Com_Collider2D_AABB), eCollider2D_Shape::AABB)
+		: Collider2D(INSTANCE_ABLE(Com_Collider2D_AABB), eCollider2D_Shape::AABB)
 		, m_offsetScale(100.f)
 		, m_leftBottom(0.f, 0.f)
 		, m_rightTop(100.f, 100.f)
@@ -18,12 +20,14 @@ namespace ehw
 
 	void Com_Collider2D_AABB::UpdateShape()
 	{
-		if (false == m_isOffsetScaleUpdated && false == GetTransform()->IsTransformUpdated())
+		Com_Transform* tr = gameObject()->GetComponent<Com_Transform>();
+
+		if (false == m_isOffsetScaleUpdated && false == tr->IsTransformUpdated())
 		{
 			return;
 		}
 
-		const MATRIX& worldMat = GetTransform()->GetWorldMatrix();
+		const MATRIX& worldMat = tr->GetWorldMatrix();
 		float2 pos = float2(worldMat._41, worldMat._42);
 		float2 halfExtentXY = m_offsetScale;
 

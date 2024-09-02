@@ -26,7 +26,7 @@ namespace ehw
 	MATRIX Com_Camera::s_projectionMatrix = MATRIX::Identity;
 
 	Com_Camera::Com_Camera()
-		: Component(REGISTER_INSTANCE(Com_Camera))
+		: Component(INSTANCE_ABLE(Com_Camera))
 		, m_viewMatrix()
 		, m_viewInverse()
 		, m_projectionMatrix()
@@ -494,14 +494,14 @@ namespace ehw
 	}
 
 	Com_Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
-		: Com_Camera::CullingAgent(REGISTER_INSTANCE(CullingAgent_Orthographic))
+		: Com_Camera::CullingAgent(INSTANCE_ABLE(CullingAgent_Orthographic))
 	{
 	}
 	Com_Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::CullingAgent_Perspective()
-		: Com_Camera::CullingAgent(REGISTER_INSTANCE(CullingAgent_Perspective))
+		: Com_Camera::CullingAgent(INSTANCE_ABLE(CullingAgent_Perspective))
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::~CullingAgent_Perspective()

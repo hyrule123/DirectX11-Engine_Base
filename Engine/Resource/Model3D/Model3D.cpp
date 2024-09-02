@@ -8,6 +8,8 @@
 
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/GameObject.h"
+
+#include "Engine/Game/Component/Com_Transform.h"
 #include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
 #include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
@@ -25,7 +27,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: Resource(REGISTER_INSTANCE(Model3D), typeid(Model3D))
+		: Resource(INSTANCE_ABLE(Model3D))
 	{
 	}
 
@@ -34,12 +36,12 @@ namespace ehw
 	}
 
 
-	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path strKey = _strKeyPath;
+		std::fs::path strKey = _key_path;
 		strKey.replace_extension();
 
 		std::fs::path fullPath = _baseDir / strKey / strKey;
@@ -48,12 +50,12 @@ namespace ehw
 		return LoadFile_Json(fullPath);
 	}
 
-	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path strKey = _strKeyPath;
+		std::fs::path strKey = _key_path;
 		strKey.replace_extension();
 
 		std::fs::path fullPath = _baseDir / strKey / strKey;
@@ -307,30 +309,6 @@ namespace ehw
 		return newObjects;
 	}
 
-	std::vector<std::unique_ptr<GameObject>> Model3D::Instantiate(GameObject* const _obj)
-	{
-		std::vector<std::unique_ptr<GameObject>> ret{};
-		
-		if (nullptr == _obj)
-		{
-			return ret;
-		}
-		
-		ret = Instantiate();
-		
-		if (ret.empty())
-		{
-			return ret;
-		}
-		
-		//ret[0] -> root 게임오브젝트
-		_obj->SwapBaseComponents((*ret[0]));
-		ret[0] = std::unique_ptr<GameObject>(_obj);
-
-		return ret;
-	}
-
-
 	eResult Model3D::ConvertFBX(
 		const std::fs::path& _fbxPath, bool _bStatic,
 		const std::fs::path& _dirAndFileName
@@ -390,7 +368,7 @@ namespace ehw
 		{
 			std::fs::path skltStrKey = filePath;
 			skltStrKey.replace_extension(strKey::path::extension::Skeleton);
-			m_skeleton->SetStrKey(skltStrKey.string());
+			m_skeleton->set_keypath(skltStrKey.string());
 		}
 		result = m_skeleton->CreateFromFBX(&loader);
 
@@ -445,7 +423,7 @@ namespace ehw
 			//.msh로 확장자를 변경
 			strKey.replace_extension(strKey::path::extension::Mesh);
 			//Key로 Mesh를 저장
-			meshCont.mesh->SetStrKey(strKey.string());
+			meshCont.mesh->set_keypath(strKey.string());
 
 
 			// 메테리얼 가져오기
@@ -523,7 +501,7 @@ namespace ehw
 		std::fs::path strKey = _texDestDir.filename();
 		strKey /= _fbxMtrl->strMtrlName;
 		strKey.replace_extension(strKey::path::extension::Material);
-		mtrl->SetStrKey(strKey.string());
+		mtrl->set_keypath(strKey.string());
 
 		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
 
@@ -661,7 +639,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey = tex->get_strkey();
+							std::string texKey(tex->get_strkey());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");

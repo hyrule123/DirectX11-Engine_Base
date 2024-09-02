@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: Resource(REGISTER_INSTANCE(Texture), typeid(Texture))
+		: Resource(INSTANCE_ABLE(Texture))
 		, mDesc()
 		, mTexture()
 		, mImage()
@@ -165,14 +165,14 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
-		return SaveFile(_baseDir / _strKeyPath);
+		return SaveFile(_baseDir / _key_path);
 	}
 
-	eResult Texture::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Texture::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		std::fs::path fullPath = _baseDir / _strKeyPath;
+		std::fs::path fullPath = _baseDir / _key_path;
 
 		if (false == std::fs::exists(fullPath))
 		{

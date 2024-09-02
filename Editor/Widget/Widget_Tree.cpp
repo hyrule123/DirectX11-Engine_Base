@@ -41,9 +41,9 @@ namespace ehw::editor
 		}
 		if (mbStem && m_Childs.empty())
 		{
-			SetStrKey("\t" + GetStrKey());
+			SetStrKey("\t" + get_keypath());
 		}
-		if (ImGui::TreeNodeEx(GetStrKey().c_str(), flag))
+		if (ImGui::TreeNodeEx(get_keypath().c_str(), flag))
 		{
 			if (!mbStem && ImGui::IsItemHovered(0) && ImGui::IsMouseClicked(0))
 			{

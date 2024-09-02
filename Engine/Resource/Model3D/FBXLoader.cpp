@@ -17,7 +17,7 @@ namespace ehw
 	
 
 	FBXLoader::FBXLoader()
-		: Entity(REGISTER_INSTANCE(FBXLoader))
+		: Entity(INSTANCE_ABLE(FBXLoader))
 		, mManager()
 		, mScene()
 		, mBones{}
@@ -649,7 +649,7 @@ namespace ehw
 				pMaterial = std::make_shared<Material>();
 
 				// 상대경로가 곧 키
-				pMaterial->SetStrKey(mContainers[i].vecMtrl[j].strMtrlName);
+				pMaterial->set_keypath(mContainers[i].vecMtrl[j].strMtrlName);
 
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것

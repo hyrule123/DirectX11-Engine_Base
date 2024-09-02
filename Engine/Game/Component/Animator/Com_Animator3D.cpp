@@ -20,7 +20,7 @@
 namespace ehw
 {
 	Com_Animator3D::Com_Animator3D()
-		: Animator(REGISTER_INSTANCE(Com_Animator3D), eDimensionType::_3D)
+		: Animator(INSTANCE_ABLE(Com_Animator3D), eDimensionType::_3D)
 		, m_sharedPlayData()
 	{
 	}

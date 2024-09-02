@@ -5,6 +5,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Material.h"
 
 namespace ehw
 {

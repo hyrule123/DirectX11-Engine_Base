@@ -1,7 +1,9 @@
 #include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 
-#include "Engine/Game/Component/Animator/Com_Animator3D.h"
 #include "Engine/Game/GameObject.h"
+
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
+#include "Engine/Game/Component/Com_Transform.h"
 
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Mesh.h"
@@ -11,7 +13,7 @@
 namespace ehw
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
-		: Com_Renderer_Mesh(REGISTER_INSTANCE(Com_Renderer_3DAnimMesh))
+		: Com_Renderer_Mesh(INSTANCE_ABLE(Com_Renderer_3DAnimMesh))
 	{
 	}
 

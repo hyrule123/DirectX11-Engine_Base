@@ -480,7 +480,7 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->SetStrKey(strKey::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_keypath(strKey::eMRT_Deffered_String[i]);
 			}
 
 
@@ -505,7 +505,7 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->SetStrKey(strKey::eMRT_Light_String[i]);
+				arrRTTex[i]->set_keypath(strKey::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();

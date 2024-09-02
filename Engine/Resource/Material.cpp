@@ -14,7 +14,7 @@
 namespace ehw
 {
     Material::Material()
-        : Resource(REGISTER_INSTANCE(Material), typeid(Material))
+        : Resource(INSTANCE_ABLE(Material))
         , m_constBufferData{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}
@@ -23,7 +23,7 @@ namespace ehw
     }
 
     Material::Material(std::string_view key)
-        : Resource(key, typeid(Material))
+        : Resource(key)
     {
     }
 
@@ -40,14 +40,14 @@ namespace ehw
     {
     }
 
-    eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath) const
+    eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
     {
-        return SaveFile_Json(_baseDir / _strKeyPath);
+        return SaveFile_Json(_baseDir / _key_path);
     }
 
-    eResult Material::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+    eResult Material::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
     {
-        return LoadFile_Json(_baseDir / _strKeyPath);
+        return LoadFile_Json(_baseDir / _key_path);
     }
 
     eResult Material::Serialize_Json(JsonSerializer* _ser) const

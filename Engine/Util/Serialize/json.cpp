@@ -1784,7 +1784,7 @@ namespace Json {
             if (name.length() >= (1U << 30))
                 throwRuntimeError("keylength >= 2^30");
             if (features_.rejectDupKeys_ && currentValue().isMember(name)) {
-                String msg = "Duplicate key: '" + name + "'";
+                String msg = "Duplicate s_name: '" + name + "'";
                 return addErrorAndRecover(msg, tokenName, tokenObjectEnd);
             }
 
@@ -3584,7 +3584,7 @@ namespace Json {
     Value& Value::resolveReference(char const* key, char const* end) {
         JSON_ASSERT_MESSAGE(
             type() == nullValue || type() == objectValue,
-            "in Json::Value::resolveReference(key, end): requires objectValue");
+            "in Json::Value::resolveReference(s_name, end): requires objectValue");
         if (type() == nullValue)
             *this = Value(objectValue);
         CZString actualKey(key, static_cast<unsigned>(end - key),

@@ -3,8 +3,8 @@
 
 #include <type_traits>
 
-#define INSTANCE(_class_) InstanceRegisterHelper<_class_, #_class_>
-#define REGISTER_INSTANCE(_class_) InstanceRegisterHelper<_class_, #_class_>::get_strkey()
+#define INSTANCE_ABLE(_class_) ClassRegisterHelper<_class_, #_class_, true>::get_name()
+#define INSTANCE_UNABLE(_class_) ClassRegisterHelper<_class_, #_class_, false>::get_name()
 
 namespace ehw {
 	template<unsigned N>
@@ -24,22 +24,24 @@ namespace ehw {
 	template<unsigned N> FixedString(char const (&)[N]) -> FixedString<N - 1>;
 
 	template <typename T>
-	class Instance {
+	class ClassInfo {
 	public:
-		inline static const std::string_view get_strkey() { return key; }
+		inline static const std::string_view get_name() { return s_name; }
 	protected:
-		static std::string_view key;
+		static std::string_view s_name;
 	};
 
 	//최초 선언 시 타입에 대한 문자열을 등록한다.
-	template <typename T, FixedString S>
-	class InstanceRegisterHelper
-		: public Instance<T>
+	template <typename T, FixedString S, bool Is_Instantiable>
+	class ClassRegisterHelper
+		: public ClassInfo<T>
 	{
 	private:
 		static const int register_inst() {
-			Instance<T>::key = std::string_view(S);
-			InstanceManager::GetInst().add_ctor<T>(Instance<T>::key);
+			ClassInfo<T>::s_name = std::string_view(S);
+			if constexpr (Is_Instantiable) {
+				InstanceManager::GetInst().add_ctor<T>(ClassInfo<T>::s_name);
+			}
 			return 1;
 		}
 		//처음 1회 초기화를 위한 변수

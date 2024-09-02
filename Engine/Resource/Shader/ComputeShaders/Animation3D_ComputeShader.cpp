@@ -16,7 +16,7 @@
 namespace ehw
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(REGISTER_INSTANCE(Animation3D_ComputeShader), typeid(Animation3D_ComputeShader), uint3(256u, 1u, 1u))
+		: ComputeShader(INSTANCE_ABLE(Animation3D_ComputeShader), uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}
@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	eResult Animation3D_ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _strKeyPath)
+	eResult Animation3D_ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		return ComputeShader::CreateByHeader(CS_Animation3D, sizeof(CS_Animation3D));
 	}

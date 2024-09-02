@@ -3,9 +3,9 @@
 #include "Editor/EditorManager.h"
 #include "Editor/Inspector/InspectorBase.h"
 
-#include <Engine/Scene/Scene.h>
+#include <Engine/Game/Scene.h>
 
-#include <Engine/Scene/GameObject.h>
+#include <Engine/Game/GameObject.h>
 
 #include <Engine/Manager/SceneManager.h>
 #include <Engine/Manager/RenderManager.h>
@@ -60,7 +60,7 @@ namespace ehw::editor
 		mTreeWidget->Clear();
 
 		Scene* scene = SceneManager::GetInst().GetActiveScene();
-		std::string sceneName = scene->GetStrKey();
+		std::string sceneName = scene->get_keypath();
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, tDataPtr{}, true);
 

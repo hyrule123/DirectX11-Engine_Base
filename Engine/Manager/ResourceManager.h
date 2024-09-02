@@ -26,10 +26,10 @@ namespace ehw
 
 		inline eResult Save(const std::string_view _strKey);
 		inline eResult Save(ResourceTypes* _resPtr);
-		inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath);
+		inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _key_path);
 
 		template <typename DerivedResType = ResourceTypes>
-		inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _strKeyPath);
+		inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _key_path);
 
 		template <typename DerivedResType = ResourceTypes>
 		inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
@@ -60,30 +60,28 @@ namespace ehw
 
 	template<typename ResourceTypes>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::Load(const std::filesystem::path& _strKeyPath)
+	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::Load(const std::filesystem::path& _key_path)
 	{
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
 
 		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
 
-		if (_strKeyPath.empty())
+		if (_key_path.empty())
 		{
 			return nullptr;
 		}
 
-		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(_strKeyPath.string());
+		std::string key_path = _key_path.string();
+		std::shared_ptr<DerivedResType> returnPtr = Find<DerivedResType>(key_path);
 
 		if(nullptr == returnPtr)
 		{
 			returnPtr = std::make_shared<DerivedResType>();
-
-			returnPtr->SetStrKey(_strKeyPath.string());
-
-			eResult result = returnPtr->Load(m_BaseDir, _strKeyPath);
+			eResult result = returnPtr->Load(m_BaseDir, _key_path);
 
 			if (eResult_success(result))
 			{
-				Insert(_strKeyPath.string(), static_pointer_cast<ResourceTypes>(returnPtr));
+				Insert(key_path, std::static_pointer_cast<ResourceTypes>(returnPtr));
 			}
 			else
 			{
@@ -106,24 +104,7 @@ namespace ehw
 
 		if (m_Resources.end() != iter)
 		{
-			//동일 리소스 타입일 경우 즉시 반환
-			if constexpr (std::is_same_v<ResourceTypes, DerivedResType>)
-			{
-				returnRes = iter->second;
-			}
-
-			//다른 리소스 타입일 경우에는 타입 확인후 반환
-			else
-			{
-				if (typeid(DerivedResType) == iter->second->GetResourceType())
-				{
-					returnRes = std::static_pointer_cast<DerivedResType>(iter->second);
-				}
-				else
-				{
-					returnRes = nullptr;
-				}
-			}
+			returnRes = std::dynamic_pointer_cast<DerivedResType>(iter->second);
 		}
 
 		return returnRes;
@@ -136,7 +117,7 @@ namespace ehw
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == Find(_strKey), "이미 동일한 키값을 가진 리소스가 있습니다.");
 
-		_Res->SetStrKey(_strKey);
+		_Res->set_keypath(_strKey);
 
 		m_Resources.insert(std::make_pair(std::string(_strKey), std::static_pointer_cast<ResourceTypes>(_Res)));
 	}
@@ -194,26 +175,26 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr, const std::fs::path& _strKeyPath)
+	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr, const std::fs::path& _key_path)
 	{
 		if (nullptr == _resPtr)
 		{
 			return eResult::Fail_Nullptr;
 		}
-		else if (_strKeyPath.empty())
+		else if (_key_path.empty())
 		{
 			return eResult::Fail_InValid;
 		}
 
 		//기존 키값 임시 저장
 		std::string tempStr{ _resPtr->get_strkey() };
-		_resPtr->SetStrKey(_strKeyPath.string());
+		_resPtr->set_keypath(_key_path.string());
 
 		//저장하고
-		eResult result = _resPtr->Save(m_BaseDir, _strKeyPath);
+		eResult result = _resPtr->Save(m_BaseDir, _key_path);
 
 		//원래 키값을 복원
-		_resPtr->SetStrKey(tempStr);
+		_resPtr->set_keypath(tempStr);
 
 		return result;
 	}

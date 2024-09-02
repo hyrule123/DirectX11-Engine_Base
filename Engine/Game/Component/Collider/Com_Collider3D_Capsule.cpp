@@ -4,11 +4,12 @@
 #include "Engine/Game/Collision/Collision3D.h"
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
+#include "Engine/Game/Component/Com_Transform.h"
 
 namespace ehw
 {
 	Com_Collider3D_Capsule::Com_Collider3D_Capsule()
-		: Com_Collider3D_Shapes(REGISTER_INSTANCE(Com_Collider3D_Capsule), eCollider3D_Shape::Capsule)
+		: Com_Collider3D_Shapes(INSTANCE_ABLE(Com_Collider3D_Capsule), eCollider3D_Shape::Capsule)
 		, m_offsetPosition()
 		, m_offsetRatio_Radius(1.f)
 		, m_offsetRatio_HalfHeight(1.f)
