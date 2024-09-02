@@ -60,6 +60,7 @@ namespace ehw::editor
 		mTreeWidget->Clear();
 
 		Scene* scene = SceneManager::GetInst().GetActiveScene();
+		if (nullptr == scene) { return; }
 		std::string sceneName(scene->get_strkey());
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, tDataPtr{}, true);

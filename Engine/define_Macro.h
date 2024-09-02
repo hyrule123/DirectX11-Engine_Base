@@ -44,7 +44,7 @@
 	}\
 	while(false)
 
-#define ASSERT_DEBUG(_expression, _messageW) 0
+#define ASSERT_DEBUG(_expression, _messageW) (void)0
 
 #define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
 #define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)

@@ -37,9 +37,11 @@ namespace physx
 namespace ehw
 {
 	class GameObject;
+	
 	class Com_Transform 
 		: public Component<Com_Transform, eComponentCategory::Transform>
 	{
+		static inline const std::string_view name = register_class<Com_Transform>("hi");
 		friend class Com_Transform;
 		friend class GameObject;
 	public:
@@ -195,6 +197,8 @@ namespace ehw
 		Com_Transform* m_parent;
 		std::vector<Com_Transform*> m_childs;
 	};
+
+	
 
 	inline void Com_Transform::SetLocalScale(const float3& _localScale)
 	{

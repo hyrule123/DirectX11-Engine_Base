@@ -7,6 +7,7 @@
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/TimeManager.h"
+#include "Engine/Manager/InstanceManager.h"
 
 #include <chrono>
 
@@ -14,7 +15,6 @@ namespace ehw
 {
 	SceneManager::SceneManager()
 		: m_activeScene{nullptr}
-		, m_umapSceneConstructor{}
 	{
 	}
 
@@ -71,8 +71,7 @@ namespace ehw
 
 	void SceneManager::Release()
 	{
-		m_activeScene.reset();
-		m_umapSceneConstructor.clear();
+		SAFE_DELETE(m_activeScene);
 	}
 
 	void SceneManager::Destroy()
@@ -83,39 +82,26 @@ namespace ehw
 		}
 	}
 
-
-	void SceneManager::LoadScene(const std::string_view _strKey)
+	Scene* SceneManager::LoadScene(std::unique_ptr<Scene> _scene)
 	{
-		const auto& Func = m_umapSceneConstructor.find(_strKey);
+		return nullptr;
+		ASSERT(nullptr != _scene, "해당 이름의 씬이 없습니다.");
 
-		if (Func == m_umapSceneConstructor.end())
-		{
-			ERROR_MESSAGE("그런 이름의 씬이 없습니다.");
-			return;
-		}
+			// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
+			//ASSERT(false, "미구현");
+			//std::vector<std::shared_ptr<GameObject>> dontDestroyObjs;
 
-		std::unique_ptr<Scene> NewScene = Func->second();
-		if (nullptr == NewScene)
-		{
-			ERROR_MESSAGE("씬 생성 실패");
-			return;
-		}
+			//if (m_activeScene)
+			//{
+			//	dontDestroyObjs = m_activeScene->GetDontDestroyGameObjects();
+			//}
 
-		// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
-		//ASSERT(false, "미구현");
-		//std::vector<std::shared_ptr<GameObject>> dontDestroyObjs;
-
-		//if (m_activeScene)
-		//{
-		//	dontDestroyObjs = m_activeScene->GetDontDestroyGameObjects();
-		//}
-		
-		//if (m_activeScene)
-		//	m_activeScene->OnExit();
+			//if (m_activeScene)
+			//	m_activeScene->OnExit();
 
 		//씬 갈아끼우기
-		m_activeScene.reset();
-		m_activeScene = std::move(NewScene);
+		SAFE_DELETE(m_activeScene);
+		m_activeScene = _scene.release();
 
 		//ASSERT(false, "미구현");
 		//for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
@@ -128,6 +114,15 @@ namespace ehw
 		m_activeScene->SceneInit();
 		m_activeScene->OnEnter();
 		m_activeScene->SceneAwake();
+
+		return m_activeScene;
+	}
+
+	Scene* SceneManager::LoadScene(const std::string_view _strKey)
+	{
+		std::unique_ptr<Scene> s(InstanceManager::GetInst().Instantiate<Scene>(_strKey));
+
+		return LoadScene(std::move(s));
 	}
 
 }

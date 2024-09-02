@@ -47,5 +47,23 @@ namespace ehw {
 		//처음 1회 초기화를 위한 변수
 		static inline const int registered = register_inst();
 	};
+
+	template <typename T>
+	class ClassInfo2 {
+	public:
+		static const std::string_view get_name() { return name; }
+
+		template <typename T>
+		friend const std::string_view register_class(const std::string_view _v);
+	private:
+		static inline std::string_view name;
+	};
+
+	template <typename T>
+	const std::string_view register_class(const std::string_view _v) {
+		ClassInfo2<T>::name = _v;
+		return _v;
+	}
+
 }
 
