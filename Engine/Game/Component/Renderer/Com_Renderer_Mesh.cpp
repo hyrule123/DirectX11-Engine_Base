@@ -20,6 +20,10 @@ namespace ehw
 	{
 	}
 
+	Com_Renderer_Mesh::~Com_Renderer_Mesh()
+	{
+	}
+
 	void Com_Renderer_Mesh::Render()
 	{
 		//메쉬 또는 재질이 없을 경우 렌더링 불가능이므로 return;

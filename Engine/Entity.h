@@ -11,11 +11,9 @@ virtual _type* Clone() override\
 {\
 	return nullptr;\
 }
-#define CLASS_INFO(_name) namespace class_name { STR_KEY(_name); }
 
 namespace ehw
 {
-	CLASS_INFO(Entity);
 	class Entity
 	{
 	public:

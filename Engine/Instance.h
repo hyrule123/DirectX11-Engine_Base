@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Manager/InstanceManager.h"
-
+//#include "Engine/Manager/InstanceManager.h"
+#include "Engine/Entity.h"
 #include <type_traits>
 
 #define INSTANCE_ABLE(_class_) ClassRegisterHelper<_class_, #_class_, true>::get_name()
@@ -28,7 +28,7 @@ namespace ehw {
 	public:
 		inline static const std::string_view get_name() { return s_name; }
 	protected:
-		static std::string_view s_name;
+		inline static std::string_view s_name;
 	};
 
 	//최초 선언 시 타입에 대한 문자열을 등록한다.
@@ -39,9 +39,9 @@ namespace ehw {
 	private:
 		static const int register_inst() {
 			ClassInfo<T>::s_name = std::string_view(S);
-			if constexpr (Is_Instantiable) {
-				InstanceManager::GetInst().add_ctor<T>(ClassInfo<T>::s_name);
-			}
+			//if constexpr (Is_Instantiable) {
+			//	InstanceManager::GetInst().add_ctor<T>(ClassInfo<T>::s_name);
+			//}
 			return 1;
 		}
 		//처음 1회 초기화를 위한 변수
