@@ -10,13 +10,14 @@
 
 #include "Engine/Util/StringConverter.h"
 
+#include "Engine/Game/Component/iComponent.h"
 #include "Engine/Game/Component/Script/Script.h"
 #include "Engine/Game/Component/Com_Transform.h"
 
 namespace ehw
 {
 	GameObject::GameObject()
-		: Entity(INSTANCE_ABLE(GameObject))
+		: Entity(ClassInfo<GameObject>::name())
 		, m_baseComponents()
 		, m_scene()
 		, m_layer(UINT_MAX)

@@ -7,6 +7,8 @@ namespace ehw
 	class Com_AudioSource 
 		: public Component<Com_AudioSource, eComponentCategory::AudioSource>
 	{
+		REGISTER_CLASS_INFO(Com_AudioSource);
+		SET_INSTANCE_ABLE(Com_AudioSource);
 	public:
 		Com_AudioSource();
 

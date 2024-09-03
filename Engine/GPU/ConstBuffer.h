@@ -8,6 +8,7 @@ namespace ehw
 	class ConstBuffer 
 		: public GPUBuffer
 	{
+		REGISTER_CLASS_INFO(ConstBuffer);
 	public:
 		ConstBuffer(eCBType _type);
 		virtual ~ConstBuffer();

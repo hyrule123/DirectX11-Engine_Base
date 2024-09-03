@@ -663,7 +663,7 @@
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
-    <ClInclude Include="Instance.h" />
+    <ClInclude Include="ClassInfo.h" />
     <ClInclude Include="Manager\InstanceManager.h" />
   </ItemGroup>
   <ItemGroup>

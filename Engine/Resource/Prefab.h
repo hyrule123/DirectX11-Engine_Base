@@ -9,6 +9,7 @@ namespace ehw
 	class Prefab final
 		: public Resource
 	{
+        REGISTER_CLASS_INFO(Prefab);
     public:
         Prefab();
         virtual ~Prefab();

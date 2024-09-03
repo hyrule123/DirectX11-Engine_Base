@@ -13,6 +13,7 @@ namespace ehw
     class Animation3D_ComputeShader :
         public ComputeShader
     {
+		REGISTER_CLASS_INFO(Animation3D_ComputeShader);
 	public:
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();

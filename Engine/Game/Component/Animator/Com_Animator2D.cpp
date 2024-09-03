@@ -7,13 +7,12 @@
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
-		: Animator(INSTANCE_ABLE(Com_Animator2D), eDimensionType::_2D)
+		: Animator(ClassInfo<Com_Animator2D>::name(), eDimensionType::_2D)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)
 		, mbLoop(false)
 	{
-
 	}
 	Com_Animator2D::Com_Animator2D(const Com_Animator2D& _other)
 		: Animator(_other)

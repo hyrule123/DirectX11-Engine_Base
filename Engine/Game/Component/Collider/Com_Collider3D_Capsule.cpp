@@ -9,7 +9,7 @@
 namespace ehw
 {
 	Com_Collider3D_Capsule::Com_Collider3D_Capsule()
-		: Com_Collider3D_Shapes(INSTANCE_ABLE(Com_Collider3D_Capsule), eCollider3D_Shape::Capsule)
+		: Com_Collider3D_Shapes(ClassInfo<Com_Collider3D_Capsule>::name(), eCollider3D_Shape::Capsule)
 		, m_offsetPosition()
 		, m_offsetRatio_Radius(1.f)
 		, m_offsetRatio_HalfHeight(1.f)

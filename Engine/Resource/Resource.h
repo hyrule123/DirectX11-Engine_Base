@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Instance.h"
+#include "Engine/ClassInfo.h"
 
 #include "Engine/Resource/define_Resource.h"
 

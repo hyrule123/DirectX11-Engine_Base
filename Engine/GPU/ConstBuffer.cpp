@@ -5,7 +5,7 @@
 namespace ehw
 {
 	ConstBuffer::ConstBuffer(eCBType _type)
-		: GPUBuffer(INSTANCE_UNABLE(ConstBuffer), eBufferType::Const)
+		: GPUBuffer(ClassInfo<ConstBuffer>::name(), eBufferType::Const)
 		, m_constBufferType(_type)
 		, mDataSize()
 		, mDataCount()

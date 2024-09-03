@@ -10,7 +10,8 @@
 namespace ehw
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
-		: mUIData()
+		: Com_Renderer_Mesh(ClassInfo<Com_Renderer_UIBase>::name())
+		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
 		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);

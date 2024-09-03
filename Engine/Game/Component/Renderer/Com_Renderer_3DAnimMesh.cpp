@@ -13,7 +13,7 @@
 namespace ehw
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
-		: Com_Renderer_Mesh(INSTANCE_ABLE(Com_Renderer_3DAnimMesh))
+		: Com_Renderer_Mesh(ClassInfo<Com_Renderer_3DAnimMesh>::name())
 	{
 	}
 

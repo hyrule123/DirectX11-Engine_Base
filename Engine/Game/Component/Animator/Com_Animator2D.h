@@ -10,6 +10,7 @@ namespace ehw
 	class Com_Animator2D 
 		: public Animator
 	{
+		REGISTER_CLASS_INFO(Com_Animator2D);
 	public:
 		struct tEvents
 		{

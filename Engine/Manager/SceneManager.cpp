@@ -84,7 +84,6 @@ namespace ehw
 
 	Scene* SceneManager::LoadScene(std::unique_ptr<Scene> _scene)
 	{
-		return nullptr;
 		ASSERT(nullptr != _scene, "해당 이름의 씬이 없습니다.");
 
 			// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.

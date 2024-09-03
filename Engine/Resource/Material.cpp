@@ -14,7 +14,7 @@
 namespace ehw
 {
     Material::Material()
-        : Resource(INSTANCE_ABLE(Material))
+        : Resource(ClassInfo<Material>::name())
         , m_constBufferData{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}

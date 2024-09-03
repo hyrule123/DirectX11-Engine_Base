@@ -41,7 +41,9 @@ namespace ehw
 	class Com_Transform 
 		: public Component<Com_Transform, eComponentCategory::Transform>
 	{
-		static inline const std::string_view name = register_class<Com_Transform>("hi");
+		REGISTER_CLASS_INFO(Com_Transform);
+		SET_INSTANCE_ABLE(Com_Transform);
+
 		friend class Com_Transform;
 		friend class GameObject;
 	public:

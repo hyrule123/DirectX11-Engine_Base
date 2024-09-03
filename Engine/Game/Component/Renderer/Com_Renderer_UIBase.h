@@ -8,6 +8,8 @@ namespace ehw
 	class Com_Renderer_UIBase :
 		public Com_Renderer_Mesh
 	{
+		REGISTER_CLASS_INFO(Com_Renderer_UIBase);
+		SET_INSTANCE_ABLE(Com_Renderer_UIBase);
 	public:
 		Com_Renderer_UIBase();
 		virtual ~Com_Renderer_UIBase();

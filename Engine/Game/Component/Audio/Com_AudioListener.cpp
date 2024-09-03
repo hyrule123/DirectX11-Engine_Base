@@ -15,13 +15,12 @@
 namespace ehw
 {
 	Com_AudioListener::Com_AudioListener()
-		: Component(INSTANCE_ABLE(Com_AudioListener))
+		: Component(ClassInfo<Com_AudioListener>::name())
 	{
 	}
 
 	Com_AudioListener::~Com_AudioListener()
 	{
-
 	}
 
 	eResult Com_AudioListener::Serialize_Json(JsonSerializer* _ser) const

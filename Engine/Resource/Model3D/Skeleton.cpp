@@ -22,9 +22,8 @@
 
 namespace ehw
 {
-	
 	Skeleton::Skeleton()
-		: Resource(INSTANCE_ABLE(Skeleton))
+		: Resource(ClassInfo<Skeleton>::name())
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}

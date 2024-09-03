@@ -7,6 +7,7 @@ namespace ehw
 {
 	class AudioClip final : public Resource
 	{
+		REGISTER_CLASS_INFO(AudioClip);
 	public:
 		AudioClip();
 		virtual ~AudioClip();

@@ -32,6 +32,7 @@ namespace ehw
 		: public Resource
 		, public Serializable_Json
     {
+		REGISTER_CLASS_INFO(Model3D);
 		friend class editor::EditorFBXConverter;
 		
 	public:

@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Entity.h"
+#include "Engine/ClassInfo.h"
 #include "Engine/Common.h"
 #include "Engine/Util/type_traits_Ex.h"
 
@@ -10,6 +11,7 @@ namespace ehw
 	class Scene 
 		: public Entity
 	{
+		REGISTER_CLASS_INFO(Scene);
 	public:
 		Scene(const std::string_view key);
 		virtual ~Scene();

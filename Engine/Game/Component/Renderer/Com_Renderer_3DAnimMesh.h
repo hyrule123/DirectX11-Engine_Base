@@ -6,6 +6,8 @@ namespace ehw
 	class Com_Renderer_3DAnimMesh :
 		public Com_Renderer_Mesh
 	{
+		REGISTER_CLASS_INFO(Com_Renderer_3DAnimMesh);
+		SET_INSTANCE_ABLE(Com_Renderer_3DAnimMesh);
 	public:
 		Com_Renderer_3DAnimMesh();
 		virtual ~Com_Renderer_3DAnimMesh();

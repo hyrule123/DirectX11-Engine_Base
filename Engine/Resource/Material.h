@@ -18,6 +18,7 @@ namespace ehw
 		: public Resource
 		, public Serializable_Json
 	{
+		REGISTER_CLASS_INFO(Material);
 	public:
 		Material();
 		Material(std::string_view key);

@@ -12,6 +12,7 @@ namespace ehw
 		: public Animation
 		, public Serializable_Json
 	{
+		REGISTER_CLASS_INFO(Animation2D);
 	public:
 		struct tSprite
 		{

@@ -9,7 +9,7 @@
 namespace ehw
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Shapes(INSTANCE_ABLE(Com_Collider3D_Sphere), eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(ClassInfo<Com_Collider3D_Sphere>::name(), eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}

@@ -27,7 +27,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: Resource(INSTANCE_ABLE(Model3D))
+		: Resource(ClassInfo<Model3D>::name())
 	{
 	}
 

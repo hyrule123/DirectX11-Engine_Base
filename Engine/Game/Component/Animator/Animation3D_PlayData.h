@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Instance.h"
+#include "Engine/ClassInfo.h"
 
 #include "Engine/Common.h"
 
@@ -17,6 +17,7 @@ namespace ehw
 	class Animation3D_PlayData
 		: public Entity
 	{
+		REGISTER_CLASS_INFO(Animation3D_PlayData);
 	public:
 		Animation3D_PlayData();
 

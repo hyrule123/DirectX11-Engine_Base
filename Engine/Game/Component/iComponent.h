@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Instance.h"
+#include "Engine/ClassInfo.h"
 #include "Engine/Game/Component/define_Component.h"
 #include "Engine/Util/Serialize/Serializable.h"
 
@@ -13,6 +13,7 @@ namespace ehw {
 		: public Entity
 		, public Serializable_Json
 	{
+		REGISTER_CLASS_INFO(iComponent);
 		friend class ComponentManager;
 		friend class GameObject;
 	public:

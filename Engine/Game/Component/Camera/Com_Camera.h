@@ -12,6 +12,8 @@ namespace  ehw
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
+		REGISTER_CLASS_INFO(Com_Camera);
+		SET_INSTANCE_ABLE(Com_Camera);
 		class CullingAgent;
 	public:
 		Com_Camera();
@@ -103,6 +105,7 @@ namespace  ehw
 
 		class CullingAgent_Orthographic : public CullingAgent
 		{
+			REGISTER_CLASS_INFO(CullingAgent_Orthographic);
 		public:
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
@@ -112,6 +115,7 @@ namespace  ehw
 
 		class CullingAgent_Perspective : public CullingAgent
 		{
+			REGISTER_CLASS_INFO(CullingAgent_Perspective);
 		public:
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();

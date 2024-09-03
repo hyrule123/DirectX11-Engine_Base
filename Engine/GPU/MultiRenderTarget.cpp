@@ -6,7 +6,7 @@
 namespace ehw
 {
 	MultiRenderTarget::MultiRenderTarget()
-		: Entity(INSTANCE_ABLE(MultiRenderTarget))
+		: Entity(ClassInfo<MultiRenderTarget>::name())
 		, mRenderTargetTextures{}
 		, mRenderTargetViews{}
 		, mDSTexture{}

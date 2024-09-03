@@ -8,6 +8,7 @@ namespace ehw
 	class Script 
 		: public Component<Script, eComponentCategory::Scripts>
 	{
+		REGISTER_CLASS_INFO(Script);
 	public:
 		Script(const std::string_view key);
 		Script(const Script& _other) = default;

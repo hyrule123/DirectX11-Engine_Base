@@ -15,6 +15,7 @@ namespace ehw
 		: public Resource
 		, public Serializable_Binary
 	{
+		REGISTER_CLASS_INFO(Skeleton);
 	public:
 		Skeleton();
 		virtual ~Skeleton();

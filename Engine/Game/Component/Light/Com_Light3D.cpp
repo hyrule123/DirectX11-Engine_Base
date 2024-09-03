@@ -17,7 +17,7 @@
 namespace ehw
 {
 	Com_Light3D::Com_Light3D()
-		: Light(INSTANCE_ABLE(Com_Light3D), eDimensionType::_3D)
+		: Light(ClassInfo<Com_Light3D>::name(), eDimensionType::_3D)
 		, m_volumeMesh()
 		, m_lightMaterial()
 		, m_index()

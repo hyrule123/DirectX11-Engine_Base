@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : Animation(INSTANCE_ABLE(Animation3D))
+        : Animation(ClassInfo<Animation3D>::name())
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}

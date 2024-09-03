@@ -16,7 +16,7 @@
 namespace ehw
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(INSTANCE_ABLE(Animation3D_ComputeShader), uint3(256u, 1u, 1u))
+		: ComputeShader(ClassInfo<Animation3D_ComputeShader>::name(), uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}

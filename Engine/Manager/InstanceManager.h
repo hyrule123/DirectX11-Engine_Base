@@ -23,7 +23,7 @@ namespace ehw {
 		T* Instantiate(const std::string_view key) {
 			Entity* e = Instantiate(key);
 			T* ret = nullptr;
-			ret = dynamic_cast<T*>(ret);
+			ret = dynamic_cast<T*>(e);
 
 			if (nullptr == ret) {
 				SAFE_DELETE(e);
@@ -44,7 +44,7 @@ namespace ehw {
 		}
 
 	private:
-		std::unordered_map<std::string_view, std::function<Entity* ()>> m_ctors;
+		static inline std::unordered_map<std::string_view, std::function<Entity* ()>> m_ctors{};
 	};
 }
 

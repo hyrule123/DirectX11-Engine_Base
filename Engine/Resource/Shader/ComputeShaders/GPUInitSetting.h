@@ -10,6 +10,7 @@ namespace ehw
 	class GPUInitSetting :
 		public ComputeShader
 	{
+		REGISTER_CLASS_INFO(GPUInitSetting);
 	public:
 		GPUInitSetting();
 		virtual ~GPUInitSetting();

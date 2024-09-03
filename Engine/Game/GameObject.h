@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Instance.h"
+#include "Engine/ClassInfo.h"
 
 #include "Engine/Game/Component/define_Component.h"
 
@@ -17,6 +17,8 @@ namespace ehw
 		: public Entity
 		, public Serializable_Json
 	{
+		REGISTER_CLASS_INFO(GameObject);
+		SET_INSTANCE_ABLE(GameObject);
 		friend class GameObject;
 	public:
 		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
@@ -51,39 +53,39 @@ namespace ehw
 	public:
 		iComponent* AddComponent(iComponent* _pCom);
 		template <typename T> requires std::is_base_of_v<iComponent, T>
-		inline T* AddComponent();
-		inline iComponent* AddComponent(const std::string_view _strKey);
+		T* AddComponent();
+		iComponent* AddComponent(const std::string_view _strKey);
 
 		template <typename T>
-		inline T* GetComponent();
+		T* GetComponent();
 
 		template <typename T> requires std::is_base_of_v<Script, T>
-		inline T* AddScript();
+		T* AddScript();
 		Script* AddScript(const std::string_view _strKey);
 
 		template <typename T>
-		inline T* GetScript();
+		T* GetScript();
 
 		Script* GetScript(const std::string_view _strKey);
 
-		inline iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
-		inline Com_Transform* Transform();
+		iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
+		Com_Transform* Transform();
 
-		inline const BaseComponents& GetComponents() const { return m_baseComponents; }
+		const BaseComponents& GetComponents() const { return m_baseComponents; }
 		
-		inline const Scripts& GetScripts() const { return m_scripts; }
+		const Scripts& GetScripts() const { return m_scripts; }
 
-		inline void SetName(const std::string_view _Name) { m_name = _Name; }
-		inline const std::string& GetName() const { return m_name; }
+		void SetName(const std::string_view _Name) { m_name = _Name; }
+		const std::string& GetName() const { return m_name; }
 		
 		void SetActive(bool _bActive);
 		bool IsActive() const { return eState::Active == m_state; }
 
-		inline eState GetState() const { return m_state; }
-		inline void SetState(eState _state) { m_state = _state; }
+		eState GetState() const { return m_state; }
+		void SetState(eState _state) { m_state = _state; }
 
 		void Destroy();
-		inline bool IsDestroyed() const { return (eState::DestroyReserved <= m_state); }
+		bool IsDestroyed() const { return (eState::DestroyReserved <= m_state); }
 
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }

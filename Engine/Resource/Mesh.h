@@ -42,6 +42,8 @@ namespace ehw
 		: public Resource 
 		, Serializable_Binary
 	{
+		REGISTER_CLASS_INFO(Mesh);
+
 	public:
 		Mesh();
 		virtual ~Mesh();
