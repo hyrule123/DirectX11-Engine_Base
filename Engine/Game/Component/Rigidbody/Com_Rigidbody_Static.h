@@ -6,8 +6,8 @@ namespace ehw
 	class Com_Rigidbody_Static :
 		public Rigidbody
 	{
-		REGISTER_CLASS_INFO(Com_Rigidbody_Static);
-		SET_INSTANCE_ABLE(Com_Rigidbody_Static);
+		REGISTER_CLASS_INSTANCE_ABLE(Com_Rigidbody_Static);
+		
 	public:
 		Com_Rigidbody_Static();
 		virtual ~Com_Rigidbody_Static();

@@ -7,8 +7,8 @@ namespace ehw
 	class Com_Camera;
 	class GridScript : public Script
 	{
-		REGISTER_CLASS_INFO(GridScript);
-		SET_INSTANCE_ABLE(GridScript);
+		REGISTER_CLASS_INSTANCE_ABLE(GridScript);
+		
 	public:
 		GridScript();
 		virtual ~GridScript();

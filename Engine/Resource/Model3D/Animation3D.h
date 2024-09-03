@@ -31,8 +31,8 @@ namespace ehw
         : public Animation
         , public Serializable_Binary
 	{
-        REGISTER_CLASS_INFO(Animation3D);
-        SET_INSTANCE_ABLE(Animation3D);
+        REGISTER_CLASS_INSTANCE_ABLE(Animation3D);
+        
         friend class Skeleton;
 	public:
 		Animation3D();

@@ -11,7 +11,7 @@ namespace ehw
 	class Animator :
 		public Component<Animator, eComponentCategory::Animator>
 	{
-		REGISTER_CLASS_INFO(Animator);
+		REGISTER_CLASS_NAME_ONLY(Animator);
 	public:
 		struct tEvent
 		{

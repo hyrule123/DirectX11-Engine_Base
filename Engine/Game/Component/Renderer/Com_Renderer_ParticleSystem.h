@@ -15,8 +15,8 @@ namespace ehw
 	class StructBuffer;
 	class Com_Renderer_ParticleSystem : public Com_Renderer_Mesh
 	{
-		REGISTER_CLASS_INFO(Com_Renderer_ParticleSystem);
-		SET_INSTANCE_ABLE(Com_Renderer_ParticleSystem);
+		REGISTER_CLASS_INSTANCE_ABLE(Com_Renderer_ParticleSystem);
+		
 	public:
 		Com_Renderer_ParticleSystem();
 		Com_Renderer_ParticleSystem(const Com_Renderer_ParticleSystem& _other);

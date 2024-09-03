@@ -65,8 +65,6 @@ namespace ehw
 		
 		AudioManager::GetInst().Init();
 		FontWrapper::GetInst().Init();
-
-		InstanceManager::GetInst().init();
 		
 		TimeManager::GetInst().Init();
 
@@ -141,6 +139,9 @@ namespace ehw
 		m_hdc = {};
 		m_bRunning = false;
 		m_editorRunFunction = nullptr;
+
+		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
+		InstanceManager::Destroy();
 	}
 
 	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)

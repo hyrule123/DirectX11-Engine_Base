@@ -41,8 +41,8 @@ namespace ehw
 	class Com_Transform 
 		: public Component<Com_Transform, eComponentCategory::Transform>
 	{
-		REGISTER_CLASS_INFO(Com_Transform);
-		SET_INSTANCE_ABLE(Com_Transform);
+		REGISTER_CLASS_INSTANCE_ABLE(Com_Transform);
+		
 
 		friend class Com_Transform;
 		friend class GameObject;

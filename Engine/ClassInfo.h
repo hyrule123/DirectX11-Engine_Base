@@ -2,8 +2,11 @@
 #include "Engine/Manager/InstanceManager.h"
 #include <type_traits>
 
-#define REGISTER_CLASS_INFO(_class_) \
-private: static inline const bool unuse_1 = ClassInfo<_class_>::register_class(#_class_)
+#define REGISTER_CLASS(_class_, _is_instance_able) \
+private: static inline const bool unuse = ClassInfo<_class_>::register_class<_is_instance_able>(#_class_)
+
+#define REGISTER_CLASS_NAME_ONLY(_class_) REGISTER_CLASS(_class_, false)
+#define REGISTER_CLASS_INSTANCE_ABLE(_class_) REGISTER_CLASS(_class_, true)
 
 namespace ehw {
 	template <typename T>
@@ -11,7 +14,8 @@ namespace ehw {
 	public:
 		static const std::string_view name() { return s_name; }
 
-		static bool register_class(const std::string_view _name, bool _is_instance_able = false);
+		template <bool Is_Instance_Able>
+		static bool register_class(const std::string_view _name);
 
 	private:
 		static inline std::string_view s_name{};
@@ -19,13 +23,12 @@ namespace ehw {
 	};
 
 	template <typename T>
-	inline bool ClassInfo<T>::register_class(const std::string_view _name, bool _is_instance_able) {
-		ASSERT(ClassInfo<T>::s_name.empty(), "Class Info를 중복 등록했습니다.");
-
+	template <bool Is_Instance_Able>
+	inline bool ClassInfo<T>::register_class(const std::string_view _name) {
 		ClassInfo<T>::s_name = _name;
-		ClassInfo<T>::s_is_instantiatable = _is_instance_able;
+		ClassInfo<T>::s_is_instantiatable = Is_Instance_Able;
 
-		if (_is_instance_able) {
+		if constexpr (Is_Instance_Able) {
 			InstanceManager::GetInst().add_ctor<T>(_name);
 		}
 

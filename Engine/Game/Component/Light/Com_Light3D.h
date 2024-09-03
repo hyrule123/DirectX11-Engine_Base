@@ -8,8 +8,8 @@ namespace ehw
 	class Material;
 	class Com_Light3D : public Light
 	{
-		REGISTER_CLASS_INFO(Com_Light3D);
-		SET_INSTANCE_ABLE(Com_Light3D);
+		REGISTER_CLASS_INSTANCE_ABLE(Com_Light3D);
+		
 	public:
 		Com_Light3D();
 

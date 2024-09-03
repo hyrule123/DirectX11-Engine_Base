@@ -8,7 +8,7 @@ namespace ehw
 {
 	class Texture final : public Resource
 	{
-		REGISTER_CLASS_INFO(Texture);
+		REGISTER_CLASS_INSTANCE_ABLE(Texture);
 	public:
 		Texture();
 		virtual ~Texture();

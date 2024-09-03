@@ -17,8 +17,8 @@ namespace ehw
 		: public Entity
 		, public Serializable_Json
 	{
-		REGISTER_CLASS_INFO(GameObject);
-		SET_INSTANCE_ABLE(GameObject);
+		REGISTER_CLASS_INSTANCE_ABLE(GameObject);
+
 		friend class GameObject;
 	public:
 		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;

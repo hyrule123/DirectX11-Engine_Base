@@ -14,7 +14,7 @@ namespace ehw
 	class ComputeShader 
 		: public Shader
 	{
-		REGISTER_CLASS_INFO(ComputeShader);
+		REGISTER_CLASS_NAME_ONLY(ComputeShader);
 	public:
 		ComputeShader(const std::string_view key, uint3 _threadsPerGroup);
 		virtual ~ComputeShader();

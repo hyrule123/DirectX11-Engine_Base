@@ -9,7 +9,7 @@ namespace ehw
     class MultiRenderTarget :
         public Entity
     {
-		REGISTER_CLASS_INFO(MultiRenderTarget);
+		REGISTER_CLASS_INSTANCE_ABLE(MultiRenderTarget);
 	public:
 		MultiRenderTarget();
 		virtual ~MultiRenderTarget();

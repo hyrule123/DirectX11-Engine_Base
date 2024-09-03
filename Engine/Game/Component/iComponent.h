@@ -13,7 +13,7 @@ namespace ehw {
 		: public Entity
 		, public Serializable_Json
 	{
-		REGISTER_CLASS_INFO(iComponent);
+		REGISTER_CLASS_NAME_ONLY(iComponent);
 		friend class ComponentManager;
 		friend class GameObject;
 	public:

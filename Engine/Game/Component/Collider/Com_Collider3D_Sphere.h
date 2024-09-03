@@ -6,8 +6,8 @@ namespace ehw
     class Com_Collider3D_Sphere :
         public Com_Collider3D_Shapes
     {
-        REGISTER_CLASS_INFO(Com_Collider3D_Shapes);
-        SET_INSTANCE_ABLE(Com_Collider3D_Shapes);
+        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider3D_Shapes);
+        
     public:
         Com_Collider3D_Sphere();
         virtual ~Com_Collider3D_Sphere();

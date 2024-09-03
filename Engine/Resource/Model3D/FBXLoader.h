@@ -110,7 +110,7 @@ namespace ehw
 	class FBXLoader :
 		public Entity
 	{
-		REGISTER_CLASS_INFO(FBXLoader);
+		REGISTER_CLASS_INSTANCE_ABLE(FBXLoader);
 	public:
 		FBXLoader();
 		virtual ~FBXLoader();

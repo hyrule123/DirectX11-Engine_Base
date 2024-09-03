@@ -7,7 +7,7 @@ namespace ehw
 	class ParticleShader 
 		: public ComputeShader
 	{
-		REGISTER_CLASS_INFO(ParticleShader);
+		REGISTER_CLASS_INSTANCE_ABLE(ParticleShader);
 	public:
 		ParticleShader();
 		virtual ~ParticleShader();

@@ -6,8 +6,8 @@ namespace ehw
     class Com_Renderer_Mesh :
         public Renderer
     {
-        REGISTER_CLASS_INFO(Com_Renderer_Mesh);
-        SET_INSTANCE_ABLE(Com_Renderer_Mesh);
+        REGISTER_CLASS_INSTANCE_ABLE(Com_Renderer_Mesh);
+        
     public:
         Com_Renderer_Mesh();
         Com_Renderer_Mesh(const std::string_view key);

@@ -6,8 +6,7 @@ namespace ehw
     class Com_Collider2D_AABB :
         public Collider2D
     {
-        REGISTER_CLASS_INFO(Com_Collider2D_AABB);
-        SET_INSTANCE_ABLE(Com_Collider2D_AABB);
+        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider2D_AABB);
     public:
         Com_Collider2D_AABB();
         virtual ~Com_Collider2D_AABB();

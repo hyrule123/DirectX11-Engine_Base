@@ -11,7 +11,7 @@ namespace ehw
 	class Scene 
 		: public Entity
 	{
-		REGISTER_CLASS_INFO(Scene);
+		REGISTER_CLASS_NAME_ONLY(Scene);
 	public:
 		Scene(const std::string_view key);
 		virtual ~Scene();

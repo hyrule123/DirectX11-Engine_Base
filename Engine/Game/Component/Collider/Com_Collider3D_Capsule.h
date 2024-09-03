@@ -6,8 +6,8 @@ namespace ehw
     class Com_Collider3D_Capsule :
         public Com_Collider3D_Shapes
     {
-        REGISTER_CLASS_INFO(Com_Collider3D_Capsule);
-        SET_INSTANCE_ABLE(Com_Collider3D_Capsule);
+        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider3D_Capsule);
+        
     public:
         Com_Collider3D_Capsule();
         virtual ~Com_Collider3D_Capsule();

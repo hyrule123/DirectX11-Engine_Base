@@ -6,7 +6,7 @@ namespace ehw
     class StateMachine :
         public Component <StateMachine, eComponentCategory::BehaviorTree>
     {
-        REGISTER_CLASS_INFO(StateMachine);
+        REGISTER_CLASS_NAME_ONLY(StateMachine);
     public:
         StateMachine(const std::string_view key);
         virtual ~StateMachine();
