@@ -9,7 +9,7 @@ protected:
 	virtual ~LazySingleton() {}
 
 private:
-	static T* m_instance;
+	static inline T* m_instance = nullptr;
 
 public:
 	static T& GetInst();
@@ -17,15 +17,11 @@ public:
 };
 
 template<typename T>
-T* LazySingleton<T>::m_instance = nullptr;
-
-template<typename T>
 inline T& LazySingleton<T>::GetInst()
 {
 	if (nullptr == m_instance)
 	{
 		m_instance = new T;
-		AtExit::AddFunc(Destroy);
 	}
 
 	return *(m_instance);

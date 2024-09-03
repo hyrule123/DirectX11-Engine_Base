@@ -1,20 +1,17 @@
 #pragma once
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/LazySingleton.h"
 
 #include "Engine/Entity.h"
 
 namespace ehw {
 	class InstanceManager
-		: public StaticSingleton<InstanceManager>
+		: public LazySingleton<InstanceManager>
 	{
 		friend class GameEngine;
-		friend class StaticSingleton<InstanceManager>;
+		friend class LazySingleton<InstanceManager>;
 	private:
 		InstanceManager();
 		~InstanceManager();
-
-		void init();
-		void release();
 
 	public:
 		Entity* Instantiate(const std::string_view key);
@@ -44,7 +41,7 @@ namespace ehw {
 		}
 
 	private:
-		static inline std::unordered_map<std::string_view, std::function<Entity* ()>> m_ctors{};
+		std::unordered_map<std::string_view, std::function<Entity* ()>> m_ctors;
 	};
 }
 

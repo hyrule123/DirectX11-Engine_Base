@@ -9,14 +9,6 @@ namespace ehw{
 	InstanceManager::~InstanceManager()
 	{
 	}
-	void InstanceManager::init()
-	{
-		AtExit::AddFunc(std::bind(&InstanceManager::release, this));
-	}
-	void InstanceManager::release()
-	{
-		m_ctors.clear();
-	}
 	Entity* InstanceManager::Instantiate(const std::string_view key)
 	{
 		Entity* ret = nullptr;
