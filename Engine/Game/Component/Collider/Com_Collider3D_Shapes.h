@@ -17,7 +17,8 @@ namespace ehw
     class Com_Collider3D_Shapes :
         public Collider3D
     {
-        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider3D_Shapes);
+        CLASS_NAME(Com_Collider3D_Shapes);
+        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Shapes);
         
     public:
         Com_Collider3D_Shapes();

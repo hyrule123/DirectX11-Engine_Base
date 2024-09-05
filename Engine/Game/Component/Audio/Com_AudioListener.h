@@ -6,7 +6,7 @@ namespace ehw
 	class Com_AudioListener 
 		: public Component<Com_AudioListener, eComponentCategory::AudioListener>
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_AudioListener);
+		CLASS_NAME(Com_AudioListener);
 		
 	public:
 		Com_AudioListener();

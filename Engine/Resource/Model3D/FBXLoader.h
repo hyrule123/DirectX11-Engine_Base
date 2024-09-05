@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/ClassInfo.h"
+#include "Engine/Entity.h"
 
 #include "Engine/Common.h"
 
@@ -110,7 +110,8 @@ namespace ehw
 	class FBXLoader :
 		public Entity
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(FBXLoader);
+		CLASS_NAME(FBXLoader);
+		REGISTER_INSTANCE_DEFAULT(FBXLoader);
 	public:
 		FBXLoader();
 		virtual ~FBXLoader();

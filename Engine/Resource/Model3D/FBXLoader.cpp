@@ -17,7 +17,7 @@ namespace ehw
 	
 
 	FBXLoader::FBXLoader()
-		: Entity(ClassInfo<FBXLoader>::name())
+		: Entity(FBXLoader::concrete_name)
 		, mManager()
 		, mScene()
 		, mBones{}

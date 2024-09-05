@@ -663,8 +663,6 @@
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
-    <ClInclude Include="ClassInfo.h" />
-    <ClInclude Include="Manager\InstanceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -734,6 +732,7 @@
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\Debug\Debug.hlsli" />
+    <None Include="Manager\InstanceManager.inl" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultShader\Basic\VS_Basic3D.hlsl">

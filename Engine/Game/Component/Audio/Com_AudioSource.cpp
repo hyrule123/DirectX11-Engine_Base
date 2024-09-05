@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
-		: Component(ClassInfo<Com_AudioSource>::name())
+		: Component(Com_AudioSource::concrete_name)
 		, mAudioClip(nullptr)
 	{
 	}

@@ -13,7 +13,7 @@
 namespace ehw
 {
 	AudioClip::AudioClip()
-		: Resource(ClassInfo<AudioClip>::name())
+		: Resource(AudioClip::concrete_name)
 		, mSound(nullptr)
 		, mChannel(nullptr)
 		, mMinDistance(1.0f)

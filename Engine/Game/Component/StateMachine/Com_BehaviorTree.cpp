@@ -3,7 +3,7 @@
 namespace ehw
 {
     Com_BehaviorTree::Com_BehaviorTree()
-        : StateMachine(ClassInfo<Com_BehaviorTree>::name())
+        : StateMachine(Com_BehaviorTree::concrete_name)
     {
     }
     Com_BehaviorTree::~Com_BehaviorTree()

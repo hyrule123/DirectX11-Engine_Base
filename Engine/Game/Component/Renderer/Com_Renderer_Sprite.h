@@ -6,7 +6,8 @@ namespace ehw
 	class Com_Animator2D;
 	class Com_Renderer_Sprite : public Com_Renderer_Mesh
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_Renderer_Sprite);
+		CLASS_NAME(Com_Renderer_Sprite);
+		REGISTER_INSTANCE_DEFAULT(Com_Renderer_Sprite);
 		
 	public:
 		Com_Renderer_Sprite();

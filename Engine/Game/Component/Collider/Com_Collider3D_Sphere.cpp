@@ -9,7 +9,7 @@
 namespace ehw
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Shapes(ClassInfo<Com_Collider3D_Sphere>::name(), eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(Com_Collider3D_Sphere::concrete_name, eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}
@@ -41,8 +41,6 @@ namespace ehw
 		shape->setLocalPose(m_offsetPosition);
 		ASSERT(false, "미구현");
 		//AttachShape(shape);
-
-		
 	}
 
 }

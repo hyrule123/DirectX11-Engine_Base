@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
-		: Com_Renderer_Mesh(ClassInfo<Com_Renderer_Sprite>::name())
+		: Com_Renderer_Mesh(Com_Renderer_Sprite::concrete_name)
 		, mAnimator(nullptr)
 	{
 	}

@@ -17,7 +17,7 @@
 namespace ehw
 {
 	Com_Light3D::Com_Light3D()
-		: Light(ClassInfo<Com_Light3D>::name(), eDimensionType::_3D)
+		: Light(Com_Light3D::concrete_name, eDimensionType::_3D)
 		, m_volumeMesh()
 		, m_lightMaterial()
 		, m_index()

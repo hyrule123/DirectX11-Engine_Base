@@ -8,7 +8,8 @@ namespace ehw
     class Com_Rigidbody_Dynamic :
         public Rigidbody
     {
-        REGISTER_CLASS_INSTANCE_ABLE(Com_Rigidbody_Dynamic);
+        CLASS_NAME(Com_Rigidbody_Dynamic);
+        REGISTER_INSTANCE_DEFAULT(Com_Rigidbody_Dynamic);
         
     public:
         Com_Rigidbody_Dynamic();

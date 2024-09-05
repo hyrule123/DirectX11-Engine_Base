@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Animation2D::Animation2D()
-		: Animation(ClassInfo<Animation2D>::name())
+		: Animation(Animation2D::concrete_name)
 		, mAnimator(nullptr)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}

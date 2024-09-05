@@ -9,7 +9,7 @@ namespace ehw
 	class Com_Animator3D :
 		public Animator
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_Animator3D);
+		CLASS_NAME(Com_Animator3D);
 		
 	public:
 		Com_Animator3D();

@@ -22,7 +22,7 @@
 namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(ClassInfo<NormalConvertShader>::name(), uint3{32, 32, 1})
+		: ComputeShader(NormalConvertShader::concrete_name, uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		

@@ -6,7 +6,8 @@ namespace ehw
     class Com_Collider3D_Capsule :
         public Com_Collider3D_Shapes
     {
-        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider3D_Capsule);
+        CLASS_NAME(Com_Collider3D_Capsule);
+        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Capsule);
         
     public:
         Com_Collider3D_Capsule();

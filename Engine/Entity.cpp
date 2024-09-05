@@ -2,7 +2,7 @@
 
 #include "Engine/define_Macro.h"
 
-
+#include "Engine/Util/AtExit.h"
 namespace ehw
 {
 	UINT32 Entity::g_nextID{};
@@ -19,5 +19,22 @@ namespace ehw
 	}
 	Entity::~Entity()
 	{
+	}
+
+	InstanceManager::InstanceManager()
+	{
+	}
+	InstanceManager::~InstanceManager()
+	{
+	}
+	Entity* InstanceManager::Instantiate(const std::string_view key)
+	{
+		Entity* ret = nullptr;
+		auto iter = m_ctors.find(key);
+		if (iter != m_ctors.end()) {
+			ret = iter->second();
+		}
+
+		return ret;
 	}
 }

@@ -8,7 +8,7 @@
 namespace ehw
 {
 	Com_Rigidbody_Static::Com_Rigidbody_Static()
-		: Rigidbody(ClassInfo<Com_Rigidbody_Static>::name())
+		: Rigidbody(Com_Rigidbody_Static::concrete_name)
 	{
 	}
 

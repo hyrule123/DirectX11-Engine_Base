@@ -24,18 +24,28 @@ PS_OUT main(VSOut_LightPoint _in)
 	float4 vLocalPos = mul(mul(vViewPos, CB_Transform.InverseView), CB_Transform.InverseWorld);
 	
 
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			
+		}
+
+	}
+	
 	
 	//로컬 공간의 구체는 반지름이 0.5f이다.(이 거리 바깥에 있는 픽셀의 경우 빛의 거리 바깥에 있는것
-	if (length(vLocalPos.xyz) > 0.5f)
-	{
-		g_debugData[0].float4_0 = vLocalPos;
+		if (length(vLocalPos.xyz) > 0.5f)
 		{
-			output.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
-			output.vSpecular = float4(1.f, 1.f, 1.f, 1.f);
-			return output;
+			g_debugData[0].float4_0 =
+vLocalPos;
+		{
+				output.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+				output.vSpecular = float4(1.f, 1.f, 1.f, 1.f);
+				return output;
+			}
+			discard;
 		}
-		//discard;
-	}
     
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
 	

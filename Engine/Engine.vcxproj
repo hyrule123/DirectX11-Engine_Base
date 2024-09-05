@@ -228,8 +228,9 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DefaultSettingVar.h" />
-    <ClInclude Include="ClassInfo.h" />
-    <ClInclude Include="Manager\InstanceManager.h" />
+    <None Include="Manager\InstanceManager.inl">
+      <FileType>Document</FileType>
+    </None>
     <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />

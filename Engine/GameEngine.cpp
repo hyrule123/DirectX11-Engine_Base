@@ -4,7 +4,6 @@
 
 #include "Engine/Game/Collision/PhysXInstance.h"
 
-#include "Engine/Manager/InstanceManager.h"
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/TimeManager.h"
 #include "Engine/Manager/InputManager.h"
@@ -21,6 +20,8 @@
 #include "Engine/EngineMain.h"
 
 #include "Engine/GlobalVariable.h"
+
+#include "Engine/Game/Scene.h"
 
 namespace ehw
 {

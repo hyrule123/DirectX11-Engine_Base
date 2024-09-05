@@ -1,10 +1,9 @@
 #pragma once
-#include "Engine/ClassInfo.h"
+#include "Engine/Entity.h"
 
 #include "Engine/Game/Component/define_Component.h"
 
 #include "Engine/Util/Serialize/Serializable.h"
-#include "Engine/Manager/InstanceManager.h"
 
 namespace ehw
 {
@@ -17,7 +16,8 @@ namespace ehw
 		: public Entity
 		, public Serializable_Json
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(GameObject);
+		CLASS_NAME(GameObject);
+		REGISTER_INSTANCE_DEFAULT(GameObject);
 
 		friend class GameObject;
 	public:
@@ -182,7 +182,7 @@ namespace ehw
 	template<typename T>
 	inline T* GameObject::GetScript()
 	{
-		return static_cast<T*>(GetScript(ClassInfo<T>::get_name()));
+		return static_cast<T*>(GetScript(T::concrete_name));
 	};
 
 	inline Com_Transform* GameObject::Transform()

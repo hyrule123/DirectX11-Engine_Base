@@ -6,7 +6,8 @@ namespace ehw
     class Com_Renderer_Mesh :
         public Renderer
     {
-        REGISTER_CLASS_INSTANCE_ABLE(Com_Renderer_Mesh);
+        CLASS_NAME(Com_Renderer_Mesh);
+        REGISTER_INSTANCE_DEFAULT(Com_Renderer_Mesh);
         
     public:
         Com_Renderer_Mesh();

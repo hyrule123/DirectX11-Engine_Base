@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes()
-		: Collider3D(ClassInfo<Com_Collider3D_Shapes>::name(), eCollider3DType::Rigid)
+		: Collider3D(Com_Collider3D_Shapes::concrete_name, eCollider3DType::Rigid)
 		, m_pxShapes{}
 	{
 	}

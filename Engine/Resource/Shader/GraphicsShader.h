@@ -27,6 +27,7 @@ namespace ehw
 		: public Shader
 		, public Serializable_Json
 	{
+		CLASS_NAME(GraphicsShader);
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();

@@ -12,7 +12,7 @@ namespace  ehw
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_Camera);
+		CLASS_NAME(Com_Camera);
 		
 		class CullingAgent;
 	public:
@@ -92,7 +92,7 @@ namespace  ehw
 		std::vector<Renderer*> m_alphaBlend;	//Transparent
 		std::vector<Renderer*> m_postProcess;
 
-
+	public:
 		class CullingAgent : public Entity
 		{
 		public:
@@ -105,7 +105,7 @@ namespace  ehw
 
 		class CullingAgent_Orthographic : public CullingAgent
 		{
-			REGISTER_CLASS_INSTANCE_ABLE(CullingAgent_Orthographic);
+			CLASS_NAME(CullingAgent_Orthographic);
 		public:
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
@@ -115,7 +115,7 @@ namespace  ehw
 
 		class CullingAgent_Perspective : public CullingAgent
 		{
-			REGISTER_CLASS_INSTANCE_ABLE(CullingAgent_Perspective);
+			CLASS_NAME(CullingAgent_Perspective);
 		public:
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();

@@ -7,7 +7,8 @@ namespace ehw
     class Com_Collider3D_Cube :
         public Com_Collider3D_Shapes
     {
-        REGISTER_CLASS_INSTANCE_ABLE(Com_Collider3D_Cube);
+        CLASS_NAME(Com_Collider3D_Cube);
+        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Cube);
         
     public:
         Com_Collider3D_Cube();

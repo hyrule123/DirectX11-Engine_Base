@@ -12,7 +12,7 @@
 namespace ehw
 {
 	Com_Renderer_Mesh::Com_Renderer_Mesh() 
-		: Renderer(ClassInfo<Com_Renderer_Mesh>::name())
+		: Renderer(Com_Renderer_Mesh::concrete_name)
 	{
 	}
 	Com_Renderer_Mesh::Com_Renderer_Mesh(const std::string_view key)

@@ -7,7 +7,7 @@
 namespace ehw
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
-		: Collider2D(ClassInfo<Com_Collider2D_AABB>::name(), eCollider2D_Shape::AABB)
+		: Collider2D(Com_Collider2D_AABB::concrete_name, eCollider2D_Shape::AABB)
 		, m_offsetScale(100.f)
 		, m_leftBottom(0.f, 0.f)
 		, m_rightTop(100.f, 100.f)

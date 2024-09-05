@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
-		: Com_Renderer_Mesh(ClassInfo<Com_Renderer_UIBase>::name())
+		: Com_Renderer_Mesh(Com_Renderer_UIBase::concrete_name)
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정

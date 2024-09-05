@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/ClassInfo.h"
+#include "Engine/Entity.h"
 
 #include "CommonGPU.h"
 

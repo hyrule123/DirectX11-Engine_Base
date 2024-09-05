@@ -27,7 +27,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: Resource(ClassInfo<Model3D>::name())
+		: Resource(Model3D::concrete_name)
 	{
 	}
 

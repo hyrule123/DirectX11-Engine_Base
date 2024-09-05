@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : Animation(ClassInfo<Animation3D>::name())
+        : Animation(Animation3D::concrete_name)
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}

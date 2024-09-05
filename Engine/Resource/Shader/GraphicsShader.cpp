@@ -12,7 +12,7 @@
 namespace ehw
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(ClassInfo<GraphicsShader>::name())
+		: Shader(GraphicsShader::concrete_name)
 		, m_arrShaderCode{}
 		, m_rasterizerType(eRSType::SolidBack)
 		, m_depthStencilType(eDSType::Less)

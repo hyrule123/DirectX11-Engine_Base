@@ -7,7 +7,7 @@
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
-		: Animator(ClassInfo<Com_Animator2D>::name(), eDimensionType::_2D)
+		: Animator(Com_Animator2D::concrete_name, eDimensionType::_2D)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)

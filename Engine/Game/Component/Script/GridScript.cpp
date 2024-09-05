@@ -16,7 +16,7 @@ namespace ehw
 	
 
 	GridScript::GridScript()
-		: Script(ClassInfo<GridScript>::name())
+		: Script(GridScript::concrete_name)
 		, mCamera(nullptr)
 	{
 

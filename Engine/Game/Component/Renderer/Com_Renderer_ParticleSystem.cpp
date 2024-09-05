@@ -21,7 +21,7 @@
 namespace ehw
 {
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
-		: Com_Renderer_Mesh(ClassInfo<Com_Renderer_ParticleSystem>::name())
+		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::concrete_name)
 		, mMaxParticles(100)
 		, mStartSize(float4(50.0f, 50.0f, 1.0f, 1.0f))
 		, mStartColor(float4(1.0f, 0.2f, 0.2f, 1.0f))

@@ -9,7 +9,7 @@
 namespace ehw
 {
 	Prefab::Prefab()
-		: Resource(ClassInfo<Prefab>::name())
+		: Resource(Prefab::concrete_name)
 		, m_prefab()
 	{
 	}

@@ -8,7 +8,8 @@ namespace ehw
 	class Com_Renderer_UIBase :
 		public Com_Renderer_Mesh
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_Renderer_UIBase);
+		CLASS_NAME(Com_Renderer_UIBase);
+		REGISTER_INSTANCE_DEFAULT(Com_Renderer_Mesh);
 		
 	public:
 		Com_Renderer_UIBase();

@@ -42,7 +42,7 @@ namespace ehw
 		: public Resource 
 		, Serializable_Binary
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Mesh);
+		CLASS_NAME(Mesh);
 
 	public:
 		Mesh();

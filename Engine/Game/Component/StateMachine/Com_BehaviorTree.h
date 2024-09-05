@@ -6,7 +6,7 @@ namespace ehw
 	class Com_BehaviorTree 
 		: public StateMachine
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(Com_BehaviorTree);
+		CLASS_NAME(Com_BehaviorTree);
 		
 	public:
 		Com_BehaviorTree();

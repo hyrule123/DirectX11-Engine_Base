@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: Resource(ClassInfo<Texture>::name())
+		: Resource(Texture::concrete_name)
 		, mDesc()
 		, mTexture()
 		, mImage()

@@ -430,7 +430,7 @@ namespace ehw {
 
 #pragma region Sphere Mesh
 		{
-			Vertex3D vtx3d;
+			Vertex3D vtx3d{};
 			std::vector<Vertex3D> VecVtx3D;
 			VecVtx3D.reserve(2000);
 
@@ -461,6 +461,7 @@ namespace ehw {
 
 				for (uint j = 0; j <= iSliceCount; ++j)
 				{
+					vtx3d = {};
 					float theta = j * fSliceAngle;
 
 					vtx3d.Pos = float4(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
@@ -479,11 +480,12 @@ namespace ehw {
 					vtx3d.BiNormal.Normalize();
 
 					VecVtx3D.push_back(vtx3d);
-					vtx3d = {};
+					
 				}
 			}
 
 			// Bottom
+			vtx3d = {};
 			vtx3d.Pos = float4(0.f, -fRadius, 0.f, 1.0f);
 			vtx3d.UV = float2(0.5f, 1.f);
 			vtx3d.Normal = float3(vtx3d.Pos.x, vtx3d.Pos.y, vtx3d.Pos.z);

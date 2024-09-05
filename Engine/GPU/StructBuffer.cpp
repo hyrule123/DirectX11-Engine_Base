@@ -9,7 +9,7 @@
 namespace ehw
 {
 	StructBuffer::StructBuffer()
-		: GPUBuffer(ClassInfo<StructBuffer>::name(), eBufferType::Struct)
+		: GPUBuffer(StructBuffer::concrete_name, eBufferType::Struct)
 		, m_desc()
 		, m_elementStride()
 		, m_elementCount()

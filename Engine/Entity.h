@@ -1,6 +1,10 @@
 #pragma once
 #include "Engine/Common.h"
 
+//클래스의 헤더 최상단에 작성. 클래스별 이름을 등록한다.
+#define CLASS_NAME(_class_) \
+public: static inline constexpr const std::string_view concrete_name = #_class_
+
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_ABLE(_type) \
 virtual _type* Clone() override { return new _type(*this); }
@@ -36,8 +40,7 @@ namespace ehw
 	};
 }
 
-
-
+#include "Engine/Manager/InstanceManager.inl"
 
 
 

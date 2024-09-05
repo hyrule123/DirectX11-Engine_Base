@@ -38,13 +38,13 @@ PSOut_Deffered main(VSOut _in)
 	}
     
 	
-	PSOut_Deffered OutColor = (PSOut_Deffered) 0;
+	PSOut_Deffered deffered_out = (PSOut_Deffered) 0;
 	
-	OutColor.Albedo = vObjectColor;
-	OutColor.Normal = float4(vViewNormal.xyz, 1.f);
-	OutColor.Specular = SpecularCoeff;
-	OutColor.Emissive = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	OutColor.Position = float4(_in.ViewPos.xyz, 1.f);
+	deffered_out.Albedo = vObjectColor;
+	deffered_out.Normal = float4(vViewNormal.xyz, 1.f);
+	deffered_out.Specular = SpecularCoeff;
+	deffered_out.Emissive = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	deffered_out.Position = float4(_in.ViewPos.xyz, 1.f);
 	
-	return OutColor;
+	return deffered_out;
 }

@@ -17,7 +17,7 @@
 namespace ehw
 {
 	GameObject::GameObject()
-		: Entity(ClassInfo<GameObject>::name())
+		: Entity(GameObject::concrete_name)
 		, m_baseComponents()
 		, m_scene()
 		, m_layer(UINT_MAX)

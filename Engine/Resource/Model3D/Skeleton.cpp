@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Skeleton::Skeleton()
-		: Resource(ClassInfo<Skeleton>::name())
+		: Resource(Skeleton::concrete_name)
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}

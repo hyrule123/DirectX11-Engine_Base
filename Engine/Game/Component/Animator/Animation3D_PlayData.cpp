@@ -17,7 +17,7 @@
 namespace ehw
 {
 	Animation3D_PlayData::Animation3D_PlayData()
-		: Entity(ClassInfo<Animation3D_PlayData>::name())
+		: Entity(Animation3D_PlayData::concrete_name)
 		, m_animationComputeShader()
 		, m_skeleton()
 		//, m_iFramePerSecond(30)

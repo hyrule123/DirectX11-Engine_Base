@@ -9,7 +9,7 @@ namespace ehw
 {
 	class NormalConvertShader : public ComputeShader
 	{
-		REGISTER_CLASS_INSTANCE_ABLE(NormalConvertShader);
+		CLASS_NAME(NormalConvertShader);
 	public:
 		NormalConvertShader();
 		virtual ~NormalConvertShader();

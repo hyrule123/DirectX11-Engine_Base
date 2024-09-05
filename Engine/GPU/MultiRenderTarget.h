@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/ClassInfo.h"
+#include "Engine/Entity.h"
 
 #include "CommonGPU.h"
 
@@ -9,7 +9,7 @@ namespace ehw
     class MultiRenderTarget :
         public Entity
     {
-		REGISTER_CLASS_INSTANCE_ABLE(MultiRenderTarget);
+		CLASS_NAME(MultiRenderTarget);
 	public:
 		MultiRenderTarget();
 		virtual ~MultiRenderTarget();

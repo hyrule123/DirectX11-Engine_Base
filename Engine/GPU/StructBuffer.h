@@ -12,7 +12,7 @@ namespace ehw
 	class StructBuffer 
 		: public GPUBuffer
 	{
-        REGISTER_CLASS_INSTANCE_ABLE(StructBuffer);
+        CLASS_NAME(StructBuffer);
     public:
         struct Desc
         {
