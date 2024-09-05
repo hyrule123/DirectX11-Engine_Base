@@ -30,7 +30,7 @@ namespace ehw
 		virtual void FixedUpdate() {}
 		virtual void Update() {}
 		virtual void final_update() {}
-		virtual void FrameEnd() {}
+		virtual void frame_end() {}
 
 		void Destroy();
 

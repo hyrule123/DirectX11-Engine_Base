@@ -30,7 +30,7 @@ namespace  ehw
 
 		//void Setting() override;
 		void final_update() override;
-		void FrameEnd() override;
+		void frame_end() override;
 		void OnEnable() override;
 		void OnDisable() override;
 

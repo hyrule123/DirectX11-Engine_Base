@@ -44,9 +44,9 @@ namespace ehw
 		m_rightTop.y = pos.y + halfExtentXY.y;
 	}
 
-	void Com_Collider2D_AABB::FrameEnd()
+	void Com_Collider2D_AABB::frame_end()
 	{
-		Collider2D::FrameEnd();
+		Collider2D::frame_end();
 		m_isOffsetScaleUpdated = false;
 	}
 

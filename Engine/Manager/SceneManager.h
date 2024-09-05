@@ -17,7 +17,7 @@ namespace ehw
 		void FixedUpdate();
 		void Update();
 		void final_update();
-		void FrameEnd();
+		void frame_end();
 		void Release();
 
 		void Destroy();

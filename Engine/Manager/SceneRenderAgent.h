@@ -21,7 +21,7 @@ namespace ehw {
 		void Render();
 
 	public:
-		void FrameEnd();
+		void frame_end();
 
 		void SetResolution(UINT _resX, UINT _resY);
 

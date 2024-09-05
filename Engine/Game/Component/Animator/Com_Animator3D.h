@@ -24,7 +24,7 @@ namespace ehw
 
 		virtual void Init() override;
 		virtual void final_update() override;
-		virtual void FrameEnd() override;
+		virtual void frame_end() override;
 
 		virtual bool IsPlaying() const;
 

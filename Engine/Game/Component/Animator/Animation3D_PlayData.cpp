@@ -149,7 +149,7 @@ namespace ehw
 		m_bFinalMatrixUpdated = false;
 		return true;
 	}
-	void Animation3D_PlayData::FrameEnd()
+	void Animation3D_PlayData::frame_end()
 	{
 		m_bInternalUpdated = false;
 		m_bFinalMatrixUpdated = false;

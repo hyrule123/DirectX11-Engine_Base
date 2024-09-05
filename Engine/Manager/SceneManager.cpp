@@ -60,7 +60,7 @@ namespace ehw
 		}
 	}
 
-	void SceneManager::FrameEnd()
+	void SceneManager::frame_end()
 	{
 		if (m_activeScene)
 		{

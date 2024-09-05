@@ -73,14 +73,14 @@ namespace ehw
 		//}
 	}
 
-	void CollisionSystem::FrameEnd()
+	void CollisionSystem::frame_end()
 	{
 		if (m_col2DManager) {
-			m_col2DManager->FrameEnd();
+			m_col2DManager->frame_end();
 		}
 		
 		if (m_col3DManager) {
-			m_col3DManager->FrameEnd();
+			m_col3DManager->frame_end();
 		}
 	}
 

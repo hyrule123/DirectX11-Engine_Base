@@ -26,8 +26,9 @@ namespace ehw
 		, m_worldRotation(math::Quaternion::Identity)
 		, m_worldDirection{ float3::Right, float3::Up, float3::Forward }
 		, m_worldMatrix(MATRIX::Identity)
-		, m_is_local_value_updated(true)
-		, m_is_transform_updated(true)
+		, m_parent_updated(false)
+		, m_local_updated(true)
+		, m_transform_updated(true)
 		, m_parent()
 		, m_childs()
 	{
@@ -44,6 +45,12 @@ namespace ehw
 		update_world_matrix_recursive();
 	}
 
+	void Transform::frame_end()
+	{
+		m_local_updated = false;
+		m_parent_updated = false;
+		m_transform_updated = false;
+	}
 
 	void Transform::bind_data()
 	{
@@ -62,8 +69,6 @@ namespace ehw
 
 	void Transform::update_local_matrix()
 	{
-		m_is_local_value_updated = false;
-
 		//1. 크기행렬
 		m_localMatrix = MATRIX::CreateScale(m_localScale);
 
@@ -96,7 +101,7 @@ namespace ehw
 			m_childs.push_back(_transform);
 
 			_transform->set_parent(this);
-			_transform->set_flags_on();
+			_transform->reserve_update_recursive();
 		}
 	}
 
@@ -116,19 +121,23 @@ namespace ehw
 		}
 	}
 
-	bool Transform::update_world_matrix_recursive()
+	void Transform::update_world_matrix_recursive()
 	{
 		//월드 행렬을 업데이트 해야 하는 경우: 로컬 또는 부모 트랜스폼 중 하나라도 업데이트 된 경우
-		bool is_world_need_update = m_is_local_value_updated;
+		bool is_world_need_update = m_local_updated || m_parent_updated;
 
-		//로컬 행렬 업데이트
-		if (m_is_local_value_updated) {
+		//로컬행렬 업데이트
+		if (m_local_updated) {
 			update_local_matrix();
+			m_local_updated = false;
 		}
 
-		//부모 행렬 업데이트 후 업데이트 되었는지 여부 받아옴
-		if (m_parent) {
-			is_world_need_update |= m_parent->update_world_matrix_recursive();
+		//부모행렬 업데이트(재귀)
+		if (m_parent_updated) {
+			if (m_parent) {
+				m_parent->update_world_matrix_recursive();
+			}
+			m_parent_updated = false;
 		}
 
 		//로컬, 월드 둘중 하나라도 업데이트 되었으면 자신의 월드행렬을 업데이트 한다.
@@ -138,7 +147,8 @@ namespace ehw
 			m_worldScale = m_localScale;
 			if (m_parent)
 			{
-				MATRIX parentMat = MATRIX::Identity;
+				//부모 매트릭스를 받아온다.
+				MATRIX parentMat = m_parent->get_world_matix_internal();
 				constexpr size_t rowErasebytes = sizeof(float) * 3;
 
 				//크기 무시
@@ -147,8 +157,6 @@ namespace ehw
 					//크기 무시 + 회전 무시: 0, 0부터 3, 3까지 밀어버리고 단위행렬로 변경
 					if (m_is_ignore_parent_rotation)
 					{
-						parentMat = m_parent->get_world_matix_internal();
-
 						memset(parentMat.m[0], 0, rowErasebytes);
 						memset(parentMat.m[1], 0, rowErasebytes);
 						memset(parentMat.m[2], 0, rowErasebytes);
@@ -161,7 +169,6 @@ namespace ehw
 					else
 					{
 						//정규화하면 크기정보가 제거된다.
-						parentMat *= m_parent->get_world_matix_internal();
 						parentMat.Right(parentMat.Right().Normalize());
 						parentMat.Up(parentMat.Up().Normalize());
 						parentMat.Forward(parentMat.Forward().Normalize());
@@ -176,8 +183,6 @@ namespace ehw
 					//크기 반영 + 회전 무시
 					if (m_is_ignore_parent_rotation)
 					{
-						parentMat = m_parent->get_world_matrix();
-
 						//우선 크기 + 회전 정보가 있는 부분을 초기화 한다.
 						memset(parentMat.m[0], 0, rowErasebytes);
 						memset(parentMat.m[1], 0, rowErasebytes);
@@ -193,10 +198,6 @@ namespace ehw
 					}
 
 					//크기 반영 + 회전 반영 -> 그냥 바로 적용
-					else
-					{
-						parentMat *= m_parent->get_world_matix_internal();
-					}
 				}
 
 				m_worldMatrix *= parentMat;
@@ -208,8 +209,15 @@ namespace ehw
 				m_worldDirection[i] = float3(m_worldMatrix.m[i]).Normalize();
 			}
 		}
+	}
 
-		return is_world_need_update;
+	void Transform::reserve_update_recursive()
+	{
+		m_parent_updated = true;
+		m_local_updated = true;
+		for (Transform* t : m_childs) {
+			t->reserve_update_recursive();
+		}
 	}
 
 	void Transform::set_world_scale(const float3& _worldScale)
@@ -223,8 +231,7 @@ namespace ehw
 		//else: false == m_is_ignore_parent_scale && m_parent
 		else 
 		{
-			//final_update 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
-			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
+			//자신의 월드행렬은 업데이트 할 필요 없음
 			m_parent->update_world_matrix_recursive();
 
 			//설정하려는 World Scale을 부모의 World Scale로 나눠 주면 Local Scale을 얼마나 지정해야하는지 알 수 있다.
@@ -236,22 +243,18 @@ namespace ehw
 		//부모 스케일 무시 or 부모 트랜스폼 없을 경우
 		if (m_is_ignore_parent_rotation || nullptr == m_parent)
 		{
-			SetLocalRotation(_worldRotation);
+			set_local_rotation(_worldRotation);
 		}
 		else
 		{
-			//final_update 단계가 아직 진행되지 않았을 경우 업데이트 함수 호출.
-			//이때 bool 플래그는 바꾸지 않는다.(다른 스크립트에서 아직 위치 업데이트가 끝나지 않았을 수 있음)
+			//부모의 월드행렬까지만 업데이트(자신은 로컬만 업데이트하면 됨)
 			m_parent->update_world_matrix_recursive();
 
 			//설정하려는 World Rotation을 부모의 World Rotation로 나눠 주면 Local Rotation을 얼마나 지정해야하는지 알 수 있다.
-			SetLocalRotation(_worldRotation / m_parent->get_world_rotation_internal());
+			set_local_rotation(_worldRotation / m_parent->get_world_rotation_internal());
 		}
 	}
-	inline void Transform::set_world_rotation(const float3& _worldRotationEuler)
-	{
-		set_world_rotation(Quaternion::CreateFromYawPitchRoll(_worldRotationEuler));
-	}
+
 	void Transform::set_world_position(const float3& _worldPosition)
 	{
 		//부모 트랜스폼 없을 경우
@@ -269,11 +272,11 @@ namespace ehw
 
 			//update_world_matrix_recursive() 호출 시 Local Matrix, World Matrix 전부 새걸로 갱신되어 있는 상태이므로(flag들이 모두 false 가 되어있는 상태)
 			//추가적으로 작업을 안해줘도 됨. -> Set함수를 통하지 않고 변경.
-			MATRIX calculatedLocalMatrix = m_worldMatrix * m_parent->get_world_matix_internal().Invert();
-			m_localPosition = calculatedLocalMatrix.Translation();
+			MATRIX local_diff = m_worldMatrix * m_parent->get_world_matix_internal().Invert();
+			m_localPosition = local_diff.Translation();
 
 			//오차를 최대한 줄이기 위해 position만 가져온다.
-			m_localMatrix.Translation(calculatedLocalMatrix.Translation());
+			m_localMatrix.Translation(m_localPosition);
 		}
 	}
 

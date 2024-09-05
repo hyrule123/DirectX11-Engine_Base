@@ -37,7 +37,7 @@ namespace ehw
 
 		void FixedUpdate();
 		void Render();
-		void FrameEnd();
+		void frame_end();
 
 	private:
 		void Enqueue(Collider2D* const _obj);

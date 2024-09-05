@@ -76,7 +76,7 @@ namespace ehw
 		}
 	}
 
-	void Com_Animator3D::FrameEnd()
+	void Com_Animator3D::frame_end()
 	{
 		if (nullptr == m_sharedPlayData)
 		{
@@ -84,7 +84,7 @@ namespace ehw
 		}
 		
 		m_sharedPlayData->UpdatePrevFrame();
-		m_sharedPlayData->FrameEnd();
+		m_sharedPlayData->frame_end();
 	}
 	
 

@@ -46,7 +46,7 @@ namespace ehw {
 		}
 	}
 
-	void SceneRenderAgent::FrameEnd()
+	void SceneRenderAgent::frame_end()
 	{
 		m_renderers.clear();
 		m_lightAttributes.clear();

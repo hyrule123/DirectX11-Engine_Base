@@ -27,7 +27,7 @@ namespace ehw
 		virtual ~Animation3D_PlayData();
 
 		bool final_update();
-		void FrameEnd();
+		void frame_end();
 		bool bind_data();
 		void UnBindData();
 

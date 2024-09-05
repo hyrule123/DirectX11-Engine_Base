@@ -101,17 +101,17 @@ namespace ehw
 
 	void Scene::SceneFrameEnd()
 	{
-		FrameEnd();
+		frame_end();
 
 		//각 GameObject에 대해 frameend 호출
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->FrameEnd();
+			m_gameObjects[i]->frame_end();
 		}
 
 		if (m_collisionSystem)
 		{
-			m_collisionSystem->FrameEnd();
+			m_collisionSystem->frame_end();
 		}
 
 		//FrameEnd에 예약해놓은 함수 호출

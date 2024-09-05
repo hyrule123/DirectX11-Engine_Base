@@ -6,10 +6,9 @@
 #include "Engine/Game/Collision/PxActorWrapper.h"
 
 //Transform 업데이트 로직
-//1. 모든 변경사항은 final_update 로직 때 반영됨(지연 적용).
-//2. 그러나 스크립트에서 호출할 가능성이 있는 함수 중, Get/Set World 함수의 경우에는 업데이트된 내용을 바로 갱신해야할 필요성이 있음.
-//	이 경우에는 Impl 함수를 직접 호출해서, 값이 반영되었다는 사실을 숨기고(silence) 한번 갱신을 해준다.
-//3. 
+//모든 작업은 더티 플래그를 통해 지연 계산된다.
+//set함수가 호출될 때 당장 행렬계산을 하지 않고 플래그만 켜둔 뒤 행렬계산이 필요할 때 실행한다.
+
 
 //SRT 각 행렬은 다음과 같은 특징을 가진다.
 //S: 단위행렬 E의 배수 형태(11, 22, 33에 크기정보, 44는 1).
@@ -61,6 +60,8 @@ namespace ehw
 		virtual eResult deserialize_json(const JsonSerializer* _ser) { return eResult(); }
 		
 		virtual void final_update() override;
+		virtual void frame_end() override;
+
 		void bind_data();
 
 #pragma region //Hierarchy
@@ -76,8 +77,7 @@ namespace ehw
 
 		
 #pragma region //Hierarchy
-
-		bool is_transform_updated() const { return m_is_transform_updated; }
+		bool is_transform_updated() const { return m_transform_updated; }
 
 #pragma region //LOCAL
 		const float3& get_local_scale() const { return m_localScale; }
@@ -87,37 +87,49 @@ namespace ehw
 		const float3& get_local_position() const { return m_localPosition; }
 
 		const MATRIX& get_local_matrix() {
-			if (m_is_local_value_updated) {
+			if (m_local_updated) {
 				update_local_matrix();
+				m_local_updated = false;
 			}
 			return m_localMatrix;
 		}
 
-		const float3& get_local_direction(eDirection _dirType) {
-			if (m_is_local_value_updated) {
-				update_local_matrix();
-			}
-			return m_localDirection[(int)_dirType];
-		}
 		const std::array<float3, (int)eDirection::END>& get_local_direction() {
+			if (m_local_updated) {
+				update_local_matrix();
+				m_local_updated = false;
+			}
 			return m_localDirection;
 		}
+
+		const float3& get_local_direction(eDirection _dirType) {
+			if (m_local_updated) {
+				update_local_matrix();
+				m_local_updated = false;
+			}
+			return get_local_direction()[(int)_dirType];
+		}
+
 		
 		void set_local_scale(const float3& _localScale) {
 			m_localScale = _localScale;
-			set_flags_on();
+			m_local_updated = true;
+			m_transform_updated = true;
 		}
-		void SetLocalRotation(const math::Quaternion& _localRotation) {
+		void set_local_rotation(const math::Quaternion& _localRotation) {
 			m_localRotation = _localRotation;
-			set_flags_on();
+			m_local_updated = true;
+			m_transform_updated = true;
 		}
-		void SetLocalRotation(const float3& _localRotationEuler) {
+		void set_local_rotation(const float3& _localRotationEuler) {
 			m_localRotation = Quaternion::CreateFromYawPitchRoll(_localRotationEuler);
-			set_flags_on();
+			m_local_updated = true;
+			m_transform_updated = true;
 		}
 		void set_local_position(const float3& _localPosition) {
 			m_localPosition = _localPosition;
-			set_flags_on();
+			m_local_updated = true;
+			m_transform_updated = true;
 		}
 #pragma endregion //LOCAL
 
@@ -150,7 +162,9 @@ namespace ehw
 
 		void set_world_scale(const float3& _worldScale);
 		void set_world_rotation(const math::Quaternion& _worldRotation);
-		void set_world_rotation(const float3& _worldRotationEuler);
+		void set_world_rotation(const float3& _worldRotationEuler) {
+			set_world_rotation(Quaternion::CreateFromYawPitchRoll(_worldRotationEuler));
+		}
 		void set_world_position(const float3& _worldPosition);
 #pragma endregion //WORLD
 
@@ -158,10 +172,6 @@ namespace ehw
 		void set_ignore_parent_rotation(bool _b) { m_is_ignore_parent_rotation = _b; }
 
 	protected:
-		void set_flags_on() {
-			m_is_local_value_updated = true;
-			m_is_transform_updated = true;
-		}
 		const float3& get_world_scale_internal() const { return m_worldScale; }
 		const math::Quaternion& get_world_rotation_internal() const { return m_worldRotation; }
 		const MATRIX& get_world_matix_internal() const { return m_worldMatrix; }
@@ -172,7 +182,9 @@ namespace ehw
 
 		void update_local_matrix();
 
-		bool update_world_matrix_recursive();
+		void update_world_matrix_recursive();
+
+		void reserve_update_recursive();
 
 	private:
 #pragma region LOCAL
@@ -207,11 +219,10 @@ namespace ehw
 		std::array<float3, (int)eDirection::END> m_worldDirection;
 #pragma endregion //WORLD
 
-		//로컬정보 변경되었을 시 true
-		bool m_is_local_value_updated;
-
-		//local이던 world던 뭐던간에 업데이트 발생 시 true
-		bool m_is_transform_updated;
+		//아래 3개 boolean은 매 프레임마다 갱신된다.
+		bool m_parent_updated;	//부모 트랜스폼에서 재귀 형태로 true
+		bool m_local_updated;	//로컬 값 변경 시 true
+		bool m_transform_updated;//위의 두 값중 하나라도 true였으면 true
 
 		//부모의 크기 무시할 시 true
 		bool m_is_ignore_parent_scale;

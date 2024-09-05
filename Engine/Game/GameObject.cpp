@@ -306,7 +306,7 @@ namespace ehw
 		}
 	}
 
-	void GameObject::FrameEnd()
+	void GameObject::frame_end()
 	{
 		if (false == IsActive())
 		{
@@ -317,7 +317,7 @@ namespace ehw
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->FrameEnd();
+				m_baseComponents[i]->frame_end();
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->FrameEnd();
+				m_scripts[i]->frame_end();
 			}
 		}
 	}

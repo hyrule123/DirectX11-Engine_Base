@@ -83,7 +83,7 @@ namespace ehw
 		void CreateCollision3D();
 
 		void FixedUpdate();
-		void FrameEnd();
+		void frame_end();
 
 		void PrepareDebugRender();
 

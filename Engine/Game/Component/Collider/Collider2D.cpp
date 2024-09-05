@@ -57,9 +57,9 @@ namespace ehw
 		}
 	}
 
-	void Collider2D::FrameEnd()
+	void Collider2D::frame_end()
 	{
-		Collider::FrameEnd();
+		Collider::frame_end();
 		m_isColliderUpdated = false;
 	}
 }

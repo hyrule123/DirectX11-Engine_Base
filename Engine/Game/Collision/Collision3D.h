@@ -41,7 +41,7 @@ namespace ehw
 		void GameSceneToPxScene();
 		void PxSceneToGameScene();
 		void Render();
-		void FrameEnd();
+		void frame_end();
 
 
 		inline physx::PxMaterial* GetDefaultPxMaterial() { return m_defaultPxMaterial; }

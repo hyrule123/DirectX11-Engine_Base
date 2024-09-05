@@ -61,7 +61,7 @@ namespace ehw
 		CreateViewMatrix();
 	}
 
-	void Com_Camera::FrameEnd()
+	void Com_Camera::frame_end()
 	{
 		m_defferedOpaque.clear();
 		m_forwardOpaque.clear();

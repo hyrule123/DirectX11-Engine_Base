@@ -44,7 +44,7 @@ namespace ehw::editor
 			const auto& tr = GetTarget()->GetComponent<Transform>();
 
 			tr->set_local_position(m_position);
-			tr->SetLocalRotation(m_rotation);
+			tr->set_local_rotation(m_rotation);
 			tr->set_local_scale(m_scale);
 		}
 	}

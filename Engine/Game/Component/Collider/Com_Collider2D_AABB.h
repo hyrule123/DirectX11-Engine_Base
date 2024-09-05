@@ -13,7 +13,7 @@ namespace ehw
         virtual ~Com_Collider2D_AABB();
 
         virtual void UpdateShape() final;
-        virtual void FrameEnd() final;
+        virtual void frame_end() final;
 
         void SetOffsetScale(float2 _scale) { m_offsetScale = _scale; m_isOffsetScaleUpdated = true; };
         void SyncToTransform(bool _enable) { m_isSyncScaleToTransform = _enable; }

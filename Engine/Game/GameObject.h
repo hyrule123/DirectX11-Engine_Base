@@ -47,7 +47,7 @@ namespace ehw
 		void Update();
 		void final_update();
 		void Render();
-		void FrameEnd();
+		void frame_end();
 		void RemoveDestroyed();
 
 	public:

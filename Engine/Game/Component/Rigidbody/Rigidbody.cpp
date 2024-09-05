@@ -95,7 +95,7 @@ namespace ehw
 		Transform* tr = gameObject()->transform();
 
 		tr->set_world_position(_pxTransform.p);
-		tr->SetLocalRotation(_pxTransform.q);
+		tr->set_local_rotation(_pxTransform.q);
 	}
 
 

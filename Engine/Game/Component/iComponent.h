@@ -41,7 +41,7 @@ namespace ehw {
 		virtual void Update() {}
 		virtual void final_update() {}
 
-		virtual void FrameEnd() {}
+		virtual void frame_end() {}
 
 		virtual void OnDisable() {}
 		virtual void OnDestroy() {}

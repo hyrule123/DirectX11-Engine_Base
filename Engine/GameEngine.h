@@ -16,7 +16,7 @@ namespace ehw
 		void Render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨
-		void FrameEnd();
+		void frame_end();
 
 		// Running main engine loop
 		bool Run();

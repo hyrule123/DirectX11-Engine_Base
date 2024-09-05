@@ -233,7 +233,7 @@ namespace ehw
 		
 	}
 
-	void Collision2D::FrameEnd()
+	void Collision2D::frame_end()
 	{
 		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
 		{

@@ -262,7 +262,7 @@ namespace ehw
 		m_collisionSystem->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider3D_Shape::Cube]);
 	}
 
-	void Collision3D::FrameEnd()
+	void Collision3D::frame_end()
 	{
 	}
 

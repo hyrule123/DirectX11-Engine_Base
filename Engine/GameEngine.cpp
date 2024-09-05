@@ -114,10 +114,10 @@ namespace ehw
 		RenderManager::GetInst().Present(true);
 	}
 
-	void GameEngine::FrameEnd()
+	void GameEngine::frame_end()
 	{	
-		RenderManager::GetInst().sceneRenderAgent().FrameEnd();
-		SceneManager::GetInst().FrameEnd();
+		RenderManager::GetInst().sceneRenderAgent().frame_end();
+		SceneManager::GetInst().frame_end();
 	}
 
 	// Running main engine loop
@@ -127,7 +127,7 @@ namespace ehw
 		final_update();
 		Render();
 
-		FrameEnd();
+		frame_end();
 		
 		return m_bRunning;
 	}
@@ -185,7 +185,7 @@ namespace ehw
 		SceneManager::GetInst().Destroy();
 		
 		Run();
-		FrameEnd();
+		frame_end();
 
 		//한 프레임 돌려주고(충돌체 해제 등의 작업 진행) 끝낸다
 		
