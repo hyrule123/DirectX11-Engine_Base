@@ -34,16 +34,15 @@ PS_OUT main(VSOut_LightPoint _in)
 	
 	
 	//로컬 공간의 구체는 반지름이 0.5f이다.(이 거리 바깥에 있는 픽셀의 경우 빛의 거리 바깥에 있는것
-		if (length(vLocalPos.xyz) == 1.f)
+	if (length(vLocalPos.xyz) == 1.f)
+	{
 		{
-			g_debugData[0].float4_0 = vLocalPos;
-		{
-				output.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
-				output.vSpecular = float4(1.f, 1.f, 1.f, 1.f);
-				return output;
-			}
-			discard;
+			output.vDiffuse = float4(1.f, 1.f, 1.f, 1.f);
+			output.vSpecular = float4(1.f, 1.f, 1.f, 1.f);
+			return output;
 		}
+		discard;
+	}
     
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
 	

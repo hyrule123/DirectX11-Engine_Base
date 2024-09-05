@@ -3,7 +3,6 @@
 
 #include "Engine/GlobalVariable.h"
 
-
 namespace ehw
 {
 	class StructBuffer;

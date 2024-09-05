@@ -41,7 +41,6 @@ namespace ehw
 		, m_postProcessTexture{}
 		, m_sceneRenderAgent{}
 		, m_lights_SBuffer{}
-		, m_debug_data_buffer{}
 	{
 	}
 	RenderManager::~RenderManager()
@@ -139,21 +138,12 @@ namespace ehw
 
 		CreateMainViewPort();
 
-		//Debug Buffer 연결
-		SDesc = {};
-		SDesc.eSBufferType = eStructBufferType::READ_WRITE;
-		SDesc.REGISLOT_t_SRV = GPU::Register::t::NONE;
-		SDesc.REGISLOT_u_UAV = GPU::Register::u::g_debugData;
-		m_debug_data_buffer = std::make_unique<StructBuffer>();
-		m_debug_data_buffer->Init<tCB_CustomData>(SDesc);
-		m_debug_data_buffer->BindDataUAV();
 
 		return true;
 	}
 
 	void RenderManager::ReleaseResources()
 	{
-		m_debug_data_buffer.reset();
 		m_lights_SBuffer.reset();
 
 		m_sceneRenderAgent.Release();
@@ -345,6 +335,11 @@ namespace ehw
 		m_context->ClearDepthStencilView(m_depth_stencil_buffer_texture->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 	}
 
+	void RenderManager::Present(bool _bVSync)
+	{
+		m_swapChain->Present(_bVSync ? 1 : 0, 0u);
+	}
+
 
 	void RenderManager::Render()
 	{
@@ -411,32 +406,6 @@ namespace ehw
 		}
 	}
 
-	void RenderManager::SetDebugData(const tCB_CustomData& _debugData)
-	{
-		m_debug_data_buffer->SetData(&_debugData, 1);
-		m_debug_data_buffer->BindDataUAV();
-	}
-
-	tCB_CustomData RenderManager::GetDebugData()
-	{
-		tCB_CustomData ret{ };
-
-		m_debug_data_buffer->GetData(&ret);
-
-		return ret;
-	}
-
-
-
-	//void RenderManager::EraseIfDestroyed_Renderer()
-	//{
-	//	std::erase_if(m_renderers,
-	//		[](Renderer* _renderer)->bool
-	//		{
-	//			return _renderer->IsDestroyed();
-	//		}
-	//	);
-	//}
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{

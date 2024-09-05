@@ -3,7 +3,7 @@
 #include "Engine/GPU/StructBuffer.h"
 
 #include "Engine/DefaultShader/Common_struct.hlsli"
-
+#include "Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli"
 
 #if defined (_WIN64) && !(NDEBUG)
 #include "Engine/CompiledShaderHeader/CS_GPUInitSetting_x64_Debug.h"

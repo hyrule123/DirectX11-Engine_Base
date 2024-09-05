@@ -1,9 +1,10 @@
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include "Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli"
 #include "Engine/DefaultShader/Func_Bitwise.hlsli"
 
 //초기화해야 하는 값이 있으면 여기서 초기화.
 //또는 디버그 용도로 사용
 //현재 하는 작업은 Endianness 확인 하나임.
+
 
 [numthreads(1, 1, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )

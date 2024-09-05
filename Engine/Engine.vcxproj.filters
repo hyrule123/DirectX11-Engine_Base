@@ -733,6 +733,7 @@
     </None>
     <None Include="DefaultShader\Debug\Debug.hlsli" />
     <None Include="Manager\InstanceManager.inl" />
+    <None Include="DefaultShader\Initialize\GPU_Init_Setting.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultShader\Basic\VS_Basic3D.hlsl">
@@ -819,7 +820,7 @@
     <FxCompile Include="DefaultShader\NormalConverter\CS_NormalConverter.hlsl">
       <Filter>_DefaultShader\NormalConvert</Filter>
     </FxCompile>
-    <FxCompile Include="DefaultShader\Initialize\CS_GPUInitSetting.hlsl">
+    <FxCompile Include="DefaultShader\Initialize\CS_GPU_Init_Setting.hlsl">
       <Filter>_DefaultShader\GPUInitSetting</Filter>
     </FxCompile>
   </ItemGroup>

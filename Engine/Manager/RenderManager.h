@@ -32,10 +32,14 @@ namespace ehw
 		void Render();
 
 		void ClearRenderTarget();// 화면 지워주기
-		inline void Present(bool _bVSync = false);
+		void Present(bool _bVSync = false);
 
-		inline std::shared_ptr<Texture> GetRenderTargetTex();
-		inline std::shared_ptr<Texture> GetDepthStencilBufferTex();
+		std::shared_ptr<Texture> GetRenderTargetTex() {
+			return m_renderTarget_texture;
+		}
+		std::shared_ptr<Texture> GetDepthStencilBufferTex() {
+			return m_depth_stencil_buffer_texture;
+		}
 
 		bool SetResolution(UINT _resX, UINT _resY);
 		UINT GetResolutionX() { return m_resolution_x; }
@@ -58,9 +62,6 @@ namespace ehw
 		void CopyRenderTarget();
 
 		void ClearMultiRenderTargets();
-
-		void SetDebugData(const tCB_CustomData& _debugData);
-		tCB_CustomData GetDebugData();
 
 		StructBuffer* GetLightSBuffer() { return m_lights_SBuffer.get(); }
 
@@ -125,24 +126,7 @@ namespace ehw
 		std::unique_ptr<StructBuffer>			m_lights_SBuffer;
 
 		SceneRenderAgent m_sceneRenderAgent;
-
-		std::unique_ptr<StructBuffer> m_debug_data_buffer;
 	};
-
-	inline void RenderManager::Present(bool _bVSync)
-	{
-		m_swapChain->Present(_bVSync ? 1 : 0, 0u);
-	}
-
-	inline std::shared_ptr<ehw::Texture> RenderManager::GetRenderTargetTex()
-	{
-		return m_renderTarget_texture;
-	}
-
-	inline std::shared_ptr<ehw::Texture> RenderManager::GetDepthStencilBufferTex()
-	{
-		return m_depth_stencil_buffer_texture;
-	}
 }
 
 
