@@ -16,7 +16,7 @@ namespace ehw
 	// 전방 선언
 	class Scene;
 	class GameObject;
-	class Com_Transform;
+	class Transform;
 	class Collider3D;
 	class CollisionSystem;
 
@@ -76,7 +76,7 @@ namespace ehw
 	private:
 		//struct tTransformSyncData
 		//{
-		//	Com_Transform* transform;
+		//	Transform* transform;
 		//	Quaternion LocalRotation;
 		//	float3 WorldPosition;
 		//};

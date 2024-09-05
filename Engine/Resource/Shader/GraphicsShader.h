@@ -35,8 +35,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		eResult CreateByCompile(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
@@ -59,7 +59,7 @@ namespace ehw
 		void SetBSState(eBSType _state) { m_blendType = _state; }
 		eBSType GetBSState() const { return m_blendType; }
 
-		void BindData();
+		void bind_data();
 		static void UnbindData();
 
 		//에디터용

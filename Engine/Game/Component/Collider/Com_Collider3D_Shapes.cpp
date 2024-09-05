@@ -5,7 +5,7 @@
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Game/Collision/Collision3D.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Game/Component/Rigidbody/Com_Rigidbody_Static.h"
 

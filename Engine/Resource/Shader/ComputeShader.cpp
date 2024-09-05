@@ -122,7 +122,7 @@ namespace ehw
 
 	void ComputeShader::OnExcute()
 	{
-		if (false == BindData())
+		if (false == bind_data())
 			return;
 
 		//데이터 카운트가 하나라도 0일경우 계산 불가
@@ -139,7 +139,7 @@ namespace ehw
 		//상수버퍼를 통해 데이터 수를 업로드
 		static ConstBuffer* const pCB = RenderManager::GetInst().GetConstBuffer(eCBType::ComputeShader);
 		pCB->SetData(&mCB_ComputeShader);
-		pCB->BindData();
+		pCB->bind_data();
 
 		//쉐이더 바인딩
 		RenderManager::GetInst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);

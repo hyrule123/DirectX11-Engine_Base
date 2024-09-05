@@ -7,7 +7,7 @@
 #include "Engine/Resource/Mesh.h"
 #include "Engine/Resource/Material.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -30,8 +30,8 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		auto tr = gameObject()->GetComponent<Com_Transform>();
-		tr->BindData();
+		auto tr = gameObject()->GetComponent<Transform>();
+		tr->bind_data();
 
 		//Render
 		UINT iSubsetCount = GetMesh()->GetSubsetCount();
@@ -44,7 +44,7 @@ namespace ehw
 				//GetMesh()->BindBuffer(i);
 
 				//재질 바인딩
-				mtrl->BindData();
+				mtrl->bind_data();
 
 				//메쉬 렌더링
 				GetMesh()->Render(i);

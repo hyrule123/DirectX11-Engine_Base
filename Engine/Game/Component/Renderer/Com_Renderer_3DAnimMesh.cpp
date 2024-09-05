@@ -3,7 +3,7 @@
 #include "Engine/Game/GameObject.h"
 
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Mesh.h"
@@ -40,10 +40,10 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 
-		auto tr = gameObject()->GetComponent<Com_Transform>();
-		tr->BindData();
+		auto tr = gameObject()->GetComponent<Transform>();
+		tr->bind_data();
 
-		animator->BindData();
+		animator->bind_data();
 		//Render
 		UINT iSubsetCount = GetMesh()->GetSubsetCount();
 		for (UINT i = 0; i < iSubsetCount; ++i)
@@ -57,7 +57,7 @@ namespace ehw
 				//재질에 애니메이션 정보 넣어주고 바인딩
 				mtrl->SetAnim3D(true);
 				mtrl->SetBoneCount(GetMesh()->GetSkeleton()->GetBoneCount());
-				mtrl->BindData();
+				mtrl->bind_data();
 
 				// 사용할 메쉬 업데이트 및 렌더링
 				GetMesh()->Render(i);

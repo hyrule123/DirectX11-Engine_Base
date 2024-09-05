@@ -128,7 +128,7 @@ namespace ehw
 
 		//Serialize
 		Json::Value ser{};
-		eResult result = Serialize_Json(&ser);
+		eResult result = serialize_json(&ser);
 		if (eResult_fail(result))
 		{
 			return result;
@@ -163,7 +163,7 @@ namespace ehw
 		}
 
 
-		return DeSerialize_Json(&ser);
+		return deserialize_json(&ser);
 	}
 }
 

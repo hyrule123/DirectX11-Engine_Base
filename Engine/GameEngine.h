@@ -12,7 +12,7 @@ namespace ehw
 		BOOL Init(const tGameEngineDesc& _AppDesc);
 
 		void Update();
-		void FinalUpdate();
+		void final_update();
 		void Render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨

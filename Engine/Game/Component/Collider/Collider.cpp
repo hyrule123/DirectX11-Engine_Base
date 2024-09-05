@@ -24,7 +24,7 @@ namespace ehw
 
 	void Collider::Init()
 	{
-		m_transform = gameObject()->Transform();
+		m_transform = gameObject()->transform();
 	}
 
 	void Collider::Awake()

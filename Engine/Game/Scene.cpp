@@ -89,12 +89,12 @@ namespace ehw
 
 	void Scene::SceneFinalUpdate()
 	{
-		FinalUpdate();
+		final_update();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
 			{
-				m_gameObjects[i]->FinalUpdate();
+				m_gameObjects[i]->final_update();
 			}
 		}
 	}

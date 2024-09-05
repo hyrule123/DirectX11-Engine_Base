@@ -70,7 +70,7 @@ namespace ehw
 	{
 	}
 
-	bool Animation3D_PlayData::FinalUpdate()
+	bool Animation3D_PlayData::final_update()
 	{
 		
 
@@ -154,7 +154,7 @@ namespace ehw
 		m_bInternalUpdated = false;
 		m_bFinalMatrixUpdated = false;
 	}
-	bool Animation3D_PlayData::BindData()
+	bool Animation3D_PlayData::bind_data()
 	{
 		if (nullptr == m_currentAnimation)
 		{

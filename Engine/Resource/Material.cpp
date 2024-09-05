@@ -50,7 +50,7 @@ namespace ehw
         return LoadFile_Json(_baseDir / _key_path);
     }
 
-    eResult Material::Serialize_Json(JsonSerializer* _ser) const
+    eResult Material::serialize_json(JsonSerializer* _ser) const
     {
         if (nullptr == _ser)
         {
@@ -108,7 +108,7 @@ namespace ehw
         return eResult::Success;
     }
 
-    eResult Material::DeSerialize_Json(const JsonSerializer* _ser)
+    eResult Material::deserialize_json(const JsonSerializer* _ser)
     {
         if (nullptr == _ser)
         {
@@ -164,7 +164,7 @@ namespace ehw
     }
 
 
-    void Material::BindData()
+    void Material::bind_data()
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
@@ -182,9 +182,9 @@ namespace ehw
         CB->SetData(&m_constBufferData);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
-        CB->BindData(flag);
+        CB->bind_data(flag);
 
-        m_shader->BindData();
+        m_shader->bind_data();
     }
 
     void Material::UnbindData()

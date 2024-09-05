@@ -8,7 +8,7 @@
 #include "Engine/Manager/SceneManager.h"
 
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Camera/Com_Camera.h"
 
 namespace ehw
@@ -46,9 +46,9 @@ namespace ehw
 		}
 
 		const auto& gameObj = mCamera->gameObject();
-		const auto& TR = gameObj->GetComponent<Com_Transform>();
+		const auto& TR = gameObj->GetComponent<Transform>();
 		
-		float3 cameraPosition = TR->GetLocalPosition();
+		float3 cameraPosition = TR->get_local_position();
 		float4 position = float4(cameraPosition.x, cameraPosition.y, cameraPosition.z, 1.0f);
 
 		float scale = mCamera->GetScale();
@@ -67,7 +67,7 @@ namespace ehw
 		data.resolution = resolution;
 		
 		CB->SetData(&data);
-		CB->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		CB->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 
 

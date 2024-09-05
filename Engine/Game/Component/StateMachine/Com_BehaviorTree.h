@@ -14,6 +14,6 @@ namespace ehw
 
 
 
-		virtual void FinalUpdate() override {}
+		virtual void final_update() override {}
 	};
 }

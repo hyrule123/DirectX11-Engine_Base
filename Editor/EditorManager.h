@@ -43,7 +43,7 @@ namespace ehw::editor
 		static void Release();
 
 		static void Update();
-		static void FinalUpdate();
+		static void final_update();
 		static void Render();
 
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함

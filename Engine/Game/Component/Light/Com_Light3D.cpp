@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Light/Com_Light3D.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Game/GameObject.h"
 
@@ -37,7 +37,7 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Light3D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_Light3D::serialize_json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -90,7 +90,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Com_Light3D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_Light3D::deserialize_json(const JsonSerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -152,11 +152,11 @@ namespace ehw
 	void Com_Light3D::Update()
 	{
 		
-		auto tr = gameObject()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Transform>();
 		if (nullptr == tr)
 			return;
 
-		float3 position = tr->GetLocalPosition();
+		float3 position = tr->get_local_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 			
 		//Transform 조작은 Update()까지만 가능.
@@ -165,7 +165,7 @@ namespace ehw
 		case ehw::eLightType::Directional:
 			break;
 		case ehw::eLightType::Point:
-			tr->SetLocalScale(float3(m_attribute.radius));
+			tr->set_local_scale(float3(m_attribute.radius));
 			break;
 		case ehw::eLightType::Spot:
 			break;
@@ -176,9 +176,9 @@ namespace ehw
 		}
 	}
 
-	void Com_Light3D::FinalUpdate()
+	void Com_Light3D::final_update()
 	{
-		auto tr = gameObject()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Transform>();
 		if (nullptr == tr)
 		{
 			return;
@@ -188,7 +188,7 @@ namespace ehw
 		{
 		case ehw::eLightType::Directional:
 		{
-			const float3& forward = tr->GetWorldDirection(eDirection::Forward);
+			const float3& forward = tr->get_world_direction(eDirection::Forward);
 			m_attribute.direction = float4(forward, 0.0f);
 			
 			break;
@@ -205,7 +205,7 @@ namespace ehw
 			break;
 		}
 
-		float3 position = tr->GetLocalPosition();
+		float3 position = tr->get_local_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
 		RenderManager::GetInst().sceneRenderAgent().RegisterLight(this);
@@ -221,10 +221,10 @@ namespace ehw
 		}
 
 		//Transform
-		auto tr = gameObject()->GetComponent<Com_Transform>();
+		auto tr = gameObject()->GetComponent<Transform>();
 		if (nullptr == tr)
 			return;
-		tr->BindData();
+		tr->bind_data();
 
 		//Light
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::numberOfLight);
@@ -233,10 +233,10 @@ namespace ehw
 		data.indexOfLight = m_index;
 
 		cb->SetData(&data);
-		cb->BindData(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		cb->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 		//m_volumeMesh->BindBuffer();
-		m_lightMaterial->BindData();
+		m_lightMaterial->bind_data();
 		m_volumeMesh->Render();
 		//m_lightMaterial->UnbindData();
 	}

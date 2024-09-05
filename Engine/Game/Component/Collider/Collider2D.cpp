@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Collider/Collider2D.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Script/Script.h"
 
 #include "Engine/Game/GameObject.h"
@@ -32,12 +32,12 @@ namespace ehw
 		//각자 소멸자에서 제거요청을 보낼경우 매번 vector를 순회돌면서 지워야해서 속도가 많이 느림
 	}
 
-	eResult Collider2D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Collider2D::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
 
-	eResult Collider2D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Collider2D::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}

@@ -46,11 +46,11 @@ namespace ehw
 		}
 
 		
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		uint Update();
-		void FinalUpdate();
+		void final_update();
 		void Render();
 
 		void Create(const std::string_view _name, std::shared_ptr<Texture> _atlas
@@ -60,7 +60,7 @@ namespace ehw
 		//아틀라스를 균일하게 조각조각 내줌
 		void CreateXY(const std::string_view _name, std::shared_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
-		void BindData();
+		void bind_data();
 		void Reset();
 		void UnBindData();
 

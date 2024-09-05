@@ -37,12 +37,12 @@ namespace ehw
 	}
 
 
-	eResult Animation2D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Animation2D::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult::Fail_NotImplemented;
 	}
 
-	eResult Animation2D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Animation2D::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult::Fail_NotImplemented;
 	}
@@ -72,7 +72,7 @@ namespace ehw
 		return -1;
 	}
 
-	void Animation2D::FinalUpdate()
+	void Animation2D::final_update()
 	{
 
 	}
@@ -142,7 +142,7 @@ namespace ehw
 
 	}
 
-	void Animation2D::BindData()
+	void Animation2D::bind_data()
 	{
 		mAtlas->BindDataSRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
@@ -156,7 +156,7 @@ namespace ehw
 		info.atlasSize = mSpriteSheet[mIndex].AtlasSize;
 
 		cb->SetData(&info);
-		cb->BindData(eShaderStageFlag::Pixel);
+		cb->bind_data(eShaderStageFlag::Pixel);
 	}
 
 	void Animation2D::Reset()
@@ -177,7 +177,7 @@ namespace ehw
 		info.animationType = (uint)eDimensionType::NOT_SET;
 
 		cb->SetData(&info);
-		cb->BindData(eShaderStageFlag::Pixel);
+		cb->bind_data(eShaderStageFlag::Pixel);
 	}
 
 

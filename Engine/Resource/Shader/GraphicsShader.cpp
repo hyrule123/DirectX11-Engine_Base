@@ -193,7 +193,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void GraphicsShader::BindData()
+	void GraphicsShader::bind_data()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 		
@@ -231,7 +231,7 @@ namespace ehw
 		pContext->OMSetBlendState(nullptr, nullptr, UINT_MAX);
 	}
 
-	eResult GraphicsShader::Serialize_Json(JsonSerializer* _ser) const
+	eResult GraphicsShader::serialize_json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -295,7 +295,7 @@ namespace ehw
 	}
 
 
-	eResult GraphicsShader::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult GraphicsShader::deserialize_json(const JsonSerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{

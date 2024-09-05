@@ -44,7 +44,7 @@ namespace ehw
         virtual ~Animation3D();
 
     public:
-        void BindData();
+        void bind_data();
         void UnBindData();
 
         virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;

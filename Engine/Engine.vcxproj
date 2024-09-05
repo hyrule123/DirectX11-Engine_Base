@@ -335,7 +335,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Texture.h" />
     <ClInclude Include="Manager\ThreadPoolManager.h" />
     <ClInclude Include="Manager\TimeManager.h" />
-    <ClInclude Include="Game\Component\Com_Transform.h" />
+    <ClInclude Include="Game\Component\Transform.h" />
     <ClInclude Include="Util\define_Util.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
@@ -448,7 +448,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Resource\Texture.cpp" />
     <ClCompile Include="Manager\ThreadPoolManager.cpp" />
     <ClCompile Include="Manager\TimeManager.cpp" />
-    <ClCompile Include="Game\Component\Com_Transform.cpp" />
+    <ClCompile Include="Game\Component\Transform.cpp" />
     <ClCompile Include="Util\define_Util.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 #include <Engine/Util/Serialize/JsonSerializer.h>
 #include <Engine/Resource/Mesh.h>
 #include <Engine/Resource/Material.h>
-#include <Engine/Game/Component/Com_Transform.h>
+#include <Engine/Game/Component/Transform.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 
@@ -149,7 +149,7 @@ namespace ehw::editor
 		}
 
 		Update();
-		FinalUpdate();
+		final_update();
 		Render();
 
 		mbInitialized = true;
@@ -166,16 +166,16 @@ namespace ehw::editor
 		}
 	}
 
-	void EditorManager::FinalUpdate()
+	void EditorManager::final_update()
 	{
 		for (const auto& obj : mEditorObjects)
 		{
-			obj->FinalUpdate();
+			obj->final_update();
 		}
 
 		for (const auto& guiPair : mGuiWindows)
 		{
-			guiPair.second->FinalUpdate();
+			guiPair.second->final_update();
 		}
 
 		if (InputManager::GetKeyPress(eKeyCode::Z))
@@ -232,7 +232,7 @@ namespace ehw::editor
 				{
 					//한 파일에 몰아서 저장
 					Json::Value& saveVal = (*mJsonUIData.get())[guiPair.first];
-					guiPair.second->Serialize_Json(&saveVal);
+					guiPair.second->serialize_json(&saveVal);
 				}
 				//delete guiPair.second;
 			}
@@ -445,7 +445,7 @@ namespace ehw::editor
 		Json::Value* pJval = CheckJsonSaved(_pBase->GetName());
 		if (pJval)
 		{
-			_pBase->DeSerialize_Json(pJval);
+			_pBase->deserialize_json(pJval);
 		}
 
 
@@ -470,7 +470,7 @@ namespace ehw::editor
 		//ImGuizmo::SetOrthographic(false);
 		//ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList());
 
-		const auto& tr = targetgameobject->GetComponent<Com_Transform>();
+		const auto& tr = targetgameobject->GetComponent<Transform>();
 		if (nullptr == tr)
 		{
 			return;
@@ -543,7 +543,7 @@ namespace ehw::editor
 			}
 			else if (mCurrentGizmoOperation == ImGuizmo::SCALE)
 			{
-				tr->SetLocalScale(scale);
+				tr->set_local_scale(scale);
 			}
 			else
 			{

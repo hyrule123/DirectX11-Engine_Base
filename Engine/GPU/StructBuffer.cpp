@@ -188,7 +188,7 @@ namespace ehw
 		m_elementCount = (uint)_uCount;
 
 		//g_arrSBufferShareData의 자신의 인덱스에 해당하는 위치에 이번에 업데이트된 구조체의 갯수를 삽입
-		//상수 버퍼의 바인딩은 BindData()를 하는 시점에 해준다.
+		//상수 버퍼의 바인딩은 bind_data()를 하는 시점에 해준다.
 		tCB_SBufferCount cb = {};
 		cb.SBufferDataCount = m_elementCount;
 

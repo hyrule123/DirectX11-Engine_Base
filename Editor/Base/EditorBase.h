@@ -14,11 +14,11 @@ namespace ehw::editor
 		EditorBase(const std::string_view _strName);
 		virtual ~EditorBase();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void InitRecursive();
-		void FinalUpdate();
+		void final_update();
 
 		virtual void Init() {}
 		virtual void Update() {}
@@ -36,12 +36,12 @@ namespace ehw::editor
 		virtual void EndUI() = 0;
 
 
-		const std::weak_ptr<EditorBase>& GetParent() { return m_parent; }
+		const std::weak_ptr<EditorBase>& get_parent() { return m_parent; }
 
 		template <typename T>
-		std::shared_ptr<T> AddChild();
+		std::shared_ptr<T> add_child();
 
-		std::shared_ptr<EditorBase> AddChild(const std::shared_ptr<EditorBase>& _pChild);
+		std::shared_ptr<EditorBase> add_child(const std::shared_ptr<EditorBase>& _pChild);
 		void ClearChild();
 
 		void ReserveChildsVector(size_t _size) { m_childs.reserve(_size); }
@@ -57,8 +57,8 @@ namespace ehw::editor
 		//void LoadRecursive(Json::Value& _Node);
 
 		void SetNoChild(bool _bNoChild) { m_bNoChild = _bNoChild; }
-		void SetParent(const std::shared_ptr<EditorBase>& _Parent) { m_parent = _Parent; }
-		const std::vector<std::shared_ptr<EditorBase>>& GetChilds() { return m_childs; }
+		void set_parent(const std::shared_ptr<EditorBase>& _Parent) { m_parent = _Parent; }
+		const std::vector<std::shared_ptr<EditorBase>>& get_childs() { return m_childs; }
 		void RemoveChild(const std::shared_ptr<EditorBase>& _pChild);
 
 
@@ -71,7 +71,7 @@ namespace ehw::editor
 	};
 
 	template<typename T>
-	inline std::shared_ptr<T> EditorBase::AddChild()
+	inline std::shared_ptr<T> EditorBase::add_child()
 	{
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
@@ -79,7 +79,7 @@ namespace ehw::editor
 		if(false == m_bNoChild)
 		{
 			retVal = std::make_shared<T>();
-			const std::shared_ptr<EditorBase>& result = AddChild(std::static_pointer_cast<EditorBase>(retVal));
+			const std::shared_ptr<EditorBase>& result = add_child(std::static_pointer_cast<EditorBase>(retVal));
 			
 			if (nullptr == result)
 			{

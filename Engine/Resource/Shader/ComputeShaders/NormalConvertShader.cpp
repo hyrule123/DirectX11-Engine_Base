@@ -53,7 +53,7 @@ namespace ehw
 		return retTex;
 	}
 
-	bool NormalConvertShader::BindData()
+	bool NormalConvertShader::bind_data()
 	{
 		mDestTex = nullptr;
 		mDestTex = std::make_shared<Texture>();

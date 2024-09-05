@@ -20,7 +20,7 @@ namespace ehw
 	{
 	}
 
-	bool ParticleShader::BindData()
+	bool ParticleShader::bind_data()
 	{
 		mBuffer->BindDataUAV(0);
 		mSharedBuffer->BindDataUAV(1);

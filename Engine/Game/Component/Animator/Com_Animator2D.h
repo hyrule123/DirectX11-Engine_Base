@@ -43,11 +43,11 @@ namespace ehw
 
 		virtual ~Com_Animator2D();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void Update() override; 
-		virtual void FinalUpdate() override;
+		virtual void final_update() override;
 
 		virtual bool IsPlaying() const override { ASSERT(false, "미구현"); return false; }
 
@@ -64,7 +64,7 @@ namespace ehw
 		tEvents* FindEvents(const std::string_view _name) const; 
 		void Play(const std::string_view _name, bool _loop = true);
 
-		virtual void BindData() override;
+		virtual void bind_data() override;
 		virtual void UnBindData() override;
 
 		std::function<void()>& GetStartEvent(const std::string_view _name) const;

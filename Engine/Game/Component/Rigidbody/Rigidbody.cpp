@@ -1,7 +1,7 @@
 #include "Engine/Game/Component/Rigidbody/Rigidbody.h"
 
 #include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Game/Collision/Collision3D.h"
@@ -77,24 +77,24 @@ namespace ehw
 	}
 	void Rigidbody::SyncToPhysXGlobalPose()
 	{
-		Com_Transform* tr = gameObject()->Transform();
-		if (false == tr->IsTransformUpdated())
+		Transform* tr = gameObject()->transform();
+		if (false == tr->is_transform_updated())
 		{
 			return;
 		}
 
 		physx::PxTransformT<float> transform{};
-		transform.p = tr->GetWorldPosition();
-		transform.q = tr->GetLocalRotation();
+		transform.p = tr->get_world_position();
+		transform.q = tr->get_local_rotation();
 
 		m_rigidActor->setGlobalPose(transform);
 	}
 
 	void Rigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
 	{
-		Com_Transform* tr = gameObject()->Transform();
+		Transform* tr = gameObject()->transform();
 
-		tr->SetWorldPosition(_pxTransform.p);
+		tr->set_world_position(_pxTransform.p);
 		tr->SetLocalRotation(_pxTransform.q);
 	}
 

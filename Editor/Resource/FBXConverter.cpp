@@ -175,7 +175,7 @@ namespace ehw::editor
 		HilightText("Add Animation to Project Model3D");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
 
-		mProjMeshDataCombo.FinalUpdate();
+		mProjMeshDataCombo.final_update();
 		if (ImGui::Button("Refresh List"))
 		{
 			LoadProjMeshDataCombo();

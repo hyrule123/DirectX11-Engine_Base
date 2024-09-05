@@ -15,7 +15,7 @@
 
 #include "Engine/GPU/MultiRenderTarget.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Renderer/Renderer.h"
 #include "Engine/Game/Component/Light/Com_Light3D.h"
 
@@ -44,17 +44,17 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Camera::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_Camera::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
 
-	eResult Com_Camera::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_Camera::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
-	void Com_Camera::FinalUpdate()
+	void Com_Camera::final_update()
 	{
 		ASSERT(eProjectionType::None != m_projectionType, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
@@ -113,7 +113,7 @@ namespace ehw
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
 		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
 		//rectMesh->BindBuffer();
-		mergeMaterial->BindData();
+		mergeMaterial->bind_data();
 		rectMesh->Render();
 		//mergeMaterial->UnbindData();
 
@@ -125,15 +125,15 @@ namespace ehw
 
 	void Com_Camera::CreateViewMatrix()
 	{
-		auto tr = gameObject()->Transform();
+		auto tr = gameObject()->transform();
 
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
-		if (false == tr->IsTransformUpdated())
+		if (false == tr->is_transform_updated())
 		{
 			return;
 		}
 
-		MATRIX world = tr->GetWorldMatrix();
+		MATRIX world = tr->get_world_matrix();
 		//뷰행렬 = 카메라 앞으로 월드행렬의 물체들을 끌어오는 작업.
 		//도로 끌어오는 작업이므로 월드행렬에 배치했던 순서의 역순으로 작업을 해주면 된다.
 		//이동과 회전을 원래대로 되돌리는 행렬은 특정 행렬을 다시 원래 상태로 돌리는 행렬이라고 볼 수 있다.
@@ -185,7 +185,7 @@ namespace ehw
 
 
 		//방법 2: MATRIX CreateLookAt 함수 사용 -> 카메라의 월드 위치 기준으로
-		world = tr->GetWorldMatrix();
+		world = tr->get_world_matrix();
 		Vector3 target = Vector3::Transform(Vector3::UnitZ, world);
 		m_viewMatrix = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
 
@@ -299,7 +299,7 @@ namespace ehw
 	//		else
 	//		{
 	//			//렌더러가 하나라도 있을 시 true 반환. 없을 시 false
-	//			const auto& childs = _pObj->GetChilds();
+	//			const auto& childs = _pObj->get_childs();
 	//			for (size_t i = 0; i < childs.size(); ++i)
 	//			{
 	//				bRet = FindRendererRecursive(childs[i]);

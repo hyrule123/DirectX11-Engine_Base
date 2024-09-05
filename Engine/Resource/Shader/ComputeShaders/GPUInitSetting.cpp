@@ -33,7 +33,7 @@ namespace ehw
 		return result;
 	}
 
-	bool GPUInitSetting::BindData()
+	bool GPUInitSetting::bind_data()
 	{
 		union CheckEndianness
 		{

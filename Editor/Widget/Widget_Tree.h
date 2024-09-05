@@ -22,7 +22,7 @@ namespace ehw::editor
 			void SetStem(bool bEnable) { mbStem = bEnable; }
 
 			tNode* AddNode();
-			const std::vector<tNode*>& GetChilds() { return m_Childs; }
+			const std::vector<tNode*>& get_childs() { return m_Childs; }
 
 			EditorWidget_Tree* mTreeWidget;
 			tDataPtr mData;

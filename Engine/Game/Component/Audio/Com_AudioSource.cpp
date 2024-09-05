@@ -5,7 +5,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -68,22 +68,22 @@ namespace ehw
 
 	}
 
-	eResult Com_AudioSource::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_AudioSource::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
 
-	eResult Com_AudioSource::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_AudioSource::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}
 
 
-	void Com_AudioSource::FinalUpdate()
+	void Com_AudioSource::final_update()
 	{
-		const auto& tr = gameObject()->GetComponent<Com_Transform>();
-		float3 pos = tr->GetLocalPosition();
-		float3 foward = tr->GetLocalDirection(eDirection::Forward);
+		const auto& tr = gameObject()->GetComponent<Transform>();
+		float3 pos = tr->get_local_position();
+		float3 foward = tr->get_local_direction(eDirection::Forward);
 
 		mAudioClip->Set3DAttributes(pos, foward);
 	}

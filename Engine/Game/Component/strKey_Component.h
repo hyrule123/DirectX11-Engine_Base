@@ -33,5 +33,5 @@ namespace ehw::strKey::component
 	STRKEY Com_Rigidbody_Dynamic = "Com_Rigidbody_Dynamic";
 	STRKEY Com_Rigidbody_Static = "Com_Rigidbody_Static";
 	STRKEY Com_BehaviorTree = "Com_BehaviorTree";
-	STRKEY Com_Transform = "Com_Transform";
+	STRKEY Transform = "Transform";
 }

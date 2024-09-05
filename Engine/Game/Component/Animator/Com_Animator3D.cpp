@@ -39,12 +39,12 @@ namespace ehw
 	{
 	}
 
-	eResult Com_Animator3D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_Animator3D::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
 
-	eResult Com_Animator3D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_Animator3D::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}
@@ -55,13 +55,13 @@ namespace ehw
 	}
 
 
-	void Com_Animator3D::FinalUpdate()
+	void Com_Animator3D::final_update()
 	{
 		if (nullptr == m_sharedPlayData)
 		{
 			return;
 		}
-		else if (false == m_sharedPlayData->FinalUpdate())
+		else if (false == m_sharedPlayData->final_update())
 		{
 			return;
 		}
@@ -151,11 +151,11 @@ namespace ehw
 	}
 
 
-	void Com_Animator3D::BindData()
+	void Com_Animator3D::bind_data()
 	{
 		if (m_sharedPlayData)
 		{
-			m_sharedPlayData->BindData();
+			m_sharedPlayData->bind_data();
 		}
 	}
 

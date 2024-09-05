@@ -3,7 +3,7 @@
 #include "Engine/Game/Collision/PhysXInstance.h"
 
 #include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -18,11 +18,11 @@ namespace ehw
 
 	physx::PxRigidActor* Com_Rigidbody_Static::CreateRigidbody()
 	{
-		Com_Transform* tr = gameObject()->Transform();
+		Transform* tr = gameObject()->transform();
 
 		physx::PxTransform pxTr{};
-		pxTr.p = tr->GetWorldPosition();
-		pxTr.q = tr->GetLocalRotation();
+		pxTr.p = tr->get_world_position();
+		pxTr.q = tr->get_local_rotation();
 
 		return PhysXInstance::GetInst().GetPhysX().createRigidStatic(pxTr);
 	}

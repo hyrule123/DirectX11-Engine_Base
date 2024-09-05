@@ -3,7 +3,7 @@
 #include "Engine/Game/Collision/PhysXInstance.h"
 
 #include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/DefaultSettingVar.h"
 
@@ -31,11 +31,11 @@ namespace ehw
 
 	physx::PxRigidActor* Com_Rigidbody_Dynamic::CreateRigidbody()
 	{
-		Com_Transform* tr = gameObject()->Transform();
+		Transform* tr = gameObject()->transform();
 
 		physx::PxTransform pxTr{};
-		pxTr.p = tr->GetWorldPosition();
-		pxTr.q = tr->GetLocalRotation();
+		pxTr.p = tr->get_world_position();
+		pxTr.q = tr->get_local_rotation();
 
 		return PhysXInstance::GetInst().GetPhysX().createRigidDynamic(pxTr);
 	}
@@ -47,8 +47,8 @@ namespace ehw
 		if (rigidActor)
 		{
 			rigidActor->addForce(_force, physx::PxForceMode::eACCELERATION);
-			//Com_Transform* transform = GetOwner()->GetComponent<Com_Transform>();
-			//physx::PxRigidDynamic*Ext::addForceAtPos(*rigidActor, PhysXConverter::ToPxVec3(force), PhysXConverter::ToPxVec3(transform->GetWorldPosition()));
+			//Transform* transform = GetOwner()->GetComponent<Transform>();
+			//physx::PxRigidDynamic*Ext::addForceAtPos(*rigidActor, PhysXConverter::ToPxVec3(force), PhysXConverter::ToPxVec3(transform->get_world_position()));
 		}
 	}
 

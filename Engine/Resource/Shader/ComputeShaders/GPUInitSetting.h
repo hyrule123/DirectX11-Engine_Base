@@ -18,7 +18,7 @@ namespace ehw
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 	protected:
-		virtual bool BindData() override;
+		virtual bool bind_data() override;
 		virtual void UnBindData() override;
 
 	private:

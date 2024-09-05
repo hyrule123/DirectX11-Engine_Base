@@ -15,11 +15,11 @@ namespace ehw
 		Rigidbody(const std::string_view key);
 		virtual ~Rigidbody();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const final { return eResult{}; };
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) final { return eResult{}; };
+		virtual eResult serialize_json(JsonSerializer* _ser) const final { return eResult{}; };
+		virtual eResult deserialize_json(const JsonSerializer* _ser) final { return eResult{}; };
 
 		void Init() final;
-		void FinalUpdate() final{}
+		void final_update() final{}
 
 		void OnEnable() final;
 		void OnDisable() final;

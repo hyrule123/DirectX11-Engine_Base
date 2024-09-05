@@ -97,7 +97,7 @@ namespace ehw::editor
 		}
 		else
 		{
-			const std::vector<tNode*>& childs = mRoot->GetChilds();
+			const std::vector<tNode*>& childs = mRoot->get_childs();
 			for (tNode* child : childs)
 			{
 				child->UpdateUI();

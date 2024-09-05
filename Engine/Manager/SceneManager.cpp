@@ -52,7 +52,7 @@ namespace ehw
 	}
 
 
-	void SceneManager::FinalUpdate()
+	void SceneManager::final_update()
 	{
 		if (m_activeScene)
 		{

@@ -3,10 +3,10 @@
 
 #include "Engine/GPU/CommonGPU.h"
 
-//1. BindData() 함수를 재정의해서 필요한 데이터를 바인딩하도록 설정
+//1. bind_data() 함수를 재정의해서 필요한 데이터를 바인딩하도록 설정
 //2. Clear() 함수를 재정의해서 데이터 바인딩을 해제하는 함수도 재정의
 //3. 데이터의 갯수 계산. 이건 처음에 한번만 계산해주면 될 때도 있고 매번 새로 계산해줘야할때도 있음.
-//		매번 새로 계산해줘야 할 경우 BindData()에서 호출해주면 되고, 한번만 해주면 될 경우에는 생성자에서 해주면 됨
+//		매번 새로 계산해줘야 할 경우 bind_data()에서 호출해주면 되고, 한번만 해주면 될 경우에는 생성자에서 해주면 됨
 //4. 위의 3개 완료했으면 필요한 시점에 OnExcute() 호출
 
 namespace ehw
@@ -22,7 +22,7 @@ namespace ehw
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
 		//다른 리소스와는 로드 방식이 다름.
 		//이 클래스를 상속한 뒤,
-		//Load 함수와 BindData, UnbindData 함수를 재정의 해준뒤
+		//Load 함수와 bind_data, UnbindData 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
@@ -36,7 +36,7 @@ namespace ehw
 		void OnExcute();
 
 	protected:
-		virtual bool BindData() = 0;
+		virtual bool bind_data() = 0;
 		virtual void UnBindData() = 0;
 
 

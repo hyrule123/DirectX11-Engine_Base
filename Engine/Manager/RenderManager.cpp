@@ -373,7 +373,7 @@ namespace ehw
 
 		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
 		cb->SetData(&info);
-		cb->BindData(eShaderStageFlag::ALL);
+		cb->bind_data(eShaderStageFlag::ALL);
 	}
 	void RenderManager::CopyRenderTarget()
 	{
@@ -446,7 +446,7 @@ namespace ehw
 
 		ConstBuffer* global = GetConstBuffer(eCBType::Global);
 		global->SetData(&gGlobal);
-		global->BindData();
+		global->bind_data();
 	}
 
 

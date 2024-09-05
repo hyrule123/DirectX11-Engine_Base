@@ -22,7 +22,7 @@ namespace ehw
 		Animator(const std::string_view key, eDimensionType _type);
 		virtual ~Animator() {};
 
-		virtual void BindData() = 0;
+		virtual void bind_data() = 0;
 		virtual void UnBindData() = 0;
 
 		virtual bool IsPlaying() const = 0;

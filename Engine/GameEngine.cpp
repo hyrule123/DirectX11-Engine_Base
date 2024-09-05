@@ -92,9 +92,9 @@ namespace ehw
 	}
 
 	// GPU에 보내기 위한 최종 정보 정리
-	void GameEngine::FinalUpdate()
+	void GameEngine::final_update()
 	{
-		SceneManager::GetInst().FinalUpdate();
+		SceneManager::GetInst().final_update();
 	}
 
 	void GameEngine::Render()
@@ -124,7 +124,7 @@ namespace ehw
 	bool GameEngine::Run()
 	{
 		Update();
-		FinalUpdate();
+		final_update();
 		Render();
 
 		FrameEnd();

@@ -9,7 +9,7 @@
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h"
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
 #include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
@@ -63,7 +63,7 @@ namespace ehw
 		return SaveFile_Json(fullPath);
 	}
 
-	eResult Model3D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Model3D::serialize_json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -144,7 +144,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Model3D::deserialize_json(const JsonSerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -236,7 +236,7 @@ namespace ehw
 
 		root->SetName(get_strkey());
 
-		Com_Transform* rootTransform = root->GetComponent<Com_Transform>();
+		Transform* rootTransform = root->GetComponent<Transform>();
 		
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
@@ -279,7 +279,7 @@ namespace ehw
 			{
 				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
-				rootTransform->AddChild(child->Transform());
+				rootTransform->add_child(child->transform());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				Com_Renderer_Mesh* renderer = nullptr;

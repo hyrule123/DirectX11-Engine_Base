@@ -13,7 +13,7 @@ namespace ehw::editor
 
 	}
 
-	void DebugObject::FinalUpdate()
+	void DebugObject::final_update()
 	{
 		const auto& vecCom = GetComponents();
 		for (size_t i = 0; i < vecCom.size(); ++i)
@@ -21,7 +21,7 @@ namespace ehw::editor
 			if (nullptr == vecCom[i])
 				continue;
 
-			vecCom[i]->FinalUpdate();
+			vecCom[i]->final_update();
 		}
 	}
 }

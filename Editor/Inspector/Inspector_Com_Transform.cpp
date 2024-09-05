@@ -3,7 +3,7 @@
 #include "Editor/Inspector/InspectorBase.h"
 
 #include <Engine/Game/GameObject.h>
-#include <Engine/Game/Component/Com_Transform.h>
+#include <Engine/Game/Component/Transform.h>
 
 namespace ehw::editor
 {
@@ -26,11 +26,11 @@ namespace ehw::editor
 			return;
 		}
 
-		const auto& tr = GetTarget()->GetComponent<Com_Transform>();
+		const auto& tr = GetTarget()->GetComponent<Transform>();
 
-		m_position = tr->GetLocalPosition();
-		m_rotation = tr->GetLocalRotation();
-		m_scale = tr->GetLocalScale();
+		m_position = tr->get_local_position();
+		m_rotation = tr->get_local_rotation();
+		m_scale = tr->get_local_scale();
 	}
 
 	void Inspector_Com_Transform::UpdateUI()
@@ -41,11 +41,11 @@ namespace ehw::editor
 
 		if (GetTarget())
 		{
-			const auto& tr = GetTarget()->GetComponent<Com_Transform>();
+			const auto& tr = GetTarget()->GetComponent<Transform>();
 
-			tr->SetLocalPosition(m_position);
+			tr->set_local_position(m_position);
 			tr->SetLocalRotation(m_rotation);
-			tr->SetLocalScale(m_scale);
+			tr->set_local_scale(m_scale);
 		}
 	}
 

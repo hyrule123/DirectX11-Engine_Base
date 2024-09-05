@@ -12,7 +12,7 @@
 
 #include "Engine/Game/Component/iComponent.h"
 #include "Engine/Game/Component/Script/Script.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -26,7 +26,7 @@ namespace ehw
 		, m_isAwaken(false)
 		, m_bDontDestroyOnLoad(false)
 	{
-		AddComponent<Com_Transform>();
+		AddComponent<Transform>();
 	}
 
 	GameObject::GameObject(const std::string_view _name)
@@ -107,7 +107,7 @@ namespace ehw
 
 
 
-	eResult GameObject::Serialize_Json(JsonSerializer* _ser) const
+	eResult GameObject::serialize_json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -126,7 +126,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GameObject::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult GameObject::deserialize_json(const JsonSerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -182,7 +182,7 @@ namespace ehw
 		SetLayer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
-		const std::vector<Com_Transform*>& childs = GetComponent<Com_Transform>()->GetChilds();
+		const std::vector<Transform*>& childs = GetComponent<Transform>()->get_childs();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
 			childs[i]->gameObject()->Awake();
@@ -235,13 +235,13 @@ namespace ehw
 
 
 
-	void GameObject::FinalUpdate()
+	void GameObject::final_update()
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->FinalUpdate();
+				m_baseComponents[i]->final_update();
 			}
 		}
 
@@ -249,7 +249,7 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->FinalUpdate();
+				m_scripts[i]->final_update();
 			}
 		}
 	}
@@ -427,7 +427,7 @@ namespace ehw
 		}
 
 		//자식이 있을경우 전부 InActive
-		const auto& childs = Transform()->GetGameObjectHierarchy();
+		const auto& childs = transform()->get_gameobject_hierarchy();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
 			childs[i]->SetActive(false);
@@ -458,9 +458,9 @@ namespace ehw
 			}
 		}
 
-		Com_Transform* const tr = Transform();
-		tr->UnlinkParent();
-		tr->DestroyChildsRecursive();
+		Transform* const tr = transform();
+		tr->unlink_parent();
+		tr->destroy_childs_recursive();
 	}
 
 	void GameObject::SetLayer(uint32 _layer)

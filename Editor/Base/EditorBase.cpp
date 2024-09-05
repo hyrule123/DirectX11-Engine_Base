@@ -19,7 +19,7 @@ namespace ehw::editor
 	EditorBase::~EditorBase()
 	{
 	}
-	eResult EditorBase::Serialize_Json(JsonSerializer* _ser) const
+	eResult EditorBase::serialize_json(JsonSerializer* _ser) const
 	{
 		using namespace ehw;
 
@@ -37,7 +37,7 @@ namespace ehw::editor
 				//에디터 child의 경우 정적으로 생성되므로 StrKey를 별도로 저장할 필요가 없음.
 				JsonSerializer& child = childs.append(Json::Value());
 				
-				eResult result = m_childs[i]->Serialize_Json(&child);
+				eResult result = m_childs[i]->serialize_json(&child);
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("Child 저장 실패");
@@ -54,7 +54,7 @@ namespace ehw::editor
 
 		return eResult::Success;
 	}
-	eResult EditorBase::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult EditorBase::deserialize_json(const JsonSerializer* _ser)
 	{
 		using namespace ehw;
 		SERIALIZER_CHECK_PTR(_ser);
@@ -73,7 +73,7 @@ namespace ehw::editor
 				{
 					const JsonSerializer& child = childs[i];
 
-					eResult result = m_childs[i]->DeSerialize_Json(&child);
+					eResult result = m_childs[i]->deserialize_json(&child);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("Child 저장 실패");
@@ -100,7 +100,7 @@ namespace ehw::editor
 			m_childs[i]->InitRecursive();
 		}
 	}
-	void EditorBase::FinalUpdate()
+	void EditorBase::final_update()
 	{
 		if (false == GetEnable())
 			return;
@@ -113,14 +113,14 @@ namespace ehw::editor
 			UpdateUI();
 			for (size_t i = 0; i < m_childs.size(); ++i)
 			{
-				m_childs[i]->FinalUpdate();
+				m_childs[i]->final_update();
 			}
 
 			EndUI();
 		}
 	}
 
-	std::shared_ptr<EditorBase> EditorBase::AddChild(const std::shared_ptr<EditorBase>& _pChild)
+	std::shared_ptr<EditorBase> EditorBase::add_child(const std::shared_ptr<EditorBase>& _pChild)
 	{
 		std::shared_ptr<EditorBase> ret = nullptr;
 
@@ -129,7 +129,7 @@ namespace ehw::editor
 			_pChild->MakeUniqueKeyByName();
 
 			auto parent = shared_from_this();
-			_pChild->SetParent(std::static_pointer_cast<EditorBase>(parent));
+			_pChild->set_parent(std::static_pointer_cast<EditorBase>(parent));
 			m_childs.push_back(_pChild);
 
 			ret = _pChild;
@@ -150,7 +150,7 @@ namespace ehw::editor
 		{
 			if ((*iter) == _pChild)
 			{
-				(*iter)->SetParent(nullptr);
+				(*iter)->set_parent(nullptr);
 				m_childs.erase(iter);
 				break;
 			}

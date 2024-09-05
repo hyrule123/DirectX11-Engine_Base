@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Renderer/Com_Renderer_ParticleSystem.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Game/GameObject.h"
 
@@ -74,12 +74,12 @@ namespace ehw
 	}
 
 
-	eResult Com_Renderer_ParticleSystem::Serialize_Json(JsonSerializer* Json) const
+	eResult Com_Renderer_ParticleSystem::serialize_json(JsonSerializer* Json) const
 	{
 		return eResult();
 	}
 
-	eResult Com_Renderer_ParticleSystem::DeSerialize_Json(const JsonSerializer* Json)
+	eResult Com_Renderer_ParticleSystem::deserialize_json(const JsonSerializer* Json)
 	{
 		return eResult();
 	}
@@ -122,9 +122,9 @@ namespace ehw
 		m_shared_buffer->Init<tParticleShared>(sDesc, 1, nullptr, 0u);
 	}
 
-	void Com_Renderer_ParticleSystem::FinalUpdate()
+	void Com_Renderer_ParticleSystem::final_update()
 	{
-		Renderer::FinalUpdate();
+		Renderer::final_update();
 
 		//파티클 생성 시간
 		float aliveTime = 1.0f / mFrequency;
@@ -147,7 +147,7 @@ namespace ehw
 		}
 
 		mMaxParticles = m_buffer->GetStride();
-		float3 pos = gameObject()->GetComponent<Com_Transform>()->GetLocalPosition();
+		float3 pos = gameObject()->GetComponent<Transform>()->get_local_position();
 		mCBData.worldPosition = float4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
 		mCBData.radius = mRadius;
@@ -162,7 +162,7 @@ namespace ehw
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::ParticleSystem);
 		cb->SetData(&mCBData);
-		cb->BindData(eShaderStageFlag::ALL);
+		cb->bind_data(eShaderStageFlag::ALL);
 
 		mCS->SetSharedStrutedBuffer(m_shared_buffer);
 		mCS->SetStrcutedBuffer(m_buffer);
@@ -174,10 +174,10 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 		
-		gameObject()->GetComponent<Com_Transform>()->BindData();
+		gameObject()->GetComponent<Transform>()->bind_data();
 		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
-		GetCurrentMaterial(0)->BindData();
+		GetCurrentMaterial(0)->bind_data();
 		GetMesh()->RenderInstanced(0u, mMaxParticles);
 
 		m_buffer->UnbindData();

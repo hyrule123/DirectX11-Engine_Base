@@ -4,7 +4,7 @@
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Collider/Collider3D.h"
 #include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
 #include "Engine/Game/Component/Rigidbody/Rigidbody.h"
@@ -296,10 +296,10 @@ namespace ehw
 	//			continue;
 	//		}
 	//			
-	//		Com_Transform* tr = collider->GetTransform();
+	//		Transform* tr = collider->GetTransform();
 
 	//		//원래 위치 정보에서 크기정보 제거
-	//		const MATRIX from = MATRIX::CreateScale(tr->GetWorldScale()).Invert() * tr->GetWorldMatrix();
+	//		const MATRIX from = MATRIX::CreateScale(tr->get_world_scale()).Invert() * tr->get_world_matrix();
 
 	//		//피직스에서 받아온 트랜스폼 정보를 가져온다
 	//		const MATRIX to = PhysXConverter::ToMATRIX(PxMat44{ worldTransform });
@@ -312,8 +312,8 @@ namespace ehw
 	//		
 	//		const float3	 position = to.Translation() - float3::Transform(from.Translation(), rotation);
 
-	//		tr->SetWorldPosition(float3::Transform(tr->GetWorldPosition(), rotation) + position);
-	//		tr->SetWorldRotation(tr->GetWorldRotation() * rotation);
+	//		tr->set_world_position(float3::Transform(tr->get_world_position(), rotation) + position);
+	//		tr->set_world_rotation(tr->get_world_rotation() * rotation);
 	//	}
 	//}
 
@@ -466,7 +466,7 @@ namespace ehw
 
 	//void Collision3D::changeGeometry(Collider3D* collider, physx::PxShape* shape, eCollider3D_Shape type)
 	//{
-	//	const float3 scale = collider->GetWorldScale();
+	//	const float3 scale = collider->get_world_scale();
 	//	switch (type)
 	//	{
 	//	case eCollider3D_Shape::Cube:

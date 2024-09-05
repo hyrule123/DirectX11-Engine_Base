@@ -2,7 +2,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -84,11 +84,11 @@ namespace ehw
 			evt.second = nullptr;
 		}
 	}
-	eResult Com_Animator2D::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_Animator2D::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
-	eResult Com_Animator2D::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_Animator2D::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}
@@ -120,7 +120,7 @@ namespace ehw
 		}
 
 	}
-	void Com_Animator2D::FinalUpdate()
+	void Com_Animator2D::final_update()
 	{
 	}
 
@@ -169,13 +169,13 @@ namespace ehw
 		
 
 		//사이즈 수정
-		const auto& tr = gameObject()->GetComponent<Com_Transform>(); 
+		const auto& tr = gameObject()->GetComponent<Transform>(); 
 		if (tr)
 		{
 			float2 size = animation->GetSpriteSize(0u);
 			
-			tr->SetIgnoreParentScale(true);
-			tr->SetLocalScale(float3(size, 1.f));
+			tr->set_ignore_parent_scale(true);
+			tr->set_local_scale(float3(size, 1.f));
 		}
 
 		return true;
@@ -225,12 +225,12 @@ namespace ehw
 			events->StartEvent();
 	}
 
-	void Com_Animator2D::BindData()
+	void Com_Animator2D::bind_data()
 	{
 		if (mActiveAnimation == nullptr)
 			return;
 
-		mActiveAnimation->BindData();
+		mActiveAnimation->bind_data();
 	}
 
 	void Com_Animator2D::UnBindData()

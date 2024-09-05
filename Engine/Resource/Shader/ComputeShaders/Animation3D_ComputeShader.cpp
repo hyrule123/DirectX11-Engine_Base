@@ -30,7 +30,7 @@ namespace ehw
 	}
 
 
-	bool Animation3D_ComputeShader::BindData()
+	bool Animation3D_ComputeShader::bind_data()
 	{
 		//참고 - NextAnimKeyFrameBuffer은 없을수도 있음
 		if (false == 
@@ -59,7 +59,7 @@ namespace ehw
 		//애니메이션 3D 상수버퍼 바인드
 		ConstBuffer* pAnimCB = RenderManager::GetInst().GetConstBuffer(eCBType::Animation3D);
 		pAnimCB->SetData(m_desc.Anim3DData);
-		pAnimCB->BindData();
+		pAnimCB->bind_data();
 
 		//데이터 갯수 계산
 		uint3 DataCounts{};

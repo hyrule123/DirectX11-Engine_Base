@@ -12,7 +12,7 @@ namespace ehw
 		ParticleShader();
 		virtual ~ParticleShader();
 
-		virtual bool BindData() override;
+		virtual bool bind_data() override;
 		virtual void UnBindData() override;
 
 		void SetStrcutedBuffer(StructBuffer* _buffer) { mBuffer = _buffer; }

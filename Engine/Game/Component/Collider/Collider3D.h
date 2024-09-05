@@ -6,7 +6,7 @@
 
 namespace ehw
 {
-	class Com_Transform;
+	class Transform;
 	class Collision3D;
 	class Collider3D : public Collider
 	{
@@ -16,8 +16,8 @@ namespace ehw
 		
 		virtual ~Collider3D();
 
-		eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult(); };
-		eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult(); };
+		eResult serialize_json(JsonSerializer* _ser) const override { return eResult(); };
+		eResult deserialize_json(const JsonSerializer* _ser) override { return eResult(); };
 
 		void Init() override;
 		void Awake() override;

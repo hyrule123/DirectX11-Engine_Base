@@ -276,7 +276,7 @@
     <ClCompile Include="Resource\Resource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Com_Transform.cpp">
+    <ClCompile Include="Game\Component\Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Audio\Com_AudioSource.cpp">
@@ -523,7 +523,7 @@
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_ParticleSystem.h">
       <Filter>Component\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Com_Transform.h">
+    <ClInclude Include="Game\Component\Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Audio\Com_AudioSource.h">

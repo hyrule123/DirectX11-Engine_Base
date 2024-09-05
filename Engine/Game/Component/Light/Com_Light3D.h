@@ -19,11 +19,11 @@ namespace ehw
 
 		virtual ~Com_Light3D();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void Update() override;
-		virtual void FinalUpdate() override;
+		virtual void final_update() override;
 
 		//Camera가 호출
 		virtual void Render() override;

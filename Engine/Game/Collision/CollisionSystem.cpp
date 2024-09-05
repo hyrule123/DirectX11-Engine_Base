@@ -1,7 +1,7 @@
 #include "Engine/Game/Collision/CollisionSystem.h"
 
 #include "Engine/Game/Scene.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Collider/Collider2D.h"
 #include "Engine/Game/Collision/Collision2D.h"
 #include "Engine/Game/Collision/Collision3D.h"
@@ -120,7 +120,7 @@ namespace ehw
 		}
 		
 		
-		m_debugMaterial->BindData();
+		m_debugMaterial->bind_data();
 
 		m_debugInfoSBuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
 		m_debugInfoSBuffer->BindDataSRV();
@@ -263,14 +263,14 @@ namespace ehw
 		//	,float3{-0.5f, -0.5f, 0.0f}
 		//};
 
-		//const auto& leftTr = _left->GetOwner()->GetComponent<Com_Transform>();
-		//const auto& rightTr = _right->GetOwner()->GetComponent<Com_Transform>();
+		//const auto& leftTr = _left->GetOwner()->GetComponent<Transform>();
+		//const auto& rightTr = _right->GetOwner()->GetComponent<Transform>();
 		//if (false == (leftTr && rightTr))
 		//	return false;
 
 
-		//MATRIX leftMat = leftTr->GetWorldMatrix();
-		//MATRIX rightMat = rightTr->GetWorldMatrix();
+		//MATRIX leftMat = leftTr->get_world_matrix();
+		//MATRIX rightMat = rightTr->get_world_matrix();
 
 
 
@@ -299,7 +299,7 @@ namespace ehw
 		//for (int index = 0; index < 4; index++)
 		//	Axis[index].z = 0.0f;
 
-		//float3 vc = leftTr->GetWorldPosition() - rightTr->GetWorldPosition();
+		//float3 vc = leftTr->get_world_position() - rightTr->get_world_position();
 		//vc.z = 0.0f;
 
 		//float3 centerDir = vc;

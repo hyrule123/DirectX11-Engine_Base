@@ -15,8 +15,8 @@
 
 //업데이트 순서
 //1. SceneManager::Update: 각 Collider들이 자신의 정보를 등록한다.
-//2. CollisionSystem::FinalUpdate: 등록된 Collider에 대한 충돌검사를 시행한다.(여기서 충돌 관련 연산이 완료 되어야함)
-//3. SceneManager::FinalUpdate: 최종적으로 Trasnfrom 위치를 갱신하고, 각 컴포넌트의 렌더링 준비를 마친다.
+//2. CollisionSystem::final_update: 등록된 Collider에 대한 충돌검사를 시행한다.(여기서 충돌 관련 연산이 완료 되어야함)
+//3. SceneManager::final_update: 최종적으로 Trasnfrom 위치를 갱신하고, 각 컴포넌트의 렌더링 준비를 마친다.
 
 //아이디어 1
 //Collider의 ID(UINT32) 두개를 붙여서(union) uint 형태를 만들고, 이 값을 이용해 Collision Pair unordered_map을 생성

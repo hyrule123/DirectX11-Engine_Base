@@ -45,8 +45,8 @@ namespace ehw
 		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 		
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		std::vector<std::unique_ptr<GameObject>> Instantiate();
 

@@ -15,13 +15,13 @@ namespace ehw
 		virtual ~Script();
 
 		//Script의 경우 Serialize 하지 않는 경우도 있으므로 일단 재정의해둔다.
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override { return eResult::Success; }
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override { return eResult::Success; }
+		virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult::Success; }
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void Init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
-		virtual void FinalUpdate() final {};
+		virtual void final_update() final {};
 
 		virtual void OnCollisionEnter(Collider* const _collider, const float3& _hitPoint) {};
 		virtual void OnCollisionStay(Collider* const _collider, const float3& _hitPoint) {};

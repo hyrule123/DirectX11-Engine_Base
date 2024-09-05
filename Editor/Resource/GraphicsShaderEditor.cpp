@@ -327,7 +327,7 @@ namespace ehw::editor
 		ImGui::Separator();
 
 		//토폴로지 업데이트
-		//mTopologyCombo.FinalUpdate();
+		//mTopologyCombo.final_update();
 
 		ImGui::Separator();
 
@@ -340,13 +340,13 @@ namespace ehw::editor
 		ImGui::Separator();
 
 		//Rasterizer State
-		mRSTypeCombo.FinalUpdate();
+		mRSTypeCombo.final_update();
 
 		//Depth Stencil
-		mDSTypeCombo.FinalUpdate();
+		mDSTypeCombo.final_update();
 
 		//Blend State
-		mBSTypeCombo.FinalUpdate();
+		mBSTypeCombo.final_update();
 
 		
 		ImGui::Spacing();
@@ -460,7 +460,7 @@ namespace ehw::editor
 					}
 
 					
-					eResult result = DummyGS.Serialize_Json(&jVal);
+					eResult result = DummyGS.serialize_json(&jVal);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("json 파일 저장에 실패했습니다.");
@@ -544,7 +544,7 @@ namespace ehw::editor
 				ImGui::InputText("SemanticName", &mSemanticName);
 
 				//DXGI Format 에딧
-				mDXGIFormatCombo.FinalUpdate();
+				mDXGIFormatCombo.final_update();
 
 				int ByteOffset = (int)mDescForEdit.AlignedByteOffset;
 				if (ImGui::InputInt("AlignedByteOffset", &ByteOffset) && ByteOffset >= 0)
@@ -739,7 +739,7 @@ namespace ehw::editor
 			ImGui::OpenPopup("Load Shader");
 			if (ImGui::BeginPopupModal("Load Shader"))
 			{
-				mLoadFileCombo.FinalUpdate();
+				mLoadFileCombo.final_update();
 
 				if (ImGui::Button("Load File"))
 				{

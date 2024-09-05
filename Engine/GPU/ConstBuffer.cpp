@@ -56,7 +56,7 @@ namespace ehw
 		}
 	}
 
-	void ConstBuffer::BindData(eShaderStageFlag_ _stageFlag)
+	void ConstBuffer::bind_data(eShaderStageFlag_ _stageFlag)
 	{
 		if (eShaderStageFlag::NONE == _stageFlag)
 		{

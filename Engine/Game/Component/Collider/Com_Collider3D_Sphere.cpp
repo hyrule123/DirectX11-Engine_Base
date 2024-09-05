@@ -4,7 +4,7 @@
 #include "Engine/Game/Collision/Collision3D.h"
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -29,9 +29,9 @@ namespace ehw
 		}
 		physx::PxMaterial* mtrl = col3dMgr->GetDefaultPxMaterial();
 
-		Com_Transform* tr = GetTransform();
+		Transform* tr = GetTransform();
 
-		const MATRIX& worldMat = tr->GetWorldMatrix();
+		const MATRIX& worldMat = tr->get_world_matrix();
 		m_sphereGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;
 
 		physx::PxShape* shape = PhysXInstance::GetInst().GetPhysX().createShape(m_sphereGeometry, *mtrl);

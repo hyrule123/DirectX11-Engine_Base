@@ -7,7 +7,7 @@
 
 namespace ehw
 {
-	class Com_Transform;
+	class Transform;
 	class CollisionSystem;
 	class Collider
 		: public Component<Collider, eComponentCategory::Collider>
@@ -38,7 +38,7 @@ namespace ehw
 		virtual MATRIX GetColliderMatrix() = 0;
 
 	protected:
-		inline Com_Transform* GetTransform() { return m_transform; }
+		inline Transform* GetTransform() { return m_transform; }
 		inline CollisionSystem* GetCollisionSystem() { return m_collisionSystem; }
 		inline void AddCollisionCount() { ++m_collisionCount; }
 		inline void SubCollisionCount();
@@ -48,7 +48,7 @@ namespace ehw
 		bool m_isTriggerMode;
 
 		//Transform을 많이 사용하므로 아예 주소를 받아 놓는다.
-		Com_Transform* m_transform;
+		Transform* m_transform;
 		CollisionSystem* m_collisionSystem;
 
 		int m_collisionCount;

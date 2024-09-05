@@ -26,9 +26,9 @@ namespace ehw
 
 		virtual ~Animation3D_PlayData();
 
-		bool FinalUpdate();
+		bool final_update();
 		void FrameEnd();
-		bool BindData();
+		bool bind_data();
 		void UnBindData();
 
 		inline const std::shared_ptr<Animation3D>& GetCurrentAnimation() { return m_currentAnimation; }

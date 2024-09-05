@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Renderer/Renderer.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Animator/Com_Animator2D.h"
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
 
@@ -49,12 +49,12 @@ namespace ehw
 		}
 	}
 
-	void Renderer::FinalUpdate()
+	void Renderer::final_update()
 	{
 		RenderManager::GetInst().sceneRenderAgent().EnqueueRenderer(this);
 	}
 
-	eResult Renderer::Serialize_Json(JsonSerializer* _ser) const
+	eResult Renderer::serialize_json(JsonSerializer* _ser) const
 	{
 		SERIALIZER_CHECK_PTR(_ser);
 
@@ -112,7 +112,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Renderer::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Renderer::deserialize_json(const JsonSerializer* _ser)
 	{
 		SERIALIZER_CHECK_PTR(_ser);
 

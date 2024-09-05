@@ -4,7 +4,7 @@
 #include "Engine/Game/Collision/Collision3D.h"
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -32,9 +32,9 @@ namespace ehw
 		physx::PxMaterial* mtrl = col3dMgr->GetDefaultPxMaterial();
 		ASSERT_DEBUG(mtrl, "Default PxMaterial 인스턴스가 없습니다.");
 
-		Com_Transform* tr = GetTransform();
+		Transform* tr = GetTransform();
 
-		const MATRIX& worldMat = tr->GetWorldMatrix();
+		const MATRIX& worldMat = tr->get_world_matrix();
 		m_capsuleGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;
 		m_capsuleGeometry.halfHeight = worldMat.Axis(eAxis3D::Y).Length() * m_offsetRatio_HalfHeight;
 

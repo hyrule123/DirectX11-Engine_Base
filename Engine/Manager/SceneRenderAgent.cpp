@@ -149,6 +149,6 @@ namespace ehw {
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::numberOfLight);
 		cb->SetData(&trCb);
-		cb->BindData(Flag);
+		cb->bind_data(Flag);
 	}
 }

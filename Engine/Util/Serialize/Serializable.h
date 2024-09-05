@@ -74,8 +74,8 @@ namespace ehw
 		eResult SaveFile_Json(std::fs::path const& _fullPath) const;
 		eResult LoadFile_Json(std::fs::path const& _fullPath);
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const = 0;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) = 0;
+		virtual eResult serialize_json(JsonSerializer* _ser) const = 0;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) = 0;
 	};
 #pragma endregion //JSON
 }

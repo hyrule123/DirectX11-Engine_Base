@@ -26,7 +26,7 @@ namespace ehw::editor
 			{
 				if (this == widget.second.get())
 					continue;
-				else if (widget.second->GetParent().expired())
+				else if (widget.second->get_parent().expired())
 				{
 					if (ImGui::MenuItem(widget.second->get_keypath().c_str(), nullptr, widget.second->GetEnablePtr()))
 					{

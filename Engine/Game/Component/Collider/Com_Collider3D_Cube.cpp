@@ -1,6 +1,6 @@
 #include "Engine/Game/Component/Collider/Com_Collider3D_Cube.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Game/Collision/Collision3D.h"
 
@@ -26,9 +26,9 @@ namespace ehw
 	{
 		std::vector<physx::PxShape*> ret{};
 
-		Com_Transform* tr = GetTransform();
+		Transform* tr = GetTransform();
 
-		m_offsetHalfScale.halfExtents = (tr->GetWorldScale() * m_offsetScale) * 0.5f;
+		m_offsetHalfScale.halfExtents = (tr->get_world_scale() * m_offsetScale) * 0.5f;
 
 		Collision3D* col3dmgr = GetCollision3D();
 		if (nullptr == col3dmgr)

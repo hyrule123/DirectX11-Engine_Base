@@ -50,7 +50,7 @@ namespace ehw
 	{
 	}
 
-    void Animation3D::BindData()
+    void Animation3D::bind_data()
     {
         ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
         m_SBufferKeyFrame->BindDataSRV();

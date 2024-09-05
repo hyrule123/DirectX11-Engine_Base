@@ -5,7 +5,7 @@
 
 namespace ehw
 {
-	class Com_Transform;
+	class Transform;
 	class Collision2D;
 	class Collider2D : public Collider
 	{
@@ -18,8 +18,8 @@ namespace ehw
 
 		virtual ~Collider2D();
 
-		eResult Serialize_Json(JsonSerializer* _ser) const override;
-		eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		eResult serialize_json(JsonSerializer* _ser) const override;
+		eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void Init() override;
 		void FrameEnd() override;
@@ -28,7 +28,7 @@ namespace ehw
 		inline void ColliderUpdate();
 		virtual void UpdateShape() = 0;
 
-		void FinalUpdate() final {}
+		void final_update() final {}
 
 	protected:
 		inline Collision2D* GetCollision2DManager() { return m_col2dManager; };

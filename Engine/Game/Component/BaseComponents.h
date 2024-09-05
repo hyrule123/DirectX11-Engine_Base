@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Rigidbody/Rigidbody.h"
 #include "Engine/Game/Component/Animator/Animator.h"
 #include "Engine/Game/Component/Audio/Com_AudioSource.h"

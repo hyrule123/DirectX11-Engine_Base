@@ -30,7 +30,7 @@ namespace ehw
 
         //여기서 Actor에 Shape들을 붙임
         void Awake() override;
-        void FinalUpdate() final {}
+        void final_update() final {}
         void OnDestroy() final;
 
         void OnLayerChange(uint32 _layer) final;

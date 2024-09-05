@@ -4,7 +4,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 
 #include <Fmod/fmod.hpp>
@@ -23,12 +23,12 @@ namespace ehw
 	{
 	}
 
-	eResult Com_AudioListener::Serialize_Json(JsonSerializer* _ser) const
+	eResult Com_AudioListener::serialize_json(JsonSerializer* _ser) const
 	{
 		return eResult();
 	}
 
-	eResult Com_AudioListener::DeSerialize_Json(const JsonSerializer* _ser)
+	eResult Com_AudioListener::deserialize_json(const JsonSerializer* _ser)
 	{
 		return eResult();
 	}
@@ -41,13 +41,13 @@ namespace ehw
 	{
 	}
 
-	void Com_AudioListener::FinalUpdate()
+	void Com_AudioListener::final_update()
 	{
-		const auto& tr = gameObject()->GetComponent<Com_Transform>();
-		float3 pos = tr->GetWorldPosition();
+		const auto& tr = gameObject()->GetComponent<Transform>();
+		float3 pos = tr->get_world_position();
 
-		float3 foward = tr->GetWorldDirection(eDirection::Forward);
-		float3 up = tr->GetWorldDirection(eDirection::Up);
+		float3 foward = tr->get_world_direction(eDirection::Forward);
+		float3 up = tr->get_world_direction(eDirection::Up);
 
 		float3 vel = { 0.0f, 0.0f, 0.0f };
 		AudioManager::GetInst().Set3DListenerAttributes(&pos, &vel, &foward, &up);

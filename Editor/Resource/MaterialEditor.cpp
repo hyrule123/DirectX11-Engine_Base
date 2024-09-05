@@ -136,7 +136,7 @@ namespace ehw::editor
 		ImGui::Text(strCurShader.c_str());
 
 
-		mShaderCombo.FinalUpdate();
+		mShaderCombo.final_update();
 		if (ImGui::Button("Refresh Shaders"))
 		{
 			RefreshShaderSettingFiles();
@@ -230,7 +230,7 @@ namespace ehw::editor
 	{
 		eRenderingMode mode = mTargetMaterial->GetRenderingMode();
 		mRenderingModeCombo.SetCurrentIndex((int)mode);
-		mRenderingModeCombo.FinalUpdate();
+		mRenderingModeCombo.final_update();
 		if (mRenderingModeCombo.IsSelectionChanged())
 		{
 			int idx = mRenderingModeCombo.GetCurrentIndex();
@@ -352,7 +352,7 @@ namespace ehw::editor
 			if (ImGui::BeginPopupModal("Material Load"))
 			{
 				HilightText("Res/Material");
-				mCurrentLoadedMtrl.FinalUpdate();
+				mCurrentLoadedMtrl.final_update();
 
 				if (ImGui::Button("Load##Material", ImVec2(100.f, 35.f)))
 				{

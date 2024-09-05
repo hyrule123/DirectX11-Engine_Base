@@ -19,8 +19,8 @@ namespace  ehw
 		Com_Camera();
 		virtual ~Com_Camera();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		__forceinline static const MATRIX& GetGpuViewMatrix() { return s_viewMatrix; }
 		__forceinline static const MATRIX& GetGpuViewInvMatrix() { return s_viewInverseMatrix; }
@@ -29,7 +29,7 @@ namespace  ehw
 		__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
 
 		//void Setting() override;
-		void FinalUpdate() override;
+		void final_update() override;
 		void FrameEnd() override;
 		void OnEnable() override;
 		void OnDisable() override;
@@ -99,7 +99,7 @@ namespace  ehw
 			CullingAgent(const std::string_view key);
 			virtual ~CullingAgent() {};
 
-			virtual void FinalUpdate() = 0;
+			virtual void final_update() = 0;
 
 		};
 
@@ -110,7 +110,7 @@ namespace  ehw
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			virtual void FinalUpdate() { ASSERT(false, "미구현"); }
+			virtual void final_update() { ASSERT(false, "미구현"); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -120,7 +120,7 @@ namespace  ehw
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
 
-			virtual void FinalUpdate() { ASSERT(false, "미구현"); }
+			virtual void final_update() { ASSERT(false, "미구현"); }
 		};
 	};
 

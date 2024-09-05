@@ -2,7 +2,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 
 namespace ehw
 {
@@ -20,14 +20,14 @@ namespace ehw
 
 	void Com_Collider2D_AABB::UpdateShape()
 	{
-		Com_Transform* tr = gameObject()->GetComponent<Com_Transform>();
+		Transform* tr = gameObject()->GetComponent<Transform>();
 
-		if (false == m_isOffsetScaleUpdated && false == tr->IsTransformUpdated())
+		if (false == m_isOffsetScaleUpdated && false == tr->is_transform_updated())
 		{
 			return;
 		}
 
-		const MATRIX& worldMat = tr->GetWorldMatrix();
+		const MATRIX& worldMat = tr->get_world_matrix();
 		float2 pos = float2(worldMat._41, worldMat._42);
 		float2 halfExtentXY = m_offsetScale;
 
@@ -54,7 +54,7 @@ namespace ehw
 	{
 		MATRIX mat{};
 		
-		const MATRIX& worldMat = GetTransform()->GetWorldMatrix();
+		const MATRIX& worldMat = GetTransform()->get_world_matrix();
 
 		mat._41 = worldMat._41;
 		mat._42 = worldMat._42;

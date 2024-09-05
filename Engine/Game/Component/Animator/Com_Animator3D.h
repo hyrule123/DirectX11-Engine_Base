@@ -19,11 +19,11 @@ namespace ehw
 
 		virtual ~Com_Animator3D();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void Init() override;
-		virtual void FinalUpdate() override;
+		virtual void final_update() override;
 		virtual void FrameEnd() override;
 
 		virtual bool IsPlaying() const;
@@ -47,7 +47,7 @@ namespace ehw
 		//UINT GetBoneCount() { return (UINT)m_pVecBones->size(); }
 
 
-		virtual void BindData() override;
+		virtual void bind_data() override;
 		virtual void UnBindData() override;
 
 

@@ -20,7 +20,7 @@ namespace ehw
 
 		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-		virtual bool BindData();
+		virtual bool bind_data();
 		virtual void UnBindData();
 
 		struct Desc

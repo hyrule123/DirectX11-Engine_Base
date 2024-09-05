@@ -1,5 +1,5 @@
 #include "Engine/Game/Component/Renderer/Com_Renderer_Sprite.h"
-#include "Engine/Game/Component/Com_Transform.h"
+#include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Animator/Com_Animator2D.h"
 
 #include "Engine/Manager/ResourceManager.h"
@@ -51,13 +51,13 @@ namespace ehw
 			return;
 
 		//재질 바인딩
-		mAnimator->BindData();
+		mAnimator->bind_data();
 
 		//메쉬 바인딩 - Render 내부에서 실행되도록 변경
 		//GetMesh()->BindBuffer();
 
 		//재질 바인딩
-		GetCurrentMaterial(0)->BindData();
+		GetCurrentMaterial(0)->bind_data();
 
 		//렌더링 하고
 		GetMesh()->Render();

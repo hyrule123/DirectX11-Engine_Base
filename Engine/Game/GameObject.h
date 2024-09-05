@@ -9,7 +9,7 @@ namespace ehw
 {
 	class Scene;
 	class Script;
-	class Com_Transform;
+	class Transform;
 	class iComponent;
 
 	class GameObject
@@ -39,13 +39,13 @@ namespace ehw
 
 		virtual ~GameObject();
 
-		virtual eResult Serialize_Json(JsonSerializer* _ser) const override;
-		virtual eResult DeSerialize_Json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void Awake();
 		void FixedUpdate();
 		void Update();
-		void FinalUpdate();
+		void final_update();
 		void Render();
 		void FrameEnd();
 		void RemoveDestroyed();
@@ -69,7 +69,7 @@ namespace ehw
 		Script* GetScript(const std::string_view _strKey);
 
 		iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
-		Com_Transform* Transform();
+		Transform* transform();
 
 		const BaseComponents& GetComponents() const { return m_baseComponents; }
 		
@@ -185,8 +185,8 @@ namespace ehw
 		return static_cast<T*>(GetScript(T::concrete_name));
 	};
 
-	inline Com_Transform* GameObject::Transform()
+	inline Transform* GameObject::transform()
 	{
-		return (Com_Transform*)m_baseComponents[(int)eComponentCategory::Transform];
+		return (Transform*)m_baseComponents[(int)eComponentCategory::Transform];
 	};
 }

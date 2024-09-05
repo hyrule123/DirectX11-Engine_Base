@@ -17,7 +17,7 @@ namespace ehw
 		bool Create(uint _dataCount = 1u);
 		bool Create(size_t _dataSize, uint _dataCount = 1u);
 		void SetData(void* _data, uint _dataCount = 1u);
-		void BindData(eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
+		void bind_data(eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
 		void UnbindData();
 
