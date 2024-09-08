@@ -15,9 +15,8 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
     if (CB_ParticleSystem.simulationSpace == 0)
     {
 		vWorldPos += CB_Transform.World._41_42_43;
-
     }
-	float3 vViewPos = mul(float4(vWorldPos, 1.0f), CB_Transform.View).xyz;
+	float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_CB_camera.view).xyz;
 	
     float3 Scale = CB_ParticleSystem.startSize.xyz;
     //Scale = lerp(20.0f, 50.0f, elapsedTime);
@@ -32,7 +31,7 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
 	
     for (int i = 0; i < 4; i++)
     {
-		Out[i].Pos = mul(float4(NewPos[i], 1.0f), CB_Transform.Projection);
+		Out[i].Pos = mul(float4(NewPos[i], 1.0f), g_CB_camera.projection);
 	}
 	
     Out[0].UV = float2(0.0f, 0.0f);

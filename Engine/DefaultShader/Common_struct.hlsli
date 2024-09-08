@@ -32,18 +32,20 @@ struct alignas(16)  tCB_Global
 	int PadGlobal;
 };
 
-struct alignas(16) tCB_Transform
+struct alignas(16) tTransform
 {
 	MATRIX World;
 	MATRIX InverseWorld;
-	MATRIX View;
-	MATRIX InverseView;
-	MATRIX Projection;
-	
 	MATRIX WorldView;
 	MATRIX WVP;
 };
 
+struct alignas(16)  tCamera
+{
+	MATRIX view;
+	MATRIX inverse_view;
+	MATRIX projection;
+};
 
 struct alignas(16) tCB_MaterialData
 {
@@ -140,12 +142,6 @@ struct alignas(16)  tCB_Noise
 };
 
 
-struct alignas(16)  tCB_SBufferCount
-{
-	uint SBufferDataCount;
-	uint3 SBufferPad;
-};
-
 struct alignas(16)  tCB_Animation3D
 {
 	int			BoneCount;		//본 갯수
@@ -199,18 +195,6 @@ struct alignas(16)  tLightColor
 	float4 diffuse;
 	float4 specular;
 	float4 ambient;
-};
-
-struct alignas(16)  tLightAttribute
-{
-	tLightColor color;
-	float4 position;
-	float4 direction;
-    
-	int lightType;
-	float radius;
-	float angle;
-	int padding;
 };
 
 

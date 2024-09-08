@@ -74,6 +74,8 @@ namespace ehw
 		void Render(UINT _subSet = 0u) const;
 		void RenderAllMeshes() const;
 		void RenderInstanced(UINT _subSet, UINT _instanceCount) const;
+		void render_instanced_all(UINT _instance_count) const;
+		size_t get_subset_count() const { return m_indexInfos.size(); }
 
 		UINT GetSubsetCount() const { return (UINT)m_indexInfos.size(); }
 		float GetBoundingSphereRad() const { return mBoundingSphereRadius; }
@@ -106,8 +108,6 @@ namespace ehw
 			//위 데이터를 토대로 GPU에서 생성된 데이터 주소
 			ComPtr<ID3D11Buffer>    Buffer;
 		};
-
-
 
 		//cf)아래 함수 나눠놓은 이유: 파일로부터 Load 할 때에는 아래 2개 함수만 호출함.
 		//버퍼를 만들지 않고 데이터만 집어넣음

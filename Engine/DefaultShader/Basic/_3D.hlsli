@@ -3,8 +3,9 @@
 #include "Engine/DefaultShader/Commons.hlsli"
 
 #ifndef __cplusplus
-#include "../Light/Func_Light.hlsli"
-#include "../Animation/Func_Animation3D.hlsli"
+#include "Engine/DefaultShader/Light/Light.hlsli"
+#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Animation/Func_Animation3D.hlsli"
 
 
 struct VSIn

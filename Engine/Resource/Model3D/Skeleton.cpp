@@ -365,7 +365,7 @@ namespace ehw
 		//CreateBuffer
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.REGISLOT_t_SRV = GPU::Register::t::g_BoneOffsetArray;
+		desc.GPU_register_t_SRV = GPU::Register::t::g_BoneOffsetArray;
 		m_pBoneOffset = std::make_shared<StructBuffer>();
 
 		eResult result = m_pBoneOffset->Init<MATRIX>(desc, (uint)vecOffset.size(), vecOffset.data(), vecOffset.size());

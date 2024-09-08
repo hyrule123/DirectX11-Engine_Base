@@ -185,13 +185,10 @@ namespace ehw
 
 	void StructBuffer::SetData(const void* _pData, size_t _uCount)
 	{
+		if (nullptr == _pData || 0 == _uCount) {
+			return;
+		}
 		m_elementCount = (uint)_uCount;
-
-		//g_arrSBufferShareData의 자신의 인덱스에 해당하는 위치에 이번에 업데이트된 구조체의 갯수를 삽입
-		//상수 버퍼의 바인딩은 bind_data()를 하는 시점에 해준다.
-		tCB_SBufferCount cb = {};
-		cb.SBufferDataCount = m_elementCount;
-
 
 		//생성 시 할당된 갯수보다 들어온 갯수가 더 클 경우 재할당하고, 거기에 데이터를 추가.
 		//생성될 때 값을 지정할 수 있으므로 바로 return 해주면 될듯
@@ -224,8 +221,9 @@ namespace ehw
 		case eStructBufferType::READ_WRITE:
 		{
 			{
-				if (nullptr == m_stagingBuffer.Get())
+				if (nullptr == m_stagingBuffer.Get()) {
 					CreateStagingBuffer();
+				}
 				else
 				{
 					D3D11_BUFFER_DESC pDesc = {};
@@ -319,7 +317,7 @@ namespace ehw
 
 		if (0 > _SRVSlot)
 		{
-			_SRVSlot = (int)m_desc.REGISLOT_t_SRV;
+			_SRVSlot = (int)m_desc.GPU_register_t_SRV;
 		}
 
 		m_curBoundRegister = _SRVSlot;
@@ -372,7 +370,7 @@ namespace ehw
 
 		if (0 > _UAVSlot)
 		{
-			_UAVSlot = m_desc.REGISLOT_u_UAV;
+			_UAVSlot = m_desc.GPU_register_u_UAV;
 		}
 		m_curBoundRegister = _UAVSlot;
 

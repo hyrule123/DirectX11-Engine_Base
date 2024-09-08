@@ -161,8 +161,8 @@ namespace ehw
 		{
 			return;
 		}
-		const MATRIX matView = mainCam->GetGpuViewMatrix();
-		const MATRIX matProj = mainCam->GetGpuProjectionMatrix();
+		const MATRIX matView = mainCam->GetViewMatrix();
+		const MATRIX matProj = mainCam->GetProjectionMatrix();
 		const MATRIX matVP = matView * matProj;
 
 		//인스턴싱

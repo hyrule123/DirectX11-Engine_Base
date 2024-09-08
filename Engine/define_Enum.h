@@ -118,41 +118,12 @@ namespace ehw
 		END,
 	};
 
-	//enum class eLayer
-	//{
-	//	None = -1,
-	//	Com_Camera,
-	//	Grid,
-	//	Monster,
-	//	Player,
-
-	//	tParticle,
-	//	PostProcess,
-	//	UI,
-
-	//	END
-	//};
-	//inline bool CheckeLayerValid(eLayer _type)
-	//{
-	//	return ((eLayer::None != _type) && (eLayer::END != _type));
-	//}
 
 	enum class eProjectionType
 	{
 		None = -1,
 		Perspective,
 		Orthographic,
-	};
-
-
-
-
-	enum class eLightType
-	{
-		Directional,
-		Point,
-		Spot,
-		END,
 	};
 
 	enum class eDimensionType

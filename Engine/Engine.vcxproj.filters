@@ -231,7 +231,7 @@
     <ClCompile Include="Resource\Shader\ComputeShader.cpp">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\Com_Light3D.cpp">
+    <ClCompile Include="Game\Component\Light\Light_3D.cpp">
       <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="GPU\ConstBuffer.cpp">
@@ -457,7 +457,7 @@
     <ClInclude Include="Resource\Shader\ComputeShader.h">
       <Filter>Resource\Shaders\Compute\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\Light\Com_Light3D.h">
+    <ClInclude Include="Game\Component\Light\Light_3D.h">
       <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="GPU\ConstBuffer.h">

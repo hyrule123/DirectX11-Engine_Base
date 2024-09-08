@@ -315,7 +315,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\LazySingleton.h" />
     <ClInclude Include="Util\Serialize\json-forwards.h" />
     <ClInclude Include="Util\Serialize\json.h" />
-    <ClInclude Include="Game\Component\Light\Com_Light3D.h" />
+    <ClInclude Include="Game\Component\Light\Light_3D.h" />
     <ClInclude Include="Resource\Material.h" />
     <ClInclude Include="Manager\PathManager.h" />
     <ClInclude Include="Resource\Mesh.h" />
@@ -426,7 +426,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Game\Component\Light\Com_Light3D.cpp" />
+    <ClCompile Include="Game\Component\Light\Light_3D.cpp" />
     <ClCompile Include="Resource\Material.cpp" />
     <ClCompile Include="Resource\Model3D\Model3D.cpp" />
     <ClCompile Include="Manager\PathManager.cpp" />

@@ -6,7 +6,7 @@
 
 #include "Engine/Manager/RenderManager.h"
 
-#include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 
 #include "Engine/GameEngine.h"
 
@@ -39,6 +39,22 @@ namespace ehw
 	{
 	}
 
+	void Transform::init_static()
+	{
+		s_buffer = new StructBuffer;
+		StructBuffer::Desc desc{};
+		desc.GPU_register_t_SRV = GPU::Register::t::g_transforms;
+		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
+		desc.eSBufferType = eStructBufferType::READ_ONLY;
+		desc.TargetStageSRV = eShaderStageFlag::ALL;
+		s_buffer->Init<tTransform>(desc);
+	}
+
+	void Transform::release_static()
+	{
+		SAFE_DELETE(s_buffer);
+	}
+
 	void Transform::final_update()
 	{
 		//아래 함수에 update_local_matrix()가 포함되어 있음.
@@ -52,19 +68,21 @@ namespace ehw
 		m_transform_updated = false;
 	}
 
+	void Transform::add_to_buffer(const MATRIX& _view, const MATRIX& _projection)
+	{
+		tTransform data;
+		data.World = m_worldMatrix;
+		data.InverseWorld = m_worldMatrix.Invert();
+		data.WorldView = m_worldMatrix * _view;
+		data.WVP = data.WorldView * _projection;
+
+		s_buffer_data.push_back(data);
+	}
+
 	void Transform::bind_data()
 	{
-		tCB_Transform cbData{};
-		cbData.World = m_worldMatrix;
-		cbData.View = Com_Camera::GetGpuViewMatrix();
-		cbData.InverseView = Com_Camera::GetGpuViewInvMatrix();
-		cbData.Projection = Com_Camera::GetGpuProjectionMatrix();
-		cbData.WorldView = cbData.World * cbData.View;
-		cbData.WVP = cbData.WorldView * cbData.Projection;
-
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Transform);
-		cb->SetData(&cbData);
-		cb->bind_data(eShaderStageFlag::ALL);
+		s_buffer->SetData(s_buffer_data.data(), s_buffer_data.size());
+		s_buffer->BindDataSRV();
 	}
 
 	void Transform::update_local_matrix()

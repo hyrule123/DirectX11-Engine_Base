@@ -22,11 +22,11 @@ namespace  ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		__forceinline static const MATRIX& GetGpuViewMatrix() { return s_viewMatrix; }
-		__forceinline static const MATRIX& GetGpuViewInvMatrix() { return s_viewInverseMatrix; }
-		__forceinline static const MATRIX& GetGpuProjectionMatrix() { return s_projectionMatrix; }
-		__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
-		__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
+		//__forceinline static const MATRIX& GetGpuViewMatrix() { return s_viewMatrix; }
+		//__forceinline static const MATRIX& GetGpuViewInvMatrix() { return s_viewInverseMatrix; }
+		//__forceinline static const MATRIX& GetProjectionMatrix() { return s_projectionMatrix; }
+		//__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
+		//__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
 
 		//void Setting() override;
 		void final_update() override;
@@ -53,8 +53,8 @@ namespace  ehw
 		
 		void SetScale(float _scale);
 		float GetScale() const { return m_scale; }
-		const MATRIX& GetViewMatrix() const { return m_viewMatrix; }
-		const MATRIX& GetProjectionMatrix() const { return m_projectionMatrix; }
+		const MATRIX& GetViewMatrix() const { return m_camera_matrices.view; }
+		const MATRIX& GetProjectionMatrix() const { return m_camera_matrices.projection; }
 
 	private:
 		void SortGameObjects();
@@ -67,13 +67,11 @@ namespace  ehw
 		void SortRenderersByMode(const std::vector<Renderer*>& _renderers);
 
 	private:
-		static MATRIX s_viewMatrix;
-		static MATRIX s_viewInverseMatrix;
-		static MATRIX s_projectionMatrix;
+		//static MATRIX s_viewMatrix;
+		//static MATRIX s_viewInverseMatrix;
+		//static MATRIX s_projectionMatrix;
 
-		MATRIX m_viewMatrix;
-		MATRIX m_viewInverse;
-		MATRIX m_projectionMatrix;
+		tCamera m_camera_matrices;
 
 		eProjectionType m_projectionType;
 		std::unique_ptr<CullingAgent> m_cullingAgent;

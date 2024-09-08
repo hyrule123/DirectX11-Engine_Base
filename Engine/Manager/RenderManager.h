@@ -15,7 +15,7 @@ namespace ehw
 	class Renderer;
 
 	class Light;
-	class Com_Light3D;
+	class Light_3D;
 	class GameObject;
 
 	class MultiRenderTarget;
@@ -30,6 +30,7 @@ namespace ehw
 		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
 
 		void Render();
+		void FrameEnd();
 
 		void ClearRenderTarget();// 화면 지워주기
 		void Present(bool _bVSync = false);
@@ -63,14 +64,13 @@ namespace ehw
 
 		void ClearMultiRenderTargets();
 
-		StructBuffer* GetLightSBuffer() { return m_lights_SBuffer.get(); }
-
 	private:
 		RenderManager();
 		~RenderManager();
 		
 		bool Init();
 		bool Settings(const tGPUManagerDesc& _Desc);
+		void load_default_resources();
 		void ReleaseResources();
 		void Release();
 		
@@ -123,7 +123,6 @@ namespace ehw
 
 		std::shared_ptr<Texture>				m_postProcessTexture;
 		std::shared_ptr<Texture>				m_noiseTexture;
-		std::unique_ptr<StructBuffer>			m_lights_SBuffer;
 
 		SceneRenderAgent m_sceneRenderAgent;
 	};

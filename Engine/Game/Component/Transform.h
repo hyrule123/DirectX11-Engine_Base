@@ -36,6 +36,7 @@ namespace physx
 namespace ehw
 {
 	class GameObject;
+	class StructBuffer;
 	
 	class Transform 
 		: public Component<Transform, eComponentCategory::Transform>
@@ -56,13 +57,18 @@ namespace ehw
 
 		virtual ~Transform();
 
+		static void init_static();
+		static void release_static();
+
 		virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult(); }
 		virtual eResult deserialize_json(const JsonSerializer* _ser) { return eResult(); }
 		
 		virtual void final_update() override;
 		virtual void frame_end() override;
 
-		void bind_data();
+		static void clear_buffer_data() { s_buffer_data.clear(); }
+		void add_to_buffer(const MATRIX& _view, const MATRIX& _projection);
+		static void bind_data();
 
 #pragma region //Hierarchy
 		Transform* get_parent() const { return m_parent; }
@@ -187,6 +193,9 @@ namespace ehw
 		void reserve_update_recursive();
 
 	private:
+		static inline std::vector<tTransform> s_buffer_data;
+		static inline StructBuffer* s_buffer;
+
 #pragma region LOCAL
 		//크기
 		float3 m_localScale;

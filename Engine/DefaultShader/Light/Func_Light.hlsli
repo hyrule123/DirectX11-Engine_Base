@@ -3,24 +3,23 @@
 
 
 #ifndef __cplusplus//HLSL
-#include "Engine/DefaultShader/Commons.hlsli"
-//StructuredBuffer<LightAttribute> lightAttributes3D : register(t14);
+#include "Engine/DefaultShader/Light/Light.hlsli"
 
 //2D
 void CalculateLight2D(in out tLightColor pLightColor, float3 position, int idx)
 {
-	if (0 == lightAttributes[idx].lightType)
+	if (0 == g_light_attributes[idx].lightType)
 	{
-		pLightColor.diffuse += lightAttributes[idx].color.diffuse;
+		pLightColor.diffuse += g_light_attributes[idx].color.diffuse;
 	}
-	else if (1 == lightAttributes[idx].lightType)
+	else if (1 == g_light_attributes[idx].lightType)
 	{
-		float length = distance(lightAttributes[idx].position.xy, position.xy);
+		float length = distance(g_light_attributes[idx].position.xy, position.xy);
         
-		if (length < lightAttributes[idx].radius)
+		if (length < g_light_attributes[idx].radius)
 		{
-			float ratio = 1.0f - (length / lightAttributes[idx].radius);
-			pLightColor.diffuse += lightAttributes[idx].color.diffuse * ratio;
+			float ratio = 1.0f - (length / g_light_attributes[idx].radius);
+			pLightColor.diffuse += g_light_attributes[idx].color.diffuse * ratio;
 		}
         
 	}
@@ -30,30 +29,32 @@ void CalculateLight2D(in out tLightColor pLightColor, float3 position, int idx)
 	}
 }
 
+
 //3D
-void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLightColor lightColor)
+tLightColor calculate_light_3D(int lightIdx, float3 viewPos, float3 viewNormal)
 {
-	tLightAttribute lightInfo = lightAttributes[lightIdx];
+	tLightColor ret = (tLightColor) 0;
+	
+	tLightAttribute lightInfo = g_light_attributes[lightIdx];
     
     //view space 상에서 빛의 세기를 구함
 	float3 LightDir = (float3) 0.0f;
- 
 	
 	float fDiffPow = 0.f;//전체 사용
 	float fDistPow = 1.f;//PointLight, SpotLight에 사용
 	float fAnglePow = 1.f;//SpotLight에 사용
     
     // Directional
-	if (0 == lightInfo.lightType)
+	if (LIGHT_TYPE_DIRECTIONAL == lightInfo.lightType)
 	{
         // Light 의 ViewSpace 에서의 '방향'(w값 0)
-		LightDir = mul(float4(lightInfo.position.xyz, 0.f), CB_Transform.View).xyz;
+		LightDir = mul(float4(lightInfo.position.xyz, 0.f), g_CB_camera.view).xyz;
 	}
     // point
-	else if (1 == lightInfo.lightType)
+	else if (LIGHT_TYPE_POINT == lightInfo.lightType)
 	{
 		// Light 의 ViewSpace 에서의 '위치'(w값 1)
-		float4 LightViewPos = mul(float4(lightInfo.position.xyz, 1.f), CB_Transform.View);
+		float4 LightViewPos = mul(float4(lightInfo.position.xyz, 1.f), g_CB_camera.view);
        
         // 표면위치 - 광원 위치 하면 방향 벡터를 구할 수 있음. 이걸 정규화
 		LightDir = normalize(viewPos - LightViewPos.xyz);
@@ -65,7 +66,7 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLi
 		fDistPow = 1.f - saturate(fDist / lightInfo.radius);
 	}
 	//SpotLight
-	else
+	else if (LIGHT_TYPE_SPOT == lightInfo.lightType)
 	{
         
 	}
@@ -85,14 +86,16 @@ void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLi
     // 반사광 세기          
 	float fRelfectPow = pow(saturate(dot(vViewReflect, vEye)), 10);
 	
-	lightColor.diffuse += lightInfo.color.diffuse * fPow * fDistPow;
-	lightColor.specular += lightInfo.color.specular * fRelfectPow * fDistPow;
-	lightColor.ambient += lightInfo.color.ambient;
+	ret.diffuse = lightInfo.color.diffuse * fPow * fDistPow;
+	ret.specular = lightInfo.color.specular * fRelfectPow * fDistPow;
+	ret.ambient = lightInfo.color.ambient;
+	
+	return ret;
 }
 
-//void CalculateLight3D(float3 _vViewPos, float3 _vViewNormal, int _LightIdx, inout tLightColor _lightcolor)
+//void calculate_light_3D(float3 _vViewPos, float3 _vViewNormal, int _LightIdx, inout tLightColor _lightcolor)
 //{
-//    LightAttribute lightinfo = lightAttributes[_LightIdx];
+//    LightAttribute lightinfo = g_light_attributes[_LightIdx];
        
 //    float3 ViewLightDir = (float3) 0.f;
 //    float fDiffPow = (float) 0.f;

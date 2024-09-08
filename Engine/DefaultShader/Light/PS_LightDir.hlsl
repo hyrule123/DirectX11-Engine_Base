@@ -1,4 +1,6 @@
 #include "Engine/DefaultShader/Light/Light.hlsli"
+#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+
 
 PS_OUT main(VSOut_LightDir _in)
 {
@@ -13,8 +15,7 @@ PS_OUT main(VSOut_LightDir _in)
       
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
         
-	tLightColor lightcolor = (tLightColor) 0.f;
-	CalculateLight3D(vViewPos.xyz, vViewNormal.xyz, CB_NumberOfLight.indexOfLight, lightcolor);
+	tLightColor lightcolor = calculate_light_3D(_in.instance_ID, vViewPos.xyz, vViewNormal.xyz);
     
 	float SpecCoef = SpecularTarget.Sample(anisotropicSampler, vUV).x;
 	float4 SpecularColor = DecodeColor(SpecCoef);

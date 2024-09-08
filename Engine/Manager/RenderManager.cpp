@@ -40,7 +40,6 @@ namespace ehw
 		, m_blendStates{}
 		, m_postProcessTexture{}
 		, m_sceneRenderAgent{}
-		, m_lights_SBuffer{}
 	{
 	}
 	RenderManager::~RenderManager()
@@ -111,18 +110,10 @@ namespace ehw
 		CreateBuffer();
 
 		//Resource
-		LoadDefaultMesh();
-		LoadDefaultShader();
-		LoadDefaultTexture();
-		LoadDefaultMaterial();
+		load_default_resources();
 
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
-
-		StructBuffer::Desc SDesc{};
-		SDesc.eSBufferType = eStructBufferType::READ_ONLY;
-		m_lights_SBuffer = std::make_unique<StructBuffer>();
-		m_lights_SBuffer->Init<tLightAttribute>(SDesc, 128u, nullptr, 0);
 
 		m_sceneRenderAgent.Init();
 
@@ -138,14 +129,19 @@ namespace ehw
 
 		CreateMainViewPort();
 
-
 		return true;
+	}
+
+	void RenderManager::load_default_resources()
+	{
+		LoadDefaultMesh();
+		LoadDefaultShader();
+		LoadDefaultTexture();
+		LoadDefaultMaterial();
 	}
 
 	void RenderManager::ReleaseResources()
 	{
-		m_lights_SBuffer.reset();
-
 		m_sceneRenderAgent.Release();
 
 		for (int i = 0; i < (int)eCBType::END; ++i)
@@ -349,8 +345,12 @@ namespace ehw
 
 		BindNoiseTexture();
 
-		m_sceneRenderAgent.BindLights();
 		m_sceneRenderAgent.Render();
+	}
+
+	void RenderManager::FrameEnd()
+	{
+		m_sceneRenderAgent.frame_end();
 	}
 
 	void RenderManager::BindNoiseTexture()

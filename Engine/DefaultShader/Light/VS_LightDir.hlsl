@@ -8,6 +8,7 @@ VSOut_LightDir main(VSIn_LightDir In)
     
 	Out.Position = float4(In.Position.xy * 2.0f, 0.0f, 1.0f);
 	Out.UV = In.UV;
+	Out.instance_ID = In.instance_ID;
     
 	return Out;
 }

@@ -47,6 +47,8 @@ TEXTURE2D(PositionTarget, t, 5);
 TEXTURE2D(DiffuseLightTarget, t, 6);
 TEXTURE2D(SpecularLightTarget, t, 7);
 
+SBUFFER(g_transforms, tTransform, t, 10);
+
 //Bone Matrices(Animation 3D)
 //현재 재생중인 애니메이션의 키프레임 데이터
 SBUFFER(g_FrameTransArray, tAnimKeyframeTranslation, t, 16);
@@ -61,9 +63,6 @@ SBUFFER_RW(g_FinalBoneMatrixArrayRW, Matrix, u, 1);
 //본 인스턴싱용
 SBUFFER_RW(g_BoneSocketMatrixArray, tOutputBoneInfo, u, 2);
 SBUFFER_RW(g_InstancingBoneMatrixArray, Matrix, u, 3);
-
-// Light
-SBUFFER(lightAttributes, tLightAttribute, t, 14);
 
 // noise
 TEXTURE2D(NoiseTexture, t, 16);

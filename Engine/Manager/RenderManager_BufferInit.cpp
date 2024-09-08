@@ -856,43 +856,40 @@ namespace ehw {
 	void RenderManager::CreateBuffer()
 	{
 #pragma region CONSTANT BUFFER
-		m_constBuffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>(eCBType::Global);
+		m_constBuffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>((uint)eCBType::Global);
 		m_constBuffers[(uint)eCBType::Global]->Create(sizeof(tCB_Global));
 		m_constBuffers[(uint)eCBType::Global]->SetPresetTargetStage(eShaderStageFlag::ALL);
 
 		UpdateGlobalCBuffer();
 
-		m_constBuffers[(uint)eCBType::Transform] = std::make_unique<ConstBuffer>(eCBType::Transform);
-		m_constBuffers[(uint)eCBType::Transform]->Create(sizeof(tCB_Transform));
+		m_constBuffers[(uint)eCBType::Transform] = std::make_unique<ConstBuffer>((uint)eCBType::Transform);
+		m_constBuffers[(uint)eCBType::Transform]->Create(sizeof(tTransform));
 
-		m_constBuffers[(uint)eCBType::ComputeShader] = std::make_unique<ConstBuffer>(eCBType::ComputeShader);
-		m_constBuffers[(uint)eCBType::ComputeShader]->Create<tCB_ComputeShader>(1u);
+		m_constBuffers[(uint)eCBType::Camera] = std::make_unique<ConstBuffer>((uint)eCBType::Camera);
+		m_constBuffers[(uint)eCBType::Camera]->Create<tCamera>();
+
+		m_constBuffers[(uint)eCBType::ComputeShader] = std::make_unique<ConstBuffer>((uint)eCBType::ComputeShader);
+		m_constBuffers[(uint)eCBType::ComputeShader]->Create<tCB_ComputeShader>();
 		m_constBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::Compute);
 
-		m_constBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>(eCBType::Material);
+		m_constBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>((uint)eCBType::Material);
 		m_constBuffers[(uint)eCBType::Material]->Create(sizeof(tCB_MaterialData));
 
-		m_constBuffers[(uint)eCBType::Grid] = std::make_unique<ConstBuffer>(eCBType::Grid);
-		m_constBuffers[(uint)eCBType::Grid]->Create(sizeof(tCB_Grid));
-
-		m_constBuffers[(uint)eCBType::Animation2D] = std::make_unique<ConstBuffer>(eCBType::Animation2D);
+		m_constBuffers[(uint)eCBType::Animation2D] = std::make_unique<ConstBuffer>((uint)eCBType::Animation2D);
 		m_constBuffers[(uint)eCBType::Animation2D]->Create(sizeof(tCB_Animation2D));
 
-		m_constBuffers[(uint)eCBType::numberOfLight] = std::make_unique<ConstBuffer>(eCBType::numberOfLight);
-		m_constBuffers[(uint)eCBType::numberOfLight]->Create(sizeof(tCB_NumberOfLight));
-
-		m_constBuffers[(uint)eCBType::ParticleSystem] = std::make_unique<ConstBuffer>(eCBType::ParticleSystem);
+		m_constBuffers[(uint)eCBType::ParticleSystem] = std::make_unique<ConstBuffer>((uint)eCBType::ParticleSystem);
 		m_constBuffers[(uint)eCBType::ParticleSystem]->Create(sizeof(tCB_ParticleSystem));
 
-		m_constBuffers[(uint)eCBType::Noise] = std::make_unique<ConstBuffer>(eCBType::Noise);
+		m_constBuffers[(uint)eCBType::Noise] = std::make_unique<ConstBuffer>((uint)eCBType::Noise);
 		m_constBuffers[(uint)eCBType::Noise]->Create(sizeof(tCB_Noise));
 
-		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>(eCBType::Animation3D);
+		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>((uint)eCBType::Animation3D);
 		m_constBuffers[(uint)eCBType::Animation3D]->Create<tCB_Animation3D>();
 
 
 
-		m_constBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>(eCBType::CustomData);
+		m_constBuffers[(uint)eCBType::CustomData] = std::make_unique<ConstBuffer>((uint)eCBType::CustomData);
 		m_constBuffers[(uint)eCBType::CustomData]->Create<tCB_CustomData>();
 
 #pragma endregion

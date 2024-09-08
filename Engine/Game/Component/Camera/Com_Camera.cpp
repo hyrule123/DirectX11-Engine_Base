@@ -14,22 +14,17 @@
 #include "Engine/Resource/Mesh.h"
 
 #include "Engine/GPU/MultiRenderTarget.h"
+#include "Engine/GPU/ConstBuffer.h"
 
 #include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Renderer/Renderer.h"
-#include "Engine/Game/Component/Light/Com_Light3D.h"
+#include "Engine/Game/Component/Light/Light_3D.h"
 
 namespace ehw
 {
-	MATRIX Com_Camera::s_viewMatrix = MATRIX::Identity;
-	MATRIX Com_Camera::s_viewInverseMatrix = MATRIX::Identity;
-	MATRIX Com_Camera::s_projectionMatrix = MATRIX::Identity;
-
 	Com_Camera::Com_Camera()
 		: Component(Com_Camera::concrete_name)
-		, m_viewMatrix()
-		, m_viewInverse()
-		, m_projectionMatrix()
+		, m_camera_matrices{}
 		, m_projectionType(eProjectionType::None)
 		, m_isEnableCulling(true)
 		, m_aspectRation(1.0f)
@@ -82,9 +77,9 @@ namespace ehw
 
 	void Com_Camera::RenderCamera(const std::vector<Renderer*>& _renderers)
 	{
-		s_viewMatrix = m_viewMatrix;
-		s_viewInverseMatrix = m_viewMatrix.Invert();
-		s_projectionMatrix = m_projectionMatrix;
+		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
+		cb->SetData(&m_camera_matrices);
+		cb->bind_data();
 
 		SortRenderersByMode(_renderers);
 
@@ -97,13 +92,23 @@ namespace ehw
 		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 		// 붙여버리자
 
-		const auto& Lights = RenderManager::GetInst().sceneRenderAgent().GetLights();
-		for (size_t i = 0; i < Lights.size(); ++i)
-		{
-			if (Lights[i]->IsEnabled())
-			{
-				Lights[i]->Render();
+
+		//나중에 컬링도 진행할것.
+		for (int i = 0; i < LIGHT_TYPE_MAX; ++i) {
+			Transform::clear_buffer_data();
+			const auto& lights = Light_3D::get_lights_by_type(i);
+			
+			for (auto* l : lights) {
+				if (true == m_layerMasks[l->gameObject()->GetLayer()]) {
+					l->add_to_buffer();
+					
+					Transform* tr = l->gameObject()->GetComponent<Transform>();
+					tr->add_to_buffer(m_camera_matrices.view, m_camera_matrices.projection);
+				}
 			}
+
+			Transform::bind_data();
+			Light_3D::render_lights(i);
 		}
 
 		// Forward render
@@ -159,7 +164,7 @@ namespace ehw
 		0 0 1 0
 		-a -b -c 1
 		*/
-		m_viewMatrix = MATRIX::CreateTranslation(-world.Translation());
+		m_camera_matrices.view = MATRIX::CreateTranslation(-world.Translation());
 
 		//2. 회전
 		//회전은 이동과는 역행렬의 모습은 다르지만 쉽게 구할수 있다.
@@ -181,14 +186,14 @@ namespace ehw
 
 		//3. transform 상수버퍼 구조체에 업데이트 -> 안함. 나중에 render때 일괄적으로 view 행렬과 proj 행렬을 곱할 예정.
 		//g_matCam.matViewProj = m_matView;
-		m_viewMatrix *= world;
+		m_camera_matrices.view *= world;
 
 
 		//방법 2: MATRIX CreateLookAt 함수 사용 -> 카메라의 월드 위치 기준으로
 		world = tr->get_world_matrix();
 		Vector3 target = Vector3::Transform(Vector3::UnitZ, world);
-		m_viewMatrix = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
-
+		m_camera_matrices.view = MATRIX::CreateLookAt(world.Translation(), target, world.Up());
+		m_camera_matrices.inverse_view = m_camera_matrices.view.Invert();
 
 
 		////===========
@@ -205,7 +210,7 @@ namespace ehw
 		//
 		////2. 업데이트
 
-		m_viewInverse = m_viewMatrix.Invert();
+		
 	}
 
 	inline void Com_Camera::SetCullEnable(bool _bCullingEnable)
@@ -248,7 +253,7 @@ namespace ehw
 		switch (m_projectionType)
 		{
 		case eProjectionType::Perspective:
-			m_projectionMatrix = MATRIX::CreatePerspectiveFieldOfViewLH
+			m_camera_matrices.projection = MATRIX::CreatePerspectiveFieldOfViewLH
 			(
 				DirectX::XM_2PI / 6.0f
 				, m_aspectRation
@@ -259,7 +264,7 @@ namespace ehw
 
 			break;
 		case eProjectionType::Orthographic:
-			m_projectionMatrix = MATRIX::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, m_nearDistance, m_farDistance);
+			m_camera_matrices.projection = MATRIX::CreateOrthographicLH(width /*/ 100.0f*/, height /*/ 100.0f*/, m_nearDistance, m_farDistance);
 
 			break;
 

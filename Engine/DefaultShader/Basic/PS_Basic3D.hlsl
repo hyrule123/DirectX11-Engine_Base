@@ -28,13 +28,14 @@ float4 main(VSOut In) : SV_Target
 
 		vNormal = normalize(mul(vNormal, matTBN));
 	}
-
-
 	
 	tLightColor lightColor = (tLightColor)0.0f;
-	for (uint i = 0; i < CB_NumberOfLight.numberOfLight; i++)
+	for (uint i = 0; i < g_CB_light_count.count; i++)
 	{
-		CalculateLight3D(In.ViewPos, vNormal, i, lightColor);
+		tLightColor temp = calculate_light_3D(i, In.ViewPos, vNormal);
+		lightColor.ambient += temp.ambient;
+		lightColor.diffuse += temp.diffuse;
+		lightColor.specular += temp.specular;
 	}
 
 	OutColor.rgb = (OutColor.rgb * lightColor.diffuse.rgb

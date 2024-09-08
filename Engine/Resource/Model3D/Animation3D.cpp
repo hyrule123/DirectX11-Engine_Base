@@ -322,7 +322,7 @@ namespace ehw
 
         StructBuffer::Desc desc{};
         desc.eSBufferType = eStructBufferType::READ_ONLY;
-        desc.REGISLOT_t_SRV = GPU::Register::t::g_FrameTransArray;
+        desc.GPU_register_t_SRV = GPU::Register::t::g_FrameTransArray;
         desc.TargetStageSRV = eShaderStageFlag::Compute;
         m_SBufferKeyFrame = std::make_shared<StructBuffer>();
 

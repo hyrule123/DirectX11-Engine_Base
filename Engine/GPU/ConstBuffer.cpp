@@ -4,7 +4,7 @@
 
 namespace ehw
 {
-	ConstBuffer::ConstBuffer(eCBType _type)
+	ConstBuffer::ConstBuffer(uint _type)
 		: GPUBuffer(ConstBuffer::concrete_name, eBufferType::Const)
 		, m_constBufferType(_type)
 		, mDataSize()
@@ -66,38 +66,38 @@ namespace ehw
 		auto pContext = RenderManager::GetInst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
-			pContext->VSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->VSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Hull & _stageFlag)
 		{
-			pContext->HSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->HSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Domain & _stageFlag)
 		{
-			pContext->DSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->DSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
-			pContext->GSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->GSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
-			pContext->PSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->PSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 		if (eShaderStageFlag::Compute & _stageFlag)
 		{
-			pContext->CSSetConstantBuffers((uint)m_constBufferType, 1u, GetBufferRef().GetAddressOf());
+			pContext->CSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 	}
 	void ConstBuffer::UnbindData()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 
-		pContext->VSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
-		pContext->HSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
-		pContext->DSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
-		pContext->GSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
-		pContext->PSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
-		pContext->CSSetConstantBuffers((uint)m_constBufferType, 0u, nullptr);
+		pContext->VSSetConstantBuffers(m_constBufferType, 0u, nullptr);
+		pContext->HSSetConstantBuffers(m_constBufferType, 0u, nullptr);
+		pContext->DSSetConstantBuffers(m_constBufferType, 0u, nullptr);
+		pContext->GSSetConstantBuffers(m_constBufferType, 0u, nullptr);
+		pContext->PSSetConstantBuffers(m_constBufferType, 0u, nullptr);
+		pContext->CSSetConstantBuffers(m_constBufferType, 0u, nullptr);
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Game/Component/Component.h"
+#include "Engine/DefaultShader/Light/Light.hlsli"
 
 namespace ehw
 {
@@ -9,8 +10,6 @@ namespace ehw
     public:
         Light(const std::string_view key, eDimensionType _dimensionType);
         virtual ~Light();
-
-        virtual void Render() = 0;
 
         eDimensionType GetDimensionType() const { return mDimension; }
 

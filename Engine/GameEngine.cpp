@@ -116,7 +116,7 @@ namespace ehw
 
 	void GameEngine::frame_end()
 	{	
-		RenderManager::GetInst().sceneRenderAgent().frame_end();
+		RenderManager::GetInst().FrameEnd();
 		SceneManager::GetInst().frame_end();
 	}
 

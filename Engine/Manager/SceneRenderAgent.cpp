@@ -5,7 +5,8 @@
 #include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/ConstBuffer.h"
 
-#include "Engine/Game/Component/Light/Com_Light3D.h"
+#include "Engine/Game/Component/Transform.h"
+#include "Engine/Game/Component/Light/Light_3D.h"
 #include "Engine/Game/Component/Camera/Com_Camera.h"
 #include "Engine/Game/Component/Renderer/Renderer.h"
 #include "Engine/Game/GameObject.h"
@@ -15,8 +16,6 @@ namespace ehw {
 		: m_cameras{}
 		, m_mainCamIndex(0u)
 		, m_renderers{}
-		, m_lights_3D{}
-		, m_lightAttributes{}
 		
 	{
 	}
@@ -26,7 +25,8 @@ namespace ehw {
 
 	void SceneRenderAgent::Init()
 	{
-
+		Transform::init_static();
+		Light_3D::init_static();
 	}
 
 	void SceneRenderAgent::Release()
@@ -34,7 +34,8 @@ namespace ehw {
 		m_cameras.clear();
 		m_mainCamIndex = 0u;
 		m_renderers.clear();
-		m_lightAttributes.clear();
+		Light_3D::release_static();
+		Transform::release_static();
 	}
 
 	void SceneRenderAgent::Render()
@@ -49,8 +50,10 @@ namespace ehw {
 	void SceneRenderAgent::frame_end()
 	{
 		m_renderers.clear();
-		m_lightAttributes.clear();
-		m_lights_3D.clear();
+
+		//static 버퍼들을 정리해준다.
+		Light_3D::clear_buffer_data();
+		Transform::clear_buffer_data();
 	}
 
 	void SceneRenderAgent::SetResolution(UINT _resX, UINT _resY)
@@ -104,51 +107,4 @@ namespace ehw {
 		}
 	}
 
-
-	void SceneRenderAgent::RemoveLight(Com_Light3D* const _pComLight)
-	{
-		for (auto iter = m_lights_3D.begin(); iter != m_lights_3D.end(); ++iter)
-		{
-			if (_pComLight == (*iter))
-			{
-				m_lights_3D.erase(iter);
-				break;
-			}
-		}
-	}
-
-	void SceneRenderAgent::BindLights()
-	{
-		StructBuffer* sbuf = RenderManager::GetInst().GetLightSBuffer();
-
-		sbuf->SetData(m_lightAttributes.data(), m_lightAttributes.size());
-
-		eShaderStageFlag_ Flag = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
-
-		sbuf->BindDataSRV(GPU::Register::t::lightAttributes, Flag);
-
-		tCB_NumberOfLight trCb = {};
-		trCb.numberOfLight = (uint)m_lightAttributes.size();
-
-		//Destroy된 light 포인터 제거
-		std::erase_if(m_lights_3D,
-			[](Com_Light3D* const iter)->bool
-			{
-				return iter->IsDestroyed();
-			}
-		);
-
-		//light index 지정
-		for (size_t i = 0; i < m_lights_3D.size(); i++)
-		{
-			if (m_lights_3D[i]->IsEnabled())
-			{
-				m_lights_3D[i]->SetIndex((uint)i);
-			}
-		}
-
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::numberOfLight);
-		cb->SetData(&trCb);
-		cb->bind_data(Flag);
-	}
 }

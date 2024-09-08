@@ -187,8 +187,8 @@ namespace ehw
 		{
 			return;
 		}
-		MATRIX matView = mainCam->GetGpuViewMatrix();
-		MATRIX matProj = mainCam->GetGpuProjectionMatrix();
+		MATRIX matView = mainCam->GetViewMatrix();
+		MATRIX matProj = mainCam->GetProjectionMatrix();
 
 		//인스턴싱
 		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)

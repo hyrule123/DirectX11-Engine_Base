@@ -60,14 +60,14 @@ namespace ehw
 		float2 resolution(width, height);
 
 		// Constant buffer
-		ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Grid);
-		tCB_Grid data;
-		data.cameraPosition = position;
-		data.cameraScale = float2(scale, scale);
-		data.resolution = resolution;
-		
-		CB->SetData(&data);
-		CB->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		//ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Grid);
+		//tCB_Grid data;
+		//data.cameraPosition = position;
+		//data.cameraScale = float2(scale, scale);
+		//data.resolution = resolution;
+		//
+		//CB->SetData(&data);
+		//CB->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 
 

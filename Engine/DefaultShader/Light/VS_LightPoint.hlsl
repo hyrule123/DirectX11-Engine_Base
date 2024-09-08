@@ -1,12 +1,9 @@
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
 
-VSOut_LightPoint main(VSIn_LightPoint In)
+VS_in_out_LightPoint main(VS_in_out_LightPoint _in)
 {
-	VSOut_LightPoint Out = (VSOut_LightPoint) 0.0f;
-    
-	Out.Position = mul(float4(In.Position), CB_Transform.WVP);
-	//Out.Position.w = 1.f;
-    
-	return Out;
+	_in.Position.w = 1.f;
+	_in.Position = mul(float4(_in.Position), g_transforms[_in.instance_ID].WVP);
+	return _in;
 }

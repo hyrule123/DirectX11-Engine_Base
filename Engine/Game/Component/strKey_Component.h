@@ -24,7 +24,7 @@ namespace ehw::strKey::component
 	STRKEY Com_Collider3D_Cube = "Com_Collider3D_Cube";
 	STRKEY Com_Collider3D_Shapes = "Com_Collider3D_Shapes";
 	STRKEY Com_Collider3D_Sphere = "Com_Collider3D_Sphere";
-	STRKEY Com_Light3D = "Com_Light3D";
+	STRKEY Light_3D = "Light_3D";
 	STRKEY Com_Renderer_3DAnimMesh = "Com_Renderer_3DAnimMesh";
 	STRKEY Com_Renderer_Mesh = "Com_Renderer_Mesh";
 	STRKEY Com_Renderer_ParticleSystem = "Com_Renderer_ParticleSystem";

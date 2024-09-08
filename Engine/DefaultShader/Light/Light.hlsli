@@ -1,32 +1,63 @@
 #ifndef LIGHT_HLSLI
 #define LIGHT_HLSLI
-#ifndef __cplusplus//HLSL
 #include "Engine/DefaultShader/Commons.hlsli"
 #include "Engine/DefaultShader/Func_DecodeColor.hlsli"
 
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
-
-
-struct VSIn_LightPoint
+struct alignas(16)    tLightAttribute
 {
-	float4 Position : POSITION;
+	tLightColor color;
+	float4 position;
+	float4 direction;
+    
+	int lightType;
+	float radius;
+	float angle;
+	int padding;
 };
 
-struct VSOut_LightPoint
+struct alignas(16)  tLightCount
 {
-	float4 Position : SV_Position;
+	uint count;
+	uint3 pad;
 };
 
+#define LIGHT_TYPE_DIRECTIONAL 0
+#define LIGHT_TYPE_POINT 1
+#define LIGHT_TYPE_MAX 2
+#define LIGHT_TYPE_SPOT 2
+
+#ifdef __cplusplus
+enum class eLightType{
+	Directional,
+	Point,
+	//Spot, //미구현
+	END
+};
+#endif
+
+// Light
+SBUFFER(g_light_attributes, tLightAttribute, t, 14);
+CBUFFER(g_CB_light_count, tLightCount, b, 5);
+
+struct VS_in_out_LightPoint
+{
+	float4 Position SEMANTIC(POSITION);
+	uint instance_ID SEMANTIC(SV_InstanceID);
+};
 struct VSIn_LightDir
 {
-	float4 Position : POSITION;
-	float2 UV : TEXCOORD;
+	float4 Position SEMANTIC(POSITION);
+	float2 UV SEMANTIC(TEXCOORD);
+	uint instance_ID SEMANTIC(SV_InstanceID);
 };
+
+#ifdef __HLSL
 
 struct VSOut_LightDir
 {
 	float4 Position : SV_Position;
 	float2 UV : TEXCOORD;
+	uint instance_ID : SV_InstanceID;
 };
 
 struct PS_OUT

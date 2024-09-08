@@ -338,6 +338,23 @@ namespace ehw
 		context->DrawIndexedInstanced(m_indexInfos[_subSet].Count, _instanceCount, 0, 0, 0);
 	}
 
+	void Mesh::render_instanced_all(UINT _instance_count) const
+	{
+		auto context = RenderManager::GetInst().Context();
+
+		context->IASetPrimitiveTopology(m_topology);
+
+		// Input Assembeler 단계에 버텍스버퍼 정보 지정
+		uint offset = 0;
+
+		context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
+
+		for (size_t i = 0; i < m_indexInfos.size(); ++i) {
+			context->IASetIndexBuffer(m_indexInfos[i].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			context->DrawIndexedInstanced(m_indexInfos[i].Count, _instance_count, 0, 0, 0);
+		}
+	}
+
 
 	eResult Mesh::CreateFromContainer(const tFBXContainer* _fbxContainer)
 	{

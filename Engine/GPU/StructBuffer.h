@@ -20,14 +20,14 @@ namespace ehw
 
             eShaderStageFlag_ TargetStageSRV;
 
-            int REGISLOT_t_SRV;
-            int REGISLOT_u_UAV;
+            int GPU_register_t_SRV;
+            int GPU_register_u_UAV;
 
             Desc()
                 : eSBufferType()
                 , TargetStageSRV(eShaderStageFlag::ALL)
-                , REGISLOT_t_SRV(-1)
-                , REGISLOT_u_UAV(-1)
+                , GPU_register_t_SRV(-1)
+                , GPU_register_u_UAV(-1)
             {}
         };
 

@@ -2,7 +2,6 @@
 #define COMMON_HLSLI
 
 //C++ - HLSL 자료형 일치를 위한 헤더
-
 #ifndef __cplusplus
 #define __HLSL
 #endif
@@ -66,7 +65,7 @@ struct uintx16 { uint u[16]; };
 #define uintx8 row_major uint2x4
 #define uintx16 row_major uint4x4
 
-#define SEMANTIC(_Type)  : _Type
+#define SEMANTIC(_Type) : _Type
 
 #endif
 

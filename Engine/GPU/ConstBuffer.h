@@ -10,7 +10,7 @@ namespace ehw
 	{
 		CLASS_NAME(ConstBuffer);
 	public:
-		ConstBuffer(eCBType _type);
+		ConstBuffer(uint _register);
 		virtual ~ConstBuffer();
 
 		template <typename T>
@@ -23,7 +23,7 @@ namespace ehw
 
 		void SetPresetTargetStage(eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
 	private:
-		const eCBType m_constBufferType;
+		const uint m_constBufferType;
 
 		uint				mDataSize;
 		uint				mDataCount;
