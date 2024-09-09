@@ -10,7 +10,7 @@
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Mesh.h"
 
 #include "Engine/GPU/MultiRenderTarget.h"
@@ -118,9 +118,9 @@ namespace ehw
 		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
 		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
 		//rectMesh->BindBuffer();
-		mergeMaterial->bind_data();
-		rectMesh->Render();
-		//mergeMaterial->UnbindData();
+		mergeMaterial->bind_buffer_to_gpu_register();
+		rectMesh->render();
+		//mergeMaterial->unbind_data();
 
 		RenderForwardOpaque();
 		RenderCutout();
@@ -342,7 +342,7 @@ namespace ehw
 		{
 			if (m_defferedOpaque[i])
 			{
-				m_defferedOpaque[i]->Render();
+				m_defferedOpaque[i]->render(m_camera_matrices.view, m_camera_matrices.projection);
 			}
 		}
 	}
@@ -353,7 +353,7 @@ namespace ehw
 		{
 			if (m_forwardOpaque[i])
 			{
-				m_forwardOpaque[i]->Render();
+				m_forwardOpaque[i]->render();
 			}
 		}
 	}
@@ -364,7 +364,7 @@ namespace ehw
 		{
 			if (m_alphaTest[i])
 			{
-				m_alphaTest[i]->Render();
+				m_alphaTest[i]->render();
 			}
 		}
 	}
@@ -375,7 +375,7 @@ namespace ehw
 		{
 			if (m_alphaBlend[i])
 			{
-				m_alphaBlend[i]->Render();
+				m_alphaBlend[i]->render();
 			}
 		}
 	}
@@ -387,7 +387,7 @@ namespace ehw
 			if (m_postProcess[i])
 			{
 				RenderManager::GetInst().CopyRenderTarget();
-				m_postProcess[i]->Render();
+				m_postProcess[i]->render();
 			}
 		}
 	}
@@ -413,7 +413,7 @@ namespace ehw
 		//Material* mtrl = renderer->GetCurrentMaterial(0u);
 		//if (mtrl)
 		//{
-		//	mode = mtrl->GetRenderingMode();
+		//	mode = mtrl->get_rendering_mode();
 		//}
 
 		//switch (mode)
@@ -463,7 +463,7 @@ namespace ehw
 			Material* mtrl = renderer->GetCurrentMaterial(0u);
 			if (mtrl)
 			{
-				mode = mtrl->GetRenderingMode();
+				mode = mtrl->get_rendering_mode();
 			}
 
 			switch (mode)

@@ -20,7 +20,7 @@
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Model3D/FBXLoader.h"
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include <regex>
 
@@ -36,7 +36,7 @@ namespace ehw
 	}
 
 
-	eResult Model3D::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Model3D::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
@@ -50,7 +50,7 @@ namespace ehw
 		return LoadFile_Json(fullPath);
 	}
 
-	eResult Model3D::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Model3D::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
@@ -80,7 +80,7 @@ namespace ehw
 				std::string skeletonStrKey{};
 				if (m_skeleton)
 				{
-					eResult result = ResourceManager<Skeleton>::GetInst().Save(m_skeleton.get());
+					eResult result = ResourceManager<Skeleton>::GetInst().save(m_skeleton.get());
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
@@ -105,7 +105,7 @@ namespace ehw
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				eResult result = ResourceManager<Mesh>::GetInst().Save(m_meshContainers[i].mesh.get());
+				eResult result = ResourceManager<Mesh>::GetInst().save(m_meshContainers[i].mesh.get());
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
@@ -122,7 +122,7 @@ namespace ehw
 						return eResult::Fail_Nullptr;
 					}
 
-					eResult result = ResourceManager<Material>::GetInst().Save(m_meshContainers[i].materials[j].get());
+					eResult result = ResourceManager<Material>::GetInst().save(m_meshContainers[i].materials[j].get());
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("재질 정보 저장 실패");
@@ -163,7 +163,7 @@ namespace ehw
 
 			if (false == skeletonStrKey.empty())
 			{
-				m_skeleton = ResourceManager<Skeleton>::GetInst().Load(skeletonStrKey);
+				m_skeleton = ResourceManager<Skeleton>::GetInst().load(skeletonStrKey);
 				if (nullptr == m_skeleton)
 				{
 					ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
@@ -198,13 +198,13 @@ namespace ehw
 				//Mesh
 				std::string meshStrkey{};
 				meshContainer["mesh"] >> meshStrkey;
-				m_meshContainers[i].mesh = ResourceManager<Mesh>::GetInst().Load(meshStrkey);
+				m_meshContainers[i].mesh = ResourceManager<Mesh>::GetInst().load(meshStrkey);
 				if (nullptr == m_meshContainers[i].mesh)
 				{
 					ERROR_MESSAGE("메쉬 로드 실패");
 					return eResult::Fail_Open;
 				}
-				m_meshContainers[i].mesh->SetSkeleton(m_skeleton);
+				m_meshContainers[i].mesh->set_skeleton(m_skeleton);
 
 				//Materials
 				const Json::Value& materials = meshContainer["materials"];
@@ -214,7 +214,7 @@ namespace ehw
 				{
 					std::string materialStrKey{};
 					materials[j] >> materialStrKey;
-					m_meshContainers[i].materials[j] = ResourceManager<Material>::GetInst().Load(materialStrKey);
+					m_meshContainers[i].materials[j] = ResourceManager<Material>::GetInst().load(materialStrKey);
 
 					if (nullptr == m_meshContainers[i].materials[j])
 					{
@@ -246,7 +246,7 @@ namespace ehw
 			Com_Animator3D* rootAnimator = root->AddComponent<Com_Animator3D>();
 
 			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
-			sharedAnimationData->SetSkeleton(m_skeleton);
+			sharedAnimationData->set_skeleton(m_skeleton);
 		}
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
@@ -324,7 +324,7 @@ namespace ehw
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::GetInst().Save(this, _dirAndFileName);
+		result = ResourceManager<Model3D>::GetInst().save(this, _dirAndFileName);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -391,9 +391,9 @@ namespace ehw
 
 			//가져올 메쉬를 생성
 			meshCont.mesh = std::make_shared<Mesh>();
-			meshCont.mesh->SetTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			meshCont.mesh->set_topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			result = meshCont.mesh->CreateFromContainer(&(containers[i]));
+			result = meshCont.mesh->create_from_container(&(containers[i]));
 			if (eResult_fail(result))
 			{
 				ERROR_MESSAGE("FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
@@ -401,7 +401,7 @@ namespace ehw
 			}
 
 			//스켈레톤 주소를 지정
-			meshCont.mesh->SetSkeleton(m_skeleton);
+			meshCont.mesh->set_skeleton(m_skeleton);
 
 
 			//기본적으로는 컨테이너 이름을 사용
@@ -471,7 +471,7 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::GetInst().Load(_meshDataName / _meshDataName);
+		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::GetInst().load(_meshDataName / _meshDataName);
 
 		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResult_fail(result))
@@ -545,7 +545,7 @@ namespace ehw
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
-				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::GetInst().Load(texKey);
+				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::GetInst().load(texKey);
 				//바로 Texture Load. 로드 실패 시 false 반환
 				if (nullptr == newTex)
 				{
@@ -555,15 +555,15 @@ namespace ehw
 				return newTex;
 			};
 
-		mtrl->SetTexture(eTextureSlot::Albedo, CopyAndLoadTex(_fbxMtrl->strDiffuseTex));
-		mtrl->SetTexture(eTextureSlot::Normal, CopyAndLoadTex(_fbxMtrl->strNormalTex));
-		mtrl->SetTexture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
-		mtrl->SetTexture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
+		mtrl->set_texture(eTextureSlot::Albedo, CopyAndLoadTex(_fbxMtrl->strDiffuseTex));
+		mtrl->set_texture(eTextureSlot::Normal, CopyAndLoadTex(_fbxMtrl->strNormalTex));
+		mtrl->set_texture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
+		mtrl->set_texture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
 		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
-		mtrl->SetShader(defferedShader);
+		mtrl->set_shader(defferedShader);
 
-		mtrl->SetRenderingMode(eRenderingMode::DefferdOpaque);
+		mtrl->set_rendering_mode(eRenderingMode::DefferdOpaque);
 
 		CheckMHMaterial(mtrl.get(), texDir);
 
@@ -604,7 +604,7 @@ namespace ehw
 		bool isMHTex = false;
 		for (size_t i = 0; i < texSuffixSize; ++i)
 		{
-			const std::shared_ptr<Texture>& tex = _mtrl->GetTexture((eTextureSlot)i);
+			const std::shared_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
 				std::string texKey{ tex->get_strkey() };
@@ -629,13 +629,13 @@ namespace ehw
 			for (size_t i = 0; i < texSuffixSize; ++i)
 			{
 				//i번째 텍스처가 있고
-				std::shared_ptr<Texture> tex = _mtrl->GetTexture((eTextureSlot)i);
+				std::shared_ptr<Texture> tex = _mtrl->get_texture((eTextureSlot)i);
 				if (tex)
 				{
 					for (size_t j = 0; j < texSuffixSize; ++j)
 					{
 						//j번째 텍스처는 없다면
-						std::shared_ptr<Texture> newTex = _mtrl->GetTexture((eTextureSlot)j);
+						std::shared_ptr<Texture> newTex = _mtrl->get_texture((eTextureSlot)j);
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
@@ -661,12 +661,12 @@ namespace ehw
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
 
-									newTex = ResourceManager<Texture>::GetInst().Load(texKey);
+									newTex = ResourceManager<Texture>::GetInst().load(texKey);
 
 
 									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");
 
-									_mtrl->SetTexture((eTextureSlot)j, newTex);
+									_mtrl->set_texture((eTextureSlot)j, newTex);
 								}
 							}
 						}

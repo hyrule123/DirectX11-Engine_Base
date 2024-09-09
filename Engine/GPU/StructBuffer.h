@@ -71,7 +71,7 @@ namespace ehw
         //Bind buffer with UAV Mode to Compute shader 
         void BindDataUAV(int _UAVSlot = -1);
 
-        void UnbindData();
+        void unbind_data();
 
     private:
         void SetDesc(const Desc& _tDesc);

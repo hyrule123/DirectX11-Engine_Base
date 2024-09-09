@@ -15,17 +15,13 @@
 
 //CBUFFER(버퍼이름, 사용할 구조체이름, 버퍼타입, 버퍼번호)
 CBUFFER(CB_Global, tCB_Global, b, 0);
-CBUFFER(CB_Transform, tTransform, b, 1);
-CBUFFER(g_CB_camera, tCamera, b, 2);
-CBUFFER(CB_MaterialData, tCB_MaterialData, b, 3);
-CBUFFER(CB_ComputeShader, tCB_ComputeShader, b, 4);
-CBUFFER(CB_Animation2D, tCB_Animation2D, b, 6);
-CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 7);
-CBUFFER(CB_Noise, tCB_Noise, b, 8);
-CBUFFER(CB_Animation3D, tCB_Animation3D, b, 9);
-CBUFFER(CB_CustomData, tCB_CustomData, b, 10);
-
-
+CBUFFER(g_CB_camera, tCamera, b, 1);
+CBUFFER(CB_MaterialData, tCB_MaterialData, b, 2);
+CBUFFER(CB_ComputeShader, tCB_ComputeShader, b, 3);
+CBUFFER(CB_Animation2D, tCB_Animation2D, b, 4);
+CBUFFER(CB_Animation3D, tCB_Animation3D, b, 5);
+CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 6);
+CBUFFER(CB_Noise, tCB_Noise, b, 7);
 
 #ifdef __cplusplus
 
@@ -34,15 +30,13 @@ namespace ehw
 	enum class eCBType
 	{
 		Global,	
-		Transform,	
 		Camera,
 		Material,	
 		ComputeShader,	
 		Animation2D,	
+		Animation3D,
 		ParticleSystem,
 		Noise,
-		Animation3D,
-		CustomData,
 		END
 	};
 };

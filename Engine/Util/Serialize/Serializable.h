@@ -50,8 +50,8 @@ namespace ehw
 		eResult SaveFile_Binary(std::fs::path const& _fullPath) const;
 		eResult LoadFile_Binary(std::fs::path const& _fullPath);
 		
-		virtual eResult Serialize_Binary(BinarySerializer* _ser) const = 0;
-		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) = 0;
+		virtual eResult serialize_binary(BinarySerializer* _ser) const = 0;
+		virtual eResult deserialize_binary(const BinarySerializer* _ser) = 0;
 	};
 #pragma endregion //BINARY
 }

@@ -292,7 +292,7 @@ namespace ehw
 
 
 	//이 함수는 다른 카메라가 호출함
-	void GameObject::Render()
+	void GameObject::render()
 	{
 		if (false == IsActive())
 		{
@@ -302,7 +302,7 @@ namespace ehw
 		if (m_baseComponents[(int)eComponentCategory::Renderer] && 
 			m_baseComponents[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->Render();
+			static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->render();
 		}
 	}
 

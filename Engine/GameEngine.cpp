@@ -97,12 +97,12 @@ namespace ehw
 		SceneManager::GetInst().final_update();
 	}
 
-	void GameEngine::Render()
+	void GameEngine::render()
 	{
 		//최종 렌더타겟 Clear
 		RenderManager::GetInst().ClearRenderTarget();
 
-		RenderManager::GetInst().Render();
+		RenderManager::GetInst().render();
 
 		if (m_editorRunFunction)
 		{
@@ -125,7 +125,7 @@ namespace ehw
 	{
 		Update();
 		final_update();
-		Render();
+		render();
 
 		frame_end();
 		

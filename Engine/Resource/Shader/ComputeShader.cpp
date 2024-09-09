@@ -30,7 +30,7 @@ namespace ehw
 	{
 	}
 
-	eResult ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		return CreateByCSO(_baseDir / _key_path);
 	}
@@ -67,7 +67,7 @@ namespace ehw
 	eResult ComputeShader::CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
-		SetEngineDefaultRes(true);
+		set_engine_default_res(true);
 
 		HRESULT hr = D3DCreateBlob(_ByteCodeSize, m_CSBlob.ReleaseAndGetAddressOf());
 		if (FAILED(hr))

@@ -5,7 +5,7 @@
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include "Engine/Game/GameObject.h"
 
@@ -45,7 +45,7 @@ namespace ehw
 		mAnimator = gameObject()->GetComponent<Com_Animator2D>();
 	}
 
-	void Com_Renderer_Sprite::Render()
+	void Com_Renderer_Sprite::render()
 	{
 		if (false == IsRenderReady() || nullptr == mAnimator)
 			return;
@@ -57,13 +57,13 @@ namespace ehw
 		//GetMesh()->BindBuffer();
 
 		//재질 바인딩
-		GetCurrentMaterial(0)->bind_data();
+		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
 
 		//렌더링 하고
-		GetMesh()->Render();
+		GetMesh()->render();
 
 		//재질 언바인딩
-		//GetCurrentMaterial(0)->UnbindData();
+		//GetCurrentMaterial(0)->unbind_data();
 
 		//애니메이터 언바인드
 		//mAnimator->UnBindData();

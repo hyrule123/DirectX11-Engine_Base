@@ -30,7 +30,7 @@ namespace ehw
 	}
 
 
-	eResult AudioClip::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult AudioClip::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		std::fs::path fullPath = _baseDir / _key_path;
 		if (false == std::fs::exists(fullPath))

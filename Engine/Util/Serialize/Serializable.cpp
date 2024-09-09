@@ -79,7 +79,7 @@ namespace ehw
 
 		//Serialize
 		BinarySerializer ser{};
-		eResult result = Serialize_Binary(&ser);
+		eResult result = serialize_binary(&ser);
 		if (eResult_fail(result))
 		{
 			return result;
@@ -104,7 +104,7 @@ namespace ehw
 		(*ifs) >> ser;
 		ifs->close();
 
-		return DeSerialize_Binary(&ser);
+		return deserialize_binary(&ser);
 	}
 
 

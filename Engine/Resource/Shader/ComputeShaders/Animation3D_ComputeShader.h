@@ -18,7 +18,7 @@ namespace ehw
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();
 
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 		virtual bool bind_data();
 		virtual void UnBindData();

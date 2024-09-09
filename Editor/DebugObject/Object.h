@@ -12,7 +12,7 @@ namespace ehw::editor
 		void Awake();
 		void Update();
 		void final_update();
-		void Render();
+		void render();
 
 	private:
 		

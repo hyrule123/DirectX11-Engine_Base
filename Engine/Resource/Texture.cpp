@@ -74,7 +74,7 @@ namespace ehw
 		}
 	}
 
-	bool Texture::Create(UINT _width, UINT _height, DXGI_FORMAT _pixelFormat, uint _D3D11_BIND_FLAG, bool _bAllowCPURead)
+	bool Texture::create(UINT _width, UINT _height, DXGI_FORMAT _pixelFormat, uint _D3D11_BIND_FLAG, bool _bAllowCPURead)
 	{
 		mDesc.BindFlags = _D3D11_BIND_FLAG;
 
@@ -126,7 +126,7 @@ namespace ehw
 		return bResult;
 	}
 
-	bool Texture::Create(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture)
+	bool Texture::create(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture)
 	{
 		mTexture = _texture;
 		mTexture->GetDesc(&mDesc);
@@ -142,7 +142,7 @@ namespace ehw
 		return Result;
 	}
 
-	bool Texture::Create(const D3D11_TEXTURE2D_DESC& _TexDesc)
+	bool Texture::create(const D3D11_TEXTURE2D_DESC& _TexDesc)
 	{
 		bool Result = false;
 		mDesc = _TexDesc;
@@ -165,12 +165,12 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Texture::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		return SaveFile(_baseDir / _key_path);
 	}
 
-	eResult Texture::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Texture::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		std::fs::path fullPath = _baseDir / _key_path;
 

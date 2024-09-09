@@ -42,8 +42,8 @@ namespace ehw
 		virtual ~Model3D();
 
 		//Model3D의 경로명 = 폴더명
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 		
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;

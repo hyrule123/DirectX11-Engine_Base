@@ -23,8 +23,8 @@ namespace ehw::editor
 	{
 		GameObject::final_update();
 	}
-	void EditorObject::Render()
+	void EditorObject::render()
 	{
-		GameObject::Render();
+		GameObject::render();
 	}
 }

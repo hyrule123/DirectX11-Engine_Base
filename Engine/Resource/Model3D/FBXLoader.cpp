@@ -4,7 +4,7 @@
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
 #include "Engine/Resource/Model3D/Model3D.h"
 
@@ -72,7 +72,7 @@ namespace ehw
 			return eResult::Fail_Open;
 		}
 		
-		mManager = fbxsdk::FbxManager::Create();
+		mManager = fbxsdk::FbxManager::create();
 		if (nullptr == mManager)
 		{
 			ASSERT(mManager, "fbx Manager가 nullptr 입니다.");
@@ -80,9 +80,9 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 		
-		mManager->SetIOSettings(fbxsdk::FbxIOSettings::Create(mManager, IOSROOT));
+		mManager->SetIOSettings(fbxsdk::FbxIOSettings::create(mManager, IOSROOT));
 
-		mScene = fbxsdk::FbxScene::Create(mManager, "");
+		mScene = fbxsdk::FbxScene::create(mManager, "");
 		if (nullptr == mScene)
 		{
 			ASSERT(mManager, "fbx Scene이 nullptr 입니다.");
@@ -90,7 +90,7 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		fbxsdk::FbxImporter* importer = fbxsdk::FbxImporter::Create(mManager, "");
+		fbxsdk::FbxImporter* importer = fbxsdk::FbxImporter::create(mManager, "");
 
 		if (false == importer->Initialize(_strPath.string().c_str(), -1, mManager->GetIOSettings()))
 		{
@@ -579,7 +579,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager<Texture>::GetInst().Load(_TextureRelativePath))
+				if (nullptr == ResourceManager<Texture>::GetInst().load(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -653,37 +653,37 @@ namespace ehw
 
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
-				pMaterial->SetRenderingMode(eRenderingMode::DefferdOpaque);
+				pMaterial->set_rendering_mode(eRenderingMode::DefferdOpaque);
 
 				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
 
 				ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
-				pMaterial->SetShader(defferedShader);
+				pMaterial->set_shader(defferedShader);
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().Load(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
-						pMaterial->SetTexture(eTextureSlot::Albedo, pTex);
+						pMaterial->set_texture(eTextureSlot::Albedo, pTex);
 					}
 				}
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().Load(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
-						pMaterial->SetTexture(eTextureSlot::Normal, pTex);
+						pMaterial->set_texture(eTextureSlot::Normal, pTex);
 					}
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().Load(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
-						pMaterial->SetTexture(eTextureSlot::Specular, pTex);
+						pMaterial->set_texture(eTextureSlot::Specular, pTex);
 					}
 				}
 
@@ -691,7 +691,7 @@ namespace ehw
 					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().Find(mContainers[i].vecMtrl[j].strEmissiveTex);
 					if (nullptr != pTex)
 					{
-						pMaterial->SetTexture(eTextureSlot::Emissive, pTex);
+						pMaterial->set_texture(eTextureSlot::Emissive, pTex);
 					}
 				}
 
@@ -703,7 +703,7 @@ namespace ehw
 					, mContainers[i].vecMtrl[j].AmbientColor
 					, mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = ResourceManager<Material>::GetInst().Save(pMaterial.get());
+				eResult result = ResourceManager<Material>::GetInst().save(pMaterial.get());
 
 				if (eResult_fail(result))
 				{

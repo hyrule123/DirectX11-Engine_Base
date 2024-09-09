@@ -10,7 +10,7 @@
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include "Engine/GPU/ConstBuffer.h"
 #include "Engine/GPU/StructBuffer.h"
@@ -174,11 +174,11 @@ namespace ehw
 
 	void Light_3D::init_static()
 	{
-		s_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::GetInst().Load(strKey::defaultRes::mesh::RectMesh);
-		s_light_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::GetInst().Load(strKey::defaultRes::material::LightDirMaterial);
+		s_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::GetInst().load(strKey::defaultRes::mesh::RectMesh);
+		s_light_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::GetInst().load(strKey::defaultRes::material::LightDirMaterial);
 
-		s_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::GetInst().Load(strKey::defaultRes::mesh::SphereMesh);
-		s_light_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::GetInst().Load(strKey::defaultRes::material::LightPointMaterial);
+		s_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::GetInst().load(strKey::defaultRes::mesh::SphereMesh);
+		s_light_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::GetInst().load(strKey::defaultRes::material::LightPointMaterial);
 
 		SAFE_DELETE(s_struct_buffer);
 		s_struct_buffer = new StructBuffer;
@@ -191,7 +191,7 @@ namespace ehw
 
 		SAFE_DELETE(s_const_buffer);
 		s_const_buffer = new ConstBuffer(GPU::Register::b::g_CB_light_count);
-		s_const_buffer->Create<tLightCount>();
+		s_const_buffer->create<tLightCount>();
 		s_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 	}
 
@@ -212,7 +212,7 @@ namespace ehw
 		s_const_buffer->bind_data();
 
 		s_struct_buffer->SetData(s_buffer_data[_light_type].data(), s_buffer_data[_light_type].size());
-		s_light_materials[_light_type]->bind_data();
+		s_light_materials[_light_type]->bind_buffer_to_gpu_register();
 		s_volume_meshes[_light_type]->render_instanced_all((UINT)s_buffer_data[_light_type].size());
 	}
 

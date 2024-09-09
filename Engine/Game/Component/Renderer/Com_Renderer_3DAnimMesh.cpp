@@ -7,7 +7,7 @@
 
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 
 namespace ehw
@@ -21,7 +21,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_3DAnimMesh::Render()
+	void Com_Renderer_3DAnimMesh::render()
 	{
 		//애니메이터가 없거나
 		//3D 애니메이터가 아니거나
@@ -33,19 +33,24 @@ namespace ehw
 			false == animator->IsPlaying()
 			)
 		{
-			Com_Renderer_Mesh::Render();
+			Com_Renderer_Mesh::render();
 			return;
 		}
 
 		if (false == IsRenderReady())
+		{
 			return;
+		}
+			
 
 		auto tr = gameObject()->GetComponent<Transform>();
+		tr->clear_buffer_data();
+		tr->add_to_buffer();
 		tr->bind_data();
 
 		animator->bind_data();
 		//Render
-		UINT iSubsetCount = GetMesh()->GetSubsetCount();
+		UINT iSubsetCount = GetMesh()->get_subset_count();
 		for (UINT i = 0; i < iSubsetCount; ++i)
 		{
 			Material* mtrl = GetCurrentMaterial(i);
@@ -56,13 +61,13 @@ namespace ehw
 
 				//재질에 애니메이션 정보 넣어주고 바인딩
 				mtrl->SetAnim3D(true);
-				mtrl->SetBoneCount(GetMesh()->GetSkeleton()->GetBoneCount());
-				mtrl->bind_data();
+				mtrl->SetBoneCount(GetMesh()->get_skeleton()->GetBoneCount());
+				mtrl->bind_buffer_to_gpu_register();
 
 				// 사용할 메쉬 업데이트 및 렌더링
-				GetMesh()->Render(i);
+				GetMesh()->render(i);
 
-				//mtrl->UnbindData();
+				//mtrl->unbind_data();
 				mtrl->SetBoneCount(0);
 				mtrl->SetAnim3D(false);
 			}

@@ -192,7 +192,7 @@
     <ClCompile Include="Resource\Mesh.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Material.cpp">
+    <ClCompile Include="Resource\Material\Material.cpp">
       <Filter>Resource\Material</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Texture.cpp">
@@ -398,6 +398,7 @@
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\InstanceManager.cpp" />
+    <ClCompile Include="Resource\Material\Deffered_Opaque.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -418,7 +419,7 @@
     <ClInclude Include="Game\Component\Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Material.h">
+    <ClInclude Include="Resource\Material\Material.h">
       <Filter>Resource\Material</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Texture.h">
@@ -616,9 +617,6 @@
     <ClInclude Include="Manager\ThreadPoolManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Component\strKey_Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\Model3D\Animation3D.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
@@ -663,6 +661,7 @@
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
+    <ClInclude Include="Resource\Material\Deffered_Opaque.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

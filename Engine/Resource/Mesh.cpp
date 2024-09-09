@@ -13,6 +13,10 @@
 #include "Engine/Util/Serialize/BinarySerializer.h"
 
 #include "Engine/Resource/Model3D/FBXLoader.h"
+#include "Engine/Resource/Material/Material.h"
+
+#include "Engine/Game/GameObject.h"
+
 
 
 #ifdef max
@@ -41,21 +45,21 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Mesh::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		std::fs::path filePath = _baseDir / _key_path;
 		filePath.replace_extension(strKey::path::extension::Mesh);
 		return SaveFile_Binary(filePath);
 	}
 
-	eResult Mesh::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Mesh::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		std::fs::path filePath = _baseDir / _key_path;
 		filePath.replace_extension(strKey::path::extension::Mesh);
 		return LoadFile_Binary(filePath);
 	}
 
-	eResult Mesh::Serialize_Binary(BinarySerializer* _ser) const
+	eResult Mesh::serialize_binary(BinarySerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -87,7 +91,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Mesh::DeSerialize_Binary(const BinarySerializer* _ser)
+	eResult Mesh::deserialize_binary(const BinarySerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -107,7 +111,7 @@ namespace ehw
 		ser >> m_vertexInfo.SysMem;
 
 		//Microsoft::WRL::ComPtr<ID3D11Buffer> mVertexBuffer;
-		if (false == CreateVertexBufferInternal())
+		if (false == create_vertex_buffer_internal())
 		{
 			ERROR_MESSAGE("버텍스 버퍼 로드 실패");
 			return eResult::Fail;
@@ -128,7 +132,7 @@ namespace ehw
 			ser >> indexInfo.Desc;
 			ser >> indexInfo.SysMem;
 
-			if (false == CreateIndexBufferInternal())
+			if (false == create_index_buffer_internal())
 			{
 				m_indexInfos.clear();
 				ERROR_MESSAGE("인덱스 버퍼 생성 중 에러가 발생했습니다.");
@@ -139,17 +143,17 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	bool Mesh::CreateVertexBuffer(const void* _data, size_t _dataStride, size_t _dataCount)
+	bool Mesh::create_vertex_buffer(const void* _data, size_t _dataStride, size_t _dataCount)
 	{
 		if (nullptr == _data)
 			return false;
 
-		SetVertexBufferData(_data, _dataStride, _dataCount);
+		set_vertex_buffer_data(_data, _dataStride, _dataCount);
 
-		return CreateVertexBufferInternal();
+		return create_vertex_buffer_internal();
 	}
 
-	void Mesh::SetVertexBufferData(const void* _data, size_t _dataStride, size_t _dataCount)
+	void Mesh::set_vertex_buffer_data(const void* _data, size_t _dataStride, size_t _dataCount)
 	{
 		m_vertexInfo.ByteStride = (uint)_dataStride;
 		m_vertexInfo.Count = (uint)_dataCount;
@@ -168,7 +172,7 @@ namespace ehw
 		memcpy(m_vertexInfo.SysMem.data(), _data, byteSize);
 	}
 
-	void Mesh::SetIndexBufferData(const UINT* _data, size_t _dataCount)
+	void Mesh::set_index_buffer_data(const UINT* _data, size_t _dataCount)
 	{
 		tIndexInfo& indexInfo = m_indexInfos.emplace_back(tIndexInfo{});
 
@@ -185,7 +189,7 @@ namespace ehw
 		memcpy_s(indexInfo.SysMem.data(), indexInfo.Desc.ByteWidth, _data, indexInfo.Desc.ByteWidth);
 	}
 
-	bool Mesh::CreateVertexBufferInternal()
+	bool Mesh::create_vertex_buffer_internal()
 	{
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = m_vertexInfo.SysMem.data();
@@ -234,7 +238,7 @@ namespace ehw
 		return true;
 	}
 
-	bool Mesh::CreateIndexBufferInternal()
+	bool Mesh::create_index_buffer_internal()
 	{
 		tIndexInfo& indexInfo = m_indexInfos.back();
 		if (nullptr != indexInfo.Buffer)
@@ -257,16 +261,16 @@ namespace ehw
 		return true;
 	}
 
-	bool Mesh::CreateIndexBuffer(const UINT* _data, size_t _dataCount)
+	bool Mesh::create_index_buffer(const UINT* _data, size_t _dataCount)
 	{
 		if (nullptr == _data)
 		{
 			return false;
 		}
 
-		SetIndexBufferData(_data, _dataCount);
+		set_index_buffer_data(_data, _dataCount);
 
-		return CreateIndexBufferInternal();
+		return create_index_buffer_internal();
 	}
 
 	//void Mesh::BindBuffers(UINT _subSet) const
@@ -280,7 +284,14 @@ namespace ehw
 	//	context->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	//}
 
-	void Mesh::Render(UINT _subSet) const
+	void Mesh::render_cached()
+	{
+		for (auto iter = m_render_queue.begin(); iter != m_render_queue.end(); ++iter) {
+			iter->first->
+		}
+	}
+
+	void Mesh::render(UINT _subSet) const
 	{
 		if ((UINT)m_indexInfos.size() <= _subSet)
 		{
@@ -300,7 +311,7 @@ namespace ehw
 		context->DrawIndexed(m_indexInfos[_subSet].Count, 0, 0);
 	}
 
-	void Mesh::RenderAllMeshes() const
+	void Mesh::render_all_meshes() const
 	{
 		auto context = RenderManager::GetInst().Context();
 
@@ -318,7 +329,7 @@ namespace ehw
 		}
 	}
 	
-	void Mesh::RenderInstanced(UINT _subSet, UINT _instanceCount) const
+	void Mesh::render_instanced(UINT _subSet, UINT _instanceCount) const
 	{
 		if ((UINT)m_indexInfos.size() <= _subSet)
 		{
@@ -356,7 +367,7 @@ namespace ehw
 	}
 
 
-	eResult Mesh::CreateFromContainer(const tFBXContainer* _fbxContainer)
+	eResult Mesh::create_from_container(const tFBXContainer* _fbxContainer)
 	{
 		ASSERT(_fbxContainer, "fbx 컨테이너가 nullptr 입니다.");
 		if (nullptr == _fbxContainer)
@@ -380,13 +391,13 @@ namespace ehw
 		}
 
 		//std::shared_ptr<Mesh> pMesh = std::make_shared<Mesh>();
-		CreateVertexBuffer<Vertex3D>(vecVtx3d);
+		create_vertex_buffer<Vertex3D>(vecVtx3d);
 
 		// 인덱스 정보
 		UINT iIdxBufferCount = (UINT)_fbxContainer->vecIndexBuffers.size();
 		for (UINT i = 0; i < iIdxBufferCount; ++i)
 		{
-			CreateIndexBuffer(_fbxContainer->vecIndexBuffers[i]);
+			create_index_buffer(_fbxContainer->vecIndexBuffers[i]);
 		}
 
 		return eResult::Success;

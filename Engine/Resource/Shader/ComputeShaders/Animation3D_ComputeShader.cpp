@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	eResult Animation3D_ComputeShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Animation3D_ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		return ComputeShader::CreateByHeader(CS_Animation3D, sizeof(CS_Animation3D));
 	}
@@ -77,13 +77,13 @@ namespace ehw
 	void Animation3D_ComputeShader::UnBindData()
 	{
 		// 전달한 구조화버퍼 전부 UnBind 하고 비워줌
-		m_desc.CurrentAnimKeyFrameBuffer->UnbindData();
+		m_desc.CurrentAnimKeyFrameBuffer->unbind_data();
 		if (m_desc.NextAnimKeyFrameBuffer)
 		{
-			m_desc.NextAnimKeyFrameBuffer->UnbindData();
+			m_desc.NextAnimKeyFrameBuffer->unbind_data();
 		}
-		m_desc.BoneOffsetMatrixBuffer->UnbindData();
-		m_desc.FinalBoneTranslationMatrixBuffer->UnbindData();
+		m_desc.BoneOffsetMatrixBuffer->unbind_data();
+		m_desc.FinalBoneTranslationMatrixBuffer->unbind_data();
 		
 		memset(&m_desc, 0, sizeof(Desc));
 	}

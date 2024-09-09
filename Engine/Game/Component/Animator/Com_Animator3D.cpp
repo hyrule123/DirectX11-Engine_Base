@@ -95,8 +95,8 @@ namespace ehw
 			return false;
 		}
 
-		std::shared_ptr<Skeleton> skeleton = m_sharedPlayData->GetSkeleton();
-		if (nullptr == m_sharedPlayData->GetSkeleton())
+		std::shared_ptr<Skeleton> skeleton = m_sharedPlayData->get_skeleton();
+		if (nullptr == m_sharedPlayData->get_skeleton())
 		{
 			return false;
 		}

@@ -15,7 +15,7 @@ namespace ehw
 		Com_Renderer_UIBase();
 		virtual ~Com_Renderer_UIBase();
 
-		virtual void Render() override;
+		virtual void render() override;
 
 		tCB_CustomData& GetUIUniformData() { return mUIData; }
 

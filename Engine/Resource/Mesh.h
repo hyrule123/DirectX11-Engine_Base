@@ -30,10 +30,8 @@ namespace ehw
 		float4 Indices;
 	};
 
-
-	
-
-
+	class GameObject;
+	class Material;
 	class FBXLoader;
 	class StructBuffer;
 	class Skeleton;
@@ -48,43 +46,42 @@ namespace ehw
 		Mesh();
 		virtual ~Mesh();
 
-		eResult CreateFromContainer(const tFBXContainer* _fbxContainer);
+		eResult create_from_container(const tFBXContainer* _fbxContainer);
 
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-		virtual eResult Serialize_Binary(BinarySerializer* _ser) const override;
-		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
-
-
-		template <typename Vertex>
-		inline bool Create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx);
+		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
+		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 
 		template <typename Vertex>
-		inline bool CreateVertexBuffer(const std::vector<Vertex>& _vecVtx);
-		bool CreateVertexBuffer(const void* _data, size_t _dataStride, size_t _dataCount);
+		inline bool create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx);
 
-		bool CreateIndexBuffer(const UINT* _data, size_t _dataCount);
-		inline bool CreateIndexBuffer(const std::vector<UINT>& _indices);
+		template <typename Vertex>
+		inline bool create_vertex_buffer(const std::vector<Vertex>& _vecVtx);
+		bool create_vertex_buffer(const void* _data, size_t _dataStride, size_t _dataCount);
 
-		void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) { m_topology = _topology; }
-		D3D11_PRIMITIVE_TOPOLOGY GetTopology() { return m_topology; }
+		bool create_index_buffer(const UINT* _data, size_t _dataCount);
+		inline bool create_index_buffer(const std::vector<UINT>& _indices);
 
+		void set_topology(D3D11_PRIMITIVE_TOPOLOGY _topology) { m_topology = _topology; }
+		D3D11_PRIMITIVE_TOPOLOGY get_topology() { return m_topology; }
 
-		void Render(UINT _subSet = 0u) const;
-		void RenderAllMeshes() const;
-		void RenderInstanced(UINT _subSet, UINT _instanceCount) const;
+		UINT get_subset_count() const { return (UINT)m_indexInfos.size(); }
+		float get_bounding_sphere_radius() const { return mBoundingSphereRadius; }
+
+		void set_skeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
+		std::shared_ptr<Skeleton> get_skeleton() const { return m_skeleton; }
+
+		void enqueue_render(Material* _mtrl, GameObject* _obj) {
+			if (_mtrl && _obj) { m_render_queue[_mtrl].push_back(_obj); }
+		}
+		void render_cached();
+		
+		void render(UINT _subSet = 0u) const;
+		void render_all_meshes() const;
+		void render_instanced(UINT _subSet, UINT _instanceCount) const;
 		void render_instanced_all(UINT _instance_count) const;
-		size_t get_subset_count() const { return m_indexInfos.size(); }
-
-		UINT GetSubsetCount() const { return (UINT)m_indexInfos.size(); }
-		float GetBoundingSphereRad() const { return mBoundingSphereRadius; }
-
-		void SetSkeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
-		std::shared_ptr<Skeleton> GetSkeleton() const { return m_skeleton; }
-
-	private:
-		//void BindBuffers(UINT _subSet = 0u) const;
 
 	private:
 		struct tVertexInfo
@@ -111,15 +108,15 @@ namespace ehw
 
 		//cf)아래 함수 나눠놓은 이유: 파일로부터 Load 할 때에는 아래 2개 함수만 호출함.
 		//버퍼를 만들지 않고 데이터만 집어넣음
-		void SetVertexBufferData(const void* _data, size_t _dataStride, size_t _dataCount);
+		void set_vertex_buffer_data(const void* _data, size_t _dataStride, size_t _dataCount);
 
 		//m_indexInfos.back()에 데이터를 넣음
-		void SetIndexBufferData(const UINT* _data, size_t _dataCount);
+		void set_index_buffer_data(const UINT* _data, size_t _dataCount);
 
 		//실제 버퍼 생성은 이 함수. 실패시 m_vertexInfo를 초기화함
-		bool CreateVertexBufferInternal();
+		bool create_vertex_buffer_internal();
 		//Vector의 맨 뒤 데이터를 가지고 생성 시도. 실패시 m_IndexInfos의 맨 뒤 데이터를 빼버림.
-		bool CreateIndexBufferInternal();
+		bool create_index_buffer_internal();
 	private:
 		D3D11_PRIMITIVE_TOPOLOGY m_topology;
 
@@ -138,27 +135,29 @@ namespace ehw
 
 		//로컬 스페이스 상에서의 바운딩 sphere의 반지름.
 		float mBoundingSphereRadius;
+
+		std::unordered_map<Material*, std::vector<GameObject*>> m_render_queue;
 	};
 
 
 	template<typename Vertex>
-	inline bool Mesh::Create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx)
+	inline bool Mesh::create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx)
 	{
-		bool bSuccess = CreateVertexBuffer<Vertex>(_vecVtx);
+		bool bSuccess = create_vertex_buffer<Vertex>(_vecVtx);
 
-		bSuccess &= CreateIndexBuffer(_vecIdx.data(), _vecIdx.size());
+		bSuccess &= create_index_buffer(_vecIdx.data(), _vecIdx.size());
 		
 		return bSuccess;
 	}
 	template<typename Vertex>
-	inline bool Mesh::CreateVertexBuffer(const std::vector<Vertex>& _vecVtx)
+	inline bool Mesh::create_vertex_buffer(const std::vector<Vertex>& _vecVtx)
 	{
 		static_assert(std::is_base_of_v<VertexBase, Vertex>);
-		return CreateVertexBuffer(static_cast<const void*>(_vecVtx.data()), sizeof(Vertex), _vecVtx.size());
+		return create_vertex_buffer(static_cast<const void*>(_vecVtx.data()), sizeof(Vertex), _vecVtx.size());
 	}
-	inline bool Mesh::CreateIndexBuffer(const std::vector<UINT>& _indices)
+	inline bool Mesh::create_index_buffer(const std::vector<UINT>& _indices)
 	{
-		return CreateIndexBuffer(static_cast<const UINT*>(_indices.data()), _indices.size());
+		return create_index_buffer(static_cast<const UINT*>(_indices.data()), _indices.size());
 	}
 
 }

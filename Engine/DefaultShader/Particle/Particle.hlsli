@@ -32,20 +32,20 @@ SBUFFER_RW(RW_SharedParticleBuffer, tParticleShared, u, 2);
 struct VSIn
 {
 	float4 Pos : POSITION;
-	uint iInstance : SV_InstanceID;
+	uint instance_ID : SV_InstanceID;
 };
 
 struct GSOutput
 {
 	float4 Pos : SV_POSITION;
 	float2 UV : TEXCOORD;
-	uint iInstance : SV_InstanceID;
+	uint instance_ID : SV_InstanceID;
 };
 
 struct VSOut
 {
 	float4 Pos : SV_Position;
-	uint iInstance : SV_InstanceID;
+	uint instance_ID : SV_InstanceID;
 };
 #endif//HLSL
 #endif

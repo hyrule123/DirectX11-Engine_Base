@@ -40,7 +40,7 @@ namespace ehw
 
 		virtual ~Animation2D();
 
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override
 		{ 
 			return eResult::Fail_NotImplemented; 
 		}
@@ -51,9 +51,9 @@ namespace ehw
 
 		uint Update();
 		void final_update();
-		void Render();
+		void render();
 
-		void Create(const std::string_view _name, std::shared_ptr<Texture> _atlas
+		void create(const std::string_view _name, std::shared_ptr<Texture> _atlas
 			, float2 _leftTop, float2 _size, float2 _offset
 			, uint _spriteLegth, float _duration);
 

@@ -19,6 +19,8 @@ struct VSIn
 	
 	float4 vWeights : BLENDWEIGHT;
 	float4 vIndices : BLENDINDICES;
+	
+	uint instance_ID : SV_InstanceID;
 };
 
 struct VSOut
@@ -31,6 +33,8 @@ struct VSOut
 	float3 ViewTangent : TANGENT;
 	float3 ViewBiNormal : BINORMAL;
 	float3 ViewNormal : NORMAL;
+	
+	uint instance_ID : SV_InstanceID;
 	
 };
 

@@ -57,23 +57,23 @@ namespace ehw
     }
     void Animation3D::UnBindData()
     {
-        m_SBufferKeyFrame->UnbindData();
+        m_SBufferKeyFrame->unbind_data();
     }
 
-    eResult Animation3D::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+    eResult Animation3D::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+    eResult Animation3D::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
 
-    eResult Animation3D::Serialize_Binary(BinarySerializer* _ser) const
+    eResult Animation3D::serialize_binary(BinarySerializer* _ser) const
     {
         if (nullptr == _ser)
         {
@@ -107,7 +107,7 @@ namespace ehw
         return eResult::Success;
     }
 
-    eResult Animation3D::DeSerialize_Binary(const BinarySerializer* _ser)
+    eResult Animation3D::deserialize_binary(const BinarySerializer* _ser)
     {
         if (nullptr == _ser)
         {

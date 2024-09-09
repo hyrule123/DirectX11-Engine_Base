@@ -125,7 +125,7 @@ namespace ehw
 	}
 
 
-	bool Com_Animator2D::Create(const std::string_view _name, std::shared_ptr<Texture> _atlas
+	bool Com_Animator2D::create(const std::string_view _name, std::shared_ptr<Texture> _atlas
 		, float2 _leftTop, float2 _size, float2 _offset
 		, uint _spriteLegth, float _duration)
 	{
@@ -137,7 +137,7 @@ namespace ehw
 			return false;
 
 		animation = new Animation2D();
-		animation->Create(_name, _atlas, _leftTop, _size, _offset, _spriteLegth, _duration);
+		animation->create(_name, _atlas, _leftTop, _size, _offset, _spriteLegth, _duration);
 
 		mAnimations.insert(std::make_pair(_name, animation));
 

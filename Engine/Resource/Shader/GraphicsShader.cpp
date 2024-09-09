@@ -13,10 +13,21 @@ namespace ehw
 {
 	GraphicsShader::GraphicsShader()
 		: Shader(GraphicsShader::concrete_name)
+		, m_inputLayoutDescs{}
+		, m_inputLayout{}
 		, m_arrShaderCode{}
-		, m_rasterizerType(eRSType::SolidBack)
-		, m_depthStencilType(eDSType::Less)
-		, m_blendType(eBSType::Default)
+		, m_vertexShader{}
+		, m_domainShader{}
+		, m_hullShader{}
+		, m_geometryShader{}
+		, m_pixelShader{}
+		, m_rasterizer{}
+		, m_blender{}
+		, m_depth_stencil{}
+		, m_blender_type{}
+		, m_blend_factor{}
+		, m_sample_mask{ UINT_MAX }
+		, m_stencil_ref{ UINT_MAX }
 		, m_errorBlob()
 		, m_bEditMode(false)
 	{
@@ -26,12 +37,12 @@ namespace ehw
 	{
 	}
 
-	eResult GraphicsShader::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult GraphicsShader::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		return SaveFile_Json(_baseDir / _key_path);
 	}
 
-	eResult GraphicsShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult GraphicsShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		return LoadFile_Json(_baseDir / _key_path);
 	}
@@ -74,7 +85,7 @@ namespace ehw
 		m_arrShaderCode[(int)_stage] = {};
 
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
-		SetEngineDefaultRes(true);
+		set_engine_default_res(true);
 
 		tShaderCode& code = m_arrShaderCode[(int)_stage];
 		code.pData = _pByteCode;
@@ -193,6 +204,18 @@ namespace ehw
 		return eResult::Success;
 	}
 
+	void GraphicsShader::SetRSState(eRSType _state)
+	{
+	}
+
+	void GraphicsShader::SetDSState(eDSType _state)
+	{
+	}
+
+	void GraphicsShader::SetBSState(eBSType _state)
+	{
+	}
+
 	void GraphicsShader::bind_data()
 	{
 		auto pContext = RenderManager::GetInst().Context();
@@ -203,6 +226,10 @@ namespace ehw
 		pContext->DSSetShader(m_domainShader.Get(), nullptr, 0);
 		pContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
 		pContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+
+		pContext->RSSetState(m_rasterizer.Get());
+		pContext->OMSetBlendState(m_blender.Get(), m_blend_factor, m_sample_mask);
+		pContext->OMSetDepthStencilState(m_depth_stencil.Get(), m_stencil)
 		
 		ID3D11RasterizerState*		rs = RenderManager::GetInst().GetRasterizerState(m_rasterizerType);
 		ID3D11DepthStencilState*	ds = RenderManager::GetInst().GetDepthStencilState(m_depthStencilType);
@@ -215,7 +242,7 @@ namespace ehw
 		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
 	}
 
-	void GraphicsShader::UnbindData()
+	void GraphicsShader::unbind_data()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 

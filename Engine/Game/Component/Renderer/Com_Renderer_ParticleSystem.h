@@ -30,7 +30,7 @@ namespace ehw
 
 		virtual void Init() override;
 		virtual void final_update() override;
-		virtual void Render() override;
+		virtual void render() override;
 
 	private:
 #pragma region Buffer 선언

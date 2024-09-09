@@ -793,7 +793,7 @@ namespace ehw::editor
 		//	if (curSel >= 0)
 		//	{
 		//		D3D_PRIMITIVE_TOPOLOGY topology = (D3D_PRIMITIVE_TOPOLOGY)curSel;
-		//		shader.SetTopology(topology);
+		//		shader.set_topology(topology);
 		//	}
 		//	else
 		//	{
@@ -861,7 +861,7 @@ namespace ehw::editor
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		
-		if (eResult_success(shader.Save(baseDir, _filePath)))
+		if (eResult_success(shader.save(baseDir, _filePath)))
 		{
 			LoadShaderSettingComboBox();
 		}
@@ -878,7 +878,7 @@ namespace ehw::editor
 		shader.SetEditMode(true);
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
-		if (eResult_fail(shader.Load(baseDir, _filePath)))
+		if (eResult_fail(shader.load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;
@@ -888,7 +888,7 @@ namespace ehw::editor
 
 		mInputLayoutDescs = shader.GetInputLayoutDescs();
 		
-		//mTopologyCombo.SetCurrentIndex((int)shader.GetTopology());
+		//mTopologyCombo.SetCurrentIndex((int)shader.get_topology());
 
 		for (size_t i = 0; i < mStageNames.size(); ++i)
 		{	

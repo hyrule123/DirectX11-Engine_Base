@@ -44,7 +44,7 @@ namespace ehw::editor
 
 		static void Update();
 		static void final_update();
-		static void Render();
+		static void render();
 
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
 		static Json::Value* CheckJsonSaved(const std::string& _strKey);

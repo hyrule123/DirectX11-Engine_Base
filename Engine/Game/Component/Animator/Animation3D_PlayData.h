@@ -39,8 +39,8 @@ namespace ehw
 
 		inline void UpdatePrevFrame() { m_PrevFrame = m_Anim3DCBuffer.CurrentFrame; }
 
-		inline std::shared_ptr<Skeleton> GetSkeleton() { return m_skeleton; }
-		void SetSkeleton(const std::shared_ptr<Skeleton> _skeleton);
+		inline std::shared_ptr<Skeleton> get_skeleton() { return m_skeleton; }
+		void set_skeleton(const std::shared_ptr<Skeleton> _skeleton);
 		inline StructBuffer* GetBoneFinalMatrixStructBuffer() { return m_pBoneFinalMatBuffer.get(); }
 
 		bool Play(const std::string_view _animationName, float _blendTime);

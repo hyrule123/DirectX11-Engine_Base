@@ -19,7 +19,7 @@ namespace ehw {
 		void Init();
 		void Release();
 
-		void Render();
+		void render();
 
 	public:
 		void frame_end();

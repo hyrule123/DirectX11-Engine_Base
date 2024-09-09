@@ -36,7 +36,7 @@ namespace ehw
 		~Collision2D();
 
 		void FixedUpdate();
-		void Render();
+		void render();
 		void frame_end();
 
 	private:

@@ -14,7 +14,7 @@ namespace ehw
 		MultiRenderTarget();
 		virtual ~MultiRenderTarget();
 
-		bool Create(std::shared_ptr<Texture> texture[MRT_MAX], std::shared_ptr<Texture> dsTexture);
+		bool create(std::shared_ptr<Texture> texture[MRT_MAX], std::shared_ptr<Texture> dsTexture);
 		void Bind();
 		inline std::shared_ptr<Texture> GetRenderTarget(uint _uRenderTargetIndex);
 

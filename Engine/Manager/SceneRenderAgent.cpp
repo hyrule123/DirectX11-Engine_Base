@@ -38,7 +38,7 @@ namespace ehw {
 		Transform::release_static();
 	}
 
-	void SceneRenderAgent::Render()
+	void SceneRenderAgent::render()
 	{
 		for (Com_Camera* cam : m_cameras) {
 			if (cam->IsEnabled()) {

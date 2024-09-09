@@ -13,7 +13,7 @@ namespace ehw
 
 		void Update();
 		void final_update();
-		void Render();
+		void render();
 
 		//한 프레임 돌고 정리해야할 함수들 등록해놓으면 호출됨
 		void frame_end();

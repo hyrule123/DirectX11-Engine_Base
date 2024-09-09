@@ -1,4 +1,4 @@
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include "Engine/GPU/ConstBuffer.h"
 
@@ -9,21 +9,18 @@
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
 #include "Engine/Resource/Texture.h"
-#include "Shader/GraphicsShader.h"
+#include "Engine/Resource/Shader/GraphicsShader.h"
+
+#include "Engine/Game/GameObject.h"
 
 namespace ehw
 {
-    Material::Material()
-        : Resource(Material::concrete_name)
-        , m_constBufferData{}
+    Material::Material(std::string_view key)
+        : Resource(key)
+        , m_const_buffer_data{}
         , m_renderingMode(eRenderingMode::Opaque)
         , m_shader{}
         , m_textures{}
-    {
-    }
-
-    Material::Material(std::string_view key)
-        : Resource(key)
     {
     }
 
@@ -31,7 +28,7 @@ namespace ehw
         : Resource(_other)
         , m_shader(_other.m_shader)
         , m_textures(_other.m_textures)
-        , m_constBufferData(_other.m_constBufferData)
+        , m_const_buffer_data(_other.m_const_buffer_data)
         , m_renderingMode(_other.m_renderingMode)
     {
     }
@@ -40,12 +37,12 @@ namespace ehw
     {
     }
 
-    eResult Material::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+    eResult Material::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
     {
         return SaveFile_Json(_baseDir / _key_path);
     }
 
-    eResult Material::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+    eResult Material::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
     {
         return LoadFile_Json(_baseDir / _key_path);
     }
@@ -90,13 +87,13 @@ namespace ehw
             ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
 
             //const buffer
-            Json::Value& cbData = ser[JSON_KEY(m_constBufferData)];
-            cbData[JSON_KEY(m_constBufferData.Amb)] << m_constBufferData.Amb;
-            cbData[JSON_KEY(m_constBufferData.bAnim)] << m_constBufferData.bAnim;
-            cbData[JSON_KEY(m_constBufferData.BoneCount)] << m_constBufferData.BoneCount;
-            cbData[JSON_KEY(m_constBufferData.Diff)] << m_constBufferData.Diff;
-            cbData[JSON_KEY(m_constBufferData.Emv)] << m_constBufferData.Emv;
-            cbData[JSON_KEY(m_constBufferData.Spec)] << m_constBufferData.Spec;
+            Json::Value& cbData = ser[JSON_KEY(m_const_buffer_data)];
+            cbData[JSON_KEY(m_const_buffer_data.Amb)] << m_const_buffer_data.Amb;
+            cbData[JSON_KEY(m_const_buffer_data.bAnim)] << m_const_buffer_data.bAnim;
+            cbData[JSON_KEY(m_const_buffer_data.BoneCount)] << m_const_buffer_data.BoneCount;
+            cbData[JSON_KEY(m_const_buffer_data.Diff)] << m_const_buffer_data.Diff;
+            cbData[JSON_KEY(m_const_buffer_data.Emv)] << m_const_buffer_data.Emv;
+            cbData[JSON_KEY(m_const_buffer_data.Spec)] << m_const_buffer_data.Spec;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
         }
         catch (const Json::Exception& _err)
@@ -124,7 +121,7 @@ namespace ehw
             {
                 std::string strKey{};
                 ser[JSON_KEY(m_shader)] >> strKey;
-                m_shader = ResourceManager<GraphicsShader>::GetInst().Load(strKey);
+                m_shader = ResourceManager<GraphicsShader>::GetInst().load(strKey);
             }
 
 
@@ -134,21 +131,21 @@ namespace ehw
             {
                 std::string strKey{};
                 textures[i] >> strKey;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().Load(strKey);
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().load(strKey);
                 if (tex)
                 {
-                    SetTexture((eTextureSlot)i, tex);
+                    set_texture((eTextureSlot)i, tex);
                 }
             }
 
             //const buffer
-            const Json::Value& cbData = ser[JSON_KEY(m_constBufferData)];
-            cbData[JSON_KEY(m_constBufferData.Amb)] >> m_constBufferData.Amb;
-            cbData[JSON_KEY(m_constBufferData.bAnim)] >> m_constBufferData.bAnim;
-            cbData[JSON_KEY(m_constBufferData.BoneCount)] >> m_constBufferData.BoneCount;
-            cbData[JSON_KEY(m_constBufferData.Diff)] >> m_constBufferData.Diff;
-            cbData[JSON_KEY(m_constBufferData.Emv)] >> m_constBufferData.Emv;
-            cbData[JSON_KEY(m_constBufferData.Spec)] >> m_constBufferData.Spec;
+            const Json::Value& cbData = ser[JSON_KEY(m_const_buffer_data)];
+            cbData[JSON_KEY(m_const_buffer_data.Amb)] >> m_const_buffer_data.Amb;
+            cbData[JSON_KEY(m_const_buffer_data.bAnim)] >> m_const_buffer_data.bAnim;
+            cbData[JSON_KEY(m_const_buffer_data.BoneCount)] >> m_const_buffer_data.BoneCount;
+            cbData[JSON_KEY(m_const_buffer_data.Diff)] >> m_const_buffer_data.Diff;
+            cbData[JSON_KEY(m_const_buffer_data.Emv)] >> m_const_buffer_data.Emv;
+            cbData[JSON_KEY(m_const_buffer_data.Spec)] >> m_const_buffer_data.Spec;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
 
             //renderingMode
@@ -163,8 +160,12 @@ namespace ehw
         return eResult::Success;
     }
 
+    void Material::clear_buffer()
+    {
 
-    void Material::bind_data()
+    }
+
+    void Material::bind_buffer_to_gpu_register()
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
@@ -172,14 +173,10 @@ namespace ehw
             {
                 m_textures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
-            else
-            {
-                Texture::ClearSRV((UINT)slotIndex);
-            }
         }
 
         ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
-        CB->SetData(&m_constBufferData);
+        CB->SetData(&m_const_buffer_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
         CB->bind_data(flag);
@@ -187,45 +184,45 @@ namespace ehw
         m_shader->bind_data();
     }
 
-    void Material::UnbindData()
+    void Material::unbind_buffer_from_gpu_register()
     {
-        GraphicsShader::UnbindData();
+        GraphicsShader::unbind_data();
 
         ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
-        CB->UnbindData();
+        CB->unbind_data();
 
         Texture::ClearAll();
     }
 
-    void Material::SetTexture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)
+    void Material::set_texture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)
     {
         m_textures[(UINT)_slot] = _texture;
         BOOL bTex = nullptr != _texture ? TRUE : FALSE;
         switch ((UINT)_slot)
         {
         case 0u:
-            m_constBufferData.bTex_0 = bTex;
+            m_const_buffer_data.bTex_0 = bTex;
             break;
         case 1u:
-            m_constBufferData.bTex_1 = bTex;
+            m_const_buffer_data.bTex_1 = bTex;
             break;
         case 2u:
-            m_constBufferData.bTex_2 = bTex;
+            m_const_buffer_data.bTex_2 = bTex;
             break;
         case 3u:
-            m_constBufferData.bTex_3 = bTex;
+            m_const_buffer_data.bTex_3 = bTex;
             break;
         case 4u:
-            m_constBufferData.bTex_4 = bTex;
+            m_const_buffer_data.bTex_4 = bTex;
             break;
         case 5u:
-            m_constBufferData.bTex_5 = bTex;
+            m_const_buffer_data.bTex_5 = bTex;
             break;
         case 6u:
-            m_constBufferData.bTex_6 = bTex;
+            m_const_buffer_data.bTex_6 = bTex;
             break;
         case 7u:
-            m_constBufferData.bTex_7 = bTex;
+            m_const_buffer_data.bTex_7 = bTex;
             break;
         default:
             ASSERT(false, "에러");

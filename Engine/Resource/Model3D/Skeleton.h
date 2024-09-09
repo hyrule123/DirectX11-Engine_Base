@@ -20,11 +20,11 @@ namespace ehw
 		Skeleton();
 		virtual ~Skeleton();
 
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-		virtual eResult Serialize_Binary(BinarySerializer* _ser) const override;
-		virtual eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
+		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
+		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 		
 
 		eResult CreateFromFBX(FBXLoader* _fbxLoader);

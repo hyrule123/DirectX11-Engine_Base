@@ -18,13 +18,13 @@ namespace ehw
 	GPUInitSetting::GPUInitSetting()
 		: ComputeShader(GPUInitSetting::concrete_name, uint3(1u, 1u, 1u))
 	{
-		SetEngineDefaultRes(true);
+		set_engine_default_res(true);
 	}
 	GPUInitSetting::~GPUInitSetting()
 	{
 	}
 
-	eResult GPUInitSetting::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult GPUInitSetting::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 
@@ -88,7 +88,7 @@ namespace ehw
 
 	void GPUInitSetting::UnBindData()
 	{
-		mInitSBuffer->UnbindData();
+		mInitSBuffer->unbind_data();
 		mInitSBuffer->GetData(&gGPUInitSetting);
 		mInitSBuffer->BindDataSRV();
 	}

@@ -7,7 +7,7 @@
 #include "Engine/GameEngine.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
@@ -17,8 +17,6 @@
 #include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/MultiRenderTarget.h"
 
-#include "RenderManager.h"
-//#include "ResourceManager.h"
 
 namespace ehw
 {
@@ -112,7 +110,7 @@ namespace ehw
 		//Resource
 		load_default_resources();
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().Load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->OnExcute();
 
 		m_sceneRenderAgent.Init();
@@ -281,7 +279,7 @@ namespace ehw
 		}
 
 		//스왑체인으로 받아온 텍스처 버퍼를 가지고 렌더타겟 텍스처 뷰(RTV) 생성
-		if (false == ReturnTex->Create(renderTarget))
+		if (false == ReturnTex->create(renderTarget))
 		{
 			ERROR_MESSAGE("렌더타겟 텍스처 생성에 실패했습니다.");
 			return nullptr;
@@ -297,7 +295,7 @@ namespace ehw
 	{
 		std::shared_ptr<Texture> DSTex = std::make_shared<ehw::Texture>();
 		
-		if (false == DSTex->Create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
+		if (false == DSTex->create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
 		{
 			ERROR_MESSAGE("Depth Stencil 버퍼 생성에 실패했습니다.");
 			return nullptr;
@@ -337,7 +335,7 @@ namespace ehw
 	}
 
 
-	void RenderManager::Render()
+	void RenderManager::render()
 	{
 		ClearMultiRenderTargets();
 
@@ -345,7 +343,7 @@ namespace ehw
 
 		BindNoiseTexture();
 
-		m_sceneRenderAgent.Render();
+		m_sceneRenderAgent.render();
 	}
 
 	void RenderManager::FrameEnd()
@@ -374,13 +372,13 @@ namespace ehw
 	{
 		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::RenderTarget);
 
-		//renderTarget->UnbindData();
+		//renderTarget->unbind_data();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
 		//RenderManager::GetInst().Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
 
-		ID3D11Texture2D* dest = m_postProcessTexture->GetTexture().Get();
-		ID3D11Texture2D* source = renderTarget->GetTexture().Get();
+		ID3D11Texture2D* dest = m_postProcessTexture->get_texture().Get();
+		ID3D11Texture2D* source = renderTarget->get_texture().Get();
 
 		RenderManager::GetInst().Context()->CopyResource(dest, source);
 
@@ -431,7 +429,7 @@ namespace ehw
 
 			m_multi_render_targets[(UINT)eMRTType::Swapchain] = std::make_unique<MultiRenderTarget>();
 
-			if (false == m_multi_render_targets[(UINT)eMRTType::Swapchain]->Create(arrRTTex, dsTex))
+			if (false == m_multi_render_targets[(UINT)eMRTType::Swapchain]->create(arrRTTex, dsTex))
 			{
 				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
@@ -447,7 +445,7 @@ namespace ehw
 			{
 				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
-				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
+				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->set_keypath(strKey::eMRT_Deffered_String[i]);
 			}
@@ -456,7 +454,7 @@ namespace ehw
 			dsTex = RenderManager::GetInst().GetDepthStencilBufferTex();
 
 			m_multi_render_targets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
-			if (false == m_multi_render_targets[(int)eMRTType::Deffered]->Create(arrRTTex, dsTex))
+			if (false == m_multi_render_targets[(int)eMRTType::Deffered]->create(arrRTTex, dsTex))
 			{
 				ERROR_MESSAGE("Multi Render Target 생성 실패.");
 				return false;
@@ -472,13 +470,13 @@ namespace ehw
 			{
 				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
-				arrRTTex[i]->Create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
+				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->set_keypath(strKey::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
-			m_multi_render_targets[(int)eMRTType::Light]->Create(arrRTTex, nullptr);
+			m_multi_render_targets[(int)eMRTType::Light]->create(arrRTTex, nullptr);
 		}
 
 		SetTexturesToDefferedMaterials();
@@ -500,8 +498,8 @@ namespace ehw
 				//Position Target
 				std::shared_ptr<Texture> positionTarget =
 					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
-				lightDirMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
-				lightPointMtrl->SetTexture(eTextureSlot::PositionTarget, positionTarget);
+				lightDirMtrl->set_texture(eTextureSlot::PositionTarget, positionTarget);
+				lightPointMtrl->set_texture(eTextureSlot::PositionTarget, positionTarget);
 			}
 
 			{
@@ -509,8 +507,8 @@ namespace ehw
 				std::shared_ptr<Texture> normalTarget =
 					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
 
-				lightDirMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
-				lightPointMtrl->SetTexture(eTextureSlot::NormalTarget, normalTarget);
+				lightDirMtrl->set_texture(eTextureSlot::NormalTarget, normalTarget);
+				lightPointMtrl->set_texture(eTextureSlot::NormalTarget, normalTarget);
 			}
 
 			{
@@ -518,8 +516,8 @@ namespace ehw
 				std::shared_ptr<Texture> specularTarget =
 					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
 
-				lightDirMtrl->SetTexture(eTextureSlot::NormalTarget, specularTarget);
-				lightPointMtrl->SetTexture(eTextureSlot::NormalTarget, specularTarget);
+				lightDirMtrl->set_texture(eTextureSlot::NormalTarget, specularTarget);
+				lightPointMtrl->set_texture(eTextureSlot::NormalTarget, specularTarget);
 			}
 		}
 
@@ -530,44 +528,44 @@ namespace ehw
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{
 				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::AlbedoTarget);
-				mergeMaterial->SetTexture(eTextureSlot::AlbedoTarget, AlbedoRT);
+				mergeMaterial->set_texture(eTextureSlot::AlbedoTarget, AlbedoRT);
 			}
 
 			{
 				std::shared_ptr<Texture> NormalRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
-				mergeMaterial->SetTexture(eTextureSlot::NormalTarget, NormalRT);
+				mergeMaterial->set_texture(eTextureSlot::NormalTarget, NormalRT);
 			}
 
 			{
 				std::shared_ptr<Texture> SpecularRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
-				mergeMaterial->SetTexture(eTextureSlot::SpecularTarget, SpecularRT);
+				mergeMaterial->set_texture(eTextureSlot::SpecularTarget, SpecularRT);
 			}
 
 			{
 				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::EmissiveTarget);
-				mergeMaterial->SetTexture(eTextureSlot::EmissiveTarget, EmissiveRT);
+				mergeMaterial->set_texture(eTextureSlot::EmissiveTarget, EmissiveRT);
 			}
 
 			{
 				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::RoughnessAndMetalicTarget);
-				mergeMaterial->SetTexture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
+				mergeMaterial->set_texture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
 			}
 
 
 			{
 				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
-				mergeMaterial->SetTexture(eTextureSlot::PositionTarget, PosRenderTarget);
+				mergeMaterial->set_texture(eTextureSlot::PositionTarget, PosRenderTarget);
 			}
 
 
 			MultiRenderTarget* LightMRT = m_multi_render_targets[(uint)eMRTType::Light].get();
 			{
 				std::shared_ptr<Texture> DiffuseLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::DiffuseLightTarget);
-				mergeMaterial->SetTexture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
+				mergeMaterial->set_texture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
 			}
 			{
 				std::shared_ptr<Texture> SpecularLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::SpecularLightTarget);
-				mergeMaterial->SetTexture(eTextureSlot::SpecularLightTarget, SpecularLightTarget);
+				mergeMaterial->set_texture(eTextureSlot::SpecularLightTarget, SpecularLightTarget);
 			}
 		}
 

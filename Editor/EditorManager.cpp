@@ -150,7 +150,7 @@ namespace ehw::editor
 
 		Update();
 		final_update();
-		Render();
+		render();
 
 		mbInitialized = true;
 	}
@@ -188,7 +188,7 @@ namespace ehw::editor
 		}
 	}
 
-	void EditorManager::Render()
+	void EditorManager::render()
 	{
 		Scene* scene = SceneManager::GetInst().GetActiveScene();
 		if (scene)
@@ -196,7 +196,7 @@ namespace ehw::editor
 			CollisionSystem* colsys = scene->GetCollisionSystem();
 			if (colsys)
 			{
-				colsys->Render();
+				colsys->render();
 			}
 		}
 		
@@ -204,7 +204,7 @@ namespace ehw::editor
 
 		for (const auto& obj : mEditorObjects)
 		{
-			obj->Render();
+			obj->render();
 		}
 
 		ImGuiRender();
@@ -412,7 +412,7 @@ namespace ehw::editor
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
 
-		ImGui::Render();
+		ImGui::render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		
 		// Update and Render additional Platform Windows

@@ -29,10 +29,7 @@ namespace ehw
 
 		virtual ~Renderer();
 
-		//virtual void Setting() override;
-		//virtual void Update() override;
 		virtual void final_update() override;
-		virtual void Render() = 0;
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;

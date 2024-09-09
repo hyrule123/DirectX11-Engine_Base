@@ -74,7 +74,7 @@ namespace ehw
 		
 
 		//Editor 프로젝트에서 호출됨.
-		void Render();
+		void render();
 
 		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData);
 

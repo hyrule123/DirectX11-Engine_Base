@@ -14,12 +14,12 @@ namespace ehw
 		virtual ~ConstBuffer();
 
 		template <typename T>
-		bool Create(uint _dataCount = 1u);
-		bool Create(size_t _dataSize, uint _dataCount = 1u);
+		bool create(uint _dataCount = 1u);
+		bool create(size_t _dataSize, uint _dataCount = 1u);
 		void SetData(void* _data, uint _dataCount = 1u);
 		void bind_data(eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
-		void UnbindData();
+		void unbind_data();
 
 		void SetPresetTargetStage(eShaderStageFlag_ _flag) { mPresetTargetStage = _flag; }
 	private:
@@ -32,8 +32,8 @@ namespace ehw
 
 
 	template<typename T>
-	inline bool ConstBuffer::Create(uint _dataCount)
+	inline bool ConstBuffer::create(uint _dataCount)
 	{
-		return Create(sizeof(T), _dataCount);
+		return create(sizeof(T), _dataCount);
 	}
 }

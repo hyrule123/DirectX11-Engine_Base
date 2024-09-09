@@ -17,13 +17,13 @@ namespace ehw
 		static void ClearAll();
 
 		//생성 관련 함수
-		bool Create(UINT _width, UINT _height, DXGI_FORMAT _format, uint _D3D11_BIND_FLAG, bool _bAllowCPURead = false);
-		bool Create(ComPtr<ID3D11Texture2D> _texture);
-		bool Create(const D3D11_TEXTURE2D_DESC& _TexDesc);
+		bool create(UINT _width, UINT _height, DXGI_FORMAT _format, uint _D3D11_BIND_FLAG, bool _bAllowCPURead = false);
+		bool create(ComPtr<ID3D11Texture2D> _texture);
+		bool create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 		void InitializeResource();
 
 
@@ -32,7 +32,7 @@ namespace ehw
 		void UnBindData();
 
 
-		void SetTexture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { mTexture = _texture; }
+		void set_texture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { mTexture = _texture; }
 
 		const D3D11_TEXTURE2D_DESC& GetDesc() const { return mDesc; }
 		uint GetHeight() const { return mDesc.Height; }
@@ -40,7 +40,7 @@ namespace ehw
 		uint2 GetSizeUint() const { return uint2{ mDesc.Width, mDesc.Height }; }
 		float2 GetSizeFloat() const { return float2{ (float)mDesc.Width, (float)mDesc.Height }; }
 
-		ComPtr<ID3D11Texture2D> GetTexture() { return mTexture; }
+		ComPtr<ID3D11Texture2D> get_texture() { return mTexture; }
 		ComPtr<ID3D11DepthStencilView> GetDSV() { return mDSV; }
 		ComPtr<ID3D11RenderTargetView> GetRTV() { return mRTV; }
 		ComPtr<ID3D11UnorderedAccessView> GetUAV() { return mUAV; }

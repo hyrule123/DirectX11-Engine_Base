@@ -9,7 +9,7 @@
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include "Engine/GPU/StructBuffer.h"
 
@@ -99,12 +99,12 @@ namespace ehw
 		ASSERT(m_debugMaterial.get(), "DebugMaterial 준비 실패");
 	}
 
-	void CollisionSystem::Render() {
+	void CollisionSystem::render() {
 		if (m_col2DManager) {
-			m_col2DManager->Render();
+			m_col2DManager->render();
 		}
 		if (m_col3DManager) {
-			m_col3DManager->Render();
+			m_col3DManager->render();
 		}
 	}
 
@@ -120,14 +120,14 @@ namespace ehw
 		}
 		
 		
-		m_debugMaterial->bind_data();
+		m_debugMaterial->bind_buffer_to_gpu_register();
 
 		m_debugInfoSBuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
 		m_debugInfoSBuffer->BindDataSRV();
 
-		_mesh->RenderInstanced(0, (UINT)_debugData.size());
+		_mesh->render_instanced(0, (UINT)_debugData.size());
 
-		//m_debugMaterial->UnbindData();
+		//m_debugMaterial->unbind_data();
 	}
 
 

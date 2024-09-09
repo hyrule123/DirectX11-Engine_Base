@@ -47,11 +47,11 @@ namespace ehw
         void bind_data();
         void UnBindData();
 
-        virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-        virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+        virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
+        virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-        eResult Serialize_Binary(BinarySerializer* _ser) const override;
-        eResult DeSerialize_Binary(const BinarySerializer* _ser) override;
+        eResult serialize_binary(BinarySerializer* _ser) const override;
+        eResult deserialize_binary(const BinarySerializer* _ser) override;
 
         eResult LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
@@ -63,8 +63,8 @@ namespace ehw
         double GetTimeLength() const { return m_TimeLength; }
         float GetUpdateTime() const { return m_UpdateTime; }
         int GetFPS() const { return m_FramePerSec; }
-        std::shared_ptr<Skeleton> GetSkeleton() const { return m_OwnerSkeleton.lock(); }
-        void SetSkeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
+        std::shared_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
+        void set_skeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
         std::shared_ptr<StructBuffer> GetKeyFrameSBuffer() const { return m_SBufferKeyFrame; }
 
     private:

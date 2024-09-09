@@ -179,7 +179,7 @@ namespace ehw
 		}
 	}
 
-	void Collision2D::Render()
+	void Collision2D::render()
 	{
 		//메인 카메라
 		Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();

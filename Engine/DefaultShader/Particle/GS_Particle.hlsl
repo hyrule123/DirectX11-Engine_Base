@@ -7,15 +7,15 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
 {
     GSOutput Out[4] = { (GSOutput) 0.0f, (GSOutput) 0.0f, (GSOutput) 0.0f, (GSOutput) 0.0f };
 	
-    if (0 == ParticleBuffer[input[0].iInstance].active)
+    if (0 == ParticleBuffer[input[0].instance_ID].active)
         return;
 	
-	float3 vWorldPos = input[0].Pos.xyz + ParticleBuffer[input[0].iInstance].position.xyz;
+	float3 vWorldPos = input[0].Pos.xyz + ParticleBuffer[input[0].instance_ID].position.xyz;
     
     if (CB_ParticleSystem.simulationSpace == 0)
     {
-		vWorldPos += CB_Transform.World._41_42_43;
-    }
+		vWorldPos += g_transforms[input[0].instance_ID].World._41_42_43;
+	}
 	float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_CB_camera.view).xyz;
 	
     float3 Scale = CB_ParticleSystem.startSize.xyz;
@@ -39,10 +39,10 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
     Out[2].UV = float2(1.0f, 1.0f);
     Out[3].UV = float2(0.0f, 1.0f);
 	
-    Out[0].iInstance = input[0].iInstance;
-    Out[1].iInstance = input[0].iInstance;
-    Out[2].iInstance = input[0].iInstance;
-    Out[3].iInstance = input[0].iInstance;
+    Out[0].instance_ID = input[0].instance_ID;
+    Out[1].instance_ID = input[0].instance_ID;
+    Out[2].instance_ID = input[0].instance_ID;
+    Out[3].instance_ID = input[0].instance_ID;
     
     
     // 0 -- 1

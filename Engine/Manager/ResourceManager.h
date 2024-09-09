@@ -8,7 +8,7 @@
 
 #include <concepts>
 
-#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::GetInst().Load<_type>(#_type)
+#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::GetInst().load<_type>(#_type)
 
 namespace ehw
 {
@@ -24,12 +24,12 @@ namespace ehw
 		void Init(const std::fs::path& _baseDir);
 		void Release();
 
-		inline eResult Save(const std::string_view _strKey);
-		inline eResult Save(ResourceTypes* _resPtr);
-		inline eResult Save(ResourceTypes* _resPtr, const std::fs::path& _key_path);
+		inline eResult save(const std::string_view _strKey);
+		inline eResult save(ResourceTypes* _resPtr);
+		inline eResult save(ResourceTypes* _resPtr, const std::fs::path& _key_path);
 
 		template <typename DerivedResType = ResourceTypes>
-		inline std::shared_ptr<DerivedResType> Load(const std::fs::path& _key_path);
+		inline std::shared_ptr<DerivedResType> load(const std::fs::path& _key_path, const std::fs::path& _base_path = {});
 
 		template <typename DerivedResType = ResourceTypes>
 		inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
@@ -60,7 +60,7 @@ namespace ehw
 
 	template<typename ResourceTypes>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::Load(const std::filesystem::path& _key_path)
+	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::load(const std::filesystem::path& _key_path, const std::fs::path& _base_path)
 	{
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
 
@@ -77,7 +77,14 @@ namespace ehw
 		if(nullptr == returnPtr)
 		{
 			returnPtr = std::make_shared<DerivedResType>();
-			eResult result = returnPtr->Load(m_BaseDir, _key_path);
+			eResult result{};
+			if (_base_path.empty()) {
+				result = returnPtr->load(m_BaseDir, _key_path);
+			}
+			else {
+				result = returnPtr->load(_base_path, _key_path);
+			}
+			
 
 			if (eResult_success(result))
 			{
@@ -148,7 +155,7 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::Save(const std::string_view _strKey)
+	inline eResult ResourceManager<ResourceTypes>::save(const std::string_view _strKey)
 	{
 		const std::shared_ptr<ResourceTypes>& savedFile = Find(_strKey);
 		if (nullptr == savedFile)
@@ -156,11 +163,11 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 		
-		return savedFile->Save(m_BaseDir, _strKey);
+		return savedFile->save(m_BaseDir, _strKey);
 	}
 
 	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr)
+	inline eResult ResourceManager<ResourceTypes>::save(ResourceTypes* _resPtr)
 	{
 		if (nullptr == _resPtr)
 		{
@@ -171,11 +178,11 @@ namespace ehw
 			return eResult::Fail_InValid;
 		}
 
-		return _resPtr->Save(m_BaseDir, _resPtr->get_strkey());
+		return _resPtr->save(m_BaseDir, _resPtr->get_strkey());
 	}
 
 	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::Save(ResourceTypes* _resPtr, const std::fs::path& _key_path)
+	inline eResult ResourceManager<ResourceTypes>::save(ResourceTypes* _resPtr, const std::fs::path& _key_path)
 	{
 		if (nullptr == _resPtr)
 		{
@@ -191,7 +198,7 @@ namespace ehw
 		_resPtr->set_keypath(_key_path.string());
 
 		//저장하고
-		eResult result = _resPtr->Save(m_BaseDir, _key_path);
+		eResult result = _resPtr->save(m_BaseDir, _key_path);
 
 		//원래 키값을 복원
 		_resPtr->set_keypath(tempStr);

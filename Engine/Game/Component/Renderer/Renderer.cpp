@@ -5,7 +5,7 @@
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Game/GameObject.h"
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
@@ -126,7 +126,7 @@ namespace ehw
 			{
 				std::string strKey{};
 				renderer[JSON_KEY(m_mesh)] >> strKey;
-				m_mesh = ResourceManager<Mesh>::GetInst().Load(strKey);
+				m_mesh = ResourceManager<Mesh>::GetInst().load(strKey);
 			}
 			
 
@@ -139,7 +139,7 @@ namespace ehw
 				{
 					std::string strKey{};
 					materials[i] >> strKey;
-					m_materials[i].SharedMaterial = ResourceManager<Material>::GetInst().Load(strKey);
+					m_materials[i].SharedMaterial = ResourceManager<Material>::GetInst().load(strKey);
 				}
 			}
 
@@ -168,7 +168,7 @@ namespace ehw
 		//}
 
 		if (nullptr != m_mesh)
-			m_materials.resize(m_mesh->GetSubsetCount());
+			m_materials.resize(m_mesh->get_subset_count());
 	}
 
 	void Renderer::SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx)

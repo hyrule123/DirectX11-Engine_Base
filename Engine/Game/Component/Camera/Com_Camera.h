@@ -4,7 +4,8 @@
 #include "Engine/define_Enum.h"
 
 #include <bitset>
-
+//그냥 하나여도 drawindexedinstanced로 호출하는걸로 통일
+//https://www.gamedev.net/forums/topic/654210-drawindexed-vs-drawindexedinstanced/
 namespace  ehw
 {
 	class Renderer;
@@ -67,10 +68,6 @@ namespace  ehw
 		void SortRenderersByMode(const std::vector<Renderer*>& _renderers);
 
 	private:
-		//static MATRIX s_viewMatrix;
-		//static MATRIX s_viewInverseMatrix;
-		//static MATRIX s_projectionMatrix;
-
 		tCamera m_camera_matrices;
 
 		eProjectionType m_projectionType;

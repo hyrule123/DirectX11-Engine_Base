@@ -18,12 +18,12 @@ VSOut main(VSIn _in)
 		info.Normal = _in.Normal;
 	}
     
-	_out.Position = mul(float4(info.Pos, 1.f), CB_Transform.WVP);
-	_out.ViewPos = mul(float4(info.Pos, 1.f), CB_Transform.WorldView).xyz;
+	_out.Position = mul(float4(info.Pos, 1.f), g_transforms[_in.instance_ID].WVP);
+	_out.ViewPos = mul(float4(info.Pos, 1.f), g_transforms[_in.instance_ID].WorldView).xyz;
 	
-	_out.ViewTangent =	normalize(mul(float4(info.Tangent.xyz, 0.0f), CB_Transform.WorldView).xyz);
-	_out.ViewBiNormal =	normalize(mul(float4(info.Binormal.xyz, 0.0f), CB_Transform.WorldView).xyz);
-	_out.ViewNormal =	normalize(mul(float4(info.Normal.xyz, 0.0f), CB_Transform.WorldView).xyz);
+	_out.ViewTangent =	normalize(mul(float4(info.Tangent.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
+	_out.ViewBiNormal =	normalize(mul(float4(info.Binormal.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
+	_out.ViewNormal =	normalize(mul(float4(info.Normal.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
 	
 	_out.UV = _in.UV;
     

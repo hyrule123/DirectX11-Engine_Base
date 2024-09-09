@@ -34,7 +34,7 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::Save(const std::fs::path& _basePath, const std::fs::path& _key_path) const
+	eResult Skeleton::save(const std::fs::path& _basePath, const std::fs::path& _key_path) const
 	{
 		//상위 디렉토리 있는지 테스트
 		{
@@ -78,7 +78,7 @@ namespace ehw
 
 		return SaveFile_Binary(_basePath / _key_path);
 	}
-	eResult Skeleton::Load(const std::fs::path& _basePath, const std::fs::path& _key_path)
+	eResult Skeleton::load(const std::fs::path& _basePath, const std::fs::path& _key_path)
 	{
 		std::fs::path fullPath = _basePath / _key_path;
 
@@ -145,7 +145,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Skeleton::Serialize_Binary(BinarySerializer* _ser) const
+	eResult Skeleton::serialize_binary(BinarySerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -175,7 +175,7 @@ namespace ehw
 
 
 
-	eResult Skeleton::DeSerialize_Binary(const BinarySerializer* _ser)
+	eResult Skeleton::deserialize_binary(const BinarySerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -300,7 +300,7 @@ namespace ehw
 			std::shared_ptr<Animation3D> ourAnim = std::shared_ptr<Animation3D>(otherAnim.second->Clone());
 
 			//스켈레톤 주소를 자신의것으로 변경
-			ourAnim->SetSkeleton(shared_from_this_T<Skeleton>());
+			ourAnim->set_skeleton(shared_from_this_T<Skeleton>());
 
 			//위에서 찾은 일치하는 Bone 번호 인덱스를 가져온다.
 			for (size_t i = 0; i < matchingIndices.size(); ++i)

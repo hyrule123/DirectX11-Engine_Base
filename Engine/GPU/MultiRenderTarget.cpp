@@ -16,7 +16,7 @@ namespace ehw
 	MultiRenderTarget::~MultiRenderTarget()
 	{
 	}
-	bool MultiRenderTarget::Create(std::shared_ptr<Texture> _texture[MRT_MAX], std::shared_ptr<Texture> _dsTexture)
+	bool MultiRenderTarget::create(std::shared_ptr<Texture> _texture[MRT_MAX], std::shared_ptr<Texture> _dsTexture)
 	{
 		ASSERT(nullptr != _texture[0], "렌더타겟이 하나도 없습니다.");
 

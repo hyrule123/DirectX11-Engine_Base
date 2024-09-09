@@ -29,7 +29,7 @@ namespace ehw
 		__forceinline ID3D11Device*			Device() { return m_device.Get(); }
 		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
 
-		void Render();
+		void render();
 		void FrameEnd();
 
 		void ClearRenderTarget();// 화면 지워주기

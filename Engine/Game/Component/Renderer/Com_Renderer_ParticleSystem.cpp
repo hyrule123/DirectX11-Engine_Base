@@ -9,7 +9,7 @@
 #include "Engine/Manager/RenderManager.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
 
@@ -97,7 +97,7 @@ namespace ehw
 		SetMaterial(material, 0);
 
 		std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().Find(texture::CartoonSmoke);
-		material->SetTexture(eTextureSlot::Albedo, tex);
+		material->set_texture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};
 		float4 startPos = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -169,7 +169,7 @@ namespace ehw
 		mCS->OnExcute();
 	}
 
-	void Com_Renderer_ParticleSystem::Render()
+	void Com_Renderer_ParticleSystem::render()
 	{
 		if (false == IsRenderReady())
 			return;
@@ -177,9 +177,9 @@ namespace ehw
 		gameObject()->GetComponent<Transform>()->bind_data();
 		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
-		GetCurrentMaterial(0)->bind_data();
-		GetMesh()->RenderInstanced(0u, mMaxParticles);
+		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
+		GetMesh()->render_instanced(0u, mMaxParticles);
 
-		m_buffer->UnbindData();
+		m_buffer->unbind_data();
 	}
 }

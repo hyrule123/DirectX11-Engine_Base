@@ -7,7 +7,7 @@
 
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Model3D/Model3D.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/AudioClip.h"

@@ -40,7 +40,7 @@ namespace ehw
 		void FixedUpdate();
 		void GameSceneToPxScene();
 		void PxSceneToGameScene();
-		void Render();
+		void render();
 		void frame_end();
 
 

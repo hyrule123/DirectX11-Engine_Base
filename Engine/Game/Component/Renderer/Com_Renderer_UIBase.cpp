@@ -5,7 +5,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 namespace ehw
 {
@@ -25,13 +25,15 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_UIBase::Render()
+	void Com_Renderer_UIBase::render()
 	{
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
+		ASSERT(false, "미구현");
+		ConstBuffer* cb = nullptr;
+			//RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
 		cb->SetData(&mUIData);
 		cb->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		Com_Renderer_Mesh::Render();
+		Com_Renderer_Mesh::render();
 	}
 }
 

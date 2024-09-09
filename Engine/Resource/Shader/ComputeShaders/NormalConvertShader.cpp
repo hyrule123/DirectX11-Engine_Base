@@ -27,14 +27,14 @@ namespace ehw
 		, mDestTex()
 		
 	{
-		SetEngineDefaultRes(true);
+		set_engine_default_res(true);
 	}
 
 	NormalConvertShader::~NormalConvertShader()
 	{
 	}
 
-	eResult NormalConvertShader::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult NormalConvertShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		return ComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
 	}
@@ -62,7 +62,7 @@ namespace ehw
 		D3D11_TEXTURE2D_DESC texDesc = mSrcTex->GetDesc();
 		texDesc.BindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
 
-		if (false == (mDestTex->Create(texDesc)))
+		if (false == (mDestTex->create(texDesc)))
 		{
 			mDestTex = nullptr;
 			return false;

@@ -77,11 +77,11 @@ namespace ehw
 
 	}
 
-	void Animation2D::Render()
+	void Animation2D::render()
 	{
 	}
 
-	void Animation2D::Create(const std::string_view _name
+	void Animation2D::create(const std::string_view _name
 		, std::shared_ptr<Texture> _atlas
 		, float2 _leftTop, float2 _size, float2 _offset
 		, uint _spriteLegth, float _duration)

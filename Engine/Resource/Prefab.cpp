@@ -17,7 +17,7 @@ namespace ehw
 	Prefab::~Prefab()
 	{
 	}
-	eResult Prefab::Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Prefab::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
 	{
 		if (m_prefab)
 		{
@@ -26,7 +26,7 @@ namespace ehw
 
 		return eResult::Fail_Nullptr;
 	}
-	eResult Prefab::Load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Prefab::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
 		m_prefab = std::make_shared<GameObject>();
 

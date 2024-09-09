@@ -21,10 +21,10 @@ namespace ehw
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
-		virtual eResult Save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const;
-		virtual eResult Load(const std::fs::path& _baseDir, const std::fs::path& _key_path) = 0;
+		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const;
+		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) = 0;
 
-		void SetEngineDefaultRes(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
+		void set_engine_default_res(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
 		template <typename T>

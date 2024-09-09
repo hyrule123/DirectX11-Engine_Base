@@ -161,7 +161,7 @@ namespace ehw::editor
 					eResult result = meshData.ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
 					if (eResult_success(result))
 					{
-						result = meshData.Save(mOutputDirName, meshData.get_keypath());
+						result = meshData.save(mOutputDirName, meshData.get_keypath());
 					}
 
 					return result;

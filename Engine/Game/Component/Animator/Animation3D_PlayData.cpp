@@ -202,7 +202,7 @@ namespace ehw
 
 	void Animation3D_PlayData::UnBindData()
 	{
-		m_pBoneFinalMatBuffer->UnbindData();
+		m_pBoneFinalMatBuffer->unbind_data();
 	}
 
 	int Animation3D_PlayData::GetStartFrame() const
@@ -215,7 +215,7 @@ namespace ehw
 		return -1;
 	}
 
-	void Animation3D_PlayData::SetSkeleton(const std::shared_ptr<Skeleton> _skeleton)
+	void Animation3D_PlayData::set_skeleton(const std::shared_ptr<Skeleton> _skeleton)
 	{
 		//스켈레톤 주소를 받아서
 		m_skeleton = _skeleton;

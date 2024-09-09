@@ -82,7 +82,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	texPath = PathManager::GetInst().MakePathStrKey(texPath);
 
-	mTextureSrc = ResourceManager<Texture>::GetInst().Load(texPath);
+	mTextureSrc = ResourceManager<Texture>::GetInst().load(texPath);
 }
 
 ImGui::SameLine();
@@ -158,7 +158,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::GetInst().Load<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
+			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::GetInst().load<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
 
 			std::shared_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
 
@@ -179,7 +179,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				eResult result = ResourceManager<Texture>::GetInst().Save(convertedTex.get(), savePath);
+				eResult result = ResourceManager<Texture>::GetInst().save(convertedTex.get(), savePath);
 				if (eResult_fail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");

@@ -46,7 +46,7 @@ namespace ehw
 
 	StructBuffer::~StructBuffer()
 	{
-		UnbindData();
+		unbind_data();
 	}
 
 	void StructBuffer::SetDesc(const Desc& _tDesc)
@@ -107,7 +107,7 @@ namespace ehw
 		}
 
 		//재할당 하기 전 바인딩된 리소스가 있다면 unbind
-		UnbindData();
+		unbind_data();
 
 		//상수버퍼와는 다르게 버퍼 재할당이 가능함. 먼저 기존 버퍼의 할당을 해제한다.(ComPtr을 통해 관리가 이루어지므로 nullptr로 바꿔주면 됨.)
 		m_elementCount = (uint)_uElemCount;
@@ -311,7 +311,7 @@ namespace ehw
 
 	void StructBuffer::BindDataSRV(int _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
-		UnbindData();
+		unbind_data();
 
 		m_curBoundView = eBufferViewType::SRV;
 
@@ -364,7 +364,7 @@ namespace ehw
 		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
 		ASSERT(eStructBufferType::READ_WRITE == m_desc.eSBufferType, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
 
-		UnbindData();
+		unbind_data();
 
 		m_curBoundView = eBufferViewType::UAV;
 
@@ -430,7 +430,7 @@ namespace ehw
 		return bResult;
 	}
 
-	void StructBuffer::UnbindData()
+	void StructBuffer::unbind_data()
 	{
 		switch (m_curBoundView)
 		{

@@ -5,7 +5,7 @@
 #include "Engine/Game/GameObject.h"
 
 #include "Engine/Resource/Mesh.h"
-#include "Engine/Resource/Material.h"
+#include "Engine/Resource/Material/Material.h"
 
 #include "Engine/Game/Component/Transform.h"
 
@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_Mesh::Render()
+	void Com_Renderer_Mesh::render()
 	{
 		//메쉬 또는 재질이 없을 경우 렌더링 불가능이므로 return;
 		if (false == IsRenderReady())
@@ -34,7 +34,7 @@ namespace ehw
 		tr->bind_data();
 
 		//Render
-		UINT iSubsetCount = GetMesh()->GetSubsetCount();
+		UINT iSubsetCount = GetMesh()->get_subset_count();
 		for (UINT i = 0; i < iSubsetCount; ++i)
 		{
 			Material* mtrl = GetCurrentMaterial(i);
@@ -44,10 +44,10 @@ namespace ehw
 				//GetMesh()->BindBuffer(i);
 
 				//재질 바인딩
-				mtrl->bind_data();
+				mtrl->bind_buffer_to_gpu_register();
 
 				//메쉬 렌더링
-				GetMesh()->Render(i);
+				GetMesh()->render(i);
 			}
 		}
 	}

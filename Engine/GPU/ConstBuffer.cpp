@@ -17,7 +17,7 @@ namespace ehw
 	{
 	}
 
-	bool ConstBuffer::Create(size_t _dataSize, uint _dataCount)
+	bool ConstBuffer::create(size_t _dataSize, uint _dataCount)
 	{
 		mDataSize = (uint)_dataSize;
 		mDataCount = _dataCount;
@@ -89,7 +89,7 @@ namespace ehw
 			pContext->CSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 	}
-	void ConstBuffer::UnbindData()
+	void ConstBuffer::unbind_data()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 

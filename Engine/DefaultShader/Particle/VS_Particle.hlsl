@@ -5,7 +5,7 @@ VSOut main(VSIn In)
     VSOut Out = (VSOut) 0.0f;
     
     Out.Pos = In.Pos;
-    Out.iInstance = In.iInstance;
+    Out.instance_ID = In.instance_ID;
     
     return Out;
 }
