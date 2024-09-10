@@ -46,9 +46,9 @@ namespace ehw
 		std::vector<float3>						vecPosition{};
 		std::vector<float2>						vecUV{};
 
-		std::vector<float3>						vecTangent{};
-		std::vector<float3>						vecBinormal{};
 		std::vector<float3>						vecNormal{};
+		std::vector<float3>						vecBinormal{};
+		std::vector<float3>						vecTangent{};
 
 		std::vector<float4>						vecBlendIndex{};
 		std::vector<float4>						vecBlendWeight{};

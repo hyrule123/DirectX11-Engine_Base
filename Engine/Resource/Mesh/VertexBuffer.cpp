@@ -2,6 +2,8 @@
 
 #include "Engine/Manager/RenderManager.h"
 
+#include "Engine/Util/Serialize/BinarySerializer.h"
+
 namespace ehw {
 
 	VertexBuffer::VertexBuffer()
@@ -22,10 +24,10 @@ namespace ehw {
 		reset();
 
 		m_byte_stride = _dataStride;
-		m_count = _dataCount;
+		m_data_count = _dataCount;
 
 		// 버텍스 버퍼
-		m_desc.ByteWidth = m_byte_stride * m_count;
+		m_desc.ByteWidth = m_byte_stride * m_data_count;
 		m_desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 		m_desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 		m_desc.CPUAccessFlags = 0;
@@ -81,11 +83,75 @@ namespace ehw {
 		return true;
 	}
 
+	void VertexBuffer::bind_buffer_to_GPU()
+	{
+		if (m_buffer) {
+			RenderManager::GetInst().Context()->IASet
+		}
+	}
+
+	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
+	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		BinarySerializer& ser = *_ser;
+
+		//토폴로지
+		ser << m_topology;
+
+		ser << m_desc;
+
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		ser << m_byte_stride;
+		ser << m_data_count;
+		ser << m_data;
+
+		ser << m_bounding_sphere_radius;
+		ser << m_bounding_box;
+
+		return eResult::Success;
+	}
+
+	eResult VertexBuffer::deserialize_binary(const BinarySerializer* _ser)
+	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const BinarySerializer& ser = *_ser;
+
+		//토폴로지
+		ser >> m_topology;
+
+		ser >> m_desc;
+
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		ser >> m_byte_stride;
+		ser >> m_data_count;
+		ser >> m_data;
+
+		ser >> m_bounding_sphere_radius;
+		ser >> m_bounding_box;
+
+		if (false == create_vertex_buffer(m_data.data(), m_byte_stride, m_data_count)) {
+			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");
+			return eResult::Fail;
+		}
+
+		return eResult::Success;
+	}
+
 	void VertexBuffer::reset()
 	{
 		m_desc = {};
 		m_byte_stride = 0;
-		m_count = 0;
+		m_data_count = 0;
 		m_data.clear();
 		m_buffer = nullptr;
 

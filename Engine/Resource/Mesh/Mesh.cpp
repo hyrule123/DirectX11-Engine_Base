@@ -14,6 +14,7 @@
 
 #include "Engine/Resource/Model3D/FBXLoader.h"
 #include "Engine/Resource/Material/Material.h"
+#include "Engine/Resource/Mesh/VertexBuffer.h"
 
 #include "Engine/Game/GameObject.h"
 
@@ -27,18 +28,11 @@ namespace ehw
 {
 	Mesh::Mesh()
 		: Resource(Mesh::concrete_name)
-		, m_topology(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-		, m_vertexInfo{}
-		, m_indexInfos{}
+		, m_vertex_buffer{}
+		, m_index_info{}
 		, m_skeleton{}
-		, m_bounding_box{}
-		, m_bounding_sphere_radius()
-		//, mVertices{}
+		, m_render_queue{}
 	{
-		
-		//최대값에는 초기값으로 부동소수점 최소값을, 최소값에는 초기값으로 부동소수점 최대값을 대입
-		m_bounding_box.Max = float3(-FLT_MAX);
-		m_bounding_box.Min = float3(FLT_MAX);
 	}
 
 	Mesh::~Mesh()
@@ -68,16 +62,6 @@ namespace ehw
 		}
 
 		BinarySerializer& ser = *_ser;
-
-		//토폴로지
-		ser << m_topology;
-
-		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		ser << m_vertexInfo.ByteStride;
-		ser << m_vertexInfo.Count;
-		ser << m_vertexInfo.Desc;
-		ser << m_vertexInfo.SysMem;
-
 
 		//m_indexInfos: m_vertexInfo와 같음. 대신 여긴 vector이므로 순회를 돌면서 저장한다.
 		ser << m_indexInfos.size();
@@ -143,12 +127,6 @@ namespace ehw
 		return eResult::Success;
 	}
 
-
-	void Mesh::set_vertex_buffer_data(const void* _data, size_t _dataStride, size_t _dataCount)
-	{
-
-	}
-
 	void Mesh::set_index_buffer_data(const UINT* _data, size_t _dataCount)
 	{
 		tIndexInfo& indexInfo = m_indexInfos.emplace_back(tIndexInfo{});
@@ -189,10 +167,28 @@ namespace ehw
 		return true;
 	}
 
+	bool Mesh::create(const void* _p_vtx, UINT _byte_stride, UINT _data_count, const std::vector<UINT>& _vecIdx)
+	{
+		m_vertex_buffer = std::make_shared<VertexBuffer>();
+		if (false == m_vertex_buffer->create_vertex_buffer(_p_vtx, _byte_stride, _data_count)) {
+			m_vertex_buffer = nullptr;
+			ASSERT_DEBUG(false, "정점 생성 실패");
+			return false;
+		}
+
+		if(false == create_index_buffer)
+
+
+
+
+		return false;
+	}
+
 	bool Mesh::create_index_buffer(const UINT* _data, size_t _dataCount)
 	{
 		if (nullptr == _data)
 		{
+			ASSERT_DEBUG(false, "인덱스가 저장된 포인터가 nullptr입니다.");
 			return false;
 		}
 
@@ -200,17 +196,6 @@ namespace ehw
 
 		return create_index_buffer_internal();
 	}
-
-	//void Mesh::BindBuffers(UINT _subSet) const
-	//{
-	//	auto context = RenderManager::GetInst().Context();
-
-	//	// Input Assembeler 단계에 버텍스버퍼 정보 지정
-	//	uint offset = 0;
-
-	//	context->IASetVertexBuffers(0, 1, m_vertexInfo.Buffer.GetAddressOf(), &m_vertexInfo.ByteStride, &offset);
-	//	context->IASetIndexBuffer(m_indexInfos[_subSet].Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	//}
 
 	void Mesh::render_cached()
 	{
