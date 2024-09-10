@@ -228,6 +228,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DefaultSettingVar.h" />
+    <ClInclude Include="Resource\Mesh\VertexBuffer.h" />
     <None Include="DefaultShader\Initialize\GPU_Init_Setting.hlsli" />
     <None Include="Manager\InstanceManager.inl">
       <FileType>Document</FileType>
@@ -251,6 +252,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Collision\PhysXInstance.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Game\Component\Rigidbody\Rigidbody.h" />
+    <ClInclude Include="Resource\Mesh\Mesh.h" />
     <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
@@ -319,7 +321,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Light\Light_3D.h" />
     <ClInclude Include="Resource\Material\Material.h" />
     <ClInclude Include="Manager\PathManager.h" />
-    <ClInclude Include="Resource\Mesh.h" />
     <ClInclude Include="Game\Component\Renderer\Renderer.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h" />
@@ -361,6 +362,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Game\Collision\PhysXInstance.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Sphere.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Rigidbody.cpp" />
+    <ClCompile Include="Resource\Mesh\Mesh.cpp" />
+    <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\StateMachine.cpp" />
@@ -432,7 +435,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Resource\Model3D\Model3D.cpp" />
     <ClCompile Include="Manager\PathManager.cpp" />
     <ClCompile Include="Resource\Shader\Shader.cpp" />
-    <ClCompile Include="Resource\Mesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Renderer.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp" />

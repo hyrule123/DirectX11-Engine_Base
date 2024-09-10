@@ -9,7 +9,7 @@
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
 #include "Engine/GPU/ConstBuffer.h"

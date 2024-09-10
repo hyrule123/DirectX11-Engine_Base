@@ -20,9 +20,7 @@ namespace ehw {
         virtual void unbind_buffer_from_gpu_register() final;
 
         static void load_dedicated_graphics_shader();
-
     private:
-
     };
 }
 

@@ -189,9 +189,6 @@
     <ClCompile Include="Game\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Mesh.cpp">
-      <Filter>Resource\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Material\Material.cpp">
       <Filter>Resource\Material</Filter>
     </ClCompile>
@@ -399,6 +396,8 @@
     <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Resource\Material\Deffered_Opaque.cpp" />
+    <ClCompile Include="Resource\Mesh\Mesh.cpp" />
+    <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -412,9 +411,6 @@
     </ClInclude>
     <ClInclude Include="Game\GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource\Mesh.h">
-      <Filter>Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Component.h">
       <Filter>Component</Filter>
@@ -662,6 +658,8 @@
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Resource\Material\Deffered_Opaque.h" />
+    <ClInclude Include="Resource\Mesh\Mesh.h" />
+    <ClInclude Include="Resource\Mesh\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

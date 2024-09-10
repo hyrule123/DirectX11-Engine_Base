@@ -1,4 +1,4 @@
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 
 #include "Engine/GlobalVariable.h"
 
@@ -31,14 +31,14 @@ namespace ehw
 		, m_vertexInfo{}
 		, m_indexInfos{}
 		, m_skeleton{}
-		, mBoundingBoxMinMax{}
-		, mBoundingSphereRadius()
+		, m_bounding_box{}
+		, m_bounding_sphere_radius()
 		//, mVertices{}
 	{
 		
 		//최대값에는 초기값으로 부동소수점 최소값을, 최소값에는 초기값으로 부동소수점 최대값을 대입
-		mBoundingBoxMinMax.Max = float3(-FLT_MAX);
-		mBoundingBoxMinMax.Min = float3(FLT_MAX);
+		m_bounding_box.Max = float3(-FLT_MAX);
+		m_bounding_box.Min = float3(FLT_MAX);
 	}
 
 	Mesh::~Mesh()
@@ -143,33 +143,10 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	bool Mesh::create_vertex_buffer(const void* _data, size_t _dataStride, size_t _dataCount)
-	{
-		if (nullptr == _data)
-			return false;
-
-		set_vertex_buffer_data(_data, _dataStride, _dataCount);
-
-		return create_vertex_buffer_internal();
-	}
 
 	void Mesh::set_vertex_buffer_data(const void* _data, size_t _dataStride, size_t _dataCount)
 	{
-		m_vertexInfo.ByteStride = (uint)_dataStride;
-		m_vertexInfo.Count = (uint)_dataCount;
 
-
-		// 버텍스 버퍼
-		m_vertexInfo.Desc.ByteWidth = m_vertexInfo.ByteStride * m_vertexInfo.Count;
-		m_vertexInfo.Desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-		m_vertexInfo.Desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
-		m_vertexInfo.Desc.CPUAccessFlags = 0;
-
-		//정점 데이터를 memcpy를 통해서 복사
-		size_t byteSize = (size_t)m_vertexInfo.Desc.ByteWidth;
-		m_vertexInfo.SysMem.resize(byteSize);
-
-		memcpy(m_vertexInfo.SysMem.data(), _data, byteSize);
 	}
 
 	void Mesh::set_index_buffer_data(const UINT* _data, size_t _dataCount)
@@ -187,55 +164,6 @@ namespace ehw
 		//인덱스 버퍼 복사
 		indexInfo.SysMem.resize(_dataCount);
 		memcpy_s(indexInfo.SysMem.data(), indexInfo.Desc.ByteWidth, _data, indexInfo.Desc.ByteWidth);
-	}
-
-	bool Mesh::create_vertex_buffer_internal()
-	{
-		D3D11_SUBRESOURCE_DATA subData = {};
-		subData.pSysMem = m_vertexInfo.SysMem.data();
-
-		if (
-			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&m_vertexInfo.Desc, &subData, m_vertexInfo.Buffer.GetAddressOf()))
-			)
-		{
-			//실패시 내용 초기화
-			m_vertexInfo = tVertexInfo{};
-			return false;
-		}
-
-		float4 BoundingBoxMin = float4(FLT_MAX);
-		float4 BoundingBoxMax = float4(-FLT_MAX);
-
-		//성공시 Bounding Sphere의 반지름을 구해준다.
-		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
-		for (size_t i = 0; i < m_vertexInfo.SysMem.size(); i += m_vertexInfo.ByteStride)
-		{
-			//메모리의 끝 위치보다는 작아야 함
-			//ex)stride가 16이고 데이터 갯수가 1개일 경우 n + 16 - 1: 15를 넘어가면 안됨 
-			ASSERT(m_vertexInfo.SysMem.size() > (i + sizeof(VertexBase) - 1u), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
-
-			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(m_vertexInfo.SysMem[i]));
-
-			//Bounding Box 계산
-			BoundingBoxMin = float4::Min(BoundingBoxMin, vtx->Pos);
-			BoundingBoxMax = float4::Max(BoundingBoxMax, vtx->Pos);
-
-
-			//Bounding Sphere 계산
-			//메쉬와 제일 먼 정점까지의 거리를 기록한다.
-			//최적화를 위해서 일단 제곱근을 구하지 않고 먼저 계산한다.
-			float lenSq = float3(vtx->Pos.x, vtx->Pos.y, vtx->Pos.z).LengthSquared();
-			mBoundingSphereRadius = std::max<float>(mBoundingSphereRadius, lenSq);
-		}
-		//Bounding Box 입력
-		mBoundingBoxMinMax.Min = float3(BoundingBoxMin);
-		mBoundingBoxMinMax.Max = float3(BoundingBoxMax);
-
-		//마지막에 sqrt 한번 해준다.
-		mBoundingSphereRadius = std::sqrtf(mBoundingSphereRadius);
-
-
-		return true;
 	}
 
 	bool Mesh::create_index_buffer_internal()

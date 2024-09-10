@@ -8,7 +8,7 @@
 #include "Engine/Game/Component/Collider/Collider2D.h"
 #include "Engine/Game/Component/Collider/Com_Collider2D_AABB.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 

@@ -6,7 +6,7 @@
 
 #include "Engine/GameEngine.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"

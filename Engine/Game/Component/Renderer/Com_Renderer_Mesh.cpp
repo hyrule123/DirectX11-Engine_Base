@@ -4,7 +4,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
 #include "Engine/Game/Component/Transform.h"

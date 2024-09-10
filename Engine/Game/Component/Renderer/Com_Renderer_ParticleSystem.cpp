@@ -8,7 +8,7 @@
 #include "Engine/Manager/ResourceManager.h"
 #include "Engine/Manager/RenderManager.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"

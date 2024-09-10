@@ -2,13 +2,13 @@
 
 #include "Engine/Manager/ResourceManager.h"
 
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 
 #include "Engine/Resource/Shader/GraphicsShader.h"
 #include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
 #include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 #include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"

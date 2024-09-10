@@ -6,30 +6,11 @@
 
 #include "Engine/Common.h"
 
+#include "Engine/Resource/Mesh/VertexBuffer.h"
+
 namespace ehw
 {
-	struct VertexBase
-	{
-		float4 Pos;
-	};
-
-	struct Vertex2D : public VertexBase
-	{
-		float2 UV;
-	};
-
-	struct Vertex3D : public VertexBase
-	{
-		float2 UV;
-		float3 Tangent;	//접선 벡터
-		float3 Normal;	//법선 벡터
-		float3 BiNormal;//종법선 벡터
-
-		//Animation 가중치 및 인덱스
-		float4 Weights;
-		float4 Indices;
-	};
-
+	class VertexBuffer;
 	class GameObject;
 	class Material;
 	class FBXLoader;
@@ -55,11 +36,7 @@ namespace ehw
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 
 		template <typename Vertex>
-		inline bool create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx);
-
-		template <typename Vertex>
-		inline bool create_vertex_buffer(const std::vector<Vertex>& _vecVtx);
-		bool create_vertex_buffer(const void* _data, size_t _dataStride, size_t _dataCount);
+		bool create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx);
 
 		bool create_index_buffer(const UINT* _data, size_t _dataCount);
 		inline bool create_index_buffer(const std::vector<UINT>& _indices);
@@ -68,7 +45,7 @@ namespace ehw
 		D3D11_PRIMITIVE_TOPOLOGY get_topology() { return m_topology; }
 
 		UINT get_subset_count() const { return (UINT)m_indexInfos.size(); }
-		float get_bounding_sphere_radius() const { return mBoundingSphereRadius; }
+		float get_bounding_sphere_radius() const { return m_bounding_sphere_radius; }
 
 		void set_skeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
 		std::shared_ptr<Skeleton> get_skeleton() const { return m_skeleton; }
@@ -120,41 +97,25 @@ namespace ehw
 	private:
 		D3D11_PRIMITIVE_TOPOLOGY m_topology;
 
-		tVertexInfo m_vertexInfo;
+		std::shared_ptr<VertexBuffer> m_vertex_buffer;
+
 		std::vector<tIndexInfo>		m_indexInfos;
 
 		//주소는 MeshData에서 관리
 		std::shared_ptr<Skeleton>	m_skeleton;
 
-		//로컬 스페이스 상에서의 바운딩 box의 최소, 최대값
-		struct BoundingBoxMinMax
-		{
-			float3 Min;
-			float3 Max;
-		} mBoundingBoxMinMax;
-
-		//로컬 스페이스 상에서의 바운딩 sphere의 반지름.
-		float mBoundingSphereRadius;
-
 		std::unordered_map<Material*, std::vector<GameObject*>> m_render_queue;
 	};
-
 
 	template<typename Vertex>
 	inline bool Mesh::create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx)
 	{
+		m_vertex_buffer = std::make_shared(VertexBuffer);
 		bool bSuccess = create_vertex_buffer<Vertex>(_vecVtx);
-
 		bSuccess &= create_index_buffer(_vecIdx.data(), _vecIdx.size());
-		
 		return bSuccess;
 	}
-	template<typename Vertex>
-	inline bool Mesh::create_vertex_buffer(const std::vector<Vertex>& _vecVtx)
-	{
-		static_assert(std::is_base_of_v<VertexBase, Vertex>);
-		return create_vertex_buffer(static_cast<const void*>(_vecVtx.data()), sizeof(Vertex), _vecVtx.size());
-	}
+
 	inline bool Mesh::create_index_buffer(const std::vector<UINT>& _indices)
 	{
 		return create_index_buffer(static_cast<const UINT*>(_indices.data()), _indices.size());

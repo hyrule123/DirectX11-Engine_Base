@@ -6,7 +6,7 @@
 #include "Engine/Game/Component/Transform.h"
 
 #include "Engine/Resource/Model3D/Skeleton.h"
-#include "Engine/Resource/Mesh.h"
+#include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
 
