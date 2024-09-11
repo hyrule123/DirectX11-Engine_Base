@@ -38,6 +38,7 @@ namespace ehw
 			namespace extension
 			{
 				STR_KEY CompiledShader = ".cso";
+				STR_KEY VertexBuffer = ".vtx";
 				STR_KEY Mesh = ".mesh";
 				STR_KEY Model3D = ".json";
 				STR_KEY Material = ".json";

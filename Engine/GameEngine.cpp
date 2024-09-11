@@ -13,7 +13,7 @@
 #include "Engine/Manager/FontWrapper.h"
 #include "Engine/Manager/PathManager.h"
 #include "Engine/Manager/ThreadPoolManager.h"
-#include "Engine/Manager/RenderManager.h"
+
 
 #include "Engine/Util/StaticSingleton.h"
 

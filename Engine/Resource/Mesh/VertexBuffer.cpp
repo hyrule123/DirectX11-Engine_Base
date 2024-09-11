@@ -86,7 +86,8 @@ namespace ehw {
 	void VertexBuffer::bind_buffer_to_GPU()
 	{
 		if (m_buffer) {
-			RenderManager::GetInst().Context()->IASet
+			UINT offset = 0u;
+			RenderManager::GetInst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
 		}
 	}
 
@@ -99,9 +100,6 @@ namespace ehw {
 		}
 
 		BinarySerializer& ser = *_ser;
-
-		//토폴로지
-		ser << m_topology;
 
 		ser << m_desc;
 
@@ -125,9 +123,6 @@ namespace ehw {
 		}
 
 		const BinarySerializer& ser = *_ser;
-
-		//토폴로지
-		ser >> m_topology;
 
 		ser >> m_desc;
 
@@ -159,6 +154,10 @@ namespace ehw {
 
 		m_bounding_box.Min = float3(std::numeric_limits<float>::max());
 		m_bounding_box.Max = float3(std::numeric_limits<float>::min());
+	}
+
+	void VertexBuffer::compute_bounding_box()
+	{
 	}
 
 }

@@ -6,6 +6,9 @@
 
 #include "Engine/Common.h"
 
+//Vertex Buffer: 여러 Mesh에서 데이터 공유
+//Index Buffer: Mesh마다 딱 하나씩 들고 있음
+
 namespace ehw
 {
 	class VertexBuffer;
@@ -39,7 +42,7 @@ namespace ehw
 			return create(_vecVtx.data(), (UINT)sizeof(Vertex), (UINT)_vecVtx.size(), _vecIdx);
 		}
 
-		bool create_index_buffer(const UINT* _data, size_t _dataCount);
+		bool create_index_buffer(const UINT* _data, UINT _dataCount);
 		bool create_index_buffer(const std::vector<UINT>& _indices) {
 			return create_index_buffer(static_cast<const UINT*>(_indices.data()), _indices.size());
 		}
@@ -58,42 +61,21 @@ namespace ehw
 		void render_instanced_all(UINT _instance_count) const;
 
 	private:
-		//위 구조체에서 ByteStride만 빠짐.
-		struct tIndexInfo
-		{
-
-		};
-
-		//m_indexInfos.back()에 데이터를 넣음
-		void set_index_buffer_data(const UINT* _data, size_t _dataCount);
-
-		//Vector의 맨 뒤 데이터를 가지고 생성 시도. 실패시 m_IndexInfos의 맨 뒤 데이터를 빼버림.
-		bool create_index_buffer_internal();
+		bool create_index_buffer_internal(const UINT* _data, UINT _dataCount);
 	private:
 		std::shared_ptr<VertexBuffer> m_vertex_buffer;
-
+		ComPtr<ID3D11Buffer>    m_index_buffer;
 		
-		D3D11_PRIMITIVE_TOPOLOGY m_indice_topology;
-		D3D11_BUFFER_DESC       Desc;
-		UINT				    Count;
-		std::vector<UINT>		SysMem;
-
-		//위 데이터를 토대로 GPU에서 생성된 데이터 주소
-		ComPtr<ID3D11Buffer>    Buffer;
+		//Index Buffer Data
+		D3D11_PRIMITIVE_TOPOLOGY m_index_topology;
+		D3D11_BUFFER_DESC       m_index_buffer_desc;
+		UINT				    m_index_count;
+		std::vector<UINT>		m_index_buffer_data;
+		////////////////////		
 
 		//주소는 MeshData에서 관리
 		std::shared_ptr<Skeleton>	m_skeleton;
 
 		std::unordered_map<Material*, std::vector<GameObject*>> m_render_queue;
-
-		//로컬 스페이스 상에서의 바운딩 sphere의 반지름.
-		float m_bounding_sphere_radius;
-
-		//로컬 스페이스 상에서의 바운딩 box의 최소, 최대값
-		struct BoundingBoxMinMax
-		{
-			float3 Min;
-			float3 Max;
-		} m_bounding_box;
 	};
 }

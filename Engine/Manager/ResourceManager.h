@@ -173,12 +173,12 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		else if (_resPtr->get_strkey().empty())
+		else if (_resPtr->get_path_key().empty())
 		{
 			return eResult::Fail_InValid;
 		}
 
-		return _resPtr->save(m_BaseDir, _resPtr->get_strkey());
+		return _resPtr->save(m_BaseDir, _resPtr->get_keypath());
 	}
 
 	template<typename ResourceTypes>
@@ -194,7 +194,7 @@ namespace ehw
 		}
 
 		//기존 키값 임시 저장
-		std::string tempStr{ _resPtr->get_strkey() };
+		std::string tempStr{ _resPtr->get_keypath() };
 		_resPtr->set_keypath(_key_path.string());
 
 		//저장하고

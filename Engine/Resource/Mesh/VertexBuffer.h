@@ -37,7 +37,21 @@ namespace ehw {
         //굳이 이렇게 한 이유: Bounding Box를 구해야 됨
         template <typename Vertex>
         bool create_vertex_buffer(const std::vector<Vertex>& _vecVtx) {
-            return create_vertex_buffer(static_cast<const void*>(_vecVtx.data()), (UINT)sizeof(Vertex), (UINT)_vecVtx.size());
+            if (m_vertex_buffers.empty()) {
+                if (false == std::is_base_of_v<VertexBase, Vertex>) {
+                    ASSERT(false, "Vertex Base를 가장 먼저 등록해야 합니다.");
+                    return false;
+                }
+
+
+            }
+
+            bool result = create_vertex_buffer(_vecVtx.data(), (UINT)sizeof(Vertex), (UINT)_vecVtx.size());
+
+            if (std::is_base_of_v<VertexBase, Vertex> && result) {
+
+            }
+
         }
         bool create_vertex_buffer(const void* _data, UINT _dataStride, UINT _dataCount);
 
@@ -49,19 +63,34 @@ namespace ehw {
 
     private:
         void reset();
+        void compute_bounding_box();
 
     private:
-        D3D11_BUFFER_DESC m_desc;
+        struct tVertexSlot {
+            std::string name;
 
-        
+            D3D11_BUFFER_DESC desc;
 
-        //Vertex 구조체는 언제든지 달라질수 있음 -> 통합 저장을 위해 unsigned char(byte) 형태로 저장.
-        std::vector<unsigned char> m_data;
+            //Vertex 구조체는 언제든지 달라질수 있음 -> 통합 저장을 위해 unsigned char(byte) 형태로 저장.
+            std::vector<unsigned char> data;
 
-        UINT m_byte_stride;
-        UINT m_data_count;
+            UINT byte_stride;
+            UINT data_count;
 
-        ComPtr<ID3D11Buffer> m_buffer;
+            ComPtr<ID3D11Buffer> buffer;
+        };
+
+        std::vector<tVertexSlot> m_vertex_buffers;
+
+        //로컬 스페이스 상에서의 바운딩 sphere의 반지름.
+        float m_bounding_sphere_radius;
+
+        //로컬 스페이스 상에서의 바운딩 box의 최소, 최대값
+        struct BoundingBoxMinMax
+        {
+            float3 Min;
+            float3 Max;
+        } m_bounding_box;
     };
 }
 

@@ -14,6 +14,7 @@
 #include "Engine/Resource/Animation2D.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
 #include "Engine/Resource/Shader/ComputeShader.h"
+#include "Engine/Resource/Mesh/VertexBuffer.h"
 
 
 namespace ehw
@@ -45,6 +46,7 @@ namespace ehw
 
 		//기본 리소스를 먼저 등록
 		ResourceManager<Texture>::GetInst().Init(baseDir / strKey::path::directory::resource::Texture);
+		ResourceManager<VertexBuffer>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
 		ResourceManager<Mesh>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
 		ResourceManager<AudioClip>::GetInst().Init(baseDir / strKey::path::directory::resource::AudioClip);
 		ResourceManager<GraphicsShader>::GetInst().Init(baseDir / strKey::path::directory::resource::GraphicsShader);
