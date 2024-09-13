@@ -23,19 +23,12 @@ namespace  ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		//__forceinline static const MATRIX& GetGpuViewMatrix() { return s_viewMatrix; }
-		//__forceinline static const MATRIX& GetGpuViewInvMatrix() { return s_viewInverseMatrix; }
-		//__forceinline static const MATRIX& GetProjectionMatrix() { return s_projectionMatrix; }
-		//__forceinline static void SetGpuViewMatrix(const MATRIX& _view) { s_viewMatrix = _view; }
-		//__forceinline static void SetGpuProjectionMatrix(const MATRIX& _projection) { s_projectionMatrix = _projection; }
-
-		//void Setting() override;
 		void final_update() override;
-		void frame_end() override;
 		void OnEnable() override;
 		void OnDisable() override;
 
-		void RenderCamera(const std::vector<Renderer*>& _renderers);
+		void render_gameobjects(const tRenderQueue& _renderQueue);
+		void render_lights();
 
 		void CreateViewMatrix();
 
@@ -57,15 +50,7 @@ namespace  ehw
 		const MATRIX& GetViewMatrix() const { return m_camera_matrices.view; }
 		const MATRIX& GetProjectionMatrix() const { return m_camera_matrices.projection; }
 
-	private:
-		void SortGameObjects();
-		void RenderDeffered();
-		void RenderForwardOpaque();
-		void RenderCutout();
-		void RenderTransparent();
-		void RenderPostProcess();
-		void PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj);
-		void SortRenderersByMode(const std::vector<Renderer*>& _renderers);
+		void bind_data_to_GPU();
 
 	private:
 		tCamera m_camera_matrices;
@@ -81,11 +66,11 @@ namespace  ehw
 		float m_scale;
 
 		std::bitset<g_maxLayer> m_layerMasks;
-		std::vector<Renderer*> m_defferedOpaque;
-		std::vector<Renderer*> m_forwardOpaque;
-		std::vector<Renderer*> m_alphaTest;		//CutOut
-		std::vector<Renderer*> m_alphaBlend;	//Transparent
-		std::vector<Renderer*> m_postProcess;
+		//std::vector<Renderer*> m_defferedOpaque;
+		//std::vector<Renderer*> m_forwardOpaque;
+		//std::vector<Renderer*> m_alphaTest;		//forward_cutout
+		//std::vector<Renderer*> m_alphaBlend;	//forward_transparent
+		//std::vector<Renderer*> m_postProcess;
 
 	public:
 		class CullingAgent : public Entity

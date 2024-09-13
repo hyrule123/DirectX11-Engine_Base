@@ -158,20 +158,20 @@ namespace ehw
 
 	enum class eRenderingMode
 	{
-		None = -1,
+		NONE = -1,
 
 		//Deffered
-		DefferdOpaque,
-		DefferdMask,
+		deffered_opaque,	//불투명 오브젝트
+		deffered_mask,	//무조건 덮어쓰는 오브젝트
 
 		//광원처리
-		Light,
+		//Light,
 
 		//Forward
-		Opaque,
-		CutOut,
-		Transparent,
-		PostProcess,
+		forward_opaque,
+		forward_cutout,
+		forward_transparent,
+		post_process,
 		
 		END,
 	};

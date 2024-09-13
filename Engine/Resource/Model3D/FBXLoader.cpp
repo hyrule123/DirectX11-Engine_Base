@@ -72,7 +72,7 @@ namespace ehw
 			return eResult::Fail_Open;
 		}
 		
-		mManager = fbxsdk::FbxManager::create();
+		mManager = fbxsdk::FbxManager::Create();
 		if (nullptr == mManager)
 		{
 			ASSERT(mManager, "fbx Manager가 nullptr 입니다.");
@@ -80,9 +80,9 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 		
-		mManager->SetIOSettings(fbxsdk::FbxIOSettings::create(mManager, IOSROOT));
+		mManager->SetIOSettings(fbxsdk::FbxIOSettings::Create(mManager, IOSROOT));
 
-		mScene = fbxsdk::FbxScene::create(mManager, "");
+		mScene = fbxsdk::FbxScene::Create(mManager, "");
 		if (nullptr == mScene)
 		{
 			ASSERT(mManager, "fbx Scene이 nullptr 입니다.");
@@ -90,7 +90,7 @@ namespace ehw
 			return eResult::Fail_Nullptr;
 		}
 
-		fbxsdk::FbxImporter* importer = fbxsdk::FbxImporter::create(mManager, "");
+		fbxsdk::FbxImporter* importer = fbxsdk::FbxImporter::Create(mManager, "");
 
 		if (false == importer->Initialize(_strPath.string().c_str(), -1, mManager->GetIOSettings()))
 		{
@@ -653,7 +653,7 @@ namespace ehw
 
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
-				pMaterial->set_rendering_mode(eRenderingMode::DefferdOpaque);
+				pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
 				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
 
@@ -695,13 +695,10 @@ namespace ehw
 					}
 				}
 
-
-
-				pMaterial->SetMaterialCoefficient(
-					mContainers[i].vecMtrl[j].DiffuseColor
-					, mContainers[i].vecMtrl[j].SpecularColor
-					, mContainers[i].vecMtrl[j].AmbientColor
-					, mContainers[i].vecMtrl[j].EmissiveColor);
+				pMaterial->SetDiffuseColor(mContainers[i].vecMtrl[j].DiffuseColor);
+				pMaterial->SetSpecularColor(mContainers[i].vecMtrl[j].SpecularColor);
+				pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
+				pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
 
 				eResult result = ResourceManager<Material>::GetInst().save(pMaterial.get());
 
@@ -911,13 +908,14 @@ namespace ehw
 				iter->second[0].Weight += Interpolate;
 			}
 
+			uint4	vIndex{};
 			float4	vWeight{};
-			float4	vIndex{};
 
-			for (int i = 0; i < iter->second.size(); ++i)
+			for (int i = 0; i < iter->second.size() && i < 4; ++i)
 			{
+				//vIndex를 uint* 형태로 만든뒤 배열 형태로 접근한다
+				reinterpret_cast<uint*>(&vIndex)[i] = (uint)iter->second[i].BoneIdx;
 				reinterpret_cast<float*>(&vWeight)[i] = (float)iter->second[i].Weight;
-				reinterpret_cast<float*>(&vIndex)[i] = (float)iter->second[i].BoneIdx;
 			}
 
 			_container.vecBlendWeight[iter->first] = vWeight;

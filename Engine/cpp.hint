@@ -57,11 +57,13 @@
 #define SAFE_DELETE(_ptr) if(_ptr) delete _ptr; _ptr = nullptr
 #define SAFE_DELETE_ARRAY(_ptr) if(_ptr) delete[] _ptr; _ptr = nullptr
 
-#define CLONE_ABLE(_type) virtual _type* Clone() override { return new _type(*this); }
-#define CLONE_DISABLE(_type) virtual _type* Clone() override { ERROR_MESSAGE_W(L"Clone할 수 없거나 Clone함수를 재정의하지 않은 클래스입니다."); return nullptr; }
+#define CONCAT_INNER(x, y) x ## y
+#define CONCAT(x, y) CONCAT_INNER(x, y)
+#define UNIQUE_VAR(x) CONCAT(x##_, __LINE__)
 
-#define CLASS_NAME(_class_) \
-public: static inline constexpr const std::string_view concrete_name = #_class_
+#define REGISTER_INSTANCE(_class, _key) \
+private: static inline const bool UNIQUE_VAR(unused) = InstanceManager::GetInst().add_ctor<_class>(_key)
+#define REGISTER_INSTANCE_DEFAULT(_class) REGISTER_INSTANCE(_class, _class::concrete_name)
 
 #define CLONE_ABLE(_type) \
 virtual _type* Clone() override { return new _type(*this); }
@@ -71,3 +73,4 @@ virtual _type* Clone() override\
 {\
 	return nullptr;\
 }
+

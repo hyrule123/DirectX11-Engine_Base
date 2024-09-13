@@ -19,16 +19,16 @@ namespace ehw::editor
 	STR_KEY eRenderingMode_String[(int)eRenderingMode::END] =
 	{
 		//Deffered
-		"DefferdOpaque",
-		"DefferdMask",
+		"deffered_opaque",
+		"deffered_mask",
 
 		"Light",
 
 		//Forward
-		"Opaque",
-		"CutOut",
-		"Transparent",
-		"PostProcess",
+		"forward_opaque",
+		"forward_cutout",
+		"forward_transparent",
+		"post_process",
 	};
 
 

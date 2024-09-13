@@ -10,14 +10,6 @@ namespace ehw
 		Shared,
 		Dynamic
 	};
-	struct tMaterialSet
-	{
-		std::shared_ptr<Material> SharedMaterial;
-		std::unique_ptr<Material> DynamicMaterial;
-		Material* CurrentMaterial;
-
-		eMaterialMode MaterialMode;
-	};
 
 	class Renderer 
 		: public Component<Renderer, eComponentCategory::Renderer>
@@ -34,74 +26,37 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void SetMesh(const std::shared_ptr<Mesh> _mesh);
+		void SetMesh(const std::shared_ptr<Mesh> _mesh) { m_mesh = _mesh; }
+		std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
 
 		//인스턴싱 구현 전까지는 일단 Material을 복사해서 사용
-		void SetMaterial(const std::shared_ptr<Material>& _Mtrl, UINT _idx);
-		Material* SetMaterialMode(UINT _idx, eMaterialMode _mode);
+		void SetMaterial(const std::shared_ptr<Material>& mtrl);
+		std::shared_ptr<Material> SetMaterialMode(eMaterialMode _mode);
 
-		inline std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
+		std::shared_ptr<Material> GetSharedMaterial() {
+			return m_shared_material;
+		}
+		std::shared_ptr<Material> GetDynamicMaterial() {
+			return m_dynamic_material;
+		}
+		std::shared_ptr<Material> GetCurrentMaterial() {
+			return m_current_material;
+		}
 
-		std::shared_ptr<Material> GetSharedMaterial(UINT _idx);
-		inline Material* GetDynamicMaterial(UINT _idx);
-		inline Material* GetCurrentMaterial(UINT _idx);
-
-		UINT GetMaterialCount() { return (UINT)m_materials.size(); }
-		bool IsRenderReady() const { return (m_mesh && false == m_materials.empty()); }
+		bool IsRenderReady() const { return (m_mesh && m_current_material); }
 
 		void SetCullingEnable(bool _bFrustumCull) { m_bCullingEnable = _bFrustumCull; }
 		bool IsCullingEnabled() const { return m_bCullingEnable; }
 
 	private:
-		inline tMaterialSet* GetMaterialSet(UINT _idx);
-
-	private:
 		std::shared_ptr<Mesh> m_mesh;
-		std::vector<tMaterialSet> m_materials;
+		std::shared_ptr<Material> m_shared_material;
+		std::shared_ptr<Material> m_dynamic_material;
+		std::shared_ptr<Material> m_current_material;
+
+		eMaterialMode m_material_mode;
 
 		bool m_bCullingEnable;
 	};
-
-
-	inline Material* Renderer::GetCurrentMaterial(UINT _idx)
-	{
-		Material* retMtrl = nullptr;
-		if ((UINT)m_materials.size() > _idx)
-		{
-			retMtrl = m_materials[_idx].CurrentMaterial;
-		}
-		return retMtrl;
-	}
-
-	inline std::shared_ptr<Material> Renderer::GetSharedMaterial(UINT _idx)
-	{
-		std::shared_ptr<Material> retMtrl = nullptr;
-		if ((UINT)m_materials.size() > _idx)
-		{
-			retMtrl = m_materials[_idx].SharedMaterial;
-		}
-		return retMtrl;
-	}
-
-	inline Material* Renderer::GetDynamicMaterial(UINT _idx)
-	{
-		Material* retMtrl = nullptr;
-		if ((UINT)m_materials.size() > _idx)
-		{
-			retMtrl = m_materials[_idx].DynamicMaterial.get();
-		}
-		return retMtrl;
-	}
-
-
-	inline tMaterialSet* Renderer::GetMaterialSet(UINT _idx)
-	{
-		tMaterialSet* mtrlSet = nullptr;
-		if ((UINT)m_materials.size() > _idx)
-		{
-			mtrlSet = &m_materials[_idx];
-		}
-		return mtrlSet;
-	}
 
 }

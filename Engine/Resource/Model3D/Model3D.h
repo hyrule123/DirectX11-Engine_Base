@@ -24,8 +24,8 @@ namespace ehw
 
 	struct tMeshContainer
 	{
-		std::shared_ptr<Mesh>					mesh;
-		std::vector<std::shared_ptr<Material>>	materials;
+		std::shared_ptr<Mesh>		mesh;
+		std::shared_ptr<Material>	material;
 	};
 
     class Model3D final 

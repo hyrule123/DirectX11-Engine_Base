@@ -33,6 +33,10 @@ namespace std
 
 namespace ehw
 {
+	class GameObject;
+	class Mesh;
+	class Material;
+
 	using int8 = std::int8_t;
 	using int16 = std::int16_t;
 	using int32 = std::int32_t;
@@ -43,8 +47,6 @@ namespace ehw
 	using uint64 = std::uint64_t;
 
 	using uint = unsigned int;
-
-	class GameObject;
 	using GameObjects = std::vector<std::unique_ptr<GameObject>>;
 
 	struct tGPUManagerDesc
@@ -136,5 +138,12 @@ namespace ehw
 		float radius;
 		float duration;
 		float time;
+	};
+
+
+	struct tRenderQueue {
+		std::shared_ptr<Mesh> mesh;
+		std::shared_ptr<Material> material;
+		std::vector<GameObject*> objects_to_render;
 	};
 }

@@ -19,6 +19,7 @@ virtual _type* Clone() override\
 namespace ehw
 {
 	class Entity
+		: public std::enable_shared_from_this<Entity>
 	{
 	public:
 		Entity(const std::string_view key);

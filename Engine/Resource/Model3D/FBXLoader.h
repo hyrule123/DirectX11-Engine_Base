@@ -50,7 +50,7 @@ namespace ehw
 		std::vector<float3>						vecBinormal{};
 		std::vector<float3>						vecTangent{};
 
-		std::vector<float4>						vecBlendIndex{};
+		std::vector<uint4>						vecBlendIndex{};
 		std::vector<float4>						vecBlendWeight{};
 
 		std::vector<std::vector<UINT>>			vecIndexBuffers{};

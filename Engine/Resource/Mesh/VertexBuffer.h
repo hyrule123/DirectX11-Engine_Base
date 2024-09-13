@@ -14,13 +14,15 @@ namespace ehw {
     struct Vertex3D : public VertexBase
     {
         float2 UV;
-        float3 Tangent;	//접선 벡터
+
+        //이 세개 벡터를 보통 TBN 이라고 부름.
+        float3 tangent;	//접선 벡터
+        float3 binormal;//종법선 벡터
         float3 Normal;	//법선 벡터
-        float3 BiNormal;//종법선 벡터
 
         //Animation 가중치 및 인덱스
+        uint4 Indices;
         float4 Weights;
-        float4 Indices;
     };
 
     class VertexBuffer 
@@ -37,25 +39,17 @@ namespace ehw {
         //굳이 이렇게 한 이유: Bounding Box를 구해야 됨
         template <typename Vertex>
         bool create_vertex_buffer(const std::vector<Vertex>& _vecVtx) {
-            if (m_vertex_buffers.empty()) {
-                if (false == std::is_base_of_v<VertexBase, Vertex>) {
-                    ASSERT(false, "Vertex Base를 가장 먼저 등록해야 합니다.");
-                    return false;
-                }
-
-
-            }
-
             bool result = create_vertex_buffer(_vecVtx.data(), (UINT)sizeof(Vertex), (UINT)_vecVtx.size());
 
             if (std::is_base_of_v<VertexBase, Vertex> && result) {
-
+                compute_bounding_box();
             }
 
+            return result;
         }
         bool create_vertex_buffer(const void* _data, UINT _dataStride, UINT _dataCount);
 
-        void bind_buffer_to_GPU();
+        void IA_set_vertex_buffer();
 
         virtual eResult serialize_binary(BinarySerializer* _ser) const override;
         virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
@@ -64,23 +58,18 @@ namespace ehw {
     private:
         void reset();
         void compute_bounding_box();
+        bool create_vertex_buffer_internal();
 
     private:
-        struct tVertexSlot {
-            std::string name;
+        D3D11_BUFFER_DESC m_desc;
 
-            D3D11_BUFFER_DESC desc;
+        //Vertex 구조체는 언제든지 달라질수 있음 -> 통합 저장을 위해 unsigned char(byte) 형태로 저장.
+        std::vector<unsigned char> m_data;
 
-            //Vertex 구조체는 언제든지 달라질수 있음 -> 통합 저장을 위해 unsigned char(byte) 형태로 저장.
-            std::vector<unsigned char> data;
+        UINT m_data_stride;
+        UINT m_data_count;
 
-            UINT byte_stride;
-            UINT data_count;
-
-            ComPtr<ID3D11Buffer> buffer;
-        };
-
-        std::vector<tVertexSlot> m_vertex_buffers;
+        ComPtr<ID3D11Buffer> m_buffer;
 
         //로컬 스페이스 상에서의 바운딩 sphere의 반지름.
         float m_bounding_sphere_radius;

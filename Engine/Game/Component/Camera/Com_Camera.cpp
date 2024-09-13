@@ -7,14 +7,14 @@
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/SceneManager.h"
-#include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Material/Material.h"
 #include "Engine/Resource/Mesh/Mesh.h"
 
-#include "Engine/GPU/MultiRenderTarget.h"
+
 #include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/MultiRenderTarget.h"
 
 #include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Renderer/Renderer.h"
@@ -56,15 +56,6 @@ namespace ehw
 		CreateViewMatrix();
 	}
 
-	void Com_Camera::frame_end()
-	{
-		m_defferedOpaque.clear();
-		m_forwardOpaque.clear();
-		m_alphaTest.clear();
-		m_alphaBlend.clear();
-		m_postProcess.clear();
-	}
-
 	void Com_Camera::OnEnable()
 	{
 		RenderManager::GetInst().sceneRenderAgent().Register_camera(this);
@@ -75,33 +66,37 @@ namespace ehw
 		RenderManager::GetInst().sceneRenderAgent().Unregister_camera(this);
 	}
 
-	void Com_Camera::RenderCamera(const std::vector<Renderer*>& _renderers)
+	void Com_Camera::render_gameobjects(const tRenderQueue& _render_queue)
 	{
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
-		cb->SetData(&m_camera_matrices);
-		cb->bind_data();
+		//출력할 레이어만 걸러낸다.(static 변수 사용)
+		static std::vector<GameObject*> s_layer_filter;
+		s_layer_filter.clear();
+		for (GameObject* obj : _render_queue.objects_to_render) {
+			if (true == m_layerMasks[obj->GetLayer()]) {
+				s_layer_filter.push_back(obj);
+			}
+		}
 
-		SortRenderersByMode(_renderers);
+		//걸러낸 레이어를 Material에 보내 데이터를 GPU로 보낸다.
+		_render_queue.material->upload_buffer_to_gpu(s_layer_filter);
+		_render_queue.material->bind_buffer_to_gpu_register();
 
-		//deffered opaque render
-		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
-		RenderDeffered();
+		//게임오브젝트 수만큼 인스턴싱 그리기 명령
+		_render_queue.mesh->render_instanced((UINT)s_layer_filter.size());
+	}
 
-		//// deffered light 
+	void Com_Camera::render_lights()
+	{
 		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Light)->Bind();
-		// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
-		// 붙여버리자
-
-
 		//나중에 컬링도 진행할것.
 		for (int i = 0; i < LIGHT_TYPE_MAX; ++i) {
 			Transform::clear_buffer_data();
 			const auto& lights = Light_3D::get_lights_by_type(i);
-			
+
 			for (auto* l : lights) {
 				if (true == m_layerMasks[l->gameObject()->GetLayer()]) {
 					l->add_to_buffer();
-					
+
 					Transform* tr = l->gameObject()->GetComponent<Transform>();
 					tr->add_to_buffer(m_camera_matrices.view, m_camera_matrices.projection);
 				}
@@ -110,22 +105,6 @@ namespace ehw
 			Transform::bind_data();
 			Light_3D::render_lights(i);
 		}
-
-		// Forward render
-		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
-
-		//// defferd + swapchain merge
-		std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
-		std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
-		//rectMesh->BindBuffer();
-		mergeMaterial->bind_buffer_to_gpu_register();
-		rectMesh->render();
-		//mergeMaterial->unbind_data();
-
-		RenderForwardOpaque();
-		RenderCutout();
-		RenderTransparent();
-		RenderPostProcess();
 	}
 
 	void Com_Camera::CreateViewMatrix()
@@ -291,206 +270,11 @@ namespace ehw
 		m_layerMasks.set((uint32)_layer, _enable);
 	}
 
-
-	//bool Com_Camera::FindRendererRecursive(GameObject* _pObj)
-	//{
-	//	bool bRet = false;
-	//	if (_pObj)
-	//	{
-	//		if (_pObj->GetComponent(eComponentCategory::Renderer))
-	//		{
-	//			bRet = true;
-	//		}
-	//		else
-	//		{
-	//			//렌더러가 하나라도 있을 시 true 반환. 없을 시 false
-	//			const auto& childs = _pObj->get_childs();
-	//			for (size_t i = 0; i < childs.size(); ++i)
-	//			{
-	//				bRet = FindRendererRecursive(childs[i]);
-	//				if (bRet)
-	//					break;
-	//			}
-	//		}
-	//	}
-
-	//	return bRet;
-	//}
-
-	void Com_Camera::SortGameObjects()
+	void Com_Camera::bind_data_to_GPU()
 	{
-		ASSERT_DEBUG(gameObject(), "Owner 주소가 없음");
-		Scene* scene = gameObject()->scene();
-		ASSERT(scene, "Scene 주소가 없음.");
-
-
-
-		//const std::vector<std::shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
-		//for (size_t i = 0; i < gameObjects.size(); ++i)
-		//{
-		//	if (true == m_layerMasks[gameObjects[i]->GetLayer()])
-		//	{
-		//		PushGameObjectToRenderingModes(gameObjects[i]);
-		//	}
-		//}
-	}
-
-	void Com_Camera::RenderDeffered()
-	{
-		for (size_t i = 0; i < m_defferedOpaque.size(); ++i)
-		{
-			if (m_defferedOpaque[i])
-			{
-				m_defferedOpaque[i]->render(m_camera_matrices.view, m_camera_matrices.projection);
-			}
-		}
-	}
-
-	void Com_Camera::RenderForwardOpaque()
-	{
-		for (size_t i = 0; i < m_forwardOpaque.size(); ++i)
-		{
-			if (m_forwardOpaque[i])
-			{
-				m_forwardOpaque[i]->render();
-			}
-		}
-	}
-
-	void Com_Camera::RenderCutout()
-	{
-		for (size_t i = 0; i < m_alphaTest.size(); ++i)
-		{
-			if (m_alphaTest[i])
-			{
-				m_alphaTest[i]->render();
-			}
-		}
-	}
-
-	void Com_Camera::RenderTransparent()
-	{
-		for (size_t i = 0; i < m_alphaBlend.size(); ++i)
-		{
-			if (m_alphaBlend[i])
-			{
-				m_alphaBlend[i]->render();
-			}
-		}
-	}
-
-	void Com_Camera::RenderPostProcess()
-	{
-		for (size_t i = 0; i < m_postProcess.size(); ++i)
-		{
-			if (m_postProcess[i])
-			{
-				RenderManager::GetInst().CopyRenderTarget();
-				m_postProcess[i]->render();
-			}
-		}
-	}
-
-	void Com_Camera::PushGameObjectToRenderingModes(const std::shared_ptr<GameObject>& _gameObj)
-	{
-		//if (nullptr == _gameObj || false == _gameObj->IsActive())
-		//	return;
-
-		//const auto& renderer = _gameObj->GetComponent<Renderer>();
-
-		//if (nullptr == renderer)
-		//	return;
-		//
-		////카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
-		//else if (m_cullingAgent && renderer->IsCullingEnabled())
-		//{
-		//	
-		//}
-
-
-		//eRenderingMode mode = eRenderingMode::None;
-		//Material* mtrl = renderer->GetCurrentMaterial(0u);
-		//if (mtrl)
-		//{
-		//	mode = mtrl->get_rendering_mode();
-		//}
-
-		//switch (mode)
-		//{
-		//case eRenderingMode::DefferdOpaque:
-		//	[[fallthrough]];
-		//case eRenderingMode::DefferdMask:
-		//	m_defferedOpaqueGameObjects.push_back(_gameObj);
-		//	break;
-		//case eRenderingMode::Opaque:
-		//	m_forwardOpaqueGameObjects.push_back(_gameObj);
-		//	break;
-		//case eRenderingMode::CutOut:
-		//	m_cutoutGameObjects.push_back(_gameObj);
-		//	break;
-		//case eRenderingMode::Transparent:
-		//	m_transparentGameObject.push_back(_gameObj);
-		//	break;
-		//case eRenderingMode::PostProcess:
-		//	m_postProcessGameObjects.push_back(_gameObj);
-		//	break;
-		//default:
-		//	break;
-		//}
-	}
-
-	void Com_Camera::SortRenderersByMode(const std::vector<Renderer*>& _renderers)
-	{
-
-		for (size_t i = 0; i < _renderers.size(); ++i)
-		{
-			Renderer* const renderer = _renderers[i];
-
-			if ((nullptr == renderer) || (false == renderer->IsEnabled()))
-			{
-				continue;
-			}
-
-			//카메라 컬링 + 렌더러 컬링모드 활성화 시 컬링 진행
-			else if (m_cullingAgent && renderer->IsCullingEnabled())
-			{
-
-			}
-
-
-			eRenderingMode mode = eRenderingMode::None;
-			Material* mtrl = renderer->GetCurrentMaterial(0u);
-			if (mtrl)
-			{
-				mode = mtrl->get_rendering_mode();
-			}
-
-			switch (mode)
-			{
-			case eRenderingMode::DefferdOpaque:
-				m_defferedOpaque.push_back(renderer);
-				break;
-				//[[fallthrough]];
-			case eRenderingMode::DefferdMask:
-				ASSERT(false, "미구현");
-				break;
-			case eRenderingMode::Opaque:
-				m_forwardOpaque.push_back(renderer);
-				break;
-			case eRenderingMode::CutOut:
-				m_alphaTest.push_back(renderer);
-				break;
-			case eRenderingMode::Transparent:
-				m_alphaBlend.push_back(renderer);
-				break;
-			case eRenderingMode::PostProcess:
-				m_postProcess.push_back(renderer);
-				break;
-			default:
-				break;
-			}
-		}
+		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
+		cb->SetData(&m_camera_matrices);
+		cb->bind_data();
 	}
 
 	Com_Camera::CullingAgent::CullingAgent(const std::string_view key)

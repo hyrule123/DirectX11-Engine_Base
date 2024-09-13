@@ -21,7 +21,7 @@ namespace ehw {
 
         set_shader(shader);
 
-        set_rendering_mode(eRenderingMode::DefferdOpaque);
+        set_rendering_mode(eRenderingMode::deffered_opaque);
         set_engine_default_res(true);
     }
     Deffered_Opaque::~Deffered_Opaque()

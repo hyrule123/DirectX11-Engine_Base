@@ -178,7 +178,7 @@ namespace ehw
 		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
-		GetMesh()->render_instanced(0u, mMaxParticles);
+		GetMesh()->render_instanced(mMaxParticles);
 
 		m_buffer->unbind_data();
 	}

@@ -171,192 +171,192 @@ namespace ehw {
 			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
-			vtx3d.Tangent = float3(-1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
-			vtx3d.Tangent = float3(-1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
-			vtx3d.Tangent = float3(-1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
-			vtx3d.Tangent = float3(-1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, 1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, 1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, 1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, 1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, -1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, -1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, -1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
-			vtx3d.Tangent = float3(0.0f, -1.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 0.0f, 1.0f);
+			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 0.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, -1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, -1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, -1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, -1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, -1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, -1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, -1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, -1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);;
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
 			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
-			vtx3d.Tangent = float3(1.0f, 0.0f, 0.0f);
-			vtx3d.BiNormal = float3(0.0f, 1.0f, 1.0f);
+			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
+			vtx3d.binormal = float3(0.0f, 1.0f, 1.0f);
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
@@ -442,8 +442,8 @@ namespace ehw {
 			vtx3d.UV = float2(0.5f, 0.f);
 			vtx3d.Normal = float3(0.0f, fRadius, 0.0f);
 			vtx3d.Normal.Normalize();
-			vtx3d.Tangent = float3(1.f, 0.f, 0.f);
-			vtx3d.BiNormal = float3(0.f, 0.f, 1.f);
+			vtx3d.tangent = float3(1.f, 0.f, 0.f);
+			vtx3d.binormal = float3(0.f, 0.f, 1.f);
 			VecVtx3D.push_back(vtx3d);
 
 			// Body
@@ -472,13 +472,13 @@ namespace ehw {
 					vtx3d.Normal = float3(vtx3d.Pos);
 					//v.Normal.Normalize();
 
-					vtx3d.Tangent.x = -fRadius * sinf(phi) * sinf(theta);
-					vtx3d.Tangent.y = 0.f;
-					vtx3d.Tangent.z = fRadius * sinf(phi) * cosf(theta);
-					vtx3d.Tangent.Normalize();
+					vtx3d.tangent.x = -fRadius * sinf(phi) * sinf(theta);
+					vtx3d.tangent.y = 0.f;
+					vtx3d.tangent.z = fRadius * sinf(phi) * cosf(theta);
+					vtx3d.tangent.Normalize();
 
-					vtx3d.Tangent.Cross(vtx3d.Normal, vtx3d.BiNormal);
-					vtx3d.BiNormal.Normalize();
+					vtx3d.tangent.Cross(vtx3d.Normal, vtx3d.binormal);
+					vtx3d.binormal.Normalize();
 
 					VecVtx3D.push_back(vtx3d);
 					
@@ -492,8 +492,8 @@ namespace ehw {
 			vtx3d.Normal = float3(vtx3d.Pos.x, vtx3d.Pos.y, vtx3d.Pos.z);
 			vtx3d.Normal.Normalize();
 
-			vtx3d.Tangent = float3(1.f, 0.f, 0.f);
-			vtx3d.BiNormal = float3(0.f, 0.f, -1.f);
+			vtx3d.tangent = float3(1.f, 0.f, 0.f);
+			vtx3d.binormal = float3(0.f, 0.f, -1.f);
 			VecVtx3D.push_back(vtx3d);
 
 			// 인덱스
@@ -1087,7 +1087,7 @@ namespace ehw {
 		std::shared_ptr <Texture> spriteTexture = ResourceManager<Texture>::GetInst().Find(texture::DefaultSprite);
 		std::shared_ptr<GraphicsShader> spriteShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::SpriteShader);
 		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
-		spriteMaterial->set_rendering_mode(eRenderingMode::Opaque);
+		spriteMaterial->set_rendering_mode(eRenderingMode::forward_opaque);
 		spriteMaterial->set_shader(spriteShader);
 		spriteMaterial->set_texture(eTextureSlot::Albedo, spriteTexture);
 		spriteMaterial->set_engine_default_res(true);
@@ -1097,7 +1097,7 @@ namespace ehw {
 #pragma region UI
 		std::shared_ptr<GraphicsShader> uiShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::UIShader);
 		std::shared_ptr<Material> uiMaterial = std::make_shared<Material>();
-		uiMaterial->set_rendering_mode(eRenderingMode::Opaque);
+		uiMaterial->set_rendering_mode(eRenderingMode::forward_opaque);
 		uiMaterial->set_shader(uiShader);
 		uiMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::GetInst().Insert(material::UIMaterial, uiMaterial);
@@ -1114,7 +1114,7 @@ namespace ehw {
 #pragma region DEBUG
 		std::shared_ptr<GraphicsShader> debugShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::DebugShader);
 		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
-		debugMaterial->set_rendering_mode(eRenderingMode::Transparent);
+		debugMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		debugMaterial->set_shader(debugShader);
 		debugMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::GetInst().Insert(material::DebugMaterial, debugMaterial);
@@ -1123,7 +1123,7 @@ namespace ehw {
 #pragma region PARTICLE
 		std::shared_ptr<GraphicsShader> particleShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::ParticleShader);
 		std::shared_ptr<Material> particleMaterial = std::make_shared<Material>();
-		particleMaterial->set_rendering_mode(eRenderingMode::Transparent);
+		particleMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		particleMaterial->set_shader(particleShader);
 		particleMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::GetInst().Insert(material::ParticleMaterial, particleMaterial);
@@ -1132,7 +1132,7 @@ namespace ehw {
 #pragma region POSTPROCESS
 		std::shared_ptr<GraphicsShader> postProcessShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::PostProcessShader);
 		std::shared_ptr<Material> postProcessMaterial = std::make_shared<Material>();
-		postProcessMaterial->set_rendering_mode(eRenderingMode::PostProcess);
+		postProcessMaterial->set_rendering_mode(eRenderingMode::post_process);
 		postProcessMaterial->set_shader(postProcessShader);
 		postProcessMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::GetInst().Insert(material::PostProcessMaterial, postProcessMaterial);
@@ -1141,7 +1141,7 @@ namespace ehw {
 #pragma region BASIC3D
 		std::shared_ptr<GraphicsShader> basic3DShader = ResourceManager<GraphicsShader>::GetInst().Find(shader::graphics::Basic3DShader);
 		std::shared_ptr<Material> basic3DMaterial = std::make_shared<Material>();
-		basic3DMaterial->set_rendering_mode(eRenderingMode::Transparent);
+		basic3DMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		basic3DMaterial->set_shader(basic3DShader);
 
 		basic3DMaterial->set_engine_default_res(true);
@@ -1157,7 +1157,7 @@ namespace ehw {
 		{
 			std::shared_ptr<GraphicsShader> lightShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::LightDirShader);
 			std::shared_ptr<Material> lightMaterial = std::make_shared<Material>();
-			lightMaterial->set_rendering_mode(eRenderingMode::None);
+			lightMaterial->set_rendering_mode(eRenderingMode::NONE);
 			lightMaterial->set_shader(lightShader);
 			lightMaterial->set_engine_default_res(true);
 			ResourceManager<Material>::GetInst().Insert(strKey::defaultRes::material::LightDirMaterial, lightMaterial);
@@ -1166,7 +1166,7 @@ namespace ehw {
 		{
 			std::shared_ptr<GraphicsShader> LightPointShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::LightPointShader);
 			std::shared_ptr<Material> lightMaterial = std::make_shared<Material>();
-			lightMaterial->set_rendering_mode(eRenderingMode::None);
+			lightMaterial->set_rendering_mode(eRenderingMode::NONE);
 			lightMaterial->set_shader(LightPointShader);
 			lightMaterial->set_engine_default_res(true);
 
@@ -1178,7 +1178,7 @@ namespace ehw {
 #pragma region MERGE
 		std::shared_ptr<GraphicsShader> mergeShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::MergeShader);
 		std::shared_ptr<Material> mergeMaterial = std::make_shared<Material>();
-		mergeMaterial->set_rendering_mode(eRenderingMode::None);
+		mergeMaterial->set_rendering_mode(eRenderingMode::NONE);
 		mergeMaterial->set_shader(mergeShader);
 		mergeMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::GetInst().Insert(strKey::defaultRes::material::MergeMaterial, mergeMaterial);

@@ -37,7 +37,7 @@ namespace ehw
 
 		//Sprite Material을 받아온다
 		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::SpriteMaterial);
-		SetMaterial(material, 0);
+		SetMaterial(material);
 	}
 
 	void Com_Renderer_Sprite::Awake()
@@ -57,7 +57,7 @@ namespace ehw
 		//GetMesh()->BindBuffer();
 
 		//재질 바인딩
-		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
+		GetCurrentMaterial()->bind_buffer_to_gpu_register();
 
 		//렌더링 하고
 		GetMesh()->render();

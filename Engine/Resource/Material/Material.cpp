@@ -18,7 +18,7 @@ namespace ehw
     Material::Material(std::string_view key)
         : Resource(key)
         , m_const_buffer_data{}
-        , m_renderingMode(eRenderingMode::Opaque)
+        , m_renderingMode(eRenderingMode::forward_opaque)
         , m_shader{}
         , m_textures{}
     {

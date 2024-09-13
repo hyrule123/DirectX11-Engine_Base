@@ -207,16 +207,18 @@ matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
 }
 
 tSkinningInfo Skinning(float3 Pos, float3 Tangent,
-    float3 Binormal, float3 Normal, float4 BlendWeight, float4 BlendIndex)
+    float3 Binormal, float3 Normal, float4 BlendWeight, uint4 BlendIndex)
 {
 	tSkinningInfo Info = (tSkinningInfo) 0;
 
 	for (int i = 0; i < 4; ++i)
 	{
 		if (BlendWeight[i] == 0.f)
+		{
 			continue;
+		}
 
-		matrix matBone = g_FinalBoneMatrixArray[(int)BlendIndex[i]];
+		matrix matBone = g_FinalBoneMatrixArray[BlendIndex[i]];
 
 		Info.Pos += (mul(float4(Pos, 1.f), matBone) * BlendWeight[i]).xyz;
 		Info.Tangent += (mul(float4(Tangent, 0.f), matBone) * BlendWeight[i]).xyz;

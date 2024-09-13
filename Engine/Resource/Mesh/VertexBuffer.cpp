@@ -22,12 +22,12 @@ namespace ehw {
 			return false;
 		}
 		reset();
-
-		m_byte_stride = _dataStride;
+		
+		m_data_stride = _dataStride;
 		m_data_count = _dataCount;
 
 		// 버텍스 버퍼
-		m_desc.ByteWidth = m_byte_stride * m_data_count;
+		m_desc.ByteWidth = m_data_stride * m_data_count;
 		m_desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
 		m_desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 		m_desc.CPUAccessFlags = 0;
@@ -37,24 +37,90 @@ namespace ehw {
 
 		memcpy(m_data.data(), _data, m_desc.ByteWidth);
 
-		D3D11_SUBRESOURCE_DATA subData = {};
-		subData.pSysMem = m_data.data();
+		return create_vertex_buffer_internal();
+	}
 
-		if (
-			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&m_desc, &subData, m_buffer.GetAddressOf()))
-			)
+	void VertexBuffer::IA_set_vertex_buffer()
+	{
+		if (m_buffer) {
+			UINT offset = 0u;
+			RenderManager::GetInst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
+		}
+	}
+
+	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
+	{
+		if (nullptr == _ser)
 		{
-			//실패시 내용 초기화
-			reset();
-			return false;
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
 		}
 
+		BinarySerializer& ser = *_ser;
+
+		ser << m_desc;
+
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		ser << m_data_stride;
+		ser << m_data_count;
+		ser << m_data;
+
+		ser << m_bounding_sphere_radius;
+		ser << m_bounding_box;
+
+		return eResult::Success;
+	}
+
+	eResult VertexBuffer::deserialize_binary(const BinarySerializer* _ser)
+	{
+		if (nullptr == _ser)
+		{
+			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
+			return eResult::Fail_Nullptr;
+		}
+
+		const BinarySerializer& ser = *_ser;
+
+		ser >> m_desc;
+
+		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
+		ser >> m_data_stride;
+		ser >> m_data_count;
+		ser >> m_data;
+
+		ser >> m_bounding_sphere_radius;
+		ser >> m_bounding_box;
+
+		if (false == create_vertex_buffer(m_data.data(), m_data_stride, m_data_count)) {
+			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");
+			return eResult::Fail;
+		}
+
+		return eResult::Success;
+	}
+
+	void VertexBuffer::reset()
+	{
+		m_desc = {};
+		m_data_stride = 0;
+		m_data_count = 0;
+		m_data.clear();
+		m_buffer = nullptr;
+
+		m_bounding_sphere_radius = std::numeric_limits<float>::max();
+
+		m_bounding_box.Min = float3(std::numeric_limits<float>::max());
+		m_bounding_box.Max = float3(std::numeric_limits<float>::min());
+	}
+
+	void VertexBuffer::compute_bounding_box()
+	{
 		float4 BoundingBoxMin = float4(FLT_MAX);
 		float4 BoundingBoxMax = float4(-FLT_MAX);
 
 		//성공시 Bounding Sphere의 반지름을 구해준다.
 		//type이 없어진 1byte 단위로 구성되어 있으므로 다시 재구성하는 작업이 필요하다.
-		for (size_t i = 0; i < m_data.size(); i += m_byte_stride)
+		for (size_t i = 0; i < m_data.size(); i += m_data_stride)
 		{
 			//메모리의 끝 위치보다는 작아야 함
 			//ex)stride가 16이고 데이터 갯수가 1개일 경우 n + 16 - 1: 15를 넘어가면 안됨 
@@ -79,85 +145,23 @@ namespace ehw {
 
 		//마지막에 sqrt 한번 해준다.
 		m_bounding_sphere_radius = std::sqrtf(m_bounding_sphere_radius);
+	}
+
+	bool VertexBuffer::create_vertex_buffer_internal()
+	{
+		D3D11_SUBRESOURCE_DATA subData = {};
+		subData.pSysMem = m_data.data();
+
+		if (
+			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&m_desc, &subData, m_buffer.ReleaseAndGetAddressOf()))
+			)
+		{
+			//실패시 내용 초기화
+			reset();
+			return false;
+		}
 
 		return true;
-	}
-
-	void VertexBuffer::bind_buffer_to_GPU()
-	{
-		if (m_buffer) {
-			UINT offset = 0u;
-			RenderManager::GetInst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
-		}
-	}
-
-	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
-	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		BinarySerializer& ser = *_ser;
-
-		ser << m_desc;
-
-		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		ser << m_byte_stride;
-		ser << m_data_count;
-		ser << m_data;
-
-		ser << m_bounding_sphere_radius;
-		ser << m_bounding_box;
-
-		return eResult::Success;
-	}
-
-	eResult VertexBuffer::deserialize_binary(const BinarySerializer* _ser)
-	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		const BinarySerializer& ser = *_ser;
-
-		ser >> m_desc;
-
-		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		ser >> m_byte_stride;
-		ser >> m_data_count;
-		ser >> m_data;
-
-		ser >> m_bounding_sphere_radius;
-		ser >> m_bounding_box;
-
-		if (false == create_vertex_buffer(m_data.data(), m_byte_stride, m_data_count)) {
-			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");
-			return eResult::Fail;
-		}
-
-		return eResult::Success;
-	}
-
-	void VertexBuffer::reset()
-	{
-		m_desc = {};
-		m_byte_stride = 0;
-		m_data_count = 0;
-		m_data.clear();
-		m_buffer = nullptr;
-
-		m_bounding_sphere_radius = std::numeric_limits<float>::max();
-
-		m_bounding_box.Min = float3(std::numeric_limits<float>::max());
-		m_bounding_box.Max = float3(std::numeric_limits<float>::min());
-	}
-
-	void VertexBuffer::compute_bounding_box()
-	{
 	}
 
 }

@@ -98,7 +98,7 @@ namespace ehw
 			for (size_t i = 0; i < m_meshContainers.size(); ++i)
 			{
 				//nullptr check
-				if (nullptr == m_meshContainers[i].mesh || m_meshContainers[i].materials.empty())
+				if (nullptr == m_meshContainers[i].mesh || nullptr == m_meshContainers[i].material)
 				{
 					return eResult::Fail_InValid;
 				}
@@ -113,24 +113,17 @@ namespace ehw
 				}
 				meshContainer["mesh"] << m_meshContainers[i].mesh->get_strkey();
 
-				//Materials
-				Json::Value& materials = meshContainer["materials"];
-				for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
+				//material
+				Json::Value& material = meshContainer["material"];
+
+				result = ResourceManager<Material>::GetInst().save(m_meshContainers[i].material.get());
+				if (eResult_fail(result))
 				{
-					if (nullptr == m_meshContainers[i].materials[j])
-					{
-						return eResult::Fail_Nullptr;
-					}
-
-					eResult result = ResourceManager<Material>::GetInst().save(m_meshContainers[i].materials[j].get());
-					if (eResult_fail(result))
-					{
-						ERROR_MESSAGE("재질 정보 저장 실패");
-						return result;
-					}
-
-					materials[j] << m_meshContainers[i].materials[j]->get_strkey();
+					ERROR_MESSAGE("재질 정보 저장 실패");
+					return result;
 				}
+
+				material << m_meshContainers[i].material->get_keypath();
 			}
 		}
 		catch (const std::exception& _err)
@@ -188,7 +181,7 @@ namespace ehw
 					ERROR_MESSAGE("메쉬 정보가 없습니다.");
 					return eResult::Fail_InValid;
 				}
-				else if (false == meshContainer.isMember("materials"))
+				else if (false == meshContainer.isMember("material"))
 				{
 					ERROR_MESSAGE("재질 정보가 없습니다.");
 					return eResult::Fail_InValid;
@@ -206,21 +199,16 @@ namespace ehw
 				}
 				m_meshContainers[i].mesh->set_skeleton(m_skeleton);
 
-				//Materials
-				const Json::Value& materials = meshContainer["materials"];
-				size_t materialSize = materials.size();
-				m_meshContainers[i].materials.resize(materialSize);
-				for (size_t j = 0; j < m_meshContainers[i].materials.size(); ++j)
-				{
-					std::string materialStrKey{};
-					materials[j] >> materialStrKey;
-					m_meshContainers[i].materials[j] = ResourceManager<Material>::GetInst().load(materialStrKey);
+				//material
+				const Json::Value& material = meshContainer["material"];
+				std::string materialtrKey{};
+				material >> materialtrKey;
+				m_meshContainers[i].material = ResourceManager<Material>::GetInst().load(materialtrKey);
 
-					if (nullptr == m_meshContainers[i].materials[j])
-					{
-						ERROR_MESSAGE("재질 로드 실패");
-						return eResult::Fail_Open;
-					}
+				if (nullptr == m_meshContainers[i].material)
+				{
+					ERROR_MESSAGE("재질 로드 실패");
+					return eResult::Fail_Open;
 				}
 			}
 		}
@@ -387,50 +375,69 @@ namespace ehw
 		const std::vector<tFBXContainer>& containers = loader.GetContainers();
 		for (size_t i = 0; i < containers.size(); ++i)
 		{
-			tMeshContainer meshCont{};
+			const tFBXContainer& cont = containers[i];
 
-			//가져올 메쉬를 생성
-			meshCont.mesh = std::make_shared<Mesh>();
-			meshCont.mesh->set_topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-			result = meshCont.mesh->create_from_container(&(containers[i]));
-			if (eResult_fail(result))
+			//버텍스 버퍼 생성
+			std::vector<Vertex3D> vertices_3d(cont.vecPosition.size());
+			for (size_t v = 0; v < cont.vecPosition.size(); ++v)
 			{
-				ERROR_MESSAGE("FBX로부터 메쉬 정보를 읽어오는 데 실패했습니다.");
-				return eResult::Fail;
+				vertices_3d[v].position = float4(cont.vecPosition[i], 1.f);
+
+				vertices_3d[v].UV = cont.vecUV[v];
+
+				vertices_3d[v].tangent = cont.vecTangent[v];
+				vertices_3d[v].binormal = cont.vecBinormal[v];
+				vertices_3d[v].Normal = cont.vecNormal[v];
+
+				if (cont.bAnimation)
+				{
+					vertices_3d[v].Weights = cont.vecBlendWeight[v];
+					vertices_3d[v].Indices = cont.vecBlendIndex[v];
+				}
 			}
+			std::shared_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
+			vb->create_vertex_buffer(vertices_3d);
 
-			//스켈레톤 주소를 지정
-			meshCont.mesh->set_skeleton(m_skeleton);
+			// 인덱스 정보
+			for (size_t j = 0; j < cont.vecIndexBuffers.size(); ++j) {
+				//메쉬
+				tMeshContainer meshCont{};
 
+				//가져올 메쉬를 생성
+				meshCont.mesh = std::make_shared<Mesh>();
+				meshCont.mesh->set_topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			//기본적으로는 컨테이너 이름을 사용
-			//비어있을 경우 이름을 만들어준다
-			std::fs::path strKey{}; 
-			if (containers[i].Name.empty())
-			{
-				strKey = filePath;
-				strKey.replace_extension();
+				meshCont.mesh->create_index_buffer(cont.vecIndexBuffers[i]);
+
+				//스켈레톤 주소를 지정
+				meshCont.mesh->set_skeleton(m_skeleton);
+
+				//기본적으로는 컨테이너 이름을 사용
+				//비어있을 경우 이름을 만들어준다
+				std::fs::path strKey{};
+				if (containers[i].Name.empty())
+				{
+					strKey = filePath;
+					strKey.replace_extension();
+					strKey += "_";
+					strKey += std::to_string(i);
+				}
+				else
+				{
+					strKey = _dirAndFileName;
+					strKey /= cont.Name;
+				}
 				strKey += "_";
-				strKey += std::to_string(i);
-			}
-			else
-			{
-				strKey = _dirAndFileName;
-				strKey /= containers[i].Name;
-			}
+				strKey += std::to_string(j);
 
-			//.msh로 확장자를 변경
-			strKey.replace_extension(strKey::path::extension::Mesh);
-			//Key로 Mesh를 저장
-			meshCont.mesh->set_keypath(strKey.string());
+				//.msh로 확장자를 변경
+				strKey.replace_extension(strKey::path::extension::Mesh);
+				//Key로 Mesh를 저장
+				meshCont.mesh->set_keypath(strKey.string());
+				ResourceManager<Mesh>::GetInst().save(meshCont.mesh.get());
 
-
-			// 메테리얼 가져오기
-			for (UINT j = 0; j < containers[i].vecMtrl.size(); ++j)
-			{
-
-				std::shared_ptr<Material> mtrl = 
+				// 메테리얼 가져오기
+				std::shared_ptr<Material> mtrl =
 					ConvertMaterial(&(containers[i].vecMtrl[j]), _dirAndFileName);
 				if (nullptr == mtrl)
 				{
@@ -438,11 +445,9 @@ namespace ehw
 					return eResult::Fail_InValid;
 				}
 
-				meshCont.materials.push_back(mtrl);
+				m_meshContainers.push_back(std::move(meshCont));
 			}
-			m_meshContainers.push_back(std::move(meshCont));
 		}
-
 		return eResult::Success;
 	}
 
@@ -503,7 +508,10 @@ namespace ehw
 		strKey.replace_extension(strKey::path::extension::Material);
 		mtrl->set_keypath(strKey.string());
 
-		mtrl->SetMaterialCoefficient(_fbxMtrl->DiffuseColor, _fbxMtrl->SpecularColor, _fbxMtrl->AmbientColor, _fbxMtrl->EmissiveColor);
+		mtrl->SetDiffuseColor(_fbxMtrl->DiffuseColor);
+		mtrl->SetSpecularColor(_fbxMtrl->SpecularColor);
+		mtrl->SetAmbientColor(_fbxMtrl->AmbientColor);
+		mtrl->SetEmissiveColor(_fbxMtrl->EmissiveColor);
 
 		std::fs::path texDir = ResourceManager<Texture>::GetInst().GetBaseDir();
 		texDir /= _texDestDir;
@@ -563,7 +571,7 @@ namespace ehw
 		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
 		mtrl->set_shader(defferedShader);
 
-		mtrl->set_rendering_mode(eRenderingMode::DefferdOpaque);
+		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);
 
 		CheckMHMaterial(mtrl.get(), texDir);
 
@@ -607,7 +615,7 @@ namespace ehw
 			const std::shared_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->get_strkey() };
+				std::string texKey{ tex->get_keypath() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -639,7 +647,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey(tex->get_strkey());
+							std::string texKey(tex->get_keypath());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");
@@ -686,11 +694,7 @@ namespace ehw
 
 		//Mesh 또는 Material은 없을 리가 없음(생성할 때 예외처리 함)
 		_renderer->SetMesh(m_meshContainers[_idx].mesh);
-
-		for (size_t i = 0; i < m_meshContainers[_idx].materials.size(); ++i)
-		{
-			_renderer->SetMaterial(m_meshContainers[_idx].materials[i], (UINT)i);
-		}
+		_renderer->SetMaterial(m_meshContainers[_idx].material);
 
 		return true;
 	}
