@@ -16,7 +16,7 @@
 //CBUFFER(버퍼이름, 사용할 구조체이름, 버퍼타입, 버퍼번호)
 CBUFFER(CB_Global, tCB_Global, b, 0);
 CBUFFER(g_CB_camera, tCamera, b, 1);
-CBUFFER(CB_MaterialData, tCB_MaterialData, b, 2);
+CBUFFER(CB_MaterialData, tSharedMaterialData, b, 2);
 CBUFFER(CB_ComputeShader, tCB_ComputeShader, b, 3);
 CBUFFER(CB_Animation2D, tCB_Animation2D, b, 4);
 CBUFFER(CB_Animation3D, tCB_Animation3D, b, 5);

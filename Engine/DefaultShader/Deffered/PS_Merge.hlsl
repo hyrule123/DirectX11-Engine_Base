@@ -7,7 +7,9 @@ float4 main(VSOut_Merge In) : SV_Target
     
 	float4 viewPos = PositionTarget.Sample(anisotropicSampler, UV);
 	if (0.0f == viewPos.a)
+	{
 		discard;
+	}
     
 	OutColor = AlbedoTarget.Sample(anisotropicSampler, UV);
     

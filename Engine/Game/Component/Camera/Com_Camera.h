@@ -66,11 +66,9 @@ namespace  ehw
 		float m_scale;
 
 		std::bitset<g_maxLayer> m_layerMasks;
-		//std::vector<Renderer*> m_defferedOpaque;
-		//std::vector<Renderer*> m_forwardOpaque;
-		//std::vector<Renderer*> m_alphaTest;		//forward_cutout
-		//std::vector<Renderer*> m_alphaBlend;	//forward_transparent
-		//std::vector<Renderer*> m_postProcess;
+
+		std::vector<GameObject*> m_layer_filtered_objects;
+		std::vector<tTransform> m_transform_data;
 
 	public:
 		class CullingAgent : public Entity

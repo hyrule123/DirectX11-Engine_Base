@@ -68,21 +68,33 @@ namespace ehw
 
 	void Com_Camera::render_gameobjects(const tRenderQueue& _render_queue)
 	{
-		//출력할 레이어만 걸러낸다.(static 변수 사용)
-		static std::vector<GameObject*> s_layer_filter;
-		s_layer_filter.clear();
+		m_layer_filtered_objects.clear();
+		m_transform_data.clear();
+
+		//출력할 레이어만 걸러낸다.
 		for (GameObject* obj : _render_queue.objects_to_render) {
 			if (true == m_layerMasks[obj->GetLayer()]) {
-				s_layer_filter.push_back(obj);
+				m_layer_filtered_objects.push_back(obj);
+
+				tTransform trdata{};
+				trdata.World = obj->GetComponent<Transform>()->get_world_matrix();
+				trdata.InverseWorld = trdata.World.Invert();
+				trdata.WorldView = trdata.World * m_camera_matrices.view;
+				trdata.WVP = trdata.WorldView * m_camera_matrices.projection;
+
+				m_transform_data.push_back(trdata);
 			}
 		}
 
-		//걸러낸 레이어를 Material에 보내 데이터를 GPU로 보낸다.
-		_render_queue.material->upload_buffer_to_gpu(s_layer_filter);
-		_render_queue.material->bind_buffer_to_gpu_register();
+		//material에서 처리해야 하는 데이터도 등록시킨 후 GPU 연동
+		_render_queue.material->set_data_to_buffer(m_layer_filtered_objects);
+		_render_queue.material->bind_buffer_to_GPU();
 
 		//게임오브젝트 수만큼 인스턴싱 그리기 명령
-		_render_queue.mesh->render_instanced((UINT)s_layer_filter.size());
+		_render_queue.mesh->render_instanced((UINT)m_layer_filtered_objects.size());
+
+		m_layer_filtered_objects.clear();
+		m_transform_data.clear();
 	}
 
 	void Com_Camera::render_lights()

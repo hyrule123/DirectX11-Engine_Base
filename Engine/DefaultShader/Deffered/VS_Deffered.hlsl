@@ -6,7 +6,8 @@ VSOut main(VSIn _in)
 	
 	tSkinningInfo info = (tSkinningInfo) 0;
 	
-	if(CB_MaterialData.bAnim)
+	//애니메이션 메쉬일 경우 스키닝 진행
+	if(TRUE == g_individual_mtrl_data[_in.instance_ID].bAnim)
 	{
 		info = Skinning(_in.Position.xyz, _in.Tangent, _in.BiNormal, _in.Normal, _in.vWeights, _in.vIndices);
 	}
@@ -21,6 +22,7 @@ VSOut main(VSIn _in)
 	_out.Position = mul(float4(info.Pos, 1.f), g_transforms[_in.instance_ID].WVP);
 	_out.ViewPos = mul(float4(info.Pos, 1.f), g_transforms[_in.instance_ID].WorldView).xyz;
 	
+	//뷰 공간에서의 TBN을 구한다. 방향값이므로 동차 좌표는 0
 	_out.ViewTangent =	normalize(mul(float4(info.Tangent.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
 	_out.ViewBiNormal =	normalize(mul(float4(info.Binormal.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
 	_out.ViewNormal =	normalize(mul(float4(info.Normal.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);

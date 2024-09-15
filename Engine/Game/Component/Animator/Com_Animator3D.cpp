@@ -49,11 +49,6 @@ namespace ehw
 		return eResult();
 	}
 
-	void Com_Animator3D::Init()
-	{
-
-	}
-
 
 	void Com_Animator3D::final_update()
 	{
@@ -150,6 +145,15 @@ namespace ehw
 		}
 	}
 
+
+	int Com_Animator3D::GetBoneCount()
+	{
+		int ret = -1;
+		if (m_sharedPlayData && m_sharedPlayData->get_skeleton()) {
+			ret = m_sharedPlayData->get_skeleton()->GetBoneCount();
+		}
+		return ret;
+	}
 
 	void Com_Animator3D::bind_data()
 	{

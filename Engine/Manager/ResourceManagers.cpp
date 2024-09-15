@@ -16,6 +16,8 @@
 #include "Engine/Resource/Shader/ComputeShader.h"
 #include "Engine/Resource/Mesh/VertexBuffer.h"
 
+#include "Engine/Game/Component/Transform.h"
+#include "Engine/Game/Component/Light/Light_3D.h"
 
 namespace ehw
 {
@@ -58,11 +60,28 @@ namespace ehw
 		ResourceManager<Animation2D>::GetInst().Init(baseDir / strKey::path::directory::resource::Animation2D);
 		ResourceManager<Model3D>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
 		ResourceManager<Skeleton>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
+
+		init_static_variables();
 	}
 
 	void ResourceManagers::Release()
 	{
+		release_static_variables();
 		m_CleanUnusedResourcesFunction.clear();
+	}
+
+	void ResourceManagers::init_static_variables()
+	{
+		Transform::init_static();
+		Light_3D::init_static();
+		Material::init_static();
+	}
+
+	void ResourceManagers::release_static_variables()
+	{
+		Material::release_static();
+		Light_3D::release_static();
+		Transform::release_static();
 	}
 
 }

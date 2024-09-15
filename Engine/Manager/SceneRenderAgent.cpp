@@ -29,9 +29,6 @@ namespace ehw {
 
 	void SceneRenderAgent::Init()
 	{
-		Transform::init_static();
-		Light_3D::init_static();
-
 		m_merge_mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
 
 		m_merge_material = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
@@ -43,12 +40,10 @@ namespace ehw {
 	{
 		m_cameras.clear();
 		m_mainCamIndex = 0u;
+		
 		for (auto& render_queue : m_renderer_queues) {
 			render_queue.clear();
 		}
-		
-		Light_3D::release_static();
-		Transform::release_static();
 	}
 
 	void SceneRenderAgent::render()
@@ -89,7 +84,9 @@ namespace ehw {
 
 	void SceneRenderAgent::frame_end()
 	{
-		m_renderer_queues.clear();
+		for (auto& render_queue : m_renderer_queues) {
+			render_queue.clear();
+		}
 
 		//static 버퍼들을 정리해준다.
 		Light_3D::clear_buffer_data();

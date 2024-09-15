@@ -395,7 +395,7 @@
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\InstanceManager.cpp" />
-    <ClCompile Include="Resource\Material\Deffered_Opaque.cpp" />
+    <ClCompile Include="Resource\Material\Deffered_Mtrl.cpp" />
     <ClCompile Include="Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
   </ItemGroup>
@@ -657,9 +657,9 @@
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
-    <ClInclude Include="Resource\Material\Deffered_Opaque.h" />
     <ClInclude Include="Resource\Mesh\Mesh.h" />
     <ClInclude Include="Resource\Mesh\VertexBuffer.h" />
+    <ClInclude Include="Resource\Material\Deffered_Mtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

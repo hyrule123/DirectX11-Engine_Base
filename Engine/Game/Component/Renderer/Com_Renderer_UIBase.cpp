@@ -18,8 +18,8 @@ namespace ehw
 		SetMesh(uiMesh);
 
 		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::UIMaterial);
-		SetMaterial(uiMaterial, 0u);
-		SetMaterialMode(0u, eMaterialMode::Dynamic);
+		SetMaterial(uiMaterial);
+		SetMaterialMode(eMaterialMode::Dynamic);
 	}
 	Com_Renderer_UIBase::~Com_Renderer_UIBase()
 	{

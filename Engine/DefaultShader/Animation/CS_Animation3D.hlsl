@@ -4,13 +4,15 @@
 #include "Engine/DefaultShader/Common_register.hlsli"
 
 
-
+//ThreadID.x = Bone Index
+//각 본의 위치 정보를 계산하는 compute shader
 [numthreads(256, 1, 1)]
 void main(int3 _threadID : SV_DispatchThreadID)
 {
-	//ThreadID.x = 본의 인덱스
 	if (CB_Animation3D.BoneCount <= _threadID.x)
+	{
 		return;
+	}	
 
 	float4 ZeroRot = float4(0.f, 0.f, 0.f, 1.f);
 	matrix matBone = 0.f;

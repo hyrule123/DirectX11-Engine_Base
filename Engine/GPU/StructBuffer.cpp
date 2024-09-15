@@ -90,7 +90,7 @@ namespace ehw
 		GetBufferDescRef().MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	}
 
-	eResult StructBuffer::Resize(size_t _capacity, const void* _pInitialData, size_t _uElemCount)
+	eResult StructBuffer::Resize(size_t _capacity, const void* _pInitialData, UINT _uElemCount)
 	{
 		if (_capacity == 0) {
 			return eResult::Success;
@@ -110,8 +110,8 @@ namespace ehw
 		unbind_data();
 
 		//상수버퍼와는 다르게 버퍼 재할당이 가능함. 먼저 기존 버퍼의 할당을 해제한다.(ComPtr을 통해 관리가 이루어지므로 nullptr로 바꿔주면 됨.)
-		m_elementCount = (uint)_uElemCount;
-		m_capacity = (uint)_capacity;
+		m_elementCount = (UINT)_uElemCount;
+		m_capacity = (UINT)_capacity;
 
 		D3D11_BUFFER_DESC& bufferDesc = GetBufferDescRef();
 		bufferDesc.StructureByteStride = m_elementStride;
@@ -130,7 +130,7 @@ namespace ehw
 				Data.pSysMem = _pInitialData;
 
 				//이 값은 무시됨. BufferDesc.ByteWidth 값만 영향을 미치는 것을 확인함.
-				Data.SysMemPitch = m_elementStride * (uint)_uElemCount;
+				Data.SysMemPitch = m_elementStride * (UINT)_uElemCount;
 				Data.SysMemSlicePitch = bufferDesc.StructureByteStride;
 				pData = &Data;
 			}
@@ -159,7 +159,7 @@ namespace ehw
 			if (nullptr != _pInitialData)
 			{
 				Data.pSysMem = _pInitialData;
-				Data.SysMemPitch = m_elementStride * (uint)_uElemCount;
+				Data.SysMemPitch = m_elementStride * (UINT)_uElemCount;
 				Data.SysMemSlicePitch = bufferDesc.StructureByteStride;
 				pData = &Data;
 			}
@@ -183,12 +183,12 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void StructBuffer::SetData(const void* _pData, size_t _uCount)
+	void StructBuffer::SetData(const void* _pData, UINT _uCount)
 	{
 		if (nullptr == _pData || 0 == _uCount) {
 			return;
 		}
-		m_elementCount = (uint)_uCount;
+		m_elementCount = _uCount;
 
 		//생성 시 할당된 갯수보다 들어온 갯수가 더 클 경우 재할당하고, 거기에 데이터를 추가.
 		//생성될 때 값을 지정할 수 있으므로 바로 return 해주면 될듯
@@ -264,6 +264,7 @@ namespace ehw
 			//READ_ONLY일 경우에는 데이터 가져오기 불가능.
 		case eStructBufferType::READ_ONLY:
 		{
+			ERROR_MESSAGE("CPU ACCESS FLAG가 Read Only일 경우 데이터를 읽어올 수 없습니다!");
 			//#ifdef _DEBUG
 			//		D3D11_MAPPED_SUBRESOURCE Data = {};
 			//
@@ -374,7 +375,7 @@ namespace ehw
 		}
 		m_curBoundRegister = _UAVSlot;
 
-		uint Offset = -1;
+		UINT Offset = -1;
 		RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(_UAVSlot, 1, m_UAV.GetAddressOf(), &Offset);
 	}
 
@@ -476,7 +477,7 @@ namespace ehw
 
 		case ehw::eBufferViewType::UAV:
 		{
-			static const uint v2_Offset = -1;
+			static const UINT v2_Offset = -1;
 			ID3D11UnorderedAccessView* pUAV = nullptr;
 			RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(m_curBoundRegister, 1, &pUAV, &v2_Offset);
 			break;

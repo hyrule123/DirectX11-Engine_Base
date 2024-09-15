@@ -16,7 +16,7 @@
 #include "Engine/GPU/CommonGPU.h"
 #include "Engine/GPU/ConstBuffer.h"
 
-#include "Engine/Resource/Material/Deffered_Opaque.h"
+#include "Engine/Resource/Material/Deffered_Mtrl.h"
 
 namespace ehw {
 	void RenderManager::LoadDefaultMesh()
@@ -28,11 +28,15 @@ namespace ehw {
 			std::shared_ptr<Mesh> pointMesh = std::make_shared<Mesh>();
 			pointMesh->set_engine_default_res(true);
 
-			uint pointIndex = 0;
+			std::vector<uint> pointIndex = { 0 };
 			bool result = false;
 
-			result = pointMesh->create_vertex_buffer(&vtx2d, sizeof(Vertex2D), (size_t)1);
-			result &= pointMesh->create_index_buffer(&pointIndex, 1u);
+			std::shared_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
+			
+			if (false == vb->create_vertex_buffer(VecVtx2D)) {
+				ASSERT(false, "point vertex 생성 실패");
+			}
+			result &= pointMesh->create_index_buffer(pointIndex);
 			ASSERT(result, "point mesh 생성 실패");
 			pointMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
@@ -46,22 +50,22 @@ namespace ehw {
 			Vertex2D vtx2d = {};
 
 			//RECT
-			vtx2d.Pos = float4(-0.5f, 0.5f, 0.0f, 1.0f);
+			vtx2d.position = float4(-0.5f, 0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(0.f, 0.f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(0.5f, 0.5f, 0.0f, 1.0f);
+			vtx2d.position = float4(0.5f, 0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(1.0f, 0.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(0.5f, -0.5f, 0.0f, 1.0f);
+			vtx2d.position = float4(0.5f, -0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(1.0f, 1.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(-0.5f, -0.5f, 0.0f, 1.0f);
+			vtx2d.position = float4(-0.5f, -0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(0.0f, 1.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
@@ -70,33 +74,31 @@ namespace ehw {
 			std::shared_ptr<Mesh> RectMesh = std::make_shared<Mesh>();
 			RectMesh->set_engine_default_res(true);
 			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::RectMesh, RectMesh);
-			RectMesh->create_vertex_buffer(VecVtx2D.data(), sizeof(vtx2d), VecVtx2D.size());
-
-
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
-			RectMesh->create_index_buffer(indices.data(), (uint)indices.size());
+			
+			ASSERT(RectMesh->create(VecVtx2D, indices), "RectMesh 생성 실패");
 
 			VecVtx2D.clear();
 
 #pragma endregion
 #pragma region DEBUG RECTMESH
 
-			vtx2d.Pos = float4(-0.5f, 0.5f, -0.00001f, 1.0f);
+			vtx2d.position = float4(-0.5f, 0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(0.f, 0.f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(0.5f, 0.5f, -0.00001f, 1.0f);
+			vtx2d.position = float4(0.5f, 0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(1.0f, 0.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(0.5f, -0.5f, -0.00001f, 1.0f);
+			vtx2d.position = float4(0.5f, -0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(1.0f, 1.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
-			vtx2d.Pos = float4(-0.5f, -0.5f, -0.00001f, 1.0f);
+			vtx2d.position = float4(-0.5f, -0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(0.0f, 1.0f);
 			VecVtx2D.push_back(vtx2d);
 			vtx2d = Vertex2D{};
@@ -106,8 +108,7 @@ namespace ehw {
 			debugmesh->set_engine_default_res(true);
 
 			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::DebugRectMesh, debugmesh);
-			debugmesh->create_vertex_buffer(VecVtx2D.data(), sizeof(Vertex2D), VecVtx2D.size());
-			debugmesh->create_index_buffer(indices.data(), static_cast<uint>(indices.size()));
+			ASSERT(debugmesh->create(VecVtx2D, indices), "debugMesh 생성 실패");
 		}
 #pragma endregion
 
@@ -117,7 +118,7 @@ namespace ehw {
 			std::vector<uint>     VecIdx;
 
 			Vertex2D center{};
-			center.Pos = float4(0.0f, 0.0f, 0.f, 1.0f);
+			center.position = float4(0.0f, 0.0f, 0.f, 1.0f);
 			center.UV = float2(0.5f, 0.5f);
 			VecVtx2D.push_back(center);
 
@@ -128,12 +129,12 @@ namespace ehw {
 			Vertex2D vtx2d = {};
 			for (int i = 0; i < iSlice; ++i)
 			{
-				vtx2d.Pos.x = fRadius * cosf(fTheta * i);
-				vtx2d.Pos.y = fRadius * sinf(fTheta * i);
+				vtx2d.position.x = fRadius * cosf(fTheta * i);
+				vtx2d.position.y = fRadius * sinf(fTheta * i);
 
 				//UV는 중점 기준으로 더하거나 빼는 방식으로 해준다.
-				vtx2d.UV.x = 0.5f + vtx2d.Pos.x;
-				vtx2d.UV.y = 0.5f - vtx2d.Pos.y;	//반대 방향
+				vtx2d.UV.x = 0.5f + vtx2d.position.x;
+				vtx2d.UV.y = 0.5f - vtx2d.position.y;	//반대 방향
 
 				VecVtx2D.push_back(vtx2d);
 
@@ -153,10 +154,11 @@ namespace ehw {
 			VecIdx.push_back((uint)VecVtx2D.size() - 1u);
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> cirlceMesh = std::make_shared<Mesh>();
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::CircleMesh, cirlceMesh);
-			cirlceMesh->create_vertex_buffer(VecVtx2D.data(), sizeof(Vertex2D), VecVtx2D.size());
-			cirlceMesh->create_index_buffer(VecIdx.data(), VecIdx.size());
+			std::shared_ptr<Mesh> circle_mesh = std::make_shared<Mesh>();
+			circle_mesh->set_engine_default_res(true);
+			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::CircleMesh, circle_mesh);
+
+			ASSERT(circle_mesh->create(VecVtx2D, VecIdx), "circle mesh 생성 실패");
 		}
 #pragma endregion
 #pragma region Cube Mesh
@@ -168,7 +170,7 @@ namespace ehw {
 			VecVtx3D.reserve(24);
 
 			// 윗면
-			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -176,7 +178,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -184,7 +186,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -192,7 +194,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 1.f, 0.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -200,7 +202,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
 			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
@@ -208,7 +210,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
 			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
@@ -216,7 +218,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
 			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
@@ -224,7 +226,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, -1.f, 0.f);
 			vtx3d.tangent = float3(-1.0f, 0.0f, 0.0f);
@@ -232,7 +234,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
@@ -240,7 +242,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
@@ -248,7 +250,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
@@ -256,7 +258,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(-1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, 1.0f, 0.0f);
@@ -264,7 +266,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
@@ -272,7 +274,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
@@ -280,7 +282,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
@@ -288,7 +290,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(1.f, 0.f, 0.f);
 			vtx3d.tangent = float3(0.0f, -1.0f, 0.0f);
@@ -296,7 +298,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -304,7 +306,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, 0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, 0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -312,7 +314,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -320,7 +322,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, 0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, 0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, 1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -328,7 +330,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, 0.5f, -0.5f, 1.0f);;
+			vtx3d.position = float4(-0.5f, 0.5f, -0.5f, 1.0f);;
 			vtx3d.UV = float2(0.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -336,7 +338,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, 0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, 0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 0.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -344,7 +346,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(0.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -352,7 +354,7 @@ namespace ehw {
 			VecVtx3D.push_back(vtx3d);
 			vtx3d = {};
 
-			vtx3d.Pos = float4(-0.5f, -0.5f, -0.5f, 1.0f);
+			vtx3d.position = float4(-0.5f, -0.5f, -0.5f, 1.0f);
 			vtx3d.UV = float2(1.f, 1.f);
 			vtx3d.Normal = float3(0.f, 0.f, -1.f);
 			vtx3d.tangent = float3(1.0f, 0.0f, 0.0f);
@@ -375,7 +377,7 @@ namespace ehw {
 			// Crate Mesh
 			std::shared_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
 			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::CubeMesh, cubMesh);
-			cubMesh->create<Vertex3D>(VecVtx3D, indices);
+			cubMesh->create(VecVtx3D, indices);
 		}
 #pragma endregion
 
@@ -418,10 +420,7 @@ namespace ehw {
 
 			// Crate Mesh
 			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
-			if (false == debugCubeMesh->create(vertices, indices))
-			{
-				ASSERT(false, "debugCubeMesh 생성 실패");
-			}
+			ASSERT(debugCubeMesh->create(vertices, indices), "debugCubeMesh 생성 실패");
 			debugCubeMesh->set_engine_default_res(true);
 			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
 			//debugCubeMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
@@ -438,7 +437,7 @@ namespace ehw {
 			float fRadius = 0.5f;
 
 			// Top
-			vtx3d.Pos = float4(0.0f, fRadius, 0.0f, 1.0f);
+			vtx3d.position = float4(0.0f, fRadius, 0.0f, 1.0f);
 			vtx3d.UV = float2(0.5f, 0.f);
 			vtx3d.Normal = float3(0.0f, fRadius, 0.0f);
 			vtx3d.Normal.Normalize();
@@ -465,11 +464,11 @@ namespace ehw {
 					vtx3d = {};
 					float theta = j * fSliceAngle;
 
-					vtx3d.Pos = float4(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
+					vtx3d.position = float4(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
 						, fRadius * cosf(i * fStackAngle)
 						, fRadius * sinf(i * fStackAngle) * sinf(j * fSliceAngle), 1.0f);
 					vtx3d.UV = float2(fUVXStep * j, fUVYStep * i);
-					vtx3d.Normal = float3(vtx3d.Pos);
+					vtx3d.Normal = float3(vtx3d.position);
 					//v.Normal.Normalize();
 
 					vtx3d.tangent.x = -fRadius * sinf(phi) * sinf(theta);
@@ -487,9 +486,9 @@ namespace ehw {
 
 			// Bottom
 			vtx3d = {};
-			vtx3d.Pos = float4(0.f, -fRadius, 0.f, 1.0f);
+			vtx3d.position = float4(0.f, -fRadius, 0.f, 1.0f);
 			vtx3d.UV = float2(0.5f, 1.f);
-			vtx3d.Normal = float3(vtx3d.Pos.x, vtx3d.Pos.y, vtx3d.Pos.z);
+			vtx3d.Normal = float3(vtx3d.position.x, vtx3d.position.y, vtx3d.position.z);
 			vtx3d.Normal.Normalize();
 
 			vtx3d.tangent = float3(1.f, 0.f, 0.f);
@@ -871,7 +870,7 @@ namespace ehw {
 		m_constBuffers[(uint)eCBType::ComputeShader]->SetPresetTargetStage(eShaderStageFlag::Compute);
 
 		m_constBuffers[(uint)eCBType::Material] = std::make_unique<ConstBuffer>((uint)eCBType::Material);
-		m_constBuffers[(uint)eCBType::Material]->create(sizeof(tCB_MaterialData));
+		m_constBuffers[(uint)eCBType::Material]->create(sizeof(tSharedMaterialData));
 
 		m_constBuffers[(uint)eCBType::Animation2D] = std::make_unique<ConstBuffer>((uint)eCBType::Animation2D);
 		m_constBuffers[(uint)eCBType::Animation2D]->create(sizeof(tCB_Animation2D));
@@ -1150,7 +1149,7 @@ namespace ehw {
 
 
 #pragma region DEFFERD
-		Deffered_Opaque::load_dedicated_graphics_shader();
+		Deffered_Mtrl::load_shaders();
 #pragma endregion
 
 #pragma region LIGHT

@@ -66,9 +66,8 @@ namespace ehw
 		virtual void final_update() override;
 		virtual void frame_end() override;
 
-		static void clear_buffer_data() { s_buffer_data.clear(); }
-		void add_to_buffer(const MATRIX& _view, const MATRIX& _projection);
-		static void bind_data();
+		//Render 시점에 호출
+		static void set_data_to_GPU(const std::vector<tTransform>& _data);
 
 #pragma region //Hierarchy
 		Transform* get_parent() const { return m_parent; }
@@ -193,7 +192,6 @@ namespace ehw
 		void reserve_update_recursive();
 
 	private:
-		static inline std::vector<tTransform> s_buffer_data;
 		static inline StructBuffer* s_buffer;
 
 #pragma region LOCAL

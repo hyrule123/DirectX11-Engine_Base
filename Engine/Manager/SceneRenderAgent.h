@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Common.h"
+#include "Engine/GPU/define_GPU.h"
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
 namespace ehw {
@@ -9,9 +10,6 @@ namespace ehw {
 	class Com_Light;
 	class StructBuffer;
 	class Texture;
-
-
-
 
 	class SceneRenderAgent
 	{
@@ -52,11 +50,11 @@ namespace ehw {
 
 		std::vector<Com_Camera*>			m_cameras;
 		size_t								m_mainCamIndex;
-		
-		std::unordered_map<size_t, tRenderQueue> m_renderer_queues[(int)eRenderingMode::END];
 
 		std::shared_ptr<Mesh> m_merge_mesh;	//rectmesh
 		std::shared_ptr<Material> m_merge_material;
+
+		std::unordered_map<size_t, tRenderQueue> m_renderer_queues[(int)eRenderingMode::END];
 	};
 }
 

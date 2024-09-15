@@ -22,7 +22,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		virtual void Init() override;
+		//virtual void Init() override;
 		virtual void final_update() override;
 		virtual void frame_end() override;
 
@@ -31,7 +31,9 @@ namespace ehw
 		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) override;
 
 		std::shared_ptr<Animation3D_PlayData> CreateSharedAnimationData();
-		inline void SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData);
+		void SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData) {
+			m_sharedPlayData = _sharedData;
+		}
 
 
 		bool Play(const std::string_view _strAnimName, float _blendTime = 0.f);
@@ -44,7 +46,7 @@ namespace ehw
 		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
 		//StructBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer.get(); }
-		//UINT GetBoneCount() { return (UINT)m_pVecBones->size(); }
+		int GetBoneCount();
 
 
 		virtual void bind_data() override;
@@ -54,11 +56,6 @@ namespace ehw
 	private:
 		std::shared_ptr<Animation3D_PlayData> m_sharedPlayData;
 	};
-
-	inline void Com_Animator3D::SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData)
-	{
-		m_sharedPlayData = _sharedData;
-	}
 }
 
 

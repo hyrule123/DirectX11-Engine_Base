@@ -233,7 +233,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <None Include="Manager\InstanceManager.inl">
       <FileType>Document</FileType>
     </None>
-    <ClInclude Include="Resource\Material\Deffered_Opaque.h" />
+    <ClInclude Include="Resource\Material\Deffered_Mtrl.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
@@ -342,7 +342,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Resource\Material\Deffered_Opaque.cpp" />
+    <ClCompile Include="Resource\Material\Deffered_Mtrl.cpp" />
     <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />

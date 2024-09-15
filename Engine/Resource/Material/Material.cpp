@@ -10,14 +10,17 @@
 
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
+#include "Engine/GPU/StructBuffer.h"
 
 #include "Engine/Game/GameObject.h"
+#include "Engine/Game/Component/Animator/Com_Animator3D.h"
+
 
 namespace ehw
 {
     Material::Material(std::string_view key)
         : Resource(key)
-        , m_const_buffer_data{}
+        , m_shared_material_data{}
         , m_renderingMode(eRenderingMode::forward_opaque)
         , m_shader{}
         , m_textures{}
@@ -28,13 +31,77 @@ namespace ehw
         : Resource(_other)
         , m_shader(_other.m_shader)
         , m_textures(_other.m_textures)
-        , m_const_buffer_data(_other.m_const_buffer_data)
+        , m_shared_material_data(_other.m_shared_material_data)
         , m_renderingMode(_other.m_renderingMode)
     {
     }
 
     Material::~Material()
     {
+    }
+
+    void Material::init_static()
+    {
+        s_individual_mtrl_buffer = new StructBuffer;
+        StructBuffer::Desc desc{};
+        desc.eSBufferType = eStructBufferType::READ_ONLY;
+        desc.GPU_register_t_SRV = GPU::Register::t::g_individual_mtrl_data;
+        desc.GPU_register_u_UAV = GPU::Register::u::NONE;
+        s_individual_mtrl_buffer->Init<tIndividual_Material_Data>(desc);
+    }
+
+    void Material::release_static()
+    {
+        SAFE_DELETE(s_individual_mtrl_buffer);
+    }
+
+    void Material::bind_shared_material_buffer()
+    {
+        for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
+        {
+            if (m_textures[slotIndex])
+            {
+                m_textures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
+            }
+        }
+
+        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
+        CB->SetData(&m_shared_material_data);
+
+        eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
+        CB->bind_data(flag);
+
+        m_shader->bind_data();
+    }
+
+    void Material::clear_buffers()
+    {
+        m_individual_mtrl_data.clear();
+    }
+
+    void Material::set_data_to_buffer(const std::vector<GameObject*>& _objs)
+    {
+        for (GameObject* obj : _objs) {
+            add_data_to_buffer(obj);
+        }
+    }
+
+    void Material::add_data_to_buffer(GameObject* _obj)
+    {
+        auto* animator = _obj->GetComponent<Com_Animator3D>();
+        tIndividual_Material_Data data{};
+
+        if (animator && animator->IsPlaying()) {
+            data.bAnim = TRUE;
+            data.BoneCount = animator->GetBoneCount();
+        }
+
+        m_individual_mtrl_data.push_back(data);
+    }
+
+    void Material::bind_buffer_to_GPU()
+    {
+        s_individual_mtrl_buffer->SetData(m_individual_mtrl_data.data(), (UINT)m_individual_mtrl_data.size());
     }
 
     eResult Material::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
@@ -87,13 +154,11 @@ namespace ehw
             ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
 
             //const buffer
-            Json::Value& cbData = ser[JSON_KEY(m_const_buffer_data)];
-            cbData[JSON_KEY(m_const_buffer_data.Amb)] << m_const_buffer_data.Amb;
-            cbData[JSON_KEY(m_const_buffer_data.bAnim)] << m_const_buffer_data.bAnim;
-            cbData[JSON_KEY(m_const_buffer_data.BoneCount)] << m_const_buffer_data.BoneCount;
-            cbData[JSON_KEY(m_const_buffer_data.Diff)] << m_const_buffer_data.Diff;
-            cbData[JSON_KEY(m_const_buffer_data.Emv)] << m_const_buffer_data.Emv;
-            cbData[JSON_KEY(m_const_buffer_data.Spec)] << m_const_buffer_data.Spec;
+            Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
+            cbData[JSON_KEY(m_shared_material_data.Amb)] << m_shared_material_data.Amb;
+            cbData[JSON_KEY(m_shared_material_data.Diff)] << m_shared_material_data.Diff;
+            cbData[JSON_KEY(m_shared_material_data.Emv)] << m_shared_material_data.Emv;
+            cbData[JSON_KEY(m_shared_material_data.Spec)] << m_shared_material_data.Spec;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
         }
         catch (const Json::Exception& _err)
@@ -139,13 +204,11 @@ namespace ehw
             }
 
             //const buffer
-            const Json::Value& cbData = ser[JSON_KEY(m_const_buffer_data)];
-            cbData[JSON_KEY(m_const_buffer_data.Amb)] >> m_const_buffer_data.Amb;
-            cbData[JSON_KEY(m_const_buffer_data.bAnim)] >> m_const_buffer_data.bAnim;
-            cbData[JSON_KEY(m_const_buffer_data.BoneCount)] >> m_const_buffer_data.BoneCount;
-            cbData[JSON_KEY(m_const_buffer_data.Diff)] >> m_const_buffer_data.Diff;
-            cbData[JSON_KEY(m_const_buffer_data.Emv)] >> m_const_buffer_data.Emv;
-            cbData[JSON_KEY(m_const_buffer_data.Spec)] >> m_const_buffer_data.Spec;
+            const Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
+            cbData[JSON_KEY(m_shared_material_data.Amb)] >> m_shared_material_data.Amb;
+            cbData[JSON_KEY(m_shared_material_data.Diff)] >> m_shared_material_data.Diff;
+            cbData[JSON_KEY(m_shared_material_data.Emv)] >> m_shared_material_data.Emv;
+            cbData[JSON_KEY(m_shared_material_data.Spec)] >> m_shared_material_data.Spec;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
 
             //renderingMode
@@ -160,40 +223,6 @@ namespace ehw
         return eResult::Success;
     }
 
-    void Material::clear_buffer()
-    {
-
-    }
-
-    void Material::bind_buffer_to_gpu_register()
-    {
-        for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
-        {
-            if (m_textures[slotIndex])
-            {
-                m_textures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
-            }
-        }
-
-        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
-        CB->SetData(&m_const_buffer_data);
-
-        eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
-        CB->bind_data(flag);
-
-        m_shader->bind_data();
-    }
-
-    void Material::unbind_buffer_from_gpu_register()
-    {
-        GraphicsShader::unbind_data();
-
-        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
-        CB->unbind_data();
-
-        Texture::ClearAll();
-    }
-
     void Material::set_texture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)
     {
         m_textures[(UINT)_slot] = _texture;
@@ -201,32 +230,34 @@ namespace ehw
         switch ((UINT)_slot)
         {
         case 0u:
-            m_const_buffer_data.bTex_0 = bTex;
+            m_shared_material_data.bTex_0 = bTex;
             break;
         case 1u:
-            m_const_buffer_data.bTex_1 = bTex;
+            m_shared_material_data.bTex_1 = bTex;
             break;
         case 2u:
-            m_const_buffer_data.bTex_2 = bTex;
+            m_shared_material_data.bTex_2 = bTex;
             break;
         case 3u:
-            m_const_buffer_data.bTex_3 = bTex;
+            m_shared_material_data.bTex_3 = bTex;
             break;
         case 4u:
-            m_const_buffer_data.bTex_4 = bTex;
+            m_shared_material_data.bTex_4 = bTex;
             break;
         case 5u:
-            m_const_buffer_data.bTex_5 = bTex;
+            m_shared_material_data.bTex_5 = bTex;
             break;
         case 6u:
-            m_const_buffer_data.bTex_6 = bTex;
+            m_shared_material_data.bTex_6 = bTex;
             break;
         case 7u:
-            m_const_buffer_data.bTex_7 = bTex;
+            m_shared_material_data.bTex_7 = bTex;
             break;
         default:
             ASSERT(false, "에러");
             break;
         }
     }
+
+
 }

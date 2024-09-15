@@ -68,20 +68,9 @@ namespace ehw
 		m_transform_updated = false;
 	}
 
-	void Transform::add_to_buffer(const MATRIX& _view, const MATRIX& _projection)
+	void Transform::set_data_to_GPU(const std::vector<tTransform>& _data)
 	{
-		tTransform data;
-		data.World = m_worldMatrix;
-		data.InverseWorld = m_worldMatrix.Invert();
-		data.WorldView = m_worldMatrix * _view;
-		data.WVP = data.WorldView * _projection;
-
-		s_buffer_data.push_back(data);
-	}
-
-	void Transform::bind_data()
-	{
-		s_buffer->SetData(s_buffer_data.data(), s_buffer_data.size());
+		s_buffer->SetData(_data.data(), (UINT)_data.size());
 		s_buffer->BindDataSRV();
 	}
 

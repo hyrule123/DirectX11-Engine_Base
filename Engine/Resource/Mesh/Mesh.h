@@ -12,7 +12,6 @@
 
 namespace ehw
 {
-	class VertexBuffer;
 	class GameObject;
 	class Material;
 	class FBXLoader;
@@ -35,6 +34,8 @@ namespace ehw
 		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 
+
+
 		void set_vertex_buffer(const std::shared_ptr<VertexBuffer>& _buf) {
 			m_vertex_buffer = _buf;
 		}
@@ -44,15 +45,20 @@ namespace ehw
 		}
 
 		template <typename Vertex> requires std::is_base_of_v<VertexBase, Vertex>
-		bool create(const std::vector<Vertex>& _vecVtx, const std::vector<UINT>& _vecIdx) {
+		bool create_vertex_buffer(const std::vector<Vertex>& _vertices) {
 			m_vertex_buffer = std::make_shared<VertexBuffer>();
-			bool result = m_vertex_buffer->create_vertex_buffer(_vecVtx);
-			result = result && create_index_buffer(_vecIdx);
-			return result;
+			return m_vertex_buffer->create_vertex_buffer(_vertices);
 		}
 		
 		bool create_index_buffer(const std::vector<UINT>& _indices) {
 			return create_index_buffer(static_cast<const UINT*>(_indices.data()), _indices.size());
+		}
+
+		template <typename Vertex> requires std::is_base_of_v<VertexBase, Vertex>
+		bool create(const std::vector<Vertex>& _vertices, const std::vector<UINT>& _indices) {
+			bool result = create_vertex_buffer(_vertices);
+			result = result && create_index_buffer(_indices);
+			return result;
 		}
 
 		void set_skeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }

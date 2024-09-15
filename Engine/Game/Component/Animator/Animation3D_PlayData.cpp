@@ -72,8 +72,6 @@ namespace ehw
 
 	bool Animation3D_PlayData::final_update()
 	{
-		
-
 		if (nullptr == m_skeleton || nullptr == m_currentAnimation)
 		{
 			return false;
@@ -123,10 +121,12 @@ namespace ehw
 			//만약 이미 마지막 프레임에 도달했을 경우 현재 프레임 유지
 			int maxFrameCount = m_currentAnimation->GetStartFrame() + m_currentAnimation->GetFrameLength() - 1;
 
-			if (m_Anim3DCBuffer.CurrentFrame >= maxFrameCount)
+			if (m_Anim3DCBuffer.CurrentFrame >= maxFrameCount) {
 				m_Anim3DCBuffer.NextFrame = maxFrameCount;	// 끝이면 현재 인덱스를 유지
-			else
+			}
+			else {
 				m_Anim3DCBuffer.NextFrame = m_Anim3DCBuffer.CurrentFrame + 1;
+			}
 
 			// 프레임간의 시간에 따른 비율을 구해준다.
 			m_Anim3DCBuffer.FrameRatio = (float)(dFrameIdx - (double)m_Anim3DCBuffer.CurrentFrame);
@@ -170,7 +170,6 @@ namespace ehw
 			{
 				return false;
 			}
-				
 
 			Animation3D_ComputeShader::Desc desc{};
 			desc.CurrentAnimKeyFrameBuffer = m_currentAnimation->GetKeyFrameSBuffer().get();
@@ -222,7 +221,6 @@ namespace ehw
 		if (m_skeleton)
 		{
 			//최종 Bone별 행렬이 저장될 Vector 크기를 재조정
-			//m_vecFinalBoneMat.resize(m_skeleton->GetBoneCount());
 			m_Anim3DCBuffer.BoneCount = m_skeleton->GetBoneCount();
 		}
 	}

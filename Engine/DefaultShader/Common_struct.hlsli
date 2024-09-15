@@ -19,8 +19,6 @@ struct alignas(16)  tGPUInitSetting
 	uint4 debugVar;
 };
 
-
-
 struct alignas(16)  tCB_Global
 {
 	uint2 uResolution;
@@ -47,7 +45,7 @@ struct alignas(16)  tCamera
 	MATRIX projection;
 };
 
-struct alignas(16) tCB_MaterialData
+struct alignas(16) tSharedMaterialData
 {
 	BOOL bTex_0;
 	BOOL bTex_1;
@@ -62,7 +60,10 @@ struct alignas(16) tCB_MaterialData
 	float4 Spec;
 	float4 Amb;
 	float4 Emv;
-	
+};
+
+struct alignas(16)  tIndividual_Material_Data
+{
 	// 3D Animation 정보
 	BOOL bAnim;
 	int BoneCount;

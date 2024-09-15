@@ -34,21 +34,17 @@ namespace ehw
 		tr->bind_data();
 
 		//Render
-		UINT iSubsetCount = GetMesh()->get_subset_count();
-		for (UINT i = 0; i < iSubsetCount; ++i)
+		auto mtrl = GetCurrentMaterial();
+		if (mtrl)
 		{
-			Material* mtrl = GetCurrentMaterial(i);
-			if (mtrl)
-			{
-				//메쉬 바인딩 - Mesh::Render 내부에서 진행하도록 변경
-				//GetMesh()->BindBuffer(i);
+			//메쉬 바인딩 - Mesh::Render 내부에서 진행하도록 변경
+			//GetMesh()->BindBuffer(i);
 
-				//재질 바인딩
-				mtrl->bind_buffer_to_gpu_register();
+			//재질 바인딩
+			mtrl->bind_buffer_to_gpu_register();
 
-				//메쉬 렌더링
-				GetMesh()->render(i);
-			}
+			//메쉬 렌더링
+			GetMesh()->render();
 		}
 	}
 }
