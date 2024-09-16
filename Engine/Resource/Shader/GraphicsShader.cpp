@@ -12,7 +12,7 @@
 namespace ehw
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(GraphicsShader::concrete_name)
+		: Shader(GraphicsShader::concrete_class_name)
 		, m_inputLayoutDescs{}
 		, m_inputLayout{}
 		, m_arrShaderCode{}
@@ -47,7 +47,7 @@ namespace ehw
 		return LoadFile_Json(_baseDir / _key_path);
 	}
 
-	eResult GraphicsShader::CreateByCompile(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)
+	eResult GraphicsShader::compile_from_source_code(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)
 	{
 		m_arrShaderCode[(int)_stage] = {};
 
@@ -80,7 +80,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GraphicsShader::CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize)
+	eResult GraphicsShader::compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
 		m_arrShaderCode[(int)_stage] = {};
 
@@ -91,10 +91,10 @@ namespace ehw
 		code.pData = _pByteCode;
 		code.dataSize = _ByteCodeSize;
 
-		return CreateShader(_stage, code.pData, code.dataSize);
+		return create_shader(_stage, code.pData, code.dataSize);
 	}
 
-	eResult GraphicsShader::CreateByCSO(eGSStage _stage, const std::fs::path& _FileName)
+	eResult GraphicsShader::compile_from_CSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
 		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
@@ -137,7 +137,7 @@ namespace ehw
 
 		//읽어온 바이트 코드로부터 쉐이더를 로딩해준다.
 		//실패시 동적할당 해제하고 오류 발생
-		eResult Result = CreateShader(_stage, code.blob->GetBufferPointer(), code.blob->GetBufferSize());
+		eResult Result = create_shader(_stage, code.blob->GetBufferPointer(), code.blob->GetBufferSize());
 		if (eResult_fail(Result))
 		{
 			code = {};
@@ -216,7 +216,7 @@ namespace ehw
 	{
 	}
 
-	void GraphicsShader::bind_data()
+	void GraphicsShader::bind_buffer_to_GPU_register()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 		
@@ -400,7 +400,7 @@ namespace ehw
 				//에딧 모드가 아닐 경우에만 로드
 				if (false == m_bEditMode && false == m_arrShaderCode[i].strKey.empty())
 				{
-					eResult result = CreateByCSO((eGSStage)i, m_arrShaderCode[i].strKey);
+					eResult result = compile_from_CSO((eGSStage)i, m_arrShaderCode[i].strKey);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("쉐이더 코드 생성 실패");
@@ -430,7 +430,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult GraphicsShader::CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize)
+	eResult GraphicsShader::create_shader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize)
 	{
 		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
 		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");

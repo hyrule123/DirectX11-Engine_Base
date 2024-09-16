@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Skeleton::Skeleton()
-		: Resource(Skeleton::concrete_name)
+		: Resource(Skeleton::concrete_class_name)
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
@@ -234,8 +234,8 @@ namespace ehw
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
 
-
-			const std::shared_ptr<Skeleton>& sklt = shared_from_this_T<Skeleton>();
+			std::shared_ptr<Skeleton> sklt = 
+				std::static_pointer_cast<Skeleton>(shared_from_this());
 
 			eResult result = anim->LoadFromFBX(sklt, &animClip[i]);
 
@@ -245,7 +245,7 @@ namespace ehw
 				return result;
 			}
 			
-			std::string animName(anim->get_strkey());
+			std::string animName(anim->get_path_key());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -300,7 +300,9 @@ namespace ehw
 			std::shared_ptr<Animation3D> ourAnim = std::shared_ptr<Animation3D>(otherAnim.second->Clone());
 
 			//스켈레톤 주소를 자신의것으로 변경
-			ourAnim->set_skeleton(shared_from_this_T<Skeleton>());
+			std::shared_ptr<Skeleton> my_shared_ptr =
+				std::static_pointer_cast<Skeleton>(my_shared_ptr);
+			ourAnim->set_skeleton(my_shared_ptr);
 
 			//위에서 찾은 일치하는 Bone 번호 인덱스를 가져온다.
 			for (size_t i = 0; i < matchingIndices.size(); ++i)

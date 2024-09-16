@@ -126,7 +126,7 @@ namespace ehw::editor
 			std::shared_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
-				strCurShader += curShader->get_keypath();
+				strCurShader += curShader->get_path_key();
 			}
 			else
 			{
@@ -156,7 +156,7 @@ namespace ehw::editor
 		std::shared_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
-			shaderKey += shader->get_keypath();
+			shaderKey += shader->get_path_key();
 		}
 		else
 		{
@@ -179,7 +179,7 @@ namespace ehw::editor
 			auto Tex = mTargetMaterial->get_texture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_keypath().data());
+				ImGui::Text(Tex->get_path_key().data());
 			}
 			else
 			{
@@ -297,7 +297,7 @@ namespace ehw::editor
 			const auto& materials = ResourceManager<Material>::GetInst().GetResources();
 			for (auto& mtrl : materials)
 			{
-				mCurrentLoadedMtrl.AddItem(mtrl.second->get_keypath());
+				mCurrentLoadedMtrl.AddItem(mtrl.second->get_path_key());
 			}
 		}
 		LoadFromFile();
@@ -306,7 +306,7 @@ namespace ehw::editor
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_keypath().empty())
+		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_path_key().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;

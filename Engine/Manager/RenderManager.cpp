@@ -111,7 +111,7 @@ namespace ehw
 		load_default_resources();
 
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
-		initSetting->OnExcute();
+		initSetting->on_execute();
 
 		m_sceneRenderAgent.Init();
 
@@ -366,7 +366,7 @@ namespace ehw
 
 		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
 		cb->SetData(&info);
-		cb->bind_data(eShaderStageFlag::ALL);
+		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 	}
 	void RenderManager::CopyRenderTarget()
 	{
@@ -413,7 +413,7 @@ namespace ehw
 
 		ConstBuffer* global = GetConstBuffer(eCBType::Global);
 		global->SetData(&gGlobal);
-		global->bind_data();
+		global->bind_buffer_to_GPU_register();
 	}
 
 

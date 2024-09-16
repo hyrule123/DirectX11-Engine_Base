@@ -10,7 +10,7 @@
 namespace ehw
 {
 	ParticleShader::ParticleShader()
-		: ComputeShader(ParticleShader::concrete_name, uint3(128, 1, 1))
+		: ComputeShader(ParticleShader::concrete_class_name, uint3(128, 1, 1))
 		, mBuffer(nullptr)
 		, mSharedBuffer(nullptr)
 	{
@@ -20,18 +20,18 @@ namespace ehw
 	{
 	}
 
-	bool ParticleShader::bind_data()
+	bool ParticleShader::bind_buffer_to_GPU_register()
 	{
 		mBuffer->BindDataUAV(0);
 		mSharedBuffer->BindDataUAV(1);
 
 		uint3 dataCounts = { mBuffer->GetStride(), 1u, 1u };
-		CalculateGroupCount(dataCounts);
+		calculate_group_count(dataCounts);
 
 		return true;
 	}
 
-	void ParticleShader::UnBindData()
+	void ParticleShader::unbind_buffer_from_GPU_register()
 	{
 		mBuffer->unbind_data();
 		mSharedBuffer->unbind_data();

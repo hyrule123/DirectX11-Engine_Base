@@ -36,7 +36,7 @@ namespace ehw
 		std::shared_ptr<StructBuffer> GetBoneOffsetBuffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬
 
 		//반환타입 변수길이가 좀 김
-		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHasher_StringView, std::equal_to<>>& 
+		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>& 
 			GetAnimations() const { return m_animations; }
 
 		std::shared_ptr<Animation3D> FindAnimation(const std::string_view _strAnimName);
@@ -55,7 +55,7 @@ namespace ehw
 		// 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
 		std::shared_ptr<StructBuffer>					m_pBoneOffset;	  
 
-		std::unordered_map<std::string, std::shared_ptr<Animation3D>, tHasher_StringView, std::equal_to<>>	m_animations;
+		std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>	m_animations;
 	};
 }
 

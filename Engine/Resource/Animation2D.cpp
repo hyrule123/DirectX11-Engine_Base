@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Animation2D::Animation2D()
-		: Animation(Animation2D::concrete_name)
+		: Animation(Animation2D::concrete_class_name)
 		, mAnimator(nullptr)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}
@@ -142,7 +142,7 @@ namespace ehw
 
 	}
 
-	void Animation2D::bind_data()
+	void Animation2D::bind_buffer_to_GPU_register()
 	{
 		mAtlas->BindDataSRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
@@ -156,7 +156,7 @@ namespace ehw
 		info.atlasSize = mSpriteSheet[mIndex].AtlasSize;
 
 		cb->SetData(&info);
-		cb->bind_data(eShaderStageFlag::Pixel);
+		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
 	}
 
 	void Animation2D::Reset()
@@ -166,7 +166,7 @@ namespace ehw
 		mbComplete = false;
 	}
 
-	void Animation2D::UnBindData()
+	void Animation2D::unbind_buffer_from_GPU_register()
 	{
 		//Texture clear
 		Texture::ClearSRV(GPU::Register::t::AtlasTexture);
@@ -177,7 +177,7 @@ namespace ehw
 		info.animationType = (uint)eDimensionType::NOT_SET;
 
 		cb->SetData(&info);
-		cb->bind_data(eShaderStageFlag::Pixel);
+		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
 	}
 
 

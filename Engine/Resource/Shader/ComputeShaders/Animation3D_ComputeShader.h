@@ -14,24 +14,26 @@ namespace ehw
         public ComputeShader
     {
 		CLASS_NAME(Animation3D_ComputeShader);
+		REGISTER_INSTANCE_DEFAULT(Animation3D_ComputeShader);
 	public:
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();
 
 		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
-		virtual bool bind_data();
-		virtual void UnBindData();
+		virtual bool bind_buffer_to_GPU_register();
+		virtual void unbind_buffer_from_GPU_register();
 
 		struct Desc
 		{
-			tCB_Animation3D* Anim3DData{};
-			StructBuffer* CurrentAnimKeyFrameBuffer{};
-			StructBuffer* NextAnimKeyFrameBuffer{};
-			StructBuffer* BoneOffsetMatrixBuffer{};
-			StructBuffer* FinalBoneTranslationMatrixBuffer{};
+			tAnimation3D_SharedInfo* shared_animation_data{};
+			StructBuffer* current_animation_key_frame_buffer{};
+			StructBuffer* next_animation_keyframe_buffer{};
+			StructBuffer* bone_offset_matrix_buffer{};
+			StructBuffer* final_bone_translation_matrix_buffer{};
 		};
-		void SetDesc(const Animation3D_ComputeShader::Desc& _desc) { m_desc = _desc; }
+		bool on_execute(const Animation3D_ComputeShader::Desc& _desc);
+
 	private:
 		Desc m_desc;
     };

@@ -7,7 +7,7 @@
 namespace ehw {
 
 	VertexBuffer::VertexBuffer()
-		: Resource(VertexBuffer::concrete_name)
+		: Resource(VertexBuffer::concrete_class_name)
 	{
 		reset();
 	}

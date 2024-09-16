@@ -5,7 +5,7 @@
 namespace ehw
 {
 	ConstBuffer::ConstBuffer(uint _type)
-		: GPUBuffer(ConstBuffer::concrete_name, eBufferType::Const)
+		: GPUBuffer(ConstBuffer::concrete_class_name, eBufferType::Const)
 		, m_constBufferType(_type)
 		, mDataSize()
 		, mDataCount()
@@ -56,7 +56,7 @@ namespace ehw
 		}
 	}
 
-	void ConstBuffer::bind_data(eShaderStageFlag_ _stageFlag)
+	void ConstBuffer::bind_buffer_to_GPU_register(eShaderStageFlag_ _stageFlag)
 	{
 		if (eShaderStageFlag::NONE == _stageFlag)
 		{

@@ -48,7 +48,7 @@ namespace ehw::editor
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 
-	std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHasher_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
+	std::unordered_map<std::string, std::shared_ptr<EditorBase>, Hasher_StringView, std::equal_to<>> EditorManager::mGuiWindows{};
 	//std::vector<EditorBase*> EditorManager::mGuiWindows{};
 	std::vector<std::shared_ptr<EditorObject>> EditorManager::mEditorObjects{};
 	std::vector<std::shared_ptr<DebugObject>> EditorManager::mDebugObjects{};
@@ -426,7 +426,7 @@ namespace ehw::editor
 	bool EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
-		const std::string_view guiName = _pBase->get_keypath();
+		const std::string_view guiName = _pBase->get_path_key();
 
 		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
 		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
@@ -438,7 +438,7 @@ namespace ehw::editor
 			//_pBase->MakeUniqueKeyByName();
 		}
 
-		mGuiWindows.insert(std::make_pair(_pBase->get_keypath(), _pBase));
+		mGuiWindows.insert(std::make_pair(_pBase->get_path_key(), _pBase));
 
 		_pBase->InitRecursive();
 

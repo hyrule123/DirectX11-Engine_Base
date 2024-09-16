@@ -76,7 +76,7 @@ namespace ehw
 		m_pxScene = PhysXInstance::GetInst().GetPhysX().createScene(sceneDescription);
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
-		m_pxScene->setName(gameScene->get_strkey().data());
+		m_pxScene->setName(gameScene->get_concrete_class_name().data());
 
 		m_pxScene->userData = this;
 	}

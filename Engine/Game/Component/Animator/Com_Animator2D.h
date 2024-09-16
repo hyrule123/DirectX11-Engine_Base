@@ -64,8 +64,8 @@ namespace ehw
 		tEvents* FindEvents(const std::string_view _name) const; 
 		void Play(const std::string_view _name, bool _loop = true);
 
-		virtual void bind_data() override;
-		virtual void UnBindData() override;
+		virtual void bind_buffer_to_GPU_register() override;
+		virtual void unbind_buffer_from_GPU_register() override;
 
 		std::function<void()>& GetStartEvent(const std::string_view _name) const;
 		std::function<void()>& GetCompleteEvent(const std::string_view _name) const;
@@ -73,8 +73,8 @@ namespace ehw
 		std::function<void()>& GetEvent(const std::string_view _name, uint _index) const;
 
 	private:
-		std::unordered_map<std::string, Animation2D*, tHasher_StringView, std::equal_to<>>	mAnimations;
-		std::unordered_map<std::string, tEvents*, tHasher_StringView, std::equal_to<>>		mEvents;
+		std::unordered_map<std::string, Animation2D*, Hasher_StringView, std::equal_to<>>	mAnimations;
+		std::unordered_map<std::string, tEvents*, Hasher_StringView, std::equal_to<>>		mEvents;
 		Animation2D* mActiveAnimation;
 		bool mbLoop;
 	};

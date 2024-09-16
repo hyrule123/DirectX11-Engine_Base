@@ -16,7 +16,7 @@
 namespace ehw
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(Animation3D_ComputeShader::concrete_name, uint3(256u, 1u, 1u))
+		: ComputeShader(Animation3D_ComputeShader::concrete_class_name, uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}
@@ -26,65 +26,71 @@ namespace ehw
 
 	eResult Animation3D_ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		return ComputeShader::CreateByHeader(CS_Animation3D, sizeof(CS_Animation3D));
+		return ComputeShader::compile_from_byte_code(CS_Animation3D, sizeof(CS_Animation3D));
 	}
 
 
-	bool Animation3D_ComputeShader::bind_data()
+	bool Animation3D_ComputeShader::bind_buffer_to_GPU_register()
 	{
 		//참고 - NextAnimKeyFrameBuffer은 없을수도 있음
 		if (false == 
 			(
-				m_desc.Anim3DData 
-				|| m_desc.CurrentAnimKeyFrameBuffer 
-				|| m_desc.BoneOffsetMatrixBuffer 
-				|| m_desc.FinalBoneTranslationMatrixBuffer))
+				m_desc.shared_animation_data 
+				|| m_desc.current_animation_key_frame_buffer 
+				|| m_desc.bone_offset_matrix_buffer 
+				|| m_desc.final_bone_translation_matrix_buffer))
 			return false;
 
 		// 구조화버퍼 전달
-		m_desc.CurrentAnimKeyFrameBuffer->BindDataSRV(GPU::Register::t::g_FrameTransArray, eShaderStageFlag::Compute);// t16;
+		m_desc.current_animation_key_frame_buffer->BindDataSRV(GPU::Register::t::g_FrameTransArray, eShaderStageFlag::Compute);// t16;
 
 		//다음 애니메이션 정보가 있는 경우 바인드
-		if (m_desc.NextAnimKeyFrameBuffer)
+		if (m_desc.next_animation_keyframe_buffer)
 		{
-			m_desc.NextAnimKeyFrameBuffer->BindDataSRV(GPU::Register::t::g_ChangeFrameTransArray, eShaderStageFlag::Compute);//t17
+			m_desc.next_animation_keyframe_buffer->BindDataSRV(GPU::Register::t::g_ChangeFrameTransArray, eShaderStageFlag::Compute);//t17
 		}
 
 		//본의 오프셋 행렬 버퍼 바인드
-		m_desc.BoneOffsetMatrixBuffer->BindDataSRV(GPU::Register::t::g_BoneOffsetArray, eShaderStageFlag::Compute);// t18
+		m_desc.bone_offset_matrix_buffer->BindDataSRV(GPU::Register::t::g_BoneOffsetArray, eShaderStageFlag::Compute);// t18
 
 		//본의 최종 행렬정보를 저장할 UAV 바인드
-		m_desc.FinalBoneTranslationMatrixBuffer->BindDataUAV(GPU::Register::u::g_FinalBoneMatrixArrayRW); // u0
+		m_desc.final_bone_translation_matrix_buffer->BindDataUAV(GPU::Register::u::g_FinalBoneMatrixArrayRW); // u0
 		
 		//애니메이션 3D 상수버퍼 바인드
 		ConstBuffer* pAnimCB = RenderManager::GetInst().GetConstBuffer(eCBType::Animation3D);
-		pAnimCB->SetData(m_desc.Anim3DData);
-		pAnimCB->bind_data();
+		pAnimCB->SetData(m_desc.shared_animation_data);
+		pAnimCB->bind_buffer_to_GPU_register();
 
 		//데이터 갯수 계산
 		uint3 DataCounts{};
-		DataCounts.x = m_desc.Anim3DData->BoneCount;
+		DataCounts.x = m_desc.shared_animation_data->BoneCount;
 		DataCounts.y = 1;
 		DataCounts.z = 1;
 		
 		//데이터 그룹 갯수 계산
-		CalculateGroupCount(DataCounts);
+		calculate_group_count(DataCounts);
 
 		return true;
 	}
 
 
-	void Animation3D_ComputeShader::UnBindData()
+	void Animation3D_ComputeShader::unbind_buffer_from_GPU_register()
 	{
 		// 전달한 구조화버퍼 전부 UnBind 하고 비워줌
-		m_desc.CurrentAnimKeyFrameBuffer->unbind_data();
-		if (m_desc.NextAnimKeyFrameBuffer)
+		m_desc.current_animation_key_frame_buffer->unbind_data();
+		if (m_desc.next_animation_keyframe_buffer)
 		{
-			m_desc.NextAnimKeyFrameBuffer->unbind_data();
+			m_desc.next_animation_keyframe_buffer->unbind_data();
 		}
-		m_desc.BoneOffsetMatrixBuffer->unbind_data();
-		m_desc.FinalBoneTranslationMatrixBuffer->unbind_data();
+		m_desc.bone_offset_matrix_buffer->unbind_data();
+		m_desc.final_bone_translation_matrix_buffer->unbind_data();
 		
-		memset(&m_desc, 0, sizeof(Desc));
+		m_desc = {};
+	}
+
+	bool Animation3D_ComputeShader::on_execute(const Animation3D_ComputeShader::Desc& _desc)
+	{
+		m_desc = _desc;
+		return ComputeShader::on_execute();
 	}
 }

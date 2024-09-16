@@ -10,11 +10,10 @@
 #include "Engine/Resource/Model3D/Model3D.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 
-
 namespace ehw
 {
 	Animation3D::Animation3D()
-        : Animation(Animation3D::concrete_name)
+        : Animation(Animation3D::concrete_class_name)
         , m_OwnerSkeleton{}
         , m_StartFrame{}
         , m_EndFrame{}
@@ -50,12 +49,12 @@ namespace ehw
 	{
 	}
 
-    void Animation3D::bind_data()
+    void Animation3D::bind_buffer_to_GPU_register()
     {
         ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
         m_SBufferKeyFrame->BindDataSRV();
     }
-    void Animation3D::UnBindData()
+    void Animation3D::unbind_buffer_from_GPU_register()
     {
         m_SBufferKeyFrame->unbind_data();
     }

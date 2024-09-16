@@ -17,7 +17,7 @@
 namespace ehw
 {
 	GameObject::GameObject()
-		: Entity(GameObject::concrete_name)
+		: Entity(GameObject::concrete_class_name)
 		, m_baseComponents()
 		, m_scene()
 		, m_layer(UINT_MAX)
@@ -75,7 +75,7 @@ namespace ehw
 			else
 			{
 				std::wstringstream stream{};
-				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->get_strkey());
+				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->get_concrete_class_name());
 				stream << L"스크립트 복사 실패.\n";
 				DEBUG_LOG_W(stream.str().c_str());
 			}
@@ -535,7 +535,7 @@ namespace ehw
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (_strKey == m_scripts[i]->get_strkey())
+			if (_strKey == m_scripts[i]->get_concrete_class_name())
 			{
 				retScript = m_scripts[i];
 				break;

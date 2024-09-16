@@ -182,7 +182,7 @@ namespace ehw
 	template<typename T>
 	inline T* GameObject::GetScript()
 	{
-		return static_cast<T*>(GetScript(T::concrete_name));
+		return static_cast<T*>(GetScript(T::concrete_class_name));
 	};
 
 	inline Transform* GameObject::transform()

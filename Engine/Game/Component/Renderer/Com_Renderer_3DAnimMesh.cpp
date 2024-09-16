@@ -13,7 +13,7 @@
 namespace ehw
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
-		: Com_Renderer_Mesh(Com_Renderer_3DAnimMesh::concrete_name)
+		: Com_Renderer_Mesh(Com_Renderer_3DAnimMesh::concrete_class_name)
 	{
 	}
 
@@ -46,9 +46,9 @@ namespace ehw
 	//	auto tr = gameObject()->GetComponent<Transform>();
 	//	tr->clear_buffer_data();
 	//	tr->add_to_buffer();
-	//	tr->bind_data();
+	//	tr->bind_buffer_to_GPU_register();
 
-	//	animator->bind_data();
+	//	animator->bind_buffer_to_GPU_register();
 	//	//Render
 	//	UINT iSubsetCount = GetMesh()->get_subset_count();
 	//	for (UINT i = 0; i < iSubsetCount; ++i)
@@ -73,7 +73,7 @@ namespace ehw
 	//		}
 	//	}
 
-	//	animator->UnBindData();
+	//	animator->unbind_buffer_from_GPU_register();
 	//}
 	}
 }

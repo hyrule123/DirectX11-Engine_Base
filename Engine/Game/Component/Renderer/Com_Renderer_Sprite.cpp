@@ -14,7 +14,7 @@
 namespace ehw
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
-		: Com_Renderer_Mesh(Com_Renderer_Sprite::concrete_name)
+		: Com_Renderer_Mesh(Com_Renderer_Sprite::concrete_class_name)
 		, mAnimator(nullptr)
 	{
 	}
@@ -51,7 +51,7 @@ namespace ehw
 			return;
 
 		//재질 바인딩
-		mAnimator->bind_data();
+		mAnimator->bind_buffer_to_GPU_register();
 
 		//메쉬 바인딩 - Render 내부에서 실행되도록 변경
 		//GetMesh()->BindBuffer();
@@ -66,6 +66,6 @@ namespace ehw
 		//GetCurrentMaterial(0)->unbind_data();
 
 		//애니메이터 언바인드
-		//mAnimator->UnBindData();
+		//mAnimator->unbind_buffer_from_GPU_register();
 	}
 }

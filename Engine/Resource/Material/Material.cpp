@@ -69,9 +69,9 @@ namespace ehw
         CB->SetData(&m_shared_material_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
-        CB->bind_data(flag);
+        CB->bind_buffer_to_GPU_register(flag);
 
-        m_shader->bind_data();
+        m_shader->bind_buffer_to_GPU_register();
     }
 
     void Material::clear_buffers()
@@ -128,7 +128,7 @@ namespace ehw
             //shader
             if (m_shader)
             {
-                ser[JSON_KEY(m_shader)] << m_shader->get_strkey();
+                ser[JSON_KEY(m_shader)] << m_shader->get_concrete_class_name();
             }
             else
             {
@@ -142,7 +142,7 @@ namespace ehw
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_strkey();
+                    textures[i] << m_textures[i]->get_concrete_class_name();
                 }
                 else
                 {

@@ -174,4 +174,18 @@ namespace ehw {
 		}
 	}
 
+	size_t SceneRenderAgent::MeshMaterialKey::Hasher::operator()(const MeshMaterialKey& _key) const
+	{
+		union key_maker {
+			static_assert(sizeof(size_t) == sizeof(uint64), "size_t가 64bit가 아님. 처리코드 필요");
+			struct key_pair {
+				uint32 a, b;
+			} pair;
+			size_t key;
+		} keymaker;
+		keymaker.pair.a = _key.mesh->GetID();
+		keymaker.pair.b = _key.material->GetID();
+		return keymaker.key;
+	}
+
 }

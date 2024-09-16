@@ -60,9 +60,9 @@ namespace ehw
 		//아틀라스를 균일하게 조각조각 내줌
 		void CreateXY(const std::string_view _name, std::shared_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
-		void bind_data();
+		void bind_buffer_to_GPU_register();
 		void Reset();
-		void UnBindData();
+		void unbind_buffer_from_GPU_register();
 
 		bool IsComplete() const { return mbComplete; }
 		const std::string& GetAnimationName() const { return mAnimationName; }

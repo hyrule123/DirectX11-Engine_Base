@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Com_Camera::Com_Camera()
-		: Component(Com_Camera::concrete_name)
+		: Component(Com_Camera::concrete_class_name)
 		, m_camera_matrices{}
 		, m_projectionType(eProjectionType::None)
 		, m_isEnableCulling(true)
@@ -114,7 +114,7 @@ namespace ehw
 				}
 			}
 
-			Transform::bind_data();
+			Transform::bind_buffer_to_GPU_register();
 			Light_3D::render_lights(i);
 		}
 	}
@@ -286,7 +286,7 @@ namespace ehw
 	{
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
 		cb->SetData(&m_camera_matrices);
-		cb->bind_data();
+		cb->bind_buffer_to_GPU_register();
 	}
 
 	Com_Camera::CullingAgent::CullingAgent(const std::string_view key)
@@ -295,14 +295,14 @@ namespace ehw
 	}
 
 	Com_Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
-		: Com_Camera::CullingAgent(CullingAgent_Orthographic::concrete_name)
+		: Com_Camera::CullingAgent(CullingAgent_Orthographic::concrete_class_name)
 	{
 	}
 	Com_Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::CullingAgent_Perspective()
-		: Com_Camera::CullingAgent(CullingAgent_Perspective::concrete_name)
+		: Com_Camera::CullingAgent(CullingAgent_Perspective::concrete_class_name)
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::~CullingAgent_Perspective()

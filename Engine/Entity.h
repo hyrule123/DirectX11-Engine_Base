@@ -3,7 +3,7 @@
 
 //클래스의 헤더 최상단에 작성. 클래스별 이름을 등록한다.
 #define CLASS_NAME(_class_) \
-public: static inline constexpr const std::string_view concrete_name = #_class_
+public: static inline constexpr const std::string_view concrete_class_name = #_class_
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_ABLE(_type) \
@@ -30,12 +30,14 @@ namespace ehw
 
 		virtual ~Entity();
 
-		inline const std::string_view get_strkey() const { return m_strKey; }
+		const std::string_view get_concrete_class_name() const { 
+			return m_concrete_class_name; 
+		}
 		uint32 GetID() const { return m_ID; }
 
 	private:
 		const uint32 m_ID;
-		const std::string_view m_strKey;
+		const std::string_view m_concrete_class_name;
 
 		static uint32 g_nextID;
 	};

@@ -19,7 +19,7 @@ namespace ehw::editor
 
 	bool Widget_List::BeginUI()
 	{
-		bool retval = ImGui::BeginListBox(get_keypath().c_str(), mSize);
+		bool retval = ImGui::BeginListBox(get_path_key().c_str(), mSize);
 		if (retval)
 		{
 			ImGui::SetNextWindowFocus();
@@ -29,7 +29,7 @@ namespace ehw::editor
 
 	void Widget_List::UpdateUI()
 	{
-		ImGui::SetWindowFocus(get_keypath().c_str());
+		ImGui::SetWindowFocus(get_path_key().c_str());
 		for (size_t i = 0; i < mResourceList.size(); i++)
 		{
 			bool bselectable = (mListIndex == i);

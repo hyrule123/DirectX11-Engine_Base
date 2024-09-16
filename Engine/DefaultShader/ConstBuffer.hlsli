@@ -19,7 +19,7 @@ CBUFFER(g_CB_camera, tCamera, b, 1);
 CBUFFER(CB_MaterialData, tSharedMaterialData, b, 2);
 CBUFFER(CB_ComputeShader, tCB_ComputeShader, b, 3);
 CBUFFER(CB_Animation2D, tCB_Animation2D, b, 4);
-CBUFFER(CB_Animation3D, tCB_Animation3D, b, 5);
+CBUFFER(g_shared_animation3D_data, tAnimation3D_SharedInfo, b, 5);
 CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 6);
 CBUFFER(CB_Noise, tCB_Noise, b, 7);
 

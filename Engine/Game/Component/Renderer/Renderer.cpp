@@ -75,15 +75,15 @@ namespace ehw
 
 		try
 		{
-			Json::Value& renderer = ser[get_strkey()];
+			Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
-			renderer[JSON_KEY(m_mesh)] << m_mesh->get_keypath();
+			renderer[JSON_KEY(m_mesh)] << m_mesh->get_path_key();
 
 			//materials
 			{
 				Json::Value& materials = renderer[JSON_KEY(m_materials)];
-				materials << m_shared_material->get_keypath();
+				materials << m_shared_material->get_path_key();
 			}
 
 			//m_bCullingEnable
@@ -107,7 +107,7 @@ namespace ehw
 
 		try
 		{
-			const Json::Value& renderer = ser[get_strkey()];
+			const Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
 			{

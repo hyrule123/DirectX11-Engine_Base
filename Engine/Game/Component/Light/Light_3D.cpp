@@ -20,7 +20,7 @@
 namespace ehw
 {
 	Light_3D::Light_3D()
-		: Light(Light_3D::concrete_name, eDimensionType::_3D)
+		: Light(Light_3D::concrete_class_name, eDimensionType::_3D)
 	{
 	}
 
@@ -47,7 +47,7 @@ namespace ehw
 
 		try
 		{
-			Json::Value& light3d = ser[get_strkey()];
+			Json::Value& light3d = ser[get_concrete_class_name()];
 
 			//m_attribute
 			{
@@ -85,7 +85,7 @@ namespace ehw
 
 		try
 		{
-			const Json::Value& light3d = ser[get_strkey()];
+			const Json::Value& light3d = ser[get_concrete_class_name()];
 
 			//m_attribute
 			{
@@ -209,7 +209,7 @@ namespace ehw
 		count.count = (uint)s_buffer_data[_light_type].size();
 
 		s_const_buffer->SetData(&count);
-		s_const_buffer->bind_data();
+		s_const_buffer->bind_buffer_to_GPU_register();
 
 		s_struct_buffer->SetData(s_buffer_data[_light_type].data(), s_buffer_data[_light_type].size());
 		s_light_materials[_light_type]->bind_buffer_to_gpu_register();

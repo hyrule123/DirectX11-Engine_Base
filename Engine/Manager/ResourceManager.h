@@ -37,7 +37,7 @@ namespace ehw
 		template <typename DerivedResType = ResourceTypes>
 		inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
 
-		const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>>&
+		const std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, Hasher_StringView, std::equal_to<>>&
 			GetResources() { return m_Resources; }
 
 		inline std::vector<std::shared_ptr<Resource>> GetResourcesVector();
@@ -55,7 +55,7 @@ namespace ehw
 		bool m_bInitialized;
 		std::fs::path m_BaseDir;
 
-		std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, tHasher_StringView, std::equal_to<>> m_Resources;
+		std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, Hasher_StringView, std::equal_to<>> m_Resources;
 	};
 
 	template<typename ResourceTypes>
@@ -178,7 +178,7 @@ namespace ehw
 			return eResult::Fail_InValid;
 		}
 
-		return _resPtr->save(m_BaseDir, _resPtr->get_keypath());
+		return _resPtr->save(m_BaseDir, _resPtr->get_path_key());
 	}
 
 	template<typename ResourceTypes>
@@ -194,7 +194,7 @@ namespace ehw
 		}
 
 		//기존 키값 임시 저장
-		std::string tempStr{ _resPtr->get_keypath() };
+		std::string tempStr{ _resPtr->get_path_key() };
 		_resPtr->set_keypath(_key_path.string());
 
 		//저장하고

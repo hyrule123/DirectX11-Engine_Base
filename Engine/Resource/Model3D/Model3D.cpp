@@ -27,7 +27,7 @@
 namespace ehw
 {
 	Model3D::Model3D()
-		: Resource(Model3D::concrete_name)
+		: Resource(Model3D::concrete_class_name)
 	{
 	}
 
@@ -86,7 +86,7 @@ namespace ehw
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					skeletonStrKey = m_skeleton->get_strkey();
+					skeletonStrKey = m_skeleton->get_concrete_class_name();
 				}
 
 				ser[JSON_KEY(m_skeleton)] << skeletonStrKey;
@@ -111,7 +111,7 @@ namespace ehw
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"] << m_meshContainers[i].mesh->get_strkey();
+				meshContainer["mesh"] << m_meshContainers[i].mesh->get_concrete_class_name();
 
 				//material
 				Json::Value& material = meshContainer["material"];
@@ -123,7 +123,7 @@ namespace ehw
 					return result;
 				}
 
-				material << m_meshContainers[i].material->get_keypath();
+				material << m_meshContainers[i].material->get_path_key();
 			}
 		}
 		catch (const std::exception& _err)
@@ -222,7 +222,7 @@ namespace ehw
 		newObjects.push_back(std::make_unique<GameObject>());
 		GameObject* root = newObjects.back().get();
 
-		root->SetName(get_strkey());
+		root->SetName(get_concrete_class_name());
 
 		Transform* rootTransform = root->GetComponent<Transform>();
 		
@@ -615,7 +615,7 @@ namespace ehw
 			const std::shared_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->get_keypath() };
+				std::string texKey{ tex->get_path_key() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -647,7 +647,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey(tex->get_keypath());
+							std::string texKey(tex->get_path_key());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");

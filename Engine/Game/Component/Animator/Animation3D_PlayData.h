@@ -62,8 +62,9 @@ namespace ehw
 		//이전 프레임(현재 프레임은 아래 구조체에 저장되어 있음)
 		int								m_PrevFrame;
 
+		
 		//GPU에 보낼 데이터 모음 구조체
-		tCB_Animation3D					m_Anim3DCBuffer;
+		tAnimation3D_SharedInfo					m_Anim3DCBuffer;
 
 		//한 프레임별 시간 저장용 변수
 		float							m_fClipUpdateTime;

@@ -12,8 +12,8 @@ namespace ehw
 		ParticleShader();
 		virtual ~ParticleShader();
 
-		virtual bool bind_data() override;
-		virtual void UnBindData() override;
+		virtual bool bind_buffer_to_GPU_register() override;
+		virtual void unbind_buffer_from_GPU_register() override;
 
 		void SetStrcutedBuffer(StructBuffer* _buffer) { mBuffer = _buffer; }
 		void SetSharedStrutedBuffer(StructBuffer* _buffer) { mSharedBuffer = _buffer; }

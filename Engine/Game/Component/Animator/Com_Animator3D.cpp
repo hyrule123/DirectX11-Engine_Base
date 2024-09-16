@@ -20,7 +20,7 @@
 namespace ehw
 {
 	Com_Animator3D::Com_Animator3D()
-		: Animator(Com_Animator3D::concrete_name, eDimensionType::_3D)
+		: Animator(Com_Animator3D::concrete_class_name, eDimensionType::_3D)
 		, m_sharedPlayData()
 	{
 	}
@@ -155,20 +155,20 @@ namespace ehw
 		return ret;
 	}
 
-	void Com_Animator3D::bind_data()
+	void Com_Animator3D::bind_buffer_to_GPU_register()
 	{
 		if (m_sharedPlayData)
 		{
-			m_sharedPlayData->bind_data();
+			m_sharedPlayData->bind_buffer_to_GPU_register();
 		}
 	}
 
 
-	void Com_Animator3D::UnBindData()
+	void Com_Animator3D::unbind_buffer_from_GPU_register()
 	{
 		if (m_sharedPlayData)
 		{
-			m_sharedPlayData->UnBindData();
+			m_sharedPlayData->unbind_buffer_from_GPU_register();
 		}
 	}
 

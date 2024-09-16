@@ -17,7 +17,7 @@
 
 namespace ehw {
     Deffered_Mtrl::Deffered_Mtrl()
-        : Material(Deffered_Mtrl::concrete_name)
+        : Material(Deffered_Mtrl::concrete_class_name)
     {
         std::shared_ptr<GraphicsShader> shader = ResourceManager<GraphicsShader>::GetInst().load(strKey::defaultRes::shader::graphics::DefferedShader);
 
@@ -66,9 +66,9 @@ namespace ehw {
 			auto tr = gameObject()->GetComponent<Transform>();
 			tr->clear_buffer_data();
 			tr->add_to_buffer();
-			tr->bind_data();
+			tr->bind_buffer_to_GPU_register();
 
-			animator->bind_data();
+			animator->bind_buffer_to_GPU_register();
 			//Render
 			UINT iSubsetCount = GetMesh()->get_subset_count();
 			for (UINT i = 0; i < iSubsetCount; ++i)
@@ -93,7 +93,7 @@ namespace ehw {
 				}
 			}
 
-			animator->UnBindData();
+			animator->unbind_buffer_from_GPU_register();
 
 		}
     }
@@ -107,10 +107,10 @@ namespace ehw {
     {
         std::shared_ptr<GraphicsShader> deffered_opaque = std::make_unique<GraphicsShader>();
 
-        eResult result = deffered_opaque->CreateByHeader(eGSStage::Vertex, VS_Deffered, sizeof(VS_Deffered));
+        eResult result = deffered_opaque->compile_from_byte_code(eGSStage::Vertex, VS_Deffered, sizeof(VS_Deffered));
         ASSERT(eResult_success(result), "쉐이더 컴파일 실패");
 
-        result = deffered_opaque->CreateByHeader(eGSStage::Pixel, PS_Deffered, sizeof(PS_Deffered));
+        result = deffered_opaque->compile_from_byte_code(eGSStage::Pixel, PS_Deffered, sizeof(PS_Deffered));
         ASSERT(eResult_success(result), "쉐이더 컴파일 실패");
 
         ResourceManager<GraphicsShader>::GetInst().Insert(g_strKey_deffered_opaque_shader, deffered_opaque);

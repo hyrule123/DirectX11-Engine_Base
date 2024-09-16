@@ -16,7 +16,7 @@ namespace ehw
 	
 
 	GridScript::GridScript()
-		: Script(GridScript::concrete_name)
+		: Script(GridScript::concrete_class_name)
 		, mCamera(nullptr)
 	{
 
@@ -67,7 +67,7 @@ namespace ehw
 		//data.resolution = resolution;
 		//
 		//CB->SetData(&data);
-		//CB->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		//CB->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 
 

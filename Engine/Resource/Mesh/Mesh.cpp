@@ -28,7 +28,7 @@
 namespace ehw
 {
 	Mesh::Mesh()
-		: Resource(Mesh::concrete_name)
+		: Resource(Mesh::concrete_class_name)
 		, m_vertex_buffer{}
 		, m_index_buffer{}
 		, m_index_topology{}
@@ -74,7 +74,7 @@ namespace ehw
 
 		if (m_vertex_buffer) {
 			ResourceManager<VertexBuffer>::GetInst().save(m_vertex_buffer.get());
-			ser << m_vertex_buffer->get_keypath();
+			ser << m_vertex_buffer->get_path_key();
 		}
 		else {
 			ser << "";
@@ -86,7 +86,7 @@ namespace ehw
 		ser << m_index_buffer_data;
 
 		if (m_skeleton) {
-			ser << m_skeleton->get_keypath();
+			ser << m_skeleton->get_path_key();
 		}
 		else {
 			ser << "";

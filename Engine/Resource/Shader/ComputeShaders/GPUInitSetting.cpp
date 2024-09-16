@@ -16,7 +16,7 @@
 namespace ehw
 {
 	GPUInitSetting::GPUInitSetting()
-		: ComputeShader(GPUInitSetting::concrete_name, uint3(1u, 1u, 1u))
+		: ComputeShader(GPUInitSetting::concrete_class_name, uint3(1u, 1u, 1u))
 	{
 		set_engine_default_res(true);
 	}
@@ -26,14 +26,14 @@ namespace ehw
 
 	eResult GPUInitSetting::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		eResult result = CreateByHeader(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
+		eResult result = compile_from_byte_code(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 
 		ASSERT(eResult_success(result), "GPU 초기화 작업 실패");
 
 		return result;
 	}
 
-	bool GPUInitSetting::bind_data()
+	bool GPUInitSetting::bind_buffer_to_GPU_register()
 	{
 		union CheckEndianness
 		{
@@ -81,12 +81,12 @@ namespace ehw
 
 		mInitSBuffer->BindDataUAV();
 
-		ComputeShader::CalculateGroupCount(uint3(1u, 1u, 1u));
+		ComputeShader::calculate_group_count(uint3(1u, 1u, 1u));
 
 		return true;
 	}
 
-	void GPUInitSetting::UnBindData()
+	void GPUInitSetting::unbind_buffer_from_GPU_register()
 	{
 		mInitSBuffer->unbind_data();
 		mInitSBuffer->GetData(&gGPUInitSetting);

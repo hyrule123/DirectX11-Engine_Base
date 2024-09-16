@@ -22,7 +22,7 @@
 namespace ehw
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(NormalConvertShader::concrete_name, uint3{32, 32, 1})
+		: ComputeShader(NormalConvertShader::concrete_class_name, uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		
@@ -36,7 +36,7 @@ namespace ehw
 
 	eResult NormalConvertShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		return ComputeShader::CreateByHeader(CS_NormalConverter, sizeof(CS_NormalConverter));
+		return ComputeShader::compile_from_byte_code(CS_NormalConverter, sizeof(CS_NormalConverter));
 	}
 
 	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)
@@ -46,14 +46,14 @@ namespace ehw
 
 		mSrcTex = _srcTex;
 		
-		OnExcute();
+		on_execute();
 
 		std::shared_ptr<Texture> retTex = mDestTex;
 		mDestTex = nullptr;
 		return retTex;
 	}
 
-	bool NormalConvertShader::bind_data()
+	bool NormalConvertShader::bind_buffer_to_GPU_register()
 	{
 		mDestTex = nullptr;
 		mDestTex = std::make_shared<Texture>();
@@ -68,7 +68,7 @@ namespace ehw
 			return false;
 		}
 		
-		mDestTex->set_keypath(mSrcTex->get_strkey());
+		mDestTex->set_keypath(mSrcTex->get_concrete_class_name());
 
 		//원본
 		mSrcTex->BindDataSRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
@@ -77,16 +77,16 @@ namespace ehw
 		mDestTex->BindDataUAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
-		ComputeShader::CalculateGroupCount(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
+		ComputeShader::calculate_group_count(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
 
 		return true;
 	}
 
-	void NormalConvertShader::UnBindData()
+	void NormalConvertShader::unbind_buffer_from_GPU_register()
 	{
-		mSrcTex->UnBindData();
+		mSrcTex->unbind_buffer_from_GPU_register();
 		mSrcTex = nullptr;
 		
-		mDestTex->UnBindData();
+		mDestTex->unbind_buffer_from_GPU_register();
 	}
 }

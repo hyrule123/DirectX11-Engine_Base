@@ -37,9 +37,9 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		eResult CreateByCompile(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
-		eResult CreateByHeader(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
-		eResult CreateByCSO(eGSStage _stage, const std::filesystem::path& _FileName);
+		eResult compile_from_source_code(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
+		eResult compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
+		eResult compile_from_CSO(eGSStage _stage, const std::filesystem::path& _FileName);
 
 		void AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc);
 		void SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs);
@@ -53,7 +53,7 @@ namespace ehw
 		void SetDSState(eDSType _state);
 		void SetBSState(eBSType _state);
 
-		void bind_data();
+		void bind_buffer_to_GPU_register();
 		static void unbind_data();
 
 		//에디터용
@@ -64,7 +64,7 @@ namespace ehw
 		const std::string& GetShaderKey(eGSStage _stage) { return m_arrShaderCode[(int)_stage].strKey; }
 
 	private:
-		eResult CreateShader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
+		eResult create_shader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
 
 	private:
 		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputLayoutDescs;

@@ -33,7 +33,7 @@ namespace ehw::editor
 		template <typename T>
 		static std::shared_ptr<T> NewGuiWindow();
 
-		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHasher_StringView, std::equal_to<>>&
+		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, Hasher_StringView, std::equal_to<>>&
 			GetGUIs() { return mGuiWindows; }
 
 	private:
@@ -63,7 +63,7 @@ namespace ehw::editor
 		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
 
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, tHasher_StringView, std::equal_to<>> mGuiWindows;
+		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, Hasher_StringView, std::equal_to<>> mGuiWindows;
 
 		static std::vector<std::shared_ptr<EditorObject>> mEditorObjects;
 		static std::vector<std::shared_ptr<DebugObject>> mDebugObjects;

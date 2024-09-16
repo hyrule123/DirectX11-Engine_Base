@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
-		: Com_Renderer_Mesh(Com_Renderer_UIBase::concrete_name)
+		: Com_Renderer_Mesh(Com_Renderer_UIBase::concrete_class_name)
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
@@ -31,7 +31,7 @@ namespace ehw
 		ConstBuffer* cb = nullptr;
 			//RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
 		cb->SetData(&mUIData);
-		cb->bind_data(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 		Com_Renderer_Mesh::render();
 	}

@@ -22,8 +22,8 @@ namespace ehw
 		Animator(const std::string_view key, eDimensionType _type);
 		virtual ~Animator() {};
 
-		virtual void bind_data() = 0;
-		virtual void UnBindData() = 0;
+		virtual void bind_buffer_to_GPU_register() = 0;
+		virtual void unbind_buffer_from_GPU_register() = 0;
 
 		virtual bool IsPlaying() const = 0;
 

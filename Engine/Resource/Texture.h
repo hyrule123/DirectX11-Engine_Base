@@ -29,7 +29,7 @@ namespace ehw
 
 		void BindDataSRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
 		void BindDataUAV(uint _UAVSlot = 0u);
-		void UnBindData();
+		void unbind_buffer_from_GPU_register();
 
 
 		void set_texture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { mTexture = _texture; }

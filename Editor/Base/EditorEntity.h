@@ -22,7 +22,7 @@ namespace ehw::editor
 
 		void MakeUniqueKeyByName() { m_StrKey += "##"; m_StrKey += std::to_string(m_ID); }
 		void SetStrKey(const std::string_view _strKey) { m_StrKey = _strKey; }
-		const std::string& get_keypath() const { return m_StrKey; }
+		const std::string& get_path_key() const { return m_StrKey; }
 		
 		void SetSaveEnable(bool _bSaveEnable) { m_bSaveEnable = _bSaveEnable; }
 		bool IsSaveEnable() const { return m_bSaveEnable; }

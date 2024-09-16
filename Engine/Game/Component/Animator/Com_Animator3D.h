@@ -49,8 +49,8 @@ namespace ehw
 		int GetBoneCount();
 
 
-		virtual void bind_data() override;
-		virtual void UnBindData() override;
+		virtual void bind_buffer_to_GPU_register() override;
+		virtual void unbind_buffer_from_GPU_register() override;
 
 
 	private:

@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_AudioListener::Com_AudioListener()
-		: Component(Com_AudioListener::concrete_name)
+		: Component(Com_AudioListener::concrete_class_name)
 	{
 	}
 

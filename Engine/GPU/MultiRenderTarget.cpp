@@ -6,7 +6,7 @@
 namespace ehw
 {
 	MultiRenderTarget::MultiRenderTarget()
-		: Entity(MultiRenderTarget::concrete_name)
+		: Entity(MultiRenderTarget::concrete_class_name)
 		, mRenderTargetTextures{}
 		, mRenderTargetViews{}
 		, mDSTexture{}
@@ -43,7 +43,7 @@ namespace ehw
 	{
 		for (uint i = 0; i < mRenderTargetCount; ++i)
 		{
-			mRenderTargetTextures[i]->UnBindData();
+			mRenderTargetTextures[i]->unbind_buffer_from_GPU_register();
 		}
 
 		ID3D11DepthStencilView* pDSView = nullptr;

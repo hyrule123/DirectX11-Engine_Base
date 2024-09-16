@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Transform::Transform()
-		: Component(Transform::concrete_name)
+		: Component(Transform::concrete_class_name)
 		, m_localScale(float3::One)
 		, m_localSize(float3::One)
 		, m_localRotation(Quaternion::Identity)

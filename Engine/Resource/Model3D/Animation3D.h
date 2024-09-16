@@ -44,8 +44,8 @@ namespace ehw
         virtual ~Animation3D();
 
     public:
-        void bind_data();
-        void UnBindData();
+        void bind_buffer_to_GPU_register();
+        void unbind_buffer_from_GPU_register();
 
         virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
         virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;

@@ -32,10 +32,10 @@ namespace ehw
 
 	eResult ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
 	{
-		return CreateByCSO(_baseDir / _key_path);
+		return compile_from_CSO(_baseDir / _key_path);
 	}
 
-	eResult ComputeShader::CreateByCompile(const std::filesystem::path& _FullPath, const std::string_view _funcName)
+	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)
 	{
 		Microsoft::WRL::ComPtr<ID3DBlob> mErrorBlob = nullptr;
 
@@ -64,7 +64,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult ComputeShader::CreateByHeader(const unsigned char* _pByteCode, size_t _ByteCodeSize)
+	eResult ComputeShader::compile_from_byte_code(const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
 		set_engine_default_res(true);
@@ -85,10 +85,10 @@ namespace ehw
 		//데이터 복사
 		memcpy_s(pCode, DestSize, _pByteCode, _ByteCodeSize);
 
-		return CreateShader(pCode, DestSize);
+		return create_shader(pCode, DestSize);
 	}
 
-	eResult ComputeShader::CreateByCSO(const std::filesystem::path& _FileName)
+	eResult ComputeShader::compile_from_CSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
 		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
@@ -117,13 +117,33 @@ namespace ehw
 
 		unsigned char* pCode = reinterpret_cast<unsigned char*>(m_CSBlob->GetBufferPointer());
 
-		return CreateShader(pCode, m_CSBlob->GetBufferSize());
+		return create_shader(pCode, m_CSBlob->GetBufferSize());
 	}
 
-	void ComputeShader::OnExcute()
+	void ComputeShader::calculate_group_count(const uint3& _dataCounts)
 	{
-		if (false == bind_data())
-			return;
+		mCB_ComputeShader.TotalDataCount = _dataCounts;
+
+		//필요한 그룹 수를 계산.
+		mCB_ComputeShader.NumGroup.x = mCB_ComputeShader.TotalDataCount.x / mCB_ComputeShader.ThreadsPerGroup.x;
+		if (0u == mCB_ComputeShader.NumGroup.x)
+			mCB_ComputeShader.NumGroup.x = 1u;
+
+		mCB_ComputeShader.NumGroup.y = mCB_ComputeShader.TotalDataCount.y / mCB_ComputeShader.ThreadsPerGroup.y;
+		if (0u == mCB_ComputeShader.NumGroup.y)
+			mCB_ComputeShader.NumGroup.y = 1u;
+
+		mCB_ComputeShader.NumGroup.z = mCB_ComputeShader.TotalDataCount.z / mCB_ComputeShader.ThreadsPerGroup.z;
+		if (0u == mCB_ComputeShader.NumGroup.z)
+			mCB_ComputeShader.NumGroup.z = 1u;
+	}
+
+	bool ComputeShader::on_execute()
+	{
+		if (false == bind_buffer_to_GPU_register()) {
+			return false; 
+		}
+			
 
 		//데이터 카운트가 하나라도 0일경우 계산 불가
 		 if (false == (
@@ -131,22 +151,24 @@ namespace ehw
 			 mCB_ComputeShader.TotalDataCount.y && 
 			 mCB_ComputeShader.TotalDataCount.z))
 		 {
-			 UnBindData();
-			 return;
+			 unbind_buffer_from_GPU_register();
+			 return false;
 		 }
 			
 		
 		//상수버퍼를 통해 데이터 수를 업로드
 		static ConstBuffer* const pCB = RenderManager::GetInst().GetConstBuffer(eCBType::ComputeShader);
 		pCB->SetData(&mCB_ComputeShader);
-		pCB->bind_data();
+		pCB->bind_buffer_to_GPU_register();
 
 		//쉐이더 바인딩
 		RenderManager::GetInst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);
 		RenderManager::GetInst().Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
 
 		//데이터 정리
-		UnBindData();
+		unbind_buffer_from_GPU_register();
+
+		return true;
 	}
 
 
@@ -154,7 +176,7 @@ namespace ehw
 
 
 
-	eResult ComputeShader::CreateShader(const void* _pByteCode, size_t _ByteCodeSize)
+	eResult ComputeShader::create_shader(const void* _pByteCode, size_t _ByteCodeSize)
 	{
 		eResult result = eResult::Fail_Create;
 

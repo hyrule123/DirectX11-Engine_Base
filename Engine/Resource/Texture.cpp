@@ -23,7 +23,7 @@
 namespace ehw
 {
 	Texture::Texture()
-		: Resource(Texture::concrete_name)
+		: Resource(Texture::concrete_class_name)
 		, mDesc()
 		, mTexture()
 		, mImage()
@@ -284,7 +284,7 @@ namespace ehw
 
 	void Texture::BindDataSRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
-		UnBindData();
+		unbind_buffer_from_GPU_register();
 	
 		mCurBoundRegister = (int)_SRVSlot;
 		mCurBoundStage = _stageFlag;
@@ -319,7 +319,7 @@ namespace ehw
 
 	void Texture::BindDataUAV(uint _startSlot)
 	{
-		UnBindData();
+		unbind_buffer_from_GPU_register();
 
 		mCurBoundView = eBufferViewType::UAV;
 		mCurBoundRegister = (int)_startSlot;
@@ -329,7 +329,7 @@ namespace ehw
 	}
 
 
-	void Texture::UnBindData()
+	void Texture::unbind_buffer_from_GPU_register()
 	{
 		switch (mCurBoundView)
 		{

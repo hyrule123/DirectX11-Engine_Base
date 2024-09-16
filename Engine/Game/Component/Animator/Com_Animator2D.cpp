@@ -7,7 +7,7 @@
 namespace ehw
 {
 	Com_Animator2D::Com_Animator2D()
-		: Animator(Com_Animator2D::concrete_name, eDimensionType::_2D)
+		: Animator(Com_Animator2D::concrete_class_name, eDimensionType::_2D)
 		, mAnimations{}
 		, mEvents{}
 		, mActiveAnimation(nullptr)
@@ -25,7 +25,7 @@ namespace ehw
 		, mbLoop(_other.mbLoop)
 	{
 
-		//std::unordered_map<std::string, Animation*, tHasher_StringView, std::equal_to<>>	mAnimations;
+		//std::unordered_map<std::string, Animation*, Hasher_StringView, std::equal_to<>>	mAnimations;
 		//이 부분 주의해야함 _other.mAnimation이랑 mAnimation이랑 헷갈릴때 많음
 		for (const auto& iter : _other.mAnimations)
 		{
@@ -59,7 +59,7 @@ namespace ehw
 					}
 				}
 			}	
-			//std::unordered_map<std::string, tEvents*, tHasher_StringView, std::equal_to<>> mEvents;
+			//std::unordered_map<std::string, tEvents*, Hasher_StringView, std::equal_to<>> mEvents;
 			//mEvents(노티파이 함수)의 경우 누가 호출했는지를 알수 없기때문에 그냥 복사하면 에러 날수도 있음
 			//예를들어서 A 게임오브젝트에서 자신에게서 소리 나도록 설정했는데 B 오브젝트로 그냥 복사해서 가져오면
 			//B오브젝트가 애니메이션 재생했는데 A 오브젝트에서 소리날수도 있다던가 그런거
@@ -225,20 +225,20 @@ namespace ehw
 			events->StartEvent();
 	}
 
-	void Com_Animator2D::bind_data()
+	void Com_Animator2D::bind_buffer_to_GPU_register()
 	{
 		if (mActiveAnimation == nullptr)
 			return;
 
-		mActiveAnimation->bind_data();
+		mActiveAnimation->bind_buffer_to_GPU_register();
 	}
 
-	void Com_Animator2D::UnBindData()
+	void Com_Animator2D::unbind_buffer_from_GPU_register()
 	{
 		if (mActiveAnimation == nullptr)
 			return;
 
-		mActiveAnimation->UnBindData();
+		mActiveAnimation->unbind_buffer_from_GPU_register();
 	}
 
 

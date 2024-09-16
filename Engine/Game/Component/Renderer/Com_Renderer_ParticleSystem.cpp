@@ -21,7 +21,7 @@
 namespace ehw
 {
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
-		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::concrete_name)
+		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::concrete_class_name)
 		, mMaxParticles(100)
 		, mStartSize(float4(50.0f, 50.0f, 1.0f, 1.0f))
 		, mStartColor(float4(1.0f, 0.2f, 0.2f, 1.0f))
@@ -162,11 +162,11 @@ namespace ehw
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::ParticleSystem);
 		cb->SetData(&mCBData);
-		cb->bind_data(eShaderStageFlag::ALL);
+		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 
 		mCS->SetSharedStrutedBuffer(m_shared_buffer);
 		mCS->SetStrcutedBuffer(m_buffer);
-		mCS->OnExcute();
+		mCS->on_execute();
 	}
 
 	void Com_Renderer_ParticleSystem::render()
@@ -174,7 +174,7 @@ namespace ehw
 		if (false == IsRenderReady())
 			return;
 		
-		gameObject()->GetComponent<Transform>()->bind_data();
+		gameObject()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
 		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();

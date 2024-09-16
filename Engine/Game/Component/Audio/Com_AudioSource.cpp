@@ -15,7 +15,7 @@
 namespace ehw
 {
 	Com_AudioSource::Com_AudioSource()
-		: Component(Com_AudioSource::concrete_name)
+		: Component(Com_AudioSource::concrete_class_name)
 		, mAudioClip(nullptr)
 	{
 	}
@@ -35,7 +35,7 @@ namespace ehw
 
 	//	if (mAudioClip)
 	//	{
-	//		jVal[JSON_KEY(mAudioClip)] = mAudioClip->get_strkey();
+	//		jVal[JSON_KEY(mAudioClip)] = mAudioClip->get_concrete_class_name();
 	//	}
 
 	//	return eResult::Success;

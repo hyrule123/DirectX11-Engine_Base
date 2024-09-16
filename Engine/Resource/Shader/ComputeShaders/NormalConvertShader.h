@@ -19,8 +19,8 @@ namespace ehw
 		std::shared_ptr<Texture> Convert(std::shared_ptr<Texture> _srcTex);
 
 	protected:
-		virtual bool bind_data() override;
-		virtual void UnBindData() override;
+		virtual bool bind_buffer_to_GPU_register() override;
+		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:
 		std::shared_ptr<Texture> mSrcTex;

@@ -9,7 +9,7 @@
 [numthreads(256, 1, 1)]
 void main(int3 _threadID : SV_DispatchThreadID)
 {
-	if (CB_Animation3D.BoneCount <= _threadID.x)
+	if (g_shared_animation3D_data.BoneCount <= _threadID.x)
 	{
 		return;
 	}	
@@ -17,20 +17,20 @@ void main(int3 _threadID : SV_DispatchThreadID)
 	float4 ZeroRot = float4(0.f, 0.f, 0.f, 1.f);
 	matrix matBone = 0.f;
 
-	int FrameIndex = _threadID.x * CB_Animation3D.FrameLength + CB_Animation3D.CurrentFrame;
-	int FrameNextIndex = _threadID.x * CB_Animation3D.FrameLength + CB_Animation3D.NextFrame;
+	int FrameIndex = _threadID.x * g_shared_animation3D_data.FrameLength + g_shared_animation3D_data.CurrentFrame;
+	int FrameNextIndex = _threadID.x * g_shared_animation3D_data.FrameLength + g_shared_animation3D_data.NextFrame;
 
-	float4 Scale = lerp(g_FrameTransArray[FrameIndex].Scale, g_FrameTransArray[FrameNextIndex].Scale, CB_Animation3D.FrameRatio);
-	float4 Pos = lerp(g_FrameTransArray[FrameIndex].Pos, g_FrameTransArray[FrameNextIndex].Pos, CB_Animation3D.FrameRatio);
-	float4 Rot = QuternionLerp(g_FrameTransArray[FrameIndex].RotQuat, g_FrameTransArray[FrameNextIndex].RotQuat, CB_Animation3D.FrameRatio);
+	float4 Scale = lerp(g_FrameTransArray[FrameIndex].Scale, g_FrameTransArray[FrameNextIndex].Scale, g_shared_animation3D_data.FrameRatio);
+	float4 Pos = lerp(g_FrameTransArray[FrameIndex].Pos, g_FrameTransArray[FrameNextIndex].Pos, g_shared_animation3D_data.FrameRatio);
+	float4 Rot = QuternionLerp(g_FrameTransArray[FrameIndex].RotQuat, g_FrameTransArray[FrameNextIndex].RotQuat, g_shared_animation3D_data.FrameRatio);
 
-	if (CB_Animation3D.bChangingAnim == TRUE)
+	if (g_shared_animation3D_data.bChangingAnim == TRUE)
 	{
-		uint ChangeFrameIndex = _threadID.x * CB_Animation3D.ChangeFrameLength * CB_Animation3D.ChangeFrameIdx;
+		uint ChangeFrameIndex = _threadID.x * g_shared_animation3D_data.ChangeFrameLength * g_shared_animation3D_data.ChangeFrameIdx;
 
-		Scale = lerp(Scale, g_ChangeFrameTransArray[ChangeFrameIndex].Scale, CB_Animation3D.ChangeRatio);
-		Pos = lerp(Pos, g_ChangeFrameTransArray[ChangeFrameIndex].Pos, CB_Animation3D.ChangeRatio);
-		Rot = QuternionLerp(Rot, g_ChangeFrameTransArray[ChangeFrameIndex].RotQuat, CB_Animation3D.ChangeRatio);
+		Scale = lerp(Scale, g_ChangeFrameTransArray[ChangeFrameIndex].Scale, g_shared_animation3D_data.ChangeRatio);
+		Pos = lerp(Pos, g_ChangeFrameTransArray[ChangeFrameIndex].Pos, g_shared_animation3D_data.ChangeRatio);
+		Rot = QuternionLerp(Rot, g_ChangeFrameTransArray[ChangeFrameIndex].RotQuat, g_shared_animation3D_data.ChangeRatio);
 	}
 
 	MatrixAffineTransformation(Scale, ZeroRot, Rot, Pos, matBone);
@@ -44,5 +44,5 @@ void main(int3 _threadID : SV_DispatchThreadID)
 	//g_BoneSocketMatrixArray[_threadID.x].Rot = Rot;
 	//g_BoneSocketMatrixArray[_threadID.x].Pos = Pos.xyz;
 
-	//g_InstancingBoneMatrixArray[CB_Animation3D.RowIndex * CB_Animation3D.BoneCount + _threadID.x] = mul(matOffset, matBone);
+	//g_InstancingBoneMatrixArray[g_shared_animation3D_data.RowIndex * g_shared_animation3D_data.BoneCount + _threadID.x] = mul(matOffset, matBone);
 }

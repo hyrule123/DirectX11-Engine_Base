@@ -11,9 +11,23 @@ namespace ehw {
 	class StructBuffer;
 	class Texture;
 
+
+
 	class SceneRenderAgent
 	{
 		friend class RenderManager;
+	public:
+		struct MeshMaterialKey {
+			std::shared_ptr<Mesh> mesh;
+			std::shared_ptr<Material> material;
+
+			bool operator == (const MeshMaterialKey& _other) const {
+				return (mesh == _other.mesh && material == _other.material);
+			}
+			struct Hasher {
+				size_t operator() (const MeshMaterialKey& _other) const;
+			};
+		};
 	private:
 		SceneRenderAgent();
 		~SceneRenderAgent();
@@ -40,13 +54,7 @@ namespace ehw {
 		void render_by_mode(Com_Camera* _cam, eRenderingMode _mode);
 
 	private:
-		union MeshMaterialKey {
-			static_assert(sizeof(size_t) == sizeof(uint64), "size_t가 64bit가 아님. 처리코드 필요");
-			struct mm_pair {
-				uint32 mesh, material;
-			} pair;
-			size_t key;	//->이게 m_render_queue의 key
-		};
+
 
 		std::vector<Com_Camera*>			m_cameras;
 		size_t								m_mainCamIndex;
@@ -54,7 +62,8 @@ namespace ehw {
 		std::shared_ptr<Mesh> m_merge_mesh;	//rectmesh
 		std::shared_ptr<Material> m_merge_material;
 
-		std::unordered_map<size_t, tRenderQueue> m_renderer_queues[(int)eRenderingMode::END];
+		std::unordered_map<MeshMaterialKey, tRenderQueue, MeshMaterialKey::Hasher> 
+			m_renderer_queues[(int)eRenderingMode::END];
 	};
 }
 

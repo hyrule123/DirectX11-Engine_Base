@@ -10,7 +10,7 @@
 namespace ehw
 {
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
-		: Rigidbody(Com_Rigidbody_Dynamic::concrete_name)
+		: Rigidbody(Com_Rigidbody_Dynamic::concrete_class_name)
 		, m_isMassMode {false}
 		, m_densityOrMass {g_defaultDensity}
 	{

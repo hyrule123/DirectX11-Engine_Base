@@ -17,7 +17,7 @@
 namespace ehw
 {
 	Animation3D_PlayData::Animation3D_PlayData()
-		: Entity(Animation3D_PlayData::concrete_name)
+		: Entity(Animation3D_PlayData::concrete_class_name)
 		, m_animationComputeShader()
 		, m_skeleton()
 		//, m_iFramePerSecond(30)
@@ -172,18 +172,19 @@ namespace ehw
 			}
 
 			Animation3D_ComputeShader::Desc desc{};
-			desc.CurrentAnimKeyFrameBuffer = m_currentAnimation->GetKeyFrameSBuffer().get();
+			desc.current_animation_key_frame_buffer = m_currentAnimation->GetKeyFrameSBuffer().get();
 
 			if (m_nextAnimation)
 			{
-				desc.NextAnimKeyFrameBuffer = m_nextAnimation->GetKeyFrameSBuffer().get();
+				desc.next_animation_keyframe_buffer = m_nextAnimation->GetKeyFrameSBuffer().get();
 			}
 
-			desc.BoneOffsetMatrixBuffer = m_skeleton->GetBoneOffsetBuffer().get();
+			desc.bone_offset_matrix_buffer = m_skeleton->GetBoneOffsetBuffer().get();
 
-			desc.FinalBoneTranslationMatrixBuffer = m_pBoneFinalMatBuffer.get();
+			desc.final_bone_translation_matrix_buffer = m_pBoneFinalMatBuffer.get();
 
-			desc.Anim3DData = &m_Anim3DCBuffer;
+			desc.shared_animation_data = &m_Anim3DCBuffer;
+
 
 			m_animationComputeShader->SetDesc(desc);
 

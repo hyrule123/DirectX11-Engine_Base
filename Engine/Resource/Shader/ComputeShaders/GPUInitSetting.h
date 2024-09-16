@@ -17,8 +17,8 @@ namespace ehw
 		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
 
 	protected:
-		virtual bool bind_data() override;
-		virtual void UnBindData() override;
+		virtual bool bind_buffer_to_GPU_register() override;
+		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:
 		std::unique_ptr<StructBuffer> mInitSBuffer;

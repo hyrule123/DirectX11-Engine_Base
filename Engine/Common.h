@@ -69,7 +69,7 @@ namespace ehw
 		std::function<void()> EditorRunFunction;
 	};
 
-	struct tHasher_StringView {
+	struct Hasher_StringView {
 		using hash_type = std::hash<std::string_view>;
 		using is_transparent = void;
 

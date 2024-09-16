@@ -143,23 +143,24 @@ struct alignas(16)  tCB_Noise
 };
 
 
-struct alignas(16)  tCB_Animation3D
+struct alignas(16)  tAnimation3D_SharedInfo
 {
-	int			BoneCount;		//본 갯수
-	int			CurrentFrame;	//현재 프레임
-	int			NextFrame;		//다음 프레임
-	float		FrameRatio;		//프레임 진행 비율
-	int			FrameLength;	//전체 프레임 장수
-	
+	uint		BoneCount;		//본 갯수
 	//Instancing 관련
-	int			RowIndex;
+	uint		instance_start_index; //내가 몇번째 인스턴스 인지
+	float2		pad;
+	
+	uint		CurrentFrame;	//현재 프레임
+	uint		NextFrame;		//다음 프레임
+	float		FrameRatio;		//프레임 진행 비율
+	uint		FrameLength;	//전체 프레임 장수
 	
 	//Animation Blending 관련
 	BOOL		bChangingAnim;
 	float		ChangeRatio;
-	int			ChangeFrameLength;
-	int			ChangeFrameIdx;
-	float2		Padding_Animation3D;
+	
+	uint		ChangeFrameLength;
+	uint		ChangeFrameIdx;
 };
 
 struct alignas(16)  tCB_CustomData

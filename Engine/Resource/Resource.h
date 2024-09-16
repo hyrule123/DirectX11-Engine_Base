@@ -15,7 +15,7 @@ namespace ehw
 		virtual ~Resource();
 
 		void set_keypath(const std::string_view _key_path) { m_key_path = _key_path; }
-		const std::string_view get_keypath() const { return m_key_path; }
+		const std::string_view get_path_key() const { return m_key_path; }
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
