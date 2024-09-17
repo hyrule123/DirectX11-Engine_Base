@@ -7,17 +7,17 @@ namespace ehw {
 	class StaticSingleton
 	{
 	public:
-		static inline T& GetInst() noexcept { return m_inst; }
+		static inline T& GetInst() noexcept {
+			static T inst{};
+			return inst; 
+		}
 	protected:
 		StaticSingleton() {};
 		~StaticSingleton() {};
 
-	private:
-		static T m_inst;
+		StaticSingleton(const StaticSingleton&) = delete;
+		StaticSingleton& operator=(const StaticSingleton&) = delete;
 	};
-
-	template <class T>
-	T StaticSingleton<T>::m_inst{};
 }
 
 
