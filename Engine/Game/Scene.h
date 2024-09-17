@@ -24,7 +24,7 @@ namespace ehw
 		void SceneFrameEnd();
 
 		//로직 재정의
-		virtual void Init() {}
+		virtual void init() {}
 		virtual void OnEnter() = 0;//리소스 로드
 
 		virtual void FixedUpdate() {}

@@ -23,9 +23,9 @@ namespace ehw
 	{
 	}
 
-	void Collider3D::Init()
+	void Collider3D::init()
 	{
-		Collider::Init();
+		Collider::init();
 	}
 
 	void Collider3D::Awake()

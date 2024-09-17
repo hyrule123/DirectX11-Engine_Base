@@ -37,7 +37,7 @@ namespace ehw
         engineDesc.GPUDesc = _Desc.GPUDesc;
         engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
 
-        ehw::GameEngine::GetInst().Init(engineDesc);
+        ehw::GameEngine::GetInst().init(engineDesc);
 
         for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
         {

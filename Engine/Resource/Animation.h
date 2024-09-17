@@ -3,6 +3,7 @@
 
 namespace ehw
 {
+    BASE_RESOURCE(Animation);
     class Animation :
         public Resource
     {

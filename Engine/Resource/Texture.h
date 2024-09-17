@@ -6,6 +6,7 @@
 
 namespace ehw
 {
+	BASE_RESOURCE(Texture);
 	class Texture final : public Resource
 	{
 		CLASS_NAME(Texture);
@@ -22,8 +23,8 @@ namespace ehw
 		bool create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
+		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
 		void InitializeResource();
 
 

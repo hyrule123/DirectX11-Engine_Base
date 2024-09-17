@@ -42,9 +42,9 @@ namespace ehw
 		return eResult();
 	}
 
-	void Collider2D::Init()
+	void Collider2D::init()
 	{
-		Collider::Init();
+		Collider::init();
 
 		if (GetCollisionSystem())
 		{

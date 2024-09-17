@@ -19,7 +19,7 @@ namespace ehw
             EditorUVCalculator();
             virtual ~EditorUVCalculator();
 
-            virtual void Init() override;
+            virtual void init() override;
             virtual void UpdateUI() override;
 
         private:

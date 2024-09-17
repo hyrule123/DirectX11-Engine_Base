@@ -33,8 +33,8 @@ namespace ehw
 	private:
 		TimeManager();
 		~TimeManager();
-		void Init();
-		void Release();
+		void init();
+		void release();
 
 	private:
 		float			m_currentDeltaTime;

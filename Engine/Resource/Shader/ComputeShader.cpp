@@ -30,9 +30,9 @@ namespace ehw
 	{
 	}
 
-	eResult ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult ComputeShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
-		return compile_from_CSO(_baseDir / _key_path);
+		return compile_from_CSO(_base_directory / _key_path);
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)

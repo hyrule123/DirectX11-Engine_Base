@@ -13,7 +13,7 @@ namespace ehw
         Com_Collider3D_Sphere();
         virtual ~Com_Collider3D_Sphere();
 
-        void Init() final;
+        void init() final;
 
     protected:
     private:

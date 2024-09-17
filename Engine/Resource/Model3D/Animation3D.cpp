@@ -59,13 +59,13 @@ namespace ehw
         m_SBufferKeyFrame->unbind_data();
     }
 
-    eResult Animation3D::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+    eResult Animation3D::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+    eResult Animation3D::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
@@ -145,7 +145,7 @@ namespace ehw
     }
 
 
-	eResult Animation3D::LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip)
+	eResult Animation3D::load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip)
 	{
 		if (nullptr == _skeleton || nullptr == _clip)
 			return eResult::Fail_Nullptr;
@@ -326,7 +326,7 @@ namespace ehw
         m_SBufferKeyFrame = std::make_shared<StructBuffer>();
 
         eResult result = 
-            m_SBufferKeyFrame->Init<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());
+            m_SBufferKeyFrame->init<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());
         if (eResult_fail(result)) {
             return false;
         }

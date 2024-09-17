@@ -78,12 +78,12 @@ namespace ehw
 			Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
-			renderer[JSON_KEY(m_mesh)] << m_mesh->get_path_key();
+			renderer[JSON_KEY(m_mesh)] << m_mesh->get_path();
 
 			//materials
 			{
 				Json::Value& materials = renderer[JSON_KEY(m_materials)];
-				materials << m_shared_material->get_path_key();
+				materials << m_shared_material->get_path();
 			}
 
 			//m_bCullingEnable

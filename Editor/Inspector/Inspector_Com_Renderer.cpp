@@ -57,8 +57,8 @@ namespace ehw::editor
 		if (mMesh == nullptr || mMaterial == nullptr)
 			return;
 
-		std::string meshName(mMesh->get_path_key());
-		std::string materialName(mMaterial->get_path_key());
+		std::string meshName(mMesh->get_path());
+		std::string materialName(mMaterial->get_path());
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()

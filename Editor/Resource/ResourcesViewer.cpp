@@ -35,7 +35,7 @@ namespace ehw::editor
 	{
 	}
 
-	void EditorResources::Init()
+	void EditorResources::init()
 	{
 		m_textureTree = add_child<EditorWidget_Tree>();
 		m_materialTree = add_child<EditorWidget_Tree>();

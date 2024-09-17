@@ -35,11 +35,11 @@ namespace ehw {
 		~InstanceManager();
 
 	public:
-		Entity* Instantiate(const std::string_view key);
+		Entity* instantiate(const std::string_view key);
 
 		template <typename T>
-		T* Instantiate(const std::string_view key) {
-			Entity* e = Instantiate(key);
+		T* instantiate(const std::string_view key) {
+			Entity* e = instantiate(key);
 			T* ret = nullptr;
 			ret = dynamic_cast<T*>(e);
 

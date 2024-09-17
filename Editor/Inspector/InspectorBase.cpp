@@ -47,7 +47,7 @@ namespace ehw::editor
 		//}
 	}
 
-	void InspectorBase::Init()
+	void InspectorBase::init()
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{

@@ -17,7 +17,7 @@ namespace ehw
 			InspectorBase();
 			virtual ~InspectorBase();
 
-			virtual void Init() override;
+			virtual void init() override;
 			virtual void Update() override;
 			virtual void UpdateUI() override;
 

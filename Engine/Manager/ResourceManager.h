@@ -13,7 +13,10 @@
 namespace ehw
 {
 	template <typename T>
-	concept ResourceTypes = std::is_base_of_v<Resource, T>;
+	concept ResourceTypes =
+		std::is_base_of_v<Resource, T>
+		&&
+		IsBaseResource<T>::is;
 
 	template <typename ResourceTypes> 
 	class ResourceManager : public StaticSingleton<ResourceManager<ResourceTypes>>
@@ -21,8 +24,8 @@ namespace ehw
 		friend class StaticSingleton<ResourceManager<ResourceTypes>>;
 
 	public:
-		void Init(const std::fs::path& _baseDir);
-		void Release();
+		void init(const std::fs::path& _base_directory);
+		void release();
 
 		inline eResult save(const std::string_view _strKey);
 		inline eResult save(ResourceTypes* _resPtr);
@@ -32,7 +35,7 @@ namespace ehw
 		inline std::shared_ptr<DerivedResType> load(const std::fs::path& _key_path, const std::fs::path& _base_path = {});
 
 		template <typename DerivedResType = ResourceTypes>
-		inline void Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
+		inline void insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res);
 
 		template <typename DerivedResType = ResourceTypes>
 		inline std::shared_ptr<DerivedResType> Find(const std::string_view _strKey);
@@ -44,7 +47,7 @@ namespace ehw
 
 		inline void CleanUnusedResources();
 
-		inline void SetBaseDir(const std::fs::path& _baseDir);
+		inline void SetBaseDir(const std::fs::path& _base_directory);
 		const std::fs::path& GetBaseDir() { return m_BaseDir; }
 
 	private:
@@ -64,7 +67,7 @@ namespace ehw
 	{
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
 
-		ASSERT(m_bInitialized, "초기화되지 않았습니다. Init()를 호출한 뒤 사용하세요.");
+		ASSERT(m_bInitialized, "초기화되지 않았습니다. init()를 호출한 뒤 사용하세요.");
 
 		if (_key_path.empty())
 		{
@@ -88,7 +91,7 @@ namespace ehw
 
 			if (eResult_success(result))
 			{
-				Insert(key_path, std::static_pointer_cast<ResourceTypes>(returnPtr));
+				insert(key_path, std::static_pointer_cast<ResourceTypes>(returnPtr));
 			}
 			else
 			{
@@ -119,7 +122,7 @@ namespace ehw
 
 	template<typename ResourceTypes>
 	template <typename DerivedResType>
-	inline void ResourceManager<ResourceTypes>::Insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res)
+	inline void ResourceManager<ResourceTypes>::insert(const std::string_view _strKey, std::shared_ptr<DerivedResType> _Res)
 	{
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == Find(_strKey), "이미 동일한 키값을 가진 리소스가 있습니다.");
@@ -143,15 +146,15 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::Init(const std::fs::path& _baseDir)
+	inline void ResourceManager<ResourceTypes>::init(const std::fs::path& _base_directory)
 	{
 		m_bInitialized = true;
 
-		SetBaseDir(_baseDir);
+		SetBaseDir(_base_directory);
 
 		ResourceManagers::GetInst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<ResourceTypes>::CleanUnusedResources, this));
 
-		AtExit::AddFunc(std::bind(&ResourceManager<ResourceTypes>::Release, this));
+		AtExit::AddFunc(std::bind(&ResourceManager<ResourceTypes>::release, this));
 	}
 
 	template<typename ResourceTypes>
@@ -173,12 +176,12 @@ namespace ehw
 		{
 			return eResult::Fail_Nullptr;
 		}
-		else if (_resPtr->get_path_key().empty())
+		else if (_resPtr->get_path().empty())
 		{
 			return eResult::Fail_InValid;
 		}
 
-		return _resPtr->save(m_BaseDir, _resPtr->get_path_key());
+		return _resPtr->save(m_BaseDir, _resPtr->get_path());
 	}
 
 	template<typename ResourceTypes>
@@ -194,7 +197,7 @@ namespace ehw
 		}
 
 		//기존 키값 임시 저장
-		std::string tempStr{ _resPtr->get_path_key() };
+		std::string tempStr{ _resPtr->get_path() };
 		_resPtr->set_keypath(_key_path.string());
 
 		//저장하고
@@ -207,7 +210,7 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::Release()
+	inline void ResourceManager<ResourceTypes>::release()
 	{
 		m_bInitialized = false;
 		m_BaseDir.clear();
@@ -245,9 +248,9 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::SetBaseDir(const std::fs::path& _baseDir)
+	inline void ResourceManager<ResourceTypes>::SetBaseDir(const std::fs::path& _base_directory)
 	{
-		m_BaseDir = _baseDir;
+		m_BaseDir = _base_directory;
 
 		if (false == std::fs::exists(m_BaseDir))
 		{

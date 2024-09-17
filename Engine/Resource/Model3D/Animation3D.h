@@ -47,13 +47,13 @@ namespace ehw
         void bind_buffer_to_GPU_register();
         void unbind_buffer_from_GPU_register();
 
-        virtual eResult save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const override;
-        virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+        virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
+        virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
 
         eResult serialize_binary(BinarySerializer* _ser) const override;
         eResult deserialize_binary(const BinarySerializer* _ser) override;
 
-        eResult LoadFromFBX(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
+        eResult load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
         int GetStartFrame() const { return m_StartFrame; }
         int GetEndFrame() const { return m_EndFrame; }

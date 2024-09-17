@@ -14,7 +14,7 @@ namespace ehw
         virtual ~Com_Collider3D_Capsule();
 
     protected:
-        void Init() override;
+        void init() override;
     private:
         physx::PxCapsuleGeometry m_capsuleGeometry;
 

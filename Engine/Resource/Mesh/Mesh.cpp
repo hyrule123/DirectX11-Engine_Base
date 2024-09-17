@@ -48,16 +48,16 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Mesh::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
 	{
 		std::fs::path key_path = _key_path;
 		key_path.replace_extension(strKey::path::extension::Mesh);
-		return SaveFile_Binary(_baseDir / key_path);
+		return SaveFile_Binary(_base_directory / key_path);
 	}
 
-	eResult Mesh::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Mesh::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
-		std::fs::path filePath = _baseDir / _key_path;
+		std::fs::path filePath = _base_directory / _key_path;
 		filePath.replace_extension(strKey::path::extension::Mesh);
 		return LoadFile_Binary(filePath);
 	}
@@ -74,7 +74,7 @@ namespace ehw
 
 		if (m_vertex_buffer) {
 			ResourceManager<VertexBuffer>::GetInst().save(m_vertex_buffer.get());
-			ser << m_vertex_buffer->get_path_key();
+			ser << m_vertex_buffer->get_path();
 		}
 		else {
 			ser << "";
@@ -86,7 +86,7 @@ namespace ehw
 		ser << m_index_buffer_data;
 
 		if (m_skeleton) {
-			ser << m_skeleton->get_path_key();
+			ser << m_skeleton->get_path();
 		}
 		else {
 			ser << "";

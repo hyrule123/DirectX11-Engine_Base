@@ -11,7 +11,7 @@ namespace ehw::editor
 		EditorResources();
 		virtual ~EditorResources();
 
-		virtual void Init() override;
+		virtual void init() override;
 
 		void ResetContent();
 

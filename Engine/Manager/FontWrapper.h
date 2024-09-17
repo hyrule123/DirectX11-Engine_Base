@@ -15,8 +15,8 @@ namespace ehw
 	private:
 		FontWrapper();
 		~FontWrapper();
-		bool Init();
-		void Release();
+		bool init();
+		void release();
 
 	private:
 		IFW1Factory* m_FW1Factory;

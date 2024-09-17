@@ -132,7 +132,7 @@ namespace ehw
 		if (_atlas == nullptr)
 			return false;
 
-		Animation2D* animation = FindAnimation(_name);
+		Animation2D* animation = find_animation(_name);
 		if (animation != nullptr)
 			return false;
 
@@ -153,7 +153,7 @@ namespace ehw
 		if (_atlas == nullptr)
 			return false;
 
-		Animation2D* animation = FindAnimation(_name);
+		Animation2D* animation = find_animation(_name);
 		if (animation != nullptr)
 			return false;
 
@@ -181,7 +181,7 @@ namespace ehw
 		return true;
 	}
 
-	Animation2D* Com_Animator2D::FindAnimation(const std::string_view _name) const
+	Animation2D* Com_Animator2D::find_animation(const std::string_view _name) const
 	{
 		const auto& iter = mAnimations.find(_name);
 
@@ -215,7 +215,7 @@ namespace ehw
 		if (events)
 			events->EndEvent();
 
-		mActiveAnimation = FindAnimation(_name);
+		mActiveAnimation = find_animation(_name);
 		mActiveAnimation->Reset();
 		mbLoop = _loop;
 

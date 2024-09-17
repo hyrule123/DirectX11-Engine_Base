@@ -4,7 +4,7 @@
 
 #ifdef _DEBUG
 
-//Release 모드에서도 작동
+//release 모드에서도 작동
 #define ASSERT(_expression, _c_str) \
 	do \
 	{ \

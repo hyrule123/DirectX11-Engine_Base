@@ -21,7 +21,7 @@ namespace ehw
 		eResult serialize_json(JsonSerializer* _ser) const override;
 		eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void Init() override;
+		void init() override;
 		void frame_end() override;
 
 		//CollisionManager에서 호출. 충돌체 정보를 계산한다.

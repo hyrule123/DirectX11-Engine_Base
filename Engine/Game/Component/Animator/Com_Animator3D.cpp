@@ -96,7 +96,7 @@ namespace ehw
 			return false;
 		}
 
-		std::shared_ptr<Animation3D> anim = skeleton->FindAnimation(_animName);
+		std::shared_ptr<Animation3D> anim = skeleton->find_animation(_animName);
 		if (nullptr == anim)
 		{
 			return false;
@@ -146,11 +146,11 @@ namespace ehw
 	}
 
 
-	int Com_Animator3D::GetBoneCount()
+	int Com_Animator3D::get_bone_count()
 	{
 		int ret = -1;
 		if (m_sharedPlayData && m_sharedPlayData->get_skeleton()) {
-			ret = m_sharedPlayData->get_skeleton()->GetBoneCount();
+			ret = m_sharedPlayData->get_skeleton()->get_bone_count();
 		}
 		return ret;
 	}

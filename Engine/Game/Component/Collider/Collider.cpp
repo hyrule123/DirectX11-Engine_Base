@@ -22,7 +22,7 @@ namespace ehw
 
 	}
 
-	void Collider::Init()
+	void Collider::init()
 	{
 		m_transform = gameObject()->transform();
 	}

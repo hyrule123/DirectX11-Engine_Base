@@ -27,7 +27,7 @@ namespace ehw::editor
 	}
 
 
-	void GameObjectHierarchy::Init()
+	void GameObjectHierarchy::init()
 	{
 		mTreeWidget = add_child<EditorWidget_Tree>();
 

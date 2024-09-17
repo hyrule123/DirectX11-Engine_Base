@@ -23,7 +23,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_Sprite::Init()
+	void Com_Renderer_Sprite::init()
 	{
 		//Renderer가 렌더링할 때 필요한 것들
 		//1. 메쉬

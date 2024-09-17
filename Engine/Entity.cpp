@@ -27,7 +27,7 @@ namespace ehw
 	InstanceManager::~InstanceManager()
 	{
 	}
-	Entity* InstanceManager::Instantiate(const std::string_view key)
+	Entity* InstanceManager::instantiate(const std::string_view key)
 	{
 		Entity* ret = nullptr;
 		auto iter = m_ctors.find(key);

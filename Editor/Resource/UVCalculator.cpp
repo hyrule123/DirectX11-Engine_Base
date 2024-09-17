@@ -25,7 +25,7 @@ namespace ehw::editor
 	{
 	}
 
-	void EditorUVCalculator::Init()
+	void EditorUVCalculator::init()
 	{
 		SetFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 	}

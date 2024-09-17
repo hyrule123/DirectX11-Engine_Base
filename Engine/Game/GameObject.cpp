@@ -362,7 +362,7 @@ namespace ehw
 
 		if (false == ret->IsInitialized())
 		{
-			ret->Init();
+			ret->init();
 			ret->SetState(iComponent::eState::NotAwaken);
 		}
 
@@ -377,7 +377,7 @@ namespace ehw
 
 	iComponent* GameObject::AddComponent(const std::string_view _strKey)
 	{
-		Entity* e = InstanceManager::GetInst().Instantiate(_strKey);
+		Entity* e = InstanceManager::GetInst().instantiate(_strKey);
 		iComponent* c = dynamic_cast<iComponent*>(e);
 		if (nullptr == c) {
 			delete e;
@@ -389,7 +389,7 @@ namespace ehw
 
 	Script* GameObject::AddScript(const std::string_view _strKey)
 	{
-		Entity* e = InstanceManager::GetInst().Instantiate(_strKey);
+		Entity* e = InstanceManager::GetInst().instantiate(_strKey);
 		Script* s = dynamic_cast<Script*>(e);
 
 		if (nullptr == s) {

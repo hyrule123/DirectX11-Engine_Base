@@ -31,8 +31,8 @@ namespace ehw {
 	private:
 		SceneRenderAgent();
 		~SceneRenderAgent();
-		void Init();
-		void Release();
+		void init();
+		void release();
 
 		void render();
 

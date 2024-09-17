@@ -37,9 +37,9 @@ namespace ehw
 	{
 	}
 
-	BOOL GameEngine::Init(const tGameEngineDesc& _desc)
+	BOOL GameEngine::init(const tGameEngineDesc& _desc)
 	{
-		AtExit::AddFunc(std::bind(&GameEngine::Release, this));
+		AtExit::AddFunc(std::bind(&GameEngine::release, this));
 
 		if (nullptr == _desc.Hwnd)
 		{
@@ -51,12 +51,12 @@ namespace ehw
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
 
-		ThreadPoolManager::GetInst().Init((size_t)std::thread::hardware_concurrency());
-		PathManager::GetInst().Init();
+		ThreadPoolManager::GetInst().init((size_t)std::thread::hardware_concurrency());
+		PathManager::GetInst().init();
 		
-		RenderManager::GetInst().Init();
+		RenderManager::GetInst().init();
 		
-		ResourceManagers::GetInst().Init();
+		ResourceManagers::GetInst().init();
 
 		if (false == RenderManager::GetInst().Settings(_desc.GPUDesc))
 		{
@@ -64,15 +64,15 @@ namespace ehw
 			return FALSE;
 		}
 		
-		AudioManager::GetInst().Init();
-		FontWrapper::GetInst().Init();
+		AudioManager::GetInst().init();
+		FontWrapper::GetInst().init();
 		
-		TimeManager::GetInst().Init();
+		TimeManager::GetInst().init();
 
-		InputManager::Init();
+		InputManager::init();
 		
-		PhysXInstance::GetInst().Init();
-		SceneManager::GetInst().Init();
+		PhysXInstance::GetInst().init();
+		SceneManager::GetInst().init();
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
@@ -132,7 +132,7 @@ namespace ehw
 		return m_bRunning;
 	}
 
-	void GameEngine::Release()
+	void GameEngine::release()
 	{
 		::ReleaseDC(m_hwnd, m_hdc);
 

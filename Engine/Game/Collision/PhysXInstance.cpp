@@ -21,10 +21,10 @@ namespace ehw
 	{
 	}
 
-	void PhysXInstance::Init()
+	void PhysXInstance::init()
 	{
 		using namespace physx;
-		AtExit::AddFunc(std::bind(&PhysXInstance::Release, this));
+		AtExit::AddFunc(std::bind(&PhysXInstance::release, this));
 
 
 		//CreateBuffer PxFoundation
@@ -64,7 +64,7 @@ namespace ehw
 	}
 
 
-	void PhysXInstance::Release()
+	void PhysXInstance::release()
 	{
 		using namespace physx;
 		PX_RELEASE(m_dispatcher);

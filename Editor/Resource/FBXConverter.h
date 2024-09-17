@@ -21,7 +21,7 @@ namespace ehw::editor
 		EditorFBXConverter();
 		virtual ~EditorFBXConverter();
 
-		virtual void Init() override;
+		virtual void init() override;
 		virtual void UpdateUI() override;
 
 	private:

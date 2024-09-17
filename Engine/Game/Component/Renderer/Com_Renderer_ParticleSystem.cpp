@@ -84,7 +84,7 @@ namespace ehw
 		return eResult();
 	}
 
-	void Com_Renderer_ParticleSystem::Init()
+	void Com_Renderer_ParticleSystem::init()
 	{
 		using namespace strKey::defaultRes;
 		mCS = LOAD_COMPUTESHADER(ParticleShader);
@@ -116,10 +116,10 @@ namespace ehw
 		sDesc.eSBufferType = eStructBufferType::READ_WRITE;
 
 		m_buffer = new StructBuffer;
-		m_buffer->Init<tParticle>(sDesc, mMaxParticles, particles, 100u);
+		m_buffer->init<tParticle>(sDesc, mMaxParticles, particles, 100u);
 
 		m_shared_buffer = new StructBuffer;
-		m_shared_buffer->Init<tParticleShared>(sDesc, 1, nullptr, 0u);
+		m_shared_buffer->init<tParticleShared>(sDesc, 1, nullptr, 0u);
 	}
 
 	void Com_Renderer_ParticleSystem::final_update()

@@ -39,32 +39,32 @@ namespace ehw
 	{
 	}
 
-	void ResourceManagers::Init()
+	void ResourceManagers::init()
 	{
-		AtExit::AddFunc(std::bind(&ResourceManagers::Release, this));
+		AtExit::AddFunc(std::bind(&ResourceManagers::release, this));
 
 		//기본 Resource들 init
 		const std::fs::path& baseDir = PathManager::GetInst().GetResPathRelative();
 
 		//기본 리소스를 먼저 등록
-		ResourceManager<Texture>::GetInst().Init(baseDir / strKey::path::directory::resource::Texture);
-		ResourceManager<VertexBuffer>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
-		ResourceManager<Mesh>::GetInst().Init(baseDir / strKey::path::directory::resource::Mesh);
-		ResourceManager<AudioClip>::GetInst().Init(baseDir / strKey::path::directory::resource::AudioClip);
-		ResourceManager<GraphicsShader>::GetInst().Init(baseDir / strKey::path::directory::resource::GraphicsShader);
-		ResourceManager<ComputeShader>::GetInst().Init(baseDir / strKey::path::directory::resource::ComputeShader);
+		ResourceManager<Texture>::GetInst().init(baseDir / strKey::path::directory::resource::Texture);
+		ResourceManager<VertexBuffer>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
+		ResourceManager<Mesh>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
+		ResourceManager<AudioClip>::GetInst().init(baseDir / strKey::path::directory::resource::AudioClip);
+		ResourceManager<GraphicsShader>::GetInst().init(baseDir / strKey::path::directory::resource::GraphicsShader);
+		ResourceManager<ComputeShader>::GetInst().init(baseDir / strKey::path::directory::resource::ComputeShader);
 
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록
-		ResourceManager<Material>::GetInst().Init(baseDir / strKey::path::directory::resource::Material);
-		ResourceManager<Animation2D>::GetInst().Init(baseDir / strKey::path::directory::resource::Animation2D);
-		ResourceManager<Model3D>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
-		ResourceManager<Skeleton>::GetInst().Init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Material>::GetInst().init(baseDir / strKey::path::directory::resource::Material);
+		ResourceManager<Animation2D>::GetInst().init(baseDir / strKey::path::directory::resource::Animation2D);
+		ResourceManager<Model3D>::GetInst().init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Skeleton>::GetInst().init(baseDir / strKey::path::directory::resource::Model3D);
 
 		init_static_variables();
 	}
 
-	void ResourceManagers::Release()
+	void ResourceManagers::release()
 	{
 		release_static_variables();
 		m_CleanUnusedResourcesFunction.clear();

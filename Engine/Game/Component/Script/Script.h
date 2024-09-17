@@ -18,7 +18,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult::Success; }
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override { return eResult::Success; }
 
-		virtual void Init() {};
+		virtual void init() {};
 		virtual void Awake() override {};
 		virtual void Update() override {};
 		virtual void final_update() final {};

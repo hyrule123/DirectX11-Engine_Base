@@ -17,9 +17,9 @@ namespace ehw
 	{
 	}
 
-	void Com_Collider3D_Sphere::Init()
+	void Com_Collider3D_Sphere::init()
 	{
-		Com_Collider3D_Shapes::Init();
+		Com_Collider3D_Shapes::init();
 
 		Collision3D* col3dMgr = GetCollision3D();
 		if (nullptr == col3dMgr)

@@ -19,7 +19,7 @@ namespace ehw::editor
 		EditorGraphicsShader();
 		virtual ~EditorGraphicsShader();
 
-		virtual void Init() override;
+		virtual void init() override;
 		virtual void UpdateUI() override;
 
 		bool CreateDefaultShaders();

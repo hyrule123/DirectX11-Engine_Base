@@ -9,7 +9,7 @@ namespace ehw
 		friend class StaticSingleton<GameEngine>;
 
 	public:
-		BOOL Init(const tGameEngineDesc& _AppDesc);
+		BOOL init(const tGameEngineDesc& _AppDesc);
 
 		void Update();
 		void final_update();
@@ -21,7 +21,7 @@ namespace ehw
 		// Running main engine loop
 		bool Run();
 
-		void Release();
+		void release();
 
 		//사이즈를 입력하면 조절
 		void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);

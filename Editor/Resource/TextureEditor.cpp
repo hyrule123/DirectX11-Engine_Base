@@ -25,7 +25,7 @@ namespace ehw::editor
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		const std::string_view key = targetTex->get_path_key();
+		const std::string_view key = targetTex->get_path();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"

@@ -44,9 +44,9 @@ namespace ehw
 	{
 	}
 
-	bool RenderManager::Init()
+	bool RenderManager::init()
 	{
-		AtExit::AddFunc(std::bind(&RenderManager::Release, this));
+		AtExit::AddFunc(std::bind(&RenderManager::release, this));
 
 		// Device, Device Context
 		uint DeviceFlag{};
@@ -89,7 +89,7 @@ namespace ehw
 	bool RenderManager::Settings(const tGPUManagerDesc& _Desc)
 	{
 		if (nullptr == m_device || nullptr == m_context) {
-			ASSERT(false, "Device Context가 생성되지 않았습니다. Init()를 먼저 호출하세요.");
+			ASSERT(false, "Device Context가 생성되지 않았습니다. init()를 먼저 호출하세요.");
 			return false;
 		}
 
@@ -113,7 +113,7 @@ namespace ehw
 		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
-		m_sceneRenderAgent.Init();
+		m_sceneRenderAgent.init();
 
 		m_resolution_x = _Desc.ResolutionX;
 		m_resolution_y = _Desc.ResolutionY;
@@ -140,7 +140,7 @@ namespace ehw
 
 	void RenderManager::ReleaseResources()
 	{
-		m_sceneRenderAgent.Release();
+		m_sceneRenderAgent.release();
 
 		for (int i = 0; i < (int)eCBType::END; ++i)
 		{
@@ -176,7 +176,7 @@ namespace ehw
 		m_swapChain = nullptr;
 	}
 
-	void RenderManager::Release()
+	void RenderManager::release()
 	{
 		m_context = nullptr;
 		m_device = nullptr;

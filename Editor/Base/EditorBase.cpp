@@ -94,7 +94,7 @@ namespace ehw::editor
 
 	void EditorBase::InitRecursive()
 	{
-		Init();
+		init();
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
 			m_childs[i]->InitRecursive();

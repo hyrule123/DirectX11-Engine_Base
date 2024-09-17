@@ -17,7 +17,7 @@ namespace ehw::editor
         EditorNormalConverter();
         virtual ~EditorNormalConverter();
 
-        virtual void Init() override;
+        virtual void init() override;
         virtual void UpdateUI() override;
 
     private:

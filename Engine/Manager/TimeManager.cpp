@@ -24,9 +24,9 @@ namespace ehw
     TimeManager::~TimeManager()
     {
     }
-    void TimeManager::Init()
+    void TimeManager::init()
     {
-        AtExit::AddFunc(std::bind(&TimeManager::Release, this));
+        AtExit::AddFunc(std::bind(&TimeManager::release, this));
 
         m_prevTime = std::chrono::high_resolution_clock::now();
 
@@ -34,7 +34,7 @@ namespace ehw
         SetFixedDeltaTime(g_defaultFixedUpdateDeltaTime);
     }
 
-    void TimeManager::Release()
+    void TimeManager::release()
     {
         m_currentDeltaTime = {};
         m_deltaTime = {};

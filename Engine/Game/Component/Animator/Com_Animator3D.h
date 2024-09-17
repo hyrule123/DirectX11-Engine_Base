@@ -22,7 +22,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		//virtual void Init() override;
+		//virtual void init() override;
 		virtual void final_update() override;
 		virtual void frame_end() override;
 
@@ -45,8 +45,8 @@ namespace ehw
 
 		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
-		//StructBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer.get(); }
-		int GetBoneCount();
+		//StructBuffer* GetFinalBoneMat() { return m_final_model_matrix_buffer.get(); }
+		int get_bone_count();
 
 
 		virtual void bind_buffer_to_GPU_register() override;

@@ -20,7 +20,7 @@ namespace ehw::editor
 		void InitRecursive();
 		void final_update();
 
-		virtual void Init() {}
+		virtual void init() {}
 		virtual void Update() {}
 
 		//재정의해서 각자 guiBase에 맞는 begin함수를 호출. bool 값이 반환되며, true가 반환되었을 때에만 endUI()가 호출됨.

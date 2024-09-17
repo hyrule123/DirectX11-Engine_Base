@@ -18,9 +18,9 @@ namespace ehw
     ThreadPoolManager::~ThreadPoolManager()
     {
     }
-    void ThreadPoolManager::Init(size_t _numThread)
+    void ThreadPoolManager::init(size_t _numThread)
     {
-        AtExit::AddFunc(std::bind(&ThreadPoolManager::Release, this));
+        AtExit::AddFunc(std::bind(&ThreadPoolManager::release, this));
 
         mNumThread = _numThread;
         mWorkerThreads.reserve(mNumThread);
@@ -47,7 +47,7 @@ namespace ehw
         }
     }
 
-    void ThreadPoolManager::Release()
+    void ThreadPoolManager::release()
     {
         mStopAll = true;
         mCVJobqueue.notify_all();

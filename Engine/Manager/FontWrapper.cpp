@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 #pragma comment(lib, "FW1FontWrapper/x64/Debug/FW1FontWrapperL.lib")
 #else _DEBUG
-#pragma comment(lib, "FW1FontWrapper/x64/Release/FW1FontWrapper.lib")
+#pragma comment(lib, "FW1FontWrapper/x64/release/FW1FontWrapper.lib")
 #endif _DEBUG
 
 
@@ -37,9 +37,9 @@ namespace ehw
 	{
 	}
 
-	bool FontWrapper::Init()
+	bool FontWrapper::init()
 	{
-		AtExit::AddFunc(std::bind(&FontWrapper::Release, this));
+		AtExit::AddFunc(std::bind(&FontWrapper::release, this));
 
 		if (FAILED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory)))
 			return false;
@@ -64,12 +64,12 @@ namespace ehw
 								);
 	}
 
-	void FontWrapper::Release()
+	void FontWrapper::release()
 	{
-		m_FW1Factory->Release();
+		m_FW1Factory->release();
 		m_FW1Factory = nullptr;
 
-		m_fontWrapper->Release();
+		m_fontWrapper->release();
 		m_fontWrapper = nullptr;
 	}
 }

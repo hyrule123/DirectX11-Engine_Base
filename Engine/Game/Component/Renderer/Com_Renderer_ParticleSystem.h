@@ -28,7 +28,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* Json) const override;
 		virtual eResult deserialize_json(const JsonSerializer* Json) override;
 
-		virtual void Init() override;
+		virtual void init() override;
 		virtual void final_update() override;
 		virtual void render() override;
 

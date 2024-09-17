@@ -26,8 +26,8 @@ namespace ehw
 	private:
 		PathManager();
 		~PathManager();
-		void Init();
-		void Release();
+		void init();
+		void release();
 
 	private:
 		std::filesystem::path m_absoluteResourceDir;

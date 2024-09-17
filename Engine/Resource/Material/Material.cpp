@@ -47,7 +47,7 @@ namespace ehw
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.GPU_register_t_SRV = GPU::Register::t::g_individual_mtrl_data;
         desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-        s_individual_mtrl_buffer->Init<tIndividual_Material_Data>(desc);
+        s_individual_mtrl_buffer->init<tIndividual_Material_Data>(desc);
     }
 
     void Material::release_static()
@@ -93,7 +93,7 @@ namespace ehw
 
         if (animator && animator->IsPlaying()) {
             data.bAnim = TRUE;
-            data.BoneCount = animator->GetBoneCount();
+            data.BoneCount = animator->get_bone_count();
         }
 
         m_individual_mtrl_data.push_back(data);
@@ -104,14 +104,14 @@ namespace ehw
         s_individual_mtrl_buffer->SetData(m_individual_mtrl_data.data(), (UINT)m_individual_mtrl_data.size());
     }
 
-    eResult Material::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+    eResult Material::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
     {
-        return SaveFile_Json(_baseDir / _key_path);
+        return SaveFile_Json(_base_directory / _key_path);
     }
 
-    eResult Material::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+    eResult Material::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
     {
-        return LoadFile_Json(_baseDir / _key_path);
+        return LoadFile_Json(_base_directory / _key_path);
     }
 
     eResult Material::serialize_json(JsonSerializer* _ser) const

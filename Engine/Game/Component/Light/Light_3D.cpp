@@ -186,7 +186,7 @@ namespace ehw
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
 		desc.GPU_register_t_SRV = GPU::Register::t::g_light_attributes;
 		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-		s_struct_buffer->Init<tLightAttribute>(desc, 16);
+		s_struct_buffer->init<tLightAttribute>(desc, 16);
 		s_struct_buffer->SetPipelineTarget(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 		SAFE_DELETE(s_const_buffer);

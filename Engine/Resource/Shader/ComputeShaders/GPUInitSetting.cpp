@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	eResult GPUInitSetting::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult GPUInitSetting::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
 		eResult result = compile_from_byte_code(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
 
@@ -76,7 +76,7 @@ namespace ehw
 		desc.GPU_register_t_SRV = GPU::Register::t::gInitSetting;
 		desc.GPU_register_u_UAV = GPU::Register::u::g_initSettings_RW;
 		mInitSBuffer = std::make_unique<StructBuffer>();
-		eResult result = mInitSBuffer->Init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
+		eResult result = mInitSBuffer->init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
 		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
 		mInitSBuffer->BindDataUAV();

@@ -13,12 +13,12 @@ namespace ehw
 		~SceneManager();
 
 	public:
-		void Init();
+		void init();
 		void FixedUpdate();
 		void Update();
 		void final_update();
 		void frame_end();
-		void Release();
+		void release();
 
 		void Destroy();
 

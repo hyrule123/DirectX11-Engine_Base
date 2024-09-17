@@ -6,8 +6,8 @@
 
 namespace ehw
 {
-	using ehw::Texture;
 
+	BASE_RESOURCE(Animation2D);
 	class Animation2D final
 		: public Animation
 		, public Serializable_Json
@@ -40,7 +40,7 @@ namespace ehw
 
 		virtual ~Animation2D();
 
-		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override
+		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override
 		{ 
 			return eResult::Fail_NotImplemented; 
 		}

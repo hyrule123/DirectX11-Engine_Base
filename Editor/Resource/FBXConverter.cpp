@@ -23,7 +23,7 @@ namespace ehw::editor
 	{
 	}
 
-	void EditorFBXConverter::Init()
+	void EditorFBXConverter::init()
 	{
 		LoadProjMeshDataCombo();
 	}
@@ -158,10 +158,10 @@ namespace ehw::editor
 				[this]()->eResult
 				{
 					Model3D meshData{};
-					eResult result = meshData.ConvertFBX(mFBXPath, mbStatic, mOutputDirName);
+					eResult result = meshData.convert_fbx(mFBXPath, mbStatic, mOutputDirName);
 					if (eResult_success(result))
 					{
-						result = meshData.save(mOutputDirName, meshData.get_path_key());
+						result = meshData.save(mOutputDirName, meshData.get_path());
 					}
 
 					return result;
@@ -195,7 +195,7 @@ namespace ehw::editor
 			}
 			else
 			{
-				Model3D::AddAnimationFromFBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
+				Model3D::add_animation_from_FBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
 			}
 		}
 	}

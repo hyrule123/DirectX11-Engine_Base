@@ -68,11 +68,11 @@ namespace ehw
 		RenderManager();
 		~RenderManager();
 		
-		bool Init();
+		bool init();
 		bool Settings(const tGPUManagerDesc& _Desc);
 		void load_default_resources();
 		void ReleaseResources();
-		void Release();
+		void release();
 		
 		//스왑체인 + 렌더타겟 생성하여 반환
 		std::shared_ptr<Texture> CreateSwapChain(UINT _resX, UINT _resY, UINT _RefreshRate);

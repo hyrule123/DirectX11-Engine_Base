@@ -33,7 +33,7 @@ namespace ehw {
 
 		virtual ~iComponent();
 
-		virtual void Init() {}
+		virtual void init() {}
 		virtual void Awake() {}
 		virtual void OnEnable() {}
 		virtual void Start() {}

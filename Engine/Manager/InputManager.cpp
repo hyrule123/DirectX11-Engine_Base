@@ -40,9 +40,9 @@ namespace ehw
 	
 
 
-	void InputManager::Init()
+	void InputManager::init()
 	{
-		AtExit::AddFunc(InputManager::Release);
+		AtExit::AddFunc(InputManager::release);
 
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
@@ -110,7 +110,7 @@ namespace ehw
 			}
 		}
 	}
-	void InputManager::Release()
+	void InputManager::release()
 	{
 		mKeys.clear();
 		mMousePos = {};

@@ -18,10 +18,10 @@ namespace ehw
 {
 	Animation3D_PlayData::Animation3D_PlayData()
 		: Entity(Animation3D_PlayData::concrete_class_name)
-		, m_animationComputeShader()
+		, m_compute_shader()
 		, m_skeleton()
 		//, m_iFramePerSecond(30)
-		, m_pBoneFinalMatBuffer(nullptr)
+		, m_final_model_matrix_buffer(nullptr)
 		, m_PrevFrame(-1)
 		, m_Anim3DCBuffer()
 
@@ -34,22 +34,22 @@ namespace ehw
 		, m_bInternalUpdated(false)
 		, m_bFinalMatrixUpdated(false)
 	{
-		m_animationComputeShader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
 
 		StructBuffer::Desc desc{};
 		desc.GPU_register_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex;
 		desc.GPU_register_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
 		desc.eSBufferType = eStructBufferType::READ_WRITE;
-		m_pBoneFinalMatBuffer = std::make_unique<StructBuffer>();
-		m_pBoneFinalMatBuffer->Init<MATRIX>(desc);
+		m_final_model_matrix_buffer = std::make_unique<StructBuffer>();
+		m_final_model_matrix_buffer->init<MATRIX>(desc);
 	}
 
 	Animation3D_PlayData::Animation3D_PlayData(const Animation3D_PlayData& _other)
 		: Entity(_other)
 		, m_skeleton()
 		//, m_iFramePerSecond(_other.m_iFramePerSecond)
-		, m_pBoneFinalMatBuffer(nullptr)
+		, m_final_model_matrix_buffer(nullptr)
 		, m_bFinalMatrixUpdated(false)
 		, m_PrevFrame(_other.m_PrevFrame)
 		, m_Anim3DCBuffer(_other.m_Anim3DCBuffer)
@@ -60,9 +60,9 @@ namespace ehw
 		, m_currentAnimation(_other.m_currentAnimation)
 		, m_fClipUpdateTime()
 	{
-		if (_other.m_pBoneFinalMatBuffer)
+		if (_other.m_final_model_matrix_buffer)
 		{
-			m_pBoneFinalMatBuffer = std::unique_ptr<StructBuffer>(_other.m_pBoneFinalMatBuffer->Clone());
+			m_final_model_matrix_buffer = std::unique_ptr<StructBuffer>(_other.m_final_model_matrix_buffer->Clone());
 		}
 	}
 
@@ -179,30 +179,30 @@ namespace ehw
 				desc.next_animation_keyframe_buffer = m_nextAnimation->GetKeyFrameSBuffer().get();
 			}
 
-			desc.bone_offset_matrix_buffer = m_skeleton->GetBoneOffsetBuffer().get();
+			desc.bone_offset_matrix_buffer = m_skeleton->get_bone_offset_buffer().get();
 
-			desc.final_bone_translation_matrix_buffer = m_pBoneFinalMatBuffer.get();
+			desc.final_bone_translation_matrix_buffer = m_final_model_matrix_buffer.get();
 
 			desc.shared_animation_data = &m_Anim3DCBuffer;
 
 
-			m_animationComputeShader->SetDesc(desc);
+			m_compute_shader->SetDesc(desc);
 
 			// 업데이트 쉐이더 실행
-			m_animationComputeShader->OnExcute();
+			m_compute_shader->OnExcute();
 
 			m_bFinalMatrixUpdated = true;
 		}
 
 		// t19 레지스터에 최종행렬 데이터(구조버퍼) 바인딩	
-		m_pBoneFinalMatBuffer->BindDataSRV();// Register_t_g_arrBoneMat, eShaderStageFlag::Vertex);
+		m_final_model_matrix_buffer->BindDataSRV();// Register_t_g_arrBoneMat, eShaderStageFlag::Vertex);
 
 		return true;
 	}
 
 	void Animation3D_PlayData::UnBindData()
 	{
-		m_pBoneFinalMatBuffer->unbind_data();
+		m_final_model_matrix_buffer->unbind_data();
 	}
 
 	int Animation3D_PlayData::GetStartFrame() const
@@ -222,7 +222,7 @@ namespace ehw
 		if (m_skeleton)
 		{
 			//최종 Bone별 행렬이 저장될 Vector 크기를 재조정
-			m_Anim3DCBuffer.BoneCount = m_skeleton->GetBoneCount();
+			m_Anim3DCBuffer.BoneCount = m_skeleton->get_bone_count();
 		}
 	}
 
@@ -230,7 +230,7 @@ namespace ehw
 	{
 		if (m_skeleton)
 		{
-			std::shared_ptr<Animation3D> anim = m_skeleton->FindAnimation(_animationName);
+			std::shared_ptr<Animation3D> anim = m_skeleton->find_animation(_animationName);
 			return Play(anim, _blendTime);
 		}
 
@@ -243,7 +243,7 @@ namespace ehw
 		{
 			return;
 		}
-		const auto& anims = m_skeleton->GetAnimations();
+		const auto& anims = m_skeleton->get_animations();
 
 		if (anims.empty())
 		{
@@ -333,10 +333,10 @@ namespace ehw
 	{
 		if (m_skeleton)
 		{
-			UINT iBoneCount = m_skeleton->GetBoneCount();
-			if (m_pBoneFinalMatBuffer->GetElemCount() != iBoneCount)
+			UINT iBoneCount = m_skeleton->get_bone_count();
+			if (m_final_model_matrix_buffer->GetElemCount() != iBoneCount)
 			{
-				if (eResult_fail(m_pBoneFinalMatBuffer->Resize((size_t)iBoneCount, nullptr, 0))) {
+				if (eResult_fail(m_final_model_matrix_buffer->Resize((size_t)iBoneCount, nullptr, 0))) {
 					return false;
 				}
 			}

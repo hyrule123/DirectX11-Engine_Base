@@ -16,7 +16,7 @@
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Model3D/FBXLoader.h"
 #include "Engine/Resource/Model3D/Animation3D.h"
-
+#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
 #include <cctype>
 
@@ -27,7 +27,10 @@ namespace ehw
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
+		, m_compute_shader{}
+		, m_final_model_matrix_buffer{}
 	{
+		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
 	}
 
 	Skeleton::~Skeleton()
@@ -201,14 +204,14 @@ namespace ehw
 			ser >> m_vecBones[i].matOffset;
 			ser >> m_vecBones[i].matBone;
 		}
-		CreateBoneOffsetSBuffer();
+		create_bone_offset_buffer();
 
 		return eResult::Success;
 	}
 
-	eResult Skeleton::CreateFromFBX(FBXLoader* _fbxLoader)
+	eResult Skeleton::create_from_FBX(FBXLoader* _fbxLoader)
 	{
-		const std::vector<tFBXBone>& vecBone = _fbxLoader->GetBones();
+		const std::vector<tFBXBone>& vecBone = _fbxLoader->get_bones();
 		if (vecBone.empty())
 		{
 			return eResult::Fail_Empty;
@@ -227,9 +230,9 @@ namespace ehw
 			bone.matOffset = FBXLoader::GetMatrixFromFbxMatrix(vecBone[i].matOffset);
 			bone.strBoneName = vecBone[i].strBoneName;
 		}
-		CreateBoneOffsetSBuffer();
+		create_bone_offset_buffer();
 
-		const auto& animClip = _fbxLoader->GetAnimations();
+		const auto& animClip = _fbxLoader->get_animations();
 		for (size_t i = 0; i < animClip.size(); ++i)
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
@@ -237,7 +240,7 @@ namespace ehw
 			std::shared_ptr<Skeleton> sklt = 
 				std::static_pointer_cast<Skeleton>(shared_from_this());
 
-			eResult result = anim->LoadFromFBX(sklt, &animClip[i]);
+			eResult result = anim->load_from_fbx(sklt, &animClip[i]);
 
 			if (eResult_fail(result))
 			{
@@ -245,7 +248,8 @@ namespace ehw
 				return result;
 			}
 			
-			std::string animName(anim->get_path_key());
+			
+			std::string animName(anim->get_path());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -274,7 +278,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	bool Skeleton::CopyAnimationFromOther(const Skeleton& _other, const std::fs::path& _saveDir)
+	bool Skeleton::copy_animation_from_other(const Skeleton& _other, const std::fs::path& _saveDir)
 	{
 		//순회를 돌아주면서 내 스켈레톤 인덱스와 매칭되는 상대 스켈레톤 인덱스를 계산
 		if (m_vecBones.size() != _other.m_vecBones.size())
@@ -284,7 +288,7 @@ namespace ehw
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
 			//내 본과 일치하는 본의 인덱스를 찾는다.
-			int otherIdx = _other.FindSameBoneIndex(m_vecBones[i]);
+			int otherIdx = _other.find_same_bone_index(m_vecBones[i]);
 
 			//일치하는 본이 없으면 Return
 			if (0 > otherIdx)
@@ -335,7 +339,7 @@ namespace ehw
 		return true;
 	}
 
-	int Skeleton::FindSameBoneIndex(const tMTBone& _other) const
+	int Skeleton::find_same_bone_index(const tMTBone& _other) const
 	{
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
 		{
@@ -354,7 +358,7 @@ namespace ehw
 		return -1;
 	}
 
-	void Skeleton::CreateBoneOffsetSBuffer()
+	void Skeleton::create_bone_offset_buffer()
 	{
 		// BoneOffet 행렬
 		std::vector<MATRIX> vecOffset;
@@ -370,12 +374,12 @@ namespace ehw
 		desc.GPU_register_t_SRV = GPU::Register::t::g_BoneOffsetArray;
 		m_pBoneOffset = std::make_shared<StructBuffer>();
 
-		eResult result = m_pBoneOffset->Init<MATRIX>(desc, (uint)vecOffset.size(), vecOffset.data(), vecOffset.size());
+		eResult result = m_pBoneOffset->init<MATRIX>(desc, (uint)vecOffset.size(), vecOffset.data(), vecOffset.size());
 		
 		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}
 
-	std::shared_ptr<Animation3D> Skeleton::FindAnimation(const std::string_view _strAnimName)
+	std::shared_ptr<Animation3D> Skeleton::find_animation(const std::string_view _strAnimName)
 	{
 		std::shared_ptr<Animation3D> retPtr = nullptr;
 		const auto& iter = m_animations.find(_strAnimName);

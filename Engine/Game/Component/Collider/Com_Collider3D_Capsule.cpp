@@ -18,9 +18,9 @@ namespace ehw
 	Com_Collider3D_Capsule::~Com_Collider3D_Capsule()
 	{
 	}
-	void Com_Collider3D_Capsule::Init()
+	void Com_Collider3D_Capsule::init()
 	{
-		Com_Collider3D_Shapes::Init();
+		Com_Collider3D_Shapes::init();
 
 		Collision3D* col3dMgr = GetCollision3D();
 		if (nullptr == col3dMgr)

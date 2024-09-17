@@ -125,8 +125,8 @@ namespace ehw
 		static MATRIX GetMatrixFromFbxMatrix(const fbxsdk::FbxAMatrix& _mat);
 
 		const std::vector<tFBXContainer>& GetContainers() const { return mContainers; }
-		const std::vector<tFBXBone>& GetBones() const { return mBones; }
-		const std::vector<tFBXAnimClip>& GetAnimations() const { return mAnimClips; }
+		const std::vector<tFBXBone>& get_bones() const { return mBones; }
+		const std::vector<tFBXAnimClip>& get_animations() const { return mAnimClips; }
 
 	private:
 		void LoadMeshContainer(fbxsdk::FbxNode* _pRoot, bool _bStatic);

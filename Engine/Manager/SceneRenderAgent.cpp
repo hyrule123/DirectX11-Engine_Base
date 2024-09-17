@@ -27,7 +27,7 @@ namespace ehw {
 	{
 	}
 
-	void SceneRenderAgent::Init()
+	void SceneRenderAgent::init()
 	{
 		m_merge_mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
 
@@ -36,7 +36,7 @@ namespace ehw {
 		ASSERT(m_merge_material && m_merge_mesh, "merge mesh와 material을 찾지 못했습니다.");
 	}
 
-	void SceneRenderAgent::Release()
+	void SceneRenderAgent::release()
 	{
 		m_cameras.clear();
 		m_mainCamIndex = 0u;

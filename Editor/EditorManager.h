@@ -39,8 +39,8 @@ namespace ehw::editor
 	private:
 		static void Run();
 
-		static void Init();
-		static void Release();
+		static void init();
+		static void release();
 
 		static void Update();
 		static void final_update();
@@ -89,7 +89,7 @@ namespace ehw::editor
 
 		if (mbEnable && (false == mbInitialized))
 		{
-			EditorManager::Init();
+			EditorManager::init();
 			mbInitialized = true;
 		}
 	}

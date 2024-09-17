@@ -28,7 +28,7 @@ namespace ehw::editor
 					continue;
 				else if (widget.second->get_parent().expired())
 				{
-					if (ImGui::MenuItem(widget.second->get_path_key().c_str(), nullptr, widget.second->GetEnablePtr()))
+					if (ImGui::MenuItem(widget.second->get_path().c_str(), nullptr, widget.second->GetEnablePtr()))
 					{
 					}
 				}

@@ -18,7 +18,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const final { return eResult{}; };
 		virtual eResult deserialize_json(const JsonSerializer* _ser) final { return eResult{}; };
 
-		void Init() final;
+		void init() final;
 		void final_update() final{}
 
 		void OnEnable() final;

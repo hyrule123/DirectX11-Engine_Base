@@ -5,6 +5,7 @@
 
 namespace ehw
 {
+	BASE_RESOURCE(AudioClip);
 	class AudioClip final : public Resource
 	{
 		CLASS_NAME(AudioClip);
@@ -12,7 +13,7 @@ namespace ehw
 		AudioClip();
 		virtual ~AudioClip();
 
-		virtual eResult load(const std::fs::path& _baseDir, const std::fs::path& _key_path) override;
+		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
 		
 		void Play();
 		void Stop();

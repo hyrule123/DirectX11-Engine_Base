@@ -19,7 +19,7 @@ namespace ehw::editor
 		EditorMaterial();
 		virtual ~EditorMaterial();
 
-		virtual void Init() override;
+		virtual void init() override;
 		virtual void Update() override;
 		virtual void UpdateUI() override;
 

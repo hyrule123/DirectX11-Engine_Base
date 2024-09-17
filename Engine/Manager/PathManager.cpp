@@ -12,9 +12,9 @@ namespace ehw
 	PathManager::~PathManager()
 	{
 	}
-	void PathManager::Init()
+	void PathManager::init()
 	{
-		AtExit::AddFunc(std::bind(&PathManager::Release, this));
+		AtExit::AddFunc(std::bind(&PathManager::release, this));
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
@@ -36,7 +36,7 @@ namespace ehw
 	}
 
 
-	void PathManager::Release()
+	void PathManager::release()
 	{
 		m_absoluteResourceDir.clear();
 		m_relativeResourceDir.clear();

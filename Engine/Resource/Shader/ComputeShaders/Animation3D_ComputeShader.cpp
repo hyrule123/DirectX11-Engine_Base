@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	eResult Animation3D_ComputeShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Animation3D_ComputeShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
 		return ComputeShader::compile_from_byte_code(CS_Animation3D, sizeof(CS_Animation3D));
 	}

@@ -41,7 +41,7 @@ namespace ehw
 
 		inline std::shared_ptr<Skeleton> get_skeleton() { return m_skeleton; }
 		void set_skeleton(const std::shared_ptr<Skeleton> _skeleton);
-		inline StructBuffer* GetBoneFinalMatrixStructBuffer() { return m_pBoneFinalMatBuffer.get(); }
+		inline StructBuffer* GetBoneFinalMatrixStructBuffer() { return m_final_model_matrix_buffer.get(); }
 
 		bool Play(const std::string_view _animationName, float _blendTime);
 		void PlayNext();
@@ -52,7 +52,7 @@ namespace ehw
 		bool CheckMesh();
 
 	private:
-		std::shared_ptr<Animation3D_ComputeShader>		m_animationComputeShader;
+		
 		std::shared_ptr<Skeleton>						m_skeleton;
 		std::shared_ptr<Animation3D>					m_currentAnimation;
 		std::shared_ptr<Animation3D>					m_nextAnimation;
@@ -77,7 +77,6 @@ namespace ehw
 		float							m_fChangeTimeAccumulate;
 
 
-		std::unique_ptr<StructBuffer>	m_pBoneFinalMatBuffer;  // 특정 프레임의 최종 행렬
 
 		bool							m_bInternalUpdated;
 		bool							m_bFinalMatrixUpdated;		// 최종행렬 연산 수행여부

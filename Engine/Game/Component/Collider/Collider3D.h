@@ -19,7 +19,7 @@ namespace ehw
 		eResult serialize_json(JsonSerializer* _ser) const override { return eResult(); };
 		eResult deserialize_json(const JsonSerializer* _ser) override { return eResult(); };
 
-		void Init() override;
+		void init() override;
 		void Awake() override;
 
 		MATRIX GetColliderMatrix() override { return MATRIX{}; };

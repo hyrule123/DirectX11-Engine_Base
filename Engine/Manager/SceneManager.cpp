@@ -21,9 +21,9 @@ namespace ehw
 	{
 	}
 
-	void SceneManager::Init()
+	void SceneManager::init()
 	{
-		AtExit::AddFunc(std::bind(&SceneManager::Release, this));
+		AtExit::AddFunc(std::bind(&SceneManager::release, this));
 	}
 
 	void SceneManager::FixedUpdate()
@@ -68,7 +68,7 @@ namespace ehw
 		}
 	}
 
-	void SceneManager::Release()
+	void SceneManager::release()
 	{
 		SAFE_DELETE(m_activeScene);
 	}
@@ -118,7 +118,7 @@ namespace ehw
 
 	Scene* SceneManager::LoadScene(const std::string_view _strKey)
 	{
-		std::unique_ptr<Scene> s(InstanceManager::GetInst().Instantiate<Scene>(_strKey));
+		std::unique_ptr<Scene> s(InstanceManager::GetInst().instantiate<Scene>(_strKey));
 
 		return LoadScene(std::move(s));
 	}

@@ -60,7 +60,7 @@ namespace ehw
 
 		bool CreateXY(const std::string_view _name, std::shared_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
-		Animation2D* FindAnimation(const std::string_view _name) const;
+		Animation2D* find_animation(const std::string_view _name) const;
 		tEvents* FindEvents(const std::string_view _name) const; 
 		void Play(const std::string_view _name, bool _loop = true);
 

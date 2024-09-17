@@ -42,7 +42,7 @@ namespace ehw
 
         //desc를 바꾸고자 할 경우 그냥 구조화 버퍼를 지웠다가 다시 생성할것.
         template <typename T>
-        eResult Init(const Desc& _tDesc, uint _capacity = 0, const void* _pInitialData = nullptr, UINT _ElemCount = 0);
+        eResult init(const Desc& _tDesc, uint _capacity = 0, const void* _pInitialData = nullptr, UINT _ElemCount = 0);
 
         eResult Resize(size_t _ElementCapacity, const void* _pInitialData = nullptr, UINT _dataCount = 0);
 
@@ -98,7 +98,7 @@ namespace ehw
 	};
 
     template<typename T>
-    inline eResult StructBuffer::Init(const Desc& _tDesc, uint _capacity, const void* _pInitialData, UINT _elemCount)
+    inline eResult StructBuffer::init(const Desc& _tDesc, uint _capacity, const void* _pInitialData, UINT _elemCount)
     {
         SetDesc(_tDesc);
 

@@ -177,7 +177,7 @@ namespace ehw::editor
 	{
 	}
 
-	void EditorGraphicsShader::Init()
+	void EditorGraphicsShader::init()
 	{
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;

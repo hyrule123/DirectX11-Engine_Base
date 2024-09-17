@@ -165,14 +165,14 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Texture::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
 	{
-		return SaveFile(_baseDir / _key_path);
+		return SaveFile(_base_directory / _key_path);
 	}
 
-	eResult Texture::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Texture::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
-		std::fs::path fullPath = _baseDir / _key_path;
+		std::fs::path fullPath = _base_directory / _key_path;
 
 		if (false == std::fs::exists(fullPath))
 		{

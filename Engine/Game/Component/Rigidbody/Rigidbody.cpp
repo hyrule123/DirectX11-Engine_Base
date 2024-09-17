@@ -19,7 +19,7 @@ namespace ehw
 	{
 	}
 
-	void Rigidbody::Init()
+	void Rigidbody::init()
 	{
 		m_rigidActor.Set(CreateRigidbody());
 		ASSERT_DEBUG(m_rigidActor, "PxActor 생성되지 않음.");

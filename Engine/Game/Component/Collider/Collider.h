@@ -20,7 +20,7 @@ namespace ehw
 		Collider(const Collider& _collider) = default;
 		virtual ~Collider();
 
-		virtual void Init() override;
+		virtual void init() override;
 		virtual void Awake() override;
 
 		void OnCollisionEnter(Collider* _collider, const float3& _contactPoint);

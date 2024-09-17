@@ -61,7 +61,7 @@ namespace ehw
 
 	//			//재질에 애니메이션 정보 넣어주고 바인딩
 	//			mtrl->SetAnim3D(true);
-	//			mtrl->SetBoneCount(GetMesh()->get_skeleton()->GetBoneCount());
+	//			mtrl->SetBoneCount(GetMesh()->get_skeleton()->get_bone_count());
 	//			mtrl->bind_buffer_to_gpu_register();
 
 	//			// 사용할 메쉬 업데이트 및 렌더링

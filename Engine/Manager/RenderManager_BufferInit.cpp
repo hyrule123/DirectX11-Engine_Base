@@ -40,7 +40,7 @@ namespace ehw {
 			ASSERT(result, "point mesh 생성 실패");
 			pointMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::PointMesh, pointMesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::PointMesh, pointMesh);
 		}
 
 #pragma endregion
@@ -73,7 +73,7 @@ namespace ehw {
 			// Crate Mesh
 			std::shared_ptr<Mesh> RectMesh = std::make_shared<Mesh>();
 			RectMesh->set_engine_default_res(true);
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::RectMesh, RectMesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::RectMesh, RectMesh);
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 			
 			ASSERT(RectMesh->create(VecVtx2D, indices), "RectMesh 생성 실패");
@@ -107,7 +107,7 @@ namespace ehw {
 			std::shared_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
 			debugmesh->set_engine_default_res(true);
 
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::DebugRectMesh, debugmesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::DebugRectMesh, debugmesh);
 			ASSERT(debugmesh->create(VecVtx2D, indices), "debugMesh 생성 실패");
 		}
 #pragma endregion
@@ -156,7 +156,7 @@ namespace ehw {
 			// Crate Mesh
 			std::shared_ptr<Mesh> circle_mesh = std::make_shared<Mesh>();
 			circle_mesh->set_engine_default_res(true);
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::CircleMesh, circle_mesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::CircleMesh, circle_mesh);
 
 			ASSERT(circle_mesh->create(VecVtx2D, VecIdx), "circle mesh 생성 실패");
 		}
@@ -376,7 +376,7 @@ namespace ehw {
 
 			// Crate Mesh
 			std::shared_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::CubeMesh, cubMesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::CubeMesh, cubMesh);
 			cubMesh->create(VecVtx3D, indices);
 		}
 #pragma endregion
@@ -422,7 +422,7 @@ namespace ehw {
 			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
 			ASSERT(debugCubeMesh->create(vertices, indices), "debugCubeMesh 생성 실패");
 			debugCubeMesh->set_engine_default_res(true);
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
 			//debugCubeMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		}
 #pragma endregion //Debug Cube Mesh
@@ -537,7 +537,7 @@ namespace ehw {
 			}
 
 			std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
-			ResourceManager<Mesh>::GetInst().Insert(strKey::defaultRes::mesh::SphereMesh, sphereMesh);
+			ResourceManager<Mesh>::GetInst().insert(strKey::defaultRes::mesh::SphereMesh, sphereMesh);
 
 			sphereMesh->create<Vertex3D>(VecVtx3D, indices);
 		}
@@ -581,7 +581,7 @@ namespace ehw {
 			TriangleShader->SetInputLayoutDesc(vecLayoutDesc2D);
 			TriangleShader->CreateInputLayout();
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::RectShader, TriangleShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::RectShader, TriangleShader);
 		}
 #pragma endregion
 #pragma region SPRITE SHADER
@@ -595,7 +595,7 @@ namespace ehw {
 			spriteShader->CreateInputLayout();
 
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::SpriteShader, spriteShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::SpriteShader, spriteShader);
 		}
 
 #pragma endregion
@@ -609,7 +609,7 @@ namespace ehw {
 			uiShader->CreateInputLayout();
 
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::UIShader, uiShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::UIShader, uiShader);
 		}
 
 #pragma endregion
@@ -626,7 +626,7 @@ namespace ehw {
 			gridShader->SetDSState(eDSType::NoWrite);
 			gridShader->SetBSState(eBSType::AlphaBlend);
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::GridShader, gridShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::GridShader, gridShader);
 		}
 
 #pragma endregion
@@ -658,7 +658,7 @@ namespace ehw {
 			debugShader->SetDSState(eDSType::NoWrite);
 			debugShader->SetBSState(eBSType::AlphaBlend);
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::DebugShader, debugShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::DebugShader, debugShader);
 		}
 
 #pragma endregion
@@ -682,11 +682,11 @@ namespace ehw {
 
 			//TODO: 파티클을 위한 토폴로지 설정 해줘야함
 			//particleShader->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::ParticleShader, particleShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::ParticleShader, particleShader);
 
 			std::shared_ptr<ParticleShader> particleCS = std::make_shared<ParticleShader>();
 			particleCS->set_engine_default_res(true);
-			ResourceManager<ComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::ParticleCS, particleCS);
+			ResourceManager<ComputeShader>::GetInst().insert(strKey::defaultRes::shader::compute::ParticleCS, particleCS);
 			particleCS->compile_from_byte_code(CS_Particle, sizeof(CS_Particle));
 		}
 #pragma endregion
@@ -700,7 +700,7 @@ namespace ehw {
 			postProcessShader->CreateInputLayout();
 
 			postProcessShader->SetDSState(eDSType::NoWrite);
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::PostProcessShader, postProcessShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::PostProcessShader, postProcessShader);
 		}
 #pragma endregion
 
@@ -765,7 +765,7 @@ namespace ehw {
 			basic3DShader->SetInputLayoutDesc(vecLayoutDesc3D);
 			basic3DShader->CreateInputLayout();
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::Basic3DShader, basic3DShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::Basic3DShader, basic3DShader);
 		}
 #pragma endregion
 
@@ -779,7 +779,7 @@ namespace ehw {
 		defferedShader->SetInputLayoutDesc(vecLayoutDesc3D);
 		defferedShader->CreateInputLayout();
 
-		ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::DefferedShader, defferedShader);
+		ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::DefferedShader, defferedShader);
 
 		//defferdShader->SetRSState();
 #pragma endregion
@@ -798,7 +798,7 @@ namespace ehw {
 			lightShader->SetDSState(eDSType::None);
 			lightShader->SetBSState(eBSType::OneOne);
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::LightDirShader, lightShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::LightDirShader, lightShader);
 		}
 
 		{
@@ -813,7 +813,7 @@ namespace ehw {
 			lightShader->SetDSState(eDSType::None);
 			lightShader->SetBSState(eBSType::OneOne);
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::LightPointShader, lightShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::LightPointShader, lightShader);
 		}
 #pragma endregion
 
@@ -839,7 +839,7 @@ namespace ehw {
 			MergeShader->SetDSState(eDSType::None);
 			MergeShader->SetBSState(eBSType::Default);
 
-			ResourceManager<GraphicsShader>::GetInst().Insert(strKey::defaultRes::shader::graphics::MergeShader, MergeShader);
+			ResourceManager<GraphicsShader>::GetInst().insert(strKey::defaultRes::shader::graphics::MergeShader, MergeShader);
 		}
 #pragma endregion
 
@@ -849,7 +849,7 @@ namespace ehw {
 		Anim3DShader->set_engine_default_res(true);
 		Anim3DShader->compile_from_byte_code(CS_Animation3D, sizeof(CS_Animation3D));
 
-		ResourceManager<ComputeShader>::GetInst().Insert(strKey::defaultRes::shader::compute::Animation3D, Anim3DShader);
+		ResourceManager<ComputeShader>::GetInst().insert(strKey::defaultRes::shader::compute::Animation3D, Anim3DShader);
 #pragma endregion
 	}
 
@@ -1079,7 +1079,7 @@ namespace ehw {
 		std::shared_ptr<Material> RectMaterial = std::make_shared<Material>();
 		RectMaterial->set_shader(shader);
 		RectMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::RectMaterial, RectMaterial);
+		ResourceManager<Material>::GetInst().insert(material::RectMaterial, RectMaterial);
 #pragma endregion
 
 #pragma region SPRITE
@@ -1090,7 +1090,7 @@ namespace ehw {
 		spriteMaterial->set_shader(spriteShader);
 		spriteMaterial->set_texture(eTextureSlot::Albedo, spriteTexture);
 		spriteMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::SpriteMaterial, spriteMaterial);
+		ResourceManager<Material>::GetInst().insert(material::SpriteMaterial, spriteMaterial);
 #pragma endregion
 
 #pragma region UI
@@ -1099,7 +1099,7 @@ namespace ehw {
 		uiMaterial->set_rendering_mode(eRenderingMode::forward_opaque);
 		uiMaterial->set_shader(uiShader);
 		uiMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::UIMaterial, uiMaterial);
+		ResourceManager<Material>::GetInst().insert(material::UIMaterial, uiMaterial);
 #pragma endregion
 
 #pragma region GRID
@@ -1107,7 +1107,7 @@ namespace ehw {
 		std::shared_ptr<Material> gridMaterial = std::make_shared<Material>();
 		gridMaterial->set_shader(gridShader);
 		gridMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::GridMaterial, gridMaterial);
+		ResourceManager<Material>::GetInst().insert(material::GridMaterial, gridMaterial);
 #pragma endregion
 
 #pragma region DEBUG
@@ -1116,7 +1116,7 @@ namespace ehw {
 		debugMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		debugMaterial->set_shader(debugShader);
 		debugMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::DebugMaterial, debugMaterial);
+		ResourceManager<Material>::GetInst().insert(material::DebugMaterial, debugMaterial);
 #pragma endregion
 
 #pragma region PARTICLE
@@ -1125,7 +1125,7 @@ namespace ehw {
 		particleMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		particleMaterial->set_shader(particleShader);
 		particleMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::ParticleMaterial, particleMaterial);
+		ResourceManager<Material>::GetInst().insert(material::ParticleMaterial, particleMaterial);
 #pragma endregion
 
 #pragma region POSTPROCESS
@@ -1134,7 +1134,7 @@ namespace ehw {
 		postProcessMaterial->set_rendering_mode(eRenderingMode::post_process);
 		postProcessMaterial->set_shader(postProcessShader);
 		postProcessMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::PostProcessMaterial, postProcessMaterial);
+		ResourceManager<Material>::GetInst().insert(material::PostProcessMaterial, postProcessMaterial);
 #pragma endregion
 
 #pragma region BASIC3D
@@ -1144,7 +1144,7 @@ namespace ehw {
 		basic3DMaterial->set_shader(basic3DShader);
 
 		basic3DMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(material::Basic3DMaterial, basic3DMaterial);
+		ResourceManager<Material>::GetInst().insert(material::Basic3DMaterial, basic3DMaterial);
 #pragma endregion
 
 
@@ -1159,7 +1159,7 @@ namespace ehw {
 			lightMaterial->set_rendering_mode(eRenderingMode::NONE);
 			lightMaterial->set_shader(lightShader);
 			lightMaterial->set_engine_default_res(true);
-			ResourceManager<Material>::GetInst().Insert(strKey::defaultRes::material::LightDirMaterial, lightMaterial);
+			ResourceManager<Material>::GetInst().insert(strKey::defaultRes::material::LightDirMaterial, lightMaterial);
 		}
 
 		{
@@ -1169,7 +1169,7 @@ namespace ehw {
 			lightMaterial->set_shader(LightPointShader);
 			lightMaterial->set_engine_default_res(true);
 
-			ResourceManager<Material>::GetInst().Insert(strKey::defaultRes::material::LightPointMaterial, lightMaterial);
+			ResourceManager<Material>::GetInst().insert(strKey::defaultRes::material::LightPointMaterial, lightMaterial);
 		}
 
 #pragma endregion
@@ -1180,7 +1180,7 @@ namespace ehw {
 		mergeMaterial->set_rendering_mode(eRenderingMode::NONE);
 		mergeMaterial->set_shader(mergeShader);
 		mergeMaterial->set_engine_default_res(true);
-		ResourceManager<Material>::GetInst().Insert(strKey::defaultRes::material::MergeMaterial, mergeMaterial);
+		ResourceManager<Material>::GetInst().insert(strKey::defaultRes::material::MergeMaterial, mergeMaterial);
 #pragma endregion
 	}
 }

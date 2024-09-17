@@ -36,7 +36,7 @@ namespace ehw
 	}
 
 
-	eResult Model3D::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult Model3D::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
@@ -44,13 +44,13 @@ namespace ehw
 		std::fs::path strKey = _key_path;
 		strKey.replace_extension();
 
-		std::fs::path fullPath = _baseDir / strKey / strKey;
+		std::fs::path fullPath = _base_directory / strKey / strKey;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
 
 		return LoadFile_Json(fullPath);
 	}
 
-	eResult Model3D::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult Model3D::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
 	{
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
@@ -58,7 +58,7 @@ namespace ehw
 		std::fs::path strKey = _key_path;
 		strKey.replace_extension();
 
-		std::fs::path fullPath = _baseDir / strKey / strKey;
+		std::fs::path fullPath = _base_directory / strKey / strKey;
 		fullPath.replace_extension(strKey::path::extension::Model3D);
 		return SaveFile_Json(fullPath);
 	}
@@ -123,7 +123,7 @@ namespace ehw
 					return result;
 				}
 
-				material << m_meshContainers[i].material->get_path_key();
+				material << m_meshContainers[i].material->get_path();
 			}
 		}
 		catch (const std::exception& _err)
@@ -216,7 +216,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	std::vector<std::unique_ptr<GameObject>> Model3D::Instantiate()
+	std::vector<std::unique_ptr<GameObject>> Model3D::instantiate()
 	{
 		std::vector<std::unique_ptr<GameObject>> newObjects{};
 		newObjects.push_back(std::make_unique<GameObject>());
@@ -252,7 +252,7 @@ namespace ehw
 				renderer = root->AddComponent<Com_Renderer_Mesh>();
 			}
 
-			if (false == SetDataToRenderer(renderer, 0))
+			if (false == set_data_to_renderer(renderer, 0))
 			{
 				newObjects.clear();
 				ASSERT(false, "Renderer 세팅 실패.");
@@ -285,7 +285,7 @@ namespace ehw
 					renderer = child->AddComponent<Com_Renderer_Mesh>();
 				}
 
-				if (false == SetDataToRenderer(renderer, (UINT)i))
+				if (false == set_data_to_renderer(renderer, (UINT)i))
 				{
 					newObjects.clear();
 					ASSERT(false, "Renderer 세팅 실패.");
@@ -297,12 +297,12 @@ namespace ehw
 		return newObjects;
 	}
 
-	eResult Model3D::ConvertFBX(
+	eResult Model3D::convert_fbx(
 		const std::fs::path& _fbxPath, bool _bStatic,
 		const std::fs::path& _dirAndFileName
 	)
 	{
-		eResult result = LoadFromFBX(_fbxPath, _bStatic, _dirAndFileName);
+		eResult result = load_from_fbx(_fbxPath, _bStatic, _dirAndFileName);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX로부터 로드 실패.");
@@ -322,7 +322,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::LoadFromFBX(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dirAndFileName)
+	eResult Model3D::load_from_fbx(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dirAndFileName)
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
@@ -358,7 +358,7 @@ namespace ehw
 			skltStrKey.replace_extension(strKey::path::extension::Skeleton);
 			m_skeleton->set_keypath(skltStrKey.string());
 		}
-		result = m_skeleton->CreateFromFBX(&loader);
+		result = m_skeleton->create_from_FBX(&loader);
 
 		//애니메이션 정보가 없을 경우에는 도로 제거
 		if (eResult::Fail_Empty == result)
@@ -438,7 +438,7 @@ namespace ehw
 
 				// 메테리얼 가져오기
 				std::shared_ptr<Material> mtrl =
-					ConvertMaterial(&(containers[i].vecMtrl[j]), _dirAndFileName);
+					convert_material(&(containers[i].vecMtrl[j]), _dirAndFileName);
 				if (nullptr == mtrl)
 				{
 					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
@@ -451,7 +451,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::AddAnimationFromFBX(const std::fs::path& _fbxPath, const std::fs::path& _meshDataName)
+	eResult Model3D::add_animation_from_FBX(const std::fs::path& _fbxPath, const std::fs::path& _meshDataName)
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
@@ -468,7 +468,7 @@ namespace ehw
 		}
 
 		std::shared_ptr<Skeleton> skeletonOfFBX = std::make_shared<Skeleton>();
-		result = skeletonOfFBX->CreateFromFBX(&loader);
+		result = skeletonOfFBX->create_from_FBX(&loader);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX로부터 스켈레톤 로딩 실패.");
@@ -485,7 +485,7 @@ namespace ehw
 			return result;
 		}
 
-		if (false == skeletonOfProj->CopyAnimationFromOther((*skeletonOfFBX), _meshDataName))
+		if (false == skeletonOfProj->copy_animation_from_other((*skeletonOfFBX), _meshDataName))
 		{
 			ERROR_MESSAGE("스켈레톤 구조가 일치하지 않아 애니메이션을 추가할 수 없습니다.");
 			return eResult::Fail;
@@ -494,7 +494,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	std::shared_ptr<Material> Model3D::ConvertMaterial(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
+	std::shared_ptr<Material> Model3D::convert_material(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _fbxMtrl || _texDestDir.empty())
 		{
@@ -573,12 +573,12 @@ namespace ehw
 
 		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-		CheckMHMaterial(mtrl.get(), texDir);
+		check_MH_material(mtrl.get(), texDir);
 
 		return mtrl;
 	}
 
-	void Model3D::CheckMHMaterial(Material* _mtrl, const std::fs::path& _texDestDir)
+	void Model3D::check_MH_material(Material* _mtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _mtrl)
 			return;
@@ -615,7 +615,7 @@ namespace ehw
 			const std::shared_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->get_path_key() };
+				std::string texKey{ tex->get_path() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -647,7 +647,7 @@ namespace ehw
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey(tex->get_path_key());
+							std::string texKey(tex->get_path());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");
@@ -684,7 +684,7 @@ namespace ehw
 		}
 	}
 
-	bool Model3D::SetDataToRenderer(Com_Renderer_Mesh* _renderer, UINT _idx)
+	bool Model3D::set_data_to_renderer(Com_Renderer_Mesh* _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;

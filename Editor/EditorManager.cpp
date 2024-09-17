@@ -63,9 +63,9 @@ namespace ehw::editor
 
 	using namespace math;
 	
-	void EditorManager::Init()
+	void EditorManager::init()
 	{
-		AtExit::AddFunc(EditorManager::Release);
+		AtExit::AddFunc(EditorManager::release);
 
 		EngineMain::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
 
@@ -210,7 +210,7 @@ namespace ehw::editor
 		ImGuiRender();
 	}
 
-	void EditorManager::Release()
+	void EditorManager::release()
 	{
 		if (false == mbInitialized)
 			return;
@@ -426,7 +426,7 @@ namespace ehw::editor
 	bool EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
-		const std::string_view guiName = _pBase->get_path_key();
+		const std::string_view guiName = _pBase->get_path();
 
 		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
 		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
@@ -438,7 +438,7 @@ namespace ehw::editor
 			//_pBase->MakeUniqueKeyByName();
 		}
 
-		mGuiWindows.insert(std::make_pair(_pBase->get_path_key(), _pBase));
+		mGuiWindows.insert(std::make_pair(_pBase->get_path(), _pBase));
 
 		_pBase->InitRecursive();
 

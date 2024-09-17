@@ -47,7 +47,7 @@ namespace ehw
 		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
 		desc.TargetStageSRV = eShaderStageFlag::ALL;
-		s_buffer->Init<tTransform>(desc);
+		s_buffer->init<tTransform>(desc);
 	}
 
 	void Transform::release_static()

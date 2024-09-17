@@ -22,7 +22,7 @@ namespace ehw
 	{
 	}
 
-	bool AudioManager::Init()
+	bool AudioManager::init()
 	{
 		void* extraDriverData = NULL;
 
@@ -37,7 +37,7 @@ namespace ehw
 		return true;
 	}
 
-	void AudioManager::Release()
+	void AudioManager::release()
 	{
 		mSystem->release();
 		mSystem = nullptr;

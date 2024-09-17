@@ -22,8 +22,8 @@ namespace ehw
 		friend class StaticSingleton<AudioManager>;
 
 	public:
-		bool Init();
-		void Release();
+		bool init();
+		void release();
 
 		bool CreateSound(const std::filesystem::path& _fullPath, FMOD::Sound** _sound);
 		void SoundPlay(FMOD::Sound* _sound, FMOD::Channel** _channel);

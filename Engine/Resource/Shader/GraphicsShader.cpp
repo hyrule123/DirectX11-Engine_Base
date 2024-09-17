@@ -37,14 +37,14 @@ namespace ehw
 	{
 	}
 
-	eResult GraphicsShader::save(const std::fs::path& _baseDir, const std::fs::path& _key_path) const
+	eResult GraphicsShader::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
 	{
-		return SaveFile_Json(_baseDir / _key_path);
+		return SaveFile_Json(_base_directory / _key_path);
 	}
 
-	eResult GraphicsShader::load(const std::fs::path& _baseDir, const std::fs::path& _key_path)
+	eResult GraphicsShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
 	{
-		return LoadFile_Json(_baseDir / _key_path);
+		return LoadFile_Json(_base_directory / _key_path);
 	}
 
 	eResult GraphicsShader::compile_from_source_code(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)

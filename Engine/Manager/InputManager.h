@@ -75,9 +75,9 @@ namespace ehw
 		}	
 
 	private:
-		static void Init();
+		static void init();
 		static void Update();
-		static void Release();
+		static void release();
 
 	private:
 		static std::vector<tKey> mKeys;
