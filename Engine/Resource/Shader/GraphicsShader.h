@@ -32,8 +32,8 @@ namespace ehw
 		GraphicsShader();
 		virtual ~GraphicsShader();
 
-		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
@@ -54,13 +54,13 @@ namespace ehw
 		void SetDSState(eDSType _state);
 		void SetBSState(eBSType _state);
 
-		void bind_buffer_to_GPU_register();
-		static void unbind_data();
+		void bind_shader();
+		static void unbind_all_shader();
 
 		//에디터용
 		void SetEditMode(bool _bEditMode) { m_bEditMode = _bEditMode; }
-		void SetShaderKey(eGSStage _stage, const std::string_view _strKey) {
-			m_arrShaderCode[(int)_stage].strKey = _strKey;
+		void SetShaderKey(eGSStage _stage, const std::string_view _resource_name) {
+			m_arrShaderCode[(int)_stage].strKey = _resource_name;
 		}
 		const std::string& GetShaderKey(eGSStage _stage) { return m_arrShaderCode[(int)_stage].strKey; }
 
@@ -83,7 +83,9 @@ namespace ehw
 		ComPtr<ID3D11BlendState>		m_blender;
 		ComPtr<ID3D11DepthStencilState> m_depth_stencil;
 
+		eRSType m_rasterizer_type;
 		eBSType m_blender_type;
+		eDSType m_depth_stencil_type;
 
 		FLOAT m_blend_factor[4];
 		UINT m_sample_mask;

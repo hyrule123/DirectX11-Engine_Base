@@ -10,7 +10,7 @@ struct alignas(16)    tLightAttribute
 	float4 direction;
     
 	int lightType;
-	float radius;
+	float radius;	//Transform의 Scale을 사용하지 않는 이유: Mesh의 크기와 별도로 사이즈를 조절할 수 있도록
 	float angle;
 	int padding;
 };

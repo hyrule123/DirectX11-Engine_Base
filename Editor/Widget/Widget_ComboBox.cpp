@@ -26,7 +26,7 @@ namespace ehw::editor
 		if (IsIndexValid())
 			Preview = mItems[mCurrentSelected].strName;
 
-		return ImGui::BeginCombo(get_path().c_str(), Preview.c_str(), mComboFlags);
+		return ImGui::BeginCombo(get_resource_name().c_str(), Preview.c_str(), mComboFlags);
 	}
 	void EditorWidget_ComboBox::UpdateUI()
 	{

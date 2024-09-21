@@ -23,7 +23,7 @@ namespace ehw
 		void Destroy();
 
 		Scene*  LoadScene(std::unique_ptr<Scene> _scene);
-		Scene*	LoadScene(const std::string_view _strKey);
+		Scene*	LoadScene(const std::string_view _resource_name);
 		Scene* GetActiveScene() { return m_activeScene; }
 
 	private:

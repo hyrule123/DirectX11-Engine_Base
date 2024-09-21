@@ -54,19 +54,19 @@ namespace ehw
 		iComponent* AddComponent(iComponent* _pCom);
 		template <typename T> requires std::is_base_of_v<iComponent, T>
 		T* AddComponent();
-		iComponent* AddComponent(const std::string_view _strKey);
+		iComponent* AddComponent(const std::string_view _resource_name);
 
 		template <typename T>
 		T* GetComponent();
 
 		template <typename T> requires std::is_base_of_v<Script, T>
 		T* AddScript();
-		Script* AddScript(const std::string_view _strKey);
+		Script* AddScript(const std::string_view _resource_name);
 
 		template <typename T>
 		T* GetScript();
 
-		Script* GetScript(const std::string_view _strKey);
+		Script* GetScript(const std::string_view _resource_name);
 
 		iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 		Transform* transform();

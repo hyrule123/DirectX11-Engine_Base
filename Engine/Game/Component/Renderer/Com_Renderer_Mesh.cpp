@@ -24,27 +24,27 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_Mesh::render()
-	{
-		//메쉬 또는 재질이 없을 경우 렌더링 불가능이므로 return;
-		if (false == IsRenderReady())
-			return;
+	//void Com_Renderer_Mesh::render()
+	//{
+	//	//메쉬 또는 재질이 없을 경우 렌더링 불가능이므로 return;
+	//	if (false == IsRenderReady())
+	//		return;
 
-		auto tr = gameObject()->GetComponent<Transform>();
-		tr->bind_buffer_to_GPU_register();
+	//	auto tr = gameObject()->GetComponent<Transform>();
+	//	tr->bind_buffer_to_GPU_register();
 
-		//Render
-		auto mtrl = GetCurrentMaterial();
-		if (mtrl)
-		{
-			//메쉬 바인딩 - Mesh::Render 내부에서 진행하도록 변경
-			//GetMesh()->BindBuffer(i);
+	//	//Render
+	//	auto mtrl = GetCurrentMaterial();
+	//	if (mtrl)
+	//	{
+	//		//메쉬 바인딩 - Mesh::Render 내부에서 진행하도록 변경
+	//		//GetMesh()->BindBuffer(i);
 
-			//재질 바인딩
-			mtrl->bind_buffer_to_gpu_register();
+	//		//재질 바인딩
+	//		mtrl->bind_buffer_to_gpu_register();
 
-			//메쉬 렌더링
-			GetMesh()->render();
-		}
-	}
+	//		//메쉬 렌더링
+	//		GetMesh()->render();
+	//	}
+	//}
 }

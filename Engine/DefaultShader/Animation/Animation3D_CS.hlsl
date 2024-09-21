@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Animation/Func_Animation3D.hlsli"
+#include "Engine/DefaultShader/Animation/Animation3D_Func.hlsli"
 
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
 #include "Engine/DefaultShader/Common_register.hlsli"
@@ -7,15 +7,15 @@
 //ThreadID.x = Bone Index
 //각 본의 위치 정보를 계산하는 compute shader
 [numthreads(256, 1, 1)]
-void main(int3 _threadID : SV_DispatchThreadID)
+void main(uint3 _threadID : SV_DispatchThreadID)
 {
 	if (g_shared_animation3D_data.BoneCount <= _threadID.x)
 	{
 		return;
-	}	
+	}
 
 	float4 ZeroRot = float4(0.f, 0.f, 0.f, 1.f);
-	matrix matBone = 0.f;
+	matrix matBone = (matrix)0.f;
 
 	int FrameIndex = _threadID.x * g_shared_animation3D_data.FrameLength + g_shared_animation3D_data.CurrentFrame;
 	int FrameNextIndex = _threadID.x * g_shared_animation3D_data.FrameLength + g_shared_animation3D_data.NextFrame;
@@ -37,7 +37,9 @@ void main(int3 _threadID : SV_DispatchThreadID)
 
 	matrix matOffset = transpose(g_BoneOffsetArray[_threadID.x]);
 
-	g_FinalBoneMatrixArrayRW[_threadID.x] = mul(matOffset, matBone);
+	//최종 입력 위치 = 자신의 인스턴스 ID * 본의 갯수 + threadID.x
+	uint final_index = g_shared_animation3D_data.instance_ID * g_shared_animation3D_data.BoneCount + _threadID.x;
+	g_FinalBoneMatrixArrayRW[final_index] = mul(matOffset, matBone);
 	//g_BoneSocketMatrixArray[_threadID.x].matBone = transpose(matBone);
 
 	//g_BoneSocketMatrixArray[_threadID.x].Scale = Scale.xyz;

@@ -14,7 +14,7 @@ namespace ehw
         Com_Renderer_Mesh(const std::string_view key);
         virtual ~Com_Renderer_Mesh();
 
-        virtual void render() override;
+        //virtual void render() override;
     private:
     };
 }

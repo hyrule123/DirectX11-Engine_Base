@@ -41,9 +41,9 @@ namespace ehw::editor
 		}
 		if (mbStem && m_Childs.empty())
 		{
-			SetStrKey("\t" + get_path());
+			SetStrKey("\t" + get_resource_name());
 		}
-		if (ImGui::TreeNodeEx(get_path().c_str(), flag))
+		if (ImGui::TreeNodeEx(get_resource_name().c_str(), flag))
 		{
 			if (!mbStem && ImGui::IsItemHovered(0) && ImGui::IsMouseClicked(0))
 			{
@@ -120,7 +120,7 @@ namespace ehw::editor
 		}
 
 		retNode->SetStrKey(name);
-		retNode->SetData(data);
+		retNode->set_data(data);
 		retNode->SetStem(isFrame);
 		retNode->mTreeWidget = this;
 

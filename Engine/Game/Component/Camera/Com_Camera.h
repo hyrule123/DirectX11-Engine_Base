@@ -3,6 +3,8 @@
 
 #include "Engine/define_Enum.h"
 
+#include "Engine/DefaultShader/Light/Light.hlsli"
+
 #include <bitset>
 //그냥 하나여도 drawindexedinstanced로 호출하는걸로 통일
 //https://www.gamedev.net/forums/topic/654210-drawindexed-vs-drawindexedinstanced/
@@ -10,6 +12,10 @@ namespace  ehw
 {
 	class Renderer;
 	class SceneRenderer;
+	class Light_3D;
+	class ConstBuffer;
+	class StructBuffer;
+
 	class Com_Camera 
 		: public Component<Com_Camera, eComponentCategory::Camera>
 	{
@@ -28,7 +34,7 @@ namespace  ehw
 		void OnDisable() override;
 
 		void render_gameobjects(const tRenderQueue& _renderQueue);
-		void render_lights();
+		void render_lights_3D(eLightType _light_type, const std::vector<Light_3D*>& _lights);
 
 		void CreateViewMatrix();
 
@@ -39,7 +45,7 @@ namespace  ehw
 		void SetProjectionType(eProjectionType _type) { m_projectionType = _type; CreateProjectionMatrix(); }
 		eProjectionType GetProjectionType() const { return m_projectionType; }
 
-		inline void SetCullEnable(bool _bCullingEnable);
+		void SetCullEnable(bool _bCullingEnable);
 		bool IsCullEnabled() const { return m_isEnableCulling; }
 
 		void CreateProjectionMatrix();
@@ -69,6 +75,14 @@ namespace  ehw
 
 		std::vector<GameObject*> m_layer_filtered_objects;
 		std::vector<tTransform> m_transform_data;
+
+		//Light 관련
+		std::shared_ptr<Mesh> m_light_3D_volume_meshes[(int)eLightType::END];
+		std::shared_ptr<Material> m_light_3D_materials[(int)eLightType::END];
+		std::vector<tLightAttribute> m_light_3D_instancing_datas[(int)eLightType::END];
+
+		std::shared_ptr<ConstBuffer> m_light_3D_const_buffer;
+		std::shared_ptr<StructBuffer> m_light_3D_instancing_buffer;
 
 	public:
 		class CullingAgent : public Entity

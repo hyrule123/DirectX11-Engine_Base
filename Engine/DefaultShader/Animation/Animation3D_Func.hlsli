@@ -206,7 +206,7 @@ matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
 	return g_BoneOffsetArray[(g_shared_animation3D_data.BoneCount * _iRowIdx) + _iBoneIdx];
 }
 
-tSkinningInfo Skinning(float3 Pos, float3 Tangent,
+tSkinningInfo Skinning(uint skeleton_instance_ID, uint bone_count, float3 Pos, float3 Tangent,
     float3 Binormal, float3 Normal, float4 BlendWeight, uint4 BlendIndex)
 {
 	tSkinningInfo Info = (tSkinningInfo) 0;
@@ -218,7 +218,8 @@ tSkinningInfo Skinning(float3 Pos, float3 Tangent,
 			continue;
 		}
 
-		matrix matBone = g_FinalBoneMatrixArray[BlendIndex[i]];
+		uint bone_idx = skeleton_instance_ID * bone_count + BlendIndex[i];
+		matrix matBone = g_FinalBoneMatrixArray[bone_idx];
 
 		Info.Pos += (mul(float4(Pos, 1.f), matBone) * BlendWeight[i]).xyz;
 		Info.Tangent += (mul(float4(Tangent, 0.f), matBone) * BlendWeight[i]).xyz;

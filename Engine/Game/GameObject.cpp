@@ -302,7 +302,7 @@ namespace ehw
 		if (m_baseComponents[(int)eComponentCategory::Renderer] && 
 			m_baseComponents[(int)eComponentCategory::Renderer]->IsEnabled())
 		{
-			static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->render();
+			//static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->render();
 		}
 	}
 
@@ -375,9 +375,9 @@ namespace ehw
 		return ret;
 	}
 
-	iComponent* GameObject::AddComponent(const std::string_view _strKey)
+	iComponent* GameObject::AddComponent(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::GetInst().instantiate(_strKey);
+		Entity* e = InstanceManager::GetInst().instantiate(_resource_name);
 		iComponent* c = dynamic_cast<iComponent*>(e);
 		if (nullptr == c) {
 			delete e;
@@ -387,9 +387,9 @@ namespace ehw
 	}
 
 
-	Script* GameObject::AddScript(const std::string_view _strKey)
+	Script* GameObject::AddScript(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::GetInst().instantiate(_strKey);
+		Entity* e = InstanceManager::GetInst().instantiate(_resource_name);
 		Script* s = dynamic_cast<Script*>(e);
 
 		if (nullptr == s) {
@@ -529,13 +529,13 @@ namespace ehw
 		}
 	}
 
-	Script* GameObject::GetScript(const std::string_view _strKey)
+	Script* GameObject::GetScript(const std::string_view _resource_name)
 	{
 		Script* retScript = nullptr;
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (_strKey == m_scripts[i]->get_concrete_class_name())
+			if (_resource_name == m_scripts[i]->get_concrete_class_name())
 			{
 				retScript = m_scripts[i];
 				break;

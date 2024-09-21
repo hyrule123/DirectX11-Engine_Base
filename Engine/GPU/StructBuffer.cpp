@@ -11,8 +11,8 @@ namespace ehw
 	StructBuffer::StructBuffer()
 		: GPUBuffer(StructBuffer::concrete_class_name, eBufferType::Struct)
 		, m_desc()
-		, m_elementStride()
-		, m_elementCount()
+		, m_data_stride()
+		, m_size()
 		, m_capacity()
 		, m_SRV()
 		, m_UAV()
@@ -25,8 +25,8 @@ namespace ehw
 	StructBuffer::StructBuffer(const StructBuffer& _other)
 		: GPUBuffer(_other)
 		, m_desc()
-		, m_elementStride(_other.m_elementStride)
-		, m_elementCount()
+		, m_data_stride(_other.m_data_stride)
+		, m_size()
 		, m_capacity()
 		, m_SRV()
 		, m_UAV()
@@ -38,7 +38,7 @@ namespace ehw
 		SetDesc(_other.m_desc);
 
 		//버퍼 빈 상태 및 동일 조건으로 생성
-		Resize(_other.m_capacity, nullptr, 0u);
+		resize(_other.m_capacity, nullptr, 0u);
 
 		//리소스 내용 복사
 		RenderManager::GetInst().Context()->CopyResource(GetBufferRef().Get(), _other.GetBufferRef().Get());
@@ -46,7 +46,7 @@ namespace ehw
 
 	StructBuffer::~StructBuffer()
 	{
-		unbind_data();
+		unbind_buffer();
 	}
 
 	void StructBuffer::SetDesc(const Desc& _tDesc)
@@ -90,14 +90,14 @@ namespace ehw
 		GetBufferDescRef().MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	}
 
-	eResult StructBuffer::Resize(size_t _capacity, const void* _pInitialData, UINT _uElemCount)
+	eResult StructBuffer::resize(size_t _capacity, const void* _pInitialData, UINT _uElemCount)
 	{
 		if (_capacity == 0) {
 			return eResult::Success;
 		}
 		//이미 더 큰 capacity일 경우 그냥 그 버퍼를 사용한다
 		if (_capacity <= m_capacity) {
-			SetData(_pInitialData, _uElemCount);
+			set_data(_pInitialData, _uElemCount);
 			return eResult::Success;
 		}
 		else if (_capacity < _uElemCount)
@@ -107,15 +107,15 @@ namespace ehw
 		}
 
 		//재할당 하기 전 바인딩된 리소스가 있다면 unbind
-		unbind_data();
+		unbind_buffer();
 
 		//상수버퍼와는 다르게 버퍼 재할당이 가능함. 먼저 기존 버퍼의 할당을 해제한다.(ComPtr을 통해 관리가 이루어지므로 nullptr로 바꿔주면 됨.)
-		m_elementCount = (UINT)_uElemCount;
+		m_size = (UINT)_uElemCount;
 		m_capacity = (UINT)_capacity;
 
 		D3D11_BUFFER_DESC& bufferDesc = GetBufferDescRef();
-		bufferDesc.StructureByteStride = m_elementStride;
-		bufferDesc.ByteWidth = m_elementStride * m_capacity;
+		bufferDesc.StructureByteStride = m_data_stride;
+		bufferDesc.ByteWidth = m_data_stride * m_capacity;
 
 		switch (m_desc.eSBufferType)
 		{
@@ -130,7 +130,7 @@ namespace ehw
 				Data.pSysMem = _pInitialData;
 
 				//이 값은 무시됨. BufferDesc.ByteWidth 값만 영향을 미치는 것을 확인함.
-				Data.SysMemPitch = m_elementStride * (UINT)_uElemCount;
+				Data.SysMemPitch = m_data_stride * (UINT)_uElemCount;
 				Data.SysMemSlicePitch = bufferDesc.StructureByteStride;
 				pData = &Data;
 			}
@@ -159,7 +159,7 @@ namespace ehw
 			if (nullptr != _pInitialData)
 			{
 				Data.pSysMem = _pInitialData;
-				Data.SysMemPitch = m_elementStride * (UINT)_uElemCount;
+				Data.SysMemPitch = m_data_stride * (UINT)_uElemCount;
 				Data.SysMemSlicePitch = bufferDesc.StructureByteStride;
 				pData = &Data;
 			}
@@ -183,19 +183,19 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void StructBuffer::SetData(const void* _pData, UINT _uCount)
+	void StructBuffer::set_data(const void* _pData, UINT _uCount)
 	{
 		if (nullptr == _pData || 0 == _uCount) {
 			return;
 		}
-		m_elementCount = _uCount;
+		m_size = _uCount;
 
 		//생성 시 할당된 갯수보다 들어온 갯수가 더 클 경우 재할당하고, 거기에 데이터를 추가.
 		//생성될 때 값을 지정할 수 있으므로 바로 return 해주면 될듯
 		if (_uCount > m_capacity)
 		{
 			//다시 생성하고자 할때는 초기 데이터와 사이즈를 일치시켜서 생성해줘야 한다.
-			Resize(_uCount, _pData, _uCount);
+			resize(_uCount, _pData, _uCount);
 			return;
 		}
 
@@ -209,7 +209,7 @@ namespace ehw
 				D3D11_MAPPED_SUBRESOURCE Data = {};
 				if (SUCCEEDED(pContext->Map(GetBufferRef().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Data)))
 				{
-					memcpy(Data.pData, _pData, (size_t)(m_elementStride * _uCount));
+					memcpy(Data.pData, _pData, (size_t)(m_data_stride * _uCount));
 
 					pContext->Unmap(GetBufferRef().Get(), 0);
 				}
@@ -237,7 +237,7 @@ namespace ehw
 				D3D11_MAPPED_SUBRESOURCE Data = {};
 				if (SUCCEEDED(pContext->Map(m_stagingBuffer.Get(), 0, D3D11_MAP_WRITE, 0, &Data)))
 				{
-					memcpy(Data.pData, _pData, (size_t)(m_elementStride * _uCount));
+					memcpy(Data.pData, _pData, (size_t)(m_data_stride * _uCount));
 					pContext->Unmap(m_stagingBuffer.Get(), 0);
 					pContext->CopyResource(GetBufferRef().Get(), m_stagingBuffer.Get());
 				}
@@ -270,7 +270,7 @@ namespace ehw
 			//
 			//		pContext->Map(GetBufferRef().Get(), 0, D3D11_MAP_READ, 0, &Data);
 			//
-			//		size_t bytesize = m_elementStride * m_elementCount;
+			//		size_t bytesize = m_data_stride * m_size;
 			//
 			//		memcpy_s(_pDest, _byteSize, Data.pData, bytesize);
 			//
@@ -299,7 +299,7 @@ namespace ehw
 			D3D11_MAPPED_SUBRESOURCE Data = {};
 			pContext->Map(m_stagingBuffer.Get(), 0, D3D11_MAP_READ, 0, &Data);
 
-			size_t bytesize = m_elementStride * m_capacity;
+			size_t bytesize = m_data_stride * m_capacity;
 			memcpy_s(_pDest, _byteSize, Data.pData, bytesize);
 
 			pContext->Unmap(m_stagingBuffer.Get(), 0);
@@ -310,9 +310,9 @@ namespace ehw
 		}
 	}
 
-	void StructBuffer::BindDataSRV(int _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void StructBuffer::bind_data_SRV(int _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
-		unbind_data();
+		unbind_buffer();
 
 		m_curBoundView = eBufferViewType::SRV;
 
@@ -360,12 +360,12 @@ namespace ehw
 		}
 	}
 
-	void StructBuffer::BindDataUAV(int _UAVSlot)
+	void StructBuffer::bind_buffer_to_UAV(int _UAVSlot)
 	{
 		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
 		ASSERT(eStructBufferType::READ_WRITE == m_desc.eSBufferType, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
 
-		unbind_data();
+		unbind_buffer();
 
 		m_curBoundView = eBufferViewType::UAV;
 
@@ -431,7 +431,7 @@ namespace ehw
 		return bResult;
 	}
 
-	void StructBuffer::unbind_data()
+	void StructBuffer::unbind_buffer()
 	{
 		switch (m_curBoundView)
 		{

@@ -8,7 +8,7 @@ namespace ehw
 	{
 	}
 
-	void Animator::AddEvent(Animation* _anim, int _frameIdx, const std::function<void()>& _func)
+	void Animator::AddEvent(Animation* _anim, uint _frameIdx, const std::function<void()>& _func)
 	{
 		ASSERT(nullptr != _anim || 0 < _frameIdx || _func, "애니메이션이 없거나 ");
 
@@ -37,7 +37,7 @@ namespace ehw
 		callbackFuncIter->second.push_back(_func);
 	}
 
-	void Animator::CallEvent(Animation* _anim, int _frameIdx)
+	void Animator::CallEvent(Animation* _anim, uint _frameIdx)
 	{
 		//해당 애니메이션 포인터 주소로 등록된 이벤트가 있는지 확인
 		auto eventIter = mMapEvent.find(reinterpret_cast<DWORD_PTR>(_anim));

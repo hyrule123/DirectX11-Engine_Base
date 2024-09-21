@@ -66,7 +66,7 @@ namespace ehw
 		//data.cameraScale = float2(scale, scale);
 		//data.resolution = resolution;
 		//
-		//CB->SetData(&data);
+		//CB->set_data(&data);
 		//CB->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 

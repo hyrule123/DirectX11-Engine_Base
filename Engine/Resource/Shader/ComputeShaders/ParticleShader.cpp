@@ -22,8 +22,8 @@ namespace ehw
 
 	bool ParticleShader::bind_buffer_to_GPU_register()
 	{
-		mBuffer->BindDataUAV(0);
-		mSharedBuffer->BindDataUAV(1);
+		mBuffer->bind_buffer_to_UAV(0);
+		mSharedBuffer->bind_buffer_to_UAV(1);
 
 		uint3 dataCounts = { mBuffer->GetStride(), 1u, 1u };
 		calculate_group_count(dataCounts);
@@ -33,7 +33,7 @@ namespace ehw
 
 	void ParticleShader::unbind_buffer_from_GPU_register()
 	{
-		mBuffer->unbind_data();
-		mSharedBuffer->unbind_data();
+		mBuffer->unbind_buffer();
+		mSharedBuffer->unbind_buffer();
 	}
 }

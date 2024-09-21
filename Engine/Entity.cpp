@@ -7,9 +7,9 @@ namespace ehw
 {
 	UINT32 Entity::g_nextID{};
 
-	Entity::Entity(const std::string_view key)
+	Entity::Entity(const std::string_view _class_concrete_name)
 		: m_ID(++g_nextID)
-		, m_concrete_class_name(key)
+		, m_concrete_class_name(_class_concrete_name)
 	{
 	}
 	Entity::Entity(const Entity& _other)

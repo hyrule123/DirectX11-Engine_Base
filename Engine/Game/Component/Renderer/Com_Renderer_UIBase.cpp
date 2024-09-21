@@ -14,10 +14,10 @@ namespace ehw
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
+		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::RectMesh);
 		SetMesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::UIMaterial);
+		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::UIMaterial);
 		SetMaterial(uiMaterial);
 		SetMaterialMode(eMaterialMode::Dynamic);
 	}
@@ -25,15 +25,15 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_UIBase::render()
-	{
-		ASSERT(false, "미구현");
-		ConstBuffer* cb = nullptr;
-			//RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
-		cb->SetData(&mUIData);
-		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+	//void Com_Renderer_UIBase::render()
+	//{
+	//	ASSERT(false, "미구현");
+	//	ConstBuffer* cb = nullptr;
+	//		//RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
+	//	cb->set_data(&mUIData);
+	//	cb->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		Com_Renderer_Mesh::render();
-	}
+	//	Com_Renderer_Mesh::render();
+	//}
 }
 

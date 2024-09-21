@@ -225,21 +225,21 @@ namespace ehw
 			events->StartEvent();
 	}
 
-	void Com_Animator2D::bind_buffer_to_GPU_register()
-	{
-		if (mActiveAnimation == nullptr)
-			return;
+	//void Com_Animator2D::bind_buffer_to_GPU_register()
+	//{
+	//	if (mActiveAnimation == nullptr)
+	//		return;
 
-		mActiveAnimation->bind_buffer_to_GPU_register();
-	}
+	//	mActiveAnimation->bind_buffer_to_GPU_register();
+	//}
 
-	void Com_Animator2D::unbind_buffer_from_GPU_register()
-	{
-		if (mActiveAnimation == nullptr)
-			return;
+	//void Com_Animator2D::unbind_buffer_from_GPU_register()
+	//{
+	//	if (mActiveAnimation == nullptr)
+	//		return;
 
-		mActiveAnimation->unbind_buffer_from_GPU_register();
-	}
+	//	mActiveAnimation->unbind_buffer_from_GPU_register();
+	//}
 
 
 

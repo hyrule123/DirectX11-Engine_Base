@@ -22,7 +22,7 @@ namespace ehw
 		: public std::enable_shared_from_this<Entity>
 	{
 	public:
-		Entity(const std::string_view key);
+		Entity(const std::string_view _class_concrete_name);
 		Entity(const Entity& _other);
 
 		//Clone을 지원하지 않을 경우 nullptr이 반환된다.

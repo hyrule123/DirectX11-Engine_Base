@@ -84,21 +84,6 @@ namespace ehw
 		}
 	}
 
-	void CollisionSystem::PrepareDebugRender()
-	{
-		m_debugInfoSBuffer = std::make_unique<StructBuffer>();
-		StructBuffer::Desc desc{};
-		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.GPU_register_t_SRV = GPU::Register::t::g_debugDrawData;
-		desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
-
-		m_debugInfoSBuffer->init<tDebugDrawData>(desc, 100, nullptr, 0);
-		ASSERT(m_debugInfoSBuffer.get(), "Debug용 Struct Buffer 생성 실패.");
-
-		m_debugMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::DebugMaterial);
-		ASSERT(m_debugMaterial.get(), "DebugMaterial 준비 실패");
-	}
-
 	void CollisionSystem::render() {
 		if (m_col2DManager) {
 			m_col2DManager->render();
@@ -106,28 +91,6 @@ namespace ehw
 		if (m_col3DManager) {
 			m_col3DManager->render();
 		}
-	}
-
-	void CollisionSystem::RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData)
-	{
-		if (nullptr == m_debugInfoSBuffer)
-		{
-			PrepareDebugRender();
-		}
-		else if (nullptr == _mesh || nullptr == m_debugMaterial || nullptr == m_debugInfoSBuffer)
-		{
-			return;
-		}
-		
-		
-		m_debugMaterial->bind_buffer_to_gpu_register();
-
-		m_debugInfoSBuffer->SetData(static_cast<const void*>(_debugData.data()), _debugData.size());
-		m_debugInfoSBuffer->BindDataSRV();
-
-		_mesh->render_instanced(0, (UINT)_debugData.size());
-
-		//m_debugMaterial->unbind_data();
 	}
 
 

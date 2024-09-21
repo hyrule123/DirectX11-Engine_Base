@@ -165,14 +165,14 @@ namespace ehw
 		return Result;
 	}
 
-	eResult Texture::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
+	eResult Texture::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
-		return SaveFile(_base_directory / _key_path);
+		return SaveFile(_base_directory / _resource_name);
 	}
 
-	eResult Texture::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult Texture::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		std::fs::path fullPath = _base_directory / _key_path;
+		std::fs::path fullPath = _base_directory / _resource_name;
 
 		if (false == std::fs::exists(fullPath))
 		{
@@ -282,7 +282,7 @@ namespace ehw
 		mTexture->GetDesc(&mDesc);
 	}
 
-	void Texture::BindDataSRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void Texture::bind_data_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
 		unbind_buffer_from_GPU_register();
 	
@@ -317,7 +317,7 @@ namespace ehw
 		}
 	}
 
-	void Texture::BindDataUAV(uint _startSlot)
+	void Texture::bind_buffer_to_UAV(uint _startSlot)
 	{
 		unbind_buffer_from_GPU_register();
 

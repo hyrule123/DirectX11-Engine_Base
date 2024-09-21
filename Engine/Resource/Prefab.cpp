@@ -17,20 +17,20 @@ namespace ehw
 	Prefab::~Prefab()
 	{
 	}
-	eResult Prefab::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
+	eResult Prefab::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
 		if (m_prefab)
 		{
-			return m_prefab->SaveFile_Json(_base_directory / _key_path);
+			return m_prefab->SaveFile_Json(_base_directory / _resource_name);
 		}
 
 		return eResult::Fail_Nullptr;
 	}
-	eResult Prefab::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult Prefab::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		m_prefab = std::make_shared<GameObject>();
 
-		eResult result = m_prefab->LoadFile_Json(_base_directory / _key_path);
+		eResult result = m_prefab->LoadFile_Json(_base_directory / _resource_name);
 		if (eResult_fail(result))
 		{
 			m_prefab = nullptr;

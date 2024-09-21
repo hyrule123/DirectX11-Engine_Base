@@ -26,19 +26,19 @@ namespace ehw
 
 		virtual ~Resource();
 
-		void set_keypath(const std::string_view _key_path) { m_path = _key_path; }
-		const std::string_view get_path() const { return m_path; }
+		void set_resource_name(const std::string_view _resource_name) { m_resource_name = _resource_name; }
+		const std::string_view get_resource_name() const { return m_resource_name; }
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
-		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const;
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) = 0;
+		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name);
 
 		void set_engine_default_res(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
 		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
 
 	private:
-		std::string m_path;
+		std::string m_resource_name;
 		bool mbEngineDefaultRes;
 	};
 

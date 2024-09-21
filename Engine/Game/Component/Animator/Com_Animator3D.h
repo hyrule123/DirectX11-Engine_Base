@@ -26,9 +26,9 @@ namespace ehw
 		virtual void final_update() override;
 		virtual void frame_end() override;
 
-		virtual bool IsPlaying() const;
+		bool is_playing() const;
 
-		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) override;
+		virtual bool AddEvent(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func) override;
 
 		std::shared_ptr<Animation3D_PlayData> CreateSharedAnimationData();
 		void SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData) {
@@ -45,13 +45,10 @@ namespace ehw
 
 		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
-		//StructBuffer* GetFinalBoneMat() { return m_final_model_matrix_buffer.get(); }
-		int get_bone_count();
-
-
-		virtual void bind_buffer_to_GPU_register() override;
-		virtual void unbind_buffer_from_GPU_register() override;
-
+		//StructBuffer* GetFinalBoneMat() { return m_final_matrix_buffer.get(); }
+		std::shared_ptr<Animation3D_PlayData> get_shared_play_data() {
+			return m_sharedPlayData;
+		}
 
 	private:
 		std::shared_ptr<Animation3D_PlayData> m_sharedPlayData;

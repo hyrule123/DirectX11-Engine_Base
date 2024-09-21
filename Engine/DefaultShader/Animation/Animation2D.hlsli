@@ -9,7 +9,7 @@ TEXTURE2D(AtlasTexture, t, 0);
 #define IsAtlasTex bTex_0
 
 #ifdef __HLSL
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Light/Light_Func.hlsli"
 
 struct VSIn
 {

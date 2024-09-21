@@ -110,7 +110,7 @@ namespace ehw
 		//Resource
 		load_default_resources();
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load_from_file<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
 		m_sceneRenderAgent.init();
@@ -353,8 +353,8 @@ namespace ehw
 
 	void RenderManager::BindNoiseTexture()
 	{
-		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::noise_03);
-		noise->BindDataSRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
+		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().find(strKey::defaultRes::texture::noise_03);
+		noise->bind_data_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
 		info.NoiseSize.x = (float)noise->GetWidth();
@@ -365,14 +365,14 @@ namespace ehw
 		info.NoiseTime = noiseTime;
 
 		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
-		cb->SetData(&info);
+		cb->set_data(&info);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 	}
 	void RenderManager::CopyRenderTarget()
 	{
-		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::GetInst().Find(strKey::defaultRes::texture::RenderTarget);
+		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::GetInst().find(strKey::defaultRes::texture::RenderTarget);
 
-		//renderTarget->unbind_data();
+		//renderTarget->unbind_buffer();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
 		//RenderManager::GetInst().Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
@@ -382,7 +382,7 @@ namespace ehw
 
 		RenderManager::GetInst().Context()->CopyResource(dest, source);
 
-		m_postProcessTexture->BindDataSRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
+		m_postProcessTexture->bind_data_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
 	void RenderManager::ClearMultiRenderTargets()
@@ -412,7 +412,7 @@ namespace ehw
 		gGlobal.AccFrame += 1u;
 
 		ConstBuffer* global = GetConstBuffer(eCBType::Global);
-		global->SetData(&gGlobal);
+		global->set_data(&gGlobal);
 		global->bind_buffer_to_GPU_register();
 	}
 
@@ -447,7 +447,7 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_keypath(strKey::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_resource_name(strKey::eMRT_Deffered_String[i]);
 			}
 
 
@@ -472,7 +472,7 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_keypath(strKey::eMRT_Light_String[i]);
+				arrRTTex[i]->set_resource_name(strKey::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
@@ -488,9 +488,9 @@ namespace ehw
 	{
 		//Light
 		{
-			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::LightDirMaterial);
+			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::LightDirMaterial);
 
-			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::LightPointMaterial);
+			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::LightPointMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
@@ -523,7 +523,7 @@ namespace ehw
 
 		//Merge
 		{
-			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::MergeMaterial);
+			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::MergeMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{

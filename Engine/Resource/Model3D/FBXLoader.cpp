@@ -579,7 +579,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager<Texture>::GetInst().load(_TextureRelativePath))
+				if (nullptr == ResourceManager<Texture>::GetInst().load_from_file(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -642,20 +642,20 @@ namespace ehw
 				//std::string strName = strPath;
 
 				// 이미 로딩된 재질이면 로딩된 것을 사용
-				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::GetInst().Find(mContainers[i].vecMtrl[j].strMtrlName);
+				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::GetInst().find(mContainers[i].vecMtrl[j].strMtrlName);
 				if (nullptr != pMaterial)
 					continue;
 
 				pMaterial = std::make_shared<Material>();
 
 				// 상대경로가 곧 키
-				pMaterial->set_keypath(mContainers[i].vecMtrl[j].strMtrlName);
+				pMaterial->set_resource_name(mContainers[i].vecMtrl[j].strMtrlName);
 
 
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 				pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::GetInst().Find(strKey::defaultRes::shader::graphics::DefferedShader);
+				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::GetInst().find(strKey::defaultRes::shader::graphics::Deffered3DShader);
 
 				ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
@@ -663,7 +663,7 @@ namespace ehw
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Albedo, pTex);
@@ -672,7 +672,7 @@ namespace ehw
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Normal, pTex);
@@ -680,7 +680,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Specular, pTex);
@@ -688,7 +688,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().Find(mContainers[i].vecMtrl[j].strEmissiveTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Emissive, pTex);
@@ -700,7 +700,7 @@ namespace ehw
 				pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
 				pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = ResourceManager<Material>::GetInst().save(pMaterial.get());
+				eResult result = ResourceManager<Material>::GetInst().save_to_file(pMaterial.get());
 
 				if (eResult_fail(result))
 				{

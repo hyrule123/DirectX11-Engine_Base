@@ -10,14 +10,19 @@
 
 #include "Engine/Resource/Texture.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/GPU/StructBuffer.h"
 
 #include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Animator/Com_Animator3D.h"
-
 
 namespace ehw
 {
+    Material::Material()
+        : Resource(Material::concrete_class_name)
+        , m_shared_material_data{}
+        , m_renderingMode(eRenderingMode::forward_opaque)
+        , m_shader{}
+        , m_textures{}
+    {
+    }
     Material::Material(std::string_view key)
         : Resource(key)
         , m_shared_material_data{}
@@ -40,78 +45,33 @@ namespace ehw
     {
     }
 
-    void Material::init_static()
-    {
-        s_individual_mtrl_buffer = new StructBuffer;
-        StructBuffer::Desc desc{};
-        desc.eSBufferType = eStructBufferType::READ_ONLY;
-        desc.GPU_register_t_SRV = GPU::Register::t::g_individual_mtrl_data;
-        desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-        s_individual_mtrl_buffer->init<tIndividual_Material_Data>(desc);
-    }
-
-    void Material::release_static()
-    {
-        SAFE_DELETE(s_individual_mtrl_buffer);
-    }
-
-    void Material::bind_shared_material_buffer()
+    void Material::bind_const_buffer_to_GPU_register()
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
             if (m_textures[slotIndex])
             {
-                m_textures[slotIndex]->BindDataSRV((uint)slotIndex, eShaderStageFlag::Pixel);
+                m_textures[slotIndex]->bind_data_SRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
         }
 
         ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
-        CB->SetData(&m_shared_material_data);
+        CB->set_data(&m_shared_material_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
         CB->bind_buffer_to_GPU_register(flag);
 
-        m_shader->bind_buffer_to_GPU_register();
+        m_shader->bind_shader();
     }
 
-    void Material::clear_buffers()
+    eResult Material::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
-        m_individual_mtrl_data.clear();
+        return SaveFile_Json(_base_directory / _resource_name);
     }
 
-    void Material::set_data_to_buffer(const std::vector<GameObject*>& _objs)
+    eResult Material::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
-        for (GameObject* obj : _objs) {
-            add_data_to_buffer(obj);
-        }
-    }
-
-    void Material::add_data_to_buffer(GameObject* _obj)
-    {
-        auto* animator = _obj->GetComponent<Com_Animator3D>();
-        tIndividual_Material_Data data{};
-
-        if (animator && animator->IsPlaying()) {
-            data.bAnim = TRUE;
-            data.BoneCount = animator->get_bone_count();
-        }
-
-        m_individual_mtrl_data.push_back(data);
-    }
-
-    void Material::bind_buffer_to_GPU()
-    {
-        s_individual_mtrl_buffer->SetData(m_individual_mtrl_data.data(), (UINT)m_individual_mtrl_data.size());
-    }
-
-    eResult Material::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
-    {
-        return SaveFile_Json(_base_directory / _key_path);
-    }
-
-    eResult Material::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
-    {
-        return LoadFile_Json(_base_directory / _key_path);
+        return LoadFile_Json(_base_directory / _resource_name);
     }
 
     eResult Material::serialize_json(JsonSerializer* _ser) const
@@ -186,7 +146,7 @@ namespace ehw
             {
                 std::string strKey{};
                 ser[JSON_KEY(m_shader)] >> strKey;
-                m_shader = ResourceManager<GraphicsShader>::GetInst().load(strKey);
+                m_shader = ResourceManager<GraphicsShader>::GetInst().load_from_file(strKey);
             }
 
 
@@ -196,7 +156,7 @@ namespace ehw
             {
                 std::string strKey{};
                 textures[i] >> strKey;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().load(strKey);
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().load_from_file(strKey);
                 if (tex)
                 {
                     set_texture((eTextureSlot)i, tex);

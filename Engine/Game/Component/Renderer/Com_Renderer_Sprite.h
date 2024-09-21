@@ -21,7 +21,7 @@ namespace ehw
 		virtual void init() override;
 		virtual void Awake() override;
 		//virtual void Update() override;
-		virtual void render() override;
+		//virtual void render() override;
 
 	private:
 		Com_Animator2D* mAnimator;

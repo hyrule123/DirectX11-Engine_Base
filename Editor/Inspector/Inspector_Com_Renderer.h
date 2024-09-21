@@ -19,8 +19,8 @@ namespace ehw::editor
 
 		virtual void UpdateUI() override;
 	
-		void SetMesh(const std::string& _strKey);
-		void SetMaterial(const std::string& _strKey);
+		void SetMesh(const std::string& _key_path);
+		void SetMaterial(const std::string& _key_path);
 
 	private:
 		Mesh* mMesh;

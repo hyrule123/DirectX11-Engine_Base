@@ -116,9 +116,9 @@ namespace ehw
 		return m_activeScene;
 	}
 
-	Scene* SceneManager::LoadScene(const std::string_view _strKey)
+	Scene* SceneManager::LoadScene(const std::string_view _resource_name)
 	{
-		std::unique_ptr<Scene> s(InstanceManager::GetInst().instantiate<Scene>(_strKey));
+		std::unique_ptr<Scene> s(InstanceManager::GetInst().instantiate<Scene>(_resource_name));
 
 		return LoadScene(std::move(s));
 	}

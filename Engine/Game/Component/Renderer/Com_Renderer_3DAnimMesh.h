@@ -14,7 +14,7 @@ namespace ehw
 		virtual ~Com_Renderer_3DAnimMesh();
 
 
-		virtual void render() override;
+		//virtual void render() override;
 	};
 }
 

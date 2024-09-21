@@ -71,12 +71,8 @@ namespace ehw
 
 		inline Scene* GetOwnerScene() { return m_owner; }
 
-		
-
 		//Editor 프로젝트에서 호출됨.
 		void render();
-
-		void RenderDebugMesh(const std::shared_ptr<Mesh>& _mesh, const std::vector<tDebugDrawData>& _debugData);
 
 	private:
 		void CreateCollision2D();
@@ -84,8 +80,6 @@ namespace ehw
 
 		void FixedUpdate();
 		void frame_end();
-
-		void PrepareDebugRender();
 
 	private:
 		Scene* const m_owner;
@@ -96,9 +90,6 @@ namespace ehw
 
 		std::unique_ptr<Collision2D> m_col2DManager;
 		std::unique_ptr<Collision3D> m_col3DManager;
-
-		std::unique_ptr<StructBuffer> m_debugInfoSBuffer;
-		std::shared_ptr<Material> m_debugMaterial;
 	};
 
 	template<type_traits_Ex::is_enum_class_v T>

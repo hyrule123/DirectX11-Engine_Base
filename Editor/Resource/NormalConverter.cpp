@@ -58,7 +58,7 @@ namespace ehw::editor
 			std::string curText = "* Current: ";
 			if (mTextureSrc)
 			{
-				curText += mTextureSrc->get_path();
+				curText += mTextureSrc->get_resource_name();
 			}
 			else
 			{
@@ -82,7 +82,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	texPath = PathManager::GetInst().MakePathStrKey(texPath);
 
-	mTextureSrc = ResourceManager<Texture>::GetInst().load(texPath);
+	mTextureSrc = ResourceManager<Texture>::GetInst().load_from_file(texPath);
 }
 
 ImGui::SameLine();
@@ -127,7 +127,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 			if (mTextureSrc)
 			{
-				texFile /= mTextureSrc->get_path();
+				texFile /= mTextureSrc->get_resource_name();
 			}
 
 			mTextureDestDir = WinAPI::FileDialog(texFile, vecExt);
@@ -158,14 +158,14 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::GetInst().load<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
+			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::GetInst().load_from_file<NormalConvertShader>(::ehw::strKey::defaultRes::shader::compute::NormalConvert);
 
 			std::shared_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
 
 			if (convertedTex)
 			{
 				std::fs::path savePath = mTextureDestDir;
-				std::fs::path texKey = convertedTex->get_path();
+				std::fs::path texKey = convertedTex->get_resource_name();
 				savePath /= texKey.filename();
 
 				if (std::fs::exists(savePath))
@@ -179,7 +179,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				eResult result = ResourceManager<Texture>::GetInst().save(convertedTex.get(), savePath);
+				eResult result = ResourceManager<Texture>::GetInst().save_to_file(convertedTex.get(), savePath);
 				if (eResult_fail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");

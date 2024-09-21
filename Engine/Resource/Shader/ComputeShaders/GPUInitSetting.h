@@ -14,7 +14,7 @@ namespace ehw
 		GPUInitSetting();
 		virtual ~GPUInitSetting();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 	protected:
 		virtual bool bind_buffer_to_GPU_register() override;

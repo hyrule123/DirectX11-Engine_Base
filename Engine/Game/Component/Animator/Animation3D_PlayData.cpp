@@ -18,12 +18,12 @@ namespace ehw
 {
 	Animation3D_PlayData::Animation3D_PlayData()
 		: Entity(Animation3D_PlayData::concrete_class_name)
-		, m_compute_shader()
 		, m_skeleton()
 		//, m_iFramePerSecond(30)
-		, m_final_model_matrix_buffer(nullptr)
 		, m_PrevFrame(-1)
-		, m_Anim3DCBuffer()
+		, m_animation3D_data()
+		, m_compute_shader()
+
 
 		, m_fChangeTimeLength()
 		, m_fChangeTimeAccumulate()
@@ -31,28 +31,17 @@ namespace ehw
 		, m_currentAnimation()
 		, m_fClipUpdateTime()
 
-		, m_bInternalUpdated(false)
-		, m_bFinalMatrixUpdated(false)
+		, m_is_pre_updated(false)
 	{
 		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
-
-		StructBuffer::Desc desc{};
-		desc.GPU_register_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
-		desc.TargetStageSRV = eShaderStageFlag::Vertex;
-		desc.GPU_register_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
-		desc.eSBufferType = eStructBufferType::READ_WRITE;
-		m_final_model_matrix_buffer = std::make_unique<StructBuffer>();
-		m_final_model_matrix_buffer->init<MATRIX>(desc);
 	}
 
 	Animation3D_PlayData::Animation3D_PlayData(const Animation3D_PlayData& _other)
 		: Entity(_other)
 		, m_skeleton()
 		//, m_iFramePerSecond(_other.m_iFramePerSecond)
-		, m_final_model_matrix_buffer(nullptr)
-		, m_bFinalMatrixUpdated(false)
 		, m_PrevFrame(_other.m_PrevFrame)
-		, m_Anim3DCBuffer(_other.m_Anim3DCBuffer)
+		, m_animation3D_data(_other.m_animation3D_data)
 
 		, m_fChangeTimeLength(_other.m_fChangeTimeLength)
 		, m_fChangeTimeAccumulate(_other.m_fChangeTimeAccumulate)
@@ -60,30 +49,25 @@ namespace ehw
 		, m_currentAnimation(_other.m_currentAnimation)
 		, m_fClipUpdateTime()
 	{
-		if (_other.m_final_model_matrix_buffer)
-		{
-			m_final_model_matrix_buffer = std::unique_ptr<StructBuffer>(_other.m_final_model_matrix_buffer->Clone());
-		}
+
 	}
 
 	Animation3D_PlayData::~Animation3D_PlayData()
 	{
 	}
 
-	bool Animation3D_PlayData::final_update()
+	bool Animation3D_PlayData::pre_update()
 	{
+		m_is_pre_updated = true;
+
+		//필요한 요소가 없을 시 return
 		if (nullptr == m_skeleton || nullptr == m_currentAnimation)
 		{
 			return false;
 		}
-		else if (m_bInternalUpdated)
-		{
-			return false;
-		}
-		m_bInternalUpdated = true;
 
 		bool bChangeEnd = false;
-		if (m_Anim3DCBuffer.bChangingAnim)
+		if (m_animation3D_data.bChangingAnim)
 		{
 			m_fChangeTimeAccumulate += TimeManager::GetInst().DeltaTime();
 
@@ -93,7 +77,7 @@ namespace ehw
 				bChangeEnd = true;
 			}
 
-			m_Anim3DCBuffer.ChangeRatio = m_fChangeTimeAccumulate / m_fChangeTimeLength;
+			m_animation3D_data.ChangeRatio = m_fChangeTimeAccumulate / m_fChangeTimeLength;
 		}
 		else
 		{
@@ -116,100 +100,69 @@ namespace ehw
 			// 현재 애니메이션 시간 * 초당 프레임 수
 			double dFrameIdx = curTime * (double)m_currentAnimation->GetFPS();
 
-			m_Anim3DCBuffer.CurrentFrame = (int)dFrameIdx;
+			m_animation3D_data.CurrentFrame = (uint)dFrameIdx;
 
 			//만약 이미 마지막 프레임에 도달했을 경우 현재 프레임 유지
-			int maxFrameCount = m_currentAnimation->GetStartFrame() + m_currentAnimation->GetFrameLength() - 1;
+			uint maxFrameCount = m_currentAnimation->get_start_frame() + m_currentAnimation->GetFrameLength() - 1;
 
-			if (m_Anim3DCBuffer.CurrentFrame >= maxFrameCount) {
-				m_Anim3DCBuffer.NextFrame = maxFrameCount;	// 끝이면 현재 인덱스를 유지
+			if (m_animation3D_data.CurrentFrame >= maxFrameCount) {
+				m_animation3D_data.NextFrame = maxFrameCount;	// 끝이면 현재 인덱스를 유지
 			}
 			else {
-				m_Anim3DCBuffer.NextFrame = m_Anim3DCBuffer.CurrentFrame + 1;
+				m_animation3D_data.NextFrame = m_animation3D_data.CurrentFrame + 1;
 			}
 
 			// 프레임간의 시간에 따른 비율을 구해준다.
-			m_Anim3DCBuffer.FrameRatio = (float)(dFrameIdx - (double)m_Anim3DCBuffer.CurrentFrame);
+			m_animation3D_data.FrameRatio = (float)(dFrameIdx - (double)m_animation3D_data.CurrentFrame);
 		}
 
 		if (bChangeEnd)
 		{
 			Play(m_nextAnimation, false);
 			m_nextAnimation = nullptr;
-			m_Anim3DCBuffer.bChangingAnim = FALSE;
-			m_Anim3DCBuffer.ChangeFrameLength = 0;
-			m_Anim3DCBuffer.ChangeFrameIdx = 0;
-			m_Anim3DCBuffer.ChangeRatio = 0.f;
+			m_animation3D_data.bChangingAnim = FALSE;
+			m_animation3D_data.ChangeFrameLength = 0;
+			m_animation3D_data.ChangeFrameIdx = 0;
+			m_animation3D_data.ChangeRatio = 0.f;
 			m_fChangeTimeLength = 0.f;
 			m_fChangeTimeAccumulate = 0.f;
 		}
 
+		//계산 대기열에 넣는다.(이후 skeleton에서 final_update를 호출)
+		m_skeleton->add_compute_queue(this);
 
-		// 컴퓨트 쉐이더 연산여부
-		m_bFinalMatrixUpdated = false;
 		return true;
+	}
+	void Animation3D_PlayData::update_final_matrix(uint _instance_id, StructBuffer* _final_matrix_buffer)
+	{
+		m_animation3D_data.instance_ID = _instance_id;
+
+		Animation3D_ComputeShader::Desc desc{};
+		desc.current_animation_key_frame_buffer = m_currentAnimation->GetKeyFrameSBuffer().get();
+
+		if (m_nextAnimation)
+		{
+			desc.next_animation_keyframe_buffer = m_nextAnimation->GetKeyFrameSBuffer().get();
+		}
+
+		desc.bone_offset_matrix_buffer = m_skeleton->get_bone_offset_buffer().get();
+
+		desc.final_bone_translation_matrix_buffer = _final_matrix_buffer;
+
+		desc.shared_animation_data = &m_animation3D_data;
+
+		m_compute_shader->on_execute(desc);
 	}
 	void Animation3D_PlayData::frame_end()
 	{
-		m_bInternalUpdated = false;
-		m_bFinalMatrixUpdated = false;
-	}
-	bool Animation3D_PlayData::bind_data()
-	{
-		if (nullptr == m_currentAnimation)
-		{
-			return false;
-		}
-
-		if (false == m_bFinalMatrixUpdated)
-		{
-			m_bFinalMatrixUpdated = true;
-
-			//구조화 버퍼가 정상적으로 생성되었는지 확인한다.
-			if (false == CheckMesh())
-			{
-				return false;
-			}
-
-			Animation3D_ComputeShader::Desc desc{};
-			desc.current_animation_key_frame_buffer = m_currentAnimation->GetKeyFrameSBuffer().get();
-
-			if (m_nextAnimation)
-			{
-				desc.next_animation_keyframe_buffer = m_nextAnimation->GetKeyFrameSBuffer().get();
-			}
-
-			desc.bone_offset_matrix_buffer = m_skeleton->get_bone_offset_buffer().get();
-
-			desc.final_bone_translation_matrix_buffer = m_final_model_matrix_buffer.get();
-
-			desc.shared_animation_data = &m_Anim3DCBuffer;
-
-
-			m_compute_shader->SetDesc(desc);
-
-			// 업데이트 쉐이더 실행
-			m_compute_shader->OnExcute();
-
-			m_bFinalMatrixUpdated = true;
-		}
-
-		// t19 레지스터에 최종행렬 데이터(구조버퍼) 바인딩	
-		m_final_model_matrix_buffer->BindDataSRV();// Register_t_g_arrBoneMat, eShaderStageFlag::Vertex);
-
-		return true;
+		m_is_pre_updated = false;
 	}
 
-	void Animation3D_PlayData::UnBindData()
-	{
-		m_final_model_matrix_buffer->unbind_data();
-	}
-
-	int Animation3D_PlayData::GetStartFrame() const
+	int Animation3D_PlayData::get_start_frame() const
 	{
 		if (m_currentAnimation)
 		{
-			return m_currentAnimation->GetStartFrame();
+			return m_currentAnimation->get_start_frame();
 		}
 
 		return -1;
@@ -222,7 +175,7 @@ namespace ehw
 		if (m_skeleton)
 		{
 			//최종 Bone별 행렬이 저장될 Vector 크기를 재조정
-			m_Anim3DCBuffer.BoneCount = m_skeleton->get_bone_count();
+			m_animation3D_data.BoneCount = m_skeleton->get_bone_count();
 		}
 	}
 
@@ -292,13 +245,13 @@ namespace ehw
 			m_nextAnimation = _anim;
 			if (m_nextAnimation)
 			{
-				m_Anim3DCBuffer.bChangingAnim = TRUE;
+				m_animation3D_data.bChangingAnim = TRUE;
 
 				double dFrameIdx = m_nextAnimation->GetStartTime() * (double)m_nextAnimation->GetFPS();
-				m_Anim3DCBuffer.ChangeFrameIdx = (int)dFrameIdx;
-				m_Anim3DCBuffer.ChangeFrameLength = m_nextAnimation->GetFrameLength();
+				m_animation3D_data.ChangeFrameIdx = (int)dFrameIdx;
+				m_animation3D_data.ChangeFrameLength = m_nextAnimation->GetFrameLength();
 
-				m_Anim3DCBuffer.ChangeRatio = 0.f;
+				m_animation3D_data.ChangeRatio = 0.f;
 				m_fChangeTimeLength = 1.f;
 				m_fChangeTimeAccumulate = 0.f;
 
@@ -317,31 +270,15 @@ namespace ehw
 				//m_iFramePerSecond = m_currentAnimation->GetFPS();
 
 				m_PrevFrame = -1;
-				m_Anim3DCBuffer.CurrentFrame = 0;
-				m_Anim3DCBuffer.NextFrame = 1;
-				m_Anim3DCBuffer.FrameRatio = 0.f;
-				m_Anim3DCBuffer.FrameLength = m_currentAnimation->GetFrameLength();
-				m_bFinalMatrixUpdated = false;
+				m_animation3D_data.CurrentFrame = 0;
+				m_animation3D_data.NextFrame = 1;
+				m_animation3D_data.FrameRatio = 0.f;
+				m_animation3D_data.FrameLength = m_currentAnimation->GetFrameLength();
+				m_is_pre_updated = false;
 				bPlayed = true;
 			}
 
 		}
 		return bPlayed;
 	}
-
-	bool Animation3D_PlayData::CheckMesh()
-	{
-		if (m_skeleton)
-		{
-			UINT iBoneCount = m_skeleton->get_bone_count();
-			if (m_final_model_matrix_buffer->GetElemCount() != iBoneCount)
-			{
-				if (eResult_fail(m_final_model_matrix_buffer->Resize((size_t)iBoneCount, nullptr, 0))) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
 }

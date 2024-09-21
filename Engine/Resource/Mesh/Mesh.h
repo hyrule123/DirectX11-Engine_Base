@@ -30,8 +30,8 @@ namespace ehw
 		Mesh();
 		virtual ~Mesh();
 
-		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
@@ -53,7 +53,7 @@ namespace ehw
 		}
 		
 		bool create_index_buffer(const std::vector<UINT>& _indices) {
-			return create_index_buffer(static_cast<const UINT*>(_indices.data()), _indices.size());
+			return create_index_buffer(static_cast<const UINT*>(_indices.data()), (UINT)_indices.size());
 		}
 
 		template <typename Vertex> requires std::is_base_of_v<VertexBase, Vertex>

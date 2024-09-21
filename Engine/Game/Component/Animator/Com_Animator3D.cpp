@@ -52,38 +52,35 @@ namespace ehw
 
 	void Com_Animator3D::final_update()
 	{
-		if (nullptr == m_sharedPlayData)
-		{
-			return;
-		}
-		else if (false == m_sharedPlayData->final_update())
-		{
-			return;
+		if (nullptr == m_sharedPlayData) { return; }
+		else if (false == m_sharedPlayData->is_playing()) { return; }
+
+		if (false == m_sharedPlayData->is_pre_updated()) {
+			if (false == m_sharedPlayData->pre_update()) {
+				return;
+			}
 		}
 
 		//이전 프레임 번호 업데이트 및 이벤트함수 호출
-		if (m_sharedPlayData->GetPrevFrame() != m_sharedPlayData->GetCurrentFrame())
+		if (m_sharedPlayData->get_prev_frame() != m_sharedPlayData->get_current_frame())
 		{
-			const std::shared_ptr<Animation3D>& curAnim = m_sharedPlayData->GetCurrentAnimation();
+			const std::shared_ptr<Animation3D>& curAnim = m_sharedPlayData->get_current_animation();
 
-
-			Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_sharedPlayData->GetCurrentFrame() - curAnim->GetStartFrame());
+			Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_sharedPlayData->get_current_frame() - curAnim->get_start_frame());
 		}
 	}
 
 	void Com_Animator3D::frame_end()
 	{
-		if (nullptr == m_sharedPlayData)
+		if (m_sharedPlayData)
 		{
-			return;
+			m_sharedPlayData->update_prev_frame();
+			m_sharedPlayData->frame_end();
 		}
-		
-		m_sharedPlayData->UpdatePrevFrame();
-		m_sharedPlayData->frame_end();
 	}
 	
 
-	bool Com_Animator3D::AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func)
+	bool Com_Animator3D::AddEvent(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func)
 	{
 		if (nullptr == m_sharedPlayData)
 		{
@@ -120,9 +117,9 @@ namespace ehw
 		return m_sharedPlayData;
 	}
 
-	bool Com_Animator3D::IsPlaying() const
+	bool Com_Animator3D::is_playing() const
 	{ 
-		return (m_sharedPlayData && (nullptr != m_sharedPlayData->GetCurrentAnimation()));
+		return (m_sharedPlayData && m_sharedPlayData->is_playing());
 	}
 
 
@@ -144,39 +141,5 @@ namespace ehw
 			m_sharedPlayData->PlayNext();
 		}
 	}
-
-
-	int Com_Animator3D::get_bone_count()
-	{
-		int ret = -1;
-		if (m_sharedPlayData && m_sharedPlayData->get_skeleton()) {
-			ret = m_sharedPlayData->get_skeleton()->get_bone_count();
-		}
-		return ret;
-	}
-
-	void Com_Animator3D::bind_buffer_to_GPU_register()
-	{
-		if (m_sharedPlayData)
-		{
-			m_sharedPlayData->bind_buffer_to_GPU_register();
-		}
-	}
-
-
-	void Com_Animator3D::unbind_buffer_from_GPU_register()
-	{
-		if (m_sharedPlayData)
-		{
-			m_sharedPlayData->unbind_buffer_from_GPU_register();
-		}
-	}
-
-
-
-
-
-
-
 
 }

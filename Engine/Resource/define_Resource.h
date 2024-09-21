@@ -84,7 +84,7 @@ namespace ehw
 				STR_KEY_DECLARE(ParticleMaterial);
 				STR_KEY_DECLARE(Basic3DMaterial);
 				STR_KEY_DECLARE(PostProcessMaterial);
-				STR_KEY_DECLARE(DefferedMaterial);
+				STR_KEY_DECLARE(Deffered3DMaterial);
 				STR_KEY_DECLARE(MergeMaterial);
 				STR_KEY_DECLARE(LightDirMaterial);
 				STR_KEY_DECLARE(LightPointMaterial);
@@ -117,8 +117,8 @@ namespace ehw
 					STR_KEY_DECLARE(NormalConvertShader);
 					STR_KEY_DECLARE(ParticleShader);
 					STR_KEY_DECLARE(PostProcessShader);
-					STR_KEY_DECLARE(Basic3DShader);
-					STR_KEY_DECLARE(DefferedShader);
+					STR_KEY_DECLARE(Forward3DShader);
+					STR_KEY_DECLARE(Deffered3DShader);
 					//STR_KEY_DECLARE(LightShader);
 					STR_KEY_DECLARE(LightDirShader);
 					STR_KEY_DECLARE(LightPointShader);

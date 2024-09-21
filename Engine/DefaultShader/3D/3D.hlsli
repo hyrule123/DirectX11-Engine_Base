@@ -6,8 +6,8 @@
 
 #ifndef __cplusplus
 #include "Engine/DefaultShader/Light/Light.hlsli"
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
-#include "Engine/DefaultShader/Animation/Func_Animation3D.hlsli"
+#include "Engine/DefaultShader/Light/Light_Func.hlsli"
+#include "Engine/DefaultShader/Animation/Animation3D_Func.hlsli"
 
 struct VSIn
 {
@@ -18,8 +18,8 @@ struct VSIn
 	float3 BiNormal : BINORMAL;
 	float3 Normal : NORMAL;
 	
-	float4 vWeights : BLENDWEIGHT;
 	float4 vIndices : BLENDINDICES;
+	float4 vWeights : BLENDWEIGHT;
 	
 	uint instance_ID : SV_InstanceID;
 };

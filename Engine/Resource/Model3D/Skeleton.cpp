@@ -8,15 +8,17 @@
 #include "Engine/DefaultShader/Common_register.hlsli"
 
 #include "Engine/GPU/StructBuffer.h"
+#include "Engine/GPU/ConstBuffer.h"
 
 #include "Engine/Manager/ResourceManager.h"
-
 
 #include "Engine/Resource/Model3D/Model3D.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Model3D/FBXLoader.h"
 #include "Engine/Resource/Model3D/Animation3D.h"
 #include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
+
+#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
 #include <cctype>
 
@@ -27,21 +29,26 @@ namespace ehw
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
-		, m_compute_shader{}
-		, m_final_model_matrix_buffer{}
+		, m_final_matrix_buffer{}
 	{
-		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+		StructBuffer::Desc desc{};
+		desc.GPU_register_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
+		desc.TargetStageSRV = eShaderStageFlag::Vertex;
+		desc.GPU_register_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
+		desc.eSBufferType = eStructBufferType::READ_WRITE;
+		m_final_matrix_buffer = std::make_unique<StructBuffer>();
+		m_final_matrix_buffer->init<MATRIX>(desc);
 	}
 
 	Skeleton::~Skeleton()
 	{
 	}
 
-	eResult Skeleton::save(const std::fs::path& _basePath, const std::fs::path& _key_path) const
+	eResult Skeleton::save_to_file(const std::fs::path& _basePath, const std::fs::path& _resource_name) const
 	{
 		//상위 디렉토리 있는지 테스트
 		{
-			std::fs::path checkDir = _key_path;
+			std::fs::path checkDir = _resource_name;
 			checkDir.remove_filename();
 			if (false == std::fs::is_directory(checkDir))
 			{
@@ -50,7 +57,7 @@ namespace ehw
 			}
 		}
 
-		std::fs::path fullPath = _basePath / _key_path;
+		std::fs::path fullPath = _basePath / _resource_name;
 		//Skeleton
 		eResult result = SaveFile_Binary(fullPath);
 		if (eResult_fail(result))
@@ -79,11 +86,11 @@ namespace ehw
 		}
 
 
-		return SaveFile_Binary(_basePath / _key_path);
+		return SaveFile_Binary(_basePath / _resource_name);
 	}
-	eResult Skeleton::load(const std::fs::path& _basePath, const std::fs::path& _key_path)
+	eResult Skeleton::load_from_file(const std::fs::path& _basePath, const std::fs::path& _resource_name)
 	{
-		std::fs::path fullPath = _basePath / _key_path;
+		std::fs::path fullPath = _basePath / _resource_name;
 
 		//Skeleton
 		eResult result = LoadFile_Binary(fullPath);
@@ -249,7 +256,7 @@ namespace ehw
 			}
 			
 			
-			std::string animName(anim->get_path());
+			std::string animName(anim->get_resource_name());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -388,6 +395,25 @@ namespace ehw
 			retPtr = iter->second;
 		}
 		return retPtr;
+	}
+
+
+	void Skeleton::compute_animation3D_final_matrix()
+	{
+		//계산해야 하는 인스턴스 개수만큼 구조화 버퍼 크기를 늘려준다.
+		uint size = (uint)(m_vecBones.size() * m_compute_queue.size());
+		m_final_matrix_buffer->resize(size);
+
+		//UAV에 바인딩한 뒤
+		m_final_matrix_buffer->bind_buffer_to_UAV();
+
+		//각자 애니메이션에 대해 업데이트를 수행
+		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
+			m_compute_queue[i]->update_final_matrix(i, m_final_matrix_buffer.get());
+		}
+
+		//UAV 연결 해제
+		m_final_matrix_buffer->unbind_buffer();
 	}
 
 }

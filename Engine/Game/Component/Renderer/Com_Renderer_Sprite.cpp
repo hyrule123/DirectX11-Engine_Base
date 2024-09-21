@@ -32,11 +32,11 @@ namespace ehw
 		//	재질 2. 텍스처
 
 		//기본 Rect Mesh로 메쉬를 설정
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::RectMesh);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::RectMesh);
 		SetMesh(mesh);
 
 		//Sprite Material을 받아온다
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(strKey::defaultRes::material::SpriteMaterial);
+		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::SpriteMaterial);
 		SetMaterial(material);
 	}
 
@@ -45,27 +45,27 @@ namespace ehw
 		mAnimator = gameObject()->GetComponent<Com_Animator2D>();
 	}
 
-	void Com_Renderer_Sprite::render()
-	{
-		if (false == IsRenderReady() || nullptr == mAnimator)
-			return;
+	//void Com_Renderer_Sprite::render()
+	//{
+	//	if (false == IsRenderReady() || nullptr == mAnimator)
+	//		return;
 
-		//재질 바인딩
-		mAnimator->bind_buffer_to_GPU_register();
+	//	//재질 바인딩
+	//	mAnimator->bind_buffer_to_GPU_register();
 
-		//메쉬 바인딩 - Render 내부에서 실행되도록 변경
-		//GetMesh()->BindBuffer();
+	//	//메쉬 바인딩 - Render 내부에서 실행되도록 변경
+	//	//GetMesh()->BindBuffer();
 
-		//재질 바인딩
-		GetCurrentMaterial()->bind_buffer_to_gpu_register();
+	//	//재질 바인딩
+	//	GetCurrentMaterial()->bind_buffer_to_gpu_register();
 
-		//렌더링 하고
-		GetMesh()->render();
+	//	//렌더링 하고
+	//	GetMesh()->render();
 
-		//재질 언바인딩
-		//GetCurrentMaterial(0)->unbind_data();
+	//	//재질 언바인딩
+	//	//GetCurrentMaterial(0)->unbind_buffer();
 
-		//애니메이터 언바인드
-		//mAnimator->unbind_buffer_from_GPU_register();
-	}
+	//	//애니메이터 언바인드
+	//	//mAnimator->unbind_buffer_from_GPU_register();
+	//}
 }

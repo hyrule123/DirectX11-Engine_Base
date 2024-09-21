@@ -181,56 +181,56 @@ namespace ehw
 
 	void Collision2D::render()
 	{
-		//메인 카메라
-		Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();
-		if (nullptr == mainCam)
-		{
-			return;
-		}
-		MATRIX matView = mainCam->GetViewMatrix();
-		MATRIX matProj = mainCam->GetProjectionMatrix();
+		////메인 카메라
+		//Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();
+		//if (nullptr == mainCam)
+		//{
+		//	return;
+		//}
+		//MATRIX matView = mainCam->GetViewMatrix();
+		//MATRIX matProj = mainCam->GetProjectionMatrix();
 
-		//인스턴싱
-		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
-		{
-			m_debugInstancingData[i].clear();
-		}
+		////인스턴싱
+		//for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
+		//{
+		//	m_debugInstancingData[i].clear();
+		//}
 
-		for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
-		{
-			for (size_t j = 0; j < m_collidersInLayer[i].size(); ++j)
-			{
-				Collider2D* col = m_collidersInLayer[i][j];
+		//for (size_t i = 0; i < m_collidersInLayer.size(); ++i)
+		//{
+		//	for (size_t j = 0; j < m_collidersInLayer[i].size(); ++j)
+		//	{
+		//		Collider2D* col = m_collidersInLayer[i][j];
 
-				if (false == col->IsEnabled())
-				{
-					continue;
-				}
+		//		if (false == col->IsEnabled())
+		//		{
+		//			continue;
+		//		}
 
-				col->ColliderUpdate();
+		//		col->ColliderUpdate();
 
-				//TODO: Collider 별로 사이즈 제대로 설정하기
-				tDebugDrawData debugData{};
-				debugData.WVP = col->GetColliderMatrix();
-				debugData.WVP *= matView;
-				debugData.WVP *= matProj;
-				debugData.isColliding = (col->IsColliding() ? TRUE : FALSE);
+		//		//TODO: Collider 별로 사이즈 제대로 설정하기
+		//		tDebugDrawData debugData{};
+		//		debugData.WVP = col->GetColliderMatrix();
+		//		debugData.WVP *= matView;
+		//		debugData.WVP *= matProj;
+		//		debugData.isColliding = (col->IsColliding() ? TRUE : FALSE);
 
-				m_debugInstancingData[(int)col->GetColliderShape()].push_back(std::move(debugData));
-			}
-		}
+		//		m_debugInstancingData[(int)col->GetColliderShape()].push_back(std::move(debugData));
+		//	}
+		//}
 
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugRectMesh);
 
 
-		m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB]);
+		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB]);
 
-		m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
+		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
 
-		//mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::CircleMesh);
-		//::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debugInfoSBuffer.get());
+		////mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::CircleMesh);
+		////::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debug_render_data.get());
 
-		
+		//
 	}
 
 	void Collision2D::frame_end()

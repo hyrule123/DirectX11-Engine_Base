@@ -52,20 +52,20 @@ namespace ehw
     void Animation3D::bind_buffer_to_GPU_register()
     {
         ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
-        m_SBufferKeyFrame->BindDataSRV();
+        m_SBufferKeyFrame->bind_data_SRV();
     }
     void Animation3D::unbind_buffer_from_GPU_register()
     {
-        m_SBufferKeyFrame->unbind_data();
+        m_SBufferKeyFrame->unbind_buffer();
     }
 
-    eResult Animation3D::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
+    eResult Animation3D::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+    eResult Animation3D::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
@@ -152,7 +152,7 @@ namespace ehw
 
         m_OwnerSkeleton = _skeleton;
 
-        set_keypath(_clip->strName);
+        set_resource_name(_clip->strName);
 
         switch (_clip->TimeMode)
         {
@@ -214,13 +214,13 @@ namespace ehw
         m_EndTime = _clip->EndTime.GetSecondDouble();
         m_TimeLength = m_EndTime - m_StartTime;
 
-        m_StartFrame = (int)_clip->StartTime.GetFrameCount(_clip->TimeMode);
+        m_StartFrame = (uint)_clip->StartTime.GetFrameCount(_clip->TimeMode);
         if (m_StartFrame < 0)
         {
             m_StartFrame = 0;
         }
-        m_EndFrame = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
-        m_FrameLength = (int)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
+        m_EndFrame = (uint)_clip->EndTime.GetFrameCount(_clip->TimeMode);
+        m_FrameLength = (uint)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
 
         ASSERT(m_FrameLength >= 0, "3D 애니메이션의 프레임이 음수입니다.");
 
@@ -259,7 +259,7 @@ namespace ehw
             m_KeyFramesPerBone[i].vecKeyFrame.resize(resizeCount);
             for(size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
             {
-                if ((int)j < m_FrameLength)
+                if ((uint)j < m_FrameLength)
                 {
                     //우리 포맷 키프레임
                     tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];

@@ -16,8 +16,12 @@
 #include "Engine/Resource/Shader/ComputeShader.h"
 #include "Engine/Resource/Mesh/VertexBuffer.h"
 
+#include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
+
 #include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Light/Light_3D.h"
+
 
 namespace ehw
 {
@@ -47,6 +51,26 @@ namespace ehw
 		const std::fs::path& baseDir = PathManager::GetInst().GetResPathRelative();
 
 		//기본 리소스를 먼저 등록
+		ResourceManager<ConstBuffer>::GetInst().init("");
+		ResourceManager<StructBuffer>::GetInst().init("");
+
+		//이 부분 나중에 분리한 별도 CPP로 옮길 것
+		std::shared_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
+		StructBuffer::Desc desc{};
+		desc.eSBufferType = eStructBufferType::READ_ONLY;
+		desc.GPU_register_t_SRV = GPU::Register::t::g_light_attributes;
+		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
+		light_3d_instancing_buffer->init<tLightAttribute>(desc, 16);
+		light_3d_instancing_buffer->SetPipelineTarget(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		ResourceManager<StructBuffer>::GetInst().insert("light_3D_instancing_buffer", light_3d_instancing_buffer);
+
+		std::shared_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
+		light_3d_const_buffer->create<tLightCount>();
+		light_3d_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+
+		ResourceManager<ConstBuffer>::GetInst().insert("light_3D_const_buffer", light_3d_const_buffer);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		ResourceManager<Texture>::GetInst().init(baseDir / strKey::path::directory::resource::Texture);
 		ResourceManager<VertexBuffer>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
 		ResourceManager<Mesh>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
@@ -73,14 +97,10 @@ namespace ehw
 	void ResourceManagers::init_static_variables()
 	{
 		Transform::init_static();
-		Light_3D::init_static();
-		Material::init_static();
 	}
 
 	void ResourceManagers::release_static_variables()
 	{
-		Material::release_static();
-		Light_3D::release_static();
 		Transform::release_static();
 	}
 

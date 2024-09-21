@@ -49,7 +49,7 @@ namespace ehw
 		virtual void Update() override; 
 		virtual void final_update() override;
 
-		virtual bool IsPlaying() const override { ASSERT(false, "미구현"); return false; }
+		bool is_playing() const { ASSERT(false, "미구현"); return false; }
 
 		bool create(const std::string_view _name
 			, std::shared_ptr<Texture> _atlas
@@ -64,8 +64,6 @@ namespace ehw
 		tEvents* FindEvents(const std::string_view _name) const; 
 		void Play(const std::string_view _name, bool _loop = true);
 
-		virtual void bind_buffer_to_GPU_register() override;
-		virtual void unbind_buffer_from_GPU_register() override;
 
 		std::function<void()>& GetStartEvent(const std::string_view _name) const;
 		std::function<void()>& GetCompleteEvent(const std::string_view _name) const;

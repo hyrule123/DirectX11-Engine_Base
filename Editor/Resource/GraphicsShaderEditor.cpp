@@ -450,7 +450,7 @@ namespace ehw::editor
 				Json::Value jVal;
 				{
 					GraphicsShader DummyGS;
-					DummyGS.set_keypath(iter.first.string());
+					DummyGS.set_resource_name(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 
@@ -861,7 +861,7 @@ namespace ehw::editor
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
 		
-		if (eResult_success(shader.save(baseDir, _filePath)))
+		if (eResult_success(shader.save_to_file(baseDir, _filePath)))
 		{
 			LoadShaderSettingComboBox();
 		}
@@ -878,7 +878,7 @@ namespace ehw::editor
 		shader.SetEditMode(true);
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
-		if (eResult_fail(shader.load(baseDir, _filePath)))
+		if (eResult_fail(shader.load_from_file(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;

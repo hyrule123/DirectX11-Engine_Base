@@ -1,5 +1,5 @@
 #include "Engine/DefaultShader/Light/Light.hlsli"
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Light/Light_Func.hlsli"
 
 
 PS_OUT main(VS_in_out_LightPoint _in)
@@ -7,6 +7,8 @@ PS_OUT main(VS_in_out_LightPoint _in)
 	PS_OUT output = (PS_OUT) 0.f;
     
 	float2 vUV = _in.Position.xy / CB_Global.fResolution;
+	
+	//Position 렌더 타겟에는 View Position 값이 들어가 있다.
 	float4 vViewPos = PositionTarget.Sample(anisotropicSampler, vUV);
     
 	if (0.f == vViewPos.a)
@@ -18,8 +20,7 @@ PS_OUT main(VS_in_out_LightPoint _in)
     // 로컬 영역에서 광원메쉬 (sphere)의 내부에 있다면 실제로 point light 안에 들어가있다는 뜻
 	float4 vLocalPos = mul(mul(vViewPos, g_CB_camera.inverse_view), g_transforms[_in.instance_ID].InverseWorld);
 	
-	//아래 상수값을 수정해야함(빛의 크기만큼)
-	if (length(vLocalPos.xyz) > 1000.f)
+	if (length(vLocalPos.xyz) > g_light_attributes[_in.instance_ID].radius)
 	{
 		discard;
 	}

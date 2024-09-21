@@ -66,10 +66,10 @@ namespace ehw
 
 	void FontWrapper::release()
 	{
-		m_FW1Factory->release();
+		m_FW1Factory->Release();
 		m_FW1Factory = nullptr;
 
-		m_fontWrapper->release();
+		m_fontWrapper->Release();
 		m_fontWrapper = nullptr;
 	}
 }

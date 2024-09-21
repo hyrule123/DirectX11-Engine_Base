@@ -57,8 +57,8 @@ namespace ehw::editor
 		if (mMesh == nullptr || mMaterial == nullptr)
 			return;
 
-		std::string meshName(mMesh->get_path());
-		std::string materialName(mMaterial->get_path());
+		std::string meshName(mMesh->get_resource_name());
+		std::string materialName(mMaterial->get_resource_name());
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()
@@ -113,9 +113,9 @@ namespace ehw::editor
 	}
 
 
-	void Inspector_Com_Renderer::SetMesh(const std::string& _strKey)
+	void Inspector_Com_Renderer::SetMesh(const std::string& _key_path)
 	{
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(_strKey);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().find(_key_path);
 
 		std::shared_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
@@ -130,9 +130,9 @@ namespace ehw::editor
 		}
 	}
 
-	void Inspector_Com_Renderer::SetMaterial(const std::string& _strKey)
+	void Inspector_Com_Renderer::SetMaterial(const std::string& _key_path)
 	{
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(_strKey);
+		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(_key_path);
 
 		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
 

@@ -155,23 +155,6 @@ namespace ehw
 
 	void Collision3D::render()
 	{
-		//메인 카메라
-		Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();
-		if (nullptr == mainCam)
-		{
-			return;
-		}
-		const MATRIX matView = mainCam->GetViewMatrix();
-		const MATRIX matProj = mainCam->GetProjectionMatrix();
-		const MATRIX matVP = matView * matProj;
-
-		//인스턴싱
-		for (size_t i = 0; i < m_debugInstancingData.size(); ++i)
-		{
-			m_debugInstancingData[i].clear();
-		}
-
-
 		const PxU32 actorCount = m_pxScene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
 		if (actorCount == 0)
 		{
@@ -211,24 +194,23 @@ namespace ehw
 					break;
 				case PxGeometryType::Enum::eBOX:
 				{
-					m_debugInstancingData[(int)eCollider3D_Shape::Cube].push_back(tDebugDrawData{});
-					tDebugDrawData& data = m_debugInstancingData[(int)eCollider3D_Shape::Cube].back();
-
 					physx::PxGeometryHolder cubeHolder(geometry);
 					float3 scale = cubeHolder.box().halfExtents;
 					scale *= 2.f;
 
-					data.WVP = MATRIX::CreateScale(scale);
-					data.WVP *= physx::PxMat44(shapes[i]->getLocalPose());
-					data.WVP *= actorWorldMatrix;
-					data.WVP *= matVP;
+					MATRIX world = MATRIX::CreateScale(scale);
+					world *= physx::PxMat44(shapes[i]->getLocalPose());
+					world *= actorWorldMatrix;
 
+					float3 color = float3(0.f, 1.f, 0.f);
 					Collider* col = static_cast<Collider*>(shapes[i]->userData);
-
-					if (col)
+					if (col && col->IsColliding())
 					{
-						data.isColliding = col->IsColliding() ? TRUE : FALSE;
+						color = float3(1.f, 0.f, 0.f);
 					}
+
+					RenderManager::GetInst().sceneRenderAgent().enqueue_debug_render(eCollider3D_Shape::Cube, world, color);
+
 					break;
 				}
 
@@ -256,10 +238,6 @@ namespace ehw
 
 			}
 		}
-
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugCubeMesh);
-
-		m_collisionSystem->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider3D_Shape::Cube]);
 	}
 
 	void Collision3D::frame_end()

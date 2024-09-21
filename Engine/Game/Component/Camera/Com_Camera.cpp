@@ -14,6 +14,7 @@
 
 
 #include "Engine/GPU/ConstBuffer.h"
+#include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/MultiRenderTarget.h"
 
 #include "Engine/Game/Component/Transform.h"
@@ -31,8 +32,23 @@ namespace ehw
 		, m_nearDistance(1.0f)
 		, m_farDistance(50000.f)
 		, m_scale(1.0f)
+		, m_light_3D_volume_meshes{}
+		, m_light_3D_materials{}
+		, m_light_3D_const_buffer()
+		, m_light_3D_instancing_buffer()
+		, m_light_3D_instancing_datas{}
 	{
 		EnableLayerMasks();
+
+		//////////////////////////////// LIGHT //////////////////////////////
+		m_light_3D_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::GetInst().load_from_file(strKey::defaultRes::mesh::RectMesh);
+		m_light_3D_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::GetInst().load_from_file(strKey::defaultRes::material::LightDirMaterial);
+
+		m_light_3D_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::GetInst().load_from_file(strKey::defaultRes::mesh::SphereMesh);
+		m_light_3D_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::GetInst().load_from_file(strKey::defaultRes::material::LightPointMaterial);
+
+		m_light_3D_const_buffer = ResourceManager<ConstBuffer>::GetInst().find("light_3D_const_buffer");
+		m_light_3D_instancing_buffer = ResourceManager<StructBuffer>::GetInst().find("light_3D_instancing_buffer");
 	}
 
 	Com_Camera::~Com_Camera()
@@ -71,7 +87,7 @@ namespace ehw
 		m_layer_filtered_objects.clear();
 		m_transform_data.clear();
 
-		//출력할 레이어만 걸러낸다.
+		//출력할 레이어만 걸러낸다. 가장 기본적인 Transform 버퍼는 여기서 업로드 한다.
 		for (GameObject* obj : _render_queue.objects_to_render) {
 			if (true == m_layerMasks[obj->GetLayer()]) {
 				m_layer_filtered_objects.push_back(obj);
@@ -86,37 +102,61 @@ namespace ehw
 			}
 		}
 
+		Transform::set_data_to_buffer(m_transform_data);
+		Transform::bind_buffer_to_GPU_register();
+
 		//material에서 처리해야 하는 데이터도 등록시킨 후 GPU 연동
-		_render_queue.material->set_data_to_buffer(m_layer_filtered_objects);
-		_render_queue.material->bind_buffer_to_GPU();
+		_render_queue.material->bind_const_buffer_to_GPU_register();
+		_render_queue.material->set_data_to_instancing_buffer(m_layer_filtered_objects);
+		_render_queue.material->bind_instancing_buffer_to_GPU_register();
 
 		//게임오브젝트 수만큼 인스턴싱 그리기 명령
 		_render_queue.mesh->render_instanced((UINT)m_layer_filtered_objects.size());
-
-		m_layer_filtered_objects.clear();
-		m_transform_data.clear();
 	}
 
-	void Com_Camera::render_lights()
+	void Com_Camera::render_lights_3D(eLightType _light_type, const std::vector<Light_3D*>& _lights)
 	{
-		RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Light)->Bind();
+		m_transform_data.clear();
+		std::vector<tLightAttribute>& datacont = m_light_3D_instancing_datas[(int)_light_type];
+		datacont.clear();
+
 		//나중에 컬링도 진행할것.
-		for (int i = 0; i < LIGHT_TYPE_MAX; ++i) {
-			Transform::clear_buffer_data();
-			const auto& lights = Light_3D::get_lights_by_type(i);
+		for (auto* l : _lights) {
+			GameObject* obj = l->gameObject();
+			if (true == m_layerMasks[obj->GetLayer()]) {
+				//transform 데이터 넣고
+				tTransform trdata{};
+				trdata.World = obj->GetComponent<Transform>()->get_world_matrix();
+				trdata.InverseWorld = trdata.World.Invert();
+				trdata.WorldView = trdata.World * m_camera_matrices.view;
+				trdata.WVP = trdata.WorldView * m_camera_matrices.projection;
 
-			for (auto* l : lights) {
-				if (true == m_layerMasks[l->gameObject()->GetLayer()]) {
-					l->add_to_buffer();
+				m_transform_data.push_back(trdata);
 
-					Transform* tr = l->gameObject()->GetComponent<Transform>();
-					tr->add_to_buffer(m_camera_matrices.view, m_camera_matrices.projection);
-				}
+				//light attribute 데이터 넣고
+				datacont.push_back(l->get_light_3D_attribute());
 			}
-
-			Transform::bind_buffer_to_GPU_register();
-			Light_3D::render_lights(i);
 		}
+
+		tLightCount light_count;
+		light_count.count = (uint)_lights.size();
+
+		//Transform 데이터 설정 및 바인딩
+		Transform::set_data_to_buffer(m_transform_data);
+		Transform::bind_buffer_to_GPU_register();
+
+		//Light count를 저장하는 상수버퍼 바인딩
+		m_light_3D_const_buffer->set_data(&light_count);
+		m_light_3D_const_buffer->bind_buffer_to_GPU_register();
+
+		//인스턴싱 데이터 바인딩
+		m_light_3D_instancing_buffer->set_data(datacont.data(), light_count.count);
+
+		//material 바인딩 후 mesh 렌더
+		m_light_3D_materials[(int)_light_type]->bind_const_buffer_to_GPU_register();
+		m_light_3D_volume_meshes[(int)_light_type]->render_instanced(light_count.count);
+
+		
 	}
 
 	void Com_Camera::CreateViewMatrix()
@@ -204,7 +244,7 @@ namespace ehw
 		
 	}
 
-	inline void Com_Camera::SetCullEnable(bool _bCullingEnable)
+	void Com_Camera::SetCullEnable(bool _bCullingEnable)
 	{
 		m_cullingAgent.reset();
 
@@ -285,7 +325,7 @@ namespace ehw
 	void Com_Camera::bind_data_to_GPU()
 	{
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
-		cb->SetData(&m_camera_matrices);
+		cb->set_data(&m_camera_matrices);
 		cb->bind_buffer_to_GPU_register();
 	}
 

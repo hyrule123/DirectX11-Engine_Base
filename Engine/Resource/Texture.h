@@ -23,13 +23,13 @@ namespace ehw
 		bool create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 		void InitializeResource();
 
 
-		void BindDataSRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
-		void BindDataUAV(uint _UAVSlot = 0u);
+		void bind_data_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
+		void bind_buffer_to_UAV(uint _UAVSlot = 0u);
 		void unbind_buffer_from_GPU_register();
 
 

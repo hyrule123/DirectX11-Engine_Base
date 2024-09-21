@@ -17,7 +17,7 @@ namespace ehw::editor
 
 			void UpdateUI();
 
-			void SetData(tDataPtr _data) { mData = _data; }
+			void set_data(tDataPtr _data) { mData = _data; }
 
 			void SetStem(bool bEnable) { mbStem = bEnable; }
 

@@ -5,22 +5,16 @@
 struct alignas(16)  tDebugDrawData
 {
 	MATRIX WVP;
-	BOOL isColliding;
-	float3 pad0;
+	float3 RGB;
+	float pad;
 };
 SBUFFER(g_debugDrawData, tDebugDrawData, t, 126);
 
 #ifdef __HLSL
-struct VSIn
+struct VS_INOUT
 {
-	float4 Pos : POSITION;
-	uint InstanceID : SV_InstanceID;
-};
-
-struct VSOut
-{
-	float4 Pos : SV_Position;
-	uint InstanceID : SV_InstanceID;
+	float4 pos : POSITION;
+	uint instance_ID : SV_InstanceID;
 };
 #endif //__HLSL
 

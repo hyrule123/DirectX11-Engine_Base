@@ -78,12 +78,12 @@ namespace ehw
 			Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
-			renderer[JSON_KEY(m_mesh)] << m_mesh->get_path();
+			renderer[JSON_KEY(m_mesh)] << m_mesh->get_resource_name();
 
 			//materials
 			{
 				Json::Value& materials = renderer[JSON_KEY(m_materials)];
-				materials << m_shared_material->get_path();
+				materials << m_shared_material->get_resource_name();
 			}
 
 			//m_bCullingEnable
@@ -113,7 +113,7 @@ namespace ehw
 			{
 				std::string strKey{};
 				renderer[JSON_KEY(m_mesh)] >> strKey;
-				m_mesh = ResourceManager<Mesh>::GetInst().load(strKey);
+				m_mesh = ResourceManager<Mesh>::GetInst().load_from_file(strKey);
 			}
 			
 
@@ -122,7 +122,7 @@ namespace ehw
 				const Json::Value& material = renderer[JSON_KEY(m_material)];
 				std::string strKey{};
 				material >> strKey;
-				m_shared_material = ResourceManager<Material>::GetInst().load(strKey);
+				m_shared_material = ResourceManager<Material>::GetInst().load_from_file(strKey);
 				m_current_material = m_shared_material;
 			}
 

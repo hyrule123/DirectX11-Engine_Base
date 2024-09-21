@@ -30,9 +30,9 @@ namespace ehw
 	{
 	}
 
-	eResult ComputeShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult ComputeShader::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		return compile_from_CSO(_base_directory / _key_path);
+		return compile_from_CSO(_base_directory / _resource_name);
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)
@@ -158,7 +158,7 @@ namespace ehw
 		
 		//상수버퍼를 통해 데이터 수를 업로드
 		static ConstBuffer* const pCB = RenderManager::GetInst().GetConstBuffer(eCBType::ComputeShader);
-		pCB->SetData(&mCB_ComputeShader);
+		pCB->set_data(&mCB_ComputeShader);
 		pCB->bind_buffer_to_GPU_register();
 
 		//쉐이더 바인딩

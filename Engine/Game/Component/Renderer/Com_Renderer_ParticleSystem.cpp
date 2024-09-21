@@ -89,14 +89,14 @@ namespace ehw
 		using namespace strKey::defaultRes;
 		mCS = LOAD_COMPUTESHADER(ParticleShader);
 
-		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::GetInst().Find(mesh::PointMesh);
+		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::GetInst().find(mesh::PointMesh);
 		SetMesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(material::ParticleMaterial);
-		SetMaterial(material, 0);
+		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(material::ParticleMaterial);
+		SetMaterial(material);
 
-		std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().Find(texture::CartoonSmoke);
+		std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().find(texture::CartoonSmoke);
 		material->set_texture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};
@@ -138,12 +138,12 @@ namespace ehw
 			mTime = f - std::floor(f);
 
 			tParticleShared shared = { 5, };
-			m_shared_buffer->SetData(&shared, 1);
+			m_shared_buffer->set_data(&shared, 1);
 		}
 		else
 		{
 			tParticleShared shared = {  };
-			m_shared_buffer->SetData(&shared, 1);
+			m_shared_buffer->set_data(&shared, 1);
 		}
 
 		mMaxParticles = m_buffer->GetStride();
@@ -161,7 +161,7 @@ namespace ehw
 
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::ParticleSystem);
-		cb->SetData(&mCBData);
+		cb->set_data(&mCBData);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 
 		mCS->SetSharedStrutedBuffer(m_shared_buffer);
@@ -169,17 +169,17 @@ namespace ehw
 		mCS->on_execute();
 	}
 
-	void Com_Renderer_ParticleSystem::render()
-	{
-		if (false == IsRenderReady())
-			return;
-		
-		gameObject()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
-		m_buffer->BindDataSRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
+	//void Com_Renderer_ParticleSystem::render()
+	//{
+	//	if (false == IsRenderReady())
+	//		return;
+	//	
+	//	gameObject()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
+	//	m_buffer->bind_data_SRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
-		GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
-		GetMesh()->render_instanced(mMaxParticles);
+	//	GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
+	//	GetMesh()->render_instanced(mMaxParticles);
 
-		m_buffer->unbind_data();
-	}
+	//	m_buffer->unbind_buffer();
+	//}
 }

@@ -13,7 +13,7 @@ namespace ehw::editor
 	}
 	bool EditorWindow::BeginUI()
 	{
-		bool retVal = ImGui::Begin(get_path().c_str(), GetEnablePtr(), mWindowFlag);
+		bool retVal = ImGui::Begin(get_resource_name().c_str(), GetEnablePtr(), mWindowFlag);
 		if(false == retVal)
 		{
 			ImGui::End();

@@ -68,7 +68,7 @@ namespace ehw::editor
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::GetInst().load(shaderName);
+				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::GetInst().load_from_file(shaderName);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ namespace ehw::editor
 			std::shared_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
-				strCurShader += curShader->get_path();
+				strCurShader += curShader->get_resource_name();
 			}
 			else
 			{
@@ -147,7 +147,7 @@ namespace ehw::editor
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::GetInst().load(shaderKey);
+				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::GetInst().load_from_file(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
@@ -156,7 +156,7 @@ namespace ehw::editor
 		std::shared_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
-			shaderKey += shader->get_path();
+			shaderKey += shader->get_resource_name();
 		}
 		else
 		{
@@ -179,7 +179,7 @@ namespace ehw::editor
 			auto Tex = mTargetMaterial->get_texture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_path().data());
+				ImGui::Text(Tex->get_resource_name().data());
 			}
 			else
 			{
@@ -204,7 +204,7 @@ namespace ehw::editor
 				{
 					std::fs::path PathstrKey = PathManager::GetInst().MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().load(PathstrKey);
+					std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().load_from_file(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -297,7 +297,7 @@ namespace ehw::editor
 			const auto& materials = ResourceManager<Material>::GetInst().GetResources();
 			for (auto& mtrl : materials)
 			{
-				mCurrentLoadedMtrl.AddItem(mtrl.second->get_path());
+				mCurrentLoadedMtrl.AddItem(mtrl.second->get_resource_name());
 			}
 		}
 		LoadFromFile();
@@ -306,7 +306,7 @@ namespace ehw::editor
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_path().empty())
+		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_resource_name().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
@@ -338,9 +338,9 @@ namespace ehw::editor
 		mTargetMaterial = std::shared_ptr<Material>(mTargetMaterial->Clone());
 
 		std::string strKey = outputPath.filename().string();
-		mTargetMaterial->set_keypath(strKey);
+		mTargetMaterial->set_resource_name(strKey);
 
-		ResourceManager<Material>::GetInst().save(mTargetMaterial.get());
+		ResourceManager<Material>::GetInst().save_to_file(mTargetMaterial.get());
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -363,7 +363,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						std::shared_ptr<Material> mtrl = ResourceManager<Material>::GetInst().Find(mtrlKey);
+						std::shared_ptr<Material> mtrl = ResourceManager<Material>::GetInst().find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
@@ -409,7 +409,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::GetInst().load(filePath.filename());
+						mTargetMaterial = ResourceManager<Material>::GetInst().load_from_file(filePath.filename());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

@@ -24,32 +24,22 @@ namespace ehw
 	{
 		CLASS_NAME(Material);
 	public:
+		Material();
 		Material(std::string_view key);
 
 		Material(const Material& _other);
 
 		virtual ~Material();
 
-		//RenderManager::CreateMaterial
-		static void init_static();
-		static void release_static();
-
-		//1, graphics shader, texture
-		void bind_shared_material_buffer();
-		//2
-		void set_data_to_buffer(const std::vector<GameObject*>& _objs);
-
 		// 필수 재정의 함수들 //
-		virtual void clear_buffers(); //버퍼 클리어
-	protected:
-		//반드시 부모 클래스의 해당 함수도 타고올라가면서 호출할것
-		virtual void add_data_to_buffer(GameObject* _obj);
-	public:
-		virtual void bind_buffer_to_GPU();
+		void bind_const_buffer_to_GPU_register();
+		virtual void clear_instancing_buffer() {}; //버퍼 클리어
+		virtual void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) {};
+		virtual void bind_instancing_buffer_to_GPU_register() {};
 		///////////////////////////////
 
-		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
@@ -84,10 +74,6 @@ namespace ehw
 
 		eRenderingMode m_renderingMode;
 		tSharedMaterialData m_shared_material_data;
-
-		//이 material을 사용하는 각 GameObject가 가지고 있는 정보
-		std::vector<tIndividual_Material_Data> m_individual_mtrl_data;
-		static inline StructBuffer* s_individual_mtrl_buffer = nullptr;
 	};
 }
 

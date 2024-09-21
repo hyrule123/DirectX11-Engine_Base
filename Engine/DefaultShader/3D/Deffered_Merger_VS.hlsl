@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Basic/_3D.hlsli"
+#include "Engine/DefaultShader/3D/3D.hlsli"
 
 VSOut_Merge main(VSIn_Merge In)
 {

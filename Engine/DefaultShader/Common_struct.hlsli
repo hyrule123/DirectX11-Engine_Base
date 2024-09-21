@@ -62,12 +62,13 @@ struct alignas(16) tSharedMaterialData
 	float4 Emv;
 };
 
-struct alignas(16)  tIndividual_Material_Data
+struct alignas(16)  tUniqueMtrlData_Default3D
 {
 	// 3D Animation 정보
 	BOOL bAnim;
-	int BoneCount;
-	int2 Padding_Material;
+	uint BoneCount;
+	uint final_bone_matrix_instance_ID;
+	int Padding_Material;
 };
 
 struct alignas(16)   tCB_ComputeShader
@@ -142,12 +143,11 @@ struct alignas(16)  tCB_Noise
 	float3 NoisePad;
 };
 
-
-struct alignas(16)  tAnimation3D_SharedInfo
+struct alignas(16)  tAnimation3D_ComputeShaderData
 {
 	uint		BoneCount;		//본 갯수
 	//Instancing 관련
-	uint		instance_start_index; //내가 몇번째 인스턴스 인지
+	uint		instance_ID; //내가 몇번째 인스턴스 인지
 	float2		pad;
 	
 	uint		CurrentFrame;	//현재 프레임

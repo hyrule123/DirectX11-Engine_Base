@@ -15,7 +15,7 @@ namespace ehw::editor
 
 	bool EditorChild::BeginUI()
 	{
-		bool retVal = ImGui::BeginChild(get_path().c_str(), mSize, mbBorder, GetImGuiWindowFlag());
+		bool retVal = ImGui::BeginChild(get_resource_name().c_str(), mSize, mbBorder, GetImGuiWindowFlag());
 		if (false == retVal)
 		{
 			ImGui::EndChild();

@@ -6,10 +6,10 @@
 #include "Engine/DefaultShader/NormalConverter/NormalConverter.hlsli"
 
 #if defined (_WIN64) && !(NDEBUG)
-#include "Engine/CompiledShaderHeader/CS_NormalConverter_x64_Debug.h"
+#include "Engine/CompiledShaderHeader/NormalConverter_CS_x64_Debug.h"
 #endif
 #if defined (_WIN64) && (NDEBUG)
-#include "Engine/CompiledShaderHeader/CS_NormalConverter_x64_Release.h"
+#include "Engine/CompiledShaderHeader/NormalConverter_CS_x64_Release.h"
 #endif
 
 #include "Engine/Resource/Texture.h"
@@ -34,9 +34,9 @@ namespace ehw
 	{
 	}
 
-	eResult NormalConvertShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult NormalConvertShader::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		return ComputeShader::compile_from_byte_code(CS_NormalConverter, sizeof(CS_NormalConverter));
+		return ComputeShader::compile_from_byte_code(NormalConverter_CS, sizeof(NormalConverter_CS));
 	}
 
 	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)
@@ -68,13 +68,13 @@ namespace ehw
 			return false;
 		}
 		
-		mDestTex->set_keypath(mSrcTex->get_concrete_class_name());
+		mDestTex->set_resource_name(mSrcTex->get_concrete_class_name());
 
 		//원본
-		mSrcTex->BindDataSRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
+		mSrcTex->bind_data_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
-		mDestTex->BindDataUAV(GPU::Register::u::DestNormalTex);
+		mDestTex->bind_buffer_to_UAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
 		ComputeShader::calculate_group_count(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });

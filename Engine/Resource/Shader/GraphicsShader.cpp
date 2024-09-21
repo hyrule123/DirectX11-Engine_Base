@@ -24,7 +24,9 @@ namespace ehw
 		, m_rasterizer{}
 		, m_blender{}
 		, m_depth_stencil{}
+		, m_rasterizer_type{}
 		, m_blender_type{}
+		, m_depth_stencil_type{}
 		, m_blend_factor{}
 		, m_sample_mask{ UINT_MAX }
 		, m_stencil_ref{ UINT_MAX }
@@ -37,14 +39,14 @@ namespace ehw
 	{
 	}
 
-	eResult GraphicsShader::save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const
+	eResult GraphicsShader::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
-		return SaveFile_Json(_base_directory / _key_path);
+		return SaveFile_Json(_base_directory / _resource_name);
 	}
 
-	eResult GraphicsShader::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult GraphicsShader::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		return LoadFile_Json(_base_directory / _key_path);
+		return LoadFile_Json(_base_directory / _resource_name);
 	}
 
 	eResult GraphicsShader::compile_from_source_code(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)
@@ -206,17 +208,20 @@ namespace ehw
 
 	void GraphicsShader::SetRSState(eRSType _state)
 	{
+		m_rasterizer = RenderManager::GetInst().GetRasterizerState(_state);
 	}
 
 	void GraphicsShader::SetDSState(eDSType _state)
 	{
+		m_depth_stencil = RenderManager::GetInst().GetDepthStencilState(_state);
 	}
 
 	void GraphicsShader::SetBSState(eBSType _state)
 	{
+		m_blender = RenderManager::GetInst().GetBlendState(_state);
 	}
 
-	void GraphicsShader::bind_buffer_to_GPU_register()
+	void GraphicsShader::bind_shader()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 		
@@ -229,20 +234,10 @@ namespace ehw
 
 		pContext->RSSetState(m_rasterizer.Get());
 		pContext->OMSetBlendState(m_blender.Get(), m_blend_factor, m_sample_mask);
-		pContext->OMSetDepthStencilState(m_depth_stencil.Get(), m_stencil)
-		
-		ID3D11RasterizerState*		rs = RenderManager::GetInst().GetRasterizerState(m_rasterizerType);
-		ID3D11DepthStencilState*	ds = RenderManager::GetInst().GetDepthStencilState(m_depthStencilType);
-		ID3D11BlendState*			bs = RenderManager::GetInst().GetBlendState(m_blendType);
-
-		pContext->RSSetState(rs);
-		pContext->OMSetDepthStencilState(ds, 10u);
-
-		constexpr float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-		pContext->OMSetBlendState(bs, blendFactor, UINT_MAX);
+		pContext->OMSetDepthStencilState(m_depth_stencil.Get(), 10u);
 	}
 
-	void GraphicsShader::unbind_data()
+	void GraphicsShader::unbind_all_shader()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 
@@ -299,11 +294,6 @@ namespace ehw
 				<< m_inputLayoutDescs[i].InstanceDataStepRate;
 		}
 
-		//Json::SaveLoad::SaveValueVector(_pJVal, JSON_KEY_PAIR(m_inputLayoutDescs));
-
-
-
-
 		//쉐이더 파일명
 		{
 			Json::Value& ShaderFileName = ser[JSON_KEY(m_arrShaderCode)];
@@ -314,9 +304,9 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		ser[JSON_KEY(m_depthStencilType)] << m_rasterizerType;
-		ser[JSON_KEY(m_depthStencilType)] << m_depthStencilType;
-		ser[JSON_KEY(m_blendType)] << m_blendType;
+		ser[JSON_KEY(m_rasterizer_type)] << m_rasterizer_type;
+		ser[JSON_KEY(m_blender_type)] << m_blender_type;
+		ser[JSON_KEY(m_depth_stencil_type)] << m_depth_stencil_type;
 
 		return eResult::Success;
 	}
@@ -411,9 +401,12 @@ namespace ehw
 		}
 
 		//래스터라이저 상태
-		ser[JSON_KEY(m_depthStencilType)] >> m_rasterizerType;
-		ser[JSON_KEY(m_depthStencilType)] >> m_depthStencilType;
-		ser[JSON_KEY(m_blendType)] >> m_blendType;
+		ser[JSON_KEY(m_rasterizer_type)] >> m_rasterizer_type;
+		ser[JSON_KEY(m_blender_type)] >> m_blender_type;
+		ser[JSON_KEY(m_depth_stencil_type)] >> m_depth_stencil_type;
+		SetRSState(m_rasterizer_type);
+		SetBSState(m_blender_type);
+		SetDSState(m_depth_stencil_type);
 
 		//에디트 모드가 아닐 경우에만 Input Layout 생성.
 		if (false == m_bEditMode)
@@ -425,7 +418,6 @@ namespace ehw
 				return result;
 			}
 		}
-
 
 		return eResult::Success;
 	}

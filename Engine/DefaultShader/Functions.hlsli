@@ -3,6 +3,6 @@
 
 #include "Engine/DefaultShader/Func_Blur.hlsli"
 #include "Engine/DefaultShader/Func_DecodeColor.hlsli"
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Light/Light_Func.hlsli"
 
 #endif

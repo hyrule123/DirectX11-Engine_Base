@@ -40,7 +40,7 @@ namespace ehw
 		return bResult;
 	}
 
-	void ConstBuffer::SetData(void* _data, uint _dataCount)
+	void ConstBuffer::set_data(const void* _data, uint _dataCount)
 	{
 		ASSERT(nullptr != _data, "data가 nullptr 입니다.");
 		ASSERT(_dataCount <= mDataCount, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
@@ -89,7 +89,7 @@ namespace ehw
 			pContext->CSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
 		}
 	}
-	void ConstBuffer::unbind_data()
+	void ConstBuffer::unbind_buffer()
 	{
 		auto pContext = RenderManager::GetInst().Context();
 

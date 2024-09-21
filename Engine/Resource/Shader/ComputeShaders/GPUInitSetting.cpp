@@ -6,10 +6,10 @@
 #include "Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli"
 
 #if defined (_WIN64) && !(NDEBUG)
-#include "Engine/CompiledShaderHeader/CS_GPUInitSetting_x64_Debug.h"
+#include "Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Debug.h"
 #endif
 #if defined(_WIN64) && (NDEBUG)
-#include "Engine/CompiledShaderHeader/CS_GPUInitSetting_x64_Release.h"
+#include "Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Release.h"
 #endif
 
 
@@ -24,9 +24,9 @@ namespace ehw
 	{
 	}
 
-	eResult GPUInitSetting::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult GPUInitSetting::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		eResult result = compile_from_byte_code(CS_GPUInitSetting, sizeof(CS_GPUInitSetting));
+		eResult result = compile_from_byte_code(GPU_Init_Setting_CS, sizeof(GPU_Init_Setting_CS));
 
 		ASSERT(eResult_success(result), "GPU 초기화 작업 실패");
 
@@ -79,7 +79,7 @@ namespace ehw
 		eResult result = mInitSBuffer->init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
 		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
-		mInitSBuffer->BindDataUAV();
+		mInitSBuffer->bind_buffer_to_UAV();
 
 		ComputeShader::calculate_group_count(uint3(1u, 1u, 1u));
 
@@ -88,8 +88,8 @@ namespace ehw
 
 	void GPUInitSetting::unbind_buffer_from_GPU_register()
 	{
-		mInitSBuffer->unbind_data();
+		mInitSBuffer->unbind_buffer();
 		mInitSBuffer->GetData(&gGPUInitSetting);
-		mInitSBuffer->BindDataSRV();
+		mInitSBuffer->bind_data_SRV();
 	}
 }

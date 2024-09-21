@@ -28,7 +28,6 @@ namespace ehw
 		: Light(_other)
 		, m_attribute(_other.m_attribute)
 	{
-		
 	}
 
 	Light_3D::~Light_3D()
@@ -169,63 +168,6 @@ namespace ehw
 		float3 position = tr->get_world_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		s_lights[m_attribute.lightType].push_back(this);
-	}
-
-	void Light_3D::init_static()
-	{
-		s_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::GetInst().load(strKey::defaultRes::mesh::RectMesh);
-		s_light_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::GetInst().load(strKey::defaultRes::material::LightDirMaterial);
-
-		s_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::GetInst().load(strKey::defaultRes::mesh::SphereMesh);
-		s_light_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::GetInst().load(strKey::defaultRes::material::LightPointMaterial);
-
-		SAFE_DELETE(s_struct_buffer);
-		s_struct_buffer = new StructBuffer;
-		StructBuffer::Desc desc{};
-		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.GPU_register_t_SRV = GPU::Register::t::g_light_attributes;
-		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-		s_struct_buffer->init<tLightAttribute>(desc, 16);
-		s_struct_buffer->SetPipelineTarget(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-
-		SAFE_DELETE(s_const_buffer);
-		s_const_buffer = new ConstBuffer(GPU::Register::b::g_CB_light_count);
-		s_const_buffer->create<tLightCount>();
-		s_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-	}
-
-	void Light_3D::clear_buffer_data()
-	{
-		for (int i = 0; i < LIGHT_TYPE_MAX; ++i) {
-			s_lights[i].clear();
-			s_buffer_data[i].clear();
-		}
-	}
-
-	void Light_3D::render_lights(int _light_type)
-	{
-		tLightCount count;
-		count.count = (uint)s_buffer_data[_light_type].size();
-
-		s_const_buffer->SetData(&count);
-		s_const_buffer->bind_buffer_to_GPU_register();
-
-		s_struct_buffer->SetData(s_buffer_data[_light_type].data(), s_buffer_data[_light_type].size());
-		s_light_materials[_light_type]->bind_buffer_to_gpu_register();
-		s_volume_meshes[_light_type]->render_instanced_all((UINT)s_buffer_data[_light_type].size());
-	}
-
-	void Light_3D::release_static()
-	{
-		for (auto& mesh : s_volume_meshes) {
-			mesh = nullptr;
-		}
-		for (auto& mtrl : s_light_materials) {
-			mtrl = nullptr;
-		}
-		
-		SAFE_DELETE(s_struct_buffer);
-		SAFE_DELETE(s_const_buffer);
+		RenderManager::GetInst().sceneRenderAgent().enqueue_light_3D((eLightType)m_attribute.lightType, this);
 	}
 }

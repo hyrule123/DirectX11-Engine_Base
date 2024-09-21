@@ -14,7 +14,7 @@ namespace ehw
 		NormalConvertShader();
 		virtual ~NormalConvertShader();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		std::shared_ptr<Texture> Convert(std::shared_ptr<Texture> _srcTex);
 

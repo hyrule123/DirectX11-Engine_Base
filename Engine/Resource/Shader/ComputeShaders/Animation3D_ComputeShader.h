@@ -19,14 +19,14 @@ namespace ehw
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		virtual bool bind_buffer_to_GPU_register();
 		virtual void unbind_buffer_from_GPU_register();
 
 		struct Desc
 		{
-			tAnimation3D_SharedInfo* shared_animation_data{};
+			tAnimation3D_ComputeShaderData* shared_animation_data{};
 			StructBuffer* current_animation_key_frame_buffer{};
 			StructBuffer* next_animation_keyframe_buffer{};
 			StructBuffer* bone_offset_matrix_buffer{};

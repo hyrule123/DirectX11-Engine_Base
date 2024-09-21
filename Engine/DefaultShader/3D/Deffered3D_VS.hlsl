@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Basic/_3D.hlsli"
+#include "Engine/DefaultShader/3D/3D.hlsli"
 
 VSOut main(VSIn _in)
 {
@@ -7,9 +7,18 @@ VSOut main(VSIn _in)
 	tSkinningInfo info = (tSkinningInfo) 0;
 	
 	//애니메이션 메쉬일 경우 스키닝 진행
-	if(TRUE == g_individual_mtrl_data[_in.instance_ID].bAnim)
+	if(TRUE == g_default_3D_mtrl_instancing_buffer[_in.instance_ID].bAnim)
 	{
-		info = Skinning(_in.Position.xyz, _in.Tangent, _in.BiNormal, _in.Normal, _in.vWeights, _in.vIndices);
+		info = Skinning(
+		g_default_3D_mtrl_instancing_buffer[_in.instance_ID].final_bone_matrix_instance_ID
+		, g_default_3D_mtrl_instancing_buffer[_in.instance_ID].BoneCount
+		, _in.Position.xyz
+		, _in.Tangent
+		, _in.BiNormal
+		, _in.Normal
+		, _in.vWeights
+		, _in.vIndices
+		);
 	}
 	else
 	{

@@ -22,20 +22,15 @@ namespace ehw
 		Animator(const std::string_view key, eDimensionType _type);
 		virtual ~Animator() {};
 
-		virtual void bind_buffer_to_GPU_register() = 0;
-		virtual void unbind_buffer_from_GPU_register() = 0;
-
-		virtual bool IsPlaying() const = 0;
-
 		eDimensionType GetDimensionType() const { return mDimensionType; }
 
 		//아래 함수를 재정의해서 protected된 AddEvent를 호출하는 방식
-		virtual bool AddEvent(const std::string_view _animName, int _frameIdx, const std::function<void()>& _func) { return false; };
+		virtual bool AddEvent(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func) { return false; };
 
-		void CallEvent(Animation* _anim, int _frameIdx);
+		void CallEvent(Animation* _anim, uint _frameIdx);
 
 	protected:
-		void AddEvent(Animation* _anim, int _frameIdx, const std::function<void()>& _func);
+		void AddEvent(Animation* _anim, uint _frameIdx, const std::function<void()>& _func);
 
 	private:
 		eDimensionType mDimensionType;

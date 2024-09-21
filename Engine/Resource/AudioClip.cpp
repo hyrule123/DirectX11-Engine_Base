@@ -30,9 +30,9 @@ namespace ehw
 	}
 
 
-	eResult AudioClip::load(const std::fs::path& _base_directory, const std::fs::path& _key_path)
+	eResult AudioClip::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		std::fs::path fullPath = _base_directory / _key_path;
+		std::fs::path fullPath = _base_directory / _resource_name;
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE("파일이 없습니다.");

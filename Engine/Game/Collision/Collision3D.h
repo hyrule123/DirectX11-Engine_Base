@@ -89,8 +89,6 @@ namespace ehw
 		//충돌체(PxShape 생성 시 필요), 프리셋 값을 변경 시 해당 material을 사용한 모든 충돌체의 프리셋 설정이 변경됨.
 		physx::PxMaterial* m_defaultPxMaterial;
 		//std::vector<tTransformSyncData> m_transformSyncData;
-
-		std::array<std::vector<tDebugDrawData>, (int)eCollider3D_Shape::END> m_debugInstancingData;
 	};
 
 

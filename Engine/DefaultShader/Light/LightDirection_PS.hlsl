@@ -1,5 +1,5 @@
 #include "Engine/DefaultShader/Light/Light.hlsli"
-#include "Engine/DefaultShader/Light/Func_Light.hlsli"
+#include "Engine/DefaultShader/Light/Light_Func.hlsli"
 
 
 PS_OUT main(VSOut_LightDir _in)

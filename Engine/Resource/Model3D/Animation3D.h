@@ -47,22 +47,22 @@ namespace ehw
         void bind_buffer_to_GPU_register();
         void unbind_buffer_from_GPU_register();
 
-        virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _key_path) const override;
-        virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _key_path) override;
+        virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+        virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
         eResult serialize_binary(BinarySerializer* _ser) const override;
         eResult deserialize_binary(const BinarySerializer* _ser) override;
 
         eResult load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
-        int GetStartFrame() const { return m_StartFrame; }
-        int GetEndFrame() const { return m_EndFrame; }
-        int GetFrameLength() const { return m_FrameLength; }
+        uint get_start_frame() const { return m_StartFrame; }
+        uint GetEndFrame() const { return m_EndFrame; }
+        uint GetFrameLength() const { return m_FrameLength; }
         double GetStartTime() const { return m_StartTime; }
         double GetEndTIme() const { return m_EndTime; }
         double GetTimeLength() const { return m_TimeLength; }
         float GetUpdateTime() const { return m_UpdateTime; }
-        int GetFPS() const { return m_FramePerSec; }
+        uint GetFPS() const { return m_FramePerSec; }
         std::shared_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
         void set_skeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
         std::shared_ptr<StructBuffer> GetKeyFrameSBuffer() const { return m_SBufferKeyFrame; }
@@ -73,18 +73,16 @@ namespace ehw
     private:
         std::weak_ptr<Skeleton> m_OwnerSkeleton;
 
-        int				m_StartFrame;
-        int				m_EndFrame;
-        int				m_FrameLength;
+        uint				m_StartFrame;
+        uint				m_EndFrame;
+        uint				m_FrameLength;
 
         double			m_StartTime;
         double			m_EndTime;
         double			m_TimeLength;
         float			m_UpdateTime; // 이거 안씀
 
-        int         	m_FramePerSec;
-
-
+        uint         	m_FramePerSec;
 
         //이중 배열 형태임
         std::vector<tKeyFramesPerBone>          m_KeyFramesPerBone;

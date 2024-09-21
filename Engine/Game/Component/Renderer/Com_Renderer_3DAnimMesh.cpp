@@ -21,8 +21,8 @@ namespace ehw
 	{
 	}
 
-	void Com_Renderer_3DAnimMesh::render()
-	{
+	//void Com_Renderer_3DAnimMesh::render()
+	//{
 		//애니메이터가 없거나
 		//3D 애니메이터가 아니거나
 		//재생 중이 아니거나
@@ -30,7 +30,7 @@ namespace ehw
 	//	auto animator = gameObject()->GetComponent<Com_Animator3D>();
 	//	if (
 	//		nullptr == animator ||
-	//		false == animator->IsPlaying()
+	//		false == animator->is_playing()
 	//		)
 	//	{
 	//		Com_Renderer_Mesh::render();
@@ -67,7 +67,7 @@ namespace ehw
 	//			// 사용할 메쉬 업데이트 및 렌더링
 	//			GetMesh()->render(i);
 
-	//			//mtrl->unbind_data();
+	//			//mtrl->unbind_buffer();
 	//			mtrl->SetBoneCount(0);
 	//			mtrl->SetAnim3D(false);
 	//		}
@@ -75,6 +75,6 @@ namespace ehw
 
 	//	animator->unbind_buffer_from_GPU_register();
 	//}
-	}
+	//}
 }
 

@@ -21,8 +21,8 @@ namespace ehw::editor
 		const std::string& GetName() const { return m_Name; }
 
 		void MakeUniqueKeyByName() { m_StrKey += "##"; m_StrKey += std::to_string(m_ID); }
-		void SetStrKey(const std::string_view _strKey) { m_StrKey = _strKey; }
-		const std::string& get_path() const { return m_StrKey; }
+		void SetStrKey(const std::string_view _key_path) { m_StrKey = _key_path; }
+		const std::string& get_resource_name() const { return m_StrKey; }
 		
 		void SetSaveEnable(bool _bSaveEnable) { m_bSaveEnable = _bSaveEnable; }
 		bool IsSaveEnable() const { return m_bSaveEnable; }

@@ -257,13 +257,13 @@ namespace ehw::editor
 		ImGuiRelease();
 	}
 
-	Json::Value* EditorManager::CheckJsonSaved(const std::string& _strKey)
+	Json::Value* EditorManager::CheckJsonSaved(const std::string& _key_path)
 	{
 		Json::Value* retJson = nullptr;
 
-		if (mJsonUIData->isMember(_strKey))
+		if (mJsonUIData->isMember(_key_path))
 		{
-			retJson = &((*mJsonUIData)[_strKey]);
+			retJson = &((*mJsonUIData)[_key_path]);
 		}
 
 		return retJson;
@@ -426,7 +426,7 @@ namespace ehw::editor
 	bool EditorManager::AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase)
 	{
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
-		const std::string_view guiName = _pBase->get_path();
+		const std::string_view guiName = _pBase->get_resource_name();
 
 		//중복되는 이름이 있을 경우 unique 이름을 만들어줌
 		std::shared_ptr<EditorBase> foundPtr = FindGuiWindow(guiName);
@@ -438,7 +438,7 @@ namespace ehw::editor
 			//_pBase->MakeUniqueKeyByName();
 		}
 
-		mGuiWindows.insert(std::make_pair(_pBase->get_path(), _pBase));
+		mGuiWindows.insert(std::make_pair(_pBase->get_resource_name(), _pBase));
 
 		_pBase->InitRecursive();
 
@@ -562,11 +562,11 @@ namespace ehw::editor
 	}
 
 
-	std::shared_ptr<EditorBase> EditorManager::FindGuiWindow(const std::string_view _strKey)
+	std::shared_ptr<EditorBase> EditorManager::FindGuiWindow(const std::string_view _key_path)
 	{
 		std::shared_ptr<EditorBase> pui = nullptr;
 
-		const auto& iter = mGuiWindows.find(_strKey);
+		const auto& iter = mGuiWindows.find(_key_path);
 		if (iter != mGuiWindows.end())
 		{
 			pui = iter->second;

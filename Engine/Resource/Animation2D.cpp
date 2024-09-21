@@ -144,7 +144,7 @@ namespace ehw
 
 	void Animation2D::bind_buffer_to_GPU_register()
 	{
-		mAtlas->BindDataSRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
+		mAtlas->bind_data_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
 		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Animation2D);
 
@@ -155,7 +155,7 @@ namespace ehw
 		info.spriteSize = mSpriteSheet[mIndex].Size;
 		info.atlasSize = mSpriteSheet[mIndex].AtlasSize;
 
-		cb->SetData(&info);
+		cb->set_data(&info);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
 	}
 
@@ -176,7 +176,7 @@ namespace ehw
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::NOT_SET;
 
-		cb->SetData(&info);
+		cb->set_data(&info);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
 	}
 

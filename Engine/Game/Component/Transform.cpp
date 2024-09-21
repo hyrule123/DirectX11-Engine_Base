@@ -68,10 +68,14 @@ namespace ehw
 		m_transform_updated = false;
 	}
 
-	void Transform::set_data_to_GPU(const std::vector<tTransform>& _data)
+	void Transform::set_data_to_buffer(const std::vector<tTransform>& _data)
 	{
-		s_buffer->SetData(_data.data(), (UINT)_data.size());
-		s_buffer->BindDataSRV();
+		s_buffer->set_data(_data.data(), (UINT)_data.size());
+	}
+
+	void Transform::bind_buffer_to_GPU_register()
+	{
+		s_buffer->bind_data_SRV();
 	}
 
 	void Transform::update_local_matrix()

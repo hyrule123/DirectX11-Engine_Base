@@ -48,7 +48,7 @@ TEXTURE2D(DiffuseLightTarget, t, 6);
 TEXTURE2D(SpecularLightTarget, t, 7);
 
 SBUFFER(g_transforms, tTransform, t, 10);
-SBUFFER(g_individual_mtrl_data, tIndividual_Material_Data, t, 11);
+SBUFFER(g_default_3D_mtrl_instancing_buffer, tUniqueMtrlData_Default3D, t, 11);
 
 //Bone Matrices(Animation 3D)
 //현재 재생중인 애니메이션의 키프레임 데이터
