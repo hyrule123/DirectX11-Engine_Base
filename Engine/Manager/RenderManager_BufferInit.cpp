@@ -426,7 +426,7 @@ namespace ehw {
 
 			// Crate Mesh
 			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
-			ASSERT(debugCubeMesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP), "debugCubeMesh 생성 실패");
+			ASSERT(debugCubeMesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugCubeMesh 생성 실패");
 			debugCubeMesh->set_engine_default_res(true);
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
 		}

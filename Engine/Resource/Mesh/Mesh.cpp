@@ -176,12 +176,8 @@ namespace ehw
 		context->IASetPrimitiveTopology(m_index_topology);
 
 		// Input Assembeler 단계에 버텍스버퍼 정보 지정
-		uint offset = 0;
-
 		m_vertex_buffer->IA_set_vertex_buffer();
-
 		context->IASetIndexBuffer(m_index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
 		context->DrawIndexedInstanced(m_index_count, _instanceCount, 0, 0, 0);
 	}
 }

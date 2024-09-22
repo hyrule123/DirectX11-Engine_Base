@@ -344,8 +344,6 @@ namespace ehw
 		BindNoiseTexture();
 
 		m_sceneRenderAgent.render();
-
-		m_sceneRenderAgent.render_debug();
 	}
 
 	void RenderManager::FrameEnd()

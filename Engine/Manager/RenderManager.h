@@ -51,9 +51,15 @@ namespace ehw
 
 		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
 
-		ID3D11RasterizerState* GetRasterizerState(eRasterizerState _Type) { return m_rasterizerStates[(int)_Type].Get(); }
-		ID3D11BlendState* GetBlendState(eBlendState _Type) { return m_blendStates[(int)_Type].Get(); }
-		ID3D11DepthStencilState* GetDepthStencilState(eDepthStencilState _Type) { return m_depthStencilStates[(int)_Type].Get(); }
+		ComPtr<ID3D11RasterizerState> GetRasterizerState(eRasterizerState _Type) { 
+			return m_rasterizerStates[(int)_Type]; 
+		}
+		ComPtr<ID3D11BlendState> GetBlendState(eBlendState _Type) { 
+			return m_blendStates[(int)_Type]; 
+		}
+		ComPtr<ID3D11DepthStencilState> GetDepthStencilState(eDepthStencilState _Type) { 
+			return m_depthStencilStates[(int)_Type]; 
+		}
 
 		MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();

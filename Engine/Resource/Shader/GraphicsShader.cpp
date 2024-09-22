@@ -33,6 +33,9 @@ namespace ehw
 		, m_errorBlob()
 		, m_bEditMode(false)
 	{
+		m_rasterizer_state = RenderManager::get_inst().GetRasterizerState(m_rasterizer_type);
+		m_blend_state = RenderManager::get_inst().GetBlendState(m_blend_type);
+		m_depth_stencil_state = RenderManager::get_inst().GetDepthStencilState(m_depth_stencil_type);
 	}
 
 	GraphicsShader::~GraphicsShader()

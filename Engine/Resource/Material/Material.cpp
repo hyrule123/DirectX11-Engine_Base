@@ -45,7 +45,7 @@ namespace ehw
     {
     }
 
-    void Material::bind_const_buffer_to_GPU_register()
+    void Material::bind_shader()
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {

@@ -39,7 +39,7 @@ namespace ehw {
 		m_debug_meshes_3D[(int)eCollider3D_Shape::Cube] =
 			ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::DebugCubeMesh);
 
-		m_debug_material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::DebugMaterial);
+		m_debug_material = ResourceManager<Material>::get_inst().find<DebugMaterial>(name::defaultRes::material::DebugMaterial);
 	}
 
 	void SceneRenderAgent::release()
@@ -84,7 +84,7 @@ namespace ehw {
 				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
 
 				// defferd + swapchain merge
-				m_deffered_merge_material->bind_instancing_buffer_to_GPU_register();
+				m_deffered_merge_material->bind_shader();
 				m_deffered_merge_rectmesh->render();
 
 				//Forward Rendering
@@ -191,7 +191,7 @@ namespace ehw {
 	{
 		if (_is_enable) {
 			m_debug_material = 
-				ResourceManager<Material>::get_inst().find(name::defaultRes::material::DebugMaterial);
+				ResourceManager<Material>::get_inst().find<DebugMaterial>(name::defaultRes::material::DebugMaterial);
 		}
 		else {
 			m_debug_material = nullptr;
@@ -200,19 +200,21 @@ namespace ehw {
 
 	void SceneRenderAgent::render_debug()
 	{
+		RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+		m_debug_material->bind_shader();
 		MATRIX VP = GetMainCamera()->GetViewMatrix() * GetMainCamera()->GetProjectionMatrix();
 		for (int i = 0; i < (int)eCollider3D_Shape::END; ++i) {
 			if (m_debug_material && m_debug_meshes_3D[i]) {
 
 				//현재 W까지만 들어있으므로 VP를 곱해서 WVP를 만들어준다.
 				for (tDebugDrawData& data : m_debug_draw_data_3D[i]) {
-					data.WVP = data.WVP * VP;
+					data.WVP *= VP;
 				}
 
-				static_cast<DebugMaterial*>(m_debug_material.get())->set_data_and_bind_GPU(m_debug_draw_data_3D[i]);
-				m_debug_meshes_3D[i]->render_instanced((UINT)m_debug_draw_data_3D->size());
+				
+				m_debug_material->set_data_and_bind_GPU(m_debug_draw_data_3D[i]);
+				m_debug_meshes_3D[i]->render_instanced((UINT)m_debug_draw_data_3D[i].size());
 			}
-			m_debug_draw_data_3D[i].clear();
 		}
 	}
 

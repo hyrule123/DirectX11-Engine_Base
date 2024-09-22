@@ -32,7 +32,7 @@ namespace ehw
 		virtual ~Material();
 
 		// 필수 재정의 함수들 //
-		void bind_const_buffer_to_GPU_register();
+		void bind_shader();
 		virtual void clear_instancing_buffer() {}; //버퍼 클리어
 		virtual void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) {};
 		virtual void bind_instancing_buffer_to_GPU_register() {};
