@@ -39,19 +39,25 @@ enum class eLightType{
 SBUFFER(g_light_attributes, tLightAttribute, t, 14);
 CBUFFER(g_CB_light_count, tLightCount, b, 5);
 
-struct VS_in_out_LightPoint
+#ifdef __HLSL
+
+struct VS_IN_LightPoint
 {
-	float4 Position SEMANTIC(POSITION);
-	uint instance_ID SEMANTIC(SV_InstanceID);
+	float4 position : POSITION;
+	uint instance_ID : SV_InstanceID;
 };
-struct VSIn_LightDir
+struct VS_OUT_LightPoint
 {
-	float4 Position SEMANTIC(POSITION);
-	float2 UV SEMANTIC(TEXCOORD);
-	uint instance_ID SEMANTIC(SV_InstanceID);
+	float4 position : SV_Position;
+	uint instance_ID : SV_InstanceID;
 };
 
-#ifdef __HLSL
+struct VSIn_LightDir
+{
+	float4 Position : POSITION;
+	float2 UV : TEXCOORD;
+	uint instance_ID : SV_InstanceID;
+};
 
 struct VSOut_LightDir
 {

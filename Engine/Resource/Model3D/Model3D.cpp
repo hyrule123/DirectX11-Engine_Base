@@ -405,9 +405,8 @@ namespace ehw
 
 				//가져올 메쉬를 생성
 				meshCont.mesh = std::make_shared<Mesh>();
-				meshCont.mesh->set_topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-				meshCont.mesh->create_index_buffer(cont.vecIndexBuffers[i]);
+				meshCont.mesh->create_index_buffer(cont.vecIndexBuffers[i], D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 				//스켈레톤 주소를 지정
 				meshCont.mesh->set_skeleton(m_skeleton);

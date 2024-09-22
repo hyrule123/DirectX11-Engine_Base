@@ -54,6 +54,19 @@ namespace ehw
 		ResourceManager<ConstBuffer>::get_inst().init("");
 		ResourceManager<StructBuffer>::get_inst().init("");
 
+		{
+			std::shared_ptr<StructBuffer> debug_render_buffer = std::make_shared<StructBuffer>();
+
+			StructBuffer::Desc desc{};
+			desc.eSBufferType = eStructBufferType::READ_ONLY;
+			desc.GPU_register_t_SRV = GPU::Register::t::g_debugDrawData;
+			desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
+
+			debug_render_buffer->init<tDebugDrawData>(desc, 100, nullptr, 0);
+
+			ResourceManager<StructBuffer>::get_inst().insert("debug_render_buffer", debug_render_buffer);
+		}
+
 		//이 부분 나중에 분리한 별도 CPP로 옮길 것
 		std::shared_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
 		StructBuffer::Desc desc{};

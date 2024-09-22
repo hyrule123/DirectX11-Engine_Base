@@ -155,7 +155,6 @@ namespace ehw
 		//material 바인딩 후 mesh 렌더
 		m_light_3D_materials[(int)_light_type]->bind_const_buffer_to_GPU_register();
 		m_light_3D_volume_meshes[(int)_light_type]->render_instanced(light_count.count);
-
 		
 	}
 

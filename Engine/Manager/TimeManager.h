@@ -14,7 +14,7 @@ namespace ehw
 		friend class GameEngine;
 	public:
 		__forceinline float DeltaTime() { return m_currentDeltaTime; }
-		__forceinline float FixedDeltaTime() { return m_fixedDeltaTime; }
+		__forceinline float get_fixed_deltatime() { return m_fixedDeltaTime; }
 
 		void update();
 		
@@ -26,7 +26,7 @@ namespace ehw
 		//0으로 설정시 실시간
 		void SetFixedDeltaTime(float _fixedDeltaTime);
 
-		//최대 FixedUpdate 횟수를 설정할 수 있음.
+		//최대 fixed_update 횟수를 설정할 수 있음.
 		//UINT_MAX로 설정시 무제한
 		void SetMaxFixedUpdatesPerFrame(uint _max);
 
@@ -48,7 +48,7 @@ namespace ehw
 		//
 
 
-		// FixedUpdate 관련
+		// fixed_update 관련
 		float			m_fixedDeltaTime;
 		uint				m_maxFixedUpdatesPerFrame;
 

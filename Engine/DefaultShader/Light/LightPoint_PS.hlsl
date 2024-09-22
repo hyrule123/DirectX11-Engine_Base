@@ -2,11 +2,11 @@
 #include "Engine/DefaultShader/Light/Light_Func.hlsli"
 
 
-PS_OUT main(VS_in_out_LightPoint _in)
+PS_OUT main(VS_OUT_LightPoint _in)
 {
 	PS_OUT output = (PS_OUT) 0.f;
     
-	float2 vUV = _in.Position.xy / CB_Global.fResolution;
+	float2 vUV = _in.position.xy / CB_Global.fResolution;
 	
 	//Position 렌더 타겟에는 View Position 값이 들어가 있다.
 	float4 vViewPos = PositionTarget.Sample(anisotropicSampler, vUV);

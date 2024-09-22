@@ -22,8 +22,6 @@ namespace ehw {
 		///////////////
 
 	private:
-		static std::shared_ptr<StructBuffer> create_debug_render_buffer();
-		static inline std::shared_ptr<StructBuffer> s_debug_render_buffer = nullptr;
 
 		std::shared_ptr<StructBuffer> m_debug_render_buffer;
 	};

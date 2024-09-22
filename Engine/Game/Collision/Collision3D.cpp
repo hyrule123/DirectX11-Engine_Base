@@ -81,11 +81,11 @@ namespace ehw
 		m_pxScene->userData = this;
 	}
 
-	void Collision3D::FixedUpdate()
+	void Collision3D::fixed_update()
 	{
 		GameSceneToPxScene();
 
-		m_pxScene->simulate(TimeManager::get_inst().FixedDeltaTime());
+		m_pxScene->simulate(TimeManager::get_inst().get_fixed_deltatime());
 		m_pxScene->fetchResults(true);
 
 		//위치 갱신

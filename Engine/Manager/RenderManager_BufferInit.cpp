@@ -11,6 +11,8 @@
 #include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
+#include "Engine/Resource/Material/DebugMaterial.h"
+
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"
 
 #include "Engine/GPU/CommonGPU.h"
@@ -35,10 +37,9 @@ namespace ehw {
 			if (false == vb->create_vertex_buffer(vertices_2D)) {
 				ASSERT(false, "point vertex 생성 실패");
 			}
-			if (false == pointMesh->create_index_buffer(pointIndex)) {
+			if (false == pointMesh->create_index_buffer(pointIndex, D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)) {
 				ASSERT(false, "point vertex 생성 실패");
 			}
-			pointMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::PointMesh, pointMesh);
 		}
@@ -71,12 +72,14 @@ namespace ehw {
 			vtx2d = Vertex2D{};
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> RectMesh = std::make_shared<Mesh>();
-			RectMesh->set_engine_default_res(true);
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::RectMesh, RectMesh);
+			std::shared_ptr<Mesh> rect_mesh = std::make_shared<Mesh>();
+			rect_mesh->set_engine_default_res(true);
+			
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 			
-			ASSERT(RectMesh->create(VecVtx2D, indices), "RectMesh 생성 실패");
+			ASSERT(rect_mesh->create(VecVtx2D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
+
+			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::RectMesh, rect_mesh);
 
 			VecVtx2D.clear();
 
@@ -108,7 +111,7 @@ namespace ehw {
 			debugmesh->set_engine_default_res(true);
 
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugRectMesh, debugmesh);
-			ASSERT(debugmesh->create(VecVtx2D, indices), "debugMesh 생성 실패");
+			ASSERT(debugmesh->create(VecVtx2D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
 		}
 #pragma endregion
 
@@ -156,9 +159,12 @@ namespace ehw {
 			// Crate Mesh
 			std::shared_ptr<Mesh> circle_mesh = std::make_shared<Mesh>();
 			circle_mesh->set_engine_default_res(true);
+			circle_mesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			ASSERT(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
+
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::CircleMesh, circle_mesh);
 
-			ASSERT(circle_mesh->create(VecVtx2D, VecIdx), "circle mesh 생성 실패");
+			
 		}
 #pragma endregion
 #pragma region Cube Mesh
@@ -377,7 +383,7 @@ namespace ehw {
 			// Crate Mesh
 			std::shared_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::CubeMesh, cubMesh);
-			cubMesh->create(VecVtx3D, indices);
+			ASSERT(cubMesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
 		}
 #pragma endregion
 
@@ -420,10 +426,9 @@ namespace ehw {
 
 			// Crate Mesh
 			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
-			ASSERT(debugCubeMesh->create(vertices, indices), "debugCubeMesh 생성 실패");
+			ASSERT(debugCubeMesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP), "debugCubeMesh 생성 실패");
 			debugCubeMesh->set_engine_default_res(true);
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
-			//debugCubeMesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		}
 #pragma endregion //Debug Cube Mesh
 
@@ -537,9 +542,8 @@ namespace ehw {
 			}
 
 			std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+			ASSERT(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::SphereMesh, sphereMesh);
-
-			sphereMesh->create<Vertex3D>(VecVtx3D, indices);
 		}
 
 
@@ -644,7 +648,7 @@ namespace ehw {
 			//debugShader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
 			debugShader->set_rasterizer_state(eRasterizerState::WireframeNone);
 			debugShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			debugShader->set_blend_state(eBlendState::AlphaBlend);
+			debugShader->set_blend_state(eBlendState::Default);
 
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::DebugShader, debugShader);
 		}
@@ -1171,7 +1175,7 @@ namespace ehw {
 
 #pragma region DEBUG
 		std::shared_ptr<GraphicsShader> debugShader = ResourceManager<GraphicsShader>::get_inst().find(shader::graphics::DebugShader);
-		std::shared_ptr<Material> debugMaterial = std::make_shared<Material>();
+		std::shared_ptr<DebugMaterial> debugMaterial = std::make_shared<DebugMaterial>();
 		debugMaterial->set_rendering_mode(eRenderingMode::forward_transparent);
 		debugMaterial->set_shader(debugShader);
 		debugMaterial->set_engine_default_res(true);

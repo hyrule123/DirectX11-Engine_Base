@@ -36,13 +36,11 @@ namespace ehw
 		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 
-
-
 		void set_vertex_buffer(const std::shared_ptr<VertexBuffer>& _buf) {
 			m_vertex_buffer = _buf;
 		}
 
-		void set_topology(const D3D11_PRIMITIVE_TOPOLOGY& _topology) {
+		void set_topology(D3D11_PRIMITIVE_TOPOLOGY _topology) {
 			m_index_topology = _topology;
 		}
 
@@ -52,14 +50,18 @@ namespace ehw
 			return m_vertex_buffer->create_vertex_buffer(_vertices);
 		}
 		
-		bool create_index_buffer(const std::vector<UINT>& _indices) {
-			return create_index_buffer(static_cast<const UINT*>(_indices.data()), (UINT)_indices.size());
+		bool create_index_buffer(const std::vector<UINT>& _indices, D3D11_PRIMITIVE_TOPOLOGY _topology) {
+			if (create_index_buffer(static_cast<const UINT*>(_indices.data()), (UINT)_indices.size())) {
+				set_topology(_topology);
+				return true;
+			}
+			return false;
 		}
 
 		template <typename Vertex> requires std::is_base_of_v<VertexBase, Vertex>
-		bool create(const std::vector<Vertex>& _vertices, const std::vector<UINT>& _indices) {
+		bool create(const std::vector<Vertex>& _vertices, const std::vector<UINT>& _indices, D3D11_PRIMITIVE_TOPOLOGY _topology) {
 			bool result = create_vertex_buffer(_vertices);
-			result = result && create_index_buffer(_indices);
+			result = result && create_index_buffer(_indices, _topology);
 			return result;
 		}
 
@@ -77,11 +79,12 @@ namespace ehw
 		ComPtr<ID3D11Buffer>    m_index_buffer;
 		
 		//Index Buffer Data
-		D3D11_PRIMITIVE_TOPOLOGY m_index_topology;
 		D3D11_BUFFER_DESC       m_index_buffer_desc;
 		UINT				    m_index_count;
 		std::vector<UINT>		m_index_buffer_data;
 		////////////////////		
+
+		D3D11_PRIMITIVE_TOPOLOGY m_index_topology;
 
 		//주소는 MeshData에서 관리
 		std::shared_ptr<Skeleton>	m_skeleton;

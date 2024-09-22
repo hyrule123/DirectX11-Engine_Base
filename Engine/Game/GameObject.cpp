@@ -214,13 +214,13 @@ namespace ehw
 		}
 	}
 
-	void GameObject::FixedUpdate()
+	void GameObject::fixed_update()
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
 			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
 			{
-				m_baseComponents[i]->FixedUpdate();
+				m_baseComponents[i]->fixed_update();
 			}
 		}
 
@@ -228,7 +228,7 @@ namespace ehw
 		{
 			if (m_scripts[i] && m_scripts[i]->IsEnabled())
 			{
-				m_scripts[i]->FixedUpdate();
+				m_scripts[i]->fixed_update();
 			}
 		}
 	}

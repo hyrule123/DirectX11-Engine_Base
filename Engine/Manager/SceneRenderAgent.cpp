@@ -38,6 +38,7 @@ namespace ehw {
 
 		m_debug_meshes_3D[(int)eCollider3D_Shape::Cube] =
 			ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::DebugCubeMesh);
+
 		m_debug_material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::DebugMaterial);
 	}
 
@@ -106,6 +107,10 @@ namespace ehw {
 
 		for (int i = 0; i < LIGHT_TYPE_MAX; ++i) {
 			m_light_3D_instances[i].clear();
+		}
+
+		for (auto& vec : m_debug_draw_data_3D) {
+			vec.clear();
 		}
 	}
 

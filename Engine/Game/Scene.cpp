@@ -61,16 +61,16 @@ namespace ehw
 
 	void Scene::SceneFixedUpdate()
 	{
-		FixedUpdate();
+		fixed_update();
 
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->FixedUpdate();
+			m_gameObjects[i]->fixed_update();
 		}
 
 		if (m_collisionSystem)
 		{
-			m_collisionSystem->FixedUpdate();
+			m_collisionSystem->fixed_update();
 		}
 	}
 

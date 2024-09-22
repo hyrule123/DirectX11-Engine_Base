@@ -42,16 +42,16 @@ namespace ehw
 		m_col3DManager = std::make_unique<Collision3D>(this);
 	}
 
-	void CollisionSystem::FixedUpdate()
+	void CollisionSystem::fixed_update()
 	{
 		if (m_col2DManager)
 		{
-			m_col2DManager->FixedUpdate();
+			m_col2DManager->fixed_update();
 		}
 		
 		if (m_col3DManager)
 		{
-			m_col3DManager->FixedUpdate();
+			m_col3DManager->fixed_update();
 		}
 
 		

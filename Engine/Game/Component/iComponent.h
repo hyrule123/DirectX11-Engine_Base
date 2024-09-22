@@ -37,7 +37,7 @@ namespace ehw {
 		virtual void Awake() {}
 		virtual void OnEnable() {}
 		virtual void Start() {}
-		virtual void FixedUpdate() {}
+		virtual void fixed_update() {}
 		virtual void update() {}
 		virtual void final_update() {}
 

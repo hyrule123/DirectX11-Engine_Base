@@ -43,7 +43,7 @@ namespace ehw
         m_prevTime = {};
         m_currentTime = {};
 
-        // FixedUpdate 관련
+        // fixed_update 관련
         m_fixedDeltaTime = {};
         m_maxFixedUpdatesPerFrame = {};
 
@@ -86,7 +86,7 @@ namespace ehw
         //    static std::chrono::duration<float> dur = end - start;
 
 
-        //    stream << std::to_string(FixedDeltaTime()) << "\n";
+        //    stream << std::to_string(get_fixed_deltatime()) << "\n";
         //    DEBUG_LOG_A(stream.str().c_str());
         //}
         //else
@@ -97,7 +97,7 @@ namespace ehw
 
     uint TimeManager::GetFixedUpdateCount()
     {
-        //FixedUpdate 횟수 계산
+        //fixed_update 횟수 계산
         uint count = 0u;
 
         if (m_fixedDeltaTime == 0.f)

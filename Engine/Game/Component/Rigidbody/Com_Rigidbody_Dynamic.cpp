@@ -20,7 +20,7 @@ namespace ehw
 	{
 	}
 
-	void Com_Rigidbody_Dynamic::FixedUpdate()
+	void Com_Rigidbody_Dynamic::fixed_update()
 	{
 		if (IsShapesModified())
 		{

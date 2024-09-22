@@ -24,6 +24,7 @@ namespace ehw {
 		reset();
 		
 		m_data_stride = _dataStride;
+
 		m_data_count = _dataCount;
 
 		// 버텍스 버퍼
@@ -44,7 +45,7 @@ namespace ehw {
 	{
 		if (m_buffer) {
 			UINT offset = 0u;
-			RenderManager::get_inst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
+			RenderManager::get_inst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_data_stride, &offset);
 		}
 	}
 

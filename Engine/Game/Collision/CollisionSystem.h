@@ -78,7 +78,7 @@ namespace ehw
 		void CreateCollision2D();
 		void CreateCollision3D();
 
-		void FixedUpdate();
+		void fixed_update();
 		void frame_end();
 
 	private:

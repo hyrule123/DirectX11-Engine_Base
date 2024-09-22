@@ -37,7 +37,7 @@ namespace ehw
 		virtual ~Collision3D();
 
 		void CreatePxScene();
-		void FixedUpdate();
+		void fixed_update();
 		void GameSceneToPxScene();
 		void PxSceneToGameScene();
 		void render();

@@ -27,7 +27,7 @@ namespace ehw
 		virtual void init() {}
 		virtual void OnEnter() = 0;//리소스 로드
 
-		virtual void FixedUpdate() {}
+		virtual void fixed_update() {}
 		virtual void update() {}
 		virtual void final_update() {}
 		virtual void frame_end() {}

@@ -26,7 +26,7 @@ namespace ehw
 		AtExit::AddFunc(std::bind(&SceneManager::release, this));
 	}
 
-	void SceneManager::FixedUpdate()
+	void SceneManager::fixed_update()
 	{
 		if (m_activeScene)
 		{

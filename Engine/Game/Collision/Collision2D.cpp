@@ -94,7 +94,7 @@ namespace ehw
 		}
 	}
 
-	void Collision2D::FixedUpdate()
+	void Collision2D::fixed_update()
 	{
 		//m_collision 데이터를 임시 컨테이너로 옮겨준다
 		std::unordered_map<tColliderID, ContactPair, tColliderID_Hasher> prevCollisions{};

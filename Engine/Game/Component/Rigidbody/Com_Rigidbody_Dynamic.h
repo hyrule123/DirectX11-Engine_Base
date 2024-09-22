@@ -15,7 +15,7 @@ namespace ehw
         Com_Rigidbody_Dynamic();
         virtual ~Com_Rigidbody_Dynamic();
 
-        void FixedUpdate() final;
+        void fixed_update() final;
 
 #pragma region //Dynamic
         void SetVelocity(const float3& _velocity);

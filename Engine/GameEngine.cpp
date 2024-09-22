@@ -87,7 +87,7 @@ namespace ehw
 	{
 		TimeManager::get_inst().update();
 		InputManager::update();
-		SceneManager::get_inst().FixedUpdate();
+		SceneManager::get_inst().fixed_update();
 		SceneManager::get_inst().update();
 	}
 
