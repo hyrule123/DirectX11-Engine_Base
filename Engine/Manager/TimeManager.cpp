@@ -54,7 +54,7 @@ namespace ehw
     }
 
 
-    void TimeManager::Update()
+    void TimeManager::update()
     {
         //DeltaTime 계산
         {
@@ -134,7 +134,7 @@ namespace ehw
         mOneSecond += m_deltaTime;
         if (1.0f < mOneSecond)
         {
-            HWND hWnd = GameEngine::GetInst().GetHwnd();
+            HWND hWnd = GameEngine::get_inst().GetHwnd();
 
             wchar_t szFloat[50] = {};
             float FPS = 1.f / m_deltaTime;

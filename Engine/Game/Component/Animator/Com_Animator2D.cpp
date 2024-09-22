@@ -93,7 +93,7 @@ namespace ehw
 		return eResult();
 	}
 
-	void Com_Animator2D::Update()
+	void Com_Animator2D::update()
 	{
 		if (mActiveAnimation == nullptr)
 			return;
@@ -110,7 +110,7 @@ namespace ehw
 		
 		if (events) 
 		{
-			uint spriteIndex = mActiveAnimation->Update();
+			uint spriteIndex = mActiveAnimation->update();
 			if (spriteIndex != -1
 				&& spriteIndex < events->Events.size()
 				&& events->Events[spriteIndex].Event)

@@ -31,14 +31,14 @@ namespace ehw {
 
 	void SceneRenderAgent::init()
 	{
-		m_deffered_merge_rectmesh = ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::RectMesh);
-		m_deffered_merge_material = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::MergeMaterial);
+		m_deffered_merge_rectmesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		m_deffered_merge_material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
 
 		ASSERT(m_deffered_merge_material && m_deffered_merge_rectmesh, "merge mesh와 material을 찾지 못했습니다.");
 
 		m_debug_meshes_3D[(int)eCollider3D_Shape::Cube] =
-			ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::DebugCubeMesh);
-		m_debug_material = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::DebugMaterial);
+			ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::DebugCubeMesh);
+		m_debug_material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::DebugMaterial);
 	}
 
 	void SceneRenderAgent::release()
@@ -66,7 +66,7 @@ namespace ehw {
 				cam->bind_data_to_GPU();
 				
 				//디퍼드 MRT 바인딩
-				RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
+				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
 				render_by_mode(cam, eRenderingMode::deffered_opaque);
 				render_by_mode(cam, eRenderingMode::deffered_mask);
 
@@ -74,13 +74,13 @@ namespace ehw {
 				// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 				// 붙여버리자
 				//렌더타겟을 Light로 변경
-				RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Light)->Bind();
+				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Light)->Bind();
 				for (int i = 0; i < (int)eLightType::END; ++i) {
 					cam->render_lights_3D((eLightType)i, m_light_3D_instances[i]);
 				}
 
 				//Merge 단계 + Forward Rendering에서는 SwapChain에 바로 데이터를 기록한다.
-				RenderManager::GetInst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
 
 				// defferd + swapchain merge
 				m_deffered_merge_material->bind_instancing_buffer_to_GPU_register();
@@ -92,7 +92,7 @@ namespace ehw {
 				render_by_mode(cam, eRenderingMode::forward_transparent);
 
 				//PostProcess 코드는 차후에 수정할것
-				//RenderManager::GetInst().CopyRenderTarget();
+				//RenderManager::get_inst().CopyRenderTarget();
 				//render_by_mode(cam, eRenderingMode::post_process);
 			}
 		}
@@ -186,7 +186,7 @@ namespace ehw {
 	{
 		if (_is_enable) {
 			m_debug_material = 
-				ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::DebugMaterial);
+				ResourceManager<Material>::get_inst().find(name::defaultRes::material::DebugMaterial);
 		}
 		else {
 			m_debug_material = nullptr;

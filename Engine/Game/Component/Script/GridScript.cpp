@@ -30,10 +30,10 @@ namespace ehw
 	void GridScript::Awake()
 	{
 		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
-		mCamera = RenderManager::GetInst().sceneRenderAgent().GetCamera(0);
+		mCamera = RenderManager::get_inst().sceneRenderAgent().GetCamera(0);
 	}
 
-	void GridScript::Update()
+	void GridScript::update()
 	{
 		if (mCamera == nullptr)
 		{
@@ -54,13 +54,13 @@ namespace ehw
 		float scale = mCamera->GetScale();
 
 		RECT winRect;
-		GetClientRect(GameEngine::GetInst().GetHwnd(), &winRect);
+		GetClientRect(GameEngine::get_inst().GetHwnd(), &winRect);
 		float width = static_cast<float>(winRect.right - winRect.left);
 		float height = static_cast<float>(winRect.bottom - winRect.top);
 		float2 resolution(width, height);
 
 		// Constant buffer
-		//ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Grid);
+		//ConstBuffer* CB = RenderManager::get_inst().GetConstBuffer(eCBType::Grid);
 		//tCB_Grid data;
 		//data.cameraPosition = position;
 		//data.cameraScale = float2(scale, scale);

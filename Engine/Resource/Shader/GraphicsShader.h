@@ -19,7 +19,7 @@ namespace ehw
 		const void* pData;	//엔진에 포함된 바이트코드(할당/해제가 필요없을 경우) 사용
 		size_t dataSize;
 		ComPtr<ID3DBlob> blob;	//파일로부터 읽어온 바이트코드(할당/해제가 필요할 경우) 사용
-		std::string strKey;
+		std::string name;
 	};
 
 	BASE_RESOURCE(GraphicsShader);
@@ -47,22 +47,25 @@ namespace ehw
 		eResult CreateInputLayout();
 		const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutDescs() { return m_inputLayoutDescs; }
 
-		ID3D11InputLayout* GetInputLayout() { return m_inputLayout.Get(); }
-		ID3D11InputLayout** GetInputLayoutAddressOf() { return m_inputLayout.GetAddressOf(); }
+		ID3D11InputLayout* get_input_layout() { return m_inputLayout.Get(); }
+		ID3D11InputLayout** get_input_layout_pp() { return m_inputLayout.GetAddressOf(); }
 
-		void SetRSState(eRSType _state);
-		void SetDSState(eDSType _state);
-		void SetBSState(eBSType _state);
+		void set_rasterizer_state(eRasterizerState _state);
+		void set_depth_stencil_state(eDepthStencilState _state);
+		void set_blend_state(eBlendState _state);
+		eRasterizerState get_rasterizer_state() const { return m_rasterizer_type; }
+		eDepthStencilState get_depth_stencil_state() const { return m_depth_stencil_type; }
+		eBlendState get_blend_state() const { return m_blend_type; }
 
 		void bind_shader();
 		static void unbind_all_shader();
 
 		//에디터용
-		void SetEditMode(bool _bEditMode) { m_bEditMode = _bEditMode; }
-		void SetShaderKey(eGSStage _stage, const std::string_view _resource_name) {
-			m_arrShaderCode[(int)_stage].strKey = _resource_name;
+		void set_edit_mode(bool _bEditMode) { m_bEditMode = _bEditMode; }
+		void set_shader_name(eGSStage _stage, const std::string_view _resource_name) {
+			m_arrShaderCode[(int)_stage].name = _resource_name;
 		}
-		const std::string& GetShaderKey(eGSStage _stage) { return m_arrShaderCode[(int)_stage].strKey; }
+		const std::string& get_shader_name(eGSStage _stage) { return m_arrShaderCode[(int)_stage].name; }
 
 	private:
 		eResult create_shader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
@@ -79,13 +82,13 @@ namespace ehw
 		ComPtr<ID3D11GeometryShader>	m_geometryShader;
 		ComPtr<ID3D11PixelShader>		m_pixelShader;
 
-		ComPtr<ID3D11RasterizerState>	m_rasterizer;
-		ComPtr<ID3D11BlendState>		m_blender;
-		ComPtr<ID3D11DepthStencilState> m_depth_stencil;
+		ComPtr<ID3D11RasterizerState>	m_rasterizer_state;
+		ComPtr<ID3D11BlendState>		m_blend_state;
+		ComPtr<ID3D11DepthStencilState> m_depth_stencil_state;
 
-		eRSType m_rasterizer_type;
-		eBSType m_blender_type;
-		eDSType m_depth_stencil_type;
+		eRasterizerState m_rasterizer_type;
+		eBlendState m_blend_type;
+		eDepthStencilState m_depth_stencil_type;
 
 		FLOAT m_blend_factor[4];
 		UINT m_sample_mask;

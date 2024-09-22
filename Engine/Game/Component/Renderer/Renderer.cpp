@@ -53,7 +53,7 @@ namespace ehw
 
 	void Renderer::final_update()
 	{
-		RenderManager::GetInst().sceneRenderAgent().enqueue_render(this);
+		RenderManager::get_inst().sceneRenderAgent().enqueue_render(this);
 	}
 
 	eResult Renderer::serialize_json(JsonSerializer* _ser) const
@@ -111,18 +111,18 @@ namespace ehw
 
 			//m_mesh
 			{
-				std::string strKey{};
-				renderer[JSON_KEY(m_mesh)] >> strKey;
-				m_mesh = ResourceManager<Mesh>::GetInst().load_from_file(strKey);
+				std::string name{};
+				renderer[JSON_KEY(m_mesh)] >> name;
+				m_mesh = ResourceManager<Mesh>::get_inst().load_from_file(name);
 			}
 			
 
 			//material
 			{
 				const Json::Value& material = renderer[JSON_KEY(m_material)];
-				std::string strKey{};
-				material >> strKey;
-				m_shared_material = ResourceManager<Material>::GetInst().load_from_file(strKey);
+				std::string name{};
+				material >> name;
+				m_shared_material = ResourceManager<Material>::get_inst().load_from_file(name);
 				m_current_material = m_shared_material;
 			}
 
@@ -138,7 +138,7 @@ namespace ehw
 		return eResult();
 	}
 
-	void Renderer::SetMaterial(const std::shared_ptr<Material>& _mtrl)
+	void Renderer::set_material(const std::shared_ptr<Material>& _mtrl)
 	{
 		m_shared_material = _mtrl;
 		m_current_material = m_shared_material;

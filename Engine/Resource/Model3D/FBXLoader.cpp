@@ -548,8 +548,8 @@ namespace ehw
 	void FBXLoader::LoadTexture()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
-		const std::fs::path& fbxPath = ResourceManager<Model3D>::GetInst().GetBaseDir();
-		const std::fs::path& texPath = ResourceManager<Texture>::GetInst().GetBaseDir();
+		const std::fs::path& fbxPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
+		const std::fs::path& texPath = ResourceManager<Texture>::get_inst().GetBaseDir();
 
 		//텍스처 폴더 발견 시 최초 한번 Texture 폴더로 이동시키기 위한 코드
 		std::fs::path srcPathToDelete{};
@@ -579,7 +579,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager<Texture>::GetInst().load_from_file(_TextureRelativePath))
+				if (nullptr == ResourceManager<Texture>::get_inst().load_from_file(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -631,7 +631,7 @@ namespace ehw
 				}
 				
 				//.json 확장자 붙여 줌
-				strMtrlKey.replace_extension(strKey::path::extension::Material);
+				strMtrlKey.replace_extension(name::path::extension::Material);
 
 				//strPath = "material\\";
 				//strPath += strMtrlKey + ".mtrl";
@@ -642,7 +642,7 @@ namespace ehw
 				//std::string strName = strPath;
 
 				// 이미 로딩된 재질이면 로딩된 것을 사용
-				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::GetInst().find(mContainers[i].vecMtrl[j].strMtrlName);
+				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(mContainers[i].vecMtrl[j].strMtrlName);
 				if (nullptr != pMaterial)
 					continue;
 
@@ -655,7 +655,7 @@ namespace ehw
 				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 				pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::GetInst().find(strKey::defaultRes::shader::graphics::Deffered3DShader);
+				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 
 				ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
@@ -663,7 +663,7 @@ namespace ehw
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Albedo, pTex);
@@ -672,7 +672,7 @@ namespace ehw
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Normal, pTex);
@@ -680,7 +680,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().load_from_file(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Specular, pTex);
@@ -688,7 +688,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::GetInst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Emissive, pTex);
@@ -700,14 +700,14 @@ namespace ehw
 				pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
 				pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = ResourceManager<Material>::GetInst().save_to_file(pMaterial.get());
+				eResult result = ResourceManager<Material>::get_inst().save_to_file(pMaterial.get());
 
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 				}
 
-				ResourceManager<Material>::GetInst().insert(pMaterial->get_concrete_class_name(), pMaterial);
+				ResourceManager<Material>::get_inst().insert(pMaterial->get_concrete_class_name(), pMaterial);
 				
 			}
 		}

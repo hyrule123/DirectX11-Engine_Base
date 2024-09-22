@@ -15,15 +15,15 @@
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Sprite.h>
 
-#include <Engine/Resource/Mesh.h>
-#include <Engine/Resource/Material.h>
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
 
 namespace ehw::editor
 {
 	Inspector_Com_Renderer::Inspector_Com_Renderer()
 		: Inspector_Component(eComponentCategory::Renderer)
-		, mMesh{}
-		, mMaterial{}
+		, m_mesh{}
+		, m_material{}
 	{
 	}
 
@@ -32,7 +32,7 @@ namespace ehw::editor
 
 	}
 
-	void Inspector_Com_Renderer::Update()
+	void Inspector_Com_Renderer::update()
 	{
 		if (GetTarget())
 		{
@@ -42,23 +42,27 @@ namespace ehw::editor
 			if (meshRenderer == nullptr)
 				return;
 
-			mMaterial = meshRenderer->GetCurrentMaterial(0);
-			mMesh = meshRenderer->GetMesh().get();
+			m_material = meshRenderer->GetCurrentMaterial();
+			m_mesh = meshRenderer->GetMesh();
 		}
 		else
 		{
-			mMaterial = nullptr;
-			mMesh = nullptr;
+			m_material.reset();
+			m_mesh.reset();
 		}
 	}
 
-	void Inspector_Com_Renderer::UpdateUI()
+	void Inspector_Com_Renderer::update_UI()
 	{
-		if (mMesh == nullptr || mMaterial == nullptr)
+		if (m_mesh.expired() || m_material.expired()) {
 			return;
+		}
+		
+		std::shared_ptr<Mesh> msh = m_mesh.lock();
+		std::shared_ptr<Material> mtrl = m_material.lock();
 
-		std::string meshName(mMesh->get_resource_name());
-		std::string materialName(mMaterial->get_resource_name());
+		std::string meshName(msh->get_resource_name());
+		std::string materialName(mtrl->get_resource_name());
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()
@@ -72,7 +76,7 @@ namespace ehw::editor
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= ResourceManager<Mesh>::GetInst().GetResources();
+				= ResourceManager<Mesh>::get_inst().GetResources();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -81,7 +85,7 @@ namespace ehw::editor
 			}
 
 			listUI->SetItemList(name);
-			listUI->SetEvent(this, std::bind(&Inspector_Com_Renderer::SetMesh
+			listUI->SetEvent(this, std::bind(&Inspector_Com_Renderer::set_mesh
 				, this, std::placeholders::_1));
 		}
 
@@ -98,7 +102,7 @@ namespace ehw::editor
 			listUI->SetEnable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ResourceManager<Material>::GetInst().GetResources();
+				= ResourceManager<Material>::get_inst().GetResources();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -107,15 +111,15 @@ namespace ehw::editor
 			}
 
 			listUI->SetItemList(Name);
-			listUI->SetEvent(this, std::bind(&Inspector_Com_Renderer::SetMaterial
+			listUI->SetEvent(this, std::bind(&Inspector_Com_Renderer::set_material
 				, this, std::placeholders::_1));
 		}
 	}
 
 
-	void Inspector_Com_Renderer::SetMesh(const std::string& _key_path)
+	void Inspector_Com_Renderer::set_mesh(const std::string& _key_path)
 	{
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().find(_key_path);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().find(_key_path);
 
 		std::shared_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
@@ -126,13 +130,13 @@ namespace ehw::editor
 		
 		if (targetObj)
 		{
-			targetObj->GetComponent<Com_Renderer_Mesh>()->SetMesh(mesh);
+			targetObj->GetComponent<Com_Renderer_Mesh>()->set_mesh(mesh);
 		}
 	}
 
-	void Inspector_Com_Renderer::SetMaterial(const std::string& _key_path)
+	void Inspector_Com_Renderer::set_material(const std::string& _key_path)
 	{
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(_key_path);
+		std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().find(_key_path);
 
 		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow("InspectorBase"));
 
@@ -142,7 +146,7 @@ namespace ehw::editor
 
 		if (targetObj)
 		{
-			targetObj->GetComponent<Com_Renderer_Mesh>()->SetMaterial(material, 0);
+			targetObj->GetComponent<Com_Renderer_Mesh>()->set_material(material);
 		}
 	}
 }

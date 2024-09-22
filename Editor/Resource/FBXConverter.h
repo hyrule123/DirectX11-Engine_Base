@@ -22,7 +22,7 @@ namespace ehw::editor
 		virtual ~EditorFBXConverter();
 
 		virtual void init() override;
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 
 	private:
 		bool CheckThread();

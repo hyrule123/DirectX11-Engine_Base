@@ -18,7 +18,7 @@ namespace ehw::editor
         virtual ~EditorNormalConverter();
 
         virtual void init() override;
-        virtual void UpdateUI() override;
+        virtual void update_UI() override;
 
     private:
         void SrcTextureUpdate();

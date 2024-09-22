@@ -7,7 +7,7 @@ namespace ehw {
     {
         CLASS_NAME(Default3DMtrl);
         REGISTER_INSTANCE_DEFAULT(Default3DMtrl);
-        //strKey::defaultRes::shader::graphics::Deffered3DShader
+        //name::defaultRes::shader::graphics::Deffered3DShader
     public:
         Default3DMtrl();
         virtual ~Default3DMtrl();

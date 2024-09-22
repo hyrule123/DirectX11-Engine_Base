@@ -41,14 +41,14 @@ namespace ehw
 		EnableLayerMasks();
 
 		//////////////////////////////// LIGHT //////////////////////////////
-		m_light_3D_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::GetInst().load_from_file(strKey::defaultRes::mesh::RectMesh);
-		m_light_3D_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::GetInst().load_from_file(strKey::defaultRes::material::LightDirMaterial);
+		m_light_3D_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::get_inst().load_from_file(name::defaultRes::mesh::RectMesh);
+		m_light_3D_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::get_inst().load_from_file(name::defaultRes::material::LightDirMaterial);
 
-		m_light_3D_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::GetInst().load_from_file(strKey::defaultRes::mesh::SphereMesh);
-		m_light_3D_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::GetInst().load_from_file(strKey::defaultRes::material::LightPointMaterial);
+		m_light_3D_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::get_inst().load_from_file(name::defaultRes::mesh::SphereMesh);
+		m_light_3D_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::get_inst().load_from_file(name::defaultRes::material::LightPointMaterial);
 
-		m_light_3D_const_buffer = ResourceManager<ConstBuffer>::GetInst().find("light_3D_const_buffer");
-		m_light_3D_instancing_buffer = ResourceManager<StructBuffer>::GetInst().find("light_3D_instancing_buffer");
+		m_light_3D_const_buffer = ResourceManager<ConstBuffer>::get_inst().find("light_3D_const_buffer");
+		m_light_3D_instancing_buffer = ResourceManager<StructBuffer>::get_inst().find("light_3D_instancing_buffer");
 	}
 
 	Com_Camera::~Com_Camera()
@@ -74,12 +74,12 @@ namespace ehw
 
 	void Com_Camera::OnEnable()
 	{
-		RenderManager::GetInst().sceneRenderAgent().Register_camera(this);
+		RenderManager::get_inst().sceneRenderAgent().Register_camera(this);
 	}
 
 	void Com_Camera::OnDisable()
 	{
-		RenderManager::GetInst().sceneRenderAgent().Unregister_camera(this);
+		RenderManager::get_inst().sceneRenderAgent().Unregister_camera(this);
 	}
 
 	void Com_Camera::render_gameobjects(const tRenderQueue& _render_queue)
@@ -232,7 +232,7 @@ namespace ehw
 		////===========
 		//
 		////1. 투영 행렬 생성
-		//const Vec2& Resolution = cDevice::GetInst()->GetRenderResolution();
+		//const Vec2& Resolution = cDevice::get_inst()->GetRenderResolution();
 		////m_matProj = XMMatrixOrthographicLH(Resolution.x, Resolution.y, 1.f, 10000.f);
 
 		////1-1. 원근 투영행렬(체험용)
@@ -268,7 +268,7 @@ namespace ehw
 
 	void Com_Camera::CreateProjectionMatrix()
 	{
-		uint2 resolution = RenderManager::GetInst().GetResolution();
+		uint2 resolution = RenderManager::get_inst().GetResolution();
 		CreateProjectionMatrix(resolution.x, resolution.y);
 	}
 
@@ -324,7 +324,7 @@ namespace ehw
 
 	void Com_Camera::bind_data_to_GPU()
 	{
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Camera);
+		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Camera);
 		cb->set_data(&m_camera_matrices);
 		cb->bind_buffer_to_GPU_register();
 	}

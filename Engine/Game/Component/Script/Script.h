@@ -20,7 +20,7 @@ namespace ehw
 
 		virtual void init() {};
 		virtual void Awake() override {};
-		virtual void Update() override {};
+		virtual void update() override {};
 		virtual void final_update() final {};
 
 		virtual void OnCollisionEnter(Collider* const _collider, const float3& _hitPoint) {};

@@ -16,7 +16,7 @@
 namespace ehw::editor
 {
 	GameObjectHierarchy::GameObjectHierarchy()
-		: EditorWindow(strKey::GameObjects)
+		: EditorWindow(name::GameObjects)
 		, mTreeWidget(nullptr)
 	{
 
@@ -40,7 +40,7 @@ namespace ehw::editor
 		InitializeScene();
 	}
 
-	void GameObjectHierarchy::Update()
+	void GameObjectHierarchy::update()
 	{
 		
 	}
@@ -51,7 +51,7 @@ namespace ehw::editor
 	{
 		GameObject* gameObj = static_cast<GameObject*>(_data.pData);
 
-		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(strKey::Inspector));
+		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(name::Inspector));
 		inspector->SetTargetGameObject(gameObj);
 	}
 
@@ -59,7 +59,7 @@ namespace ehw::editor
 	{
 		mTreeWidget->Clear();
 
-		Scene* scene = SceneManager::GetInst().GetActiveScene();
+		Scene* scene = SceneManager::get_inst().GetActiveScene();
 		if (nullptr == scene) { return; }
 		std::string sceneName(scene->get_concrete_class_name());
 

@@ -182,7 +182,7 @@ namespace ehw
 	void Collision2D::render()
 	{
 		////메인 카메라
-		//Com_Camera* mainCam = RenderManager::GetInst().sceneRenderAgent().GetMainCamera();
+		//Com_Camera* mainCam = RenderManager::get_inst().sceneRenderAgent().GetMainCamera();
 		//if (nullptr == mainCam)
 		//{
 		//	return;
@@ -220,14 +220,14 @@ namespace ehw
 		//	}
 		//}
 
-		//std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().Find(name::defaultRes::mesh::DebugRectMesh);
 
 
 		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB]);
 
 		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
 
-		////mesh = ResourceManager<Mesh>::GetInst().Find(strKey::defaultRes::mesh::CircleMesh);
+		////mesh = ResourceManager<Mesh>::get_inst().Find(name::defaultRes::mesh::CircleMesh);
 		////::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debug_render_data.get());
 
 		//

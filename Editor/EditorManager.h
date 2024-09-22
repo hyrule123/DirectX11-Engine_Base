@@ -42,7 +42,7 @@ namespace ehw::editor
 		static void init();
 		static void release();
 
-		static void Update();
+		static void update();
 		static void final_update();
 		static void render();
 

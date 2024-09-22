@@ -9,8 +9,8 @@ namespace ehw::editor
 		Inspector_Com_Transform();
 		virtual ~Inspector_Com_Transform();
 
-		virtual void Update() override;
-		virtual void UpdateUI() override;
+		virtual void update() override;
+		virtual void update_UI() override;
 
 	private:
 		float3 m_position;

@@ -11,7 +11,7 @@
 namespace ehw::editor
 {
 	InspectorBase::InspectorBase()
-		: EditorWindow(strKey::Inspector)
+		: EditorWindow(name::Inspector)
 		, mTargetGameObject()
 		, mTargetResource()
 	{
@@ -62,7 +62,7 @@ namespace ehw::editor
 		//}
 	}
 
-	void InspectorBase::Update()
+	void InspectorBase::update()
 	{
 		if (mTargetGameObject && mTargetGameObject->IsDestroyed())
 		{
@@ -76,7 +76,7 @@ namespace ehw::editor
 				if (mTargetGameObject)
 				{
 					mGuiComponents[i]->SetTarget(mTargetGameObject);
-					mGuiComponents[i]->Update();
+					mGuiComponents[i]->update();
 				}
 			}
 		}
@@ -90,18 +90,18 @@ namespace ehw::editor
 		//		if (false == mTargetGameObject.expired())
 		//		{
 		//			mGuiResources[i]->SetTarget(mTargetResource);
-		//			mGuiResources[i]->Update();
+		//			mGuiResources[i]->update();
 		//		}
 		//	}
 		//		
 		//}
 	}
 
-	void InspectorBase::UpdateUI()
+	void InspectorBase::update_UI()
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(::ehw::strKey::eComponentCategory_String[(UINT)i].data());
+			IndicatorButton(::ehw::name::eComponentCategory_String[(UINT)i].data());
 
 			if (mTargetGameObject && mGuiComponents[i])
 			{

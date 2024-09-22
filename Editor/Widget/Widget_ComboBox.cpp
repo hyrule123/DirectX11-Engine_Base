@@ -28,7 +28,7 @@ namespace ehw::editor
 
 		return ImGui::BeginCombo(get_resource_name().c_str(), Preview.c_str(), mComboFlags);
 	}
-	void EditorWidget_ComboBox::UpdateUI()
+	void EditorWidget_ComboBox::update_UI()
 	{
 		
 

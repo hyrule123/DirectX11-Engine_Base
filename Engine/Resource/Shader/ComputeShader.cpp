@@ -91,7 +91,7 @@ namespace ehw
 	eResult ComputeShader::compile_from_CSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::get_inst().GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.(뒤에서부터)
@@ -157,13 +157,13 @@ namespace ehw
 			
 		
 		//상수버퍼를 통해 데이터 수를 업로드
-		static ConstBuffer* const pCB = RenderManager::GetInst().GetConstBuffer(eCBType::ComputeShader);
+		static ConstBuffer* const pCB = RenderManager::get_inst().GetConstBuffer(eCBType::ComputeShader);
 		pCB->set_data(&mCB_ComputeShader);
 		pCB->bind_buffer_to_GPU_register();
 
 		//쉐이더 바인딩
-		RenderManager::GetInst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);
-		RenderManager::GetInst().Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
+		RenderManager::get_inst().Context()->CSSetShader(m_CS.Get(), nullptr, 0);
+		RenderManager::get_inst().Context()->Dispatch(mCB_ComputeShader.NumGroup.x, mCB_ComputeShader.NumGroup.y, mCB_ComputeShader.NumGroup.z);
 
 		//데이터 정리
 		unbind_buffer_from_GPU_register();
@@ -180,7 +180,7 @@ namespace ehw
 	{
 		eResult result = eResult::Fail_Create;
 
-		if (SUCCEEDED(RenderManager::GetInst().Device()->CreateComputeShader(
+		if (SUCCEEDED(RenderManager::get_inst().Device()->CreateComputeShader(
 			_pByteCode,
 			_ByteCodeSize,
 			nullptr,

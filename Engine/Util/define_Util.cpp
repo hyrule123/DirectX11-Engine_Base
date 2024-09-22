@@ -41,7 +41,7 @@ std::filesystem::path ehw::WinAPI::FileDialog(const std::filesystem::path& _base
 	OPENFILENAMEW OpenFile = {};
 
 	OpenFile.lStructSize = sizeof(OPENFILENAME);	//구조체 크기
-	OpenFile.hwndOwner = ehw::GameEngine::GetInst().GetHwnd();	//관리 핸들
+	OpenFile.hwndOwner = ehw::GameEngine::get_inst().GetHwnd();	//관리 핸들
 
 	std::vector<wchar_t> extensionFilters;
 	for (size_t i = 0; i < _extensions.size(); ++i)

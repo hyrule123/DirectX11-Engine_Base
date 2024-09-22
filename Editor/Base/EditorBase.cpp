@@ -105,12 +105,12 @@ namespace ehw::editor
 		if (false == GetEnable())
 			return;
 
-		//자신의 고유 Update 항목을 호출
-		Update();
+		//자신의 고유 update 항목을 호출
+		update();
 
 		if (true == BeginUI())
 		{
-			UpdateUI();
+			update_UI();
 			for (size_t i = 0; i < m_childs.size(); ++i)
 			{
 				m_childs[i]->final_update();

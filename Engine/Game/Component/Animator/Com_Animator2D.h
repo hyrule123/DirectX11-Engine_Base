@@ -46,7 +46,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		virtual void Update() override; 
+		virtual void update() override; 
 		virtual void final_update() override;
 
 		bool is_playing() const { ASSERT(false, "미구현"); return false; }

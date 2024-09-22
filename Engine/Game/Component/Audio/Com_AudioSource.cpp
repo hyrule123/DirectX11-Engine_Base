@@ -56,8 +56,8 @@ namespace ehw
 
 	//	if (jVal.isMember(JSON_KEY(mAudioClip)))
 	//	{
-	//		std::string strKey = jVal[JSON_KEY(mAudilClip)].asString();
-	//		mAudioClip = ResourceManager<AudioClip>::GetInst().Load(strKey);
+	//		std::string name = jVal[JSON_KEY(mAudilClip)].asString();
+	//		mAudioClip = ResourceManager<AudioClip>::get_inst().Load(name);
 	//	}
 
 	//	return eResult::Success;

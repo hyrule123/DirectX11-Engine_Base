@@ -76,7 +76,7 @@ namespace ehw
 
 	private:
 		static void init();
-		static void Update();
+		static void update();
 		static void release();
 
 	private:

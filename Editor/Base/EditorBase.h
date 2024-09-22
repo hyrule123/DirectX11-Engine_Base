@@ -21,7 +21,7 @@ namespace ehw::editor
 		void final_update();
 
 		virtual void init() {}
-		virtual void Update() {}
+		virtual void update() {}
 
 		//재정의해서 각자 guiBase에 맞는 begin함수를 호출. bool 값이 반환되며, true가 반환되었을 때에만 endUI()가 호출됨.
 		//그러므로 무조건 endUI()를 호출하고 싶을 경우에는 true를 고정으로 반환시켜줄 것 
@@ -30,7 +30,7 @@ namespace ehw::editor
 		virtual bool BeginUI() = 0;
 
 		//여기에는 클래스에서 특별하게 호출해야할 레이아웃이 있을 경우 재정의해서 사용하면 됨.
-		virtual void UpdateUI() {}
+		virtual void update_UI() {}
 
 		//재정의해서 각자 guiBase에 맞는 end함수를 호출
 		virtual void EndUI() = 0;

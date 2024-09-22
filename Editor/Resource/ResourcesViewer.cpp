@@ -10,8 +10,8 @@
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Texture.h>
-#include <Engine/Resource/Material.h>
-#include <Engine/Resource/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Mesh/Mesh.h>
 #include <Engine/Resource/Shader/GraphicsShader.h>
 
 
@@ -24,7 +24,7 @@ namespace ehw::editor
 	using namespace math;
 
 	EditorResources::EditorResources()
-		: EditorWindow(strKey::ResourceViewer)
+		: EditorWindow(name::ResourceViewer)
 		, m_textureTree()
 		, m_materialTree()
 		, m_meshTree()
@@ -80,11 +80,11 @@ namespace ehw::editor
 
 	void EditorResources::ToInspectorTexture(tDataPtr _data)
 	{
-		const auto& resource = static_cast<Resource*>(_data.pData)->shared_from_this_T<Resource>();
-
+		const auto& resource = 
+			std::static_pointer_cast<Resource>((static_cast<Resource*>(_data.pData))->shared_from_this());
 		
 
-		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(strKey::Inspector));
+		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(name::Inspector));
 		inspector->SetTargetResource(resource);
 	}
 

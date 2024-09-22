@@ -5,8 +5,8 @@
 
 #include <Engine/Util/AtExit.h>
 #include <Engine/Util/Serialize/JsonSerializer.h>
-#include <Engine/Resource/Mesh.h>
-#include <Engine/Resource/Material.h>
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
 #include <Engine/Game/Component/Transform.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 #include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
@@ -72,32 +72,32 @@ namespace ehw::editor
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		//mDebugObjects.resize((UINT)eColliderType::END);
 
-		//std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::GetInst().Find(::ehw::strKey::defaultRes::mesh::DebugRectMesh);
-		//std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().Find(::ehw::strKey::defaultRes::material::DebugMaterial);
+		//std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::ehw::name::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::ehw::name::defaultRes::material::DebugMaterial);
 
 		//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
 		//auto renderer
 		//	= mDebugObjects[(UINT)eColliderType::Rect]->AddComponent<Com_Renderer_Mesh>();
 
-		//renderer->SetMaterial(material, 0);
-		//renderer->SetMesh(rectMesh);
+		//renderer->set_material(material, 0);
+		//renderer->set_mesh(rectMesh);
 
-		//std::shared_ptr<Mesh> circleMesh = ResourceManager<Mesh>::GetInst().Find("CircleMesh");
+		//std::shared_ptr<Mesh> circleMesh = ResourceManager<Mesh>::get_inst().Find("CircleMesh");
 
 		//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
 		//renderer
 		//	= mDebugObjects[(UINT)eColliderType::Circle]->AddComponent<Com_Renderer_Mesh>();
 
-		//renderer->SetMaterial(material, 0);
-		//renderer->SetMesh(circleMesh);
+		//renderer->set_material(material, 0);
+		//renderer->set_mesh(circleMesh);
 
 
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
 		//Com_Renderer_Mesh* gridMr = gridObject->AddComponent<Com_Renderer_Mesh>();
-		//gridMr->SetMesh(ResourceManager::Find<Mesh>(L"RectMesh"));
-		//gridMr->SetMaterial(ResourceManager<Material>::GetInst().Find(L"GridMaterial"));
+		//gridMr->set_mesh(ResourceManager::Find<Mesh>(L"RectMesh"));
+		//gridMr->set_material(ResourceManager<Material>::get_inst().Find(L"GridMaterial"));
 		//GridScript* gridScript = gridObject->AddComponent<GridScript>();
 		//gridScript->SetCamera(gMainCamera);
 
@@ -148,7 +148,7 @@ namespace ehw::editor
 			return;
 		}
 
-		Update();
+		update();
 		final_update();
 		render();
 
@@ -156,13 +156,13 @@ namespace ehw::editor
 	}
 
 
-	void EditorManager::Update()
+	void EditorManager::update()
 	{
 		ImGuiNewFrame();
 
 		for (const auto& obj : mEditorObjects)
 		{
-			obj->Update();
+			obj->update();
 		}
 	}
 
@@ -190,7 +190,7 @@ namespace ehw::editor
 
 	void EditorManager::render()
 	{
-		Scene* scene = SceneManager::GetInst().GetActiveScene();
+		Scene* scene = SceneManager::get_inst().GetActiveScene();
 		if (scene)
 		{
 			CollisionSystem* colsys = scene->GetCollisionSystem();
@@ -217,7 +217,7 @@ namespace ehw::editor
 		mbInitialized = false;
 
 		//IMGUI 내부 세팅 저장
-		const std::fs::path& saveDir = PathManager::GetInst().GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::get_inst().GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		ImGui::SaveIniSettingsToDisk(savePath.string().c_str());
 
@@ -321,7 +321,7 @@ namespace ehw::editor
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = PathManager::GetInst().GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::get_inst().GetResPathRelative();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{
@@ -342,15 +342,15 @@ namespace ehw::editor
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(GameEngine::GetInst().GetHwnd());
-		ImGui_ImplDX11_Init(RenderManager::GetInst().Device()
-			, RenderManager::GetInst().Context());
+		ImGui_ImplWin32_Init(GameEngine::get_inst().GetHwnd());
+		ImGui_ImplDX11_Init(RenderManager::get_inst().Device()
+			, RenderManager::get_inst().Context());
 
 
 
 		//설정 파일들 로드
 		//TODO: 여기
-		//std::filesystem::path origDir = PathManager::GetInst()->GetPathRel_Content();
+		//std::filesystem::path origDir = PathManager::get_inst()->GetPathRel_Content();
 
 		//origDir /= DIRECTORY_NAME::SAVED_SETTING;
 		//std::filesystem::path fullPath = origDir / "imgui.ini";
@@ -412,10 +412,10 @@ namespace ehw::editor
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
 
-		ImGui::render();
+		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		
-		// Update and Render additional Platform Windows
+		// update and Render additional Platform Windows
 		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			ImGui::UpdatePlatformWindows();

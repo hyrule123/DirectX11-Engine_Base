@@ -44,7 +44,7 @@ namespace ehw
 
 		void Awake();
 		void FixedUpdate();
-		void Update();
+		void update();
 		void final_update();
 		void render();
 		void frame_end();

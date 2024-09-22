@@ -5,7 +5,7 @@
 namespace ehw::editor
 {
 	Widget_List::Widget_List()
-		: EditorBase(strKey::ListBox)
+		: EditorBase(name::ListBox)
 		, mListIndex(-1)
 		, mSize(200.f, 200.f)
 		, mEventGUI()
@@ -27,7 +27,7 @@ namespace ehw::editor
 		return retval;
 	}
 
-	void Widget_List::UpdateUI()
+	void Widget_List::update_UI()
 	{
 		ImGui::SetWindowFocus(get_resource_name().c_str());
 		for (size_t i = 0; i < mResourceList.size(); i++)

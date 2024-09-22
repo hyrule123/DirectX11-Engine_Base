@@ -20,8 +20,8 @@ namespace ehw::editor
 		virtual ~EditorMaterial();
 
 		virtual void init() override;
-		virtual void Update() override;
-		virtual void UpdateUI() override;
+		virtual void update() override;
+		virtual void update_UI() override;
 
 	private:
 		void RefreshShaderSettingFiles();

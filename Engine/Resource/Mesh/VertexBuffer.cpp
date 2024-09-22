@@ -44,7 +44,7 @@ namespace ehw {
 	{
 		if (m_buffer) {
 			UINT offset = 0u;
-			RenderManager::GetInst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
+			RenderManager::get_inst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_desc.ByteWidth, &offset);
 		}
 	}
 
@@ -153,7 +153,7 @@ namespace ehw {
 		subData.pSysMem = m_data.data();
 
 		if (
-			FAILED(RenderManager::GetInst().Device()->CreateBuffer(&m_desc, &subData, m_buffer.ReleaseAndGetAddressOf()))
+			FAILED(RenderManager::get_inst().Device()->CreateBuffer(&m_desc, &subData, m_buffer.ReleaseAndGetAddressOf()))
 			)
 		{
 			//실패시 내용 초기화

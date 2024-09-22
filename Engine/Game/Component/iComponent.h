@@ -38,7 +38,7 @@ namespace ehw {
 		virtual void OnEnable() {}
 		virtual void Start() {}
 		virtual void FixedUpdate() {}
-		virtual void Update() {}
+		virtual void update() {}
 		virtual void final_update() {}
 
 		virtual void frame_end() {}

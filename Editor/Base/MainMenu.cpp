@@ -7,7 +7,7 @@
 namespace ehw::editor
 {
 	EditorMainMenu::EditorMainMenu()
-		: EditorBase(strKey::MainMenu)
+		: EditorBase(name::MainMenu)
 	{
         //SetSize(ImVec2(100.0f, 100.0f));
 	}
@@ -17,7 +17,7 @@ namespace ehw::editor
 	}
 
 
-	void EditorMainMenu::UpdateUI()
+	void EditorMainMenu::update_UI()
 	{
 		if (ImGui::BeginMenu("UI Menu"))
 		{
@@ -39,7 +39,7 @@ namespace ehw::editor
 			bool p_open = GetEnable();
 			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
 			{
-				GameEngine::GetInst().ShutDown();
+				GameEngine::get_inst().ShutDown();
 			}
 
 			ImGui::EndMenu();

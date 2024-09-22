@@ -24,7 +24,7 @@ namespace ehw
 		END
 	};
 
-	namespace strKey
+	namespace name
 	{
 		STR_KEY ArrGSPrefix[(int)eGSStage::END] =
 		{
@@ -97,7 +97,7 @@ namespace ehw
 		END,
 	};
 
-	enum class eRSType
+	enum class eRasterizerState
 	{
 		SolidBack,
 		SolidFront,
@@ -106,7 +106,7 @@ namespace ehw
 		END,
 	};
 
-	enum class eDSType
+	enum class eDepthStencilState
 	{
 		Less,
 		Greater,
@@ -115,7 +115,7 @@ namespace ehw
 		END,
 	};
 
-	enum class eBSType
+	enum class eBlendState
 	{
 		Default,
 		AlphaBlend,
@@ -123,7 +123,7 @@ namespace ehw
 		END,
 	};
 
-	namespace strKey
+	namespace name
 	{
 		constexpr const char* eSamplerType[(int)ehw::eSamplerType::END]
 		{
@@ -132,7 +132,7 @@ namespace ehw
 			"Anisotropic",
 		};
 
-		constexpr const char* eRSType[(int)ehw::eRSType::END]
+		constexpr const char* eRasterizerState[(int)ehw::eRasterizerState::END]
 		{
 			"SolidBack",
 			"SolidFront",
@@ -140,7 +140,7 @@ namespace ehw
 			"WireframeNone",
 		};
 
-		constexpr const char* eDSType[(int)ehw::eDSType::END]
+		constexpr const char* eDepthStencilState[(int)ehw::eDepthStencilState::END]
 		{
 			"Less",
 			"Greater",
@@ -148,7 +148,7 @@ namespace ehw
 			"None",
 		};
 
-		constexpr const char* eBSType[(int)ehw::eBSType::END]
+		constexpr const char* eBlendState[(int)ehw::eBlendState::END]
 		{
 			"Default",
 			"AlphaBlend",
@@ -207,7 +207,7 @@ namespace ehw
 		PositionTarget,
 		END
 	};
-	namespace strKey
+	namespace name
 	{
 		STR_KEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
 		{
@@ -226,7 +226,7 @@ namespace ehw
 		SpecularLightTarget,
 		END
 	};
-	namespace strKey
+	namespace name
 	{
 		STR_KEY eMRT_Light_String[(int)eMRT_Light::END]
 		{

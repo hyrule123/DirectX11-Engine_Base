@@ -24,7 +24,7 @@ namespace ehw
 		eResult serialize_json(JsonSerializer* _ser) const override;
 		eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void Update() override;
+		void update() override;
 		void final_update() override;
 		
 		const tLightAttribute& get_light_3D_attribute() const { return m_attribute; }

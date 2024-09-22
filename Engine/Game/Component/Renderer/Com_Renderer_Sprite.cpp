@@ -32,12 +32,12 @@ namespace ehw
 		//	재질 2. 텍스처
 
 		//기본 Rect Mesh로 메쉬를 설정
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::RectMesh);
-		SetMesh(mesh);
+		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		set_mesh(mesh);
 
 		//Sprite Material을 받아온다
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::SpriteMaterial);
-		SetMaterial(material);
+		std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::SpriteMaterial);
+		set_material(material);
 	}
 
 	void Com_Renderer_Sprite::Awake()

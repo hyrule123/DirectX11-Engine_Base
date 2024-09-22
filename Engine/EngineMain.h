@@ -29,7 +29,7 @@ namespace ehw
 		EngineMain(const tDesc_EngineMain& _Desc);
 		~EngineMain();
 
-		static inline EngineMain& GetInst() noexcept { return *s_engineMainInst; }
+		static inline EngineMain& get_inst() noexcept { return *s_engineMainInst; }
 
 		BOOL Run();
 

@@ -28,7 +28,7 @@ namespace ehw::editor
 		virtual ~EditorWidget_ComboBox();
 
 		virtual bool BeginUI() override;
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 		virtual void EndUI() override;
 
 		void SetImguiComboFlag(ImGuiComboFlags _Flags) { mComboFlags = _Flags; }

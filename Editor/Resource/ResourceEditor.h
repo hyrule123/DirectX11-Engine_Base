@@ -10,7 +10,7 @@ namespace ehw::editor
 		ResourceEditor(const std::string_view _resTypeName);
 		virtual ~ResourceEditor();
 
-		void UpdateUI() override;
+		void update_UI() override;
 		
 		void SetTarget(const std::weak_ptr<ResourceType>& _target) { mTarget = _target; }
 		const std::weak_ptr<ResourceType>& GetTarget() const { return mTarget; }
@@ -31,7 +31,7 @@ namespace ehw::editor
 	}
 
 	template<class ResourceType>
-	inline void ResourceEditor<ResourceType>::UpdateUI()
+	inline void ResourceEditor<ResourceType>::update_UI()
 	{
 		if (mTarget.expired())
 			return;
@@ -41,7 +41,7 @@ namespace ehw::editor
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
 
-		//ImGui::Button(strKey::ArrResName[(UINT)mTarget->GetResType()]);
+		//ImGui::Button(name::ArrResName[(UINT)mTarget->GetResType()]);
 		ImGui::PopStyleColor(3);
 		ImGui::PopID();
 	}

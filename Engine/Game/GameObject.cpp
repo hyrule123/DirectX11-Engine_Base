@@ -189,7 +189,7 @@ namespace ehw
 		}
 	}
 
-	void GameObject::Update()
+	void GameObject::update()
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
@@ -198,7 +198,7 @@ namespace ehw
 				if (false == m_baseComponents[i]->IsStarted()) {
 					m_baseComponents[i]->Start();
 				}
-				m_baseComponents[i]->Update();
+				m_baseComponents[i]->update();
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace ehw
 				if (false == m_scripts[i]->IsStarted()) {
 					m_scripts[i]->Start();
 				}
-				m_scripts[i]->Update();
+				m_scripts[i]->update();
 			}
 		}
 	}
@@ -377,7 +377,7 @@ namespace ehw
 
 	iComponent* GameObject::AddComponent(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::GetInst().instantiate(_resource_name);
+		Entity* e = InstanceManager::get_inst().instantiate(_resource_name);
 		iComponent* c = dynamic_cast<iComponent*>(e);
 		if (nullptr == c) {
 			delete e;
@@ -389,7 +389,7 @@ namespace ehw
 
 	Script* GameObject::AddScript(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::GetInst().instantiate(_resource_name);
+		Entity* e = InstanceManager::get_inst().instantiate(_resource_name);
 		Script* s = dynamic_cast<Script*>(e);
 
 		if (nullptr == s) {

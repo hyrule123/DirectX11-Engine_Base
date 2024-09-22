@@ -11,6 +11,6 @@ namespace ehw::editor
 		TextureEditor();
 		virtual ~TextureEditor();
 
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 	};
 }

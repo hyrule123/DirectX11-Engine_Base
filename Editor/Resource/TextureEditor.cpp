@@ -4,7 +4,7 @@
 namespace ehw::editor
 {
 	TextureEditor::TextureEditor()
-		: ResourceEditor(::ehw::strKey::path::directory::resource::Texture)
+		: ResourceEditor(::ehw::name::path::directory::resource::Texture)
 	{
 
 	}
@@ -14,7 +14,7 @@ namespace ehw::editor
 
 	}
 
-	void TextureEditor::UpdateUI()
+	void TextureEditor::update_UI()
 	{
 		if (GetTarget().expired())
 		{

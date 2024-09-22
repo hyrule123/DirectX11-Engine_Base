@@ -51,9 +51,9 @@ namespace ehw
 
 		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
 
-		ID3D11RasterizerState* GetRasterizerState(eRSType _Type) { return m_rasterizerStates[(int)_Type].Get(); }
-		ID3D11BlendState* GetBlendState(eBSType _Type) { return m_blendStates[(int)_Type].Get(); }
-		ID3D11DepthStencilState* GetDepthStencilState(eDSType _Type) { return m_depthStencilStates[(int)_Type].Get(); }
+		ID3D11RasterizerState* GetRasterizerState(eRasterizerState _Type) { return m_rasterizerStates[(int)_Type].Get(); }
+		ID3D11BlendState* GetBlendState(eBlendState _Type) { return m_blendStates[(int)_Type].Get(); }
+		ID3D11DepthStencilState* GetDepthStencilState(eDepthStencilState _Type) { return m_depthStencilStates[(int)_Type].Get(); }
 
 		MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();
@@ -117,9 +117,9 @@ namespace ehw
 
 		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_constBuffers;
 		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_samplerStates;
-		std::array<ComPtr<ID3D11RasterizerState>, (int)eRSType::END>	m_rasterizerStates;
-		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDSType::END>	m_depthStencilStates;
-		std::array<ComPtr<ID3D11BlendState>, (int)eBSType::END>			m_blendStates;
+		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizerStates;
+		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depthStencilStates;
+		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blendStates;
 
 		std::shared_ptr<Texture>				m_postProcessTexture;
 		std::shared_ptr<Texture>				m_noiseTexture;

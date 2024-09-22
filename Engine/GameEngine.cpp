@@ -51,28 +51,28 @@ namespace ehw
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
 
-		ThreadPoolManager::GetInst().init((size_t)std::thread::hardware_concurrency());
-		PathManager::GetInst().init();
+		ThreadPoolManager::get_inst().init((size_t)std::thread::hardware_concurrency());
+		PathManager::get_inst().init();
 		
-		RenderManager::GetInst().init();
+		RenderManager::get_inst().init();
 		
-		ResourceManagers::GetInst().init();
+		ResourceManagers::get_inst().init();
 
-		if (false == RenderManager::GetInst().Settings(_desc.GPUDesc))
+		if (false == RenderManager::get_inst().Settings(_desc.GPUDesc))
 		{
 			ERROR_MESSAGE("Graphics Device 초기화 실패");
 			return FALSE;
 		}
 		
-		AudioManager::GetInst().init();
-		FontWrapper::GetInst().init();
+		AudioManager::get_inst().init();
+		FontWrapper::get_inst().init();
 		
-		TimeManager::GetInst().init();
+		TimeManager::get_inst().init();
 
 		InputManager::init();
 		
-		PhysXInstance::GetInst().init();
-		SceneManager::GetInst().init();
+		PhysXInstance::get_inst().init();
+		SceneManager::get_inst().init();
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
@@ -83,47 +83,47 @@ namespace ehw
 
 	// 게임 로직 캐릭터 이동 등등 
 	// CPU UPDATE
-	void GameEngine::Update()
+	void GameEngine::update()
 	{
-		TimeManager::GetInst().Update();
-		InputManager::Update();
-		SceneManager::GetInst().FixedUpdate();
-		SceneManager::GetInst().Update();
+		TimeManager::get_inst().update();
+		InputManager::update();
+		SceneManager::get_inst().FixedUpdate();
+		SceneManager::get_inst().update();
 	}
 
 	// GPU에 보내기 위한 최종 정보 정리
 	void GameEngine::final_update()
 	{
-		SceneManager::GetInst().final_update();
+		SceneManager::get_inst().final_update();
 	}
 
 	void GameEngine::render()
 	{
 		//최종 렌더타겟 Clear
-		RenderManager::GetInst().ClearRenderTarget();
+		RenderManager::get_inst().ClearRenderTarget();
 
-		RenderManager::GetInst().render();
+		RenderManager::get_inst().render();
 
 		if (m_editorRunFunction)
 		{
 			m_editorRunFunction();
 		}
 
-		TimeManager::GetInst().RenderFPS();
+		TimeManager::get_inst().RenderFPS();
 
-		RenderManager::GetInst().Present(true);
+		RenderManager::get_inst().Present(true);
 	}
 
 	void GameEngine::frame_end()
 	{	
-		RenderManager::GetInst().FrameEnd();
-		SceneManager::GetInst().frame_end();
+		RenderManager::get_inst().FrameEnd();
+		SceneManager::get_inst().frame_end();
 	}
 
 	// Running main engine loop
 	bool GameEngine::Run()
 	{
-		Update();
+		update();
 		final_update();
 		render();
 
@@ -182,7 +182,7 @@ namespace ehw
 	void GameEngine::Destroy()
 	{
 		//Destroy() 호출 후
-		SceneManager::GetInst().Destroy();
+		SceneManager::get_inst().Destroy();
 		
 		Run();
 		frame_end();

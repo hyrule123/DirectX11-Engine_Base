@@ -11,7 +11,7 @@ namespace ehw
 	public:
 		BOOL init(const tGameEngineDesc& _AppDesc);
 
-		void Update();
+		void update();
 		void final_update();
 		void render();
 

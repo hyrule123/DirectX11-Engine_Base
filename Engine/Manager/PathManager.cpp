@@ -18,7 +18,7 @@ namespace ehw
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
-		m_absoluteResourceDir /= strKey::path::directory::resource::Resource;
+		m_absoluteResourceDir /= name::path::directory::resource::Resource;
 		if (false == std::fs::exists(m_absoluteResourceDir))
 		{
 			std::fs::create_directories(m_absoluteResourceDir);
@@ -28,7 +28,7 @@ namespace ehw
 		ASSERT(std::fs::exists(m_relativeResourceDir), "절대경로와 상대경로가 일치하지 않습니다.");
 
 		m_relativeDir_ShaderCSO = ".";
-		m_relativeDir_ShaderCSO /= ehw::strKey::path::directory::CompiledShader;
+		m_relativeDir_ShaderCSO /= ehw::name::path::directory::CompiledShader;
 		if (false == std::fs::exists(m_relativeDir_ShaderCSO))
 		{
 			std::fs::create_directories(m_relativeDir_ShaderCSO);

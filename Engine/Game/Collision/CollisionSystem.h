@@ -14,7 +14,7 @@
 
 
 //업데이트 순서
-//1. SceneManager::Update: 각 Collider들이 자신의 정보를 등록한다.
+//1. SceneManager::update: 각 Collider들이 자신의 정보를 등록한다.
 //2. CollisionSystem::final_update: 등록된 Collider에 대한 충돌검사를 시행한다.(여기서 충돌 관련 연산이 완료 되어야함)
 //3. SceneManager::final_update: 최종적으로 Trasnfrom 위치를 갱신하고, 각 컴포넌트의 렌더링 준비를 마친다.
 

@@ -20,7 +20,7 @@ namespace ehw
 		
 		virtual void init() override;
 		virtual void Awake() override;
-		//virtual void Update() override;
+		//virtual void update() override;
 		//virtual void render() override;
 
 	private:

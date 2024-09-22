@@ -10,7 +10,7 @@ namespace ehw::editor
 		virtual ~EditorMainMenu();
 
 		virtual bool BeginUI() final { return ImGui::BeginMainMenuBar(); }
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 		virtual void EndUI() final { return ImGui::EndMainMenuBar(); }
 
 	private:

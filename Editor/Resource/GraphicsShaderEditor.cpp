@@ -8,7 +8,7 @@
 
 namespace ehw::editor
 {
-	namespace strKey
+	namespace name
 	{
 		constexpr const char* DXGI_FORMAT_String[] =
 		{
@@ -155,7 +155,7 @@ namespace ehw::editor
 
 
 	EditorGraphicsShader::EditorGraphicsShader()
-		: EditorWindow(strKey::EditorGraphicsShader)
+		: EditorWindow(name::EditorGraphicsShader)
 		, mDescForEdit()
 		, mSemanticEditIdx(-1)
 		, mSemanticName{}
@@ -181,10 +181,10 @@ namespace ehw::editor
 	{
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
-			Items.reserve(strKey::DXGI_FORMAT_StringSize);
-			for (size_t i = 0; i < strKey::DXGI_FORMAT_StringSize; ++i)
+			Items.reserve(name::DXGI_FORMAT_StringSize);
+			for (size_t i = 0; i < name::DXGI_FORMAT_StringSize; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::DXGI_FORMAT_String[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ name::DXGI_FORMAT_String[i], });
 			}
 			mDXGIFormatCombo.SetItems(Items);
 			mDXGIFormatCombo.SetStrKey("DXGI Format");
@@ -192,10 +192,10 @@ namespace ehw::editor
 
 		//{
 		//	std::vector<EditorWidget_ComboBox::tComboItem> Items;
-		//	Items.reserve(strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize);
-		//	for (size_t i = 0; i < strKey::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
+		//	Items.reserve(name::D3D_PRIMITIVE_TOPOLOGY_StringSize);
+		//	for (size_t i = 0; i < name::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
 		//	{
-		//		Items.push_back(EditorWidget_ComboBox::tComboItem{ strKey::D3D_PRIMITIVE_TOPOLOGY_String[i], });
+		//		Items.push_back(EditorWidget_ComboBox::tComboItem{ name::D3D_PRIMITIVE_TOPOLOGY_String[i], });
 		//	}
 		//	mTopologyCombo.SetItems(Items);
 		//	mTopologyCombo.SetStrKey("Topology Type");
@@ -203,10 +203,10 @@ namespace ehw::editor
 
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
-			Items.reserve((size_t)eRSType::END);
-			for (size_t i = 0; i < (size_t)eRSType::END; ++i)
+			Items.reserve((size_t)eRasterizerState::END);
+			for (size_t i = 0; i < (size_t)eRasterizerState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::strKey::eRSType[i],});
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eRasterizerState[i],});
 			}
 			mRSTypeCombo.SetItems(Items);
 			mRSTypeCombo.SetStrKey("Rasterizer Type");
@@ -214,10 +214,10 @@ namespace ehw::editor
 
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
-			Items.reserve((size_t)eDSType::END);
-			for (size_t i = 0; i < (size_t)eDSType::END; ++i)
+			Items.reserve((size_t)eDepthStencilState::END);
+			for (size_t i = 0; i < (size_t)eDepthStencilState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::strKey::eDSType[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eDepthStencilState[i], });
 			}
 			mDSTypeCombo.SetItems(Items);
 			mDSTypeCombo.SetStrKey("Depth-Stencil Type");
@@ -225,10 +225,10 @@ namespace ehw::editor
 
 		{
 			std::vector<EditorWidget_ComboBox::tComboItem> Items;
-			Items.reserve((size_t)eBSType::END);
-			for (size_t i = 0; i < (size_t)eBSType::END; ++i)
+			Items.reserve((size_t)eBlendState::END);
+			for (size_t i = 0; i < (size_t)eBlendState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::strKey::eBSType[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eBlendState[i], });
 			}
 			mBSTypeCombo.SetItems(Items);
 			mBSTypeCombo.SetStrKey("Blend State");
@@ -240,14 +240,14 @@ namespace ehw::editor
 			Items.reserve((int)eGSStage::END);
 			for (size_t i = 0; i < (int)eGSStage::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::strKey::ArrGSPrefix[i] });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::ArrGSPrefix[i] });
 			}
 			mStageTypeCombo.SetItems(Items);
 			mStageTypeCombo.SetStrKey("Shader Type");
 		}
 	}
 
-	void EditorGraphicsShader::UpdateUI()
+	void EditorGraphicsShader::update_UI()
 	{
 		constexpr const char* cEdit = "Edit##";
 		constexpr const char* cDelete = "Delete##";
@@ -334,7 +334,7 @@ namespace ehw::editor
 
 		for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 		{
-			ImGui::InputText(::ehw::strKey::ArrGSPrefix[i].data(), &mStageNames[i]);
+			ImGui::InputText(::ehw::name::ArrGSPrefix[i].data(), &mStageNames[i]);
 		}
 
 		ImGui::Separator();
@@ -389,7 +389,7 @@ namespace ehw::editor
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
-		std::fs::path shaderPath = PathManager::GetInst().GetShaderCSOPath();
+		std::fs::path shaderPath = PathManager::get_inst().GetShaderCSOPath();
 
 		//쉐이더 바이트코드 경로 확인
 		if (false == std::fs::exists(shaderPath))
@@ -410,11 +410,11 @@ namespace ehw::editor
 
 			for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 			{
-				size_t pos = fileName.find(::ehw::strKey::ArrGSPrefix[i]);
+				size_t pos = fileName.find(::ehw::name::ArrGSPrefix[i]);
 				if (std::string::npos != pos)
 				{
-					std::string baseFileName = entry.path().filename().replace_extension(::ehw::strKey::path::extension::ShaderSetting).string();
-					baseFileName.erase(pos, std::strlen(::ehw::strKey::ArrGSPrefix[i].data()));
+					std::string baseFileName = entry.path().filename().replace_extension(::ehw::name::path::extension::ShaderSetting).string();
+					baseFileName.erase(pos, std::strlen(::ehw::name::ArrGSPrefix[i].data()));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
 					break;
@@ -426,7 +426,7 @@ namespace ehw::editor
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<std::string> vecNewShaderGroup;
-		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
+		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -435,7 +435,7 @@ namespace ehw::editor
 		//map을 순회 돌아주면서
 		for (const auto& iter : umapGSGroup)
 		{
-			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::ehw::strKey::path::extension::ShaderSetting);
+			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::ehw::name::path::extension::ShaderSetting);
 
 			//파일이 존재하지 않으면 json 파일 초기화 및 생성을 해준다.
 			if (false == std::fs::exists(ShaderFilePath))
@@ -456,7 +456,7 @@ namespace ehw::editor
 
 					for (size_t i = 0; i < fileNames.size(); ++i)
 					{
-						DummyGS.SetShaderKey((eGSStage)i, fileNames[i].string());
+						DummyGS.set_shader_name((eGSStage)i, fileNames[i].string());
 					}
 
 					
@@ -470,7 +470,7 @@ namespace ehw::editor
 
 				//for (int i = 0; i < (int)eGSStage::END; ++i)
 				//{
-				//	jVal[strKey::ArrGSPrefix[i]] = iter.second.FileName[i].string();
+				//	jVal[name::ArrGSPrefix[i]] = iter.second.FileName[i].string();
 				//}
 
 				ofs << jVal;
@@ -501,7 +501,7 @@ namespace ehw::editor
 
 	void EditorGraphicsShader::LoadShaderSettingComboBox()
 	{
-		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
+		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{
@@ -810,17 +810,17 @@ namespace ehw::editor
 					NOTIFICATION("필수인 Vertex Shader가 설정되지 않았습니다.");
 					return;
 				}
-				shader.SetShaderKey((eGSStage)i, mStageNames[i]);
+				shader.set_shader_name((eGSStage)i, mStageNames[i]);
 			}
 		}
 
 
 		{
 			int curSel = mRSTypeCombo.GetCurrentIndex();
-			if (0 <= curSel && curSel < (int)eRSType::END)
+			if (0 <= curSel && curSel < (int)eRasterizerState::END)
 			{
-				eRSType Type = (eRSType)curSel;
-				shader.SetRSState(Type);
+				eRasterizerState Type = (eRasterizerState)curSel;
+				shader.set_rasterizer_state(Type);
 			}
 			else
 			{
@@ -831,10 +831,10 @@ namespace ehw::editor
 
 		{
 			int curSel = mDSTypeCombo.GetCurrentIndex();
-			if (0 <= curSel && curSel < (int)eDSType::END)
+			if (0 <= curSel && curSel < (int)eDepthStencilState::END)
 			{
-				eDSType Type = (eDSType)curSel;
-				shader.SetDSState(Type);
+				eDepthStencilState Type = (eDepthStencilState)curSel;
+				shader.set_depth_stencil_state(Type);
 			}
 			else
 			{
@@ -846,10 +846,10 @@ namespace ehw::editor
 		{
 			int curSel = mBSTypeCombo.GetCurrentIndex();
 
-			if (0 <= curSel && curSel < (int)eBSType::END)
+			if (0 <= curSel && curSel < (int)eBlendState::END)
 			{
-				eBSType Type = (eBSType)curSel;
-				shader.SetBSState(Type);
+				eBlendState Type = (eBlendState)curSel;
+				shader.set_blend_state(Type);
 			}
 			else
 			{
@@ -859,7 +859,7 @@ namespace ehw::editor
 		}
 
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 		
 		if (eResult_success(shader.save_to_file(baseDir, _filePath)))
 		{
@@ -875,9 +875,9 @@ namespace ehw::editor
 	{
 		using namespace ehw;
 		GraphicsShader shader{};
-		shader.SetEditMode(true);
+		shader.set_edit_mode(true);
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 		if (eResult_fail(shader.load_from_file(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
@@ -892,11 +892,11 @@ namespace ehw::editor
 
 		for (size_t i = 0; i < mStageNames.size(); ++i)
 		{	
-			mStageNames[i] = shader.GetShaderKey((eGSStage)i);
+			mStageNames[i] = shader.get_shader_name((eGSStage)i);
 		}
 
-		mRSTypeCombo.SetCurrentIndex((int)shader.GetRSState());
-		mDSTypeCombo.SetCurrentIndex((int)shader.GetDSState());
-		mBSTypeCombo.SetCurrentIndex((int)shader.GetBSState());
+		mRSTypeCombo.SetCurrentIndex((int)shader.get_rasterizer_state());
+		mDSTypeCombo.SetCurrentIndex((int)shader.get_depth_stencil_state());
+		mBSTypeCombo.SetCurrentIndex((int)shader.get_blend_state());
 	}
 }

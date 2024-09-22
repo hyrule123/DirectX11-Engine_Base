@@ -4,7 +4,7 @@
 
 namespace ehw
 {
-	namespace strKey
+	namespace name
 	{
 		namespace path
 		{

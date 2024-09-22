@@ -13,7 +13,7 @@ namespace ehw::editor
 		virtual ~Widget_List();
 
 		virtual bool BeginUI() final;
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 		virtual void EndUI() final;
 
 		void SetEvent(EditorBase* widget, std::function<void(const std::string& key)> event)

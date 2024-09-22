@@ -20,7 +20,7 @@ namespace ehw::editor
 		void AddResources(const char* name)
 		{
 			//const std::vector<std::shared_ptr<Resource>>& resources
-			//	= ResourceManager<T>::GetInst().GetResourcesVector();
+			//	= ResourceManager<T>::get_inst().GetResourcesVector();
 
 			//EditorWidget_Tree::tNode* stemNode
 			//	= mTreeWidget->AddNode(rootNode, name, tDataPtr{}, true);

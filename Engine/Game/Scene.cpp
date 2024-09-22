@@ -76,13 +76,13 @@ namespace ehw
 
 	void Scene::SceneUpdate()
 	{
-		Update();
+		update();
 
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
 			{
-				m_gameObjects[i]->Update();
+				m_gameObjects[i]->update();
 			}
 		}
 	}

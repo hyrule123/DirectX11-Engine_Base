@@ -38,7 +38,7 @@ namespace ehw
 		m_capsuleGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;
 		m_capsuleGeometry.halfHeight = worldMat.Axis(eAxis3D::Y).Length() * m_offsetRatio_HalfHeight;
 
-		physx::PxShape* shape = PhysXInstance::GetInst().GetPhysX().createShape(m_capsuleGeometry, *mtrl);
+		physx::PxShape* shape = PhysXInstance::get_inst().GetPhysX().createShape(m_capsuleGeometry, *mtrl);
 
 		ASSERT_DEBUG(shape, "PxShape 인스턴스 생성 실패.");
 

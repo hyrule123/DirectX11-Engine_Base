@@ -72,7 +72,7 @@ namespace ehw
 
 			for (const auto& iter : m_animations)
 			{
-				result = iter.second->SaveFile_Binary(fullPath / iter.first / strKey::path::extension::Anim3D);
+				result = iter.second->SaveFile_Binary(fullPath / iter.first / name::path::extension::Anim3D);
 				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg{};
@@ -121,7 +121,7 @@ namespace ehw
 				{
 					continue;
 				}
-				else if (strKey::path::extension::Anim3D != filePath.extension())
+				else if (name::path::extension::Anim3D != filePath.extension())
 				{
 					continue;
 				}
@@ -325,22 +325,22 @@ namespace ehw
 				}
 			}
 
-			std::string strKey = otherAnim.first;
-			auto iter = m_animations.find(strKey);
+			std::string name = otherAnim.first;
+			auto iter = m_animations.find(name);
 			while (iter != m_animations.end())
 			{
-				strKey += "+";
-				iter = m_animations.find(strKey);
+				name += "+";
+				iter = m_animations.find(name);
 			}
 
 			std::fs::path filePath = _saveDir.filename();
-			filePath /= strKey;
+			filePath /= name;
 			
 			if (eResult_fail(ourAnim->SaveFile_Binary(filePath)))
 				return false;
 
 			//우리 애니메이션 쪽에 등록
-			m_animations.insert(std::make_pair(strKey, ourAnim));
+			m_animations.insert(std::make_pair(name, ourAnim));
 		}
 
 		return true;
@@ -381,7 +381,7 @@ namespace ehw
 		desc.GPU_register_t_SRV = GPU::Register::t::g_BoneOffsetArray;
 		m_pBoneOffset = std::make_shared<StructBuffer>();
 
-		eResult result = m_pBoneOffset->init<MATRIX>(desc, (uint)vecOffset.size(), vecOffset.data(), vecOffset.size());
+		eResult result = m_pBoneOffset->init<MATRIX>(desc, (UINT)vecOffset.size(), vecOffset.data(), (UINT)vecOffset.size());
 		
 		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}

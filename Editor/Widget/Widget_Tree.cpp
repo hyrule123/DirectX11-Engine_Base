@@ -21,7 +21,7 @@ namespace ehw::editor
 		}
 	}
 	// Node
-	void EditorWidget_Tree::tNode::UpdateUI()
+	void EditorWidget_Tree::tNode::update_UI()
 	{
 		//ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Framed;
 
@@ -52,7 +52,7 @@ namespace ehw::editor
 
 			for (tNode* node : m_Childs)
 			{
-				node->UpdateUI();
+				node->update_UI();
 			}
 
 			ImGui::TreePop();
@@ -70,7 +70,7 @@ namespace ehw::editor
 
 	// Tree
 	EditorWidget_Tree::EditorWidget_Tree()
-		: EditorChild(strKey::EditorWidget_Tree)
+		: EditorChild(name::EditorWidget_Tree)
 		, mRoot(nullptr)
 		, mbDummyRootUse{}
 		, mSelectedNode{}
@@ -84,7 +84,7 @@ namespace ehw::editor
 	}
 
 
-	void EditorWidget_Tree::UpdateUI()
+	void EditorWidget_Tree::update_UI()
 	{
 		if (mRoot == nullptr)
 		{
@@ -93,14 +93,14 @@ namespace ehw::editor
 
 		if (!mbDummyRootUse)
 		{
-			mRoot->UpdateUI();
+			mRoot->update_UI();
 		}
 		else
 		{
 			const std::vector<tNode*>& childs = mRoot->get_childs();
 			for (tNode* child : childs)
 			{
-				child->UpdateUI();
+				child->update_UI();
 			}
 		}
 	}

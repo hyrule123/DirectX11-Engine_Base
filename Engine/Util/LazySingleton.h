@@ -14,12 +14,12 @@ namespace ehw
 		static inline T* m_instance = nullptr;
 
 	public:
-		static T& GetInst();
+		static T& get_inst();
 		static void Destroy();
 	};
 
 	template<typename T>
-	inline T& LazySingleton<T>::GetInst()
+	inline T& LazySingleton<T>::get_inst()
 	{
 		if (nullptr == m_instance)
 		{

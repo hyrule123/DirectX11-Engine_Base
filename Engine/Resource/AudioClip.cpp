@@ -39,7 +39,7 @@ namespace ehw
 			return eResult::Fail_Open;
 		}
 
-		if (false == AudioManager::GetInst().CreateSound(fullPath, &mSound))
+		if (false == AudioManager::get_inst().CreateSound(fullPath, &mSound))
 			return eResult::Fail_Open;
 
 		mSound->set3DMinMaxDistance(mMinDistance, mMaxDistance);
@@ -54,7 +54,7 @@ namespace ehw
 		else
 			mSound->setMode(FMOD_LOOP_OFF);
 
-		AudioManager::GetInst().SoundPlay(mSound, &mChannel);
+		AudioManager::get_inst().SoundPlay(mSound, &mChannel);
 	} 
 
 	void AudioClip::Stop()

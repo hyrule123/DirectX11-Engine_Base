@@ -16,7 +16,7 @@ namespace ehw
 		__forceinline float DeltaTime() { return m_currentDeltaTime; }
 		__forceinline float FixedDeltaTime() { return m_fixedDeltaTime; }
 
-		void Update();
+		void update();
 		
 		uint GetFixedUpdateCount();
 		inline void SetFixedUpdateMode(bool _enable);

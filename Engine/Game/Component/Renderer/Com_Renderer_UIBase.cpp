@@ -14,11 +14,11 @@ namespace ehw
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::GetInst().find(strKey::defaultRes::mesh::RectMesh);
-		SetMesh(uiMesh);
+		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		set_mesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::UIMaterial);
-		SetMaterial(uiMaterial);
+		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::UIMaterial);
+		set_material(uiMaterial);
 		SetMaterialMode(eMaterialMode::Dynamic);
 	}
 	Com_Renderer_UIBase::~Com_Renderer_UIBase()
@@ -29,7 +29,7 @@ namespace ehw
 	//{
 	//	ASSERT(false, "미구현");
 	//	ConstBuffer* cb = nullptr;
-	//		//RenderManager::GetInst().GetConstBuffer(eCBType::CustomData);
+	//		//RenderManager::get_inst().GetConstBuffer(eCBType::CustomData);
 	//	cb->set_data(&mUIData);
 	//	cb->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 

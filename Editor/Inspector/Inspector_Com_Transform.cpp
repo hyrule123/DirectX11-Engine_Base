@@ -19,7 +19,7 @@ namespace ehw::editor
 
 	}
 
-	void Inspector_Com_Transform::Update()
+	void Inspector_Com_Transform::update()
 	{
 		if (nullptr == GetTarget())
 		{
@@ -33,7 +33,7 @@ namespace ehw::editor
 		m_scale = tr->get_local_scale();
 	}
 
-	void Inspector_Com_Transform::UpdateUI()
+	void Inspector_Com_Transform::update_UI()
 	{
 		ImGui::DragFloat3("Position", (float*)&m_position);
 		ImGui::DragFloat3("Rotation", (float*)&m_rotation);

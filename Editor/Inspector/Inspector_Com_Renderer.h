@@ -15,15 +15,15 @@ namespace ehw::editor
 		Inspector_Com_Renderer();
 		virtual ~Inspector_Com_Renderer();
 
-		virtual void Update() override;
+		virtual void update() override;
 
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 	
-		void SetMesh(const std::string& _key_path);
-		void SetMaterial(const std::string& _key_path);
+		void set_mesh(const std::string& _key_path);
+		void set_material(const std::string& _key_path);
 
 	private:
-		Mesh* mMesh;
-		Material* mMaterial;
+		std::weak_ptr<Mesh> m_mesh;
+		std::weak_ptr<Material> m_material;
 	};
 }

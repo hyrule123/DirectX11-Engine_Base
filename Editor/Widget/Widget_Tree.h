@@ -15,7 +15,7 @@ namespace ehw::editor
 			tNode();
 			virtual ~tNode();
 
-			void UpdateUI();
+			void update_UI();
 
 			void set_data(tDataPtr _data) { mData = _data; }
 
@@ -37,7 +37,7 @@ namespace ehw::editor
 		EditorWidget_Tree();
 		virtual ~EditorWidget_Tree();
 
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 
 		tNode* AddNode(tNode* parent, const std::string& name, tDataPtr data, bool stem = false);
 		void Clear();

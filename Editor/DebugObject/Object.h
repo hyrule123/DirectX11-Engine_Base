@@ -10,7 +10,7 @@ namespace ehw::editor
 		virtual ~EditorObject();
 
 		void Awake();
-		void Update();
+		void update();
 		void final_update();
 		void render();
 

@@ -30,20 +30,20 @@ namespace ehw
 	{
 		if (m_activeScene)
 		{
-			TimeManager::GetInst().SetFixedUpdateMode(true);
+			TimeManager::get_inst().SetFixedUpdateMode(true);
 
-			uint fixedUpdateCount = TimeManager::GetInst().GetFixedUpdateCount();
+			uint fixedUpdateCount = TimeManager::get_inst().GetFixedUpdateCount();
 
 			for(uint i = 0; i < fixedUpdateCount; ++i)
 			{
 				m_activeScene->SceneFixedUpdate();
 			}
 
-			TimeManager::GetInst().SetFixedUpdateMode(false);
+			TimeManager::get_inst().SetFixedUpdateMode(false);
 		}
 	}
 
-	void SceneManager::Update()
+	void SceneManager::update()
 	{
 		if (m_activeScene)
 		{
@@ -118,7 +118,7 @@ namespace ehw
 
 	Scene* SceneManager::LoadScene(const std::string_view _resource_name)
 	{
-		std::unique_ptr<Scene> s(InstanceManager::GetInst().instantiate<Scene>(_resource_name));
+		std::unique_ptr<Scene> s(InstanceManager::get_inst().instantiate<Scene>(_resource_name));
 
 		return LoadScene(std::move(s));
 	}

@@ -55,7 +55,7 @@ namespace ehw
 		}
 	}
 
-	void InputManager::Update()
+	void InputManager::update()
 	{
 		if (GetFocus())
 		{
@@ -90,7 +90,7 @@ namespace ehw
 
 			POINT mousePos = {};
 			GetCursorPos(&mousePos);
-			ScreenToClient(GameEngine::GetInst().GetHwnd(), &mousePos);
+			ScreenToClient(GameEngine::get_inst().GetHwnd(), &mousePos);
 			mMousePos.x = static_cast<float>(mousePos.x);
 			mMousePos.y = static_cast<float>(mousePos.y);
 

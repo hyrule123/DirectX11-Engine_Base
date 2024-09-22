@@ -55,7 +55,7 @@ namespace ehw
             }
         }
 
-        ConstBuffer* CB = RenderManager::GetInst().GetConstBuffer(eCBType::Material);
+        ConstBuffer* CB = RenderManager::get_inst().GetConstBuffer(eCBType::Material);
         CB->set_data(&m_shared_material_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
@@ -144,9 +144,9 @@ namespace ehw
         {
             //shader
             {
-                std::string strKey{};
-                ser[JSON_KEY(m_shader)] >> strKey;
-                m_shader = ResourceManager<GraphicsShader>::GetInst().load_from_file(strKey);
+                std::string name{};
+                ser[JSON_KEY(m_shader)] >> name;
+                m_shader = ResourceManager<GraphicsShader>::get_inst().load_from_file(name);
             }
 
 
@@ -154,9 +154,9 @@ namespace ehw
             const Json::Value& textures = ser[JSON_KEY(m_textures)];
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
-                std::string strKey{};
-                textures[i] >> strKey;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::GetInst().load_from_file(strKey);
+                std::string name{};
+                textures[i] >> name;
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load_from_file(name);
                 if (tex)
                 {
                     set_texture((eTextureSlot)i, tex);

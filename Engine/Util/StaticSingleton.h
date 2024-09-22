@@ -7,7 +7,7 @@ namespace ehw {
 	class StaticSingleton
 	{
 	public:
-		static inline T& GetInst() noexcept {
+		static inline T& get_inst() noexcept {
 			static T inst{};
 			return inst; 
 		}

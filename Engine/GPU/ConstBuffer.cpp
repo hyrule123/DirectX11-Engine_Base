@@ -31,7 +31,7 @@ namespace ehw
 		bufferDesc.MiscFlags = 0;
 		bufferDesc.StructureByteStride = 0;
 
-		bool bResult = SUCCEEDED(RenderManager::GetInst().Device()->CreateBuffer(&GetBufferDescRef(), nullptr, GetBufferRef().GetAddressOf()));
+		bool bResult = SUCCEEDED(RenderManager::get_inst().Device()->CreateBuffer(&GetBufferDescRef(), nullptr, GetBufferRef().GetAddressOf()));
 		if (false == bResult)
 		{
 			Clear();
@@ -46,7 +46,7 @@ namespace ehw
 		ASSERT(_dataCount <= mDataCount, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
 	
 
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 		D3D11_MAPPED_SUBRESOURCE tSubRes{};
 
 		if (SUCCEEDED(pContext->Map(GetBufferRef().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
@@ -63,7 +63,7 @@ namespace ehw
 			_stageFlag = mPresetTargetStage;
 		}
 
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetConstantBuffers(m_constBufferType, 1u, GetBufferRef().GetAddressOf());
@@ -91,7 +91,7 @@ namespace ehw
 	}
 	void ConstBuffer::unbind_buffer()
 	{
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 
 		pContext->VSSetConstantBuffers(m_constBufferType, 0u, nullptr);
 		pContext->HSSetConstantBuffers(m_constBufferType, 0u, nullptr);

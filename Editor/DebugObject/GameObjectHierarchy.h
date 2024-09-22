@@ -16,7 +16,7 @@ namespace ehw::editor
 		virtual ~GameObjectHierarchy();
 
 		virtual void init() override;
-		virtual void Update() override;
+		virtual void update() override;
 
 		void GameobjectSelectCallback(tDataPtr _data);
 		void InitializeScene();

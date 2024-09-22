@@ -37,7 +37,7 @@ namespace ehw
         engineDesc.GPUDesc = _Desc.GPUDesc;
         engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
 
-        ehw::GameEngine::GetInst().init(engineDesc);
+        ehw::GameEngine::get_inst().init(engineDesc);
 
         for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
         {
@@ -91,7 +91,7 @@ namespace ehw
             }
             else
             {
-                bReturn = ehw::GameEngine::GetInst().Run();
+                bReturn = ehw::GameEngine::get_inst().Run();
             }
         }
 
@@ -174,7 +174,7 @@ namespace ehw
     {
         LRESULT ret = 0;
         if (message == WM_DESTROY) {
-            GameEngine::GetInst().Destroy();
+            GameEngine::get_inst().Destroy();
             PostQuitMessage(0);
             ret = 1;
         }

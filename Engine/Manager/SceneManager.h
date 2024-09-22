@@ -15,7 +15,7 @@ namespace ehw
 	public:
 		void init();
 		void FixedUpdate();
-		void Update();
+		void update();
 		void final_update();
 		void frame_end();
 		void release();

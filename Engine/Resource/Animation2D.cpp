@@ -47,13 +47,13 @@ namespace ehw
 		return eResult::Fail_NotImplemented;
 	}
 
-	uint Animation2D::Update()
+	uint Animation2D::update()
 	{
 		if (mbComplete)
 			return -1;
 
 		// 시간 체크
-		mTime += TimeManager::GetInst().DeltaTime();
+		mTime += TimeManager::get_inst().DeltaTime();
 
 		// 누적 시간이 해당 프레임의 유지시간을 넘어서면 다음프레임으로 이동
 		if (mSpriteSheet[mIndex].Duration < mTime)
@@ -146,7 +146,7 @@ namespace ehw
 	{
 		mAtlas->bind_data_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::_2D;
@@ -171,7 +171,7 @@ namespace ehw
 		//Texture clear
 		Texture::ClearSRV(GPU::Register::t::AtlasTexture);
 
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::NOT_SET;

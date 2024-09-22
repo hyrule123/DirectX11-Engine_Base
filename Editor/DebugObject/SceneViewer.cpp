@@ -9,7 +9,7 @@
 namespace ehw::editor
 {
 	SceneViewer::SceneViewer()
-		: EditorWindow(strKey::GameViewer)
+		: EditorWindow(name::GameViewer)
 	{
 	}
 
@@ -17,18 +17,18 @@ namespace ehw::editor
 	{
 	}
 
-	void SceneViewer::UpdateUI()
+	void SceneViewer::update_UI()
 	{
 		std::shared_ptr<Texture> renderTarget
-			= RenderManager::GetInst().GetRenderTargetTex();
+			= RenderManager::get_inst().GetRenderTargetTex();
 
 		std::shared_ptr<Texture> gameTex
 			= std::make_shared<Texture>();
-		gameTex->create(RenderManager::GetInst().GetResolutionX(), RenderManager::GetInst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+		gameTex->create(RenderManager::get_inst().GetResolutionX(), RenderManager::get_inst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 		
 		//61 번 셰이더 리소스 뷰 null초기화
 		ID3D11ShaderResourceView* gameSRV = nullptr;
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 		pContext->PSSetShaderResources(GPU::Register::t::guiGameTexture, 1u, &gameSRV);
 		pContext->CopyResource(gameTex->get_texture().Get()
 			, renderTarget->get_texture().Get());

@@ -48,11 +48,11 @@ namespace ehw
 		AtExit::AddFunc(std::bind(&ResourceManagers::release, this));
 
 		//기본 Resource들 init
-		const std::fs::path& baseDir = PathManager::GetInst().GetResPathRelative();
+		const std::fs::path& baseDir = PathManager::get_inst().GetResPathRelative();
 
 		//기본 리소스를 먼저 등록
-		ResourceManager<ConstBuffer>::GetInst().init("");
-		ResourceManager<StructBuffer>::GetInst().init("");
+		ResourceManager<ConstBuffer>::get_inst().init("");
+		ResourceManager<StructBuffer>::get_inst().init("");
 
 		//이 부분 나중에 분리한 별도 CPP로 옮길 것
 		std::shared_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
@@ -62,28 +62,28 @@ namespace ehw
 		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
 		light_3d_instancing_buffer->init<tLightAttribute>(desc, 16);
 		light_3d_instancing_buffer->SetPipelineTarget(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-		ResourceManager<StructBuffer>::GetInst().insert("light_3D_instancing_buffer", light_3d_instancing_buffer);
+		ResourceManager<StructBuffer>::get_inst().insert("light_3D_instancing_buffer", light_3d_instancing_buffer);
 
 		std::shared_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
 		light_3d_const_buffer->create<tLightCount>();
 		light_3d_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		ResourceManager<ConstBuffer>::GetInst().insert("light_3D_const_buffer", light_3d_const_buffer);
+		ResourceManager<ConstBuffer>::get_inst().insert("light_3D_const_buffer", light_3d_const_buffer);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		ResourceManager<Texture>::GetInst().init(baseDir / strKey::path::directory::resource::Texture);
-		ResourceManager<VertexBuffer>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
-		ResourceManager<Mesh>::GetInst().init(baseDir / strKey::path::directory::resource::Mesh);
-		ResourceManager<AudioClip>::GetInst().init(baseDir / strKey::path::directory::resource::AudioClip);
-		ResourceManager<GraphicsShader>::GetInst().init(baseDir / strKey::path::directory::resource::GraphicsShader);
-		ResourceManager<ComputeShader>::GetInst().init(baseDir / strKey::path::directory::resource::ComputeShader);
+		ResourceManager<Texture>::get_inst().init(baseDir / name::path::directory::resource::Texture);
+		ResourceManager<VertexBuffer>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
+		ResourceManager<Mesh>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
+		ResourceManager<AudioClip>::get_inst().init(baseDir / name::path::directory::resource::AudioClip);
+		ResourceManager<GraphicsShader>::get_inst().init(baseDir / name::path::directory::resource::GraphicsShader);
+		ResourceManager<ComputeShader>::get_inst().init(baseDir / name::path::directory::resource::ComputeShader);
 
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록
-		ResourceManager<Material>::GetInst().init(baseDir / strKey::path::directory::resource::Material);
-		ResourceManager<Animation2D>::GetInst().init(baseDir / strKey::path::directory::resource::Animation2D);
-		ResourceManager<Model3D>::GetInst().init(baseDir / strKey::path::directory::resource::Model3D);
-		ResourceManager<Skeleton>::GetInst().init(baseDir / strKey::path::directory::resource::Model3D);
+		ResourceManager<Material>::get_inst().init(baseDir / name::path::directory::resource::Material);
+		ResourceManager<Animation2D>::get_inst().init(baseDir / name::path::directory::resource::Animation2D);
+		ResourceManager<Model3D>::get_inst().init(baseDir / name::path::directory::resource::Model3D);
+		ResourceManager<Skeleton>::get_inst().init(baseDir / name::path::directory::resource::Model3D);
 
 		init_static_variables();
 	}

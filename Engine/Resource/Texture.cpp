@@ -48,7 +48,7 @@ namespace ehw
 	{
 		ID3D11ShaderResourceView* srv = nullptr;
 
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 
 		pContext->VSSetShaderResources(_startSlot, 1u, &srv);
 		pContext->HSSetShaderResources(_startSlot, 1u, &srv);
@@ -64,7 +64,7 @@ namespace ehw
 		{
 			ID3D11ShaderResourceView* srv = nullptr;
 
-			auto pContext = RenderManager::GetInst().Context();
+			auto pContext = RenderManager::get_inst().Context();
 			pContext->VSSetShaderResources(i, 1u, &srv);
 			pContext->HSSetShaderResources(i, 1u, &srv);
 			pContext->DSSetShaderResources(i, 1u, &srv);
@@ -106,7 +106,7 @@ namespace ehw
 		
 
 		bool bResult = false;
-		auto* pDevice = RenderManager::GetInst().Device();
+		auto* pDevice = RenderManager::get_inst().Device();
 		bResult = SUCCEEDED(pDevice->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
 
 		if(false == bResult)
@@ -147,7 +147,7 @@ namespace ehw
 		bool Result = false;
 		mDesc = _TexDesc;
 
-		Result = SUCCEEDED(RenderManager::GetInst().Device()->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
+		Result = SUCCEEDED(RenderManager::get_inst().Device()->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
 		if (false == Result)
 		{
 			ERROR_MESSAGE("텍스처 생성에 실패 했습니다.");
@@ -235,7 +235,7 @@ namespace ehw
 		std::wstring Extension = _fullPath.extension().wstring();
 		
 		DirectX::ScratchImage img{};
-		if (FAILED(DirectX::CaptureTexture(RenderManager::GetInst().Device(), RenderManager::GetInst().Context(), mTexture.Get(), img)))
+		if (FAILED(DirectX::CaptureTexture(RenderManager::get_inst().Device(), RenderManager::get_inst().Context(), mTexture.Get(), img)))
 		{
 			ERROR_MESSAGE("Texture를 Scratch Image로 가져오는 데 실패했습니다.");
 			return eResult::Fail_Create;
@@ -271,7 +271,7 @@ namespace ehw
 	{
 		CreateShaderResourceView
 		(
-			RenderManager::GetInst().Device(),
+			RenderManager::get_inst().Device(),
 			mImage.GetImages(),
 			mImage.GetImageCount(),
 			mImage.GetMetadata(),
@@ -290,7 +290,7 @@ namespace ehw
 		mCurBoundStage = _stageFlag;
 		mCurBoundView = eBufferViewType::SRV;
 
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
 			pContext->VSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
@@ -325,7 +325,7 @@ namespace ehw
 		mCurBoundRegister = (int)_startSlot;
 
 		uint i = -1;
-		RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(_startSlot, 1, mUAV.GetAddressOf(), &i);
+		RenderManager::get_inst().Context()->CSSetUnorderedAccessViews(_startSlot, 1, mUAV.GetAddressOf(), &i);
 	}
 
 
@@ -341,7 +341,7 @@ namespace ehw
 			ASSERT(0 <= mCurBoundRegister, "Bound된 레지스터 번호가 음수입니다.");
 			ID3D11ShaderResourceView* srv = nullptr;
 
-			auto pContext = RenderManager::GetInst().Context();
+			auto pContext = RenderManager::get_inst().Context();
 
 			if (eShaderStageFlag::Vertex & mCurBoundStage)
 			{
@@ -378,7 +378,7 @@ namespace ehw
 			ID3D11UnorderedAccessView* pUAV = nullptr;
 			uint u = -1;
 
-			RenderManager::GetInst().Context()->CSSetUnorderedAccessViews(mCurBoundRegister, 1, &pUAV, &u);
+			RenderManager::get_inst().Context()->CSSetUnorderedAccessViews(mCurBoundRegister, 1, &pUAV, &u);
 
 			//현재 연결된 레지스터 번호와 파이프라인을 초기화
 			mCurBoundRegister = -1;
@@ -394,7 +394,7 @@ namespace ehw
 			ID3D11RenderTargetView* pRTV = nullptr;
 			ID3D11DepthStencilView* pDSV = nullptr;
 
-			RenderManager::GetInst().Context()->OMSetRenderTargets(1u, &pRTV, pDSV);
+			RenderManager::get_inst().Context()->OMSetRenderTargets(1u, &pRTV, pDSV);
 			break;
 		}
 
@@ -408,7 +408,7 @@ namespace ehw
 
 	bool Texture::CreateView()
 	{
-		auto pDevice = RenderManager::GetInst().Device();
+		auto pDevice = RenderManager::get_inst().Device();
 		if (mDesc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL)
 		{
 			if (FAILED(pDevice->CreateDepthStencilView(mTexture.Get(), nullptr, mDSV.GetAddressOf())))

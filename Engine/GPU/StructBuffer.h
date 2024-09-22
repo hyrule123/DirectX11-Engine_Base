@@ -99,7 +99,7 @@ namespace ehw
 	};
 
     template<typename T>
-    inline eResult StructBuffer::init(const Desc& _tDesc, uint _capacity, const void* _pInitialData, UINT _elemCount)
+    inline eResult StructBuffer::init(const Desc& _tDesc, UINT _capacity, const void* _pInitialData, UINT _elemCount)
     {
         SetDesc(_tDesc);
 

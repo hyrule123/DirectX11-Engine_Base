@@ -7,7 +7,7 @@ namespace ehw
 {
     class GameObject;
 
-    BASE_RESOURCE(Texture);
+    BASE_RESOURCE(Prefab);
 	class Prefab final
 		: public Resource
 	{

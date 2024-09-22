@@ -18,8 +18,8 @@ namespace ehw
 			virtual ~InspectorBase();
 
 			virtual void init() override;
-			virtual void Update() override;
-			virtual void UpdateUI() override;
+			virtual void update() override;
+			virtual void update_UI() override;
 
 			void SetTargetGameObject(GameObject* _targetObj) { mTargetGameObject = _targetObj; }
 			GameObject* GetTargetGameObject() { return mTargetGameObject; }

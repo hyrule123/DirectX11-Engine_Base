@@ -21,11 +21,11 @@ namespace ehw
 		, m_hullShader{}
 		, m_geometryShader{}
 		, m_pixelShader{}
-		, m_rasterizer{}
-		, m_blender{}
-		, m_depth_stencil{}
+		, m_rasterizer_state{}
+		, m_blend_state{}
+		, m_depth_stencil_state{}
 		, m_rasterizer_type{}
-		, m_blender_type{}
+		, m_blend_type{}
 		, m_depth_stencil_type{}
 		, m_blend_factor{}
 		, m_sample_mask{ UINT_MAX }
@@ -99,7 +99,7 @@ namespace ehw
 	eResult GraphicsShader::compile_from_CSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::GetInst().GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::get_inst().GetShaderCSOPath();
 		shaderBinPath /= _FileName;
 
 		if (false == std::fs::exists(shaderBinPath))
@@ -121,7 +121,7 @@ namespace ehw
 		//파일이 열리면 지역변수 Blob을 만들어서 데이터를 옮긴다.
 		tShaderCode& code = m_arrShaderCode[(int)_stage];
 		code = {};
-		code.strKey = _FileName.string();
+		code.name = _FileName.string();
 		code.dataSize = sFile.tellg();
 
 		//Blob 내부에 공간을 할당.
@@ -190,7 +190,7 @@ namespace ehw
 			return eResult::Fail_Create;
 		}
 
-		if (FAILED(RenderManager::GetInst().Device()->CreateInputLayout(
+		if (FAILED(RenderManager::get_inst().Device()->CreateInputLayout(
 			m_inputLayoutDescs.data(),
 			(uint)m_inputLayoutDescs.size(),
 			VS.pData,
@@ -206,24 +206,27 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	void GraphicsShader::SetRSState(eRSType _state)
+	void GraphicsShader::set_rasterizer_state(eRasterizerState _state)
 	{
-		m_rasterizer = RenderManager::GetInst().GetRasterizerState(_state);
+		m_rasterizer_type = _state;
+		m_rasterizer_state = RenderManager::get_inst().GetRasterizerState(_state);
 	}
 
-	void GraphicsShader::SetDSState(eDSType _state)
+	void GraphicsShader::set_depth_stencil_state(eDepthStencilState _state)
 	{
-		m_depth_stencil = RenderManager::GetInst().GetDepthStencilState(_state);
+		m_depth_stencil_type = _state;
+		m_depth_stencil_state = RenderManager::get_inst().GetDepthStencilState(_state);
 	}
 
-	void GraphicsShader::SetBSState(eBSType _state)
+	void GraphicsShader::set_blend_state(eBlendState _state)
 	{
-		m_blender = RenderManager::GetInst().GetBlendState(_state);
+		m_blend_type = _state;
+		m_blend_state = RenderManager::get_inst().GetBlendState(_state);
 	}
 
 	void GraphicsShader::bind_shader()
 	{
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 		
 		pContext->IASetInputLayout(m_inputLayout.Get());
 		pContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
@@ -232,14 +235,14 @@ namespace ehw
 		pContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
 		pContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
-		pContext->RSSetState(m_rasterizer.Get());
-		pContext->OMSetBlendState(m_blender.Get(), m_blend_factor, m_sample_mask);
-		pContext->OMSetDepthStencilState(m_depth_stencil.Get(), 10u);
+		pContext->RSSetState(m_rasterizer_state.Get());
+		pContext->OMSetBlendState(m_blend_state.Get(), m_blend_factor, m_sample_mask);
+		pContext->OMSetDepthStencilState(m_depth_stencil_state.Get(), 10u);
 	}
 
 	void GraphicsShader::unbind_all_shader()
 	{
-		auto pContext = RenderManager::GetInst().Context();
+		auto pContext = RenderManager::get_inst().Context();
 
 		pContext->IASetInputLayout(nullptr);
 		pContext->VSSetShader(nullptr, nullptr, 0);
@@ -299,13 +302,13 @@ namespace ehw
 			Json::Value& ShaderFileName = ser[JSON_KEY(m_arrShaderCode)];
 			for (int i = 0; i < (int)eGSStage::END; ++i)
 			{
-				ShaderFileName.append(m_arrShaderCode[i].strKey);
+				ShaderFileName.append(m_arrShaderCode[i].name);
 			}
 		}
 
 		//래스터라이저 상태
 		ser[JSON_KEY(m_rasterizer_type)] << m_rasterizer_type;
-		ser[JSON_KEY(m_blender_type)] << m_blender_type;
+		ser[JSON_KEY(m_blend_type)] << m_blend_type;
 		ser[JSON_KEY(m_depth_stencil_type)] << m_depth_stencil_type;
 
 		return eResult::Success;
@@ -385,12 +388,12 @@ namespace ehw
 					return eResult::Fail_InValid;
 				}
 
-				m_arrShaderCode[i].strKey = shaderFileName.asString();
+				m_arrShaderCode[i].name = shaderFileName.asString();
 
 				//에딧 모드가 아닐 경우에만 로드
-				if (false == m_bEditMode && false == m_arrShaderCode[i].strKey.empty())
+				if (false == m_bEditMode && false == m_arrShaderCode[i].name.empty())
 				{
-					eResult result = compile_from_CSO((eGSStage)i, m_arrShaderCode[i].strKey);
+					eResult result = compile_from_CSO((eGSStage)i, m_arrShaderCode[i].name);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("쉐이더 코드 생성 실패");
@@ -402,11 +405,11 @@ namespace ehw
 
 		//래스터라이저 상태
 		ser[JSON_KEY(m_rasterizer_type)] >> m_rasterizer_type;
-		ser[JSON_KEY(m_blender_type)] >> m_blender_type;
+		ser[JSON_KEY(m_blend_type)] >> m_blend_type;
 		ser[JSON_KEY(m_depth_stencil_type)] >> m_depth_stencil_type;
-		SetRSState(m_rasterizer_type);
-		SetBSState(m_blender_type);
-		SetDSState(m_depth_stencil_type);
+		set_rasterizer_state(m_rasterizer_type);
+		set_blend_state(m_blend_type);
+		set_depth_stencil_state(m_depth_stencil_type);
 
 		//에디트 모드가 아닐 경우에만 Input Layout 생성.
 		if (false == m_bEditMode)
@@ -427,7 +430,7 @@ namespace ehw
 		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
 		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");
 
-		auto pDevice = RenderManager::GetInst().Device();
+		auto pDevice = RenderManager::get_inst().Device();
 		switch (_stage)
 		{
 		case eGSStage::Vertex:

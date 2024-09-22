@@ -41,11 +41,11 @@ namespace ehw
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path strKey = _resource_name;
-		strKey.replace_extension();
+		std::fs::path name = _resource_name;
+		name.replace_extension();
 
-		std::fs::path fullPath = _base_directory / strKey / strKey;
-		fullPath.replace_extension(strKey::path::extension::Model3D);
+		std::fs::path fullPath = _base_directory / name / name;
+		fullPath.replace_extension(name::path::extension::Model3D);
 
 		return LoadFile_Json(fullPath);
 	}
@@ -55,11 +55,11 @@ namespace ehw
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path strKey = _resource_name;
-		strKey.replace_extension();
+		std::fs::path name = _resource_name;
+		name.replace_extension();
 
-		std::fs::path fullPath = _base_directory / strKey / strKey;
-		fullPath.replace_extension(strKey::path::extension::Model3D);
+		std::fs::path fullPath = _base_directory / name / name;
+		fullPath.replace_extension(name::path::extension::Model3D);
 		return SaveFile_Json(fullPath);
 	}
 
@@ -80,7 +80,7 @@ namespace ehw
 				std::string skeletonStrKey{};
 				if (m_skeleton)
 				{
-					eResult result = ResourceManager<Skeleton>::GetInst().save_to_file(m_skeleton.get());
+					eResult result = ResourceManager<Skeleton>::get_inst().save_to_file(m_skeleton.get());
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
@@ -105,7 +105,7 @@ namespace ehw
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				eResult result = ResourceManager<Mesh>::GetInst().save_to_file(m_meshContainers[i].mesh.get());
+				eResult result = ResourceManager<Mesh>::get_inst().save_to_file(m_meshContainers[i].mesh.get());
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
@@ -116,7 +116,7 @@ namespace ehw
 				//material
 				Json::Value& material = meshContainer["material"];
 
-				result = ResourceManager<Material>::GetInst().save_to_file(m_meshContainers[i].material.get());
+				result = ResourceManager<Material>::get_inst().save_to_file(m_meshContainers[i].material.get());
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("재질 정보 저장 실패");
@@ -156,7 +156,7 @@ namespace ehw
 
 			if (false == skeletonStrKey.empty())
 			{
-				m_skeleton = ResourceManager<Skeleton>::GetInst().load_from_file(skeletonStrKey);
+				m_skeleton = ResourceManager<Skeleton>::get_inst().load_from_file(skeletonStrKey);
 				if (nullptr == m_skeleton)
 				{
 					ERROR_MESSAGE("스켈레톤 정보 로드에 실패했습니다.");
@@ -191,7 +191,7 @@ namespace ehw
 				//Mesh
 				std::string meshStrkey{};
 				meshContainer["mesh"] >> meshStrkey;
-				m_meshContainers[i].mesh = ResourceManager<Mesh>::GetInst().load_from_file(meshStrkey);
+				m_meshContainers[i].mesh = ResourceManager<Mesh>::get_inst().load_from_file(meshStrkey);
 				if (nullptr == m_meshContainers[i].mesh)
 				{
 					ERROR_MESSAGE("메쉬 로드 실패");
@@ -203,7 +203,7 @@ namespace ehw
 				const Json::Value& material = meshContainer["material"];
 				std::string materialtrKey{};
 				material >> materialtrKey;
-				m_meshContainers[i].material = ResourceManager<Material>::GetInst().load_from_file(materialtrKey);
+				m_meshContainers[i].material = ResourceManager<Material>::get_inst().load_from_file(materialtrKey);
 
 				if (nullptr == m_meshContainers[i].material)
 				{
@@ -312,7 +312,7 @@ namespace ehw
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::GetInst().save_to_file(this, _dirAndFileName);
+		result = ResourceManager<Model3D>::get_inst().save_to_file(this, _dirAndFileName);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -355,7 +355,7 @@ namespace ehw
 		//Key 설정
 		{
 			std::fs::path skltStrKey = filePath;
-			skltStrKey.replace_extension(strKey::path::extension::Skeleton);
+			skltStrKey.replace_extension(name::path::extension::Skeleton);
 			m_skeleton->set_resource_name(skltStrKey.string());
 		}
 		result = m_skeleton->create_from_FBX(&loader);
@@ -414,27 +414,27 @@ namespace ehw
 
 				//기본적으로는 컨테이너 이름을 사용
 				//비어있을 경우 이름을 만들어준다
-				std::fs::path strKey{};
+				std::fs::path name{};
 				if (containers[i].Name.empty())
 				{
-					strKey = filePath;
-					strKey.replace_extension();
-					strKey += "_";
-					strKey += std::to_string(i);
+					name = filePath;
+					name.replace_extension();
+					name += "_";
+					name += std::to_string(i);
 				}
 				else
 				{
-					strKey = _dirAndFileName;
-					strKey /= cont.Name;
+					name = _dirAndFileName;
+					name /= cont.Name;
 				}
-				strKey += "_";
-				strKey += std::to_string(j);
+				name += "_";
+				name += std::to_string(j);
 
 				//.msh로 확장자를 변경
-				strKey.replace_extension(strKey::path::extension::Mesh);
+				name.replace_extension(name::path::extension::Mesh);
 				//Key로 Mesh를 저장
-				meshCont.mesh->set_resource_name(strKey.string());
-				ResourceManager<Mesh>::GetInst().save_to_file(meshCont.mesh.get());
+				meshCont.mesh->set_resource_name(name.string());
+				ResourceManager<Mesh>::get_inst().save_to_file(meshCont.mesh.get());
 
 				// 메테리얼 가져오기
 				std::shared_ptr<Material> mtrl =
@@ -476,7 +476,7 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::GetInst().load_from_file(_meshDataName / _meshDataName);
+		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::get_inst().load_from_file(_meshDataName / _meshDataName);
 
 		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResult_fail(result))
@@ -503,17 +503,17 @@ namespace ehw
 		//material 하나 생성
 		std::shared_ptr<Material> mtrl = std::make_shared<Material>();
 
-		std::fs::path strKey = _texDestDir.filename();
-		strKey /= _fbxMtrl->strMtrlName;
-		strKey.replace_extension(strKey::path::extension::Material);
-		mtrl->set_resource_name(strKey.string());
+		std::fs::path name = _texDestDir.filename();
+		name /= _fbxMtrl->strMtrlName;
+		name.replace_extension(name::path::extension::Material);
+		mtrl->set_resource_name(name.string());
 
 		mtrl->SetDiffuseColor(_fbxMtrl->DiffuseColor);
 		mtrl->SetSpecularColor(_fbxMtrl->SpecularColor);
 		mtrl->SetAmbientColor(_fbxMtrl->AmbientColor);
 		mtrl->SetEmissiveColor(_fbxMtrl->EmissiveColor);
 
-		std::fs::path texDir = ResourceManager<Texture>::GetInst().GetBaseDir();
+		std::fs::path texDir = ResourceManager<Texture>::get_inst().GetBaseDir();
 		texDir /= _texDestDir;
 
 		//media directory(텍스처같은 파일들) 옮겨졌는지 여부 저장 변수
@@ -553,7 +553,7 @@ namespace ehw
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
-				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::GetInst().load_from_file(texKey);
+				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::get_inst().load_from_file(texKey);
 				//바로 Texture Load. 로드 실패 시 false 반환
 				if (nullptr == newTex)
 				{
@@ -568,7 +568,7 @@ namespace ehw
 		mtrl->set_texture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->set_texture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::GetInst().find(strKey::defaultRes::shader::graphics::Deffered3DShader);
+		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 		mtrl->set_shader(defferedShader);
 
 		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);
@@ -669,7 +669,7 @@ namespace ehw
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
 
-									newTex = ResourceManager<Texture>::GetInst().load_from_file(texKey);
+									newTex = ResourceManager<Texture>::get_inst().load_from_file(texKey);
 
 
 									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");
@@ -693,8 +693,8 @@ namespace ehw
 			return false;
 
 		//Mesh 또는 Material은 없을 리가 없음(생성할 때 예외처리 함)
-		_renderer->SetMesh(m_meshContainers[_idx].mesh);
-		_renderer->SetMaterial(m_meshContainers[_idx].material);
+		_renderer->set_mesh(m_meshContainers[_idx].mesh);
+		_renderer->set_material(m_meshContainers[_idx].material);
 
 		return true;
 	}

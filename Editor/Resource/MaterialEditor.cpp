@@ -5,7 +5,7 @@
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>
 
-#include <Engine/Resource/Material.h>
+#include <Engine/Resource/Material/Material.h>
 #include <Engine/Resource/Texture.h>
 #include <Engine/Resource/Shader/GraphicsShader.h>
 
@@ -22,7 +22,7 @@ namespace ehw::editor
 		"deffered_opaque",
 		"deffered_mask",
 
-		"Light",
+		//"Light",
 
 		//Forward
 		"forward_opaque",
@@ -61,19 +61,19 @@ namespace ehw::editor
 		}
 	}
 
-	void EditorMaterial::Update()
+	void EditorMaterial::update()
 	{
 		if (mShaderCombo.IsSelectionChanged())
 		{
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::GetInst().load_from_file(shaderName);
+				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load_from_file(shaderName);
 			}
 		}
 	}
 
-	void EditorMaterial::UpdateUI()
+	void EditorMaterial::update_UI()
 	{
 		UpdateShader();
 
@@ -102,7 +102,7 @@ namespace ehw::editor
 	}
 	void EditorMaterial::RefreshShaderSettingFiles()
 	{
-		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::GetInst().GetBaseDir();
+		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -147,7 +147,7 @@ namespace ehw::editor
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::GetInst().load_from_file(shaderKey);
+				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load_from_file(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
@@ -192,19 +192,19 @@ namespace ehw::editor
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ResourceManager<Texture>::GetInst().GetBaseDir();
+				const std::fs::path& texPath = ResourceManager<Texture>::get_inst().GetBaseDir();
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < ::ehw::strKey::path::extension::Texture_ArrSize; ++i)
+				for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
 				{
-					vecExt.push_back(::ehw::strKey::path::extension::Texture[i]);
+					vecExt.push_back(::ehw::name::path::extension::Texture[i]);
 				}
 				std::fs::path receivedPath = WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey = PathManager::GetInst().MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey = PathManager::get_inst().MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().load_from_file(PathstrKey);
+					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load_from_file(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -294,7 +294,7 @@ namespace ehw::editor
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.Reset();
-			const auto& materials = ResourceManager<Material>::GetInst().GetResources();
+			const auto& materials = ResourceManager<Material>::get_inst().GetResources();
 			for (auto& mtrl : materials)
 			{
 				mCurrentLoadedMtrl.AddItem(mtrl.second->get_resource_name());
@@ -323,10 +323,10 @@ namespace ehw::editor
 	}
 	void EditorMaterial::SaveToFile()
 	{
-		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::GetInst().GetBaseDir());
+		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::get_inst().GetBaseDir());
 			
 		outputPath /= mSaveLoadFileName;
-		outputPath = WinAPI::FileDialog(outputPath, ::ehw::strKey::path::extension::Material);
+		outputPath = WinAPI::FileDialog(outputPath, ::ehw::name::path::extension::Material);
 
 		if (outputPath.empty())
 		{
@@ -335,12 +335,12 @@ namespace ehw::editor
 
 		//저장할 때는 Key값을 바꿔야 하기 때문에 Clone 해서 저장해야 한다.
 		//기존 리소스를 그대로 Save하게 되면 Key 값이 변경되어 에러가 발생할 수 있음.
-		mTargetMaterial = std::shared_ptr<Material>(mTargetMaterial->Clone());
+		mTargetMaterial = std::shared_ptr<Material>(dynamic_cast<Material*>(mTargetMaterial->Clone()));
 
-		std::string strKey = outputPath.filename().string();
-		mTargetMaterial->set_resource_name(strKey);
+		std::string name = outputPath.filename().string();
+		mTargetMaterial->set_resource_name(name);
 
-		ResourceManager<Material>::GetInst().save_to_file(mTargetMaterial.get());
+		ResourceManager<Material>::get_inst().save_to_file(mTargetMaterial.get());
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -363,12 +363,12 @@ namespace ehw::editor
 					}
 					else
 					{
-						std::shared_ptr<Material> mtrl = ResourceManager<Material>::GetInst().find(mtrlKey);
+						std::shared_ptr<Material> mtrl = ResourceManager<Material>::get_inst().find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
 						{
-							mtrl = std::shared_ptr<Material>(mtrl->Clone());
+							mtrl = std::shared_ptr<Material>(dynamic_cast<Material*>(mtrl->Clone()));
 							mtrl->set_engine_default_res(false);
 						}
 
@@ -397,10 +397,10 @@ namespace ehw::editor
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::GetInst().GetBaseDir());
+					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::get_inst().GetBaseDir());
 
 					//Res 폴더
-					const std::fs::path& resDir = PathManager::GetInst().GetResPathAbsolute();
+					const std::fs::path& resDir = PathManager::get_inst().GetResPathAbsolute();
 
 					std::fs::path filePath = WinAPI::FileDialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
@@ -409,7 +409,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::GetInst().load_from_file(filePath.filename());
+						mTargetMaterial = ResourceManager<Material>::get_inst().load_from_file(filePath.filename());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

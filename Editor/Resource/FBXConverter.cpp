@@ -29,7 +29,7 @@ namespace ehw::editor
 	}
 
 
-	void EditorFBXConverter::UpdateUI()
+	void EditorFBXConverter::update_UI()
 	{
 
 		if (CheckThread())
@@ -86,7 +86,7 @@ namespace ehw::editor
 			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
-			waitDot += TimeManager::GetInst().DeltaTime();
+			waitDot += TimeManager::get_inst().DeltaTime();
 			if (1.f < waitDot)
 			{
 				waitDot = 0.f;
@@ -154,7 +154,7 @@ namespace ehw::editor
 				return;
 			}
 			
-			mFutureConvertResult = ThreadPoolManager::GetInst().EnqueueJob(
+			mFutureConvertResult = ThreadPoolManager::get_inst().EnqueueJob(
 				[this]()->eResult
 				{
 					Model3D meshData{};
@@ -203,7 +203,7 @@ namespace ehw::editor
 	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetStrKey("Model3D List");
-		const std::fs::path& meshPath = ResourceManager<Model3D>::GetInst().GetBaseDir();
+		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
 
 		try
 		{

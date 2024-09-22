@@ -110,7 +110,7 @@ namespace ehw
 	}
 
 	//트랜스폼을 업데이트
-	void Light_3D::Update()
+	void Light_3D::update()
 	{
 		auto tr = gameObject()->GetComponent<Transform>();
 		if (nullptr == tr) {
@@ -120,7 +120,7 @@ namespace ehw
 		float3 position = tr->get_local_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 			
-		//Transform 조작은 Update()까지만 가능.
+		//Transform 조작은 update()까지만 가능.
 		switch (m_attribute.lightType)
 		{
 		case LIGHT_TYPE_DIRECTIONAL:
@@ -168,6 +168,6 @@ namespace ehw
 		float3 position = tr->get_world_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		RenderManager::GetInst().sceneRenderAgent().enqueue_light_3D((eLightType)m_attribute.lightType, this);
+		RenderManager::get_inst().sceneRenderAgent().enqueue_light_3D((eLightType)m_attribute.lightType, this);
 	}
 }

@@ -30,7 +30,7 @@ namespace ehw::editor
 		SetFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 	}
 
-	void EditorUVCalculator::UpdateUI()
+	void EditorUVCalculator::update_UI()
 	{
 		UpdateLoadButton();
 
@@ -43,20 +43,20 @@ namespace ehw::editor
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
-			std::vector<std::fs::path> extensions(::ehw::strKey::path::extension::Texture_ArrSize);
-			for (size_t i = 0; i < ::ehw::strKey::path::extension::Texture_ArrSize; ++i)
+			std::vector<std::fs::path> extensions(::ehw::name::path::extension::Texture_ArrSize);
+			for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
 			{
-				extensions[i] = ::ehw::strKey::path::extension::Texture[i];
+				extensions[i] = ::ehw::name::path::extension::Texture[i];
 			}
 
-			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::GetInst().GetBaseDir());
+			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
 
 			std::fs::path texPath = WinAPI::FileDialog(absTexPath, extensions);
 
 
-			texPath = PathManager::GetInst().MakePathStrKey(texPath);
+			texPath = PathManager::get_inst().MakePathStrKey(texPath);
 
-			mTexture = ResourceManager<Texture>::GetInst().load_from_file(texPath);
+			mTexture = ResourceManager<Texture>::get_inst().load_from_file(texPath);
 
 			if (mTexture)
 			{

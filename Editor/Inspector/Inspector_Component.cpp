@@ -5,7 +5,7 @@
 namespace ehw::editor
 {
 	Inspector_Component::Inspector_Component(eComponentCategory _type)
-		: EditorChild(::ehw::strKey::eComponentCategory_String[(int)_type])
+		: EditorChild(::ehw::name::eComponentCategory_String[(int)_type])
 		, m_ComCategory(_type)
 		, mTarget()
 	{

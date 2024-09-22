@@ -86,17 +86,17 @@ namespace ehw
 
 	void Com_Renderer_ParticleSystem::init()
 	{
-		using namespace strKey::defaultRes;
+		using namespace name::defaultRes;
 		mCS = LOAD_COMPUTESHADER(ParticleShader);
 
-		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::GetInst().find(mesh::PointMesh);
-		SetMesh(point);
+		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::get_inst().find(mesh::PointMesh);
+		set_mesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceManager<Material>::GetInst().find(material::ParticleMaterial);
-		SetMaterial(material);
+		std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().find(material::ParticleMaterial);
+		set_material(material);
 
-		std::shared_ptr<Texture> tex = ResourceManager<Texture>::GetInst().find(texture::CartoonSmoke);
+		std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().find(texture::CartoonSmoke);
 		material->set_texture(eTextureSlot::Albedo, tex);
 
 		tParticle particles[100] = {};
@@ -130,7 +130,7 @@ namespace ehw
 		float aliveTime = 1.0f / mFrequency;
 
 		//누적시간
-		mTime += TimeManager::GetInst().DeltaTime();
+		mTime += TimeManager::get_inst().DeltaTime();
 		if (aliveTime < mTime)
 		{
 			float f = (mTime / aliveTime);
@@ -156,11 +156,11 @@ namespace ehw
 		mCBData.startSize = mStartSize;
 		mCBData.startColor = mStartColor;
 		mCBData.startLifeTime = mStartLifeTime;
-		mCBData.deltaTime = TimeManager::GetInst().DeltaTime();
-		mCBData.elapsedTime += TimeManager::GetInst().DeltaTime();
+		mCBData.deltaTime = TimeManager::get_inst().DeltaTime();
+		mCBData.elapsedTime += TimeManager::get_inst().DeltaTime();
 
 
-		ConstBuffer* cb = RenderManager::GetInst().GetConstBuffer(eCBType::ParticleSystem);
+		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::ParticleSystem);
 		cb->set_data(&mCBData);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 

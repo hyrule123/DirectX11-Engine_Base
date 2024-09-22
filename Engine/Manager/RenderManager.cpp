@@ -110,7 +110,7 @@ namespace ehw
 		//Resource
 		load_default_resources();
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::GetInst().load_from_file<GPUInitSetting>(strKey::defaultRes::shader::compute::GPUInitSetting);
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load_from_file<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
 		m_sceneRenderAgent.init();
@@ -150,15 +150,15 @@ namespace ehw
 		{
 			m_samplerStates[i] = nullptr;
 		}
-		for (int i = 0; i < (int)eRSType::END; ++i)
+		for (int i = 0; i < (int)eRasterizerState::END; ++i)
 		{
 			m_rasterizerStates[i] = nullptr;
 		}
-		for (int i = 0; i < (int)eDSType::END; ++i)
+		for (int i = 0; i < (int)eDepthStencilState::END; ++i)
 		{
 			m_depthStencilStates[i] = nullptr;
 		}
-		for (int i = 0; i < (int)eBSType::END; ++i)
+		for (int i = 0; i < (int)eBlendState::END; ++i)
 		{
 			m_blendStates[i] = nullptr;
 		}
@@ -223,7 +223,7 @@ namespace ehw
 	{
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 
-		swapChainDesc.OutputWindow = GameEngine::GetInst().GetHwnd();
+		swapChainDesc.OutputWindow = GameEngine::get_inst().GetHwnd();
 		swapChainDesc.Windowed = true;
 		swapChainDesc.BufferCount = 2;
 		//DXGI WARNING: IDXGIFactory::CreateSwapChain: Blt-model swap effects (DXGI_SWAP_EFFECT_DISCARD and DXGI_SWAP_EFFECT_SEQUENTIAL) are legacy swap effects that are predominantly superceded by their flip-model counterparts (DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL and DXGI_SWAP_EFFECT_FLIP_DISCARD)
@@ -312,7 +312,7 @@ namespace ehw
 		m_viewport.MinDepth = (FLOAT)0.f;
 		m_viewport.MaxDepth = (FLOAT)1.f;
 
-		int2 winSize = GameEngine::GetInst().GetWindowSize();
+		int2 winSize = GameEngine::get_inst().GetWindowSize();
 
 		m_viewport.Width = (FLOAT)winSize.x;
 		m_viewport.Height = (FLOAT)winSize.y;
@@ -353,7 +353,7 @@ namespace ehw
 
 	void RenderManager::BindNoiseTexture()
 	{
-		std::shared_ptr<Texture> noise = ResourceManager<Texture>::GetInst().find(strKey::defaultRes::texture::noise_03);
+		std::shared_ptr<Texture> noise = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::noise_03);
 		noise->bind_data_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
@@ -361,7 +361,7 @@ namespace ehw
 		info.NoiseSize.y = (float)noise->GetHeight();
 
 		static float noiseTime = 10.f;
-		noiseTime -= TimeManager::GetInst().DeltaTime();
+		noiseTime -= TimeManager::get_inst().DeltaTime();
 		info.NoiseTime = noiseTime;
 
 		ConstBuffer* cb = m_constBuffers[(uint)eCBType::Noise].get();
@@ -370,17 +370,17 @@ namespace ehw
 	}
 	void RenderManager::CopyRenderTarget()
 	{
-		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::GetInst().find(strKey::defaultRes::texture::RenderTarget);
+		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::RenderTarget);
 
 		//renderTarget->unbind_buffer();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
-		//RenderManager::GetInst().Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
+		//RenderManager::get_inst().Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
 
 		ID3D11Texture2D* dest = m_postProcessTexture->get_texture().Get();
 		ID3D11Texture2D* source = renderTarget->get_texture().Get();
 
-		RenderManager::GetInst().Context()->CopyResource(dest, source);
+		RenderManager::get_inst().Context()->CopyResource(dest, source);
 
 		m_postProcessTexture->bind_data_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
@@ -407,7 +407,7 @@ namespace ehw
 
 	void RenderManager::UpdateGlobalCBuffer()
 	{
-		gGlobal.DeltaTime = TimeManager::GetInst().DeltaTime();
+		gGlobal.DeltaTime = TimeManager::get_inst().DeltaTime();
 		gGlobal.AccFramePrev = gGlobal.AccFrame;
 		gGlobal.AccFrame += 1u;
 
@@ -424,8 +424,8 @@ namespace ehw
 			std::shared_ptr<Texture> arrRTTex[8] = {};
 			std::shared_ptr<Texture> dsTex = nullptr;
 
-			arrRTTex[0] = RenderManager::GetInst().GetRenderTargetTex();
-			dsTex = RenderManager::GetInst().GetDepthStencilBufferTex();
+			arrRTTex[0] = RenderManager::get_inst().GetRenderTargetTex();
+			dsTex = RenderManager::get_inst().GetDepthStencilBufferTex();
 
 			m_multi_render_targets[(UINT)eMRTType::Swapchain] = std::make_unique<MultiRenderTarget>();
 
@@ -447,11 +447,11 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_name(strKey::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_resource_name(name::eMRT_Deffered_String[i]);
 			}
 
 
-			dsTex = RenderManager::GetInst().GetDepthStencilBufferTex();
+			dsTex = RenderManager::get_inst().GetDepthStencilBufferTex();
 
 			m_multi_render_targets[(int)eMRTType::Deffered] = std::make_unique<MultiRenderTarget>();
 			if (false == m_multi_render_targets[(int)eMRTType::Deffered]->create(arrRTTex, dsTex))
@@ -472,7 +472,7 @@ namespace ehw
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_name(strKey::eMRT_Light_String[i]);
+				arrRTTex[i]->set_resource_name(name::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
@@ -488,9 +488,9 @@ namespace ehw
 	{
 		//Light
 		{
-			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::LightDirMaterial);
+			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightDirMaterial);
 
-			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::LightPointMaterial);
+			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightPointMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
@@ -523,7 +523,7 @@ namespace ehw
 
 		//Merge
 		{
-			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::GetInst().find(strKey::defaultRes::material::MergeMaterial);
+			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{

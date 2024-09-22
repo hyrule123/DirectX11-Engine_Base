@@ -10,7 +10,7 @@ namespace ehw::editor
 		virtual ~SceneViewer();
 
 
-		virtual void UpdateUI() override;
+		virtual void update_UI() override;
 
 	private:
 	};

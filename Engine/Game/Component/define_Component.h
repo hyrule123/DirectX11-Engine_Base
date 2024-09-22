@@ -31,7 +31,7 @@ namespace ehw
 		return (_cat < eComponentCategory::END);
 	}
 
-	namespace strKey
+	namespace name
 	{
 		STR_KEY eComponentCategory_String[(int)eComponentCategory::END] =
 		{

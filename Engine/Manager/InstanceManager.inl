@@ -10,7 +10,7 @@
 #define UNIQUE_VAR(x) CONCAT(x##_, __LINE__)
 
 #define REGISTER_INSTANCE(_class, _key) \
-private: static inline const bool UNIQUE_VAR(unused) = InstanceManager::GetInst().add_ctor<_class>(_key)
+private: static inline const bool UNIQUE_VAR(unused) = InstanceManager::get_inst().add_ctor<_class>(_key)
 #define REGISTER_INSTANCE_DEFAULT(_class) REGISTER_INSTANCE(_class, _class::concrete_class_name)
 
 //이 클래스의 목적: 문자열로 원하는 클래스를 생성

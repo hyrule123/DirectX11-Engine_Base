@@ -8,7 +8,7 @@
 
 #include <concepts>
 
-#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::GetInst().load_from_file<_type>(#_type)
+#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::get_inst().load_from_file<_type>(#_type)
 
 namespace ehw
 {
@@ -153,7 +153,7 @@ namespace ehw
 
 		SetBaseDir(_base_directory);
 
-		ResourceManagers::GetInst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<ResourceTypes>::CleanUnusedResources, this));
+		ResourceManagers::get_inst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<ResourceTypes>::CleanUnusedResources, this));
 
 		AtExit::AddFunc(std::bind(&ResourceManager<ResourceTypes>::release, this));
 	}
@@ -253,8 +253,7 @@ namespace ehw
 	{
 		m_BaseDir = _base_directory;
 
-		if (false == std::fs::exists(m_BaseDir))
-		{
+		if (false == m_BaseDir.empty() && false == std::fs::exists(m_BaseDir)) {
 			bool result = std::fs::create_directories(m_BaseDir);
 			ASSERT(result, "리소스 기본 디렉토리 생성에 실패했습니다.");
 		}

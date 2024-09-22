@@ -51,14 +51,14 @@ namespace ehw
 	eResult Mesh::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
 		std::fs::path key_path = _resource_name;
-		key_path.replace_extension(strKey::path::extension::Mesh);
+		key_path.replace_extension(name::path::extension::Mesh);
 		return SaveFile_Binary(_base_directory / key_path);
 	}
 
 	eResult Mesh::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		std::fs::path filePath = _base_directory / _resource_name;
-		filePath.replace_extension(strKey::path::extension::Mesh);
+		filePath.replace_extension(name::path::extension::Mesh);
 		return LoadFile_Binary(filePath);
 	}
 
@@ -73,7 +73,7 @@ namespace ehw
 		BinarySerializer& ser = *_ser;
 
 		if (m_vertex_buffer) {
-			ResourceManager<VertexBuffer>::GetInst().save_to_file(m_vertex_buffer.get());
+			ResourceManager<VertexBuffer>::get_inst().save_to_file(m_vertex_buffer.get());
 			ser << m_vertex_buffer->get_resource_name();
 		}
 		else {
@@ -108,7 +108,7 @@ namespace ehw
 		//vertex buffer
 		std::string keypath; ser >> keypath;
 		if (false == keypath.empty()) {
-			m_vertex_buffer = ResourceManager<VertexBuffer>::GetInst().load_from_file(keypath);
+			m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load_from_file(keypath);
 		}
 
 		ser >> m_index_topology;
@@ -119,7 +119,7 @@ namespace ehw
 		//skeleton
 		ser >> keypath;
 		if (false == keypath.empty()) {
-			ResourceManager<VertexBuffer>::GetInst().load_from_file(keypath);
+			ResourceManager<VertexBuffer>::get_inst().load_from_file(keypath);
 		}
 
 		return eResult::Success;
@@ -130,7 +130,7 @@ namespace ehw
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = _data;
 
-		HRESULT result = RenderManager::GetInst().Device()->CreateBuffer(&m_index_buffer_desc, &subData, m_index_buffer.ReleaseAndGetAddressOf());
+		HRESULT result = RenderManager::get_inst().Device()->CreateBuffer(&m_index_buffer_desc, &subData, m_index_buffer.ReleaseAndGetAddressOf());
 
 		return SUCCEEDED(result);
 	}
@@ -157,7 +157,7 @@ namespace ehw
 
 	void Mesh::render() const
 	{
-		auto context = RenderManager::GetInst().Context();
+		auto context = RenderManager::get_inst().Context();
 
 		context->IASetPrimitiveTopology(m_index_topology);
 
@@ -171,7 +171,7 @@ namespace ehw
 	
 	void Mesh::render_instanced(UINT _instanceCount) const
 	{
-		auto context = RenderManager::GetInst().Context();
+		auto context = RenderManager::get_inst().Context();
 
 		context->IASetPrimitiveTopology(m_index_topology);
 

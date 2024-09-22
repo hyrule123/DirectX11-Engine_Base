@@ -15,9 +15,9 @@ namespace ehw::editor
 	{
 		GameObject::Awake();
 	}
-	void EditorObject::Update()
+	void EditorObject::update()
 	{
-		GameObject::Update();
+		GameObject::update();
 	}
 	void EditorObject::final_update()
 	{

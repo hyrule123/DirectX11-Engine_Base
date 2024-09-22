@@ -12,7 +12,7 @@ namespace ehw::editor
 		virtual ~EditorWindow();
 
 		virtual bool BeginUI() override;
-		virtual void UpdateUI() {};
+		virtual void update_UI() {};
 		virtual void EndUI() override;
 
 		void SetFlag(ImGuiWindowFlags _flag) { mWindowFlag = _flag; }
