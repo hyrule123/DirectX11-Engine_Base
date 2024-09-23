@@ -56,7 +56,7 @@ namespace ehw::editor
 
 			texPath = PathManager::get_inst().MakePathStrKey(texPath);
 
-			mTexture = ResourceManager<Texture>::get_inst().load_from_file(texPath);
+			mTexture = ResourceManager<Texture>::get_inst().load(texPath);
 
 			if (mTexture)
 			{

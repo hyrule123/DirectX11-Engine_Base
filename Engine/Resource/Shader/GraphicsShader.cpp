@@ -42,12 +42,12 @@ namespace ehw
 	{
 	}
 
-	eResult GraphicsShader::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	eResult GraphicsShader::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
 		return SaveFile_Json(_base_directory / _resource_name);
 	}
 
-	eResult GraphicsShader::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult GraphicsShader::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		return LoadFile_Json(_base_directory / _resource_name);
 	}

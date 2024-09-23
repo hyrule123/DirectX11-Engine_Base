@@ -110,7 +110,7 @@ namespace ehw
 		//Resource
 		load_default_resources();
 
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load_from_file<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
+		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
 		m_sceneRenderAgent.init();
@@ -344,6 +344,11 @@ namespace ehw
 		BindNoiseTexture();
 
 		m_sceneRenderAgent.render();
+	}
+
+	void RenderManager::render_debug()
+	{
+		m_sceneRenderAgent.render_debug();
 	}
 
 	void RenderManager::FrameEnd()

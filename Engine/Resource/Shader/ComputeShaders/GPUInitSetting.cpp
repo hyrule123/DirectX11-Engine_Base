@@ -24,7 +24,7 @@ namespace ehw
 	{
 	}
 
-	eResult GPUInitSetting::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult GPUInitSetting::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		eResult result = compile_from_byte_code(GPU_Init_Setting_CS, sizeof(GPU_Init_Setting_CS));
 

@@ -68,7 +68,7 @@ namespace ehw::editor
 			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load_from_file(shaderName);
+				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load(shaderName);
 			}
 		}
 	}
@@ -147,7 +147,7 @@ namespace ehw::editor
 			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load_from_file(shaderKey);
+				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
@@ -204,7 +204,7 @@ namespace ehw::editor
 				{
 					std::fs::path PathstrKey = PathManager::get_inst().MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load_from_file(PathstrKey);
+					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey);
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -340,7 +340,7 @@ namespace ehw::editor
 		std::string name = outputPath.filename().string();
 		mTargetMaterial->set_resource_name(name);
 
-		ResourceManager<Material>::get_inst().save_to_file(mTargetMaterial.get());
+		ResourceManager<Material>::get_inst().save(mTargetMaterial.get());
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -409,7 +409,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::get_inst().load_from_file(filePath.filename());
+						mTargetMaterial = ResourceManager<Material>::get_inst().load(filePath.filename());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

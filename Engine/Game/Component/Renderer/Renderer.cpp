@@ -113,7 +113,7 @@ namespace ehw
 			{
 				std::string name{};
 				renderer[JSON_KEY(m_mesh)] >> name;
-				m_mesh = ResourceManager<Mesh>::get_inst().load_from_file(name);
+				m_mesh = ResourceManager<Mesh>::get_inst().load(name);
 			}
 			
 
@@ -122,7 +122,7 @@ namespace ehw
 				const Json::Value& material = renderer[JSON_KEY(m_material)];
 				std::string name{};
 				material >> name;
-				m_shared_material = ResourceManager<Material>::get_inst().load_from_file(name);
+				m_shared_material = ResourceManager<Material>::get_inst().load(name);
 				m_current_material = m_shared_material;
 			}
 

@@ -59,13 +59,13 @@ namespace ehw
         m_SBufferKeyFrame->unbind_buffer();
     }
 
-    eResult Animation3D::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+    eResult Animation3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+    eResult Animation3D::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
         ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;

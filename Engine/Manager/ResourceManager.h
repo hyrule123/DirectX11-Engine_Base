@@ -8,7 +8,7 @@
 
 #include <concepts>
 
-#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::get_inst().load_from_file<_type>(#_type)
+#define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::get_inst().load<_type>(#_type)
 
 namespace ehw
 {
@@ -29,12 +29,15 @@ namespace ehw
 		void init(const std::fs::path& _base_directory);
 		void release();
 
-		eResult save_to_file(const std::string_view _resource_name);
-		eResult save_to_file(ResourceTypes* _resPtr);
-		eResult save_to_file(ResourceTypes* _resPtr, const std::fs::path& _resource_name);
+		//Resource Manager에 등록된 경로에 파일을 저장한다.
+		eResult save(const std::shared_ptr<ResourceTypes>& _res);
+		eResult save_as(const std::shared_ptr<ResourceTypes>& _res, const std::fs::path& _save_as_resource_name);
 
+		//Resource Manager에 등록된 경로로부터 불러온다.
 		template <typename DerivedResType = ResourceTypes>
-		std::shared_ptr<DerivedResType> load_from_file(const std::fs::path& _resource_name, const std::fs::path& _base_path = {});
+		std::shared_ptr<DerivedResType> load(const std::fs::path& _resource_name);
+
+		//std::shared_ptr<ResourceTypes> load(const std::fs::path& _resource_name, const std::string_view _concrete_class_name);
 
 		template <typename DerivedResType = ResourceTypes>
 		void insert(const std::string_view _resource_name, std::shared_ptr<DerivedResType> _Res);
@@ -64,11 +67,9 @@ namespace ehw
 
 	template<typename ResourceTypes>
 	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::load_from_file(const std::filesystem::path& _resource_name, const std::fs::path& _base_path)
+	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::load(const std::filesystem::path& _resource_name)
 	{
 		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
-
-		//ASSERT(m_bInitialized, "초기화되지 않았습니다. init()를 호출한 뒤 사용하세요.");
 
 		if (_resource_name.empty())
 		{
@@ -81,14 +82,7 @@ namespace ehw
 		if(nullptr == returnPtr)
 		{
 			returnPtr = std::make_shared<DerivedResType>();
-			eResult result{};
-			if (_base_path.empty()) {
-				result = returnPtr->load_from_file(m_BaseDir, _resource_name);
-			}
-			else {
-				result = returnPtr->load_from_file(_base_path, _resource_name);
-			}
-			
+			eResult result = result = returnPtr->load(m_BaseDir, _resource_name);
 
 			if (eResult_success(result))
 			{
@@ -115,7 +109,12 @@ namespace ehw
 
 		if (m_Resources.end() != iter)
 		{
-			returnRes = std::dynamic_pointer_cast<DerivedResType>(iter->second);
+			if constexpr (std::is_same_v<ResourceTypes, DerivedResType>) {
+				returnRes = iter->second;
+			}
+			else {
+				returnRes = std::dynamic_pointer_cast<DerivedResType>(iter->second);
+			}
 		}
 
 		return returnRes;
@@ -159,63 +158,31 @@ namespace ehw
 	}
 
 	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::save_to_file(const std::string_view _resource_name)
-	{
-		const std::shared_ptr<ResourceTypes>& savedFile = find(_resource_name);
-		if (nullptr == savedFile)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		
-		return savedFile->save_to_file(m_BaseDir, _resource_name);
-	}
-
-	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::save_to_file(ResourceTypes* _resPtr)
-	{
-		if (nullptr == _resPtr)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		else if (_resPtr->get_resource_name().empty())
-		{
-			return eResult::Fail_InValid;
-		}
-
-		return _resPtr->save_to_file(m_BaseDir, _resPtr->get_resource_name());
-	}
-
-	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::save_to_file(ResourceTypes* _resPtr, const std::fs::path& _resource_name)
-	{
-		if (nullptr == _resPtr)
-		{
-			return eResult::Fail_Nullptr;
-		}
-		else if (_resource_name.empty())
-		{
-			return eResult::Fail_InValid;
-		}
-
-		//기존 키값 임시 저장
-		std::string tempStr{ _resPtr->get_resource_name() };
-		_resPtr->set_resource_name(_resource_name.string());
-
-		//저장하고
-		eResult result = _resPtr->save_to_file(m_BaseDir, _resource_name);
-
-		//원래 키값을 복원
-		_resPtr->set_resource_name(tempStr);
-
-		return result;
-	}
-
-	template<typename ResourceTypes>
 	inline void ResourceManager<ResourceTypes>::release()
 	{
 		m_bInitialized = false;
 		m_BaseDir.clear();
 		m_Resources.clear();
+	}
+
+	template<typename ResourceTypes>
+	inline eResult ResourceManager<ResourceTypes>::save(const std::shared_ptr<ResourceTypes>& _res)
+	{
+		if (nullptr == _res || _res->get_resource_name().empty()) {
+			return eResult::Fail;
+		}
+
+		return _res->save(m_BaseDir, _res->get->resource_name());
+	}
+
+	template<typename ResourceTypes>
+	inline eResult ResourceManager<ResourceTypes>::save_as(const std::shared_ptr<ResourceTypes>& _res, const std::fs::path& _save_as_resource_name)
+	{
+		if (nullptr == _res || _save_as_resource_name.empty()) {
+			return eResult::Fail;
+		}
+
+		return _res->save(m_BaseDir, _save_as_resource_name);
 	}
 
 	template<typename ResourceTypes>

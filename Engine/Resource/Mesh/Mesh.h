@@ -25,13 +25,13 @@ namespace ehw
 		, Serializable_Binary
 	{
 		CLASS_NAME(Mesh);
-
+		REGISTER_INSTANCE_DEFAULT(Mesh);
 	public:
 		Mesh();
 		virtual ~Mesh();
 
-		virtual eResult save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
-		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
+		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;

@@ -579,7 +579,7 @@ namespace ehw
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager<Texture>::get_inst().load_from_file(_TextureRelativePath))
+				if (nullptr == ResourceManager<Texture>::get_inst().load(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -663,7 +663,7 @@ namespace ehw
 
 				
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strDiffuseTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Albedo, pTex);
@@ -672,7 +672,7 @@ namespace ehw
 
 					
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strNormalTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strNormalTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Normal, pTex);
@@ -680,7 +680,7 @@ namespace ehw
 				}
 
 				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load_from_file(mContainers[i].vecMtrl[j].strSpecularTex);
+					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strSpecularTex);
 					if (nullptr != pTex)
 					{
 						pMaterial->set_texture(eTextureSlot::Specular, pTex);
@@ -700,7 +700,7 @@ namespace ehw
 				pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
 				pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
 
-				eResult result = ResourceManager<Material>::get_inst().save_to_file(pMaterial.get());
+				eResult result = ResourceManager<Material>::get_inst().save(pMaterial);
 
 				if (eResult_fail(result))
 				{

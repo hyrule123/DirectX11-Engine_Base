@@ -44,13 +44,11 @@ namespace ehw
 	{
 	}
 
-	eResult Skeleton::save_to_file(const std::fs::path& _basePath, const std::fs::path& _resource_name) const
+	eResult Skeleton::save(const std::fs::path& _basePath, const std::fs::path& _resource_name) const
 	{
-		//상위 디렉토리 있는지 테스트
+		//디렉토리가 존재하는지 확인한다.
 		{
-			std::fs::path checkDir = _resource_name;
-			checkDir.remove_filename();
-			if (false == std::fs::is_directory(checkDir))
+			if (false == std::fs::is_directory((_basePath / _resource_name).remove_filename()))
 			{
 				ERROR_MESSAGE("Skeleton은 반드시 폴더 안에 저장되어야 합니다.");
 				return eResult::Fail;
@@ -68,11 +66,11 @@ namespace ehw
 		
 		//Animation3D는 Skeleton에 종속되므로 ResourceManager를 사용하지 않음 -> SaveFile_Binary을 통해 저장한다.
 		{
-			fullPath.remove_filename();
-
 			for (const auto& iter : m_animations)
 			{
-				result = iter.second->SaveFile_Binary(fullPath / iter.first / name::path::extension::Anim3D);
+				fullPath.replace_filename(iter.first);
+				fullPath.replace_extension(name::path::extension::Anim3D);
+				result = iter.second->SaveFile_Binary(fullPath);
 				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg{};
@@ -85,10 +83,9 @@ namespace ehw
 			}
 		}
 
-
-		return SaveFile_Binary(_basePath / _resource_name);
+		return result;
 	}
-	eResult Skeleton::load_from_file(const std::fs::path& _basePath, const std::fs::path& _resource_name)
+	eResult Skeleton::load(const std::fs::path& _basePath, const std::fs::path& _resource_name)
 	{
 		std::fs::path fullPath = _basePath / _resource_name;
 

@@ -30,6 +30,7 @@ namespace ehw
 		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
 
 		void render();
+		void render_debug();
 		void FrameEnd();
 
 		void ClearRenderTarget();// 화면 지워주기

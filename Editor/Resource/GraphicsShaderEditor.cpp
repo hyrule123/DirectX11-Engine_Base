@@ -861,7 +861,7 @@ namespace ehw::editor
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 		
-		if (eResult_success(shader.save_to_file(baseDir, _filePath)))
+		if (eResult_success(shader.save(baseDir, _filePath)))
 		{
 			LoadShaderSettingComboBox();
 		}
@@ -878,7 +878,7 @@ namespace ehw::editor
 		shader.set_edit_mode(true);
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
-		if (eResult_fail(shader.load_from_file(baseDir, _filePath)))
+		if (eResult_fail(shader.load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;

@@ -64,12 +64,12 @@ namespace ehw
         m_shader->bind_shader();
     }
 
-    eResult Material::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+    eResult Material::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
         return SaveFile_Json(_base_directory / _resource_name);
     }
 
-    eResult Material::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+    eResult Material::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
         return LoadFile_Json(_base_directory / _resource_name);
     }
@@ -146,7 +146,7 @@ namespace ehw
             {
                 std::string name{};
                 ser[JSON_KEY(m_shader)] >> name;
-                m_shader = ResourceManager<GraphicsShader>::get_inst().load_from_file(name);
+                m_shader = ResourceManager<GraphicsShader>::get_inst().load(name);
             }
 
 
@@ -156,7 +156,7 @@ namespace ehw
             {
                 std::string name{};
                 textures[i] >> name;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load_from_file(name);
+                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load(name);
                 if (tex)
                 {
                     set_texture((eTextureSlot)i, tex);

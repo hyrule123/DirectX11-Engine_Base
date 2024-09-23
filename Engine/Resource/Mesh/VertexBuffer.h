@@ -51,9 +51,13 @@ namespace ehw {
 
         void IA_set_vertex_buffer();
 
+        virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const;
+        virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name);
+
         virtual eResult serialize_binary(BinarySerializer* _ser) const override;
         virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
-        
+
+        bool is_saved() const { return m_is_saved; }
 
     private:
         void reset();
@@ -80,6 +84,9 @@ namespace ehw {
             float3 Min;
             float3 Max;
         } m_bounding_box;
+
+        //한번 저장했을 경우 true로 바뀐다.
+        mutable bool m_is_saved;
     };
 }
 

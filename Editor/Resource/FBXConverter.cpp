@@ -161,7 +161,7 @@ namespace ehw::editor
 					eResult result = meshData.convert_fbx(mFBXPath, mbStatic, mOutputDirName);
 					if (eResult_success(result))
 					{
-						result = meshData.save_to_file(mOutputDirName, meshData.get_resource_name());
+						result = meshData.save(mOutputDirName, meshData.get_resource_name());
 					}
 
 					return result;

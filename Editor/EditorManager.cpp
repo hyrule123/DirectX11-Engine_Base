@@ -199,6 +199,7 @@ namespace ehw::editor
 				colsys->render();
 			}
 		}
+		RenderManager::get_inst().render_debug();
 		
 		//CollisionSystem::Render();
 

@@ -26,7 +26,7 @@ namespace ehw
 		//Load 함수와 bind_buffer_to_GPU_register, unbind_buffer 함수를 재정의 해준뒤
 		//ResourceMgr를 통해서 '해당 클래스를' 로드해준다.
 		//이때 키값은 왠만하면 클래스명으로 지어주는것을 추천
-		virtual eResult load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
 		eResult compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName);
 

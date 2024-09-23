@@ -109,8 +109,6 @@ namespace ehw
 			m_editorRunFunction();
 		}
 
-		RenderManager::get_inst().sceneRenderAgent().render_debug();
-
 		TimeManager::get_inst().RenderFPS();
 
 		RenderManager::get_inst().Present(true);

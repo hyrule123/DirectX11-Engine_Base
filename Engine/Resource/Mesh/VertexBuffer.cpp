@@ -4,6 +4,8 @@
 
 #include "Engine/Util/Serialize/BinarySerializer.h"
 
+#include "Engine/Resource/define_Resource.h"
+
 namespace ehw {
 
 	VertexBuffer::VertexBuffer()
@@ -47,6 +49,52 @@ namespace ehw {
 			UINT offset = 0u;
 			RenderManager::get_inst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_data_stride, &offset);
 		}
+	}
+
+	eResult VertexBuffer::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	{
+		std::fs::path fullpath = _base_directory / _resource_name;
+		fullpath.replace_extension(name::path::extension::VertexBuffer);
+
+		BinarySerializer ser{};
+		eResult result = serialize_binary(&ser);
+		if (eResult_fail(result)) {
+			return result;
+		}
+
+		std::ofstream ofs(fullpath);
+		if (false == ofs.is_open()) {
+			return eResult::Fail;
+		}
+
+		result = ser.SaveFile(ofs);
+		if (eResult_fail(result)) {
+			return result;
+		}
+
+		m_is_saved = true;
+		return eResult::Success;
+	}
+
+	eResult VertexBuffer::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	{
+		std::fs::path fullpath = _base_directory / _resource_name;
+		fullpath.replace_extension(name::path::extension::VertexBuffer);
+
+		std::ifstream ifs(fullpath);
+		if (ifs.is_open()) {
+			BinarySerializer ser{};
+			eResult result = ser.LoadFile(ifs);
+			if (eResult_fail(result)) {
+				return result;
+			}
+			result = deserialize_binary(&ser);
+			if (eResult_fail(result)) {
+				return result;
+			}
+		}
+
+		return eResult::Success;
 	}
 
 	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
@@ -112,6 +160,8 @@ namespace ehw {
 
 		m_bounding_box.Min = float3(std::numeric_limits<float>::max());
 		m_bounding_box.Max = float3(std::numeric_limits<float>::min());
+
+		m_is_saved = false;
 	}
 
 	void VertexBuffer::compute_bounding_box()

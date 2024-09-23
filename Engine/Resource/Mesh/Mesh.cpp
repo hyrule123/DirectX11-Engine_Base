@@ -48,14 +48,27 @@ namespace ehw
 	{
 	}
 
-	eResult Mesh::save_to_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	eResult Mesh::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
 		std::fs::path key_path = _resource_name;
 		key_path.replace_extension(name::path::extension::Mesh);
+
+		eResult result = eResult::Fail;
+
+		//공유 리소스이므로 한번 저장했으면 더이상 저장할 필요 없음
+		if (false == m_vertex_buffer->is_saved()) {
+			result = ResourceManager<VertexBuffer>::get_inst().save_as(m_vertex_buffer, _resource_name);
+
+			if (eResult_fail(result)) {
+				ERROR_MESSAGE("Vertex Buffer 저장 실패.");
+				return result;
+			}
+		}
+
 		return SaveFile_Binary(_base_directory / key_path);
 	}
 
-	eResult Mesh::load_from_file(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult Mesh::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		std::fs::path filePath = _base_directory / _resource_name;
 		filePath.replace_extension(name::path::extension::Mesh);
@@ -72,8 +85,9 @@ namespace ehw
 
 		BinarySerializer& ser = *_ser;
 
+
+		//vertex buffer은 별도로 이름만 저장
 		if (m_vertex_buffer) {
-			ResourceManager<VertexBuffer>::get_inst().save_to_file(m_vertex_buffer.get());
 			ser << m_vertex_buffer->get_resource_name();
 		}
 		else {
@@ -108,7 +122,7 @@ namespace ehw
 		//vertex buffer
 		std::string keypath; ser >> keypath;
 		if (false == keypath.empty()) {
-			m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load_from_file(keypath);
+			m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load(keypath);
 		}
 
 		ser >> m_index_topology;
@@ -119,7 +133,7 @@ namespace ehw
 		//skeleton
 		ser >> keypath;
 		if (false == keypath.empty()) {
-			ResourceManager<VertexBuffer>::get_inst().load_from_file(keypath);
+			ResourceManager<VertexBuffer>::get_inst().load(keypath);
 		}
 
 		return eResult::Success;

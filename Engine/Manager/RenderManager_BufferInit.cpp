@@ -886,22 +886,22 @@ namespace ehw {
 
 		std::shared_ptr<Texture> pTex = nullptr;
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::noise_01);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_01);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::noise_02);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_02);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::noise_03);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_03);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::BasicCube);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::BasicCube);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::BasicCubeNormal);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::BasicCubeNormal);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load_from_file(texture::Brick);
+		pTex = ResourceManager<Texture>::get_inst().load(texture::Brick);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 #pragma endregion
