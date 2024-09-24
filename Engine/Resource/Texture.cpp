@@ -282,7 +282,7 @@ namespace ehw
 		mTexture->GetDesc(&mDesc);
 	}
 
-	void Texture::bind_data_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void Texture::bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
 		unbind_buffer_from_GPU_register();
 	
@@ -317,7 +317,7 @@ namespace ehw
 		}
 	}
 
-	void Texture::bind_buffer_to_UAV(uint _startSlot)
+	void Texture::bind_buffer_as_UAV(uint _startSlot)
 	{
 		unbind_buffer_from_GPU_register();
 

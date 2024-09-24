@@ -133,9 +133,11 @@ namespace ehw
 
 		return true;
 	}
-	void Animation3D_PlayData::update_final_matrix(uint _instance_id, StructBuffer* _final_matrix_buffer)
+
+	//Skeleton 쪽에서 호출.
+	void Animation3D_PlayData::update_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer)
 	{
-		m_animation3D_data.instance_ID = _instance_id;
+		m_animation3D_data.model_inst_ID = _model_inst_ID;
 
 		Animation3D_ComputeShader::Desc desc{};
 		desc.current_animation_key_frame_buffer = m_currentAnimation->GetKeyFrameSBuffer().get();

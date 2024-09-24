@@ -67,10 +67,10 @@ namespace ehw
         void GetData(T* _pDest) { GetData(static_cast<void*>(_pDest), sizeof(T)); }
 
         //데이터를 특정 레지스터에 바인딩. SRV에 바인딩할것인지 UAV에 바인딩할것인지를 지정
-        void bind_data_SRV(int _SRVSlot = -1, eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
+        void bind_buffer_as_SRV(int _SRVSlot = -1, eShaderStageFlag_ _stageFlag = eShaderStageFlag::NONE);
 
         //Bind buffer with UAV Mode to Compute shader 
-        void bind_buffer_to_UAV(int _UAVSlot = -1);
+        void bind_buffer_as_UAV(int _UAVSlot = -1);
 
         void unbind_buffer();
 

@@ -38,7 +38,7 @@ void main(uint3 _threadID : SV_DispatchThreadID)
 	matrix matOffset = transpose(g_BoneOffsetArray[_threadID.x]);
 
 	//최종 입력 위치 = 자신의 인스턴스 ID * 본의 갯수 + threadID.x
-	uint final_index = g_shared_animation3D_data.instance_ID * g_shared_animation3D_data.BoneCount + _threadID.x;
+	uint final_index = g_shared_animation3D_data.model_inst_ID * g_shared_animation3D_data.BoneCount + _threadID.x;
 	g_FinalBoneMatrixArrayRW[final_index] = mul(matOffset, matBone);
 	//g_BoneSocketMatrixArray[_threadID.x].matBone = transpose(matBone);
 

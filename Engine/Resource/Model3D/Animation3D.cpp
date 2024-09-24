@@ -52,7 +52,7 @@ namespace ehw
     void Animation3D::bind_buffer_to_GPU_register()
     {
         ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
-        m_SBufferKeyFrame->bind_data_SRV();
+        m_SBufferKeyFrame->bind_buffer_as_SRV();
     }
     void Animation3D::unbind_buffer_from_GPU_register()
     {

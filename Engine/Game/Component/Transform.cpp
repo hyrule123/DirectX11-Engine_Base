@@ -75,7 +75,7 @@ namespace ehw
 
 	void Transform::bind_buffer_to_GPU_register()
 	{
-		s_buffer->bind_data_SRV();
+		s_buffer->bind_buffer_as_SRV();
 	}
 
 	void Transform::update_local_matrix()

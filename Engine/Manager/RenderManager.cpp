@@ -359,7 +359,7 @@ namespace ehw
 	void RenderManager::BindNoiseTexture()
 	{
 		std::shared_ptr<Texture> noise = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::noise_03);
-		noise->bind_data_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
+		noise->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
 		info.NoiseSize.x = (float)noise->GetWidth();
@@ -387,7 +387,7 @@ namespace ehw
 
 		RenderManager::get_inst().Context()->CopyResource(dest, source);
 
-		m_postProcessTexture->bind_data_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
+		m_postProcessTexture->bind_buffer_as_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
 	void RenderManager::ClearMultiRenderTargets()

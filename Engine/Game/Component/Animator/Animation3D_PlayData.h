@@ -29,12 +29,19 @@ namespace ehw
 		
 		bool is_pre_updated() const { return m_is_pre_updated; }
 
-		//shared_data를 업데이트(컴퓨트쉐이더 연산 대기)
+		/*로직 요약
+		this::pre_update
+		->skeleton::compute_animation_final_matrix
+		->this::update_final_matrix
+		*/
+		//shared_data 업데이트 + skeleton enqueue
 		bool pre_update();
-		void update_final_matrix(uint _instance_id, StructBuffer* _final_matrix_buffer);
+
+		//skeleton쪽에서 호출. 자신의 final matrix를 업데이트 한다.
+		void update_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer);
 		void frame_end();
-		uint get_matrix_instance_ID() const { return m_animation3D_data.instance_ID; }
 		uint get_bone_count() const { return m_animation3D_data.BoneCount; }
+		uint get_model_inst_ID() const { return m_animation3D_data.model_inst_ID; }
 
 		std::shared_ptr<Animation3D> get_current_animation() { return m_currentAnimation; }
 		const tAnimation3D_ComputeShaderData& get_animation3D_data() const { return m_animation3D_data; }

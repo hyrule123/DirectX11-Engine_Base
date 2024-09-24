@@ -28,8 +28,8 @@ namespace ehw
 		void InitializeResource();
 
 
-		void bind_data_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
-		void bind_buffer_to_UAV(uint _UAVSlot = 0u);
+		void bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
+		void bind_buffer_as_UAV(uint _UAVSlot = 0u);
 		void unbind_buffer_from_GPU_register();
 
 

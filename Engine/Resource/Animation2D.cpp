@@ -144,7 +144,7 @@ namespace ehw
 
 	void Animation2D::bind_buffer_to_GPU_register()
 	{
-		mAtlas->bind_data_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
+		mAtlas->bind_buffer_as_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
 		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Animation2D);
 

@@ -310,7 +310,7 @@ namespace ehw
 		}
 	}
 
-	void StructBuffer::bind_data_SRV(int _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void StructBuffer::bind_buffer_as_SRV(int _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
 		unbind_buffer();
 
@@ -360,7 +360,7 @@ namespace ehw
 		}
 	}
 
-	void StructBuffer::bind_buffer_to_UAV(int _UAVSlot)
+	void StructBuffer::bind_buffer_as_UAV(int _UAVSlot)
 	{
 		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
 		ASSERT(eStructBufferType::READ_WRITE == m_desc.eSBufferType, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");

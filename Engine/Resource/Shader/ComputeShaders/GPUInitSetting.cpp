@@ -79,7 +79,7 @@ namespace ehw
 		eResult result = mInitSBuffer->init<tGPUInitSetting>(desc, 1ui64, &gGPUInitSetting, 1ui64);
 		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
-		mInitSBuffer->bind_buffer_to_UAV();
+		mInitSBuffer->bind_buffer_as_UAV();
 
 		ComputeShader::calculate_group_count(uint3(1u, 1u, 1u));
 
@@ -90,6 +90,6 @@ namespace ehw
 	{
 		mInitSBuffer->unbind_buffer();
 		mInitSBuffer->GetData(&gGPUInitSetting);
-		mInitSBuffer->bind_data_SRV();
+		mInitSBuffer->bind_buffer_as_SRV();
 	}
 }

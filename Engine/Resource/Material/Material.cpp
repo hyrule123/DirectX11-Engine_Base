@@ -51,7 +51,7 @@ namespace ehw
         {
             if (m_textures[slotIndex])
             {
-                m_textures[slotIndex]->bind_data_SRV((uint)slotIndex, eShaderStageFlag::Pixel);
+                m_textures[slotIndex]->bind_buffer_as_SRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
         }
 

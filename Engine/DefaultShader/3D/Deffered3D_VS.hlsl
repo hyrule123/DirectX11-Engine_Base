@@ -10,7 +10,7 @@ VSOut main(VSIn _in)
 	if(TRUE == g_default_3D_mtrl_instancing_buffer[_in.instance_ID].bAnim)
 	{
 		info = Skinning(
-		g_default_3D_mtrl_instancing_buffer[_in.instance_ID].final_bone_matrix_instance_ID
+		g_default_3D_mtrl_instancing_buffer[_in.instance_ID].model_instance_ID
 		, g_default_3D_mtrl_instancing_buffer[_in.instance_ID].BoneCount
 		, _in.Position.xyz
 		, _in.Tangent

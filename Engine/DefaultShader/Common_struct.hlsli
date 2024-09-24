@@ -67,7 +67,7 @@ struct alignas(16)  tDefault3DMtrl_InstancingData
 	// 3D Animation 정보
 	BOOL bAnim;
 	uint BoneCount;
-	uint final_bone_matrix_instance_ID;
+	uint model_instance_ID;
 	int Padding_Material;
 };
 
@@ -147,7 +147,7 @@ struct alignas(16)  tAnimation3D_ComputeShaderData
 {
 	uint		BoneCount;		//본 갯수
 	//Instancing 관련
-	uint		instance_ID; //내가 몇번째 인스턴스 인지
+	uint		model_inst_ID; //내가 몇번째 인스턴스 인지
 	float2		pad;
 	
 	uint		CurrentFrame;	//현재 프레임

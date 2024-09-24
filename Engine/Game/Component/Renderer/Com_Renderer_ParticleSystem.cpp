@@ -175,7 +175,7 @@ namespace ehw
 	//		return;
 	//	
 	//	gameObject()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
-	//	m_buffer->bind_data_SRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
+	//	m_buffer->bind_buffer_as_SRV(GPU::Register::t::AlbedoTexture, eShaderStageFlag::Geometry);
 
 	//	GetCurrentMaterial(0)->bind_buffer_to_gpu_register();
 	//	GetMesh()->render_instanced(mMaxParticles);

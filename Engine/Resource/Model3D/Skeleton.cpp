@@ -395,22 +395,32 @@ namespace ehw
 	}
 
 
-	void Skeleton::compute_animation3D_final_matrix()
+	void Skeleton::compute_bone_final_matrix()
 	{
+		if (m_compute_queue.empty()) {
+			return;
+		}
+
 		//계산해야 하는 인스턴스 개수만큼 구조화 버퍼 크기를 늘려준다.
 		uint size = (uint)(m_vecBones.size() * m_compute_queue.size());
 		m_final_matrix_buffer->resize(size);
 
 		//UAV에 바인딩한 뒤
-		m_final_matrix_buffer->bind_buffer_to_UAV();
+		m_final_matrix_buffer->bind_buffer_as_UAV();
 
 		//각자 애니메이션에 대해 업데이트를 수행
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
 			m_compute_queue[i]->update_final_matrix(i, m_final_matrix_buffer.get());
 		}
+		m_compute_queue.clear();
 
 		//UAV 연결 해제
 		m_final_matrix_buffer->unbind_buffer();
+	}
+
+	void Skeleton::bind_bone_final_matrix_SRV()
+	{
+		m_final_matrix_buffer->bind_buffer_as_SRV();
 	}
 
 }

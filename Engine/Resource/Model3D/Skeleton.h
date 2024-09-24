@@ -32,7 +32,7 @@ namespace ehw
 
 		eResult create_from_FBX(FBXLoader* _fbxLoader);
 
-		StructBuffer* GetBoneFinalMatrixStructBuffer() { return m_final_matrix_buffer.get(); }
+		StructBuffer* get_bone_final_mat_buffer() { return m_final_matrix_buffer.get(); }
 	
 		//Animation 3D
 		const std::vector<tMTBone>& get_bones() const { return m_vecBones; }
@@ -48,8 +48,8 @@ namespace ehw
 		void add_compute_queue(Animation3D_PlayData* _play_data) {
 			if (_play_data) { m_compute_queue.push_back(_play_data); }
 		}
-		void clear_compute_queue() { m_compute_queue.clear(); }
-		void compute_animation3D_final_matrix();
+		void compute_bone_final_matrix();
+		void bind_bone_final_matrix_SRV();
 
 		//애니메이션을 이동가능한지 확인하고, 이동시켜주는 함수
 		bool copy_animation_from_other(const Skeleton& _other, const std::fs::path& _saveDir);
@@ -65,8 +65,6 @@ namespace ehw
 		std::shared_ptr<StructBuffer>					m_pBoneOffset;	  
 
 		std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>	m_animations;
-
-
 
 		//특정 프레임의 최종 행렬(여러개의 애니메이션을 받음)
 		std::vector<Animation3D_PlayData*> m_compute_queue;

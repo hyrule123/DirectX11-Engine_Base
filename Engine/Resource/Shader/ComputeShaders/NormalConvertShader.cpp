@@ -71,10 +71,10 @@ namespace ehw
 		mDestTex->set_resource_name(mSrcTex->get_concrete_class_name());
 
 		//원본
-		mSrcTex->bind_data_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
+		mSrcTex->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
-		mDestTex->bind_buffer_to_UAV(GPU::Register::u::DestNormalTex);
+		mDestTex->bind_buffer_as_UAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
 		ComputeShader::calculate_group_count(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
