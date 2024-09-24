@@ -151,6 +151,7 @@ namespace ehw
 
 		//인스턴싱 데이터 바인딩
 		m_light_3D_instancing_buffer->set_data(datacont.data(), light_count.count);
+		m_light_3D_instancing_buffer->bind_data_SRV();
 
 		//material 바인딩 후 mesh 렌더
 		m_light_3D_materials[(int)_light_type]->bind_shader();

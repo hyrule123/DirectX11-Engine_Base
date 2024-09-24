@@ -53,7 +53,7 @@ namespace ehw {
 		void enqueue_render(Renderer* _render);
 		void enqueue_light_3D(eLightType _type, Light_3D* _light) {
 			if (_light) {
-
+				m_light_3D_instances[(int)_type].push_back(_light);
 			}
 		}
 
