@@ -51,10 +51,6 @@ namespace ehw
 
 	eResult Model3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
-		if (_resource_name.empty()) {
-			int a = 3;
-		}
-
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.

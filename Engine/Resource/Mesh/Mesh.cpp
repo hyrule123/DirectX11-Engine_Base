@@ -129,6 +129,11 @@ namespace ehw
 		ser >> m_index_count;
 		ser >> m_index_buffer_data;
 
+		if (false == create_index_buffer_internal(m_index_buffer_data.data(), (UINT)m_index_buffer_data.size())) {
+			ERROR_MESSAGE("인덱스 버퍼 생성에 실패했습니다.");
+			return eResult::Fail;
+		}
+
 		//skeleton
 		ser >> res_name;
 		if (false == res_name.empty()) {

@@ -8,8 +8,7 @@ namespace ehw {
 	{
 	public:
 		static inline T& get_inst() noexcept {
-			static T inst{};
-			return inst; 
+			static T inst{}; return inst; 
 		}
 	protected:
 		StaticSingleton() {};

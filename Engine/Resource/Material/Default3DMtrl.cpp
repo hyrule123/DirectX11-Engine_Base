@@ -53,7 +53,7 @@ namespace ehw {
 
         for (GameObject* obj : _objs) {
             auto* animator = obj->GetComponent<Com_Animator3D>();
-            tUniqueMtrlData_Default3D data{};
+            tDefault3DMtrl_InstancingData data{};
 
             if (animator && animator->is_playing()) {
                 data.bAnim = TRUE;
@@ -78,6 +78,6 @@ namespace ehw {
         desc.eSBufferType = eStructBufferType::READ_ONLY;
         desc.GPU_register_t_SRV = GPU::Register::t::g_default_3D_mtrl_instancing_buffer;
         desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-        s_default_3D_mtrl_instancing_buffer->init<tUniqueMtrlData_Default3D>(desc);
+        s_default_3D_mtrl_instancing_buffer->init<tDefault3DMtrl_InstancingData>(desc);
     }
 }

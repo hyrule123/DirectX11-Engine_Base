@@ -35,10 +35,12 @@ namespace ehw {
 		m_desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 		m_desc.CPUAccessFlags = 0;
 
-		//정점 데이터를 memcpy를 통해서 복사
-		m_data.resize((size_t)m_desc.ByteWidth);
+		if (_data != m_data.data()) {
+			//정점 데이터를 memcpy를 통해서 복사
+			m_data.resize((size_t)m_desc.ByteWidth);
 
-		memcpy(m_data.data(), _data, m_desc.ByteWidth);
+			memcpy(m_data.data(), _data, m_desc.ByteWidth);
+		}
 
 		return create_vertex_buffer_internal();
 	}
@@ -56,7 +58,6 @@ namespace ehw {
 	{
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
-
 		return SaveFile_Binary(fullpath);;
 	}
 
@@ -64,6 +65,7 @@ namespace ehw {
 	{
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
+		reset();
 		return LoadFile_Binary(fullpath);
 	}
 
@@ -111,7 +113,7 @@ namespace ehw {
 		ser >> m_bounding_sphere_radius;
 		ser >> m_bounding_box;
 
-		if (false == create_vertex_buffer(m_data.data(), m_data_stride, m_data_count)) {
+		if (false == create_vertex_buffer_internal()) {
 			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");
 			return eResult::Fail;
 		}

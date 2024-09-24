@@ -62,7 +62,7 @@ struct alignas(16) tSharedMaterialData
 	float4 Emv;
 };
 
-struct alignas(16)  tUniqueMtrlData_Default3D
+struct alignas(16)  tDefault3DMtrl_InstancingData
 {
 	// 3D Animation 정보
 	BOOL bAnim;

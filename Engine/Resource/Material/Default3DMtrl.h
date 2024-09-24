@@ -19,7 +19,7 @@ namespace ehw {
         static void load_static_buffer();
     private:
         //이 material을 사용하는 각 GameObject가 가지고 있는 정보
-        std::vector<tUniqueMtrlData_Default3D> m_default_3D_mtrl_instancing_data;
+        std::vector<tDefault3DMtrl_InstancingData> m_default_3D_mtrl_instancing_data;
         std::shared_ptr<StructBuffer> m_default_3D_mtrl_instancing_buffer;
 
         //동일 material 클래스끼리는 공유해서 사용하므로 static
