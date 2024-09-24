@@ -104,11 +104,6 @@ namespace ehw
 		void SetActiveInternal(bool _bActive);
 
 	private:
-		
-		void SetComponentData(iComponent* _pCom);
-
-
-	private:
 		std::string m_name;
 
 		Scene* m_scene;

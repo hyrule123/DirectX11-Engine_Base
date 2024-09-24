@@ -53,18 +53,6 @@ namespace ehw
 		std::fs::path key_path = _resource_name;
 		key_path.replace_extension(name::path::extension::Mesh);
 
-		eResult result = eResult::Fail;
-
-		//공유 리소스이므로 한번 저장했으면 더이상 저장할 필요 없음
-		if (false == m_vertex_buffer->is_saved()) {
-			result = ResourceManager<VertexBuffer>::get_inst().save_as(m_vertex_buffer, _resource_name);
-
-			if (eResult_fail(result)) {
-				ERROR_MESSAGE("Vertex Buffer 저장 실패.");
-				return result;
-			}
-		}
-
 		return SaveFile_Binary(_base_directory / key_path);
 	}
 
@@ -85,20 +73,33 @@ namespace ehw
 
 		BinarySerializer& ser = *_ser;
 
+		if (nullptr == m_vertex_buffer) {
+			return eResult::Fail;
+		}
 
-		//vertex buffer은 별도로 이름만 저장
-		if (m_vertex_buffer) {
-			ser << m_vertex_buffer->get_resource_name();
+		//vertex buffer는 필수
+		if (nullptr == m_vertex_buffer) {
+			ERROR_MESSAGE("Vertex Buffer가 있어야 저장할 수 있습니다.");
+			return eResult::Fail;
 		}
-		else {
-			ser << "";
+
+		//공유 리소스이므로 한번 저장했으면 더이상 저장할 필요 없음
+		if (false == m_vertex_buffer->is_saved()) {
+			eResult result = ResourceManager<VertexBuffer>::get_inst().save(m_vertex_buffer);
+
+			if (eResult_fail(result)) {
+				ERROR_MESSAGE("Vertex Buffer 저장 실패.");
+				return result;
+			}
 		}
+		ser << m_vertex_buffer->get_resource_name();
 
 		ser << m_index_topology;
 		ser << m_index_buffer_desc;
 		ser << m_index_count;
 		ser << m_index_buffer_data;
 
+		//skeleton은 필수 X
 		if (m_skeleton) {
 			ser << m_skeleton->get_resource_name();
 		}
@@ -120,10 +121,8 @@ namespace ehw
 		const BinarySerializer& ser = *_ser;
 		
 		//vertex buffer
-		std::string keypath; ser >> keypath;
-		if (false == keypath.empty()) {
-			m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load(keypath);
-		}
+		std::string res_name; ser >> res_name;
+		m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load(res_name);
 
 		ser >> m_index_topology;
 		ser >> m_index_buffer_desc;
@@ -131,9 +130,9 @@ namespace ehw
 		ser >> m_index_buffer_data;
 
 		//skeleton
-		ser >> keypath;
-		if (false == keypath.empty()) {
-			ResourceManager<VertexBuffer>::get_inst().load(keypath);
+		ser >> res_name;
+		if (false == res_name.empty()) {
+			m_skeleton = ResourceManager<Skeleton>::get_inst().load(res_name);
 		}
 
 		return eResult::Success;

@@ -82,7 +82,12 @@ namespace ehw
             lock.unlock();
 
             // 해당 job 을 수행한다 :)
-            job();
+            try {
+                job();
+            }
+            catch (const std::exception& _err) {
+                ERROR_MESSAGE_A(_err.what());
+            }
         }
     }
 

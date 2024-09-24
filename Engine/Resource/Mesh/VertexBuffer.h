@@ -25,11 +25,13 @@ namespace ehw {
         float4 Weights;
     };
 
+    BASE_RESOURCE(VertexBuffer);
     class VertexBuffer 
         : public Resource
         , public Serializable_Binary
     {
         CLASS_NAME(VertexBuffer);
+        REGISTER_INSTANCE_DEFAULT(VertexBuffer);
 
     public:
         VertexBuffer();
@@ -43,7 +45,7 @@ namespace ehw {
 
             if (std::is_base_of_v<VertexBase, Vertex> && result) {
                 compute_bounding_box();
-            }
+            } 
 
             return result;
         }

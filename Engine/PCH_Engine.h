@@ -1,7 +1,7 @@
 #ifndef PCH_ENGINE
 #define PCH_ENGINE
 
-#include <string>
+
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -9,6 +9,7 @@
 #include <commdlg.h>
 #include <combaseapi.h>
 
+#include <string>
 #include <array>
 #include <vector>
 #include <queue>
@@ -21,6 +22,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <utility>
 #include <limits>
 #include <memory>
 #include <filesystem>

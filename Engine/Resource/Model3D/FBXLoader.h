@@ -28,7 +28,6 @@ namespace ehw
 		float4 AmbientColor{};
 		float4 EmissiveColor{};
 
-
 		float	SpecularPower{};
 		float	TransparencyFactor{};
 		float	Shininess{};
@@ -43,26 +42,28 @@ namespace ehw
 	struct tFBXContainer
 	{
 		std::string								Name{};
-		std::vector<float3>						vecPosition{};
+		std::vector<float4>						vecPosition{};
 		std::vector<float2>						vecUV{};
 
-		std::vector<float3>						vecNormal{};
-		std::vector<float3>						vecBinormal{};
-		std::vector<float3>						vecTangent{};
-
-		std::vector<uint4>						vecBlendIndex{};
-		std::vector<float4>						vecBlendWeight{};
-
+		//index buffer 수 == material 수
 		std::vector<std::vector<UINT>>			vecIndexBuffers{};
 		std::vector<tFBXMaterial>				vecMtrl{};
 
 		//이 정점이 특정 Bone Index로부터 얼마만큼의 추가 가중치를 받을것인지(배율)
 		std::unordered_map<int, std::vector<tFBXWeight>>	mapWeights{};
 
+		//bump
 		bool bBump{};
-		bool bAnimation{};
+		std::vector<float3>						vecNormal{};
+		std::vector<float3>						vecBinormal{};
+		std::vector<float3>						vecTangent{};
 
-		void ResizeVertices(int _iSize)
+		//Animation
+		bool bAnimation{};
+		std::vector<uint4>						vecBlendIndex{};
+		std::vector<float4>						vecBlendWeight{};
+
+		void resize_by_vertices_count(int _iSize)
 		{
 			vecPosition.resize(_iSize);
 			vecUV.resize(_iSize);
@@ -119,49 +120,49 @@ namespace ehw
 	public:
 		void Reset();
 
-		eResult LoadFbx(const std::filesystem::path& _strPath, bool _bStatic = true);
+		eResult load_FBX(const std::filesystem::path& _strPath, bool _bStatic = true);
 
 		// FbxMatrix -> Matrix(FBX(double) 포맷에서 프로젝트 포맷(float)으로 변환해서 반환해준다
-		static MATRIX GetMatrixFromFbxMatrix(const fbxsdk::FbxAMatrix& _mat);
+		static MATRIX get_matrix_from_FbxAMatrix(const fbxsdk::FbxAMatrix& _mat);
 
-		const std::vector<tFBXContainer>& GetContainers() const { return mContainers; }
+		const std::vector<tFBXContainer>& get_containers() const { return mContainers; }
 		const std::vector<tFBXBone>& get_bones() const { return mBones; }
 		const std::vector<tFBXAnimClip>& get_animations() const { return mAnimClips; }
 
 	private:
-		void LoadMeshContainer(fbxsdk::FbxNode* _pRoot, bool _bStatic);
-		void LoadMesh(fbxsdk::FbxMesh* _pFBXMesh, bool _bStatic);
-		void LoadMaterial(fbxsdk::FbxSurfaceMaterial* _pMtrlSur);
+		void convert_from_FBX_tree(fbxsdk::FbxNode* _pRoot, bool _bStatic);
+		tFBXContainer load_container(fbxsdk::FbxMesh* _pFBXMesh, bool _bStatic);
+		tFBXMaterial load_material(fbxsdk::FbxSurfaceMaterial* _pMtrlSur);
 
-		void GetTangent(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer, int _vertexIdx, int _iVtxOrder);
-		void GetBinormal(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer, int _vertexIdx, int _iVtxOrder);
-		void GetNormal(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer, int _vertexIdx, int _iVtxOrder);
-		void GetUV(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer, int _vertexIdx, int _iVtxOrder);
+		float3 get_tangent(fbxsdk::FbxMesh* _pMesh, int _vertexIdx, int _iVtxOrder);
+		float3 get_binormal(fbxsdk::FbxMesh* _pMesh, int _vertexIdx, int _iVtxOrder);
+		float3 get_normal(fbxsdk::FbxMesh* _pMesh, int _vertexIdx, int _iVtxOrder);
+		float2 get_UV(fbxsdk::FbxMesh* _pMesh, int _vertexIdx, int _iVtxOrder);
 
-		float4 GetMtrlData(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
-		std::string GetMtrlTextureName(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
+		float4 get_material_data(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
+		std::string get_material_texture_name(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
 
-		void LoadTexture();
+		void load_textures();
 
 		//혹시라도 Material 이름이 안지어져있을 때 사용하기위해 Path를 받아옴(이름이 있을경우 사용 X)
-		void CreateMaterial(const std::filesystem::path& _strPath);
+		//void CreateMaterial(const std::filesystem::path& _strPath);
 
 		// Animation
-		void LoadSkeleton(fbxsdk::FbxNode* _pNode);
-		void LoadBoneRecursive(fbxsdk::FbxNode* _pNode, int _iDepth, int _iIdx, int _iParentIdx);
-		void LoadAnimationClip();
-		void Triangulate(fbxsdk::FbxNode* _pNode);
+		void load_skeleton(fbxsdk::FbxNode* _pNode);
+		void load_bone_recursive(fbxsdk::FbxNode* _pNode, int _iDepth, int _iIdx, int _iParentIdx);
+		void load_animation_clip();
+		void triangulate(fbxsdk::FbxNode* _pNode);
 
-		void LoadAnimationData(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer);
-		void LoadWeightsAndIndices(fbxsdk::FbxCluster* _pCluster, int _bondIndex, tFBXContainer& _pContainer);
-		void LoadOffsetMatrix(fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _bondIndex, tFBXContainer& _pContainer);
-		void LoadKeyframeTransform(fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform
-			, int _bondIndex, tFBXContainer& _pContainer);
+		void load_animation_data(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh);
+		void load_index_weights(tFBXContainer& _container, fbxsdk::FbxCluster* _pCluster, int _bondIndex);
+		void load_offset_matrices(tFBXContainer& _container, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _bondIndex);
+		void load_keyframe_transform(tFBXContainer& _container, fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform
+			, int _bondIndex);
+		void CheckWeightAndIndices(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh);
 
 		int FindBoneIndex(const std::string& _strBoneName);
 		fbxsdk::FbxAMatrix GetTransform(fbxsdk::FbxNode* _pNode);
 
-		void CheckWeightAndIndices(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _pContainer);
 
 		int GetAllNodesCountRecursive(fbxsdk::FbxNode* _pNode);
 

@@ -83,16 +83,15 @@ namespace ehw
 
 		ResourceManager<ConstBuffer>::get_inst().insert("light_3D_const_buffer", light_3d_const_buffer);
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		ResourceManager<Texture>::get_inst().init(baseDir / name::path::directory::resource::Texture);
 		ResourceManager<VertexBuffer>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
-		ResourceManager<Mesh>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
+		ResourceManager<Texture>::get_inst().init(baseDir / name::path::directory::resource::Texture);
 		ResourceManager<AudioClip>::get_inst().init(baseDir / name::path::directory::resource::AudioClip);
 		ResourceManager<GraphicsShader>::get_inst().init(baseDir / name::path::directory::resource::GraphicsShader);
 		ResourceManager<ComputeShader>::get_inst().init(baseDir / name::path::directory::resource::ComputeShader);
 
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록
+		ResourceManager<Mesh>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
 		ResourceManager<Material>::get_inst().init(baseDir / name::path::directory::resource::Material);
 		ResourceManager<Animation2D>::get_inst().init(baseDir / name::path::directory::resource::Animation2D);
 		ResourceManager<Model3D>::get_inst().init(baseDir / name::path::directory::resource::Model3D);

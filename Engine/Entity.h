@@ -36,7 +36,7 @@ namespace ehw
 		uint32 GetID() const { return m_ID; }
 
 		template <typename T>
-		std::shared_ptr<T> shared_from_this() {
+		std::shared_ptr<T> shared_from_this_cast() {
 			return std::dynamic_pointer_cast<T>(shared_from_this());
 		}
 

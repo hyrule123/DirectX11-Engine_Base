@@ -7,43 +7,44 @@
 #include "ResourceManagers.h"
 
 #include <concepts>
+#include <mutex>
 
 #define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::get_inst().load<_type>(#_type)
 
 namespace ehw
 {
 	template <typename T>
-	concept ResourceTypes =
+	concept ResourceType =
 		std::is_base_of_v<Resource, T>
 		&&
 		IsBaseResource<T>::is;
 
-	template <typename ResourceTypes> 
-	class ResourceManager : public StaticSingleton<ResourceManager<ResourceTypes>>
+	template <ResourceType T> 
+	class ResourceManager : public StaticSingleton<ResourceManager<T>>
 	{
-		friend class StaticSingleton<ResourceManager<ResourceTypes>>;
+		friend class StaticSingleton<ResourceManager<T>>;
 	public:
 		using Resources = 
-			std::unordered_map<std::string, std::shared_ptr<ResourceTypes>, Hasher_StringView, std::equal_to<>>;
+			std::unordered_map<std::string, std::shared_ptr<T>, Hasher_StringView, std::equal_to<>>;
 
 		void init(const std::fs::path& _base_directory);
 		void release();
 
 		//Resource Manager에 등록된 경로에 파일을 저장한다.
-		eResult save(const std::shared_ptr<ResourceTypes>& _res);
-		eResult save_as(const std::shared_ptr<ResourceTypes>& _res, const std::fs::path& _save_as_resource_name);
+		eResult save(const std::shared_ptr<T>& _res);
+		eResult save_as(const std::shared_ptr<T>& _res, const std::fs::path& _save_as_resource_name);
 
 		//Resource Manager에 등록된 경로로부터 불러온다.
-		template <typename DerivedResType = ResourceTypes>
-		std::shared_ptr<DerivedResType> load(const std::fs::path& _resource_name);
+		template <typename Derived = T>
+		std::shared_ptr<Derived> load(const std::string_view _resource_name);
 
-		//std::shared_ptr<ResourceTypes> load(const std::fs::path& _resource_name, const std::string_view _concrete_class_name);
+		std::shared_ptr<T> load(const std::string_view _resource_name, const std::string_view _concrete_class_name);
 
-		template <typename DerivedResType = ResourceTypes>
-		void insert(const std::string_view _resource_name, std::shared_ptr<DerivedResType> _Res);
+		template <typename Derived = T>
+		void insert(const std::string_view _resource_name, std::shared_ptr<Derived> _Res);
 
-		template <typename DerivedResType = ResourceTypes>
-		std::shared_ptr<DerivedResType> find(const std::string_view _resource_name);
+		template <typename Derived = T>
+		std::shared_ptr<Derived> find(const std::string_view _resource_name);
 
 		const Resources& GetResources() { return m_Resources; }
 
@@ -61,122 +62,124 @@ namespace ehw
 	private:
 		bool m_bInitialized;
 		std::fs::path m_BaseDir;
+		std::mutex m_mtx;
 
 		Resources m_Resources;
 	};
 
-	template<typename ResourceTypes>
-	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::load(const std::filesystem::path& _resource_name)
+	template<ResourceType T>
+	template<typename Derived>
+	inline std::shared_ptr<Derived> ResourceManager<T>::load(const std::string_view _resource_name)
 	{
-		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>);
+		static_assert(std::is_base_of_v<T, Derived>);
+
+		std::shared_ptr<Derived> ret = nullptr;
 
 		if (_resource_name.empty())
 		{
-			return nullptr;
+			return ret;
 		}
 
-		std::string key_path = _resource_name.string();
-		std::shared_ptr<DerivedResType> returnPtr = find<DerivedResType>(key_path);
+		ret = find<Derived>(_resource_name);
 
-		if(nullptr == returnPtr)
+		if(nullptr == ret)
 		{
-			returnPtr = std::make_shared<DerivedResType>();
-			eResult result = result = returnPtr->load(m_BaseDir, _resource_name);
+			ret = std::make_shared<Derived>();
+			eResult result = result = ret->load(m_BaseDir, _resource_name);
 
 			if (eResult_success(result))
 			{
-				insert(key_path, std::static_pointer_cast<ResourceTypes>(returnPtr));
+				insert(_resource_name, std::static_pointer_cast<T>(ret));
 			}
 			else
 			{
-				returnPtr = nullptr;
+				ret = nullptr;
 			}
 		}
 
-		return returnPtr;
+		return ret;
 	}
 
 
 
-	template<typename ResourceTypes>
-	template<typename DerivedResType>
-	inline std::shared_ptr<DerivedResType> ResourceManager<ResourceTypes>::find(const std::string_view _resource_name)
+	template<ResourceType T>
+	template<typename Derived>
+	inline std::shared_ptr<Derived> ResourceManager<T>::find(const std::string_view _resource_name)
 	{
-		std::shared_ptr<DerivedResType> returnRes = nullptr;
+		std::shared_ptr<Derived> returnRes = nullptr;
 
 		const auto& iter = m_Resources.find(_resource_name);
 
 		if (m_Resources.end() != iter)
 		{
-			if constexpr (std::is_same_v<ResourceTypes, DerivedResType>) {
+			if constexpr (std::is_same_v<T, Derived>) {
 				returnRes = iter->second;
 			}
 			else {
-				returnRes = std::dynamic_pointer_cast<DerivedResType>(iter->second);
+				returnRes = std::dynamic_pointer_cast<Derived>(iter->second);
 			}
 		}
 
 		return returnRes;
 	}
 
-	template<typename ResourceTypes>
-	template <typename DerivedResType>
-	inline void ResourceManager<ResourceTypes>::insert(const std::string_view _resource_name, std::shared_ptr<DerivedResType> _Res)
+	template<ResourceType T>
+	template <typename Derived>
+	inline void ResourceManager<T>::insert(const std::string_view _resource_name, std::shared_ptr<Derived> _Res)
 	{
-		static_assert(std::is_base_of_v<ResourceTypes, DerivedResType>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
+		static_assert(std::is_base_of_v<T, Derived>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == find(_resource_name), "이미 동일한 키값을 가진 리소스가 있습니다.");
 
 		_Res->set_resource_name(_resource_name);
-
-		m_Resources.insert(std::make_pair(std::string(_resource_name), std::static_pointer_cast<ResourceTypes>(_Res)));
+		std::lock_guard<std::mutex> locker(m_mtx);
+		m_Resources.insert(std::make_pair(std::string(_resource_name), std::static_pointer_cast<T>(_Res)));
 	}
 
-	template<typename ResourceTypes>
-	inline ResourceManager<ResourceTypes>::ResourceManager()
+	template<ResourceType T>
+	inline ResourceManager<T>::ResourceManager()
 		: m_bInitialized{false}
 		, m_BaseDir{}
 		, m_Resources{}
 	{
 	}
 
-	template<typename ResourceTypes>
-	inline ResourceManager<ResourceTypes>::~ResourceManager()
+	template<ResourceType T>
+	inline ResourceManager<T>::~ResourceManager()
 	{
 	}
 
-	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::init(const std::fs::path& _base_directory)
+	template<ResourceType T>
+	inline void ResourceManager<T>::init(const std::fs::path& _base_directory)
 	{
 		m_bInitialized = true;
 
 		SetBaseDir(_base_directory);
 
-		ResourceManagers::get_inst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<ResourceTypes>::CleanUnusedResources, this));
+		ResourceManagers::get_inst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<T>::CleanUnusedResources, this));
 
-		AtExit::AddFunc(std::bind(&ResourceManager<ResourceTypes>::release, this));
+		AtExit::AddFunc(std::bind(&ResourceManager<T>::release, this));
 	}
 
-	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::release()
+	template<ResourceType T>
+	inline void ResourceManager<T>::release()
 	{
 		m_bInitialized = false;
 		m_BaseDir.clear();
 		m_Resources.clear();
 	}
 
-	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::save(const std::shared_ptr<ResourceTypes>& _res)
+	template<ResourceType T>
+	inline eResult ResourceManager<T>::save(const std::shared_ptr<T>& _res)
 	{
 		if (nullptr == _res || _res->get_resource_name().empty()) {
 			return eResult::Fail;
 		}
 
-		return _res->save(m_BaseDir, _res->get->resource_name());
+		return _res->save(m_BaseDir, _res->get_resource_name());
 	}
 
-	template<typename ResourceTypes>
-	inline eResult ResourceManager<ResourceTypes>::save_as(const std::shared_ptr<ResourceTypes>& _res, const std::fs::path& _save_as_resource_name)
+	template<ResourceType T>
+	inline eResult ResourceManager<T>::save_as(const std::shared_ptr<T>& _res, const std::fs::path& _save_as_resource_name)
 	{
 		if (nullptr == _res || _save_as_resource_name.empty()) {
 			return eResult::Fail;
@@ -185,8 +188,28 @@ namespace ehw
 		return _res->save(m_BaseDir, _save_as_resource_name);
 	}
 
-	template<typename ResourceTypes>
-	inline std::vector<std::shared_ptr<Resource>> ResourceManager<ResourceTypes>::GetResourcesVector()
+	template<ResourceType T>
+	inline std::shared_ptr<T> ResourceManager<T>::load(const std::string_view _resource_name, const std::string_view _concrete_class_name)
+	{
+		std::shared_ptr<T> ret = find<T>(_resource_name);
+
+		//없을 경우 클래스 이름을 통해 새로 생성
+		if (nullptr == ret) {
+			ret = std::shared_ptr<T>(InstanceManager::get_inst().instantiate<T>(_concrete_class_name).release());
+
+			if (ret && eResult_success(ret->load(m_BaseDir, _resource_name))) {
+				ret->set_resource_name(_resource_name);
+			}
+			else {
+				ret = nullptr;
+			}
+		}
+
+		return ret;
+	}
+
+	template<ResourceType T>
+	inline std::vector<std::shared_ptr<Resource>> ResourceManager<T>::GetResourcesVector()
 	{
 		std::vector<std::shared_ptr<Resource>> retVec{};
 
@@ -198,8 +221,8 @@ namespace ehw
 		return retVec;
 	}
 
-	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::CleanUnusedResources()
+	template<ResourceType T>
+	inline void ResourceManager<T>::CleanUnusedResources()
 	{
 		using pairType = decltype(m_Resources)::value_type;
 		std::erase_if(m_Resources,
@@ -215,8 +238,8 @@ namespace ehw
 		);
 	}
 
-	template<typename ResourceTypes>
-	inline void ResourceManager<ResourceTypes>::SetBaseDir(const std::fs::path& _base_directory)
+	template<ResourceType T>
+	inline void ResourceManager<T>::SetBaseDir(const std::fs::path& _base_directory)
 	{
 		m_BaseDir = _base_directory;
 

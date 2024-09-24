@@ -377,35 +377,14 @@ namespace ehw
 
 	iComponent* GameObject::AddComponent(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::get_inst().instantiate(_resource_name);
-		iComponent* c = dynamic_cast<iComponent*>(e);
-		if (nullptr == c) {
-			delete e;
-			return nullptr;
-		}
-		return AddComponent(c);
+		return AddComponent(InstanceManager::get_inst().instantiate<iComponent>(_resource_name).release());
 	}
-
 
 	Script* GameObject::AddScript(const std::string_view _resource_name)
 	{
-		Entity* e = InstanceManager::get_inst().instantiate(_resource_name);
-		Script* s = dynamic_cast<Script*>(e);
-
-		if (nullptr == s) {
-			delete e;
-			return nullptr;
-		}
-
-		return static_cast<Script*>(AddComponent(s));
+		iComponent* ret = AddComponent(InstanceManager::get_inst().instantiate<Script>(_resource_name).release());
+		return static_cast<Script*>(ret);
 	}
-
-	void GameObject::SetComponentData(iComponent* _pCom)
-	{
-		//private 함수이므로 null check는 했다고 가정함
-	}
-
-
 
 	void GameObject::SetActive(bool _bActive)
 	{

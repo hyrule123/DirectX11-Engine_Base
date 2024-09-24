@@ -22,7 +22,7 @@ namespace ehw
 	class Skeleton;
 	struct tFBXMaterial;
 
-	struct tMeshContainer
+	struct tMeshMtrlPair
 	{
 		std::shared_ptr<Mesh>		mesh;
 		std::shared_ptr<Material>	material;
@@ -76,7 +76,7 @@ namespace ehw
 
 	private:
 		std::shared_ptr<Skeleton> m_skeleton;
-		std::vector<tMeshContainer> m_meshContainers;
+		std::vector<tMeshMtrlPair> m_mesh_mtrl_pairs;
     };
 }
 

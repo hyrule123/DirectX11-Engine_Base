@@ -88,7 +88,7 @@ namespace ehw
             //shader
             if (m_shader)
             {
-                ser[JSON_KEY(m_shader)] << m_shader->get_concrete_class_name();
+                ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
             }
             else
             {
@@ -102,7 +102,7 @@ namespace ehw
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_concrete_class_name();
+                    textures[i] << m_textures[i]->get_resource_name();
                 }
                 else
                 {

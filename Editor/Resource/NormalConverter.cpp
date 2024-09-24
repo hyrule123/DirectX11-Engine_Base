@@ -82,7 +82,7 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 
 	texPath = PathManager::get_inst().MakePathStrKey(texPath);
 
-	mTextureSrc = ResourceManager<Texture>::get_inst().load(texPath);
+	mTextureSrc = ResourceManager<Texture>::get_inst().load(texPath.string());
 }
 
 ImGui::SameLine();
@@ -179,7 +179,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				eResult result = ResourceManager<Texture>::get_inst().save(convertedTex.get(), savePath);
+				eResult result = ResourceManager<Texture>::get_inst().save_as(convertedTex, savePath.string());
 				if (eResult_fail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");

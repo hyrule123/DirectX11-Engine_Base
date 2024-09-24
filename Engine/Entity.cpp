@@ -27,14 +27,13 @@ namespace ehw
 	InstanceManager::~InstanceManager()
 	{
 	}
-	Entity* InstanceManager::instantiate(const std::string_view key)
+	std::unique_ptr<Entity> InstanceManager::instantiate(const std::string_view key)
 	{
-		Entity* ret = nullptr;
+		std::unique_ptr<Entity> ret = nullptr;
 		auto iter = m_ctors.find(key);
 		if (iter != m_ctors.end()) {
 			ret = iter->second();
 		}
-
 		return ret;
 	}
 }

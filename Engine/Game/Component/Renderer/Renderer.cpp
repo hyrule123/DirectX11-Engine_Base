@@ -156,11 +156,13 @@ namespace ehw
 			else if (eMaterialMode::Dynamic == _mode)
 			{
 				if (nullptr == m_dynamic_material) {
-					auto* clone = m_shared_material->Clone();
+					//clone 후 shared_ptr로 넣어준다
+					std::shared_ptr<Entity> clone = 
+						std::shared_ptr<Entity>(static_cast<Entity*>(m_shared_material->Clone()));
 					ASSERT(clone, "복제 실패");
+					//dynamic_cast 수행
 					if (clone) {
-						m_dynamic_material =
-							std::dynamic_pointer_cast<Material>(clone->shared_from_this());
+						m_dynamic_material = std::dynamic_pointer_cast<Material>(clone);
 					}
 				}
 				m_current_material = m_dynamic_material;

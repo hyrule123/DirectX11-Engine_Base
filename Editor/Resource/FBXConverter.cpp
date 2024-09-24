@@ -157,14 +157,8 @@ namespace ehw::editor
 			mFutureConvertResult = ThreadPoolManager::get_inst().EnqueueJob(
 				[this]()->eResult
 				{
-					Model3D meshData{};
-					eResult result = meshData.convert_fbx(mFBXPath, mbStatic, mOutputDirName);
-					if (eResult_success(result))
-					{
-						result = meshData.save(mOutputDirName, meshData.get_resource_name());
-					}
-
-					return result;
+					std::shared_ptr<Model3D> meshData = std::make_shared<Model3D>();
+					return meshData->convert_fbx(mFBXPath, mbStatic, mOutputDirName);
 				}
 			);
 		}

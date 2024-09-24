@@ -204,7 +204,7 @@ namespace ehw::editor
 				{
 					std::fs::path PathstrKey = PathManager::get_inst().MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey);
+					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey.string());
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -340,7 +340,7 @@ namespace ehw::editor
 		std::string name = outputPath.filename().string();
 		mTargetMaterial->set_resource_name(name);
 
-		ResourceManager<Material>::get_inst().save(mTargetMaterial.get());
+		ResourceManager<Material>::get_inst().save(mTargetMaterial);
 	}
 	void EditorMaterial::LoadFromFile()
 	{
@@ -409,7 +409,7 @@ namespace ehw::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::get_inst().load(filePath.filename());
+						mTargetMaterial = ResourceManager<Material>::get_inst().load(filePath.filename().string());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

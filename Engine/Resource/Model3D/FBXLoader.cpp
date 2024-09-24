@@ -63,7 +63,7 @@ namespace ehw
 		}
 	}
 
-	eResult FBXLoader::LoadFbx(const std::fs::path& _strPath, bool _bStatic)
+	eResult FBXLoader::load_FBX(const std::fs::path& _strPath, bool _bStatic)
 	{
 		Reset();
 
@@ -121,13 +121,13 @@ namespace ehw
 		//originAxis = mScene->GetGlobalSettings().GetAxisSystem();
 
 		//새로운 코드
-		if (mScene->GetGlobalSettings().GetAxisSystem() != fbxsdk::FbxAxisSystem::Max)
+		if (mScene->GetGlobalSettings().GetAxisSystem() != fbxsdk::FbxAxisSystem::Max) {
 			mScene->GetGlobalSettings().SetAxisSystem(fbxsdk::FbxAxisSystem::Max);
+		}	
 
 		//전체 노드 갯수를 구해서 vector 크기를 예약 시켜놓는다.(이게 최대 수치임)
 		int childCount = GetAllNodesCountRecursive(mScene->GetRootNode()) + 1;
 		mContainers.reserve(childCount);
-
 
 		//static 메쉬로 불러오기 설정이 아닐 경우
 		if (false == _bStatic)
@@ -135,14 +135,13 @@ namespace ehw
 			//애니메이션 이름을 쭉 받아온다.
 			mScene->FillAnimStackNameArray(mAnimNames);
 
-			if (mAnimNames.GetCount() > 0)
+			if (0 < mAnimNames.GetCount())
 			{
-				LoadAnimationClip();
+				load_animation_clip();
 
 				// 본 정보를 읽어온다.
 				mBones.reserve(childCount);
-				LoadSkeleton(mScene->GetRootNode());
-				
+				load_skeleton(mScene->GetRootNode());
 
 				// 클립이 가지고 있는 프레임을 본 개수만큼 resize 해준다.
 				// 원래 Animation Clip에서 하던것이다.
@@ -153,17 +152,17 @@ namespace ehw
 			}
 		}
 
-		// 삼각화(Triangulate)
-		Triangulate(mScene->GetRootNode());
+		// 삼각화(triangulate)
+		triangulate(mScene->GetRootNode());
 
 		// 메쉬 데이터 얻기
-		LoadMeshContainer(mScene->GetRootNode(), _bStatic);
+		convert_from_FBX_tree(mScene->GetRootNode(), _bStatic);
 
 		importer->Destroy();
 		importer = nullptr;
 
 		// 필요한 텍스쳐 로드
-		//LoadTexture();
+		//load_textures();
 
 		// 필요한 메테리얼 생성
 		//CreateMaterial(_strPath);
@@ -171,7 +170,7 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	MATRIX FBXLoader::GetMatrixFromFbxMatrix(const fbxsdk::FbxAMatrix& _mat)
+	MATRIX FBXLoader::get_matrix_from_FbxAMatrix(const fbxsdk::FbxAMatrix& _mat)
 	{
 		MATRIX mat;
 		for (int i = 0; i < 4; ++i)
@@ -186,7 +185,7 @@ namespace ehw
 
 
 
-	void FBXLoader::LoadMeshContainer(fbxsdk::FbxNode* _pNode, bool _bStatic)
+	void FBXLoader::convert_from_FBX_tree(fbxsdk::FbxNode* _pNode, bool _bStatic)
 	{
 		// 노드의 메쉬정보 읽기
 		fbxsdk::FbxNodeAttribute* pAttr = _pNode->GetNodeAttribute();
@@ -196,18 +195,11 @@ namespace ehw
 			//fbxsdk::FbxAMatrix matGlobal = _pNode->EvaluateGlobalTransform();
 			//matGlobal.GetR();
 			fbxsdk::FbxMesh* mesh = _pNode->GetMesh();
-			if (mesh)
-				LoadMesh(mesh, _bStatic);
-		}
-
-		// 해당 노드의 재질정보 읽기
-		int iMtrlCnt = _pNode->GetMaterialCount();
-		if (0 < iMtrlCnt)
-		{
-			for (int i = 0; i < iMtrlCnt; ++i)
-			{
-				fbxsdk::FbxSurfaceMaterial* pMtrlSur = _pNode->GetMaterial(i);
-				LoadMaterial(pMtrlSur);
+			if (mesh) {
+				mContainers.push_back(load_container(mesh, _bStatic));
+				if (mContainers.back().Name.empty()) {
+					mContainers.back().Name = mFileName + "_" + std::to_string(mContainers.size()); 
+				}
 			}
 		}
 
@@ -215,22 +207,21 @@ namespace ehw
 		int iChildCnt = _pNode->GetChildCount();
 		for (int i = 0; i < iChildCnt; ++i)
 		{
-			LoadMeshContainer(_pNode->GetChild(i), _bStatic);
+			convert_from_FBX_tree(_pNode->GetChild(i), _bStatic);
 		}
 	}
 
-	void FBXLoader::LoadMesh(fbxsdk::FbxMesh* _pFBXMesh, bool _bStatic)
+	tFBXContainer FBXLoader::load_container(fbxsdk::FbxMesh* _pFBXMesh, bool _bStatic)
 	{
-		mContainers.push_back(tFBXContainer{});
-		tFBXContainer& container = mContainers.back();
+		tFBXContainer cont{};// = mContainers.back();
 
-		container.Name = _pFBXMesh->GetName();
+		cont.Name = _pFBXMesh->GetName();
 
 		// ControlPoint 는 위치정보를 담고 있는 배열이다.
 		// 이 배열의 개수는 곧 정점의 개수가 된다.
 		// 정점에 대응되는 요소들을 Resize 해준다
 		int iVtxCnt = _pFBXMesh->GetControlPointsCount();
-		container.ResizeVertices(iVtxCnt);
+		cont.resize_by_vertices_count(iVtxCnt);
 
 		// 내부적으로 fbxsdk::FbxVector4타입의 배열로 저장하고 있기 때문에 배열의 
 		// 시작주소를 얻어온다.
@@ -238,25 +229,47 @@ namespace ehw
 		for (int i = 0; i < iVtxCnt; ++i)
 		{
 			// y와 z축이 바뀌어 있으므로 변경해준다.
-			container.vecPosition[i].x = (float)pFbxPos[i].mData[0];
-			container.vecPosition[i].y = (float)pFbxPos[i].mData[2];
-			container.vecPosition[i].z = (float)pFbxPos[i].mData[1];
+			cont.vecPosition[i].x = (float)pFbxPos[i].mData[0];
+			cont.vecPosition[i].y = (float)pFbxPos[i].mData[2];
+			cont.vecPosition[i].z = (float)pFbxPos[i].mData[1];
+			cont.vecPosition[i].w = (float)pFbxPos[i].mData[3];
 		}
 
-		// 폴리곤 개수
-		int polygonCount = _pFBXMesh->GetPolygonCount();
-
-		// 재질의 개수 ( ==> SubSet 개수 ==> Index Buffer Count)
+		// 해당 노드의 재질정보 읽기
+		// mesh의 부분별 재질을 통해 Index Buffer를 나눠줄 예정 ( ==> SubSet 개수 ==> Index Buffer Count)
 		int materialCount = _pFBXMesh->GetNode()->GetMaterialCount();
 		if (0 == materialCount)
 		{
 			materialCount = 1;
 		}
-		container.vecIndexBuffers.resize(materialCount);
+
+		cont.vecIndexBuffers.resize(materialCount);
+		for (int i = 0; i < materialCount; ++i)
+		{
+			fbxsdk::FbxSurfaceMaterial* pMtrlSur = _pFBXMesh->GetNode()->GetMaterial(i);
+			cont.vecMtrl.push_back(load_material(pMtrlSur));
+
+			//무조건 이름을 가지고있게 해준다
+			if (cont.vecMtrl.back().strMtrlName.empty())
+			{
+				size_t contIdx = mContainers.size();
+				size_t mtrlIdx = cont.vecMtrl.size();
+				cont.vecMtrl.back().strMtrlName = mFileName;
+				cont.vecMtrl.back().strMtrlName = "_";
+				cont.vecMtrl.back().strMtrlName += std::to_string(contIdx);
+				cont.vecMtrl.back().strMtrlName += "_";
+				cont.vecMtrl.back().strMtrlName += std::to_string(mtrlIdx);
+			}
+		}
 
 		// 정점 정보가 속한 subset 을 알기위해서 재질 정보를 얻어온다.
+		//(지금 넣을 값이 몇번 index 버퍼에 들어가는지)
+		//contains information about how the geometry is associated with materials
 		fbxsdk::FbxGeometryElementMaterial* material = _pFBXMesh->GetElementMaterial();
 		int vertexOrder = 0;
+
+		// 폴리곤 개수
+		int polygonCount = _pFBXMesh->GetPolygonCount();
 
 		//삼각형 수만큼 반복한다.
 		for (int i = 0; i < polygonCount; ++i)
@@ -275,93 +288,95 @@ namespace ehw
 				ASSERT(0 <= vertexIdx, "해당 버텍스의 인덱스 번호가 음수입니다.");
 				vertexIndexOfPolygon[j] = vertexIdx;
 
-				GetTangent(_pFBXMesh, container, vertexIdx, vertexOrder);
-				GetBinormal(_pFBXMesh, container, vertexIdx, vertexOrder);
-				GetNormal(_pFBXMesh, container, vertexIdx, vertexOrder);
+				cont.vecTangent[vertexIdx] 
+					= get_tangent(_pFBXMesh, vertexIdx, vertexOrder);
+				cont.vecBinormal[vertexIdx] 
+					= get_binormal(_pFBXMesh, vertexIdx, vertexOrder);
+				cont.vecNormal[vertexIdx]
+					= get_normal(_pFBXMesh, vertexIdx, vertexOrder);
+
+				//TBN중 0이 아닌 값이 있을 경우 bump texture
+				if (cont.vecTangent[vertexIdx] != float3::Zero 
+					|| cont.vecBinormal[vertexIdx] != float3::Zero 
+					|| cont.vecNormal[vertexIdx] != float3::Zero) {
+					cont.bBump = true;
+				}
 
 				int uvIndex = _pFBXMesh->GetTextureUVIndex(i, j);
-				GetUV(_pFBXMesh, container, vertexIdx, uvIndex);
+				cont.vecUV[vertexIdx] = get_UV(_pFBXMesh, vertexIdx, uvIndex);
 
 				++vertexOrder;
 			}
 
-			// 삼각형이 소속된 서브셋 인덱스를 얻어온다.
+			//material별로 index 버퍼를 나누기로 했으므로
+			//삼각형이 소속된 서브셋 인덱스를 얻어온다.
+			//만약 없을 경우 0번에 다 때려박는다(하나로 뭉쳐준다)
 			int	subsetIndex = 0;
 			if (material)
 			{
 				subsetIndex = material->GetIndexArray().GetAt(i);
 			}
 
-			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[0]);
-			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[2]);
-			container.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[1]);
+			cont.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[0]);
+			cont.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[2]);
+			cont.vecIndexBuffers[subsetIndex].push_back(vertexIndexOfPolygon[1]);
 		}
 
 		if (false == _bStatic)
 		{
-			LoadAnimationData(_pFBXMesh, container);
+			load_animation_data(cont, _pFBXMesh);
 		}
+
+		return cont;
 	}
 
-	void FBXLoader::LoadMaterial(fbxsdk::FbxSurfaceMaterial* _pMtrlSur)
+	tFBXMaterial FBXLoader::load_material(fbxsdk::FbxSurfaceMaterial* _pMtrlSur)
 	{
 		tFBXMaterial tMtrlInfo{};
 
 		tMtrlInfo.strMtrlName = _pMtrlSur->GetName();
 
-		//무조건 이름을 가지고있게 해준다
-		if (tMtrlInfo.strMtrlName.empty())
-		{
-			size_t contIdx = mContainers.size();
-			size_t mtrlIdx = mContainers.back().vecMtrl.size();
-			tMtrlInfo.strMtrlName = mFileName;
-			tMtrlInfo.strMtrlName = "_";
-			tMtrlInfo.strMtrlName += std::to_string(contIdx);
-			tMtrlInfo.strMtrlName += "_";
-			tMtrlInfo.strMtrlName += std::to_string(mtrlIdx);
-		}
-
 		// Diff
-		tMtrlInfo.DiffuseColor = GetMtrlData(_pMtrlSur
+		tMtrlInfo.DiffuseColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sDiffuse
 			, fbxsdk::FbxSurfaceMaterial::sDiffuseFactor);
 
 		// Amb
-		tMtrlInfo.AmbientColor = GetMtrlData(_pMtrlSur
+		tMtrlInfo.AmbientColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sAmbient
 			, fbxsdk::FbxSurfaceMaterial::sAmbientFactor);
 
 		// Spec
-		tMtrlInfo.SpecularColor = GetMtrlData(_pMtrlSur
+		tMtrlInfo.SpecularColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sSpecular
 			, fbxsdk::FbxSurfaceMaterial::sSpecularFactor);
 
 		// Emisv
-		tMtrlInfo.EmissiveColor = GetMtrlData(_pMtrlSur
+		tMtrlInfo.EmissiveColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sEmissive
 			, fbxsdk::FbxSurfaceMaterial::sEmissiveFactor);
 
 		// Texture Name
-		tMtrlInfo.strDiffuseTex = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sDiffuse);
-		tMtrlInfo.strNormalTex = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sNormalMap);
-		tMtrlInfo.strSpecularTex = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sSpecular);
-		tMtrlInfo.strEmissiveTex = GetMtrlTextureName(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sEmissive);
+		tMtrlInfo.strDiffuseTex = get_material_texture_name(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sDiffuse);
+		tMtrlInfo.strNormalTex = get_material_texture_name(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sNormalMap);
+		tMtrlInfo.strSpecularTex = get_material_texture_name(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sSpecular);
+		tMtrlInfo.strEmissiveTex = get_material_texture_name(_pMtrlSur, fbxsdk::FbxSurfaceMaterial::sEmissive);
 
-		mContainers.back().vecMtrl.push_back(tMtrlInfo);
+		return tMtrlInfo;
 	}
 
-	void FBXLoader::GetTangent(fbxsdk::FbxMesh* _pMesh
-		, tFBXContainer& _container
+	float3 FBXLoader::get_tangent(fbxsdk::FbxMesh* _pMesh
 		, int _vertexIndex		 /*해당 정점의 인덱스*/
 		, int _vertexOrder /*폴리곤 단위로 접근하는 순서*/)
 	{
+		float3 ret = float3::Zero;
+
 		// 메쉬로부터 ElementTangent 정보를 얻어온다.
 		fbxsdk::FbxGeometryElementTangent* Tangent = _pMesh->GetElementTangent();
 
-		if (nullptr == Tangent)
-			return;
-
-		_container.bBump = true;
+		if (nullptr == Tangent) {
+			return ret;
+		}
 
 		int	tangentIndex = _vertexOrder;
 
@@ -390,20 +405,23 @@ namespace ehw
 		}
 
 		fbxsdk::FbxVector4	vTangent = Tangent->GetDirectArray().GetAt(tangentIndex);
-		_container.vecTangent[_vertexIndex].x = (float)vTangent.mData[0];
-		_container.vecTangent[_vertexIndex].y = (float)vTangent.mData[2];
-		_container.vecTangent[_vertexIndex].z = (float)vTangent.mData[1];
+
+		ret.x = (float)vTangent.mData[0];
+		ret.y = (float)vTangent.mData[2];
+		ret.z = (float)vTangent.mData[1];
+
+		return ret;
 	}
 
-	void FBXLoader::GetBinormal(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _container, int _vertexIndex, int _vertexOrder)
+	float3 FBXLoader::get_binormal(fbxsdk::FbxMesh* _pMesh, int _vertexIndex, int _vertexOrder)
 	{
+		float3 ret = float3::Zero;
 		// 메쉬로부터 ElementBinormal 정보를 얻어온다.
 		fbxsdk::FbxGeometryElementBinormal* Binormal = _pMesh->GetElementBinormal();
 
-		if (!Binormal)
-			return;
-
-		_container.bBump = true;
+		if (nullptr == Binormal) {
+			return ret;
+		}
 
 		int	BinormalIndex = _vertexOrder;
 
@@ -433,13 +451,17 @@ namespace ehw
 
 		fbxsdk::FbxVector4	vBinormal = Binormal->GetDirectArray().GetAt(BinormalIndex);
 
-		_container.vecBinormal[_vertexIndex].x = (float)vBinormal.mData[0];
-		_container.vecBinormal[_vertexIndex].y = (float)vBinormal.mData[2];
-		_container.vecBinormal[_vertexIndex].z = (float)vBinormal.mData[1];
+		ret.x = (float)vBinormal.mData[0];
+		ret.y = (float)vBinormal.mData[2];
+		ret.z = (float)vBinormal.mData[1];
+
+		return ret;
 	}
 
-	void FBXLoader::GetNormal(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _container, int _vertexIndex, int _vertexOrder)
+	float3 FBXLoader::get_normal(fbxsdk::FbxMesh* _pMesh, int _vertexIndex, int _vertexOrder)
 	{
+		float3 ret = float3::Zero;
+
 		// 메쉬로부터 ElementNormal 정보를 얻어온다.
 		fbxsdk::FbxGeometryElementNormal* Normal = _pMesh->GetElementNormal();
 
@@ -471,28 +493,53 @@ namespace ehw
 
 		fbxsdk::FbxVector4	vNormal = Normal->GetDirectArray().GetAt(NormalIndex);
 
-		_container.vecNormal[_vertexIndex].x = (float)vNormal.mData[0];
-		_container.vecNormal[_vertexIndex].y = (float)vNormal.mData[2];
-		_container.vecNormal[_vertexIndex].z = (float)vNormal.mData[1];
+		
+		ret.x = (float)vNormal.mData[0];
+		ret.y = (float)vNormal.mData[2];
+		ret.z = (float)vNormal.mData[1];
+
+		return ret;
 	}
 
-	void FBXLoader::GetUV(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _container, int _vertexIndex, int _iUVIndex)
+	float2 FBXLoader::get_UV(fbxsdk::FbxMesh* _pMesh, int _vertexIndex, int _iUVIndex)
 	{
+		float2 ret = float2::Zero;
+
+		//참고: 여러개의 UV좌표들이 존재할 수도 있다. 일단은 1개만 취급
 		fbxsdk::FbxGeometryElementUV* pUV = _pMesh->GetElementUV();
+		if (nullptr == pUV) {
+			DEBUG_MESSAGE("UV좌표가 없습니다.\n");
+			return ret;
+		}
 
-		UINT iUVIdx = 0;
-		if (pUV->GetReferenceMode() == fbxsdk::FbxGeometryElement::eDirect)
-			iUVIdx = _vertexIndex;
-		else
-			iUVIdx = pUV->GetIndexArray().GetAt(_vertexIndex);
+		UINT iUVIdx = _iUVIndex;
 
-		iUVIdx = _iUVIndex;
+		//Control Point == Vertex Index
+		if (pUV->GetMappingMode() == fbxsdk::FbxGeometryElement::eByControlPoint) {
+			switch (pUV->GetReferenceMode())
+			{
+			case fbxsdk::FbxGeometryElement::eDirect: {
+				iUVIdx = _vertexIndex;
+				break;
+			}
+			case fbxsdk::FbxGeometryElement::eIndexToDirect: {
+				iUVIdx = pUV->GetIndexArray().GetAt(_vertexIndex);
+				break;
+			}
+			default:
+				ASSERT(false, "예상치 못한 FbxGeometryElement 타입입니다.");
+				break;
+			}
+		}
+
 		fbxsdk::FbxVector2 vUV = pUV->GetDirectArray().GetAt(iUVIdx);
-		_container.vecUV[_vertexIndex].x = (float)vUV.mData[0];
-		_container.vecUV[_vertexIndex].y = 1.f - (float)vUV.mData[1]; // fbx uv 좌표계는 좌하단이 0,0
+		ret.x = (float)vUV.mData[0];
+		ret.y = 1.f - (float)vUV.mData[1]; // fbx uv 좌표계는 좌하단이 0,0
+
+		return ret;
 	}
 
-	float4 FBXLoader::GetMtrlData(fbxsdk::FbxSurfaceMaterial* _pSurface
+	float4 FBXLoader::get_material_data(fbxsdk::FbxSurfaceMaterial* _pSurface
 		, const char* _pMtrlName
 		, const char* _pMtrlFactorName)
 	{
@@ -512,7 +559,7 @@ namespace ehw
 		return vRetVal;
 	}
 
-	std::string FBXLoader::GetMtrlTextureName(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty)
+	std::string FBXLoader::get_material_texture_name(fbxsdk::FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty)
 	{
 		std::string retStr;
 
@@ -545,7 +592,7 @@ namespace ehw
 		return retStr;
 	}
 
-	void FBXLoader::LoadTexture()
+	void FBXLoader::load_textures()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
 		const std::fs::path& fbxPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
@@ -557,8 +604,9 @@ namespace ehw
 			[&](std::string& _TextureRelativePath)->void
 			{
 				//비어있을경우 return
-				if (_TextureRelativePath.empty())
+				if (_TextureRelativePath.empty()) {
 					return;
+				}
 
 				//이동 원본 경로와 목표 경로를 만들어준다.
 				std::fs::path srcPath = fbxPath / _TextureRelativePath;
@@ -610,131 +658,126 @@ namespace ehw
 		}
 	}
 
-	void FBXLoader::CreateMaterial(const std::filesystem::path& _strPath)
+	//void FBXLoader::CreateMaterial(const std::filesystem::path& _strPath)
+	//{
+	//	//std::string strMtrlKey;
+	//	//std::string strPath;
+
+	//	for (UINT i = 0; i < mContainers.size(); ++i)
+	//	{
+	//		for (UINT j = 0; j < mContainers[i].vecMtrl.size(); ++j)
+	//		{
+	//			//std::fs::path strMtrlKey = mContainers[i].vecMtrl[j].strMtrlName;
+	//			//if (strMtrlKey.empty())
+	//			//{
+	//			//	//파일 이름에서 확장자 제거하고 이름만 받아옴
+	//			//	strMtrlKey = _strPath.stem();
+
+	//			//	//번호 붙여줌
+	//			//	strMtrlKey += "_Mtrl";
+	//			//	strMtrlKey += std::to_string(j);
+	//			//}
+	//			//
+	//			////.json 확장자 붙여 줌
+	//			//strMtrlKey.replace_extension(name::path::extension::Material);
+
+	//			////strPath = "material\\";
+	//			////strPath += strMtrlKey + ".mtrl";
+
+	//			//// 재질 이름
+	//			//mContainers[i].vecMtrl[j].strMtrlName = strMtrlKey.string();
+
+	//			//std::string strName = strPath;
+
+	//			// 이미 로딩된 재질이면 로딩된 것을 사용
+	//			std::shared_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(mContainers[i].vecMtrl[j].strMtrlName);
+	//			if (nullptr != pMaterial) {
+	//				continue;
+	//			}
+
+	//			pMaterial = std::make_shared<Material>();
+
+	//			// 상대경로가 곧 키
+	//			pMaterial->set_resource_name(mContainers[i].vecMtrl[j].strMtrlName);
+
+	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
+	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
+
+	//			const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+
+	//			ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
+
+	//			pMaterial->set_shader(defferedShader);
+	//			
+	//			{
+	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
+	//				if (nullptr != pTex)
+	//				{
+	//					pMaterial->set_texture(eTextureSlot::Albedo, pTex);
+	//				}
+	//			}
+	//				
+	//			{
+	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strNormalTex);
+	//				if (nullptr != pTex)
+	//				{
+	//					pMaterial->set_texture(eTextureSlot::Normal, pTex);
+	//				}
+	//			}
+
+	//			{
+	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strSpecularTex);
+	//				if (nullptr != pTex)
+	//				{
+	//					pMaterial->set_texture(eTextureSlot::Specular, pTex);
+	//				}
+	//			}
+
+	//			{
+	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
+	//				if (nullptr != pTex)
+	//				{
+	//					pMaterial->set_texture(eTextureSlot::Emissive, pTex);
+	//				}
+	//			}
+
+	//			pMaterial->SetDiffuseColor(mContainers[i].vecMtrl[j].DiffuseColor);
+	//			pMaterial->SetSpecularColor(mContainers[i].vecMtrl[j].SpecularColor);
+	//			pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
+	//			pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
+
+	//			eResult result = ResourceManager<Material>::get_inst().save(pMaterial);
+
+	//			if (eResult_fail(result))
+	//			{
+	//				ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
+	//			}
+
+	//			ResourceManager<Material>::get_inst().insert(pMaterial->get_resource_name(), pMaterial);
+	//		}
+	//	}
+	//}
+
+	void FBXLoader::load_skeleton(fbxsdk::FbxNode* _pNode)
 	{
-		//std::string strMtrlKey;
-		//std::string strPath;
-
-		for (UINT i = 0; i < mContainers.size(); ++i)
-		{
-			for (UINT j = 0; j < mContainers[i].vecMtrl.size(); ++j)
-			{
-				std::fs::path strMtrlKey = mContainers[i].vecMtrl[j].strMtrlName;
-				if (strMtrlKey.empty())
-				{
-					//파일 이름에서 확장자 제거하고 이름만 받아옴
-					strMtrlKey = _strPath.stem();
-
-					//번호 붙여줌
-					strMtrlKey += "_Mtrl";
-					strMtrlKey += std::to_string(j);
-				}
-				
-				//.json 확장자 붙여 줌
-				strMtrlKey.replace_extension(name::path::extension::Material);
-
-				//strPath = "material\\";
-				//strPath += strMtrlKey + ".mtrl";
-
-				// 재질 이름
-				mContainers[i].vecMtrl[j].strMtrlName = strMtrlKey.string();
-
-				//std::string strName = strPath;
-
-				// 이미 로딩된 재질이면 로딩된 것을 사용
-				std::shared_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(mContainers[i].vecMtrl[j].strMtrlName);
-				if (nullptr != pMaterial)
-					continue;
-
-				pMaterial = std::make_shared<Material>();
-
-				// 상대경로가 곧 키
-				pMaterial->set_resource_name(mContainers[i].vecMtrl[j].strMtrlName);
-
-
-				//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
-				pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
-
-				const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
-
-				ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
-
-				pMaterial->set_shader(defferedShader);
-
-				
-				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
-					if (nullptr != pTex)
-					{
-						pMaterial->set_texture(eTextureSlot::Albedo, pTex);
-					}
-				}
-
-					
-				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strNormalTex);
-					if (nullptr != pTex)
-					{
-						pMaterial->set_texture(eTextureSlot::Normal, pTex);
-					}
-				}
-
-				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strSpecularTex);
-					if (nullptr != pTex)
-					{
-						pMaterial->set_texture(eTextureSlot::Specular, pTex);
-					}
-				}
-
-				{
-					std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
-					if (nullptr != pTex)
-					{
-						pMaterial->set_texture(eTextureSlot::Emissive, pTex);
-					}
-				}
-
-				pMaterial->SetDiffuseColor(mContainers[i].vecMtrl[j].DiffuseColor);
-				pMaterial->SetSpecularColor(mContainers[i].vecMtrl[j].SpecularColor);
-				pMaterial->SetAmbientColor(mContainers[i].vecMtrl[j].AmbientColor);
-				pMaterial->SetEmissiveColor(mContainers[i].vecMtrl[j].EmissiveColor);
-
-				eResult result = ResourceManager<Material>::get_inst().save(pMaterial);
-
-				if (eResult_fail(result))
-				{
-					ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
-				}
-
-				ResourceManager<Material>::get_inst().insert(pMaterial->get_concrete_class_name(), pMaterial);
-				
-			}
-		}
-	}
-
-	void FBXLoader::LoadSkeleton(fbxsdk::FbxNode* _pNode)
-	{
-		mBones.reserve(200);
-
+		//mBones.reserve(200);
 
 		//Root 노드는 Skeletal Node가 될 수 없다
 		//https://download.autodesk.com/us/fbx/20102/fbx_sdk_help/index.html?url=WS8e4c2438b09b7f9c-5fe157071197ccd9b09-7ffe.htm,topicNumber=d0e4048
 		int childCount = _pNode->GetChildCount();
 		for (int i = 0; i < childCount; ++i)
 		{
-			LoadBoneRecursive(_pNode->GetChild(i), 0, 0, -1);
+			load_bone_recursive(_pNode->GetChild(i), 0, 0, -1);
 		}
 	}
 
-	void FBXLoader::LoadBoneRecursive(fbxsdk::FbxNode* _pNode, int _iDepth, int _iIdx, int _iParentIdx)
+	void FBXLoader::load_bone_recursive(fbxsdk::FbxNode* _pNode, int _iDepth, int _iIdx, int _iParentIdx)
 	{
 		fbxsdk::FbxNodeAttribute* pAttr = _pNode->GetNodeAttribute();
 
 		if (pAttr && pAttr->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 		{
-			mBones.push_back(tFBXBone{});
-			tFBXBone& bone = mBones.back();
+			tFBXBone bone{};
 
 			bone.strBoneName = _pNode->GetName();
 			if (mbMixamo)
@@ -745,17 +788,19 @@ namespace ehw
 			bone.Depth = _iDepth++;
 			bone.ParentIndx = _iParentIdx;
 
+			mBones.push_back(bone);
+
 			//Bone Matrix는 애니메이션에서 로드함
 		}
 
 		int iChildCount = _pNode->GetChildCount();
 		for (int i = 0; i < iChildCount; ++i)
 		{
-			LoadBoneRecursive(_pNode->GetChild(i), _iDepth, (int)mBones.size(), _iIdx);
+			load_bone_recursive(_pNode->GetChild(i), _iDepth, (int)mBones.size(), _iIdx);
 		}
 	}
 
-	void FBXLoader::LoadAnimationClip()
+	void FBXLoader::load_animation_clip()
 	{
 		int iAnimCount = mAnimNames.GetCount();
 		mAnimClips.reserve(iAnimCount);
@@ -766,16 +811,18 @@ namespace ehw
 		{
 			fbxsdk::FbxAnimStack* pAnimStack = mScene->FindMember<fbxsdk::FbxAnimStack>(mAnimNames[i]->Buffer());
 
-			if (nullptr == pAnimStack)
+			if (nullptr == pAnimStack) {
 				continue;
+			}
 
 			//FbxAnimEvaluator* pevaluator = mScene->GetAnimationEvaluator();
 			//mScene->SetCurrentAnimationStack();
-
-			mAnimClips.push_back(tFBXAnimClip{});
-			tFBXAnimClip& clip = mAnimClips.back();
+			tFBXAnimClip clip{};
 
 			clip.strName = pAnimStack->GetName();
+			if (clip.strName.empty()) {
+				clip.strName = mFileName + "_Anim_" + std::to_string(i);
+			}
 			
 			//믹사모인지 확인
 			if (strMixamo == clip.strName)
@@ -791,10 +838,12 @@ namespace ehw
 			// 변환해준다. 몇프레임 짜리 애니메이션 인지를 구해준다.
 			clip.TimeLength = clip.EndTime.GetFrameCount(timeMode) - clip.StartTime.GetFrameCount(timeMode);
 			clip.TimeMode = timeMode;
+
+			mAnimClips.push_back(clip);
 		}
 	}
 
-	void FBXLoader::Triangulate(fbxsdk::FbxNode* _pNode)
+	void FBXLoader::triangulate(fbxsdk::FbxNode* _pNode)
 	{
 		fbxsdk::FbxNodeAttribute* pAttr = _pNode->GetNodeAttribute();
 
@@ -811,25 +860,25 @@ namespace ehw
 
 		for (int i = 0; i < iChildCount; ++i)
 		{
-			Triangulate(_pNode->GetChild(i));
+			triangulate(_pNode->GetChild(i));
 		}
 	}
 
-	void FBXLoader::LoadAnimationData(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _container)
+	void FBXLoader::load_animation_data(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh)
 	{
 		int iSkinCount = _pMesh->GetDeformerCount(fbxsdk::FbxDeformer::eSkin);
-		if (iSkinCount <= 0)
+		if (iSkinCount <= 0) {
 			return;
+		}
 
 		// 메쉬의 정점 수를 얻어온다.
 		int	vertexCount = _pMesh->GetControlPointsCount();
 
 		// 정점의 가중치 정보와 본인덱스 정보는 정점 수만큼
 		// 만들어져야 한다.
+		_container.bAnimation = true;
 		_container.vecBlendWeight.resize(vertexCount);
 		_container.vecBlendIndex.resize(vertexCount);
-
-		_container.bAnimation = true;
 
 		fbxsdk::FbxAMatrix matTransform = GetTransform(_pMesh->GetNode());
 
@@ -861,23 +910,23 @@ namespace ehw
 					}
 					int boneIndex = FindBoneIndex(boneName);
 
-					LoadWeightsAndIndices(cluster, boneIndex, _container);
+					load_index_weights(_container, cluster, boneIndex);
 
-					LoadOffsetMatrix(cluster, matTransform, boneIndex, _container);
+					load_offset_matrices(_container, cluster, matTransform, boneIndex);
 
 					//Bone의 로컬스페이스 위치
 					mBones[boneIndex].matBone = matTransform;
 
-					LoadKeyframeTransform(_pMesh->GetNode(), cluster, matTransform, boneIndex, _container);
+					load_keyframe_transform(_container, _pMesh->GetNode(), cluster, matTransform, boneIndex);
 				}
 			}
 		}
 
-		CheckWeightAndIndices(_pMesh, _container);
+		CheckWeightAndIndices(_container, _pMesh);
 	}
 
 
-	void FBXLoader::CheckWeightAndIndices(fbxsdk::FbxMesh* _pMesh, tFBXContainer& _container)
+	void FBXLoader::CheckWeightAndIndices(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh)
 	{
 		std::unordered_map<int, std::vector<tFBXWeight>>::iterator iter = _container.mapWeights.begin();
 		std::unordered_map<int, std::vector<tFBXWeight>>::iterator iterEnd = _container.mapWeights.end();
@@ -938,8 +987,8 @@ namespace ehw
 
 
 
-	void FBXLoader::LoadKeyframeTransform(fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster
-		, const fbxsdk::FbxAMatrix& _matNodeTransform, int _bondIndex, tFBXContainer& _container)
+	void FBXLoader::load_keyframe_transform(tFBXContainer& _container, fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster
+		, const fbxsdk::FbxAMatrix& _matNodeTransform, int _bondIndex)
 	{
 		// Reflect Matrix(축 orientation을 변경)
 		fbxsdk::FbxVector4 V0 = { 1.0, 0.0, 0.0, 0.0 };
@@ -1005,9 +1054,9 @@ namespace ehw
 		}
 	}
 
-	void FBXLoader::LoadOffsetMatrix(fbxsdk::FbxCluster* _pCluster
+	void FBXLoader::load_offset_matrices(tFBXContainer& _container, fbxsdk::FbxCluster* _pCluster
 		, const fbxsdk::FbxAMatrix& _matNodeTransform
-		, int _bondIndex, tFBXContainer& _container)
+		, int _bondIndex)
 	{
 		fbxsdk::FbxAMatrix matClusterTrans;
 		fbxsdk::FbxAMatrix matClusterLinkTrans;
@@ -1060,9 +1109,7 @@ namespace ehw
 	}
 
 
-	void FBXLoader::LoadWeightsAndIndices(fbxsdk::FbxCluster* _pCluster
-		, int _bondIndex
-		, tFBXContainer& _container)
+	void FBXLoader::load_index_weights(tFBXContainer& _container, fbxsdk::FbxCluster* _pCluster, int _bondIndex)
 	{
 		int iIndicesCount = _pCluster->GetControlPointIndicesCount();
 		for (int i = 0; i < iIndicesCount; ++i)
@@ -1075,8 +1122,6 @@ namespace ehw
 
 			int vertexIndex = _pCluster->GetControlPointIndices()[i];
 
-			// map의 특징 : 키를 이용해 인덱스처럼 접근할 경우 해당 키가 없다면
-			// 만들어준다.
 			_container.mapWeights[vertexIndex].push_back(weight);
 		}
 	}

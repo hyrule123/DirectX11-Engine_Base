@@ -41,10 +41,9 @@ namespace ehw
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
-		std::fs::path name = _resource_name;
-		name.replace_extension();
-
-		std::fs::path fullPath = _base_directory / name / name;
+		std::fs::path fullPath = _base_directory / _resource_name;
+		fullPath.replace_extension();
+		fullPath /= _resource_name;
 		fullPath.replace_extension(name::path::extension::Model3D);
 
 		return LoadFile_Json(fullPath);
@@ -52,13 +51,18 @@ namespace ehw
 
 	eResult Model3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
+		if (_resource_name.empty()) {
+			int a = 3;
+		}
+
 		//Model3D는 다른 클래스와 저장 / 로드 방식이 약간 다름
 		//예를 들어 Player를 저장한다고 하면
 		//Player/Player.json 형태로 저장한다.
 		std::fs::path name = _resource_name;
 		name.replace_extension();
+		name /= _resource_name;
 
-		std::fs::path fullPath = _base_directory / name / name;
+		std::fs::path fullPath = _base_directory / name;
 		fullPath.replace_extension(name::path::extension::Model3D);
 		return SaveFile_Json(fullPath);
 	}
@@ -77,54 +81,53 @@ namespace ehw
 		{
 			//Skeleton
 			{
-				std::string skeletonStrKey{};
-				if (m_skeleton)
-				{
+				if (m_skeleton) {
 					eResult result = ResourceManager<Skeleton>::get_inst().save(m_skeleton);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					skeletonStrKey = m_skeleton->get_resource_name();
+					ser[JSON_KEY(m_skeleton)] << m_skeleton->get_resource_name();
 				}
-
-				ser[JSON_KEY(m_skeleton)] << skeletonStrKey;
+				else {
+					ser[JSON_KEY(m_skeleton)] << "";
+				}
 			}
 
 
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
-			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
-			for (size_t i = 0; i < m_meshContainers.size(); ++i)
+			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_mesh_mtrl_pairs)];
+			for (size_t i = 0; i < m_mesh_mtrl_pairs.size(); ++i)
 			{
 				//nullptr check
-				if (nullptr == m_meshContainers[i].mesh || nullptr == m_meshContainers[i].material)
+				if (nullptr == m_mesh_mtrl_pairs[i].mesh || nullptr == m_mesh_mtrl_pairs[i].material)
 				{
 					return eResult::Fail_InValid;
 				}
 				Json::Value& meshContainer = arrMeshCont[i];
 
 				//Mesh
-				eResult result = ResourceManager<Mesh>::get_inst().save(m_meshContainers[i].mesh);
+				eResult result = ResourceManager<Mesh>::get_inst().save(m_mesh_mtrl_pairs[i].mesh);
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"]["concrete_class_name"] = m_meshContainers[i].mesh->get_concrete_class_name();
-				meshContainer["mesh"]["resource_name"] << m_meshContainers[i].mesh->get_resource_name();
+				meshContainer["mesh"]["concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
+				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_name();
 
 				//material
-				result = ResourceManager<Material>::get_inst().save(m_meshContainers[i].material);
+				result = ResourceManager<Material>::get_inst().save(m_mesh_mtrl_pairs[i].material);
 				if (eResult_fail(result))
 				{
 					ERROR_MESSAGE("재질 정보 저장 실패");
 					return result;
 				}
 				meshContainer["material"]["concrete_class_name"]
-					<< m_meshContainers[i].material->get_concrete_class_name();
+					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
 				meshContainer["material"]["resource_name"]
-					<< m_meshContainers[i].material->get_resource_name();
+					<< m_mesh_mtrl_pairs[i].material->get_resource_name();
 			}
 		}
 		catch (const std::exception& _err)
@@ -145,7 +148,7 @@ namespace ehw
 		}
 
 		m_skeleton = nullptr;
-		m_meshContainers.clear();
+		m_mesh_mtrl_pairs.clear();
 
 		const JsonSerializer& ser = *_ser;
 
@@ -169,10 +172,10 @@ namespace ehw
 			//MeshContainers
 			{
 				//전부 포인터 형태이므로 StrKey를 등록해 준다.
-				const Json::Value& arrMeshCont = (ser)[JSON_KEY(m_meshContainers)];
+				const Json::Value& arrMeshCont = (ser)[JSON_KEY(m_mesh_mtrl_pairs)];
 				size_t meshContSize = (size_t)arrMeshCont.size();
-				m_meshContainers.resize(meshContSize);
-				for (size_t i = 0; i < m_meshContainers.size(); ++i)
+				m_mesh_mtrl_pairs.resize(meshContSize);
+				for (size_t i = 0; i < m_mesh_mtrl_pairs.size(); ++i)
 				{
 					const Json::Value& meshContainer = arrMeshCont[i];
 
@@ -182,21 +185,21 @@ namespace ehw
 					meshContainer["mesh"]["resource_name"] >> res_name;
 					meshContainer["mesh"]["concrete_class_name"] >> class_name;
 					
-					m_meshContainers[i].mesh = ResourceManager<Mesh>::get_inst().load(res_name, class_name);
-					if (nullptr == m_meshContainers[i].mesh)
+					m_mesh_mtrl_pairs[i].mesh = ResourceManager<Mesh>::get_inst().load(res_name, class_name);
+					if (nullptr == m_mesh_mtrl_pairs[i].mesh)
 					{
 						ERROR_MESSAGE("메쉬 로드 실패");
 						return eResult::Fail_Open;
 					}
-					m_meshContainers[i].mesh->set_skeleton(m_skeleton);
+					m_mesh_mtrl_pairs[i].mesh->set_skeleton(m_skeleton);
 
 					//material
-					const Json::Value& material = meshContainer["material"];
-					std::string material_filename{};
-					material >> material_filename;
-					m_meshContainers[i].material = ResourceManager<Material>::get_inst().load(material_filename);
+					class_name.clear(); res_name.clear();
+					meshContainer["material"]["resource_name"] >> res_name;
+					meshContainer["material"]["concrete_class_name"] >> class_name;
+					m_mesh_mtrl_pairs[i].material = ResourceManager<Material>::get_inst().load(res_name, class_name);
 
-					if (nullptr == m_meshContainers[i].material)
+					if (nullptr == m_mesh_mtrl_pairs[i].material)
 					{
 						ERROR_MESSAGE("재질 로드 실패");
 						return eResult::Fail_Open;
@@ -208,7 +211,6 @@ namespace ehw
 			ERROR_MESSAGE_A(_err.what());
 			return eResult::Fail_InValid;
 		}
-
 
 		return eResult::Success;
 	}
@@ -222,7 +224,7 @@ namespace ehw
 		root->SetName(get_concrete_class_name());
 
 		Transform* rootTransform = root->GetComponent<Transform>();
-		
+
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		std::shared_ptr<Animation3D_PlayData> sharedAnimationData{};
@@ -235,7 +237,7 @@ namespace ehw
 		}
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
-		if (1u == (UINT)m_meshContainers.size())
+		if (1u == (UINT)m_mesh_mtrl_pairs.size())
 		{
 			Com_Renderer_Mesh* renderer = nullptr;
 			if (sharedAnimationData)
@@ -260,7 +262,7 @@ namespace ehw
 		//여러 개의 container를 가지고 있을 경우: 하나의 부모 object에 여러개의 child를 생성해서 각각 Meshrenderer에 할당
 		else
 		{
-			for (size_t i = 0; i < m_meshContainers.size(); ++i)
+			for (size_t i = 0; i < m_mesh_mtrl_pairs.size(); ++i)
 			{
 				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
@@ -309,7 +311,7 @@ namespace ehw
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::get_inst().save(shared_from_this<Model3D>());
+		result = ResourceManager<Model3D>::get_inst().save_as(shared_from_this_cast<Model3D>(), _dirAndFileName);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -319,21 +321,21 @@ namespace ehw
 		return eResult::Success;
 	}
 
-	eResult Model3D::load_from_fbx(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dirAndFileName)
+	eResult Model3D::load_from_fbx(const std::fs::path& _fbxPath, bool _bStatic, const std::fs::path& _dir_name)
 	{
 		if (false == std::fs::exists(_fbxPath))
 		{
 			ERROR_MESSAGE("파일을 찾지 못했습니다.");
 			return eResult::Fail_Open;
 		}
-		else if (_dirAndFileName.empty())
+		else if (_dir_name.empty())
 		{
 			ERROR_MESSAGE("파일명을 설정하지 않았습니다.");
 			return eResult::Fail_Open;
 		}
 
 		FBXLoader loader{};
-		eResult result = loader.LoadFbx(_fbxPath, _bStatic);
+		eResult result = loader.load_FBX(_fbxPath, _bStatic);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX 불러오기 실패.");
@@ -341,27 +343,21 @@ namespace ehw
 		}
 
 		//Res/Model3D/Player
-		std::fs::path filePath = _dirAndFileName;
-		filePath.replace_extension();
+		std::fs::path dir_and_filename = _dir_name;
 		//Res/Model3D/Player/Player
-		filePath = filePath / filePath;
+		dir_and_filename = dir_and_filename / _dir_name;
+		dir_and_filename.replace_extension();
 
 		//Bone 정보 로드
 		m_skeleton = std::make_shared<Skeleton>();
-
-		//Key 설정
-		{
-			std::fs::path skltStrKey = filePath;
-			skltStrKey.replace_extension(name::path::extension::Skeleton);
-			m_skeleton->set_resource_name(skltStrKey.string());
-		}
+		m_skeleton->set_resource_name(dir_and_filename.string());
 		result = m_skeleton->create_from_FBX(&loader);
-
 		//애니메이션 정보가 없을 경우에는 도로 제거
 		if (eResult::Fail_Empty == result)
 		{
 			m_skeleton = nullptr;
 		}
+
 		//그 외의 이유로 실패했을 경우에는 에러
 		else if (eResult_fail(result))
 		{
@@ -369,7 +365,7 @@ namespace ehw
 			return result;
 		}
 
-		const std::vector<tFBXContainer>& containers = loader.GetContainers();
+		const std::vector<tFBXContainer>& containers = loader.get_containers();
 		for (size_t i = 0; i < containers.size(); ++i)
 		{
 			const tFBXContainer& cont = containers[i];
@@ -378,7 +374,7 @@ namespace ehw
 			std::vector<Vertex3D> vertices_3d(cont.vecPosition.size());
 			for (size_t v = 0; v < cont.vecPosition.size(); ++v)
 			{
-				vertices_3d[v].position = float4(cont.vecPosition[v], 1.f);
+				vertices_3d[v].position = cont.vecPosition[v];
 
 				vertices_3d[v].UV = cont.vecUV[v];
 
@@ -392,58 +388,51 @@ namespace ehw
 					vertices_3d[v].Indices = cont.vecBlendIndex[v];
 				}
 			}
+			//vertex buffer은 container당 하나
 			std::shared_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
+			vb->set_resource_name((_dir_name / cont.Name).string());
 			vb->create_vertex_buffer(vertices_3d);
+			//ResourceManager<VertexBuffer>::get_inst().save(vb);
 
 			// 인덱스 정보
 			for (size_t j = 0; j < cont.vecIndexBuffers.size(); ++j) {
 				const auto& indices = cont.vecIndexBuffers[j];
 
 				//메쉬
-				tMeshContainer meshCont{};
+				tMeshMtrlPair mm_pair{};
 
 				//가져올 메쉬를 생성
-				meshCont.mesh = std::make_shared<Mesh>();
-
-				meshCont.mesh->create_index_buffer(indices, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				mm_pair.mesh = std::make_shared<Mesh>();
+				mm_pair.mesh->set_vertex_buffer(vb);
+				mm_pair.mesh->create_index_buffer(indices, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 				//스켈레톤 주소를 지정
-				meshCont.mesh->set_skeleton(m_skeleton);
+				mm_pair.mesh->set_skeleton(m_skeleton);
 
 				//기본적으로는 컨테이너 이름을 사용
 				//비어있을 경우 이름을 만들어준다
-				std::fs::path name{};
-				if (cont.Name.empty())
-				{
-					name = filePath;
-					name.replace_extension();
-					name += "_";
-					name += std::to_string(i);
-				}
-				else
-				{
-					name = _dirAndFileName;
-					name /= cont.Name;
-				}
+				std::fs::path name = _dir_name / cont.Name;
 				name += "_";
 				name += std::to_string(j);
 
 				//.msh로 확장자를 변경
-				name.replace_extension(name::path::extension::Mesh);
 				//Key로 Mesh를 저장
-				meshCont.mesh->set_resource_name(name.string());
-				ResourceManager<Mesh>::get_inst().save(meshCont.mesh);
+				mm_pair.mesh->set_resource_name(
+					name.string());
+				//ResourceManager<Mesh>::get_inst().save(mm_pair.mesh);
 
 				// 메테리얼 가져오기
-				meshCont.material =
-					convert_material(&(cont.vecMtrl[j]), _dirAndFileName);
-				if (nullptr == meshCont.material)
+				mm_pair.material =
+					convert_material(&(cont.vecMtrl[j]), _dir_name);
+				if (nullptr == mm_pair.material)
 				{
 					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
 					return eResult::Fail_InValid;
 				}
+				mm_pair.material->set_resource_name(name.string());
+				//ResourceManager<Material>::get_inst().save(mm_pair.material);
 
-				m_meshContainers.push_back(std::move(meshCont));
+				m_mesh_mtrl_pairs.push_back(mm_pair);
 			}
 		}
 		return eResult::Success;
@@ -458,7 +447,7 @@ namespace ehw
 		}
 
 		FBXLoader loader{};
-		eResult result = loader.LoadFbx(_fbxPath, false);
+		eResult result = loader.load_FBX(_fbxPath, false);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("FBX 불러오기 실패.");
@@ -474,7 +463,7 @@ namespace ehw
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::get_inst().load(_meshDataName / _meshDataName);
+		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::get_inst().load((_meshDataName / _meshDataName).string());
 
 		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResult_fail(result))
@@ -551,7 +540,7 @@ namespace ehw
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
-				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::get_inst().load(texKey);
+				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::get_inst().load(texKey.string());
 				//바로 Texture Load. 로드 실패 시 false 반환
 				if (nullptr == newTex)
 				{
@@ -667,8 +656,7 @@ namespace ehw
 									std::fs::path texKey = _texDestDir.filename();
 									texKey /= dirIter.path().filename();
 
-									newTex = ResourceManager<Texture>::get_inst().load(texKey);
-
+									newTex = ResourceManager<Texture>::get_inst().load(texKey.string());
 
 									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");
 
@@ -687,12 +675,12 @@ namespace ehw
 		if (nullptr == _renderer)
 			return false;
 
-		else if (_idx >= (UINT)m_meshContainers.size())
+		else if (_idx >= (UINT)m_mesh_mtrl_pairs.size())
 			return false;
 
 		//Mesh 또는 Material은 없을 리가 없음(생성할 때 예외처리 함)
-		_renderer->set_mesh(m_meshContainers[_idx].mesh);
-		_renderer->set_material(m_meshContainers[_idx].material);
+		_renderer->set_mesh(m_mesh_mtrl_pairs[_idx].mesh);
+		_renderer->set_material(m_mesh_mtrl_pairs[_idx].material);
 
 		return true;
 	}

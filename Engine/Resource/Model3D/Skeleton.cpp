@@ -230,8 +230,8 @@ namespace ehw
 
 			bone.iDepth = vecBone[i].Depth;
 			bone.iParentIndx = vecBone[i].ParentIndx;
-			bone.matBone = FBXLoader::GetMatrixFromFbxMatrix(vecBone[i].matBone);
-			bone.matOffset = FBXLoader::GetMatrixFromFbxMatrix(vecBone[i].matOffset);
+			bone.matBone = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].matBone);
+			bone.matOffset = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].matOffset);
 			bone.strBoneName = vecBone[i].strBoneName;
 		}
 		create_bone_offset_buffer();
@@ -241,8 +241,8 @@ namespace ehw
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
 
-			std::shared_ptr<Skeleton> sklt = 
-				std::static_pointer_cast<Skeleton>(shared_from_this());
+			std::shared_ptr<Skeleton> sklt =
+				shared_from_this_cast<Skeleton>();
 
 			eResult result = anim->load_from_fbx(sklt, &animClip[i]);
 

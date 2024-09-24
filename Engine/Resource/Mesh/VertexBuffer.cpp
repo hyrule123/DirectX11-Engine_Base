@@ -43,6 +43,7 @@ namespace ehw {
 		return create_vertex_buffer_internal();
 	}
 
+#include "Engine/Manager/ResourceManager.h"
 	void VertexBuffer::IA_set_vertex_buffer()
 	{
 		if (m_buffer) {
@@ -56,45 +57,14 @@ namespace ehw {
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
 
-		BinarySerializer ser{};
-		eResult result = serialize_binary(&ser);
-		if (eResult_fail(result)) {
-			return result;
-		}
-
-		std::ofstream ofs(fullpath);
-		if (false == ofs.is_open()) {
-			return eResult::Fail;
-		}
-
-		result = ser.SaveFile(ofs);
-		if (eResult_fail(result)) {
-			return result;
-		}
-
-		m_is_saved = true;
-		return eResult::Success;
+		return SaveFile_Binary(fullpath);;
 	}
 
 	eResult VertexBuffer::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
-
-		std::ifstream ifs(fullpath);
-		if (ifs.is_open()) {
-			BinarySerializer ser{};
-			eResult result = ser.LoadFile(ifs);
-			if (eResult_fail(result)) {
-				return result;
-			}
-			result = deserialize_binary(&ser);
-			if (eResult_fail(result)) {
-				return result;
-			}
-		}
-
-		return eResult::Success;
+		return LoadFile_Binary(fullpath);
 	}
 
 	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
@@ -117,6 +87,7 @@ namespace ehw {
 		ser << m_bounding_sphere_radius;
 		ser << m_bounding_box;
 
+		m_is_saved = true;
 		return eResult::Success;
 	}
 

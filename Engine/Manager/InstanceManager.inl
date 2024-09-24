@@ -35,18 +35,15 @@ namespace ehw {
 		~InstanceManager();
 
 	public:
-		Entity* instantiate(const std::string_view key);
+		std::unique_ptr<Entity> instantiate(const std::string_view key);
 
 		template <typename T>
-		T* instantiate(const std::string_view key) {
-			Entity* e = instantiate(key);
-			T* ret = nullptr;
-			ret = dynamic_cast<T*>(e);
-
-			if (nullptr == ret) {
-				SAFE_DELETE(e);
+		std::unique_ptr<T> instantiate(const std::string_view key) {
+			std::unique_ptr<Entity> inst = instantiate(key);
+			std::unique_ptr<T> ret(dynamic_cast<T*>(inst.get()));
+			if (ret) {
+				inst.release();
 			}
-
 			return ret;
 		}
 
@@ -55,17 +52,17 @@ namespace ehw {
 			ASSERT_DEBUG(false == _name.empty(), "이름이 비어있습니다.");
 
 			m_ctors[_name] =
-				[_arg...]()->Entity* {
+				[_arg...]()->std::unique_ptr<Entity> {
 
 				//static_cast가 Entity 에러를 막아줌
-				return static_cast<Entity*>(new T(_arg...));
+				return std::make_unique<T>(_arg...);
 				};
 
 			return true;
 		}
 
 	private:
-		std::unordered_map<std::string_view, std::function<Entity* ()>> m_ctors;
+		std::unordered_map<std::string_view, std::function<std::unique_ptr<Entity> ()>> m_ctors;
 	};
 
 }
