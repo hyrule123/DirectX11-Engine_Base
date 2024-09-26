@@ -16,8 +16,8 @@ VSOut main(VSIn _in)
 		, _in.Tangent
 		, _in.BiNormal
 		, _in.Normal
-		, _in.vWeights
 		, _in.vIndices
+		, _in.vWeights
 		);
 	}
 	else

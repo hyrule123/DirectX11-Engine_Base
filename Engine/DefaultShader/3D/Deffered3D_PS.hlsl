@@ -13,6 +13,7 @@ PSOut_Deffered main(VSOut _in)
     
 	if (TRUE == CB_MaterialData.IsNormalTex)
 	{
+		//normal 회전 행렬(view 공간으로 normal값을 변환해주는 행렬)
 		float3x3 matRot =
 		{
 			_in.ViewTangent,//X
@@ -20,11 +21,11 @@ PSOut_Deffered main(VSOut _in)
 			_in.ViewNormal//Z
 		};
 
-		// 물체의 표면에 적용될 탄젠트 공간 기준 방향벡터를 가져온다.
+		//노말맵에 들어있는 방향 벡터는 '탄젠트 공간'에 속해 있는 방향 벡터이다.
 		float3 vNormal = NormalTexture.Sample(anisotropicSampler, _in.UV).xyz;
 		
 		//Normal 값은 0.f과 1.f 사이(0 ~ 255) -> -1 ~ 1 사이로 변환한다.
-		// 0~1값을 -1~1의 값으로 변환 후 
+		// 0~1값을 -1~1의 값으로 변환한다.
 		vNormal = normalize((vNormal * 2.f) - 1.f);
 		
 		//Normal 회전 행렬과 곱해서 실제 노말값을 구한다.

@@ -84,7 +84,7 @@ tLightColor calculate_light_3D(int lightIdx, float3 viewPos, float3 viewNormal)
 	float3 vEye = -normalize(viewPos);
     
     // 반사광 세기          
-	float fRelfectPow = pow(saturate(dot(vViewReflect, vEye)), 10);
+	float fRelfectPow = pow(saturate(dot(vViewReflect, vEye)), 2);
 	
 	ret.diffuse = lightInfo.color.diffuse * fPow * fDistPow;
 	ret.specular = lightInfo.color.specular * fRelfectPow * fDistPow;

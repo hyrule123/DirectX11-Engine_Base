@@ -214,15 +214,20 @@ namespace ehw
         m_EndTime = _clip->EndTime.GetSecondDouble();
         m_TimeLength = m_EndTime - m_StartTime;
 
-        m_StartFrame = (uint)_clip->StartTime.GetFrameCount(_clip->TimeMode);
-        if (m_StartFrame < 0)
-        {
-            m_StartFrame = 0;
+        int frame_index = (int)_clip->StartTime.GetFrameCount(_clip->TimeMode);
+        if (frame_index < 0) {
+            frame_index = 0;
         }
-        m_EndFrame = (uint)_clip->EndTime.GetFrameCount(_clip->TimeMode);
-        m_FrameLength = (uint)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
+        m_StartFrame = (uint)frame_index;
+        
+        frame_index = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
+        if (frame_index < 0) {
+            frame_index = 0;
+        }
+        m_EndFrame = (uint)frame_index;
 
-        ASSERT(m_FrameLength >= 0, "3D 애니메이션의 프레임이 음수입니다.");
+        ASSERT(m_StartFrame <= m_EndFrame, "3D 애니메이션의 프레임이 음수입니다.");
+        m_FrameLength = (uint)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
 
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
@@ -252,41 +257,39 @@ namespace ehw
 
             //애니메이션 전체 키프레임의 갯수와, 실제 애니메이션의 중 적은 쪽의 것을 사용해준다
             //이유: 키프레임이 0개일수도 있고, 등록된 키프레임 수보다 훨씬 많을수도 있음
-            size_t resizeCount =
-                m_FrameLength <= _clip->KeyFramesPerBone[i].vecKeyFrame.size() ?
-                m_FrameLength : _clip->KeyFramesPerBone[i].vecKeyFrame.size();
+            size_t frame_count = _clip->KeyFramesPerBone[i].vecKeyFrame.size();
+            if (m_FrameLength <= _clip->KeyFramesPerBone[i].vecKeyFrame.size()) {
+                frame_count = m_FrameLength;
+            }
 
-            m_KeyFramesPerBone[i].vecKeyFrame.resize(resizeCount);
-            for(size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
+            m_KeyFramesPerBone[i].vecKeyFrame.resize(frame_count);
+            for(size_t j = 0; j < frame_count; ++j)
             {
-                if ((uint)j < m_FrameLength)
-                {
-                    //우리 포맷 키프레임
-                    tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];
+                //우리 포맷 키프레임
+                tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];
 
-                    //FBX 포맷 키프레임
-                    const tFBXKeyFrame& fbxKeyFrame = _clip->KeyFramesPerBone[i].vecKeyFrame[j];
+                //FBX 포맷 키프레임
+                const tFBXKeyFrame& fbxKeyFrame = _clip->KeyFramesPerBone[i].vecKeyFrame[j];
 
-                    //포맷을 변환해줘야 한다. double -> float
+                //포맷을 변환해줘야 한다. double -> float
 
-                    const fbxsdk::FbxVector4& fbxPos = fbxKeyFrame.matTransform.GetT();
-                    projKeyFrame.Trans.Pos.x = (float)fbxPos.mData[0];
-                    projKeyFrame.Trans.Pos.y = (float)fbxPos.mData[1];
-                    projKeyFrame.Trans.Pos.z = (float)fbxPos.mData[2];
-                    projKeyFrame.Trans.Pos.w = 1.f;
+                const fbxsdk::FbxVector4& fbxPos = fbxKeyFrame.matTransform.GetT();
+                projKeyFrame.Trans.Pos.x = (float)fbxPos.mData[0];
+                projKeyFrame.Trans.Pos.y = (float)fbxPos.mData[1];
+                projKeyFrame.Trans.Pos.z = (float)fbxPos.mData[2];
+                projKeyFrame.Trans.Pos.w = 1.f;
 
-                    const fbxsdk::FbxVector4& fbxScale = fbxKeyFrame.matTransform.GetS();
-                    projKeyFrame.Trans.Scale.x = (float)fbxScale.mData[0];
-                    projKeyFrame.Trans.Scale.y = (float)fbxScale.mData[1];
-                    projKeyFrame.Trans.Scale.z = (float)fbxScale.mData[2];
-                    projKeyFrame.Trans.Pos.w = 1.f;
+                const fbxsdk::FbxVector4& fbxScale = fbxKeyFrame.matTransform.GetS();
+                projKeyFrame.Trans.Scale.x = (float)fbxScale.mData[0];
+                projKeyFrame.Trans.Scale.y = (float)fbxScale.mData[1];
+                projKeyFrame.Trans.Scale.z = (float)fbxScale.mData[2];
+                projKeyFrame.Trans.Pos.w = 1.f;
 
-                    const fbxsdk::FbxQuaternion& fbxQuat = fbxKeyFrame.matTransform.GetQ();
-                    projKeyFrame.Trans.RotQuat.x = (float)fbxQuat.mData[0];
-                    projKeyFrame.Trans.RotQuat.y = (float)fbxQuat.mData[1];
-                    projKeyFrame.Trans.RotQuat.z = (float)fbxQuat.mData[2];
-                    projKeyFrame.Trans.RotQuat.w = (float)fbxQuat.mData[3];
-                }
+                const fbxsdk::FbxQuaternion& fbxQuat = fbxKeyFrame.matTransform.GetQ();
+                projKeyFrame.Trans.RotQuat.x = (float)fbxQuat.mData[0];
+                projKeyFrame.Trans.RotQuat.y = (float)fbxQuat.mData[1];
+                projKeyFrame.Trans.RotQuat.z = (float)fbxQuat.mData[2];
+                projKeyFrame.Trans.RotQuat.w = (float)fbxQuat.mData[3];
             }
         }
 

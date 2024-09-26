@@ -11,7 +11,9 @@ PS_OUT main(VSOut_LightDir _in)
     
 	//xyz 셋다 0일 경우 버림
 	if (false == any(vViewPos.xyz))
+	{
 		discard;
+	}
       
 	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
         

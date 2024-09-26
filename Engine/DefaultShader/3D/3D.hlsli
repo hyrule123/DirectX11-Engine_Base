@@ -18,7 +18,7 @@ struct VSIn
 	float3 BiNormal : BINORMAL;
 	float3 Normal : NORMAL;
 	
-	float4 vIndices : BLENDINDICES;
+	uint4 vIndices : BLENDINDICES;
 	float4 vWeights : BLENDWEIGHT;
 	
 	uint instance_ID : SV_InstanceID;

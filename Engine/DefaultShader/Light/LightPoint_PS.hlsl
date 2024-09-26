@@ -6,21 +6,22 @@ PS_OUT main(VS_OUT_LightPoint _in)
 {
 	PS_OUT output = (PS_OUT) 0.f;
     
+	//현재 픽셀의 0.0~1.0 사이의 위치를 찾아낸다.
 	float2 vUV = _in.position.xy / CB_Global.fResolution;
 	
-	//Position 렌더 타겟에는 View Position 값이 들어가 있다.
+	//Position 렌더 타겟에는 물체의 view position이 들어가 있다.
 	float4 vViewPos = PositionTarget.Sample(anisotropicSampler, vUV);
     
 	if (0.f == vViewPos.a)
 	{
 		discard;
 	}
-      
+	
     // 광원 영역에 잡힌 position target의 위치값을 로컬영역으로 바꿔야한다.
     // 로컬 영역에서 광원메쉬 (sphere)의 내부에 있다면 실제로 point light 안에 들어가있다는 뜻
 	float4 vLocalPos = mul(mul(vViewPos, g_CB_camera.inverse_view), g_transforms[_in.instance_ID].InverseWorld);
 	
-	if (length(vLocalPos.xyz) > g_light_attributes[_in.instance_ID].radius)
+	if (length(vLocalPos.xyz) > 0.5f)
 	{
 		discard;
 	}

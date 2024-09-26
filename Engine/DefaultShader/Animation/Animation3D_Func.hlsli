@@ -207,7 +207,7 @@ matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
 }
 
 tSkinningInfo Skinning(uint skeleton_instance_ID, uint bone_count, float3 Pos, float3 Tangent,
-    float3 Binormal, float3 Normal, float4 BlendWeight, uint4 BlendIndex)
+    float3 Binormal, float3 Normal, uint4 BlendIndex, float4 BlendWeight)
 {
 	tSkinningInfo Info = (tSkinningInfo) 0;
 

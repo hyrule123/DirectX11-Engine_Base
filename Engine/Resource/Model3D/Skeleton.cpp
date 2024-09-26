@@ -412,6 +412,7 @@ namespace ehw
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
 			m_compute_queue[i]->update_final_matrix(i, m_final_matrix_buffer.get());
 		}
+		//계산 완료된 큐는 바로 비워준다.
 		m_compute_queue.clear();
 
 		//UAV 연결 해제

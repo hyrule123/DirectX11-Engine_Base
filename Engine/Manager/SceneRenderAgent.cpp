@@ -62,40 +62,38 @@ namespace ehw {
 	void SceneRenderAgent::render()
 	{
 		for (Com_Camera* cam : m_cameras) {
-			if (cam->IsEnabled()) {
-				//카메라 정보 GPU 바인딩
-				cam->bind_data_to_GPU();
+			//카메라 정보 GPU 바인딩
+			cam->bind_data_to_GPU();
 				
-				//디퍼드 MRT 바인딩
-				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
-				render_by_mode(cam, eRenderingMode::deffered_opaque);
-				render_by_mode(cam, eRenderingMode::deffered_mask);
+			//디퍼드 MRT 바인딩
+			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
+			render_by_mode(cam, eRenderingMode::deffered_opaque);
+			render_by_mode(cam, eRenderingMode::deffered_mask);
 
-				//// deffered light 
-				// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
-				// 붙여버리자
-				//렌더타겟을 Light로 변경
-				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Light)->Bind();
-				for (int i = 0; i < (int)eLightType::END; ++i) {
-					cam->render_lights_3D((eLightType)i, m_light_3D_instances[i]);
-				}
-
-				//Merge 단계 + Forward Rendering에서는 SwapChain에 바로 데이터를 기록한다.
-				RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
-
-				// defferd + swapchain merge
-				m_deffered_merge_material->bind_shader();
-				m_deffered_merge_rectmesh->render();
-
-				//Forward Rendering
-				render_by_mode(cam, eRenderingMode::forward_opaque);
-				render_by_mode(cam, eRenderingMode::forward_cutout);
-				render_by_mode(cam, eRenderingMode::forward_transparent);
-
-				//PostProcess 코드는 차후에 수정할것
-				//RenderManager::get_inst().CopyRenderTarget();
-				//render_by_mode(cam, eRenderingMode::post_process);
+			//// deffered light 
+			// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
+			// 붙여버리자
+			//렌더타겟을 Light로 변경
+			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Light)->Bind();
+			for (int i = 0; i < (int)eLightType::END; ++i) {
+				cam->render_lights_3D((eLightType)i, m_light_3D_instances[i]);
 			}
+
+			//Merge 단계 + Forward Rendering에서는 SwapChain에 바로 데이터를 기록한다.
+			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+
+			// defferd + swapchain merge
+			m_deffered_merge_material->bind_shader();
+			m_deffered_merge_rectmesh->render();
+
+			//Forward Rendering
+			render_by_mode(cam, eRenderingMode::forward_opaque);
+			render_by_mode(cam, eRenderingMode::forward_cutout);
+			render_by_mode(cam, eRenderingMode::forward_transparent);
+
+			//PostProcess 코드는 차후에 수정할것
+			//RenderManager::get_inst().CopyRenderTarget();
+			//render_by_mode(cam, eRenderingMode::post_process);
 		}
 	}
 
