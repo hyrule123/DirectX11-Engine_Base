@@ -12,12 +12,12 @@ namespace ehw
 	{
 		CLASS_NAME(Light_3D);
 		REGISTER_INSTANCE_DEFAULT(Light_3D);
-		
+		CLONE_ABLE(Light_3D);
 	public:
 		Light_3D();
 
 		Light_3D(const Light_3D& _other);
-		CLONE_ABLE(Light_3D);
+		
 
 		~Light_3D() override;
 

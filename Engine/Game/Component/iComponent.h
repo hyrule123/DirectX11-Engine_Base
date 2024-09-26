@@ -14,8 +14,11 @@ namespace ehw {
 		, public Serializable_Json
 	{
 		CLASS_NAME(iComponent);
+		CLONE_DISABLE(iComponent);
+
 		friend class ComponentManager;
 		friend class GameObject;
+		
 	public:
 		enum class eState
 		{
@@ -29,7 +32,7 @@ namespace ehw {
 		iComponent(const std::string_view key, eComponentCategory _type);
 
 		iComponent(const iComponent& _other);
-		CLONE_DISABLE(iComponent);
+		
 
 		virtual ~iComponent();
 

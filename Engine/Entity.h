@@ -5,16 +5,13 @@
 #define CLASS_NAME(_class_) \
 public: static inline constexpr const std::string_view concrete_class_name = #_class_
 
-//Clone을 지원하지 않을 경우 nullptr이 반환된다.
+//CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
-virtual _type* Clone() override { return new _type(*this); }
+public: virtual _type* Clone() override { return new _type(*this); }
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_DISABLE(_type) \
-virtual _type* Clone() override\
-{\
-	return nullptr;\
-}
+private: virtual _type* Clone() override { return nullptr; }
 
 namespace ehw
 {

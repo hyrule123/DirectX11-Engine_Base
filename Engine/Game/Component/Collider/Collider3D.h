@@ -10,9 +10,9 @@ namespace ehw
 	class Collision3D;
 	class Collider3D : public Collider
 	{
+		CLONE_DISABLE(Collider3D);
 	public:
 		Collider3D(const std::string_view key, eCollider3DType _col3dType);
-		CLONE_DISABLE(Collider3D);
 		
 		virtual ~Collider3D();
 

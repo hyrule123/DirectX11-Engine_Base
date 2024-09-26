@@ -18,11 +18,10 @@ namespace ehw
 		: public Entity
 	{
 		CLASS_NAME(Animation3D_PlayData);
+		CLONE_ABLE(Animation3D_PlayData);
 	public:
 		Animation3D_PlayData();
-
 		Animation3D_PlayData(const Animation3D_PlayData& _other);
-		CLONE_ABLE(Animation3D_PlayData);
 
 		virtual ~Animation3D_PlayData();
 

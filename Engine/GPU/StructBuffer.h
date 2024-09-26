@@ -14,6 +14,7 @@ namespace ehw
 		: public GPUBuffer
 	{
         CLASS_NAME(StructBuffer);
+        CLONE_ABLE(StructBuffer);
     public:
         struct Desc
         {
@@ -37,7 +38,7 @@ namespace ehw
         StructBuffer();
 
         StructBuffer(const StructBuffer& _other);
-        CLONE_ABLE(StructBuffer);
+        
 
         virtual ~StructBuffer();
 

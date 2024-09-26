@@ -43,17 +43,17 @@ namespace ehw
 	{
 		CLASS_NAME(Transform);
 		REGISTER_INSTANCE_DEFAULT(Transform);
-
+		CLONE_ABLE(Transform);
+		
 		friend class Transform;
 		friend class GameObject;
+
 	public:
 		Transform();
-
 		//단순 Value만 저장 중이므로 기본 복사 생성자로도 충분함.
 		Transform(const Transform& _other) = default;
+		
 		Transform(Transform&& _move) noexcept = default;
-
-		CLONE_ABLE(Transform);
 
 		virtual ~Transform();
 

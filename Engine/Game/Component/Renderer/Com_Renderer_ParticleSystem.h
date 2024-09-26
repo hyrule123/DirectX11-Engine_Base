@@ -17,11 +17,10 @@ namespace ehw
 	{
 		CLASS_NAME(Com_Renderer_ParticleSystem);
 		REGISTER_INSTANCE_DEFAULT(Com_Renderer_ParticleSystem);
-		
+		CLONE_ABLE(Com_Renderer_ParticleSystem);
 	public:
 		Com_Renderer_ParticleSystem();
 		Com_Renderer_ParticleSystem(const Com_Renderer_ParticleSystem& _other);
-		CLONE_ABLE(Com_Renderer_ParticleSystem);
 
 		~Com_Renderer_ParticleSystem();
 

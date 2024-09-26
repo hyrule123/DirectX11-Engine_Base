@@ -13,6 +13,7 @@ namespace ehw
 		, public Serializable_Json
 	{
 		CLASS_NAME(Animation2D);
+		CLONE_ABLE(Animation2D);
 	public:
 		struct tSprite
 		{
@@ -34,9 +35,7 @@ namespace ehw
 		};
 
 		Animation2D();
-
 		Animation2D(const Animation2D& _other);
-		CLONE_ABLE(Animation2D);
 
 		virtual ~Animation2D();
 

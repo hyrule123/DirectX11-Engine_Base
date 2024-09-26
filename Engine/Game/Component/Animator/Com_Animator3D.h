@@ -10,12 +10,10 @@ namespace ehw
 		public Animator
 	{
 		CLASS_NAME(Com_Animator3D);
-		
+		CLONE_ABLE(Com_Animator3D);
 	public:
 		Com_Animator3D();
-
 		Com_Animator3D(const Com_Animator3D& _other);
-		CLONE_ABLE(Com_Animator3D);
 
 		virtual ~Com_Animator3D();
 

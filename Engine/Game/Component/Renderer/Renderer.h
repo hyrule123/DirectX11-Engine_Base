@@ -26,7 +26,7 @@ namespace ehw
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void set_mesh(const std::shared_ptr<Mesh> _mesh) { m_mesh = _mesh; }
+		void set_mesh(const std::shared_ptr<Mesh>& _mesh) { m_mesh = _mesh; }
 		std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
 
 		//인스턴싱 구현 전까지는 일단 Material을 복사해서 사용

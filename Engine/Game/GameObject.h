@@ -16,10 +16,12 @@ namespace ehw
 		: public Entity
 		, public Serializable_Json
 	{
+		friend class GameObject;
+
 		CLASS_NAME(GameObject);
 		REGISTER_INSTANCE_DEFAULT(GameObject);
-
-		friend class GameObject;
+		CLONE_ABLE(GameObject);
+		
 	public:
 		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
 		using Scripts = std::vector<Script*>;
@@ -35,7 +37,7 @@ namespace ehw
 		GameObject();
 		GameObject(const std::string_view _name);
 		GameObject(const GameObject& _other);
-		CLONE_ABLE(GameObject);
+		
 
 		virtual ~GameObject();
 

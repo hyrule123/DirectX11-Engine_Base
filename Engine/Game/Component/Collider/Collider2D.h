@@ -9,12 +9,11 @@ namespace ehw
 	class Collision2D;
 	class Collider2D : public Collider
 	{
-	public:
-		eCollider2D_Shape GetColliderShape() const { return m_collider2DShape; }
-
-		Collider2D(const std::string_view key, eCollider2D_Shape _type);
-		Collider2D(const Collider2D& _collider);
+		CLASS_NAME(Collider2D);
 		CLONE_DISABLE(Collider2D);
+	public:
+		Collider2D(const std::string_view key, eCollider2D_Shape _type);
+		Collider2D(const Collider2D& _other);
 
 		virtual ~Collider2D();
 
@@ -29,6 +28,8 @@ namespace ehw
 		virtual void UpdateShape() = 0;
 
 		void final_update() final {}
+
+		eCollider2D_Shape GetColliderShape() const { return m_collider2DShape; }
 
 	protected:
 		inline Collision2D* GetCollision2DManager() { return m_col2dManager; };

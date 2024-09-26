@@ -8,13 +8,13 @@ namespace ehw
 	{
 		CLASS_NAME(Com_Renderer_Sprite);
 		REGISTER_INSTANCE_DEFAULT(Com_Renderer_Sprite);
-		
+		CLONE_ABLE(Com_Renderer_Sprite);
 	public:
 		Com_Renderer_Sprite();
 
 		Com_Renderer_Sprite(const Com_Renderer_Sprite& _other) = default;
 
-		CLONE_ABLE(Com_Renderer_Sprite);
+		
 
 		virtual ~Com_Renderer_Sprite();
 		

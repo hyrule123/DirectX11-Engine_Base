@@ -7,6 +7,7 @@ namespace ehw
     class Light :
         public Component<Light, eComponentCategory::Light>
     {
+        
     public:
         Light(const std::string_view key, eDimensionType _dimensionType);
         virtual ~Light();

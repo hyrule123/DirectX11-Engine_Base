@@ -7,14 +7,19 @@ namespace ehw {
     {
         CLASS_NAME(Default3DMtrl);
         REGISTER_INSTANCE_DEFAULT(Default3DMtrl);
-        //name::defaultRes::shader::graphics::Deffered3DShader
+        CLONE_ABLE(Default3DMtrl);
     public:
         Default3DMtrl();
+        Default3DMtrl(const Default3DMtrl& _other) = default;
+
         virtual ~Default3DMtrl();
 
         void clear_instancing_buffer() final;
         void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) final;
         void bind_instancing_buffer_to_GPU_register() final;
+
+        void set_forward3D_shader();
+        void set_deffered3D_shader();
 
         static void load_static_buffer();
     private:

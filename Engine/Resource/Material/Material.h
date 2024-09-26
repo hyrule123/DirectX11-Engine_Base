@@ -23,6 +23,7 @@ namespace ehw
 		, public Serializable_Json
 	{
 		CLASS_NAME(Material);
+		CLONE_ABLE(Material);
 	public:
 		Material();
 		Material(std::string_view key);
@@ -30,6 +31,7 @@ namespace ehw
 		Material(const Material& _other);
 
 		virtual ~Material();
+
 
 		// 필수 재정의 함수들 //
 		void bind_shader();

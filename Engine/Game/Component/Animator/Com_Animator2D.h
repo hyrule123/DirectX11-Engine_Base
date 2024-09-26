@@ -11,6 +11,7 @@ namespace ehw
 		: public Animator
 	{
 		CLASS_NAME(Com_Animator2D);
+		CLONE_ABLE(Com_Animator2D);
 	public:
 		struct tEvents
 		{
@@ -37,9 +38,7 @@ namespace ehw
 		};
 
 		Com_Animator2D();
-
 		Com_Animator2D(const Com_Animator2D& _other);
-		CLONE_ABLE(Com_Animator2D);
 
 		virtual ~Com_Animator2D();
 

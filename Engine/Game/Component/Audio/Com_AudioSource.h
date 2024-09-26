@@ -8,14 +8,11 @@ namespace ehw
 		: public Component<Com_AudioSource, eComponentCategory::AudioSource>
 	{
 		CLASS_NAME(Com_AudioSource);
-		
+		//다 같이 공유하는 '리소스' 포인터만 변수로 가지고 있으므로 기본 복사 생성자로도 충분하다.
+		CLONE_ABLE(Com_AudioSource);
 	public:
 		Com_AudioSource();
-
-		//복사할 변수가 있지만,
-		//다 같이 공유하는 '리소스' 포인터이기 때문에 기본 복사 생성자로도 충분하다.
 		Com_AudioSource(const Com_AudioSource& _other) = default;
-		CLONE_ABLE(Com_AudioSource);
 
 		virtual ~Com_AudioSource();
 

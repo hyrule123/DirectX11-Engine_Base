@@ -11,6 +11,8 @@
 #include "Engine/CompiledShaderHeader/Deffered3D_PS_x64_Release.h"
 #endif
 
+#include "Engine/Manager/ResourceManager.h"
+
 #include "Engine/Game/GameObject.h"
 
 #include "Engine/Game/Component/Animator/Com_Animator3D.h"
@@ -81,6 +83,18 @@ namespace ehw {
     void Default3DMtrl::bind_instancing_buffer_to_GPU_register()
     {
         m_default_3D_mtrl_instancing_buffer->bind_buffer_as_SRV();
+    }
+
+    void Default3DMtrl::set_forward3D_shader()
+    {
+        auto forward = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Forward3DShader);
+        set_shader(forward);
+    }
+
+    void Default3DMtrl::set_deffered3D_shader()
+    {
+        auto deffered = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+        set_shader(deffered);
     }
 
     void Default3DMtrl::load_static_buffer()

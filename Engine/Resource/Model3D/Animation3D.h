@@ -31,15 +31,15 @@ namespace ehw
         : public Animation
         , public Serializable_Binary
 	{
+        friend class Skeleton;
+
         CLASS_NAME(Animation3D);
         REGISTER_INSTANCE_DEFAULT(Animation3D);
+        CLONE_ABLE(Animation3D);
         
-        friend class Skeleton;
 	public:
 		Animation3D();
-
         Animation3D(const Animation3D& _other);
-        CLONE_ABLE(Animation3D);
 
         virtual ~Animation3D();
 
