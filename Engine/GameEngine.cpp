@@ -51,7 +51,8 @@ namespace ehw
 		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
 		SetWindowSize(_desc.Width, _desc.Height);
 
-		ThreadPoolManager::get_inst().init((size_t)std::thread::hardware_concurrency());
+		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
+		ThreadPoolManager::get_inst().init((size_t)4);
 		PathManager::get_inst().init();
 		
 		RenderManager::get_inst().init();
