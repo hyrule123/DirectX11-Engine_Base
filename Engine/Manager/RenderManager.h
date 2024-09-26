@@ -95,7 +95,7 @@ namespace ehw
 
 		void LoadDefaultMesh();
 		void LoadDefaultMaterial();
-		void LoadDefaultShader();
+		void load_default_shaders();
 		void LoadDefaultTexture();
 
 		void CreateSamplerStates();
@@ -103,7 +103,7 @@ namespace ehw
 		void CreateDepthStencilStates();
 		void CreateBlendStates();
 
-		void CreateBuffer();
+		void create_const_buffers();
 
 	private:
 		UINT m_resolution_x;

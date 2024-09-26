@@ -393,16 +393,18 @@
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
     <ClCompile Include="Game\Component\iComponent.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
-    <ClCompile Include="Manager\RenderManager_BufferInit.cpp" />
     <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Resource\Material\Default3DMtrl.cpp" />
     <ClCompile Include="Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Resource\Material\DebugMaterial.cpp" />
-    <ClCompile Include="Manager\DefaultResInit\StructBuffers.cpp" />
-    <ClCompile Include="Manager\DefaultResInit\Meshes.cpp" />
-    <ClCompile Include="Manager\DefaultResInit\Materials.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_ConstBuffers.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_Meshes.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_Materials.cpp" />
     <ClCompile Include="Resource\Material\Light_3D_Material.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_ShaderStates.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">

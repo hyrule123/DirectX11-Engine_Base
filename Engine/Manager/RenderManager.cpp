@@ -105,7 +105,7 @@ namespace ehw
 		CreateRasterizerStates();
 		CreateDepthStencilStates();
 		CreateBlendStates();
-		CreateBuffer();
+		create_const_buffers();
 
 		//Resource
 		load_default_resources();
@@ -133,7 +133,7 @@ namespace ehw
 	void RenderManager::load_default_resources()
 	{
 		LoadDefaultMesh();
-		LoadDefaultShader();
+		load_default_shaders();
 		LoadDefaultTexture();
 		LoadDefaultMaterial();
 	}
