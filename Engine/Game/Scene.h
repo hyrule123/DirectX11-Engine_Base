@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Entity.h"
-#include "Engine/Entity.h"
+#include "Engine/Game/Entity.h"
+#include "Engine/Game/Entity.h"
 #include "Engine/Common.h"
 #include "Engine/Util/type_traits_Ex.h"
 

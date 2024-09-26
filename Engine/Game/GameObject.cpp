@@ -377,12 +377,12 @@ namespace ehw
 
 	iComponent* GameObject::AddComponent(const std::string_view _resource_name)
 	{
-		return AddComponent(InstanceManager::get_inst().instantiate<iComponent>(_resource_name).release());
+		return AddComponent(EntityFactory::get_inst().instantiate<iComponent>(_resource_name).release());
 	}
 
 	Script* GameObject::AddScript(const std::string_view _resource_name)
 	{
-		iComponent* ret = AddComponent(InstanceManager::get_inst().instantiate<Script>(_resource_name).release());
+		iComponent* ret = AddComponent(EntityFactory::get_inst().instantiate<Script>(_resource_name).release());
 		return static_cast<Script*>(ret);
 	}
 

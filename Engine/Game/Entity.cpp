@@ -1,4 +1,4 @@
-#include "Engine/Entity.h"
+#include "Engine/Game/Entity.h"
 
 #include "Engine/define_Macro.h"
 
@@ -21,13 +21,13 @@ namespace ehw
 	{
 	}
 
-	InstanceManager::InstanceManager()
+	EntityFactory::EntityFactory()
 	{
 	}
-	InstanceManager::~InstanceManager()
+	EntityFactory::~EntityFactory()
 	{
 	}
-	std::unique_ptr<Entity> InstanceManager::instantiate(const std::string_view key)
+	std::unique_ptr<Entity> EntityFactory::instantiate(const std::string_view key)
 	{
 		std::unique_ptr<Entity> ret = nullptr;
 		auto iter = m_ctors.find(key);

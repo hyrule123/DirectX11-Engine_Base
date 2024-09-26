@@ -227,14 +227,12 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Entity.h" />
     <ClInclude Include="Resource\Material\Light_3D_Material.h" />
     <ClInclude Include="Resource\Material\DebugMaterial.h" />
     <ClInclude Include="DefaultSettingVar.h" />
     <ClInclude Include="Resource\Mesh\VertexBuffer.h" />
     <None Include="DefaultShader\Initialize\GPU_Init_Setting.hlsli" />
-    <None Include="Manager\InstanceManager.inl">
-      <FileType>Document</FileType>
-    </None>
     <ClInclude Include="Resource\Material\Default3DMtrl.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Game\Component\iComponent.h" />
@@ -306,7 +304,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Shader\ComputeShader.h" />
     <ClInclude Include="GPU\ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="define_Enum.h" />
     <ClInclude Include="Manager\AudioManager.h" />
     <ClInclude Include="Manager\FontWrapper.h" />
@@ -344,6 +341,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Entity.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_ShaderStates.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
@@ -353,7 +351,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="Manager\Default_Resources\Default_ConstBuffers.cpp" />
     <ClCompile Include="Resource\Material\DebugMaterial.cpp" />
     <ClCompile Include="Resource\Material\Default3DMtrl.cpp" />
-    <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Game\Component\iComponent.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
@@ -427,7 +424,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClCompile Include="GPU\GPUBuffer.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShader.cpp" />
     <ClCompile Include="GPU\ConstBuffer.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Manager\FontWrapper.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />

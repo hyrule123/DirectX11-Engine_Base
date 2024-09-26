@@ -118,7 +118,7 @@ namespace ehw
 
 	Scene* SceneManager::LoadScene(const std::string_view _resource_name)
 	{
-		std::unique_ptr<Scene> s(InstanceManager::get_inst().instantiate<Scene>(_resource_name));
+		std::unique_ptr<Scene> s(EntityFactory::get_inst().instantiate<Scene>(_resource_name));
 
 		return LoadScene(std::move(s));
 	}

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Entity.h"
+#include "Engine/Game/Entity.h"
 
 #include "Engine/Game/Component/define_Component.h"
 

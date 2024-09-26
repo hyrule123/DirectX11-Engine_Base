@@ -69,7 +69,7 @@ namespace ehw
 		
 		TimeManager::get_inst().init();
 
-		InputManager::init();
+		InputManager::get_inst().init();
 		
 		PhysXInstance::get_inst().init();
 		SceneManager::get_inst().init();
@@ -86,7 +86,7 @@ namespace ehw
 	void GameEngine::update()
 	{
 		TimeManager::get_inst().update();
-		InputManager::update();
+		InputManager::get_inst().update();
 		SceneManager::get_inst().fixed_update();
 		SceneManager::get_inst().update();
 	}
@@ -142,7 +142,7 @@ namespace ehw
 		m_editorRunFunction = nullptr;
 
 		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
-		InstanceManager::Destroy();
+		EntityFactory::Destroy();
 	}
 
 	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)

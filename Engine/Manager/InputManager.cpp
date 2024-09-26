@@ -1,20 +1,12 @@
-
-#include "InputManager.h"
-
+#include "Engine/Manager/InputManager.h"
 
 
 #include "Engine/GameEngine.h"
 
 #include "Engine/Util/AtExit.h"
 
-
-
 namespace ehw
 {
-	std::vector<InputManager::tKey> InputManager::mKeys;
-	float2 InputManager::mMousePos{};
-	float2 InputManager::mMousePosPrev{};
-	float2 InputManager::mMouseDir{};
 	constexpr int ASCII[(uint)eKeyCode::END] =
 	{
 		//Alphabet
@@ -42,7 +34,7 @@ namespace ehw
 
 	void InputManager::init()
 	{
-		AtExit::AddFunc(InputManager::release);
+		AtExit::AddFunc(std::bind(&InputManager::release, this));
 
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{

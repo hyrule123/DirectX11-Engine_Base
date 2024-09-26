@@ -183,9 +183,6 @@
     <ClCompile Include="GameEngine.cpp">
       <Filter>High Level Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Game\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -393,7 +390,6 @@
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
     <ClCompile Include="Game\Component\iComponent.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
-    <ClCompile Include="Manager\InstanceManager.cpp" />
     <ClCompile Include="Resource\Material\Default3DMtrl.cpp" />
     <ClCompile Include="Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
@@ -405,13 +401,11 @@
     <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_ShaderStates.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
+    <ClCompile Include="Game\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
       <Filter>High Level Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="PCH_Engine.h">
       <Filter>Common</Filter>
@@ -669,6 +663,7 @@
     <ClInclude Include="Resource\Material\Default3DMtrl.h" />
     <ClInclude Include="Resource\Material\DebugMaterial.h" />
     <ClInclude Include="Resource\Material\Light_3D_Material.h" />
+    <ClInclude Include="Game\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
@@ -738,7 +733,6 @@
       <Filter>_DefaultShader</Filter>
     </None>
     <None Include="DefaultShader\Debug\Debug.hlsli" />
-    <None Include="Manager\InstanceManager.inl" />
     <None Include="DefaultShader\Initialize\GPU_Init_Setting.hlsli" />
   </ItemGroup>
   <ItemGroup>

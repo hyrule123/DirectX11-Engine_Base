@@ -75,4 +75,6 @@
 #define SAFE_DELETE(_ptr) if(_ptr) { delete _ptr; _ptr = nullptr; }
 #define SAFE_DELETE_ARRAY(_ptr) if(_ptr) { delete[] _ptr; _ptr = nullptr; }
 
-
+#define CONCAT_INNER(x, y) x ## y
+#define CONCAT(x, y) CONCAT_INNER(x, y)
+#define UNIQUE_VAR(x) CONCAT(x##_, __LINE__)

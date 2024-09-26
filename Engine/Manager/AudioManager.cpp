@@ -1,7 +1,4 @@
-
 #include "AudioManager.h"
-#include "Engine/Util/AtExit.h"
-
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>
@@ -24,6 +21,8 @@ namespace ehw
 
 	bool AudioManager::init()
 	{
+		AtExit::AddFunc(std::bind(&AudioManager::release, this));
+
 		void* extraDriverData = NULL;
 
 		FMOD::Studio::System::create(&mSystem);

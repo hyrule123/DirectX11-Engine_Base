@@ -195,7 +195,7 @@ namespace ehw
 
 		//없을 경우 클래스 이름을 통해 새로 생성
 		if (nullptr == ret) {
-			ret = std::shared_ptr<T>(InstanceManager::get_inst().instantiate<T>(_concrete_class_name).release());
+			ret = std::shared_ptr<T>(EntityFactory::get_inst().instantiate<T>(_concrete_class_name).release());
 
 			if (ret && eResult_success(ret->load(m_BaseDir, _resource_name))) {
 				ret->set_resource_name(_resource_name);

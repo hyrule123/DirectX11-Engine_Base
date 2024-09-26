@@ -133,11 +133,11 @@ namespace ehw::editor
 		}
 
 		if (
-			InputManager::GetKeyPress(eKeyCode::LCTRL)
+			InputManager::get_inst().GetKeyPress(eKeyCode::LCTRL)
 			&&
-			InputManager::GetKeyPress(eKeyCode::LSHIFT)
+			InputManager::get_inst().GetKeyPress(eKeyCode::LSHIFT)
 			&&
-			InputManager::GetKeyDown(eKeyCode::E)
+			InputManager::get_inst().GetKeyDown(eKeyCode::E)
 			)
 		{
 			EditorManager::ToggleEnable();
@@ -178,11 +178,11 @@ namespace ehw::editor
 			guiPair.second->final_update();
 		}
 
-		if (InputManager::GetKeyPress(eKeyCode::Z))
+		if (InputManager::get_inst().GetKeyPress(eKeyCode::Z))
 		{
 			mCurrentGizmoOperation = ImGuizmo::SCALE;
 		}
-		if (InputManager::GetKeyPress(eKeyCode::X))
+		if (InputManager::get_inst().GetKeyPress(eKeyCode::X))
 		{
 			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		}

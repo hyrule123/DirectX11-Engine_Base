@@ -1,7 +1,8 @@
 #pragma once
-
 #include "Engine/Util/EnumFlags.h"
 #include "Engine/Common.h"
+
+#include "Engine/Util/StaticSingleton.h"
 
 namespace ehw
 {
@@ -41,7 +42,9 @@ namespace ehw
 
 
 	class InputManager
+		: public StaticSingleton<InputManager>
 	{
+		friend class StaticSingleton<InputManager>;
 		friend class GameEngine;
 	public:
 		struct tKey
@@ -51,38 +54,38 @@ namespace ehw
 			bool	  bPressed;
 		};
 
-		static __forceinline eKeyState GetKeyState(eKeyCode keyCode) { return mKeys[static_cast<uint>(keyCode)].eState; }
-		static __forceinline float2 GetMousePos() { return mMousePos; }
-		static __forceinline float2 GetMouseDir() { return mMouseDir; }
+		__forceinline eKeyState GetKeyState(eKeyCode keyCode) { return mKeys[static_cast<uint>(keyCode)].eState; }
+		__forceinline float2 GetMousePos() { return mMousePos; }
+		__forceinline float2 GetMouseDir() { return mMouseDir; }
 
 		//GetKeyPress()		키를 누르는 시간만큼 true를 반환
 		//GetKeyDown()	키를 눌렀을 때, 딱 한번 true를 반환
 		//GetKeyUp()	키를 누르다 땠을 때, 딱 한번 true를 반환
 
-		static __forceinline bool GetKeyPress(eKeyCode keyCode)
+		__forceinline bool GetKeyPress(eKeyCode keyCode)
 		{
 			return (eKeyState::PRESSED == mKeys[static_cast<uint>(keyCode)].eState);
 		}
 
-		static __forceinline bool GetKeyDown(eKeyCode keyCode)
+		__forceinline bool GetKeyDown(eKeyCode keyCode)
 		{
 			return (eKeyState::DOWN == mKeys[static_cast<uint>(keyCode)].eState);
 		}
 
-		static __forceinline bool GetKeyUp(eKeyCode keyCode)
+		__forceinline bool GetKeyUp(eKeyCode keyCode)
 		{
 			return (eKeyState::UP == mKeys[static_cast<uint>(keyCode)].eState);
 		}	
 
 	private:
-		static void init();
-		static void update();
-		static void release();
+		void init();
+		void update();
+		void release();
 
 	private:
-		static std::vector<tKey> mKeys;
-		static float2 mMousePos;
-		static float2 mMousePosPrev;
-		static float2 mMouseDir;
+		std::vector<tKey> mKeys;
+		float2 mMousePos;
+		float2 mMousePosPrev;
+		float2 mMouseDir;
 	};
 }

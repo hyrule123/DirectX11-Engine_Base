@@ -20,7 +20,6 @@ namespace ehw
 	class AudioManager final : public StaticSingleton<AudioManager>
 	{
 		friend class StaticSingleton<AudioManager>;
-
 	public:
 		bool init();
 		void release();
