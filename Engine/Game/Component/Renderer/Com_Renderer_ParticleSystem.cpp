@@ -160,7 +160,7 @@ namespace ehw
 		mCBData.elapsedTime += TimeManager::get_inst().DeltaTime();
 
 
-		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::ParticleSystem);
+		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::ParticleSystem);
 		cb->set_data(&mCBData);
 		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
 

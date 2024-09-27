@@ -57,7 +57,7 @@ namespace ehw
 		m_desc.final_bone_translation_matrix_buffer->bind_buffer_as_UAV(GPU::Register::u::g_FinalBoneMatrixArrayRW); // u0
 		
 		//애니메이션 3D 상수버퍼 바인드
-		ConstBuffer* pAnimCB = RenderManager::get_inst().GetConstBuffer(eCBType::Animation3D);
+		ConstBuffer* pAnimCB = RenderManager::get_inst().get_const_buffer(eCBType::Animation3D);
 		pAnimCB->set_data(m_desc.shared_animation_data);
 		pAnimCB->bind_buffer_to_GPU_register();
 

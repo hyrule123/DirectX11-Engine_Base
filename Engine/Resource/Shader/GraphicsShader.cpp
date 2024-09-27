@@ -33,9 +33,9 @@ namespace ehw
 		, m_errorBlob()
 		, m_bEditMode(false)
 	{
-		m_rasterizer_state = RenderManager::get_inst().GetRasterizerState(m_rasterizer_type);
-		m_blend_state = RenderManager::get_inst().GetBlendState(m_blend_type);
-		m_depth_stencil_state = RenderManager::get_inst().GetDepthStencilState(m_depth_stencil_type);
+		m_rasterizer_state = RenderManager::get_inst().get_rasterizer_state(m_rasterizer_type);
+		m_blend_state = RenderManager::get_inst().get_blend_state(m_blend_type);
+		m_depth_stencil_state = RenderManager::get_inst().get_depth_stencil_state(m_depth_stencil_type);
 	}
 
 	GraphicsShader::~GraphicsShader()
@@ -212,19 +212,19 @@ namespace ehw
 	void GraphicsShader::set_rasterizer_state(eRasterizerState _state)
 	{
 		m_rasterizer_type = _state;
-		m_rasterizer_state = RenderManager::get_inst().GetRasterizerState(_state);
+		m_rasterizer_state = RenderManager::get_inst().get_rasterizer_state(_state);
 	}
 
 	void GraphicsShader::set_depth_stencil_state(eDepthStencilState _state)
 	{
 		m_depth_stencil_type = _state;
-		m_depth_stencil_state = RenderManager::get_inst().GetDepthStencilState(_state);
+		m_depth_stencil_state = RenderManager::get_inst().get_depth_stencil_state(_state);
 	}
 
 	void GraphicsShader::set_blend_state(eBlendState _state)
 	{
 		m_blend_type = _state;
-		m_blend_state = RenderManager::get_inst().GetBlendState(_state);
+		m_blend_state = RenderManager::get_inst().get_blend_state(_state);
 	}
 
 	void GraphicsShader::bind_shader()

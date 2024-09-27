@@ -66,7 +66,7 @@ namespace ehw {
 			cam->bind_data_to_GPU();
 				
 			//디퍼드 MRT 바인딩
-			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Deffered)->Bind();
+			RenderManager::get_inst().get_multi_rendertarget(eMRTType::Deffered)->Bind();
 			render_by_mode(cam, eRenderingMode::deffered_opaque);
 			render_by_mode(cam, eRenderingMode::deffered_mask);
 
@@ -74,13 +74,13 @@ namespace ehw {
 			// 여러개의 모든 빛을 미리 한장의 텍스처에다가 계산을 해두고
 			// 붙여버리자
 			//렌더타겟을 Light로 변경
-			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Light)->Bind();
+			RenderManager::get_inst().get_multi_rendertarget(eMRTType::Light)->Bind();
 			for (int i = 0; i < (int)eLightType::END; ++i) {
 				cam->render_lights_3D((eLightType)i, m_light_3D_instances[i]);
 			}
 
 			//Merge 단계 + Forward Rendering에서는 SwapChain에 바로 데이터를 기록한다.
-			RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+			RenderManager::get_inst().get_multi_rendertarget(eMRTType::Swapchain)->Bind();
 
 			// defferd + swapchain merge
 			m_deffered_merge_material->bind_shader();
@@ -92,7 +92,7 @@ namespace ehw {
 			render_by_mode(cam, eRenderingMode::forward_transparent);
 
 			//PostProcess 코드는 차후에 수정할것
-			//RenderManager::get_inst().CopyRenderTarget();
+			//RenderManager::get_inst().copy_rendertarget();
 			//render_by_mode(cam, eRenderingMode::post_process);
 		}
 	}
@@ -198,7 +198,7 @@ namespace ehw {
 
 	void SceneRenderAgent::render_debug()
 	{
-		RenderManager::get_inst().GetMultiRenderTarget(eMRTType::Swapchain)->Bind();
+		RenderManager::get_inst().get_multi_rendertarget(eMRTType::Swapchain)->Bind();
 		m_debug_material->bind_shader();
 		MATRIX VP = GetMainCamera()->GetViewMatrix() * GetMainCamera()->GetProjectionMatrix();
 		for (int i = 0; i < (int)eCollider3D_Shape::END; ++i) {

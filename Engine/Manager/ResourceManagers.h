@@ -15,25 +15,25 @@ namespace ehw
 	public:
 		void CleanUnusedResources();
 
-		inline void AddUnusedResourceCleanFunc(std::function<void()>&& _func);
+		void AddUnusedResourceCleanFunc(std::function<void()>&& _func) {
+			ASSERT_DEBUG(nullptr != _func, "인자로 들어온 함수가 nullptr입니다.");
+			m_CleanUnusedResourcesFunction.emplace_back(_func);
+		}
 		
 	private:
 		ResourceManagers();
 		~ResourceManagers();
-		void init();
-		void release();
+		void init_resource_managers();
+		void load_default_resources();
 
-		void init_static_variables();
-		void release_static_variables();
+		void create_default_buffers();
+		void load_default_shaders();
+		void load_default_textures();
+		void load_default_meshes();
+		void load_default_materials();
 
 		std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
 	};
-
-	inline void ResourceManagers::AddUnusedResourceCleanFunc(std::function<void()>&& _func)
-	{
-		ASSERT_DEBUG(nullptr != _func, "인자로 들어온 함수가 nullptr입니다.");
-		m_CleanUnusedResourcesFunction.emplace_back(_func);
-	}
 }
 
 

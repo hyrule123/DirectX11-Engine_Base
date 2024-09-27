@@ -54,6 +54,11 @@ namespace ehw
 			bool	  bPressed;
 		};
 
+	private:
+		InputManager();
+		~InputManager();
+
+	public:
 		__forceinline eKeyState GetKeyState(eKeyCode keyCode) { return mKeys[static_cast<uint>(keyCode)].eState; }
 		__forceinline float2 GetMousePos() { return mMousePos; }
 		__forceinline float2 GetMouseDir() { return mMouseDir; }
@@ -78,9 +83,7 @@ namespace ehw
 		}	
 
 	private:
-		void init();
 		void update();
-		void release();
 
 	private:
 		std::vector<tKey> mKeys;

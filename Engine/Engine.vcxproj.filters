@@ -394,12 +394,12 @@
     <ClCompile Include="Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="Resource\Mesh\VertexBuffer.cpp" />
     <ClCompile Include="Resource\Material\DebugMaterial.cpp" />
-    <ClCompile Include="Manager\Default_Resources\Default_ConstBuffers.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_Buffers.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Meshes.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Materials.cpp" />
     <ClCompile Include="Resource\Material\Light_3D_Material.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
-    <ClCompile Include="Manager\Default_Resources\Default_ShaderStates.cpp" />
+    <ClCompile Include="Manager\Default_Resources\Default_RenderStates.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
     <ClCompile Include="Game\Entity.cpp" />
   </ItemGroup>

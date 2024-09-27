@@ -1,10 +1,10 @@
-#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/Resourcemanagers.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Mesh/Mesh.h"
 
 namespace ehw {
-	void RenderManager::LoadDefaultMesh()
+	void ResourceManagers::load_default_meshes()
 	{
 #pragma region POINT MESH
 		{

@@ -29,13 +29,13 @@ namespace ehw
 		'0', '1', '2', '3', '4', '5',
 		'6', '7', '8', '9',
 	};
-	
 
-
-	void InputManager::init()
+	InputManager::InputManager()
+		: mKeys()
+		, mMousePos()
+		, mMousePosPrev()
+		, mMouseDir()
 	{
-		AtExit::AddFunc(std::bind(&InputManager::release, this));
-
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
 			tKey key;
@@ -45,6 +45,10 @@ namespace ehw
 
 			mKeys.push_back(key);
 		}
+	}
+
+	InputManager::~InputManager()
+	{
 	}
 
 	void InputManager::update()
@@ -101,11 +105,5 @@ namespace ehw
 				mKeys[i].bPressed = false;
 			}
 		}
-	}
-	void InputManager::release()
-	{
-		mKeys.clear();
-		mMousePos = {};
-		mMouseDir = {};
 	}
 }

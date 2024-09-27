@@ -13,30 +13,23 @@ namespace ehw
 		: mSystem{}
 		, mCoreSystem{}
 	{
+		void* extraDriverData = NULL;
+
+		FMOD_RESULT result = FMOD::Studio::System::create(&mSystem);
+		ASSERT(FMOD_RESULT::FMOD_OK == result, "FMOD 초기화 실패");
+
+		// The example Studio project is authored for 5.1 sound, so set up the system output mode to match
+		result = mSystem->getCoreSystem(&mCoreSystem);
+		ASSERT(FMOD_RESULT::FMOD_OK == result, "FMOD 초기화 실패");
+
+		result = mCoreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0);
+		ASSERT(FMOD_RESULT::FMOD_OK == result, "FMOD 초기화 실패");
+
+		result = mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
+		ASSERT(FMOD_RESULT::FMOD_OK == result, "FMOD 초기화 실패");
 	}
 
 	AudioManager::~AudioManager()
-	{
-	}
-
-	bool AudioManager::init()
-	{
-		AtExit::AddFunc(std::bind(&AudioManager::release, this));
-
-		void* extraDriverData = NULL;
-
-		FMOD::Studio::System::create(&mSystem);
-
-		// The example Studio project is authored for 5.1 sound, so set up the system output mode to match
-		mSystem->getCoreSystem(&mCoreSystem);
-		mCoreSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0);
-
-		mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, extraDriverData);
-
-		return true;
-	}
-
-	void AudioManager::release()
 	{
 		mSystem->release();
 		mSystem = nullptr;

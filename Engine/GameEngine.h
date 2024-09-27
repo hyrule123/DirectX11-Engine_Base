@@ -7,6 +7,9 @@ namespace ehw
 	class GameEngine : public StaticSingleton<GameEngine>
 	{
 		friend class StaticSingleton<GameEngine>;
+	private:
+		GameEngine();
+		~GameEngine();
 
 	public:
 		BOOL init(const tGameEngineDesc& _AppDesc);
@@ -21,8 +24,6 @@ namespace ehw
 		// Running main engine loop
 		bool Run();
 
-		void release();
-
 		//사이즈를 입력하면 조절
 		void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);
 		void SetWindowSize(int _Width, int _Height);
@@ -32,10 +33,6 @@ namespace ehw
 
 		void Destroy();
 		void ShutDown() { m_bRunning = false; }
-
-	protected:
-		GameEngine();
-		~GameEngine();
 
 	private:
 		HWND m_hwnd;

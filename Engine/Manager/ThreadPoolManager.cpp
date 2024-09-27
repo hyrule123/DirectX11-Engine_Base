@@ -17,14 +17,26 @@ namespace ehw
     }
     ThreadPoolManager::~ThreadPoolManager()
     {
+        mStopAll = true;
+        mCVJobqueue.notify_all();
+
+        //큐를 비워준다
+        {
+            std::unique_lock<std::mutex> lock(mMtxJobQueue);
+            std::queue<std::function<void()>> emptyQueue;
+            mJobs.swap(emptyQueue);
+        }
+
+        for (auto& t : mWorkerThreads)
+        {
+            t.join();
+        }
     }
     void ThreadPoolManager::init(size_t _numThread)
     {
-        AtExit::AddFunc(std::bind(&ThreadPoolManager::release, this));
-
         mNumThread = _numThread;
         mWorkerThreads.reserve(mNumThread);
-        
+
         for (size_t i = 0; i < mNumThread; ++i)
         {
             std::wstring threadDesc = L"ThreadPool_000";
@@ -44,24 +56,6 @@ namespace ehw
             std::thread thread([this]() { WorkerThread(); });
             SetThreadDescription(thread.native_handle(), threadDesc.c_str());
             mWorkerThreads.emplace_back(std::move(thread));
-        }
-    }
-
-    void ThreadPoolManager::release()
-    {
-        mStopAll = true;
-        mCVJobqueue.notify_all();
-
-        //큐를 비워준다
-        {
-            std::unique_lock<std::mutex> lock(mMtxJobQueue);
-            std::queue<std::function<void()>> emptyQueue;
-            mJobs.swap(emptyQueue);
-        }
-
-        for (auto& t : mWorkerThreads)
-        {
-            t.join();
         }
     }
 

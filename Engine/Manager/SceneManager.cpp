@@ -19,11 +19,7 @@ namespace ehw
 
 	SceneManager::~SceneManager()
 	{
-	}
-
-	void SceneManager::init()
-	{
-		AtExit::AddFunc(std::bind(&SceneManager::release, this));
+		SAFE_DELETE(m_activeScene);
 	}
 
 	void SceneManager::fixed_update()
@@ -66,11 +62,6 @@ namespace ehw
 		{
 			m_activeScene->SceneFrameEnd();
 		}
-	}
-
-	void SceneManager::release()
-	{
-		SAFE_DELETE(m_activeScene);
 	}
 
 	void SceneManager::Destroy()

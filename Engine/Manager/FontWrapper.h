@@ -9,14 +9,12 @@ namespace ehw
 	{
 		friend class StaticSingleton<FontWrapper>;
 		friend class GameEngine;
-	public:
-		void DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
-
 	private:
 		FontWrapper();
 		~FontWrapper();
-		bool init();
-		void release();
+
+	public:
+		void DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
 
 	private:
 		IFW1Factory* m_FW1Factory;

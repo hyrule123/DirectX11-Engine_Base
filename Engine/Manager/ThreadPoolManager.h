@@ -26,7 +26,6 @@ namespace ehw
         ThreadPoolManager();
         ~ThreadPoolManager();
         void init(size_t _numThread);
-        void release();
 
     private:
         // Worker 쓰레드

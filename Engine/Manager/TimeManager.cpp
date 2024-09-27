@@ -20,39 +20,14 @@ namespace ehw
         , m_accumulatedDeltaTime{}
         , mOneSecond{}
     {
-    }
-    TimeManager::~TimeManager()
-    {
-    }
-    void TimeManager::init()
-    {
-        AtExit::AddFunc(std::bind(&TimeManager::release, this));
-
         m_prevTime = std::chrono::high_resolution_clock::now();
 
         SetMaxFixedUpdatesPerFrame(g_maxFixedUpdatesPerFrame);
         SetFixedDeltaTime(g_defaultFixedUpdateDeltaTime);
     }
-
-    void TimeManager::release()
+    TimeManager::~TimeManager()
     {
-        m_currentDeltaTime = {};
-        m_deltaTime = {};
-        m_delatTime_max_cap_per_frame = {};
-
-        m_prevTime = {};
-        m_currentTime = {};
-
-        // fixed_update 관련
-        m_fixedDeltaTime = {};
-        m_maxFixedUpdatesPerFrame = {};
-
-        m_accumulatedDeltaTime = {};
-        //
-
-        mOneSecond = {};
     }
-
 
     void TimeManager::update()
     {

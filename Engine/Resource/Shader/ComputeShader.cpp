@@ -157,7 +157,7 @@ namespace ehw
 			
 		
 		//상수버퍼를 통해 데이터 수를 업로드
-		static ConstBuffer* const pCB = RenderManager::get_inst().GetConstBuffer(eCBType::ComputeShader);
+		static ConstBuffer* const pCB = RenderManager::get_inst().get_const_buffer(eCBType::ComputeShader);
 		pCB->set_data(&mCB_ComputeShader);
 		pCB->bind_buffer_to_GPU_register();
 

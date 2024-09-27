@@ -35,12 +35,19 @@ namespace ehw
 
 	GameEngine::~GameEngine()
 	{
+		::ReleaseDC(m_hwnd, m_hdc);
+
+		m_hwnd = {};
+		m_hdc = {};
+		m_bRunning = false;
+		m_editorRunFunction = nullptr;
+
+		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
+		EntityFactory::Destroy();
 	}
 
 	BOOL GameEngine::init(const tGameEngineDesc& _desc)
 	{
-		AtExit::AddFunc(std::bind(&GameEngine::release, this));
-
 		if (nullptr == _desc.Hwnd)
 		{
 			return FALSE;
@@ -53,27 +60,34 @@ namespace ehw
 
 		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
 		ThreadPoolManager::get_inst().init((size_t)4);
-		PathManager::get_inst().init();
-		
-		RenderManager::get_inst().init();
-		
-		ResourceManagers::get_inst().init();
 
-		if (false == RenderManager::get_inst().Settings(_desc.GPUDesc))
-		{
-			ERROR_MESSAGE("Graphics Device 초기화 실패");
-			return FALSE;
-		}
+		//PathManager 인스턴스 생성
+		PathManager::get_inst();
 		
-		AudioManager::get_inst().init();
-		FontWrapper::get_inst().init();
-		
-		TimeManager::get_inst().init();
+		//RenderManager 인스턴스 생성(Device, Context 생성)
+		RenderManager::get_inst();
 
-		InputManager::get_inst().init();
+		//ResourceManager들 인스턴스 생성
+		ResourceManagers::get_inst().init_resource_managers();
+
+		//래스터라이저, 블렌드, 깊이버퍼 등 각종 render state 로드
+		RenderManager::get_inst().load_render_states();
+
+		//기본 리소스(메쉬, 쉐이더, 재질, 텍스처) 로드
+		ResourceManagers::get_inst().load_default_resources();
+
+		//RenderManager 스왑체인 및 뷰포트 생성
+		RenderManager::get_inst().init(_desc.GPUDesc);
 		
-		PhysXInstance::get_inst().init();
-		SceneManager::get_inst().init();
+		AudioManager::get_inst();
+		FontWrapper::get_inst();
+		
+		TimeManager::get_inst();
+
+		InputManager::get_inst();
+		
+		PhysXInstance::get_inst();
+		SceneManager::get_inst();
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
@@ -101,7 +115,7 @@ namespace ehw
 	void GameEngine::render()
 	{
 		//최종 렌더타겟 Clear
-		RenderManager::get_inst().ClearRenderTarget();
+		RenderManager::get_inst().clear_rendertarget();
 
 		RenderManager::get_inst().render();
 
@@ -112,7 +126,7 @@ namespace ehw
 
 		TimeManager::get_inst().RenderFPS();
 
-		RenderManager::get_inst().Present(true);
+		RenderManager::get_inst().present(true);
 	}
 
 	void GameEngine::frame_end()
@@ -131,19 +145,6 @@ namespace ehw
 		frame_end();
 		
 		return m_bRunning;
-	}
-
-	void GameEngine::release()
-	{
-		::ReleaseDC(m_hwnd, m_hdc);
-
-		m_hwnd = {};
-		m_hdc = {};
-		m_bRunning = false;
-		m_editorRunFunction = nullptr;
-
-		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
-		EntityFactory::Destroy();
 	}
 
 	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)

@@ -15,18 +15,8 @@ namespace ehw
 		, m_physics{ nullptr }
 		, m_dispatcher{ nullptr }
 		, m_PVD{ nullptr }	//PhysX Visualization Debugger
-	{}
-
-	PhysXInstance::~PhysXInstance()
-	{
-	}
-
-	void PhysXInstance::init()
 	{
 		using namespace physx;
-		AtExit::AddFunc(std::bind(&PhysXInstance::release, this));
-
-
 		//CreateBuffer PxFoundation
 		m_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_allocator, m_errorCallback);
 		ASSERT(m_foundation, "PxFoundation 생성 실패");
@@ -63,8 +53,7 @@ namespace ehw
 		ASSERT(m_dispatcher, "physx dispatcher 생성 실패");
 	}
 
-
-	void PhysXInstance::release()
+	PhysXInstance::~PhysXInstance()
 	{
 		using namespace physx;
 		PX_RELEASE(m_dispatcher);

@@ -25,6 +25,13 @@ namespace ehw
 		friend class StaticSingleton<RenderManager>;
 		friend class GameEngine;
 
+	private:
+		RenderManager();
+		~RenderManager();
+
+		void load_render_states();
+		void init(const tGPUManagerDesc& _Desc);
+
 	public:
 		__forceinline ID3D11Device*			Device() { return m_device.Get(); }
 		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
@@ -33,14 +40,14 @@ namespace ehw
 		void render_debug();
 		void FrameEnd();
 
-		void ClearRenderTarget();// 화면 지워주기
-		void Present(bool _bVSync = false);
+		void clear_rendertarget();// 화면 지워주기
+		void present(bool _bVSync = false);
 
-		std::shared_ptr<Texture> GetRenderTargetTex() {
-			return m_renderTarget_texture;
+		std::shared_ptr<Texture> get_rendertarget_buffer() {
+			return m_render_target;
 		}
-		std::shared_ptr<Texture> GetDepthStencilBufferTex() {
-			return m_depth_stencil_buffer_texture;
+		std::shared_ptr<Texture> get_depth_stencil_buffer() {
+			return m_depth_stencil_buffer;
 		}
 
 		bool SetResolution(UINT _resX, UINT _resY);
@@ -50,59 +57,44 @@ namespace ehw
 
 		SceneRenderAgent& sceneRenderAgent() { return m_sceneRenderAgent; }
 
-		ConstBuffer* GetConstBuffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
+		ConstBuffer* get_const_buffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
 
-		ComPtr<ID3D11RasterizerState> GetRasterizerState(eRasterizerState _Type) { 
+		ComPtr<ID3D11RasterizerState> get_rasterizer_state(eRasterizerState _Type) { 
 			return m_rasterizerStates[(int)_Type]; 
 		}
-		ComPtr<ID3D11BlendState> GetBlendState(eBlendState _Type) { 
+		ComPtr<ID3D11BlendState> get_blend_state(eBlendState _Type) { 
 			return m_blendStates[(int)_Type]; 
 		}
-		ComPtr<ID3D11DepthStencilState> GetDepthStencilState(eDepthStencilState _Type) { 
+		ComPtr<ID3D11DepthStencilState> get_depth_stencil_state(eDepthStencilState _Type) { 
 			return m_depthStencilStates[(int)_Type]; 
 		}
 
-		MultiRenderTarget* GetMultiRenderTarget(eMRTType _Type) {
+		MultiRenderTarget* get_multi_rendertarget(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();
 		}
 
-		void BindNoiseTexture();
-		void CopyRenderTarget();
+		void bind_noise_texture();
+		void copy_rendertarget();
 
-		void ClearMultiRenderTargets();
+		void clear_multi_rendertargets();
 
 	private:
-		RenderManager();
-		~RenderManager();
-		
-		bool init();
-		bool Settings(const tGPUManagerDesc& _Desc);
-		void load_default_resources();
-		void ReleaseResources();
-		void release();
-		
 		//스왑체인 + 렌더타겟 생성하여 반환
-		std::shared_ptr<Texture> CreateSwapChain(UINT _resX, UINT _resY, UINT _RefreshRate);
-		std::shared_ptr<Texture> CreateDepthStencil(UINT _resX, UINT _resY);
+		std::shared_ptr<Texture> create_swapchain(UINT _resX, UINT _resY, UINT _RefreshRate);
+		std::shared_ptr<Texture> create_depth_stencil_buffer(UINT _resX, UINT _resY);
 
 		//Application의 창 크기를 따라감
-		void CreateMainViewPort();
+		void create_main_viewport();
 
-		void UpdateGlobalCBuffer();
+		void update_global_const_buffer();
 
-		bool CreateMultiRenderTargets(UINT _resX, UINT _resY);
-		void SetTexturesToDefferedMaterials();
+		bool create_multi_rendertargets(UINT _resX, UINT _resY);
+		void set_MRT_to_deffered_materials();
 
-		void LoadDefaultMesh();
-		void LoadDefaultMaterial();
-		void load_default_shaders();
-		void LoadDefaultTexture();
-
-		void CreateSamplerStates();
-		void CreateRasterizerStates();
-		void CreateDepthStencilStates();
-		void CreateBlendStates();
-
+		void create_default_render_states();
+		void create_rasterizer_states();
+		void create_depth_stencil_states();
+		void create_blend_states();
 		void create_const_buffers();
 
 	private:
@@ -115,8 +107,8 @@ namespace ehw
 	
 		ComPtr<IDXGISwapChain> m_swapChain;
 		
-		std::shared_ptr<ehw::Texture> m_renderTarget_texture;
-		std::shared_ptr<ehw::Texture> m_depth_stencil_buffer_texture;
+		std::shared_ptr<ehw::Texture> m_render_target;
+		std::shared_ptr<ehw::Texture> m_depth_stencil_buffer;
 		
 		D3D11_VIEWPORT m_viewport;
 

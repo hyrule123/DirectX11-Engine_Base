@@ -8,14 +8,6 @@ namespace ehw
 		, m_relativeResourceDir{}
 		, m_relativeDir_ShaderCSO{}
 	{
-	}
-	PathManager::~PathManager()
-	{
-	}
-	void PathManager::init()
-	{
-		AtExit::AddFunc(std::bind(&PathManager::release, this));
-
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
 		m_absoluteResourceDir /= name::path::directory::resource::Resource;
@@ -34,9 +26,7 @@ namespace ehw
 			std::fs::create_directories(m_relativeDir_ShaderCSO);
 		}
 	}
-
-
-	void PathManager::release()
+	PathManager::~PathManager()
 	{
 		m_absoluteResourceDir.clear();
 		m_relativeResourceDir.clear();

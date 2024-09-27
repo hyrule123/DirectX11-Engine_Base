@@ -20,7 +20,7 @@ namespace ehw::editor
 	void SceneViewer::update_UI()
 	{
 		std::shared_ptr<Texture> renderTarget
-			= RenderManager::get_inst().GetRenderTargetTex();
+			= RenderManager::get_inst().get_rendertarget_buffer();
 
 		std::shared_ptr<Texture> gameTex
 			= std::make_shared<Texture>();

@@ -1,4 +1,4 @@
-#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/Resourcemanagers.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/CompiledShaderHeader/DefaultShaders.h"
@@ -10,7 +10,7 @@
 #include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
 
 namespace ehw {
-	void RenderManager::load_default_shaders()
+	void ResourceManagers::load_default_shaders()
 	{
 #pragma region 2D LAYOUT
 		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc2D;
@@ -163,7 +163,7 @@ namespace ehw {
 
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 		LayoutDesc.AlignedByteOffset = 60;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
 		LayoutDesc.InputSlot = 0;
 		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		LayoutDesc.SemanticName = "BLENDINDICES";

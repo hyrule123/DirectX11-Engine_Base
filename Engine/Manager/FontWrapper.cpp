@@ -31,24 +31,23 @@ namespace ehw
 		: m_FW1Factory{ nullptr }
 		, m_fontWrapper{ nullptr }
 	{
+		ASSERT(
+			SUCCEEDED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory))
+			,"FW1CreateFactory 실패");
+
+		auto pDevice = RenderManager::get_inst().Device();
+		ASSERT(
+			SUCCEEDED(m_FW1Factory->CreateFontWrapper(pDevice, L"Arial", &m_fontWrapper))
+			, "CreateFontWrapper 실패");
 	}
 
 	FontWrapper::~FontWrapper()
 	{
-	}
+		m_FW1Factory->Release();
+		m_FW1Factory = nullptr;
 
-	bool FontWrapper::init()
-	{
-		AtExit::AddFunc(std::bind(&FontWrapper::release, this));
-
-		if (FAILED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory)))
-			return false;
-
-		auto pDevice = RenderManager::get_inst().Device();
-		if (FAILED(m_FW1Factory->CreateFontWrapper(pDevice, L"Arial", &m_fontWrapper)))
-			return false;
-
-		return true;
+		m_fontWrapper->Release();
+		m_fontWrapper = nullptr;
 	}
 
 	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb)
@@ -62,14 +61,5 @@ namespace ehw
 								 _rgb,// Text color, 0xAaBbGgRr
 								 0      // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
 								);
-	}
-
-	void FontWrapper::release()
-	{
-		m_FW1Factory->Release();
-		m_FW1Factory = nullptr;
-
-		m_fontWrapper->Release();
-		m_fontWrapper = nullptr;
 	}
 }

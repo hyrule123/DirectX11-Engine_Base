@@ -1,4 +1,4 @@
-#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/Resourcemanagers.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Shader/GraphicsShader.h"
@@ -10,7 +10,7 @@
 #include "Engine/Resource/Material/DebugMaterial.h"
 
 namespace ehw {
-	void RenderManager::LoadDefaultMaterial()
+	void ResourceManagers::load_default_materials()
 	{
 		using namespace name::defaultRes;
 #pragma region DEFAULT

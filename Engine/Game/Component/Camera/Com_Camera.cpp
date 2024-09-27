@@ -321,7 +321,7 @@ namespace ehw
 
 	void Com_Camera::bind_data_to_GPU()
 	{
-		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Camera);
+		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::Camera);
 		cb->set_data(&m_camera_matrices);
 		cb->bind_buffer_to_GPU_register();
 	}

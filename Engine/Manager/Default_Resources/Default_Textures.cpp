@@ -1,10 +1,10 @@
-#include "Engine/Manager/RenderManager.h"
+#include "Engine/Manager/Resourcemanagers.h"
 #include "Engine/Manager/ResourceManager.h"
 
 #include "Engine/Resource/Texture.h"
 
 namespace ehw {
-	void RenderManager::LoadDefaultTexture()
+	void ResourceManagers::load_default_textures()
 	{
 #pragma region STATIC TEXTURE
 		using namespace name::defaultRes;

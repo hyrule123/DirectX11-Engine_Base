@@ -12,8 +12,6 @@ namespace ehw
 	private:
 		PhysXInstance();
 		~PhysXInstance();
-		void init();
-		void release();
 
 	public:
 		inline physx::PxPhysics& GetPhysX() { return *m_physics; };

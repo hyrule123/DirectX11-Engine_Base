@@ -15,6 +15,7 @@
 #include "Engine/Resource/Shader/GraphicsShader.h"
 #include "Engine/Resource/Shader/ComputeShader.h"
 #include "Engine/Resource/Mesh/VertexBuffer.h"
+#include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
 #include "Engine/GPU/ConstBuffer.h"
 #include "Engine/GPU/StructBuffer.h"
@@ -41,54 +42,24 @@ namespace ehw
 
 	ResourceManagers::~ResourceManagers()
 	{
+		Transform::release_static();
+		m_CleanUnusedResourcesFunction.clear();
 	}
 
-	void ResourceManagers::init()
+	void ResourceManagers::init_resource_managers()
 	{
-		AtExit::AddFunc(std::bind(&ResourceManagers::release, this));
-
 		//기본 Resource들 init
 		const std::fs::path& baseDir = PathManager::get_inst().GetResPathRelative();
 
-		//기본 리소스를 먼저 등록
-		ResourceManager<ConstBuffer>::get_inst().init("");
-		ResourceManager<StructBuffer>::get_inst().init("");
-
-		{
-			std::shared_ptr<StructBuffer> debug_render_buffer = std::make_shared<StructBuffer>();
-
-			StructBuffer::Desc desc{};
-			desc.eSBufferType = eStructBufferType::READ_ONLY;
-			desc.GPU_register_t_SRV = GPU::Register::t::g_debugDrawData;
-			desc.TargetStageSRV = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
-
-			debug_render_buffer->init<tDebugDrawData>(desc, 100, nullptr, 0);
-
-			ResourceManager<StructBuffer>::get_inst().insert("debug_render_buffer", debug_render_buffer);
-		}
-
-		//이 부분 나중에 분리한 별도 CPP로 옮길 것
-		std::shared_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
-		StructBuffer::Desc desc{};
-		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.GPU_register_t_SRV = GPU::Register::t::g_light_attributes;
-		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-		light_3d_instancing_buffer->init<tLightAttribute>(desc, 16);
-		light_3d_instancing_buffer->SetPipelineTarget(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-		ResourceManager<StructBuffer>::get_inst().insert("light_3D_instancing_buffer", light_3d_instancing_buffer);
-
-		std::shared_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
-		light_3d_const_buffer->create<tLightCount>();
-		light_3d_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-
-		ResourceManager<ConstBuffer>::get_inst().insert("light_3D_const_buffer", light_3d_const_buffer);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		ResourceManager<VertexBuffer>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
 		ResourceManager<Texture>::get_inst().init(baseDir / name::path::directory::resource::Texture);
 		ResourceManager<AudioClip>::get_inst().init(baseDir / name::path::directory::resource::AudioClip);
 		ResourceManager<GraphicsShader>::get_inst().init(baseDir / name::path::directory::resource::GraphicsShader);
 		ResourceManager<ComputeShader>::get_inst().init(baseDir / name::path::directory::resource::ComputeShader);
 
+		//기본 리소스를 먼저 등록
+		ResourceManager<ConstBuffer>::get_inst().init("");
+		ResourceManager<StructBuffer>::get_inst().init("");
 
 		//다른 리소스를 참조하는 리소스를 나중에 등록
 		ResourceManager<Mesh>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
@@ -96,24 +67,17 @@ namespace ehw
 		ResourceManager<Animation2D>::get_inst().init(baseDir / name::path::directory::resource::Animation2D);
 		ResourceManager<Model3D>::get_inst().init(baseDir / name::path::directory::resource::Model3D);
 		ResourceManager<Skeleton>::get_inst().init(baseDir / name::path::directory::resource::Model3D);
-
-		init_static_variables();
 	}
 
-	void ResourceManagers::release()
+	void ResourceManagers::load_default_resources()
 	{
-		release_static_variables();
-		m_CleanUnusedResourcesFunction.clear();
-	}
+		create_default_buffers();
+		load_default_shaders();
+		load_default_textures();
+		load_default_meshes();
+		load_default_materials();
 
-	void ResourceManagers::init_static_variables()
-	{
 		Transform::init_static();
-	}
-
-	void ResourceManagers::release_static_variables()
-	{
-		Transform::release_static();
 	}
 
 }

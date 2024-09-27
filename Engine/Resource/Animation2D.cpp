@@ -146,7 +146,7 @@ namespace ehw
 	{
 		mAtlas->bind_buffer_as_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
-		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::_2D;
@@ -171,7 +171,7 @@ namespace ehw
 		//Texture clear
 		Texture::ClearSRV(GPU::Register::t::AtlasTexture);
 
-		ConstBuffer* cb = RenderManager::get_inst().GetConstBuffer(eCBType::Animation2D);
+		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::Animation2D);
 
 		tCB_Animation2D info = {};
 		info.animationType = (uint)eDimensionType::NOT_SET;

@@ -55,7 +55,7 @@ namespace ehw
             }
         }
 
-        ConstBuffer* CB = RenderManager::get_inst().GetConstBuffer(eCBType::Material);
+        ConstBuffer* CB = RenderManager::get_inst().get_const_buffer(eCBType::Material);
         CB->set_data(&m_shared_material_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;

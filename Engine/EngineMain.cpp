@@ -8,24 +8,26 @@
 
 namespace ehw
 {
-    std::vector<WindowMsgHandleFunc> EngineMain::m_commonMsgHandleFunctions;
-    EngineMain* EngineMain::s_engineMainInst = nullptr;
-
     EngineMain::EngineMain(const tDesc_EngineMain& _Desc)
-    : mInstance{}
+    : m_hinstance{}
     , m_hwnd{}
-    , mHAccelTable{}
+    , m_hacceltable{}
     {
-        s_engineMainInst = this;
-
-        mInstance = _Desc.Inst;
+        m_hinstance = _Desc.Inst;
 
         AddCommonMsgHandleFunc(&Wm_Destroy);
 
         ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
         ASSERT(InitInstance(_Desc), "창 생성 실패");
 
-        ShowWindow(m_hwnd, SW_HIDE);
+        //if문 체크 말고 다른방식으로 하면 자꾸 경고뜸
+        if (m_hwnd) {
+            ShowWindow(m_hwnd, SW_HIDE);
+        }
+        else {
+            ASSERT(false, "HWND가 생성되지 않음.");
+        }
+        
         UpdateWindow(m_hwnd);
 
         ehw::tGameEngineDesc engineDesc;
@@ -47,18 +49,12 @@ namespace ehw
             }
         }
 
-        mHAccelTable = LoadAccelerators(mInstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
+        m_hacceltable = LoadAccelerators(m_hinstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
     }
 
     EngineMain::~EngineMain()
     {
-        AtExit::CallAtExit();
-
-        s_engineMainInst = nullptr;
-
-        
-
-        mInstance = {};
+        m_hinstance = {};
         m_hwnd = {};
 
         m_commonMsgHandleFunctions.clear();
@@ -81,7 +77,7 @@ namespace ehw
                 }
 
                 //TranslateAccelerator: 메뉴 명령을 위한 메시지 처리
-                if (!TranslateAccelerator(msg.hwnd, mHAccelTable, &msg))
+                if (!TranslateAccelerator(msg.hwnd, m_hacceltable, &msg))
                 {
                     TranslateMessage(&msg);
 
@@ -95,6 +91,8 @@ namespace ehw
             }
         }
 
+        //종료
+        AtExit::CallAtExit();
         return bReturn;
     }
 
@@ -128,7 +126,7 @@ namespace ehw
         WinClass.lpfnWndProc = WndProc;
         WinClass.cbClsExtra = 0;
         WinClass.cbWndExtra = 0;
-        WinClass.hInstance = mInstance;
+        WinClass.hInstance = m_hinstance;
         WinClass.hIcon = _Desc.WindowIcon;
         WinClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
         WinClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
