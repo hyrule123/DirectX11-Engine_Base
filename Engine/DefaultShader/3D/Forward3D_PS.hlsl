@@ -32,7 +32,7 @@ float4 main(VSOut In) : SV_Target
 	tLightColor lightColor = (tLightColor)0.0f;
 	for (uint i = 0; i < g_CB_light_count.count; i++)
 	{
-		tLightColor temp = calculate_light_3D(i, In.ViewPos, vNormal);
+		tLightColor temp = calculate_light_3D(g_light_attributes[i], In.ViewPos, vNormal);
 		lightColor.ambient += temp.ambient;
 		lightColor.diffuse += temp.diffuse;
 		lightColor.specular += temp.specular;

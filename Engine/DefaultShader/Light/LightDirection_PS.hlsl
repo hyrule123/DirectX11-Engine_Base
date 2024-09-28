@@ -17,7 +17,7 @@ PS_OUT main(VSOut_LightDir _in)
       
 	float4 vViewNormal = g_normal_rendertarget.Sample(anisotropicSampler, vUV);
 	
-	tLightColor lightcolor = test2(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
+	tLightColor lightcolor = calculate_light_3D(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
 	
 	//tLightColor lightcolor = calculate_directional_light_3D(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
     

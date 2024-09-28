@@ -28,7 +28,7 @@ PS_OUT main(VS_OUT_LightPoint _in)
     
 	float4 vViewNormal = g_normal_rendertarget.Sample(anisotropicSampler, vUV);
 	
-	tLightColor lightcolor = test2(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
+	tLightColor lightcolor = calculate_light_3D(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
     
 	//float SpecCoef = g_specular_rendertarget.Sample(anisotropicSampler, vUV).x;
 	//float4 SpecularColor = DecodeColor(SpecCoef);

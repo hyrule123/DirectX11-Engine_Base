@@ -7,11 +7,10 @@ struct alignas(16)    tLightAttribute
 {
 	tLightColor color;
 	float4 position;
-	float4 direction;
-    
-	int lightType;
+	float4 direction;//Directional Light에서 사용
+	int lightType;	
 	float radius;	//Transform의 Scale을 사용하지 않는 이유: Mesh의 크기와 별도로 사이즈를 조절할 수 있도록
-	float angle;
+	float angle;	//Spot Light에서 사용
 	int padding;
 };
 
