@@ -69,7 +69,7 @@ namespace ehw
 			return m_depthStencilStates[(int)_Type]; 
 		}
 
-		MultiRenderTarget* get_multi_rendertarget(eMRTType _Type) {
+		MultiRenderTarget* get_rendertarget(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();
 		}
 

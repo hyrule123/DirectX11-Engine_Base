@@ -7,7 +7,7 @@ PS_OUT main(VSOut_LightDir _in)
 	PS_OUT output = (PS_OUT) 0.f;
     
 	float2 vUV = _in.Position.xy / CB_Global.fResolution;
-	float4 vViewPos = PositionTarget.Sample(anisotropicSampler, vUV);
+	float4 vViewPos = g_view_position_rendertarget.Sample(anisotropicSampler, vUV);
     
 	//xyz 셋다 0일 경우 버림
 	if (false == any(vViewPos.xyz))
@@ -15,11 +15,13 @@ PS_OUT main(VSOut_LightDir _in)
 		discard;
 	}
       
-	float4 vViewNormal = NormalTarget.Sample(anisotropicSampler, vUV);
-        
-	tLightColor lightcolor = calculate_light_3D(_in.instance_ID, vViewPos.xyz, vViewNormal.xyz);
+	float4 vViewNormal = g_normal_rendertarget.Sample(anisotropicSampler, vUV);
+	
+	tLightColor lightcolor = test2(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
+	
+	//tLightColor lightcolor = calculate_directional_light_3D(g_light_attributes[_in.instance_ID], vViewPos.xyz, vViewNormal.xyz);
     
-	float SpecCoef = SpecularTarget.Sample(anisotropicSampler, vUV).x;
+	float SpecCoef = g_specular_rendertarget.Sample(anisotropicSampler, vUV).x;
 	float4 SpecularColor = DecodeColor(SpecCoef);
 
 	output.vDiffuse = lightcolor.diffuse + lightcolor.ambient;

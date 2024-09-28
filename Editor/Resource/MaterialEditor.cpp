@@ -311,7 +311,7 @@ namespace ehw::editor
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
 		}
-		else if (nullptr == mTargetMaterial->get_texture(eTextureSlot::Tex_0))
+		else if (nullptr == mTargetMaterial->get_texture(eTextureSlot::_0))
 		{
 			if (IDNO == MessageBoxW(nullptr, L"첫 번째 텍스처(Tex0)가 없습니다.\n(에러는 아님 나중에 코드로 할거면 괜찮음)\n저장할까요?", L"Notification", MB_YESNO))
 			{

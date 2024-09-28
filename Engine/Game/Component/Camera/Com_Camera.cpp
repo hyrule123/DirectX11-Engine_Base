@@ -139,7 +139,7 @@ namespace ehw
 		}
 
 		tLightCount light_count;
-		light_count.count = (uint)_lights.size();
+		light_count.count = (uint)datacont.size();
 
 		//Transform 데이터 설정 및 바인딩
 		Transform::set_data_to_buffer(m_transform_data);

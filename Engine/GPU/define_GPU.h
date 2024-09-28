@@ -197,43 +197,6 @@ namespace ehw
 		END,
 	};
 
-	enum class eMRT_Deffered
-	{
-		AlbedoTarget,
-		NormalTarget,
-		SpecularTarget,
-		EmissiveTarget,
-		RoughnessAndMetalicTarget,
-		PositionTarget,
-		END
-	};
-	namespace name
-	{
-		STR_KEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
-		{
-			"AlbedoTarget",
-			"NormalTarget",
-			"SpecularTarget",
-			"EmissiveTarget",
-			"RoughnessAndMetalicTarget",
-			"PositionTarget",
-		};
-	}
-
-	enum class eMRT_Light
-	{
-		DiffuseLightTarget,
-		SpecularLightTarget,
-		END
-	};
-	namespace name
-	{
-		STR_KEY eMRT_Light_String[(int)eMRT_Light::END]
-		{
-			"DiffuseLightTarget",
-			"SpecularLightTarget",
-		};
-	}
 
 	enum class eBufferViewType
 	{

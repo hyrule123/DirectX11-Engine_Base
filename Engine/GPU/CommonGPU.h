@@ -31,31 +31,32 @@ namespace ehw
 	enum class eTextureSlot
 	{
 		//기본 이름(최대 8장)
-		Tex_0,
-		Tex_1,
-		Tex_2,
-		Tex_3,
-		Tex_4,
-		Tex_5,
-		Tex_6,
-		Tex_7,
+		_0,
+		_1,
+		_2,
+		_3,
+		_4,
+		_5,
+		_6,
+		_7,
 
 		//명칭
-		Albedo = GPU::Register::t::AlbedoTexture,
-		Normal = GPU::Register::t::NormalTexture,
-		Specular = GPU::Register::t::SpecularTexture,
-		Emissive = GPU::Register::t::EmissiveTexture,
-		RoughnessAndMetalic = GPU::Register::t::RoughnessMetalicTexture,
+		diffuse_texture = GPU::Register::t::g_diffuse_texture,
+		normal_texture = GPU::Register::t::g_normal_texture,
+		specular_texture = GPU::Register::t::g_specular_texture,
+		emissive_texture = GPU::Register::t::g_emissive_texture,
+		roughness_metalic_texture = GPU::Register::t::g_roughness_metalic_texture,
 
-		AlbedoTarget = GPU::Register::t::AlbedoTarget,
-		NormalTarget = GPU::Register::t::NormalTarget,
-		SpecularTarget = GPU::Register::t::SpecularTarget,
-		EmissiveTarget = GPU::Register::t::EmissiveTarget,
-		RoughnessAndMetalicTarget = GPU::Register::t::RoughnessMetalicTarget,
-		PositionTarget = GPU::Register::t::PositionTarget,
+		//렌더타겟을 "텍스처"로 바인딩할때
+		rendertarget_diffuse = GPU::Register::t::g_diffuse_rendertarget,
+		rendertarget_specular = GPU::Register::t::g_specular_rendertarget,
+		rendertarget_normal = GPU::Register::t::g_normal_rendertarget,
+		rendertarget_view_position = GPU::Register::t::g_view_position_rendertarget,
+		rendertarget_emissive = GPU::Register::t::g_emissive_rendertarget,
+		rendertarget_roughness_metalic = GPU::Register::t::g_roughness_metalic_rendertarget,
 
-		DiffuseLightTarget = GPU::Register::t::DiffuseLightTarget,
-		SpecularLightTarget = GPU::Register::t::SpecularLightTarget,
+		rendertarget_diffuse_light = GPU::Register::t::g_diffuse_light_rendertarget,
+		rendertarget_specular_light = GPU::Register::t::g_specular_light_rendertarget,
 
 		//CubeT8,
 		//CubeT9,

@@ -132,9 +132,27 @@ namespace ehw {
 #pragma endregion
 
 #pragma region 3D 기본 입력 레이아웃
-		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc3D = vecLayoutDesc2D;
+		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc3D;
 
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		LayoutDesc = {};
+		LayoutDesc.AlignedByteOffset = 0;
+		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		LayoutDesc.InputSlot = 0;
+		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		LayoutDesc.SemanticName = "POSITION";
+		LayoutDesc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(LayoutDesc);
+
+		LayoutDesc = {};
+		LayoutDesc.AlignedByteOffset = 16;
+		LayoutDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		LayoutDesc.InputSlot = 0;
+		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		LayoutDesc.SemanticName = "TEXCOORD";
+		LayoutDesc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(LayoutDesc);
+
+		LayoutDesc = {};
 		LayoutDesc.AlignedByteOffset = 24;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		LayoutDesc.InputSlot = 0;
@@ -143,7 +161,7 @@ namespace ehw {
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
 
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		LayoutDesc = {};
 		LayoutDesc.AlignedByteOffset = 36;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		LayoutDesc.InputSlot = 0;
@@ -152,7 +170,7 @@ namespace ehw {
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
 
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		LayoutDesc = {};
 		LayoutDesc.AlignedByteOffset = 48;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 		LayoutDesc.InputSlot = 0;
@@ -161,7 +179,7 @@ namespace ehw {
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
 
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		LayoutDesc = {};
 		LayoutDesc.AlignedByteOffset = 60;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
 		LayoutDesc.InputSlot = 0;
@@ -170,7 +188,7 @@ namespace ehw {
 		LayoutDesc.SemanticIndex = 0;
 		vecLayoutDesc3D.push_back(LayoutDesc);
 
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		LayoutDesc = {};
 		LayoutDesc.AlignedByteOffset = 76;
 		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		LayoutDesc.InputSlot = 0;

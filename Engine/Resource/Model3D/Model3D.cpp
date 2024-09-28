@@ -546,10 +546,10 @@ namespace ehw
 				return newTex;
 			};
 
-		mtrl->set_texture(eTextureSlot::Albedo, CopyAndLoadTex(_fbxMtrl->strDiffuseTex));
-		mtrl->set_texture(eTextureSlot::Normal, CopyAndLoadTex(_fbxMtrl->strNormalTex));
-		mtrl->set_texture(eTextureSlot::Specular, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
-		mtrl->set_texture(eTextureSlot::Emissive, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
+		mtrl->set_texture(eTextureSlot::diffuse_texture, CopyAndLoadTex(_fbxMtrl->strDiffuseTex));
+		mtrl->set_texture(eTextureSlot::normal_texture, CopyAndLoadTex(_fbxMtrl->strNormalTex));
+		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
+		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
 		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 		mtrl->set_shader(defferedShader);

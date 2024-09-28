@@ -2,12 +2,12 @@
 #define _3D_HLSLI
 #include "Engine/DefaultShader/Commons.hlsli"
 
-
-
 #ifndef __cplusplus
 #include "Engine/DefaultShader/Light/Light.hlsli"
 #include "Engine/DefaultShader/Light/Light_Func.hlsli"
 #include "Engine/DefaultShader/Animation/Animation3D_Func.hlsli"
+
+
 
 struct VSIn
 {
@@ -39,16 +39,45 @@ struct VSOut
 	
 };
 
+//수정 시 아래 C++ enum도 수정할것.
 struct PSOut_Deffered
 {
-	float4 Albedo : SV_Target0;
-	float4 Normal : SV_Target1;
-	float4 Specular : SV_Target2;
-	float4 Emissive : SV_Target3;
-	float4 RoughnessAndMetalic : SV_Target4;
-	float4 Position : SV_Target5;
+	float4 Diffuse : SV_Target0;
+	float4 Specular : SV_Target1;
+	float4 Normal : SV_Target2;
+	float4 Position : SV_Target3;
+	float4 Emissive : SV_Target4;
+	float4 RoughnessAndMetalic : SV_Target5;
 };
+#endif
+#ifdef __cplusplus
+namespace ehw{
+	enum class eMRT_Deffered
+	{
+		Diffuse,
+		Specular,
+		Normal,
+		ViewPosition,
+		Emissive,
+		Roughness_Metalic,
+		END
+	};
+	namespace name
+	{
+		STR_KEY eMRT_Deffered_String[(int)eMRT_Deffered::END]
+		{
+			"RT_diffuse",
+			"RT_specular",
+			"RT_normal",
+			"RT_view_position",
+			"RT_emissive",
+			"RT_roughness_metalic",	
+		};
+	}
+}
+#endif //__cplusplus
 
+#ifdef __HLSL
 struct VSIn_Merge
 {
 	float4 Position : POSITION;
@@ -58,6 +87,6 @@ struct VSOut_Merge
 {
 	float4 Position : SV_Position;
 };
-#endif//__cplusplus
+#endif//HLSL
 
-#endif
+#endif//_3D_HLSLI

@@ -14,22 +14,22 @@ REGISTER_DECLARE(NONE, u, -1);
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
 
 //Material Default Texture
-TEXTURE2D(Tex_0, t, 0);
-TEXTURE2D(Tex_1, t, 1);
-TEXTURE2D(Tex_2, t, 2);
-TEXTURE2D(Tex_3, t, 3);
-TEXTURE2D(Tex_4, t, 4);
-TEXTURE2D(Tex_5, t, 5);
-TEXTURE2D(Tex_6, t, 6);
-TEXTURE2D(Tex_7, t, 7);
+TEXTURE2D(g_is_texture_0, t, 0);
+TEXTURE2D(g_is_texture_1, t, 1);
+TEXTURE2D(g_is_texture_2, t, 2);
+TEXTURE2D(g_is_texture_3, t, 3);
+TEXTURE2D(g_is_texture_4, t, 4);
+TEXTURE2D(g_is_texture_5, t, 5);
+TEXTURE2D(g_is_texture_6, t, 6);
+TEXTURE2D(g_is_texture_7, t, 7);
 
 
-//3D Material
-TEXTURE2D(AlbedoTexture, t, 0);
-TEXTURE2D(NormalTexture, t, 1);
-TEXTURE2D(SpecularTexture, t, 2);
-TEXTURE2D(EmissiveTexture, t, 3);
-TEXTURE2D(RoughnessMetalicTexture, t, 4);
+//모델링이 가지고있는 텍스처
+TEXTURE2D(g_diffuse_texture, t, 0);
+TEXTURE2D(g_normal_texture, t, 1);
+TEXTURE2D(g_specular_texture, t, 2);
+TEXTURE2D(g_emissive_texture, t, 3);
+TEXTURE2D(g_roughness_metalic_texture, t, 4);
 #define IsAlbedoTex bTex_0
 #define IsNormalTex bTex_1
 #define IsSpecularTex bTex_2
@@ -37,15 +37,15 @@ TEXTURE2D(RoughnessMetalicTexture, t, 4);
 #define IsRMTTex bTex_4
 
 
-//Deffered + Light MRT
-TEXTURE2D(AlbedoTarget, t, 0);
-TEXTURE2D(NormalTarget, t, 1);
-TEXTURE2D(SpecularTarget, t, 2);
-TEXTURE2D(EmissiveTarget, t, 3);
-TEXTURE2D(RoughnessMetalicTarget, t, 4);
-TEXTURE2D(PositionTarget, t, 5);
-TEXTURE2D(DiffuseLightTarget, t, 6);
-TEXTURE2D(SpecularLightTarget, t, 7);
+//Deffered + Light 렌더타겟을 "샘플링용 텍스처"로 바인딩할때
+TEXTURE2D(g_diffuse_rendertarget, t, 0);
+TEXTURE2D(g_specular_rendertarget, t, 1);
+TEXTURE2D(g_normal_rendertarget, t, 2);
+TEXTURE2D(g_view_position_rendertarget, t, 3);
+TEXTURE2D(g_emissive_rendertarget, t, 4);
+TEXTURE2D(g_roughness_metalic_rendertarget, t, 5);
+TEXTURE2D(g_diffuse_light_rendertarget, t, 6);
+TEXTURE2D(g_specular_light_rendertarget, t, 7);
 
 SBUFFER(g_transforms, tTransform, t, 10);
 SBUFFER(g_default_3D_mtrl_instancing_buffer, tDefault3DMtrl_InstancingData, t, 11);

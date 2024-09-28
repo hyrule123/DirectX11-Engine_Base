@@ -27,13 +27,33 @@ struct alignas(16)  tLightCount
 #define LIGHT_TYPE_SPOT 2
 
 #ifdef __cplusplus
-enum class eLightType{
-	Directional,
-	Point,
-	//Spot, //미구현
-	END
-};
+
+	namespace ehw{
+	enum class eLightType{
+		Directional,
+		Point,
+		//Spot, //미구현
+		END
+	};
+
+	enum class eMRT_Light
+	{
+		Diffuse_Light,
+		Specular_Light,
+		END
+	};
+	namespace name
+	{
+		STR_KEY eMRT_Light_String[(int)eMRT_Light::END]
+		{
+			"MRT_diffuse_light",
+			"MRT_specular_light",
+		};
+	}
+}
 #endif
+
+
 
 // Light
 SBUFFER(g_light_attributes, tLightAttribute, t, 14);

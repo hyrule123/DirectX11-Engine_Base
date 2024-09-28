@@ -713,7 +713,7 @@ namespace ehw
 	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
 	//				if (nullptr != pTex)
 	//				{
-	//					pMaterial->set_texture(eTextureSlot::Albedo, pTex);
+	//					pMaterial->set_texture(eTextureSlot::Diffuse, pTex);
 	//				}
 	//			}
 	//				

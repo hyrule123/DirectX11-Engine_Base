@@ -2,13 +2,15 @@
 
 PSOut_Deffered main(VSOut _in)
 {
+	PSOut_Deffered out_color = (PSOut_Deffered) 0;
+	
 	float4 vObjectColor = float4(0.4f, 0.4f, 0.4f, 1.f);
 	float4 vOutColor = float4(1.f, 1.f, 1.f, 1.f);
 	float3 vViewNormal = _in.ViewNormal;
     
 	if (TRUE == CB_MaterialData.IsAlbedoTex)
 	{
-		vObjectColor = AlbedoTexture.Sample(anisotropicSampler, _in.UV);
+		vObjectColor = g_diffuse_texture.Sample(anisotropicSampler, _in.UV);
 	}
     
 	if (TRUE == CB_MaterialData.IsNormalTex)
@@ -22,7 +24,7 @@ PSOut_Deffered main(VSOut _in)
 		};
 
 		//노말맵에 들어있는 방향 벡터는 '탄젠트 공간'에 속해 있는 방향 벡터이다.
-		float3 vNormal = NormalTexture.Sample(anisotropicSampler, _in.UV).xyz;
+		float3 vNormal = g_normal_texture.Sample(anisotropicSampler, _in.UV).xyz;
 		
 		//Normal 값은 0.f과 1.f 사이(0 ~ 255) -> -1 ~ 1 사이로 변환한다.
 		// 0~1값을 -1~1의 값으로 변환한다.
@@ -35,13 +37,13 @@ PSOut_Deffered main(VSOut _in)
 	float4 SpecularCoeff = CB_MaterialData.Spec;
 	if (TRUE == CB_MaterialData.IsSpecularTex)
 	{
-		SpecularCoeff = SpecularTexture.Sample(anisotropicSampler, _in.UV);
+		SpecularCoeff = g_specular_texture.Sample(anisotropicSampler, _in.UV);
 	}
     
 	
 	PSOut_Deffered deffered_out = (PSOut_Deffered) 0;
 	
-	deffered_out.Albedo = vObjectColor;
+	deffered_out.Diffuse = vObjectColor;
 	deffered_out.Normal = float4(vViewNormal.xyz, 1.f);
 	deffered_out.Specular = SpecularCoeff;
 	deffered_out.Emissive = float4(1.0f, 1.0f, 1.0f, 1.0f);

@@ -27,7 +27,7 @@ namespace ehw {
 		std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 		spriteMaterial->set_rendering_mode(eRenderingMode::forward_opaque);
 		spriteMaterial->set_shader(spriteShader);
-		spriteMaterial->set_texture(eTextureSlot::Albedo, spriteTexture);
+		spriteMaterial->set_texture(eTextureSlot::diffuse_texture, spriteTexture);
 		spriteMaterial->set_engine_default_res(true);
 		ResourceManager<Material>::get_inst().insert(material::SpriteMaterial, spriteMaterial);
 #pragma endregion

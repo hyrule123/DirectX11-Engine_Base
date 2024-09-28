@@ -6,7 +6,7 @@ float4 main(VSOut In) : SV_Target
 
 	if (CB_MaterialData.IsAlbedoTex == TRUE)
 	{
-		OutColor = AlbedoTexture.Sample(anisotropicSampler, In.UV);
+		OutColor = g_diffuse_texture.Sample(anisotropicSampler, In.UV);
 	}
 
 	float3 vNormal = In.ViewNormal;
@@ -14,17 +14,17 @@ float4 main(VSOut In) : SV_Target
 	if (CB_MaterialData.IsNormalTex == TRUE)
 	{
 	// 물체의 표면에 적용될 탄젠트 공간 기준 방향벡터를 가져온다.
-			vNormal = NormalTexture.Sample(anisotropicSampler, In.UV).xyz;
+		vNormal = g_normal_texture.Sample(anisotropicSampler, In.UV).xyz;
 
 	// 0~1값을 -1~1의 값으로 변환
-			vNormal = (vNormal * 2.0f) - 1.0f;
+		vNormal = (vNormal * 2.0f) - 1.0f;
 
-			float3x3 matTBN =
-			{
-				In.ViewTangent,
-				In.ViewBiNormal,
-				In.ViewNormal,
-			};
+		float3x3 matTBN =
+		{
+			In.ViewTangent,
+			In.ViewBiNormal,
+			In.ViewNormal,
+		};
 
 		vNormal = normalize(mul(vNormal, matTBN));
 	}

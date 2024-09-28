@@ -16,7 +16,7 @@ namespace ehw
 
 		bool create(std::shared_ptr<Texture> texture[MRT_MAX], std::shared_ptr<Texture> dsTexture);
 		void Bind();
-		inline std::shared_ptr<Texture> GetRenderTarget(uint _uRenderTargetIndex);
+		std::shared_ptr<Texture> get_rendertarget(uint _uRenderTargetIndex);
 
 		//렌더타겟을 특정 색상으로 변경
 		void Clear(const float4& _clearColor);
@@ -28,7 +28,7 @@ namespace ehw
 		uint mRenderTargetCount;
     };
 
-	inline std::shared_ptr<Texture> MultiRenderTarget::GetRenderTarget(uint _uRenderTargetIndex)
+	inline std::shared_ptr<Texture> MultiRenderTarget::get_rendertarget(uint _uRenderTargetIndex)
 	{
 		std::shared_ptr<Texture> RenderTarget = nullptr;
 		if (_uRenderTargetIndex < MRT_MAX)

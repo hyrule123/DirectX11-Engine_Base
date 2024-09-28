@@ -17,6 +17,9 @@
 #include "Engine/GPU/StructBuffer.h"
 #include "Engine/GPU/MultiRenderTarget.h"
 
+#include "Engine/DefaultShader/3D/3D.hlsli"
+#include "Engine/DefaultShader/Light/Light.hlsli"
+
 
 namespace ehw
 {
@@ -442,8 +445,7 @@ namespace ehw
 
 			for (int i = 0; i < (int)eMRT_Deffered::END; ++i)
 			{
-				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
-				arrRTTex[i] = defferedTex;
+				arrRTTex[i] = std::make_shared<Texture>();
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
 				arrRTTex[i]->set_resource_name(name::eMRT_Deffered_String[i]);
@@ -486,6 +488,8 @@ namespace ehw
 	void RenderManager::set_MRT_to_deffered_materials()
 	{
 		//Light
+		//Light_Diffuse와 Light_Specular을 렌더타겟으로 설정 후(SV_Target0, SV_Target1)
+		//Diffuse, Normal, Specular, Emissive, Roughness/Metalic, View Position 렌더타겟을 "텍스처"로 바인딩
 		{
 			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightDirMaterial);
 
@@ -494,78 +498,94 @@ namespace ehw
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
 			{
-				//Position Target
-				std::shared_ptr<Texture> positionTarget =
-					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
-				lightDirMtrl->set_texture(eTextureSlot::PositionTarget, positionTarget);
-				lightPointMtrl->set_texture(eTextureSlot::PositionTarget, positionTarget);
-			}
-
-			{
-				//Normal Target
-				std::shared_ptr<Texture> normalTarget =
-					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
-
-				lightDirMtrl->set_texture(eTextureSlot::NormalTarget, normalTarget);
-				lightPointMtrl->set_texture(eTextureSlot::NormalTarget, normalTarget);
+				//Diffuse Target
+				std::shared_ptr<Texture> diffuse =
+					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Diffuse);
+				lightDirMtrl->set_texture(eTextureSlot::rendertarget_diffuse, diffuse);
+				lightPointMtrl->set_texture(eTextureSlot::rendertarget_diffuse, diffuse);
 			}
 
 			{
 				//Specular Target
 				std::shared_ptr<Texture> specularTarget =
-					DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
+					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Specular);
 
-				lightDirMtrl->set_texture(eTextureSlot::NormalTarget, specularTarget);
-				lightPointMtrl->set_texture(eTextureSlot::NormalTarget, specularTarget);
+				lightDirMtrl->set_texture(eTextureSlot::rendertarget_specular, specularTarget);
+				lightPointMtrl->set_texture(eTextureSlot::rendertarget_specular, specularTarget);
+			}
+
+			{
+				//Normal Target
+				std::shared_ptr<Texture> normalTarget =
+					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Normal);
+
+				lightDirMtrl->set_texture(eTextureSlot::rendertarget_normal, normalTarget);
+				lightPointMtrl->set_texture(eTextureSlot::rendertarget_normal, normalTarget);
+			}
+
+			{
+				//View Position Target
+				std::shared_ptr<Texture> view_position = 
+					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::ViewPosition);
+
+				lightDirMtrl->set_texture(eTextureSlot::rendertarget_view_position, view_position);
+				lightPointMtrl->set_texture(eTextureSlot::rendertarget_view_position, view_position);
+			}
+
+			{
+				//Routhness/Metalic Target
+				std::shared_ptr<Texture> rmt =
+					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Roughness_Metalic);
+				lightDirMtrl->set_texture(eTextureSlot::rendertarget_roughness_metalic, rmt);
+				lightPointMtrl->set_texture(eTextureSlot::rendertarget_roughness_metalic, rmt);
 			}
 		}
 
-		//Merge
+		//Merge: Deffered, Light 렌더타겟 전부 바인딩
 		{
 			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{
-				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::AlbedoTarget);
-				mergeMaterial->set_texture(eTextureSlot::AlbedoTarget, AlbedoRT);
+				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Diffuse);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_diffuse, AlbedoRT);
 			}
 
 			{
-				std::shared_ptr<Texture> NormalRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::NormalTarget);
-				mergeMaterial->set_texture(eTextureSlot::NormalTarget, NormalRT);
+				std::shared_ptr<Texture> NormalRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Normal);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_normal, NormalRT);
 			}
 
 			{
-				std::shared_ptr<Texture> SpecularRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::SpecularTarget);
-				mergeMaterial->set_texture(eTextureSlot::SpecularTarget, SpecularRT);
+				std::shared_ptr<Texture> SpecularRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Specular);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_specular, SpecularRT);
 			}
 
 			{
-				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::EmissiveTarget);
-				mergeMaterial->set_texture(eTextureSlot::EmissiveTarget, EmissiveRT);
+				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Emissive);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_emissive, EmissiveRT);
 			}
 
 			{
-				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::RoughnessAndMetalicTarget);
-				mergeMaterial->set_texture(eTextureSlot::RoughnessAndMetalicTarget, RoughnessMetailcRT);
+				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Roughness_Metalic);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_roughness_metalic, RoughnessMetailcRT);
 			}
-
 
 			{
-				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->GetRenderTarget((uint)eMRT_Deffered::PositionTarget);
-				mergeMaterial->set_texture(eTextureSlot::PositionTarget, PosRenderTarget);
+				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::ViewPosition);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_view_position, PosRenderTarget);
 			}
 
-
+			//Light MRT의 0, 1을 6, 7번 텍스처로 바인딩
 			MultiRenderTarget* LightMRT = m_multi_render_targets[(uint)eMRTType::Light].get();
 			{
-				std::shared_ptr<Texture> DiffuseLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::DiffuseLightTarget);
-				mergeMaterial->set_texture(eTextureSlot::DiffuseLightTarget, DiffuseLightTarget);
+				std::shared_ptr<Texture> g_diffuse_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Diffuse_Light);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_diffuse_light, g_diffuse_light_rendertarget);
 			}
 			{
-				std::shared_ptr<Texture> SpecularLightTarget = LightMRT->GetRenderTarget((uint)eMRT_Light::SpecularLightTarget);
-				mergeMaterial->set_texture(eTextureSlot::SpecularLightTarget, SpecularLightTarget);
-			}
+				std::shared_ptr<Texture> g_specular_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Specular_Light);
+				mergeMaterial->set_texture(eTextureSlot::rendertarget_specular_light, g_specular_light_rendertarget);
+			}	
 		}
 
 

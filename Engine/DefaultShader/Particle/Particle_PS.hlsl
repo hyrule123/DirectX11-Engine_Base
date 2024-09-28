@@ -4,7 +4,7 @@ float4 main(GSOutput In) : SV_TARGET
 {
     float4 outColor = (float4) 0.0f;
     
-    outColor = AlbedoTexture.Sample(anisotropicSampler, In.UV);
+    outColor = g_diffuse_texture.Sample(anisotropicSampler, In.UV);
     
     outColor *= CB_ParticleSystem.startColor;
     

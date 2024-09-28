@@ -75,6 +75,8 @@ namespace ehw {
 		std::unordered_map<MeshMaterialKey, tRenderQueue, MeshMaterialKey::Hasher>
 			m_renderer_queues[(int)eRenderingMode::END];
 
+		//Light Material
+
 		//Deffered Merge
 		std::shared_ptr<Mesh> m_deffered_merge_rectmesh;
 		std::shared_ptr<Material> m_deffered_merge_material;

@@ -55,9 +55,6 @@ namespace ehw
 		RenderManager::get_inst().Context()->OMSetRenderTargets(mRenderTargetCount, mRenderTargetViews, pDSView);
 	}
 
-
-
-
 	void MultiRenderTarget::Clear(const float4& _clearColor)
 	{
 		for (uint i = 0u; i < mRenderTargetCount; ++i)
