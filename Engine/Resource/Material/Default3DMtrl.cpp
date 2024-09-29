@@ -32,17 +32,10 @@ namespace ehw {
         set_rendering_mode(eRenderingMode::deffered_opaque);
         set_engine_default_res(true);
 
-        if (nullptr == s_default_3D_mtrl_instancing_buffer) {
-            load_static_buffer();
-        }
-        m_default_3D_mtrl_instancing_buffer = s_default_3D_mtrl_instancing_buffer;
+        m_default_3D_mtrl_instancing_buffer = ResourceManager<StructBuffer>::get_inst().find("default_3D_material_instancing_buffer");
     }
     Default3DMtrl::~Default3DMtrl()
     {
-        m_default_3D_mtrl_instancing_buffer = nullptr;
-        if (s_default_3D_mtrl_instancing_buffer.use_count() == 1) {
-            s_default_3D_mtrl_instancing_buffer = nullptr;
-        }
     }
 
     void Default3DMtrl::clear_instancing_buffer()
@@ -52,6 +45,7 @@ namespace ehw {
 
     void Default3DMtrl::set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs)
     {
+        m_default_3D_mtrl_instancing_data.clear();
         m_default_3D_mtrl_instancing_data.reserve(_objs.size());
 
         std::shared_ptr<Skeleton> shared_skeleton = nullptr;
@@ -95,15 +89,5 @@ namespace ehw {
     {
         auto deffered = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
         set_shader(deffered);
-    }
-
-    void Default3DMtrl::load_static_buffer()
-    {
-        s_default_3D_mtrl_instancing_buffer = std::make_shared<StructBuffer>();
-        StructBuffer::Desc desc{};
-        desc.eSBufferType = eStructBufferType::READ_ONLY;
-        desc.GPU_register_t_SRV = GPU::Register::t::g_default_3D_mtrl_instancing_buffer;
-        desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-        s_default_3D_mtrl_instancing_buffer->init<tDefault3DMtrl_InstancingData>(desc);
     }
 }

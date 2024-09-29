@@ -193,7 +193,8 @@ namespace ehw
 					class_name.clear(); res_name.clear();
 					meshContainer["material"]["resource_name"] >> res_name;
 					meshContainer["material"]["concrete_class_name"] >> class_name;
-					m_mesh_mtrl_pairs[i].material = ResourceManager<Material>::get_inst().load(res_name, class_name);
+					m_mesh_mtrl_pairs[i].material = 
+						ResourceManager<Material>::get_inst().load(res_name, class_name);
 
 					if (nullptr == m_mesh_mtrl_pairs[i].material)
 					{
@@ -263,6 +264,8 @@ namespace ehw
 				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
 				rootTransform->add_child(child->transform());
+
+				child->SetName(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				Com_Renderer_Mesh* renderer = nullptr;

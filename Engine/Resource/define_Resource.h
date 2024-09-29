@@ -84,7 +84,6 @@ namespace ehw
 				STR_KEY_DECLARE(ParticleMaterial);
 				STR_KEY_DECLARE(Basic3DMaterial);
 				STR_KEY_DECLARE(PostProcessMaterial);
-				STR_KEY_DECLARE(Deffered3DMaterial);
 				STR_KEY_DECLARE(MergeMaterial);
 				STR_KEY_DECLARE(LightDirMaterial);
 				STR_KEY_DECLARE(LightPointMaterial);

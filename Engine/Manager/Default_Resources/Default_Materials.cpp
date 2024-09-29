@@ -78,17 +78,6 @@ namespace ehw {
 		ResourceManager<Material>::get_inst().insert(material::Basic3DMaterial, basic3DMaterial);
 #pragma endregion
 
-#pragma region
-		std::shared_ptr<GraphicsShader> deffered_3D_shader = ResourceManager<GraphicsShader>::get_inst().find(shader::graphics::Deffered3DShader);
-
-		std::shared_ptr<Material> deffered_3D_mtrl = std::make_shared<Default3DMtrl>();
-		deffered_3D_mtrl->set_shader(deffered_3D_shader);
-
-		ResourceManager<Material>::get_inst().insert(material::Deffered3DMaterial, deffered_3D_mtrl);
-
-		Default3DMtrl::load_static_buffer();
-#pragma endregion
-
 #pragma region LIGHT
 		{
 			std::shared_ptr<GraphicsShader> lightShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::LightDirShader);
