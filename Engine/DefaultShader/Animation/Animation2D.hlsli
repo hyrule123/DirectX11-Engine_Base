@@ -6,7 +6,7 @@
 
 //Atlas texture(Animation 2D)
 TEXTURE2D(AtlasTexture, t, 0);
-#define IsAtlasTex bTex_0
+#define IsAtlasTex is_texture_0
 
 #ifdef __HLSL
 #include "Engine/DefaultShader/Light/Light_Func.hlsli"

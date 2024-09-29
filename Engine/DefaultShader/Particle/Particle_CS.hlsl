@@ -7,7 +7,7 @@
 [numthreads(128, 1, 1)]
 void main( uint3 DTid : SV_DispatchThreadID )
 {
-    if ( CB_ParticleSystem.maxParticles <= DTid.x )
+    if ( g_CB_particle_system.maxParticles <= DTid.x )
         return;
     
     if (RW_ParticleBuffer[DTid.x].active == 0)
@@ -36,9 +36,9 @@ void main( uint3 DTid : SV_DispatchThreadID )
                 // 랜덤값으로 위치와 방향을 설정해준다.
                 // 샘플링을 시도할 UV 계산해준다.
             float4 Random = (float4) 0.0f;
-            float2 UV = float2((float) DTid.x / CB_ParticleSystem.maxParticles, 0.5f);
-            UV.x += CB_ParticleSystem.elapsedTime;
-			UV.y += sin((UV.x + CB_ParticleSystem.elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
+            float2 UV = float2((float) DTid.x / g_CB_particle_system.maxParticles, 0.5f);
+            UV.x += g_CB_particle_system.elapsedTime;
+			UV.y += sin((UV.x + g_CB_particle_system.elapsedTime) * 3.14592f + 2.0f * 10.0f) * 0.5f;
                 
             Random = float4
                 (
@@ -50,27 +50,27 @@ void main( uint3 DTid : SV_DispatchThreadID )
 
             //// radius 원형 범위로 스폰
             float fTheta = Random.x * 3.141592f * 2.0f;
-			RW_ParticleBuffer[DTid.x].position.xy = float2(cos(fTheta), sin(fTheta)) * Random.y * CB_ParticleSystem.radius;
+			RW_ParticleBuffer[DTid.x].position.xy = float2(cos(fTheta), sin(fTheta)) * Random.y * g_CB_particle_system.radius;
             RW_ParticleBuffer[DTid.x].position.z = 100.0f;
             
             RW_ParticleBuffer[DTid.x].direction.xy 
                 = normalize(float2(RW_ParticleBuffer[DTid.x].position.xy));
             
-            if (CB_ParticleSystem.simulationSpace) // 1 world , 0 local
+            if (g_CB_particle_system.simulationSpace) // 1 world , 0 local
             {
-                RW_ParticleBuffer[DTid.x].position.xyz += CB_ParticleSystem.worldPosition.xyz;
+                RW_ParticleBuffer[DTid.x].position.xyz += g_CB_particle_system.worldPosition.xyz;
             }
             
             ////파티클 속력
             RW_ParticleBuffer[DTid.x].time = 0.0f;
-			RW_ParticleBuffer[DTid.x].speed = CB_ParticleSystem.startSpeed;
-			RW_ParticleBuffer[DTid.x].lifeTime = CB_ParticleSystem.startLifeTime;
+			RW_ParticleBuffer[DTid.x].speed = g_CB_particle_system.startSpeed;
+			RW_ParticleBuffer[DTid.x].lifeTime = g_CB_particle_system.startLifeTime;
             
         }
     }
     else // active == 1
     {
-		RW_ParticleBuffer[DTid.x].time += CB_ParticleSystem.deltaTime;
+		RW_ParticleBuffer[DTid.x].time += g_CB_particle_system.deltaTime;
         if (RW_ParticleBuffer[DTid.x].lifeTime < RW_ParticleBuffer[DTid.x].time)
         {
             RW_ParticleBuffer[DTid.x].active = 0;
@@ -78,7 +78,7 @@ void main( uint3 DTid : SV_DispatchThreadID )
         else
         {
             RW_ParticleBuffer[DTid.x].position 
-            += RW_ParticleBuffer[DTid.x].direction * RW_ParticleBuffer[DTid.x].speed * CB_ParticleSystem.deltaTime;
+            += RW_ParticleBuffer[DTid.x].direction * RW_ParticleBuffer[DTid.x].speed * g_CB_particle_system.deltaTime;
         }
     }
 }

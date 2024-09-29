@@ -115,10 +115,10 @@ namespace ehw
 
             //const buffer
             Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
-            cbData[JSON_KEY(m_shared_material_data.Amb)] << m_shared_material_data.Amb;
-            cbData[JSON_KEY(m_shared_material_data.Diff)] << m_shared_material_data.Diff;
-            cbData[JSON_KEY(m_shared_material_data.Emv)] << m_shared_material_data.Emv;
-            cbData[JSON_KEY(m_shared_material_data.Spec)] << m_shared_material_data.Spec;
+            cbData[JSON_KEY(m_shared_material_data.ambient)] << m_shared_material_data.ambient;
+            cbData[JSON_KEY(m_shared_material_data.diffuse)] << m_shared_material_data.diffuse;
+            cbData[JSON_KEY(m_shared_material_data.emissive)] << m_shared_material_data.emissive;
+            cbData[JSON_KEY(m_shared_material_data.specular)] << m_shared_material_data.specular;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
         }
         catch (const Json::Exception& _err)
@@ -165,10 +165,10 @@ namespace ehw
 
             //const buffer
             const Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
-            cbData[JSON_KEY(m_shared_material_data.Amb)] >> m_shared_material_data.Amb;
-            cbData[JSON_KEY(m_shared_material_data.Diff)] >> m_shared_material_data.Diff;
-            cbData[JSON_KEY(m_shared_material_data.Emv)] >> m_shared_material_data.Emv;
-            cbData[JSON_KEY(m_shared_material_data.Spec)] >> m_shared_material_data.Spec;
+            cbData[JSON_KEY(m_shared_material_data.ambient)] >> m_shared_material_data.ambient;
+            cbData[JSON_KEY(m_shared_material_data.diffuse)] >> m_shared_material_data.diffuse;
+            cbData[JSON_KEY(m_shared_material_data.emissive)] >> m_shared_material_data.emissive;
+            cbData[JSON_KEY(m_shared_material_data.specular)] >> m_shared_material_data.specular;
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
 
             //renderingMode
@@ -190,28 +190,28 @@ namespace ehw
         switch ((UINT)_slot)
         {
         case 0u:
-            m_shared_material_data.bTex_0 = bTex;
+            m_shared_material_data.is_texture_0 = bTex;
             break;
         case 1u:
-            m_shared_material_data.bTex_1 = bTex;
+            m_shared_material_data.is_texture_1 = bTex;
             break;
         case 2u:
-            m_shared_material_data.bTex_2 = bTex;
+            m_shared_material_data.is_texture_2 = bTex;
             break;
         case 3u:
-            m_shared_material_data.bTex_3 = bTex;
+            m_shared_material_data.is_texture_3 = bTex;
             break;
         case 4u:
-            m_shared_material_data.bTex_4 = bTex;
+            m_shared_material_data.is_texture_4 = bTex;
             break;
         case 5u:
-            m_shared_material_data.bTex_5 = bTex;
+            m_shared_material_data.is_texture_5 = bTex;
             break;
         case 6u:
-            m_shared_material_data.bTex_6 = bTex;
+            m_shared_material_data.is_texture_6 = bTex;
             break;
         case 7u:
-            m_shared_material_data.bTex_7 = bTex;
+            m_shared_material_data.is_texture_7 = bTex;
             break;
         default:
             ASSERT(false, "에러");

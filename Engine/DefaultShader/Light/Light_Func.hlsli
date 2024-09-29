@@ -54,10 +54,10 @@ in tLightAttribute _light_attr
 	else if (LIGHT_TYPE_POINT == _light_attr.lightType)
 	{
 		// Light 의 ViewSpace 에서의 '위치'(w값 1)
-		float4 LightViewPos = mul(float4(_light_attr.position.xyz, 1.f), g_CB_camera.view);
+		float4 light_view_pos = mul(float4(_light_attr.position.xyz, 1.f), g_CB_camera.view);
        
         // 표면위치 - 광원 위치 하면 빛의 방향 벡터를 구할 수 있음.
-		light_direction = _view_position - LightViewPos.xyz;
+		light_direction = _view_position - light_view_pos.xyz;
         
         // 거리에 따른 세기 변화를 계산하고
 		float light_surface_dist = length(light_direction);
@@ -86,98 +86,179 @@ in tLightAttribute _light_attr
 	float3 vViewReflect = normalize(light_direction + 2.f * cosLight * _view_normal);
     
     // 카메라에서 픽셀 지점을 바라보는 시선 벡터
+	//뷰 공간이므로 카메라의 위치는 0, 0, 0이다
 	float3 vEye = -normalize(_view_position);
     
     // 반사광 세기          
 	float fRelfectPow = pow(saturate(dot(vViewReflect, vEye)), 10);
 	
-	ret.diffuse = _light_attr.color.diffuse * fDiffPow * fDistPow;
+	ret.diffuse = _light_attr.color.diffuse * fDistPow * fDiffPow;// * fDistPow;
 	ret.specular = _light_attr.color.specular * fRelfectPow * fDistPow;
 	ret.ambient = _light_attr.color.ambient;
 	
 	return ret;
 }
 
-/*
-tLightColor test2(tLightAttribute _attr, float3 _view_pos, float3 _view_normal)
-{
-	tLightColor color = (tLightColor) 0;
+
+//tLightColor test2(tLightAttribute _attr, float3 _view_pos, float3 _view_normal)
+//{
+//	tLightColor color = (tLightColor) 0;
        
-	float3 ViewLightDir = (float3) 0.f;
-	float fDiffPow = (float) 0.f;
-	float fSpecPow = (float) 0.f;
+//	float3 ViewLightDir = (float3) 0.f;
+//	float fDiffPow = (float) 0.f;
+//	float fSpecPow = (float) 0.f;
     
-    // Directional Light
-	if (_attr.lightType == 0)
+//     Directional Light
+//	if (_attr.lightType == 0)
+//	{
+//		ViewLightDir = normalize(mul(float4(_attr.direction.xyz, 0.f), g_CB_camera.view));
+    
+//         View 스페이스 상에서 표면의 빛의 세기를 구함
+//		fDiffPow = saturate(dot(-ViewLightDir, _view_normal));
+    
+//         반사광 세기를 구함
+//         표면의 빛의 반사벡터       
+//		float3 vViewReflect = normalize(ViewLightDir + 2.f * dot(-ViewLightDir, _view_normal) * _view_normal);
+        
+//         시점에서 표면을 향하는 벡터
+//		float3 vEye = normalize(_view_pos);
+        
+//         시선 벡터와 반사벡터를 내적해서 반사광의 세기를 구함
+//		fSpecPow = saturate(dot(-vEye, vViewReflect));
+//		fSpecPow = pow(fSpecPow, 20);
+//	}
+    
+//     Point Light
+//	else if (_attr.lightType == 1)
+//	{
+//         ViewSpace 상에서 광원의 위치를 알아낸다.
+//		float3 vLightViewPos = mul(float4(_attr.position.xyz, 1.f), g_CB_camera.view);
+        
+//         광원의 위치에서 표면을 향하는 벡터를 구한다.
+//		ViewLightDir = _view_pos - vLightViewPos;
+        
+//         광원에서 표면까지의 거리를 구한다.
+//		float fDist = length(ViewLightDir);
+        
+//         광원에서 표면을 향하는 단위벡터를 구한다.        
+//		ViewLightDir = normalize(ViewLightDir);
+        
+//         반경대비 거리에 따른 빛의 세기 비율
+//        float fRatio = saturate(1.f - (fDist / lightinfo.fRadius));        
+//		float fRatio = cos(saturate(fDist / _attr.radius) * 3.1415926535f * 0.5f);
+                        
+//         View 스페이스 상에서 표면의 빛의 세기를 구함        
+//		fDiffPow = saturate(dot(-ViewLightDir, _view_normal)) * fRatio;
+
+//         반사광 세기를 구함
+//         표면의 빛의 반사벡터       
+//		float3 vViewReflect = normalize(ViewLightDir + 2.f * dot(-ViewLightDir, _view_normal) * _view_normal);
+        
+//         시점에서 표면을 향하는 벡터
+//		float3 vEye = normalize(_view_pos);
+        
+//         시선 벡터와 반사벡터를 내적해서 반사광의 세기를 구함
+//		fSpecPow = saturate(dot(-vEye, vViewReflect));
+//		fSpecPow = pow(fSpecPow, 20);
+//	}
+    
+//     SpotLight
+//	else
+//	{
+        
+//	}
+    
+//     최종 난반사광
+//	color.diffuse += _attr.color.diffuse * fDiffPow;
+    
+//     최종 반사광 
+//	color.specular += _attr.color.specular * fSpecPow;
+
+//     최종 환경광
+//	color.ambient += _attr.color.ambient;
+	
+//	return color;
+//}
+
+void CalculateLight3D(float3 viewPos, float3 viewNormal, int lightIdx, inout tLightColor lightColor)
+{
+	tLightAttribute lightInfo = g_light_attributes[lightIdx];
+    
+	float3 viewLightDir = (float3) 0.0f;
+
+        //view space 상에서 빛의 세기를 구함
+	float fDiffPow = 0.0f;
+	float fSpecPow = 0.0f;
+    
+    // Directional
+	if (0 == lightInfo.lightType)
 	{
-		ViewLightDir = normalize(mul(float4(_attr.direction.xyz, 0.f), g_CB_camera.view));
-    
-        // View 스페이스 상에서 표면의 빛의 세기를 구함
-		fDiffPow = saturate(dot(-ViewLightDir, _view_normal));
-    
+		viewLightDir = normalize(mul(float4(lightInfo.direction.xyz, 0.0f), g_CB_camera.view));
+
+        //view space 상에서 빛의 세기를 구함
+		fDiffPow = saturate(dot(-viewLightDir, viewNormal));
+		fSpecPow = 0.0f;
+        
         // 반사광 세기를 구함
-        // 표면의 빛의 반사벡터       
-		float3 vViewReflect = normalize(ViewLightDir + 2.f * dot(-ViewLightDir, _view_normal) * _view_normal);
+        // 표면의 빛의 반사벡터
+		float3 viewReflect = normalize(viewLightDir + 2.0f * dot(-viewLightDir, viewNormal) * viewNormal);
         
         // 시점에서 표면을 향하는 벡터
-		float3 vEye = normalize(_view_pos);
-        
-        // 시선 벡터와 반사벡터를 내적해서 반사광의 세기를 구함
-		fSpecPow = saturate(dot(-vEye, vViewReflect));
-		fSpecPow = pow(fSpecPow, 20);
-	}
+		float3 vEye = normalize(viewPos);
     
-    // Point Light
-	else if (_attr.lightType == 1)
+        //시선 벡터랑 반사벡터를 내적해서 반사광의 세기를 구한다.
+		fSpecPow = saturate(dot(-vEye, viewReflect));
+		fSpecPow = pow(fSpecPow, 30);
+        
+
+	}
+    // point
+	else if (1 == lightInfo.lightType)
 	{
-        // ViewSpace 상에서 광원의 위치를 알아낸다.
-		float3 vLightViewPos = mul(float4(_attr.position.xyz, 1.f), g_CB_camera.view);
+        // view space 상에서 광원의 위치를 알아낸다.
+		float3 vLightViewPos = mul(float4(lightInfo.position.xyz, 1.0f), g_CB_camera.view);
         
-        // 광원의 위치에서 표면을 향하는 벡터를 구한다.
-		ViewLightDir = _view_pos - vLightViewPos;
+        // 광원의 위치에서 표면을 향하는 벡터
+		viewLightDir = viewPos - vLightViewPos;
         
-        // 광원에서 표면까지의 거리를 구한다.
-		float fDist = length(ViewLightDir);
+        //광원에서 표면까지의 거리를 구한다.
+		float dist = length(viewLightDir);
         
-        // 광원에서 표면을 향하는 단위벡터를 구한다.        
-		ViewLightDir = normalize(ViewLightDir);
+        // 광원에서 표면을 향하는 단위벡터를 구한다.
+		viewLightDir = normalize(viewLightDir);
         
         // 반경대비 거리에 따른 빛의 세기 비율
-        //float fRatio = saturate(1.f - (fDist / lightinfo.fRadius));        
-		float fRatio = cos(saturate(fDist / _attr.radius) * 3.1415926535f * 0.5f);
-                        
-        // View 스페이스 상에서 표면의 빛의 세기를 구함        
-		fDiffPow = saturate(dot(-ViewLightDir, _view_normal)) * fRatio;
-
-        // 반사광 세기를 구함
-        // 표면의 빛의 반사벡터       
-		float3 vViewReflect = normalize(ViewLightDir + 2.f * dot(-ViewLightDir, _view_normal) * _view_normal);
+		float ratio = cos(saturate(dist / lightInfo.radius) * 3.1415926535 * 0.5f);
+        
+        //view space 상에서 표면의 빛의 세기를 구함
+		fDiffPow = saturate(dot(-viewLightDir, viewNormal)) * ratio;
+        
+        // 반사광의 세기를 구함
+        // 표면의 빛의 반사벡터
+		float3 viewReflect = normalize(viewLightDir + 2.0f * dot(-viewLightDir, viewNormal) * viewNormal);
         
         // 시점에서 표면을 향하는 벡터
-		float3 vEye = normalize(_view_pos);
+		float3 vEye = normalize(viewPos);
         
-        // 시선 벡터와 반사벡터를 내적해서 반사광의 세기를 구함
-		fSpecPow = saturate(dot(-vEye, vViewReflect));
-		fSpecPow = pow(fSpecPow, 20);
+        //시선 벡터랑 반사벡터를 내적해서 반사광의 세기를 구한다.
+		fSpecPow = saturate(dot(-vEye, viewReflect));
+		fSpecPow = pow(fSpecPow, 30);
 	}
-    
-    // SpotLight
 	else
 	{
         
 	}
     
     // 최종 난반사광
-	color.diffuse += _attr.color.diffuse * fDiffPow;
-    
-    // 최종 반사광 
-	color.specular += _attr.color.specular * fSpecPow;
-
-    // 최종 환경광
-	color.ambient += _attr.color.ambient;
-	
-	return color;
+	lightColor.diffuse += lightInfo.color.diffuse * fDiffPow;
+        
+        // 정반사광
+	lightColor.specular += lightInfo.color.specular * fSpecPow;
+        
+        // 주변광
+	lightColor.ambient = lightInfo.color.ambient;
 }
-*/
+
+
 #endif//HLSL
 #endif

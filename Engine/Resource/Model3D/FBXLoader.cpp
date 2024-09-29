@@ -336,17 +336,17 @@ namespace ehw
 
 		tMtrlInfo.strMtrlName = _pMtrlSur->GetName();
 
-		// Diff
+		// diffuse
 		tMtrlInfo.DiffuseColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sDiffuse
 			, fbxsdk::FbxSurfaceMaterial::sDiffuseFactor);
 
-		// Amb
+		// ambient
 		tMtrlInfo.AmbientColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sAmbient
 			, fbxsdk::FbxSurfaceMaterial::sAmbientFactor);
 
-		// Spec
+		// specular
 		tMtrlInfo.SpecularColor = get_material_data(_pMtrlSur
 			, fbxsdk::FbxSurfaceMaterial::sSpecular
 			, fbxsdk::FbxSurfaceMaterial::sSpecularFactor);

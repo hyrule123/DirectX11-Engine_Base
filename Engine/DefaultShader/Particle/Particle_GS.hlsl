@@ -12,13 +12,13 @@ void main( point VSOut input[1], inout TriangleStream<GSOutput> output)
 	
 	float3 vWorldPos = input[0].Pos.xyz + ParticleBuffer[input[0].instance_ID].position.xyz;
     
-    if (CB_ParticleSystem.simulationSpace == 0)
+    if (g_CB_particle_system.simulationSpace == 0)
     {
 		vWorldPos += g_transforms[input[0].instance_ID].World._41_42_43;
 	}
 	float3 vViewPos = mul(float4(vWorldPos, 1.0f), g_CB_camera.view).xyz;
 	
-    float3 Scale = CB_ParticleSystem.startSize.xyz;
+    float3 Scale = g_CB_particle_system.startSize.xyz;
     //Scale = lerp(20.0f, 50.0f, elapsedTime);
 	
     float3 NewPos[4] =

@@ -8,12 +8,12 @@ PSOut_Deffered main(VSOut _in)
 	float4 vOutColor = float4(1.f, 1.f, 1.f, 1.f);
 	float3 vViewNormal = _in.ViewNormal;
     
-	if (TRUE == CB_MaterialData.IsAlbedoTex)
+	if (TRUE == g_CB_material_shared_data.IsAlbedoTex)
 	{
 		vObjectColor = g_diffuse_texture.Sample(anisotropicSampler, _in.UV);
 	}
     
-	if (TRUE == CB_MaterialData.IsNormalTex)
+	if (TRUE == g_CB_material_shared_data.IsNormalTex)
 	{
 		//normal 회전 행렬(view 공간으로 normal값을 변환해주는 행렬)
 		float3x3 matRot =
@@ -34,8 +34,8 @@ PSOut_Deffered main(VSOut _in)
 		vViewNormal = mul(vNormal, matRot);
 	}
 	
-	float4 SpecularCoeff = CB_MaterialData.Spec;
-	if (TRUE == CB_MaterialData.IsSpecularTex)
+	float4 SpecularCoeff = g_CB_material_shared_data.specular;
+	if (TRUE == g_CB_material_shared_data.IsSpecularTex)
 	{
 		SpecularCoeff = g_specular_texture.Sample(anisotropicSampler, _in.UV);
 	}

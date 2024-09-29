@@ -47,19 +47,19 @@ struct alignas(16)  tCamera
 
 struct alignas(16) tSharedMaterialData
 {
-	BOOL bTex_0;
-	BOOL bTex_1;
-	BOOL bTex_2;
-	BOOL bTex_3;
-	BOOL bTex_4;
-	BOOL bTex_5;
-	BOOL bTex_6;
-	BOOL bTex_7;
+	BOOL is_texture_0;
+	BOOL is_texture_1;
+	BOOL is_texture_2;
+	BOOL is_texture_3;
+	BOOL is_texture_4;
+	BOOL is_texture_5;
+	BOOL is_texture_6;
+	BOOL is_texture_7;
 	
-	float4 Diff;
-	float4 Spec;
-	float4 Amb;
-	float4 Emv;
+	float4 diffuse;
+	float4 specular;
+	float4 ambient;
+	float4 emissive;
 };
 
 struct alignas(16)  tDefault3DMtrl_InstancingData

@@ -55,20 +55,20 @@ namespace ehw
 		eRenderingMode get_rendering_mode() const { return m_renderingMode; }
 		void set_rendering_mode(eRenderingMode _mode) { m_renderingMode = _mode; }
 
-		void set_diffuse(const float4& _diff) { m_shared_material_data.Diff = _diff; }
-		void set_specular(const float4& _spec) { m_shared_material_data.Spec = _spec; }
-		void set_amibence(const float4& _amb) { m_shared_material_data.Amb = _amb; }
-		void set_emissvie(const float4& _emsv) { m_shared_material_data.Emv = _emsv; }
+		void set_diffuse(const float4& _diff) { m_shared_material_data.diffuse = _diff; }
+		void set_specular(const float4& _spec) { m_shared_material_data.specular = _spec; }
+		void set_amibence(const float4& _amb) { m_shared_material_data.ambient = _amb; }
+		void set_emissvie(const float4& _emsv) { m_shared_material_data.emissive = _emsv; }
 
-		float4 GetDiffuseColor() const { return m_shared_material_data.Diff; }
-		float4 GetSpecularColor() const { return m_shared_material_data.Spec; }
-		float4 GetAmbientColor() const { return m_shared_material_data.Amb; }
-		float4 GetEmissiveColor() const { return m_shared_material_data.Emv; }
+		float4 GetDiffuseColor() const { return m_shared_material_data.diffuse; }
+		float4 GetSpecularColor() const { return m_shared_material_data.specular; }
+		float4 GetAmbientColor() const { return m_shared_material_data.ambient; }
+		float4 GetEmissiveColor() const { return m_shared_material_data.emissive; }
 
-		void SetDiffuseColor(const float4& _diff)		{ m_shared_material_data.Diff = _diff; }
-		void SetSpecularColor(const float4& _spec)	{ m_shared_material_data.Spec = _spec; }
-		void SetAmbientColor(const float4& _amb)		{ m_shared_material_data.Amb = _amb; }
-		void SetEmissiveColor(const float4& _emsv)	{ m_shared_material_data.Emv = _emsv; }
+		void SetDiffuseColor(const float4& _diff)		{ m_shared_material_data.diffuse = _diff; }
+		void SetSpecularColor(const float4& _spec)	{ m_shared_material_data.specular = _spec; }
+		void SetAmbientColor(const float4& _amb)		{ m_shared_material_data.ambient = _amb; }
+		void SetEmissiveColor(const float4& _emsv)	{ m_shared_material_data.emissive = _emsv; }
 			
 	private:
 		std::shared_ptr<GraphicsShader> m_shader;

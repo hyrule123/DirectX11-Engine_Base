@@ -27,7 +27,7 @@ float4 GaussianBlur(float2 UV)
     else if (UV.y < 0.0f)
         UV.y = 1.0f + frac(UV.y);
     
-    int2 iUV = UV * CB_Noise.NoiseSize.xy;
+    int2 iUV = UV * g_CB_noise.NoiseSize.xy;
     iUV -= int2(2, 2);
     
     for (int i = 0; i < 5; i++)

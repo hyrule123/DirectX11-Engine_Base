@@ -198,7 +198,6 @@ namespace ehw
 #pragma region LOCAL
 		//크기
 		float3 m_localScale;
-		float3 m_localSize;
 		
 		//회전
 		math::Quaternion m_localRotation;
