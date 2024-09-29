@@ -14,14 +14,14 @@
 
 
 //CBUFFER(버퍼이름, 사용할 구조체이름, 버퍼타입, 버퍼번호)
-CBUFFER(CB_Global, tCB_Global, b, 0);
+CBUFFER(g_CB_global, tCB_Global, b, 0);
 CBUFFER(g_CB_camera, tCamera, b, 1);
-CBUFFER(CB_MaterialData, tSharedMaterialData, b, 2);
-CBUFFER(CB_ComputeShader, tCB_ComputeShader, b, 3);
-CBUFFER(CB_Animation2D, tCB_Animation2D, b, 4);
+CBUFFER(g_CB_material_shared_data, tSharedMaterialData, b, 2);
+CBUFFER(g_CB_compute_shader, tCB_ComputeShader, b, 3);
+CBUFFER(g_CB_animation_2D, tCB_Animation2D, b, 4);
 CBUFFER(g_shared_animation3D_data, tAnimation3D_ComputeShaderData, b, 5);
-CBUFFER(CB_ParticleSystem, tCB_ParticleSystem, b, 6);
-CBUFFER(CB_Noise, tCB_Noise, b, 7);
+CBUFFER(g_CB_particle_system, tCB_ParticleSystem, b, 6);
+CBUFFER(g_CB_noise, tCB_Noise, b, 7);
 
 #ifdef __cplusplus
 

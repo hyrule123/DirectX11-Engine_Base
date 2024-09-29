@@ -3,15 +3,15 @@
 float4 main(VSOut In) : SV_Target
 {
 	float4 OutColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-
-	if (CB_MaterialData.IsAlbedoTex == TRUE)
+	
+	if (g_CB_material_shared_data.IsAlbedoTex == TRUE)
 	{
 		OutColor = g_diffuse_texture.Sample(anisotropicSampler, In.UV);
 	}
 
 	float3 vNormal = In.ViewNormal;
 
-	if (CB_MaterialData.IsNormalTex == TRUE)
+	if (g_CB_material_shared_data.IsNormalTex == TRUE)
 	{
 	// 물체의 표면에 적용될 탄젠트 공간 기준 방향벡터를 가져온다.
 		vNormal = g_normal_texture.Sample(anisotropicSampler, In.UV).xyz;

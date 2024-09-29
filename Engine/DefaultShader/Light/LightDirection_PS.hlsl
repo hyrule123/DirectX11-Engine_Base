@@ -6,7 +6,7 @@ PS_OUT main(VSOut_LightDir _in)
 {
 	PS_OUT output = (PS_OUT) 0.f;
     
-	float2 vUV = _in.Position.xy / CB_Global.fResolution;
+	float2 vUV = _in.Position.xy / g_CB_global.fResolution;
 	float4 vViewPos = g_view_position_rendertarget.Sample(anisotropicSampler, vUV);
     
 	//xyz 셋다 0일 경우 버림

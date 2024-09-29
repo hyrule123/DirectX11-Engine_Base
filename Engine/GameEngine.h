@@ -10,7 +10,6 @@ namespace ehw
 	private:
 		GameEngine();
 		~GameEngine();
-
 	public:
 		BOOL init(const tGameEngineDesc& _AppDesc);
 

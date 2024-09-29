@@ -18,7 +18,7 @@ float ConvertColor(uint2 _texPos, float _signFactor, float _indexFactor)
 [numthreads(32, 32, 1)] // 그룹당 쓰레드 개수 ( 최대 1024개까지 지정가능 )
 void main( uint3 _dtID : SV_DispatchThreadID )
 {
-	if (CB_ComputeShader.TexWidth < _dtID.x || CB_ComputeShader.TexHeight < _dtID.y)
+	if (g_CB_compute_shader.TexWidth < _dtID.x || g_CB_compute_shader.TexHeight < _dtID.y)
 		return;
 
 	float4 normal = (float4) 0;

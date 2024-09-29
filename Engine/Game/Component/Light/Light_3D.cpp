@@ -117,7 +117,7 @@ namespace ehw
 			return;
 		}
 
-		float3 position = tr->get_local_position();
+		float3 position = tr->get_world_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 			
 		//Transform 조작은 update()까지만 가능.
@@ -126,7 +126,7 @@ namespace ehw
 		case LIGHT_TYPE_DIRECTIONAL:
 			break;
 		case LIGHT_TYPE_POINT:
-			tr->set_local_scale(float3(m_attribute.radius));
+			tr->set_world_scale(float3(m_attribute.radius));
 			break;
 		case LIGHT_TYPE_SPOT:
 			break;
@@ -151,7 +151,6 @@ namespace ehw
 		{
 			const float3& forward = tr->get_world_direction(eDirection::Forward);
 			m_attribute.direction = float4(forward, 0.0f);
-			
 			break;
 		}
 

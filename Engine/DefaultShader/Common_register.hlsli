@@ -14,27 +14,27 @@ REGISTER_DECLARE(NONE, u, -1);
 SBUFFER(gInitSetting, tGPUInitSetting, t, 127);
 
 //Material Default Texture
-TEXTURE2D(g_is_texture_0, t, 0);
-TEXTURE2D(g_is_texture_1, t, 1);
-TEXTURE2D(g_is_texture_2, t, 2);
-TEXTURE2D(g_is_texture_3, t, 3);
-TEXTURE2D(g_is_texture_4, t, 4);
-TEXTURE2D(g_is_texture_5, t, 5);
-TEXTURE2D(g_is_texture_6, t, 6);
-TEXTURE2D(g_is_texture_7, t, 7);
+TEXTURE2D(g_texture_0, t, 0);
+TEXTURE2D(g_texture_1, t, 1);
+TEXTURE2D(g_texture_2, t, 2);
+TEXTURE2D(g_texture_3, t, 3);
+TEXTURE2D(g_texture_4, t, 4);
+TEXTURE2D(g_texture_5, t, 5);
+TEXTURE2D(g_texture_6, t, 6);
+TEXTURE2D(g_texture_7, t, 7);
 
 
 //모델링이 가지고있는 텍스처
 TEXTURE2D(g_diffuse_texture, t, 0);
-TEXTURE2D(g_normal_texture, t, 1);
-TEXTURE2D(g_specular_texture, t, 2);
+TEXTURE2D(g_specular_texture, t, 1);
+TEXTURE2D(g_normal_texture, t, 2);
 TEXTURE2D(g_emissive_texture, t, 3);
 TEXTURE2D(g_roughness_metalic_texture, t, 4);
-#define IsAlbedoTex bTex_0
-#define IsNormalTex bTex_1
-#define IsSpecularTex bTex_2
-#define IsEmissiveTex bTex_3
-#define IsRMTTex bTex_4
+#define IsAlbedoTex is_texture_0
+#define IsSpecularTex is_texture_1
+#define IsNormalTex is_texture_2
+#define IsEmissiveTex is_texture_3
+#define IsRMTTex is_texture_4
 
 
 //Deffered + Light 렌더타겟을 "샘플링용 텍스처"로 바인딩할때

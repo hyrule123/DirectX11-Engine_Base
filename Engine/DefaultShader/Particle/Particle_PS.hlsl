@@ -6,7 +6,7 @@ float4 main(GSOutput In) : SV_TARGET
     
     outColor = g_diffuse_texture.Sample(anisotropicSampler, In.UV);
     
-    outColor *= CB_ParticleSystem.startColor;
+    outColor *= g_CB_particle_system.startColor;
     
     if (outColor.a <= 0.0f)
         discard;

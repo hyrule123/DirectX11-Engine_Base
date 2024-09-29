@@ -42,8 +42,8 @@ namespace ehw
 
 		//명칭
 		diffuse_texture = GPU::Register::t::g_diffuse_texture,
-		normal_texture = GPU::Register::t::g_normal_texture,
 		specular_texture = GPU::Register::t::g_specular_texture,
+		normal_texture = GPU::Register::t::g_normal_texture,
 		emissive_texture = GPU::Register::t::g_emissive_texture,
 		roughness_metalic_texture = GPU::Register::t::g_roughness_metalic_texture,
 
