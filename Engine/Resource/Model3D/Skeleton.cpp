@@ -302,7 +302,11 @@ namespace ehw
 
 			//일치하는 본이 없으면 Return
 			if (0 > otherIdx)
+			{
+				ERROR_MESSAGE("본 인덱스 정보가 일치하지 않습니다.");
 				return false;
+			}
+				
 
 			//내 본의 i번쨰 = 상대 본의 otherIdx 번쨰
 			matchingIndices[i] = otherIdx;
@@ -336,11 +340,16 @@ namespace ehw
 				iter = m_animations.find(name);
 			}
 
-			std::fs::path filePath = _saveDir.filename();
-			filePath /= name;
+			std::fs::path fullPath = ResourceManager<Skeleton>::get_inst().GetBaseDir(); 
+			fullPath /= _saveDir.filename();
+			fullPath /= name;
+			fullPath.replace_extension(name::path::extension::Anim3D);
 			
-			if (eResult_fail(ourAnim->SaveFile_Binary(filePath)))
+			if (eResult_fail(ourAnim->SaveFile_Binary(fullPath)))
+			{
+				ERROR_MESSAGE("Animation 3D 저장 실패");
 				return false;
+			}
 
 			//우리 애니메이션 쪽에 등록
 			m_animations.insert(std::make_pair(name, ourAnim));
