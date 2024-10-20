@@ -55,27 +55,27 @@ namespace ehw
 
         eResult load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
-        uint get_start_frame() const { return m_StartFrame; }
-        uint GetEndFrame() const { return m_EndFrame; }
-        uint GetFrameLength() const { return m_FrameLength; }
-        double GetStartTime() const { return m_StartTime; }
-        double GetEndTIme() const { return m_EndTime; }
-        double GetTimeLength() const { return m_TimeLength; }
-        float GetUpdateTime() const { return m_UpdateTime; }
-        uint GetFPS() const { return m_FramePerSec; }
+        uint get_start_frame() const { return m_StartFrameIdx; }
+        uint get_end_frame() const { return m_EndFrameIdx; }
+        uint get_frame_length() const { return m_frame_length; }
+        double get_start_time() const { return m_StartTime; }
+        double get_end_time() const { return m_EndTime; }
+        double get_time_length() const { return m_TimeLength; }
+        float get_update_time() const { return m_UpdateTime; }
+        uint get_FPS() const { return m_FramePerSec; }
         std::shared_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
         void set_skeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
-        std::shared_ptr<StructBuffer> GetKeyFrameSBuffer() const { return m_SBufferKeyFrame; }
+        std::shared_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_SBufferKeyFrame; }
 
     private:
-        bool CreateKeyFrameSBuffer();
+        bool create_keyframe_sbuffer();
 
     private:
         std::weak_ptr<Skeleton> m_OwnerSkeleton;
 
-        uint				m_StartFrame;
-        uint				m_EndFrame;
-        uint				m_FrameLength;
+        uint				m_StartFrameIdx;
+        uint				m_EndFrameIdx;
+        uint                m_frame_length;
 
         double			m_StartTime;
         double			m_EndTime;

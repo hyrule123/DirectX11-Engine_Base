@@ -56,6 +56,7 @@ namespace ehw
 		}
 
 		std::fs::path fullPath = _basePath / _resource_name;
+		fullPath.replace_extension(name::path::extension::Skeleton);
 		//Skeleton
 		eResult result = SaveFile_Binary(fullPath);
 		if (eResult_fail(result))
@@ -89,6 +90,7 @@ namespace ehw
 	{
 		std::fs::path fullPath = _basePath / _resource_name;
 
+		fullPath.replace_extension(name::path::extension::Skeleton);
 		//Skeleton
 		eResult result = LoadFile_Binary(fullPath);
 		if (eResult_fail(result))
@@ -286,7 +288,11 @@ namespace ehw
 	{
 		//순회를 돌아주면서 내 스켈레톤 인덱스와 매칭되는 상대 스켈레톤 인덱스를 계산
 		if (m_vecBones.size() != _other.m_vecBones.size())
+		{
+			ERROR_MESSAGE("본 정보가 일치하지 않습니다.");
 			return false;
+		}
+			
 
 		std::vector<int> matchingIndices(m_vecBones.size());
 		for (size_t i = 0; i < m_vecBones.size(); ++i)
@@ -309,7 +315,7 @@ namespace ehw
 
 			//스켈레톤 주소를 자신의것으로 변경
 			std::shared_ptr<Skeleton> my_shared_ptr =
-				std::static_pointer_cast<Skeleton>(my_shared_ptr);
+				std::static_pointer_cast<Skeleton>(shared_from_this_cast<Skeleton>());
 			ourAnim->set_skeleton(my_shared_ptr);
 
 			//위에서 찾은 일치하는 Bone 번호 인덱스를 가져온다.

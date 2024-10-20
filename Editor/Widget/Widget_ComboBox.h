@@ -38,9 +38,9 @@ namespace ehw::editor
 
 		//새로 들어온 벡터값으로 값을 교체
 		void SetItems(const std::vector<std::string>& _strItems);
-		void SetItems(const std::vector<tComboItem>& _vecItem) { Reset(); mItems = _vecItem; }
+		void SetItems(const std::vector<tComboItem>& _vecItem) { ClearItems(); mItems = _vecItem; }
 
-		void Reset() { mItems.clear(); mCurrentSelected = -1; mComboFlags = 0; }
+		void ClearItems() { mItems.clear(); mCurrentSelected = -1; mComboFlags = 0; }
 
 		size_t GetItemCount() const { return mItems.size(); }
 

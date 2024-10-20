@@ -15,9 +15,9 @@ namespace ehw
 	Animation3D::Animation3D()
         : Animation(Animation3D::concrete_class_name)
         , m_OwnerSkeleton{}
-        , m_StartFrame{}
-        , m_EndFrame{}
-        , m_FrameLength{}
+        , m_StartFrameIdx{}
+        , m_EndFrameIdx{}
+        , m_frame_length()
         , m_StartTime{}
         , m_EndTime{}
         , m_TimeLength{}
@@ -25,15 +25,15 @@ namespace ehw
         , m_FramePerSec{}
         , m_KeyFramesPerBone{}
         , m_SBufferKeyFrame{}
-	{
+    {
 	}
 
     Animation3D::Animation3D(const Animation3D& _other)
         : Animation(_other)
         , m_OwnerSkeleton{ _other.m_OwnerSkeleton }
-        , m_StartFrame{ _other.m_StartFrame }
-        , m_EndFrame{ _other.m_EndFrame}
-        , m_FrameLength{ _other.m_FrameLength }
+        , m_StartFrameIdx{ _other.m_StartFrameIdx }
+        , m_EndFrameIdx{ _other.m_EndFrameIdx}
+        , m_frame_length(_other.m_frame_length)
         , m_StartTime{ _other.m_StartTime }
         , m_EndTime{ _other.m_EndTime }
         , m_TimeLength{ _other.m_TimeLength }
@@ -41,6 +41,7 @@ namespace ehw
         , m_FramePerSec{_other.m_FramePerSec}
         , m_KeyFramesPerBone{_other.m_KeyFramesPerBone}
         , m_SBufferKeyFrame{}
+        
     {
         m_SBufferKeyFrame = std::shared_ptr<StructBuffer>(_other.m_SBufferKeyFrame->Clone());
     }
@@ -87,9 +88,9 @@ namespace ehw
 
         BinarySerializer& ser = *_ser;
 
-        ser << m_StartFrame;
-        ser << m_EndFrame;
-        ser << m_FrameLength;
+        ser << m_StartFrameIdx;
+        ser << m_EndFrameIdx;
+        ser << m_frame_length;
         ser << m_StartTime;
         ser << m_EndTime;
         ser << m_TimeLength;
@@ -116,15 +117,14 @@ namespace ehw
 
         const BinarySerializer& ser = *_ser;
 
-        ser >> m_StartFrame;
-        ser >> m_EndFrame;
-        ser >> m_FrameLength;
+        ser >> m_StartFrameIdx;
+        ser >> m_EndFrameIdx;
+        ser >> m_frame_length;
         ser >> m_StartTime;
         ser >> m_EndTime;
         ser >> m_TimeLength;
         ser >> m_UpdateTime;
         ser >> m_FramePerSec;
-        
 
         size_t vecSize = 0;
         ser >> vecSize;
@@ -135,7 +135,7 @@ namespace ehw
             ser >> m_KeyFramesPerBone[i].vecKeyFrame;
         }
 
-        if (false == CreateKeyFrameSBuffer())
+        if (false == create_keyframe_sbuffer())
         {
             ERROR_MESSAGE("키프레임 구조화 버퍼 생성 실패.");
             return eResult::Fail_Create;
@@ -214,21 +214,11 @@ namespace ehw
         m_EndTime = _clip->EndTime.GetSecondDouble();
         m_TimeLength = m_EndTime - m_StartTime;
 
-        int frame_index = (int)_clip->StartTime.GetFrameCount(_clip->TimeMode);
-        if (frame_index < 0) {
-            frame_index = 0;
-        }
-        m_StartFrame = (uint)frame_index;
-        
-        frame_index = (int)_clip->EndTime.GetFrameCount(_clip->TimeMode);
-        if (frame_index < 0) {
-            frame_index = 0;
-        }
-        m_EndFrame = (uint)frame_index;
+        m_StartFrameIdx = (uint)_clip->StartFrameIdx;
+        m_EndFrameIdx = (uint)_clip->EndFrameIdx;
 
-        ASSERT(m_StartFrame <= m_EndFrame, "3D 애니메이션의 프레임이 음수입니다.");
-        m_FrameLength = (uint)(m_EndFrame - m_StartFrame + 1);//+1 -> 0프레임부터 시작이므로
-
+        ASSERT(m_StartFrameIdx <= m_EndFrameIdx, "3D 애니메이션의 프레임이 음수입니다.");
+        m_frame_length = (uint)_clip->FrameLength;
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
         //그러므로 CPU 메모리에서는 이중 배열 형태로 저장해 놓고
@@ -239,6 +229,7 @@ namespace ehw
         //그러므로 하나의 애니메이션은 본의 갯수 * 키프레임 갯수가 된다
         size_t boneCount = _clip->KeyFramesPerBone.size();
         m_KeyFramesPerBone.resize(boneCount);//CPU
+
         for (size_t i = 0; i < boneCount; ++i)
         {
             m_KeyFramesPerBone[i].BoneIndex = _clip->KeyFramesPerBone[i].BoneIndex;
@@ -254,16 +245,9 @@ namespace ehw
             //키프레임 갯수는 고정된 프레임 수로 생성해준다
             //본의 사이즈 * 프레임 수(2차 배열 -> 1차 배열)
 
-
-            //애니메이션 전체 키프레임의 갯수와, 실제 애니메이션의 중 적은 쪽의 것을 사용해준다
-            //이유: 키프레임이 0개일수도 있고, 등록된 키프레임 수보다 훨씬 많을수도 있음
-            size_t frame_count = _clip->KeyFramesPerBone[i].vecKeyFrame.size();
-            if (m_FrameLength <= _clip->KeyFramesPerBone[i].vecKeyFrame.size()) {
-                frame_count = m_FrameLength;
-            }
-
-            m_KeyFramesPerBone[i].vecKeyFrame.resize(frame_count);
-            for(size_t j = 0; j < frame_count; ++j)
+            //전부 동일하게 키프레임을 가지고 있음이 보장됨
+            m_KeyFramesPerBone[i].vecKeyFrame.resize(m_frame_length);
+            for(uint j = 0; j < m_frame_length; ++j)
             {
                 //우리 포맷 키프레임
                 tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];
@@ -272,6 +256,7 @@ namespace ehw
                 const tFBXKeyFrame& fbxKeyFrame = _clip->KeyFramesPerBone[i].vecKeyFrame[j];
 
                 //포맷을 변환해줘야 한다. double -> float
+                projKeyFrame.Time = (float)fbxKeyFrame.Time;
 
                 const fbxsdk::FbxVector4& fbxPos = fbxKeyFrame.matTransform.GetT();
                 projKeyFrame.Trans.Pos.x = (float)fbxPos.mData[0];
@@ -293,7 +278,7 @@ namespace ehw
             }
         }
 
-        if (false == CreateKeyFrameSBuffer())
+        if (false == create_keyframe_sbuffer())
         {
             return eResult::Fail_InValid;
         }
@@ -302,21 +287,20 @@ namespace ehw
 	}
 #pragma endregion
 
-    bool Animation3D::CreateKeyFrameSBuffer()
+    bool Animation3D::create_keyframe_sbuffer()
     {
         ASSERT(false == m_KeyFramesPerBone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
 
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
 
-        //Bone의 갯수 * Frame의 수가 전체 배열의 갯수가 된다.
-        vecFrameTrans.resize(m_KeyFramesPerBone.size() * m_FrameLength);
+        vecFrameTrans.resize(m_KeyFramesPerBone.size() * (size_t)m_frame_length);
 
         for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
         {
             for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
             {
                 //i번째 본의 j 키프레임 데이터
-                size_t indexIn1DArray = m_FrameLength * i + j;
+                size_t indexIn1DArray = (m_EndFrameIdx + 1) * i + j;
                 vecFrameTrans[indexIn1DArray] = m_KeyFramesPerBone[i].vecKeyFrame[j].Trans;
             }
         }

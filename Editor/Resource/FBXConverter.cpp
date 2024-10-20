@@ -197,6 +197,7 @@ namespace ehw::editor
 	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
 		mProjMeshDataCombo.SetStrKey("Model3D List");
+		mProjMeshDataCombo.ClearItems();
 		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
 
 		try

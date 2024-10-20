@@ -100,9 +100,9 @@ namespace ehw
 		}
 
 		//혹시나 frame이 최대 프레임 수보다 많을 경우 최대 프레임 수로 제한한다.
-		else if (anim->GetFrameLength() <= _frameIdx)
+		else if (anim->get_frame_length() <= _frameIdx)
 		{
-			_frameIdx = anim->GetFrameLength() - 1;
+			_frameIdx = anim->get_frame_length() - 1;
 		}
 
 		Animator::AddEvent(static_cast<Animation*>(anim.get()), _frameIdx, _func);

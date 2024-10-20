@@ -831,13 +831,16 @@ namespace ehw
 			}
 
 			fbxsdk::FbxTakeInfo* take = mScene->GetTakeInfo(clip.strName.c_str());
+
+			clip.TimeMode = timeMode;
 			clip.StartTime = take->mLocalTimeSpan.GetStart();
 			clip.EndTime = take->mLocalTimeSpan.GetStop();
-			
+
 			// GetFrameCount 함수를 호출하고  time모드를 넣어주면 시간을 프레임으로
 			// 변환해준다. 몇프레임 짜리 애니메이션 인지를 구해준다.
-			clip.TimeLength = clip.EndTime.GetFrameCount(timeMode) - clip.StartTime.GetFrameCount(timeMode);
-			clip.TimeMode = timeMode;
+			clip.StartFrameIdx = clip.StartTime.GetFrameCount(timeMode);
+			clip.EndFrameIdx = clip.EndTime.GetFrameCount(timeMode);
+			clip.FrameLength = clip.EndFrameIdx + 1;
 
 			mAnimClips.push_back(clip);
 		}
@@ -1021,13 +1024,13 @@ namespace ehw
 
 		for (size_t i = 0; i < mAnimClips.size(); ++i)
 		{
-			fbxsdk::FbxLongLong	Start = mAnimClips[i].StartTime.GetFrameCount(mAnimClips[i].TimeMode);
-			fbxsdk::FbxLongLong	End = mAnimClips[i].EndTime.GetFrameCount(mAnimClips[i].TimeMode);
-
-			mAnimClips[i].KeyFramesPerBone[_bondIndex].BoneIndex = _bondIndex;
+			tFBXAnimClip& clip = mAnimClips[i];
+			clip.KeyFramesPerBone[_bondIndex].BoneIndex = _bondIndex;
+			clip.KeyFramesPerBone[_bondIndex].vecKeyFrame.resize(
+				clip.FrameLength);
 
 			// 전체 프레임 수만큼 반복한다.
-			for (fbxsdk::FbxLongLong j = Start; j <= End; ++j)
+			for (fbxsdk::FbxLongLong j = clip.StartFrameIdx; j <= clip.EndFrameIdx; ++j)
 			{
 				fbxsdk::FbxTime	Time = {};
 
@@ -1044,12 +1047,8 @@ namespace ehw
 				//축 orientation 변환
 				matCur = matReflect * matCur * matReflect;
 
-				tFBXKeyFrame KeyFrame = {};
-
-				KeyFrame.Time = Time.GetSecondDouble();
-				KeyFrame.matTransform = matCur;
-
-				mAnimClips[i].KeyFramesPerBone[_bondIndex].vecKeyFrame.push_back(KeyFrame);
+				mAnimClips[i].KeyFramesPerBone[_bondIndex].vecKeyFrame[j].Time = Time.GetSecondDouble();
+				mAnimClips[i].KeyFramesPerBone[_bondIndex].vecKeyFrame[j].matTransform = matCur;
 			}
 		}
 	}

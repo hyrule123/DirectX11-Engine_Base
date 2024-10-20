@@ -76,13 +76,13 @@ namespace ehw
 		tAnimation3D_ComputeShaderData					m_animation3D_data;
 
 		//한 프레임별 시간 저장용 변수
-		float							m_fClipUpdateTime;
+		double							m_fClipUpdateTime;
 
 		//전체 시간 길이
-		float							m_fChangeTimeLength;
+		double							m_fChangeTimeLength;
 
 		//애니메이션 시작 이후 누적 시간
-		float							m_fChangeTimeAccumulate;
+		double							m_fChangeTimeAccumulate;
 
 		
 		bool							m_is_pre_updated;

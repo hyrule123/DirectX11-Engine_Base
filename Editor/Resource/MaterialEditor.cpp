@@ -110,7 +110,7 @@ namespace ehw::editor
 			return;
 		}
 
-		mShaderCombo.Reset();
+		mShaderCombo.ClearItems();
 
 		std::fs::directory_iterator dirIter(shaderPath);
 		for (auto& entry : dirIter)
@@ -293,7 +293,7 @@ namespace ehw::editor
 			mSaveLoadFileName.clear();
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
-			mCurrentLoadedMtrl.Reset();
+			mCurrentLoadedMtrl.ClearItems();
 			const auto& materials = ResourceManager<Material>::get_inst().GetResources();
 			for (auto& mtrl : materials)
 			{

@@ -101,7 +101,10 @@ namespace ehw
 		fbxsdk::FbxTime		StartTime{};
 		fbxsdk::FbxTime		EndTime{};
 		
-		fbxsdk::FbxLongLong	TimeLength{};
+		fbxsdk::FbxLongLong StartFrameIdx{};
+		fbxsdk::FbxLongLong EndFrameIdx{};
+		fbxsdk::FbxLongLong FrameLength{};//전체 길이(EndFrameIdx + 1)
+
 		fbxsdk::FbxTime::EMode TimeMode{};
 
 		//각 본 별 키프레임 데이터
