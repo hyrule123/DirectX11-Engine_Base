@@ -124,7 +124,10 @@ namespace ehw
 		RemoveDestroyed();
 
 		//마지막으로 Scene 작동 중 추가된 GameObject를 추가
-		AddGameObjectsInternal(m_delayedAddQueue);
+		if (false == m_delayedAddQueue.empty()) 
+		{
+			AddGameObjectsInternal(m_delayedAddQueue);
+		}
 	}
 
 
@@ -142,6 +145,7 @@ namespace ehw
 		//true가 반환되면 에러 있다는 뜻
 		if (SetGameObjectInfo(_newObject, _layer))
 		{
+			ERROR_MESSAGE("문제발생");
 			return ret;
 		}
 
@@ -249,10 +253,12 @@ namespace ehw
 	{
 		if (nullptr == _obj)
 		{
+			DEBUG_MESSAGE("object가 nullptr 입니다.");
 			return true;
 		}
 		else if (false == IsLayerValid(_layer))
 		{
+			DEBUG_MESSAGE("Layer 번호가 유효하지 않습니다.(0~31)");
 			return true;
 		}
 

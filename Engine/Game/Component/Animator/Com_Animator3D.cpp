@@ -124,11 +124,20 @@ namespace ehw
 
 
 
+	std::shared_ptr<Skeleton> Com_Animator3D::get_skeleton()
+	{
+		std::shared_ptr<Skeleton> ret{};
+		if (m_sharedPlayData) {
+			ret = m_sharedPlayData->get_skeleton();
+		}
+		return ret;
+	}
+
 	bool Com_Animator3D::Play(const std::string_view _strAnimName, float _blendTime)
 	{
 		if (m_sharedPlayData)
 		{
-			return m_sharedPlayData->Play(_strAnimName, _blendTime);
+			return m_sharedPlayData->play(_strAnimName, _blendTime);
 		}
 
 		return false;
@@ -138,7 +147,15 @@ namespace ehw
 	{
 		if (m_sharedPlayData)
 		{
-			m_sharedPlayData->PlayNext();
+			m_sharedPlayData->play_next();
+		}
+	}
+
+	void Com_Animator3D::bind_computed_final_bone_matrix()
+	{
+		if (m_sharedPlayData) 
+		{
+			m_sharedPlayData->bind_computed_final_bone_matrix();
 		}
 	}
 

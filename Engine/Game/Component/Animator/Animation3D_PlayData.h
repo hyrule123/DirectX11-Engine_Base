@@ -7,6 +7,11 @@
 //참고 - class Animation3D: 변하지 않는 데이터
 //하나의 Skeleton에 여러 개의 Mesh가 붙어있는 경우가 있음 -> 현재 상황 공유가 필요하기 때문에 만든 클래스
 
+/*
+흐름: pre_update에서 현재 애니메이션이 몇 프레임인지 계산
+계산 후 자신의 주소를 skeleton에 등록
+skeleton에서는 render 단계에서 저장된 주소들에 대해 일괄 
+*/
 
 namespace ehw
 {
@@ -25,19 +30,20 @@ namespace ehw
 
 		virtual ~Animation3D_PlayData();
 
-		
+
 		bool is_pre_updated() const { return m_is_pre_updated; }
 
 		/*로직 요약
 		this::pre_update
 		->skeleton::compute_animation_final_matrix
-		->this::update_final_matrix
+		->this::compute_bone_final_matrix
 		*/
 		//shared_data 업데이트 + skeleton enqueue
 		bool pre_update();
 
+		void bind_computed_final_bone_matrix();
 		//skeleton쪽에서 호출. 자신의 final matrix를 업데이트 한다.
-		void update_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer);
+		void compute_bone_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer);
 		void frame_end();
 		uint get_bone_count() const { return m_animation3D_data.BoneCount; }
 		uint get_model_inst_ID() const { return m_animation3D_data.model_inst_ID; }
@@ -53,13 +59,13 @@ namespace ehw
 
 		std::shared_ptr<Skeleton> get_skeleton() { return m_skeleton; }
 		void set_skeleton(const std::shared_ptr<Skeleton> _skeleton);
-
+		
 		bool is_playing() const { return nullptr != m_currentAnimation; }
-		bool Play(const std::string_view _animationName, float _blendTime);
-		void PlayNext();
+		bool play(const std::string_view _animationName, float _blendTime);
+		void play_next();
 
 	private:
-		bool Play(const std::shared_ptr<Animation3D>& _animation, float _blendTime);
+		bool play_internal(const std::shared_ptr<Animation3D>& _animation, float _blendTime);
 
 	private:
 		std::shared_ptr<Skeleton>						m_skeleton;
@@ -86,6 +92,7 @@ namespace ehw
 
 		
 		bool							m_is_pre_updated;
+
 	};
 }
 

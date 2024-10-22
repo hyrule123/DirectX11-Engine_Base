@@ -32,18 +32,15 @@ namespace ehw
 		void SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData) {
 			m_sharedPlayData = _sharedData;
 		}
-
+		std::shared_ptr<Skeleton> get_skeleton();
 
 		bool Play(const std::string_view _strAnimName, float _blendTime = 0.f);
 
 		//디버그용
 		void PlayNext();
 
-		//virtual void AddEvent(std::string_view _animName, int _frameIdx, const std::function<void()>& _func) {}
+		void bind_computed_final_bone_matrix();
 
-		//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
-
-		//StructBuffer* GetFinalBoneMat() { return m_final_matrix_buffer.get(); }
 		std::shared_ptr<Animation3D_PlayData> get_shared_play_data() {
 			return m_sharedPlayData;
 		}

@@ -116,20 +116,20 @@ namespace ehw
 				m_animation3D_data.CurrentFrame = start_frame_idx;
 			}
 			else if (end_frame_idx < m_animation3D_data.CurrentFrame) {
-				m_animation3D_data.CurrentFrame = end_frame_idx;
+				m_animation3D_data.CurrentFrame = start_frame_idx;
 			}
 
 			if (m_animation3D_data.NextFrame < start_frame_idx) {
 				m_animation3D_data.NextFrame = start_frame_idx;
 			}
 			else if (end_frame_idx < m_animation3D_data.NextFrame) {
-				m_animation3D_data.NextFrame = end_frame_idx;
+				m_animation3D_data.NextFrame = start_frame_idx;
 			}
 		}
 
 		if (bChangeEnd)
 		{
-			Play(m_nextAnimation, false);
+			play_internal(m_nextAnimation, false);
 			m_nextAnimation = nullptr;
 			m_animation3D_data.bChangingAnim = FALSE;
 			m_animation3D_data.ChangeFrameLength = 0;
@@ -145,8 +145,17 @@ namespace ehw
 		return true;
 	}
 
+	void Animation3D_PlayData::bind_computed_final_bone_matrix()
+	{
+		if (m_skeleton) 
+		{
+			m_skeleton->compute_bone_final_matrix();
+			m_skeleton->bind_bone_final_matrix_SRV();
+		}
+	}
+
 	//Skeleton 쪽에서 호출.
-	void Animation3D_PlayData::update_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer)
+	void Animation3D_PlayData::compute_bone_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer)
 	{
 		m_animation3D_data.model_inst_ID = _model_inst_ID;
 
@@ -192,18 +201,18 @@ namespace ehw
 		}
 	}
 
-	bool Animation3D_PlayData::Play(const std::string_view _animationName, float _blendTime)
+	bool Animation3D_PlayData::play(const std::string_view _animationName, float _blendTime)
 	{
 		if (m_skeleton)
 		{
 			std::shared_ptr<Animation3D> anim = m_skeleton->find_animation(_animationName);
-			return Play(anim, _blendTime);
+			return play_internal(anim, _blendTime);
 		}
 
 		return false;
 	}
 
-	void Animation3D_PlayData::PlayNext()
+	void Animation3D_PlayData::play_next()
 	{
 		if (nullptr == m_skeleton)
 		{
@@ -217,7 +226,7 @@ namespace ehw
 		}
 		else if (nullptr == m_currentAnimation || (size_t)1 == anims.size())
 		{
-			Play(anims.begin()->second, true);
+			play_internal(anims.begin()->second, true);
 		}
 		else
 		{
@@ -230,11 +239,11 @@ namespace ehw
 					++iter;
 					if (iter == anims.end())
 					{
-						Play(anims.begin()->second, 1.f);
+						play_internal(anims.begin()->second, 1.f);
 					}
 					else
 					{
-						Play(iter->second, 1.f);
+						play_internal(iter->second, 1.f);
 					}
 					break;
 				}
@@ -245,7 +254,7 @@ namespace ehw
 	}
 
 
-	bool Animation3D_PlayData::Play(const std::shared_ptr<Animation3D>& _anim, float _blendTime)
+	bool Animation3D_PlayData::play_internal(const std::shared_ptr<Animation3D>& _anim, float _blendTime)
 	{
 		if (nullptr == _anim)
 			return false;

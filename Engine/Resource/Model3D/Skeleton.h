@@ -45,8 +45,11 @@ namespace ehw
 
 		std::shared_ptr<Animation3D> find_animation(const std::string_view _strAnimName);
 		
-		void add_compute_queue(Animation3D_PlayData* _play_data) {
-			if (_play_data) { m_compute_queue.push_back(_play_data); }
+		//return value: 인덱스 번호
+		uint add_compute_queue(Animation3D_PlayData* _play_data) {
+			ASSERT_DEBUG(_play_data, "play data가 없음.");
+			m_compute_queue.push_back(_play_data);
+			return (uint)m_compute_queue.size() - 1;
 		}
 		void compute_bone_final_matrix();
 		void bind_bone_final_matrix_SRV();

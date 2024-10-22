@@ -46,29 +46,32 @@ namespace ehw {
     void Default3DMtrl::set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs)
     {
         m_default_3D_mtrl_instancing_data.clear();
+
+        if (_objs.empty()) 
+        {
+            return;
+        }
+
         m_default_3D_mtrl_instancing_data.reserve(_objs.size());
 
-        std::shared_ptr<Skeleton> shared_skeleton = nullptr;
+        //애니메이션의 최종 행렬을 먼저 계산 후 바인딩한다.
+        auto* animator = _objs.front()->GetComponent<Com_Animator3D>();
+        if (animator)
+        {
+            animator->bind_computed_final_bone_matrix();
+        }
+
         for (GameObject* obj : _objs) {
             auto* animator = obj->GetComponent<Com_Animator3D>();
             tDefault3DMtrl_InstancingData data{};
 
             if (animator && animator->is_playing()) {
-                //아무 스켈레톤이나 주소를 받아놓는다.
-                shared_skeleton = animator->get_shared_play_data()->get_skeleton();
-
                 data.bAnim = TRUE;
                 data.BoneCount = animator->get_shared_play_data()->get_bone_count();
                 data.model_instance_ID = animator->get_shared_play_data()->get_model_inst_ID();
             }
 
             m_default_3D_mtrl_instancing_data.push_back(data);
-        }
-
-        //애니메이션의 최종 행렬을 계산하고 SRV 바인딩
-        if (shared_skeleton) {
-            shared_skeleton->compute_bone_final_matrix();
-            shared_skeleton->bind_bone_final_matrix_SRV();
         }
 
         m_default_3D_mtrl_instancing_buffer->set_data(m_default_3D_mtrl_instancing_data.data(), (UINT)m_default_3D_mtrl_instancing_data.size());

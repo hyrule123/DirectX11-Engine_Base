@@ -39,6 +39,10 @@ namespace ehw
 		void Write(const unsigned char* _pSrc, size_t _size);
 		size_t Read(unsigned char* _pDest, size_t _size) const;
 
+		//Global operator
+		friend std::ostream& operator <<(std::ostream& _os, const BinarySerializer& _ser);
+		friend std::istream& operator >>(std::istream& _is, BinarySerializer& _ser);
+
 		template <BinaryDefaultTypes T>
 		inline void operator <<(const T& _data);
 
@@ -56,7 +60,6 @@ namespace ehw
 
 		template <typename CharType>
 		inline void operator >>(std::basic_string<CharType>& _data) const;
-
 
 		size_t GetDataSize() const { return m_data.size(); }
 		void ReserveDataSize(size_t _size) { m_data.reserve(_size); }
@@ -158,7 +161,5 @@ namespace ehw
 	}
 
 
-	//Global operator
-	std::ostream& operator <<(std::ostream& _os, const BinarySerializer& _ser);
-	std::istream& operator >>(std::istream& _is, BinarySerializer& _ser);
+
 }

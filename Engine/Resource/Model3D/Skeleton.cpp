@@ -20,8 +20,6 @@
 
 #include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
-#include <cctype>
-
 namespace ehw
 {
 	Skeleton::Skeleton()
@@ -425,7 +423,7 @@ namespace ehw
 
 		//각자 애니메이션에 대해 업데이트를 수행
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
-			m_compute_queue[i]->update_final_matrix(i, m_final_matrix_buffer.get());
+			m_compute_queue[i]->compute_bone_final_matrix(i, m_final_matrix_buffer.get());
 		}
 		//계산 완료된 큐는 바로 비워준다.
 		m_compute_queue.clear();

@@ -37,6 +37,7 @@ VSOut main(VSIn _in)
 	_out.ViewNormal =	normalize(mul(float4(info.Normal.xyz, 0.0f), g_transforms[_in.instance_ID].WorldView).xyz);
 	
 	_out.UV = _in.UV;
+	_out.instance_ID = _in.instance_ID;
     
 	return _out;
 }

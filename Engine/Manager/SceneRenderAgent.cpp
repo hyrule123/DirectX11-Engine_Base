@@ -190,7 +190,7 @@ namespace ehw {
 	void SceneRenderAgent::set_debug_render(bool _is_enable)
 	{
 		if (_is_enable) {
-			m_debug_material = 
+			m_debug_material =
 				ResourceManager<Material>::get_inst().find<DebugMaterial>(name::defaultRes::material::DebugMaterial);
 		}
 		else {
@@ -211,7 +211,6 @@ namespace ehw {
 					data.WVP *= VP;
 				}
 
-				
 				m_debug_material->set_data_and_bind_GPU(m_debug_draw_data_3D[i]);
 				m_debug_meshes_3D[i]->render_instanced((UINT)m_debug_draw_data_3D[i].size());
 			}
@@ -220,10 +219,8 @@ namespace ehw {
 
 	void SceneRenderAgent::render_by_mode(Com_Camera* _cam, eRenderingMode _mode)
 	{
-		auto iter = m_renderer_queues[(int)_mode].cbegin();
-		auto iterEnd = m_renderer_queues[(int)_mode].cend();
-		for (; iter != iterEnd; ++iter) {
-			_cam->render_gameobjects(iter->second);
+		for (const auto& iter : m_renderer_queues[(int)_mode]){
+			_cam->render_gameobjects(iter.second);
 		}
 	}
 
