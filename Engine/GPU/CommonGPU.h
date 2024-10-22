@@ -66,5 +66,4 @@ namespace ehw
 
 		END
 	};
-
 }

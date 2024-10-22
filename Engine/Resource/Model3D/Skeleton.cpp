@@ -29,6 +29,9 @@ namespace ehw
 		, m_animations{}
 		, m_final_matrix_buffer{}
 	{
+		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+		ASSERT(nullptr != m_compute_shader, "컴퓨트쉐이더가 없음");
+
 		StructBuffer::Desc desc{};
 		desc.GPU_register_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
 		desc.TargetStageSRV = eShaderStageFlag::Vertex;
@@ -180,8 +183,6 @@ namespace ehw
 		return eResult::Success;
 	}
 
-
-
 	eResult Skeleton::deserialize_binary(const BinarySerializer* _ser)
 	{
 		if (nullptr == _ser)
@@ -251,7 +252,6 @@ namespace ehw
 				ERROR_MESSAGE("애니메이션 생성 실패");
 				return result;
 			}
-			
 			
 			std::string animName(anim->get_resource_name());
 			if (animName.empty())
@@ -423,7 +423,23 @@ namespace ehw
 
 		//각자 애니메이션에 대해 업데이트를 수행
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
-			m_compute_queue[i]->compute_bone_final_matrix(i, m_final_matrix_buffer.get());
+			Animation3D_ComputeShader::Desc desc{};
+
+			desc.current_animation_key_frame_buffer = m_compute_queue[i]->get_current_animation()->get_keyframe_sbuffer().get();
+
+			std::shared_ptr<Animation3D> next_anim = m_compute_queue[i]->get_next_animation();
+			if (next_anim)
+			{
+				desc.next_animation_keyframe_buffer = next_anim->get_keyframe_sbuffer().get();
+			}
+
+			desc.bone_offset_matrix_buffer = m_pBoneOffset.get();
+
+			desc.final_bone_translation_matrix_buffer = m_final_matrix_buffer.get();
+
+			desc.shared_animation_data = &(m_compute_queue[i]->get_compute_shader_data());
+
+			m_compute_shader->on_execute(desc);
 		}
 		//계산 완료된 큐는 바로 비워준다.
 		m_compute_queue.clear();

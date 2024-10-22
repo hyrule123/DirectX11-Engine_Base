@@ -37,7 +37,7 @@ namespace ehw
 		//Animation 3D
 		const std::vector<tMTBone>& get_bones() const { return m_vecBones; }
 		UINT get_bone_count() const { return (UINT)m_vecBones.size(); }
-		std::shared_ptr<StructBuffer> get_bone_offset_buffer() { return  m_pBoneOffset; }	   // 각 뼈의 offset 행렬
+		std::shared_ptr<StructBuffer> get_bone_offset_buffer() { return m_pBoneOffset; }	   // 각 뼈의 offset 행렬
 
 		//반환타입 변수길이가 좀 김
 		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>& 
@@ -72,6 +72,7 @@ namespace ehw
 		//특정 프레임의 최종 행렬(여러개의 애니메이션을 받음)
 		std::vector<Animation3D_PlayData*> m_compute_queue;
 		std::unique_ptr<StructBuffer>	m_final_matrix_buffer;
+		std::shared_ptr<Animation3D_ComputeShader>	m_compute_shader;
 	};
 }
 

@@ -10,8 +10,6 @@
 #include "Engine/Resource/Model3D/Animation3D.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 
-#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
-
 #include <fbxsdk/fbxsdk.h>
 
 namespace ehw
@@ -22,8 +20,6 @@ namespace ehw
 		//, m_iFramePerSecond(30)
 		, m_PrevFrame(-1)
 		, m_animation3D_data()
-		, m_compute_shader()
-
 
 		, m_fChangeTimeLength()
 		, m_fChangeTimeAccumulate()
@@ -33,7 +29,7 @@ namespace ehw
 
 		, m_is_pre_updated(false)
 	{
-		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+		
 	}
 
 	Animation3D_PlayData::Animation3D_PlayData(const Animation3D_PlayData& _other)
@@ -139,8 +135,8 @@ namespace ehw
 			m_fChangeTimeAccumulate = 0.f;
 		}
 
-		//계산 대기열에 넣는다.(이후 skeleton에서 final_update를 호출)
-		m_skeleton->add_compute_queue(this);
+		//계산 대기열에 넣는다. 받아오는 변수는 자신의 인덱스 번호(차후에 사용됨)
+		m_animation3D_data.model_inst_ID = m_skeleton->add_compute_queue(this);
 
 		return true;
 	}
@@ -154,27 +150,6 @@ namespace ehw
 		}
 	}
 
-	//Skeleton 쪽에서 호출.
-	void Animation3D_PlayData::compute_bone_final_matrix(uint _model_inst_ID, StructBuffer* _final_matrix_buffer)
-	{
-		m_animation3D_data.model_inst_ID = _model_inst_ID;
-
-		Animation3D_ComputeShader::Desc desc{};
-		desc.current_animation_key_frame_buffer = m_currentAnimation->get_keyframe_sbuffer().get();
-
-		if (m_nextAnimation)
-		{
-			desc.next_animation_keyframe_buffer = m_nextAnimation->get_keyframe_sbuffer().get();
-		}
-
-		desc.bone_offset_matrix_buffer = m_skeleton->get_bone_offset_buffer().get();
-
-		desc.final_bone_translation_matrix_buffer = _final_matrix_buffer;
-
-		desc.shared_animation_data = &m_animation3D_data;
-
-		m_compute_shader->on_execute(desc);
-	}
 	void Animation3D_PlayData::frame_end()
 	{
 		m_is_pre_updated = false;

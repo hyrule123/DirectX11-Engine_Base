@@ -33,13 +33,17 @@ namespace ehw
 	bool Animation3D_ComputeShader::bind_buffer_to_GPU_register()
 	{
 		//참고 - NextAnimKeyFrameBuffer은 없을수도 있음
-		if (false == 
+		if (false ==
 			(
-				m_desc.shared_animation_data 
-				|| m_desc.current_animation_key_frame_buffer 
-				|| m_desc.bone_offset_matrix_buffer 
+				m_desc.shared_animation_data
+				|| m_desc.current_animation_key_frame_buffer
+				|| m_desc.bone_offset_matrix_buffer
 				|| m_desc.final_bone_translation_matrix_buffer))
+		{
+			DEBUG_MESSAGE("필수 데이터가 없습니다.");
 			return false;
+		}
+			
 
 		// 구조화버퍼 전달
 		m_desc.current_animation_key_frame_buffer->bind_buffer_as_SRV(GPU::Register::t::g_FrameTransArray, eShaderStageFlag::Compute);// t16;

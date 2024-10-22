@@ -156,7 +156,7 @@ namespace ehw
 		m_constBuffers[(uint)eCBType::Noise]->create(sizeof(tCB_Noise));
 
 		m_constBuffers[(uint)eCBType::Animation3D] = std::make_unique<ConstBuffer>((uint)eCBType::Animation3D);
-		m_constBuffers[(uint)eCBType::Animation3D]->create<tAnimation3D_ComputeShaderData>();
+		m_constBuffers[(uint)eCBType::Animation3D]->create<tAnimation3D_ComputeShader_Data>();
 
 #pragma endregion
 	}

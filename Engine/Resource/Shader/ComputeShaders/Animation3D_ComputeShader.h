@@ -5,7 +5,7 @@
 
 //설명: 3D 애니메이션을 처리하기 위한 컴퓨트쉐이더
 //사용법
-//* Animation3D_ComputeShader::Desc 구조체에 필요한 내용을 넣어서 전달.
+//* tAnimation3D_ComputeShader_Desc 구조체에 필요한 내용을 넣어서 전달.
 
 namespace ehw
 {
@@ -26,11 +26,11 @@ namespace ehw
 
 		struct Desc
 		{
-			tAnimation3D_ComputeShaderData* shared_animation_data{};
-			StructBuffer* current_animation_key_frame_buffer{};
-			StructBuffer* next_animation_keyframe_buffer{};
-			StructBuffer* bone_offset_matrix_buffer{};
-			StructBuffer* final_bone_translation_matrix_buffer{};
+			const struct tAnimation3D_ComputeShader_Data* shared_animation_data{};
+			class StructBuffer* current_animation_key_frame_buffer{};
+			class StructBuffer* next_animation_keyframe_buffer{};
+			class StructBuffer* bone_offset_matrix_buffer{};
+			class StructBuffer* final_bone_translation_matrix_buffer{};
 		};
 		bool on_execute(const Animation3D_ComputeShader::Desc& _desc);
 

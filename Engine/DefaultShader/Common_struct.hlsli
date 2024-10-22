@@ -143,7 +143,7 @@ struct alignas(16)  tCB_Noise
 	float3 NoisePad;
 };
 
-struct alignas(16)  tAnimation3D_ComputeShaderData
+struct alignas(16)  tAnimation3D_ComputeShader_Data
 {
 	uint		BoneCount;		//본 갯수
 	//Instancing 관련
