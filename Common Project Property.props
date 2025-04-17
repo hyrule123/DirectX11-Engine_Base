@@ -3,11 +3,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(ProjectDir)..;$(SolutionDir)Project;$(SolutionDir)Project\Base;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)External\include;$(SolutionDir)External\include\PhysX;$(SolutionDir)External\include\fbxsdk;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>$(SolutionDir)External\lib;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)BinObj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(ProjectDir)..;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(SolutionDir)external\include;$(SolutionDir)external\include\PhysX;$(SolutionDir)external\include\fbxsdk;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)external\lib\$(Platform)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IntDir>$(SolutionDir)bin_obj\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)bin_lib\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -24,7 +24,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
