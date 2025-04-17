@@ -25,7 +25,7 @@ namespace std
 
 #define SERIALIZER_CHECK_PTR(_ser) if(nullptr == _ser) { ERROR_MESSAGE("Serializer가 nullptr 이었습니다."); return eResult::Fail_Nullptr; }
 
-namespace ehw
+namespace core
 {
 	class Serializable
 	{
@@ -61,7 +61,7 @@ namespace ehw
 #define JSON_KEY(_varName) #_varName
 
 //Json의 경우 try-catch문 안에 넣어줄것(Json 라이브러리가 해당 방식으로 에러 핸들링을 하고있음)
-namespace ehw
+namespace core
 {
 	using JsonSerializer = Json::Value;
 	class Serializable_Json

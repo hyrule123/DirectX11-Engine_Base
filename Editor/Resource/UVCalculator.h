@@ -3,12 +3,12 @@
 
 #include <Engine/Util/SimpleMath.h>
 
-namespace ehw
+namespace core
 {
     class Texture;
 }
 
-namespace ehw
+namespace core
 {
     namespace editor
     {

@@ -2,7 +2,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 
-namespace ehw
+namespace core
 {
 	Resource::Resource(const std::string_view key)
 		: Entity(key)

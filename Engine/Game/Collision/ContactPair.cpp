@@ -1,7 +1,7 @@
 #include "Engine/Game/Collision/ContactPair.h"
 
 #include "Engine/Game/Component/Collider/Collider.h"
-namespace ehw
+namespace core
 {
 	ContactPair::ContactPair(Collider* const _left, Collider* const _right)
 		: m_left(_left)

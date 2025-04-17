@@ -17,7 +17,7 @@
 
 #include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
-namespace ehw
+namespace core
 {
 	Com_Animator3D::Com_Animator3D()
 		: Animator(Com_Animator3D::concrete_class_name, eDimensionType::_3D)

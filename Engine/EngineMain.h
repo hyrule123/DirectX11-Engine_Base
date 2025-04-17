@@ -3,7 +3,7 @@
 #include "Engine/Util/StaticSingleton.h"
 
 //설명: 윈도우 인스턴스 초기화 및 GameEngine 루프를 실행하는곳
-namespace ehw
+namespace core
 {
 	struct tDesc_EngineMain
 	{
@@ -18,7 +18,7 @@ namespace ehw
 
 		std::vector<std::function<void()>> ExternalInitFuncs;
 
-		ehw::tGPUManagerDesc GPUDesc;
+		core::tGPUManagerDesc GPUDesc;
 
 		std::function<void()> EditorRunFunction;
 	};

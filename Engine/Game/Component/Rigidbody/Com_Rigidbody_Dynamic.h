@@ -3,7 +3,7 @@
 
 #include "Engine/define_Enum.h"
 
-namespace ehw
+namespace core
 {
     class Com_Rigidbody_Dynamic :
         public Rigidbody

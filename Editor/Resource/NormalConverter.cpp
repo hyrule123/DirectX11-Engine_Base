@@ -12,7 +12,7 @@
 #include <Engine/Resource/Shader/ComputeShaders/NormalConvertShader.h>
 #include <Engine/DefaultShader/NormalConverter/NormalConverter.hlsli>
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorNormalConverter::EditorNormalConverter()
 		: EditorWindow("Normal Converter")
@@ -71,9 +71,9 @@ namespace ehw::editor
 if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 {
 	std::vector<std::fs::path> vecExt{};
-	for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
+	for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
 	{
-		vecExt.push_back(::ehw::name::path::extension::Texture[i]);
+		vecExt.push_back(::core::name::path::extension::Texture[i]);
 	}
 
 	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
@@ -96,7 +96,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 	void EditorNormalConverter::DestTextureUpdate()
 	{
-		using namespace ehw;
+		using namespace core;
 		HilightText("Dest Texture Save Directory");
 		{
 			std::string curText = "* Current: ";
@@ -118,9 +118,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		if (ImGui::Button("Set Directory##Dest Texture", ImVec2(0.f, 25.f)))
 		{
 			std::vector<std::fs::path> vecExt{};
-			for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
+			for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
 			{
-				vecExt.push_back(::ehw::name::path::extension::Texture[i]);
+				vecExt.push_back(::core::name::path::extension::Texture[i]);
 			}
 
 			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
@@ -144,7 +144,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 	void EditorNormalConverter::CopyTextureUpdate()
 	{
-		using namespace ehw;
+		using namespace core;
 		if (ImGui::Button("Convert Normal Map Texture", ImVec2(0.f, 35.f)))
 		{
 			if (nullptr == mTextureSrc)
@@ -158,7 +158,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::ehw::name::defaultRes::shader::compute::NormalConvert);
+			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
 
 			std::shared_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
 

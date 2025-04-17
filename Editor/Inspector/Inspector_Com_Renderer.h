@@ -1,13 +1,13 @@
 #pragma once
 #include "Editor/Inspector/Inspector_Component.h"
 
-namespace ehw
+namespace core
 {
 	class Mesh;
 	class Material;
 }
 
-namespace ehw::editor
+namespace core::editor
 {
 	class Inspector_Com_Renderer : public Inspector_Component
 	{

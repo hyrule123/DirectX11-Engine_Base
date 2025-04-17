@@ -3,7 +3,7 @@
 #include "Engine/Common.h"
 #include <memory>
 
-namespace ehw
+namespace core
 {
 	class Collider;
 	class ContactPair

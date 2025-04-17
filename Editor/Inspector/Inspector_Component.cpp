@@ -2,10 +2,10 @@
 
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	Inspector_Component::Inspector_Component(eComponentCategory _type)
-		: EditorChild(::ehw::name::eComponentCategory_String[(int)_type])
+		: EditorChild(::core::name::eComponentCategory_String[(int)_type])
 		, m_ComCategory(_type)
 		, mTarget()
 	{

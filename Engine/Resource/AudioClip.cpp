@@ -10,7 +10,7 @@
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
 
-namespace ehw
+namespace core
 {
 	AudioClip::AudioClip()
 		: Resource(AudioClip::concrete_class_name)

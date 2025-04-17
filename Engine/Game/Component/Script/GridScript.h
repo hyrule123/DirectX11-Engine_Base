@@ -2,7 +2,7 @@
 #include "Engine/Game/Component/Script/Script.h"
 
 
-namespace ehw
+namespace core
 {
 	class Com_Camera;
 	class GridScript : public Script

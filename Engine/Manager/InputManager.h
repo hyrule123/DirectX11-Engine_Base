@@ -4,7 +4,7 @@
 
 #include "Engine/Util/StaticSingleton.h"
 
-namespace ehw
+namespace core
 {
 	enum class eKeyCode
 	{

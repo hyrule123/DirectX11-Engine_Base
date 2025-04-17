@@ -10,7 +10,7 @@
 //Vertex Buffer: 여러 Mesh에서 데이터 공유
 //Index Buffer: Mesh마다 딱 하나씩 들고 있음
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 	class Material;

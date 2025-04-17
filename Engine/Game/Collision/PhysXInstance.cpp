@@ -6,7 +6,7 @@
 
 #include "Engine/Game/Component/Collider/Collider3D.h"
 
-namespace ehw
+namespace core
 {
 	PhysXInstance::PhysXInstance()
 		: m_allocator{}

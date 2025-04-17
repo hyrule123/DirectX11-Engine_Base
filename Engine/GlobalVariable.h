@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <string>
 
-namespace ehw
+namespace core
 {
 	extern tGPUInitSetting		gGPUInitSetting;
 	extern tCB_Global			gGlobal;

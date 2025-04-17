@@ -23,7 +23,7 @@
 
 #include <chrono>
 
-namespace ehw
+namespace core
 {
 	using namespace ::physx;
 

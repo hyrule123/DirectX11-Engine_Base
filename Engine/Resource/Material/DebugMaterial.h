@@ -3,7 +3,7 @@
 
 #include "Engine/DefaultShader/Debug/Debug.hlsli"
 
-namespace ehw {
+namespace core {
 	class DebugMaterial
 		: public Material
 	{

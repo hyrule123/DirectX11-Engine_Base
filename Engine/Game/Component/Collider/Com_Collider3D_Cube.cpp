@@ -9,7 +9,7 @@
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
 
-namespace ehw
+namespace core
 {
 	Com_Collider3D_Cube::Com_Collider3D_Cube()
 		: Com_Collider3D_Shapes(Com_Collider3D_Cube::concrete_class_name, eCollider3D_Shape::Cube)

@@ -14,7 +14,7 @@
 #include <Engine/Util/define_Util.h>
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	STR_KEY eRenderingMode_String[(int)eRenderingMode::END] =
 	{
@@ -195,9 +195,9 @@ namespace ehw::editor
 				const std::fs::path& texPath = ResourceManager<Texture>::get_inst().GetBaseDir();
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
+				for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
 				{
-					vecExt.push_back(::ehw::name::path::extension::Texture[i]);
+					vecExt.push_back(::core::name::path::extension::Texture[i]);
 				}
 				std::fs::path receivedPath = WinAPI::FileDialog(texPath, vecExt);
 				if (false == receivedPath.empty())
@@ -326,7 +326,7 @@ namespace ehw::editor
 		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::get_inst().GetBaseDir());
 			
 		outputPath /= mSaveLoadFileName;
-		outputPath = WinAPI::FileDialog(outputPath, ::ehw::name::path::extension::Material);
+		outputPath = WinAPI::FileDialog(outputPath, ::core::name::path::extension::Material);
 
 		if (outputPath.empty())
 		{

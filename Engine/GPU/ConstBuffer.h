@@ -3,7 +3,7 @@
 
 #include "Engine/DefaultShader/ConstBuffer.hlsli"
 
-namespace ehw
+namespace core
 {
 	BASE_RESOURCE(ConstBuffer);
 	class ConstBuffer 

@@ -9,7 +9,7 @@
 #include "Engine/Resource/Shader/ComputeShaders/NormalConvertShader.h"
 #include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
 
-namespace ehw {
+namespace core {
 	void ResourceManagers::load_default_shaders()
 	{
 #pragma region 2D LAYOUT

@@ -4,7 +4,7 @@
 
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	Com_Animator2D::Com_Animator2D()
 		: Animator(Com_Animator2D::concrete_class_name, eDimensionType::_2D)

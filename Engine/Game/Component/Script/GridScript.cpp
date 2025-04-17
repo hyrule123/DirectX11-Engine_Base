@@ -11,7 +11,7 @@
 #include "Engine/Game/Component/Transform.h"
 #include "Engine/Game/Component/Camera/Com_Camera.h"
 
-namespace ehw
+namespace core
 {
 	
 

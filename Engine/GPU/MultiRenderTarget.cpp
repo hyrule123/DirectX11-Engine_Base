@@ -3,7 +3,7 @@
 #include "Engine/define_Macro.h"
 #include "Engine/Resource/Texture.h"
 
-namespace ehw
+namespace core
 {
 	MultiRenderTarget::MultiRenderTarget()
 		: Entity(MultiRenderTarget::concrete_class_name)

@@ -14,7 +14,7 @@
 #include "Engine/Game/Component/Script/Script.h"
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	GameObject::GameObject()
 		: Entity(GameObject::concrete_class_name)

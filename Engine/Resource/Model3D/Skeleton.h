@@ -6,7 +6,7 @@
 #include "Engine/Util/Serialize/Serializable.h"
 
 //MeshData에 종속된 클래스
-namespace ehw
+namespace core
 {
 	class Animation3D_PlayData;
 	class Animation3D_ComputeShader;

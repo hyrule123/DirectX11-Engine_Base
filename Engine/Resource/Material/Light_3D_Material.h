@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Material/Material.h"
 
-namespace ehw {
+namespace core {
 	class Light_3D_Material
 		: public Material
 	{

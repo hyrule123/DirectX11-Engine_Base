@@ -3,7 +3,7 @@
 
 #include "CommonGPU.h"
 
-namespace ehw
+namespace core
 {
 	enum class eBufferType
 	{

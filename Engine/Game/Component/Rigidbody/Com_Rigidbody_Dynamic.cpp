@@ -7,7 +7,7 @@
 
 #include "Engine/DefaultSettingVar.h"
 
-namespace ehw
+namespace core
 {
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
 		: Rigidbody(Com_Rigidbody_Dynamic::concrete_class_name)

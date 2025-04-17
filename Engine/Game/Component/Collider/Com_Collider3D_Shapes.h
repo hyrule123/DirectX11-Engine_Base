@@ -12,7 +12,7 @@
 //OnEnable: PxScene에 Actor 연결
 //OnDisable: PxScene으로부터 Actor 연결 해제
 
-namespace ehw
+namespace core
 {
     class Com_Collider3D_Shapes :
         public Collider3D

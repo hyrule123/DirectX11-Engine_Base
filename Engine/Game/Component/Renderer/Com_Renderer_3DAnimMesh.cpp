@@ -10,7 +10,7 @@
 #include "Engine/Resource/Material/Material.h"
 
 
-namespace ehw
+namespace core
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
 		: Com_Renderer_Mesh(Com_Renderer_3DAnimMesh::concrete_class_name)

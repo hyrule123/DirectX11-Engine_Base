@@ -3,7 +3,7 @@
 #include "Engine/Game/Component/define_Component.h"
 #include "Engine/Util/Serialize/Serializable.h"
 
-namespace ehw {
+namespace core {
 	class GameObject;
 	class Scene;
 	

@@ -5,7 +5,7 @@
 
 #include "Engine/Util/Serialize/Serializable.h"
 
-namespace ehw
+namespace core
 {
 	class Scene;
 	class Script;

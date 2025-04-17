@@ -2,7 +2,7 @@
 #include <stack>
 #include <functional>
 
-namespace ehw {
+namespace core {
 	class AtExit
 	{
 	private:

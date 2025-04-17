@@ -2,7 +2,7 @@
 
 #include "Engine/Common.h"
 
-namespace ehw
+namespace core
 {
 	void operator<<(Json::Value& _jVal, const char* _c_str)
 	{

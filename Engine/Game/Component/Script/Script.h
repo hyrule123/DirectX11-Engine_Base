@@ -3,7 +3,7 @@
 
 #include "Engine/Game/Component/Collider/Collider2D.h"
 
-namespace ehw
+namespace core
 {
 	class Script 
 		: public Component<Script, eComponentCategory::Scripts>

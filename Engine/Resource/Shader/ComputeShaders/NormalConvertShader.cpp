@@ -19,7 +19,7 @@
 #include "Engine/GPU/ConstBuffer.h"
 
 
-namespace ehw
+namespace core
 {
 	NormalConvertShader::NormalConvertShader()
 		: ComputeShader(NormalConvertShader::concrete_class_name, uint3{32, 32, 1})

@@ -2,7 +2,7 @@
 #include "Engine/Util/EnumFlags.h"
 #include "Engine/Util/type_traits_Ex.h"
 
-namespace ehw
+namespace core
 {
 	enum class eResult
 	{

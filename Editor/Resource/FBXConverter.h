@@ -6,13 +6,13 @@
 #include <thread>
 #include <future>
 
-namespace ehw
+namespace core
 {
 	class Model3D;
 }
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorFBXConverter :
 		public EditorWindow

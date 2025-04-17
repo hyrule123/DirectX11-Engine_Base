@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GPU/GPUBuffer.h"
 
-namespace ehw
+namespace core
 {
     enum class eStructBufferType
     {

@@ -12,7 +12,7 @@
 #include "Engine/Manager/RenderManager.h"
 
 
-namespace ehw
+namespace core
 {
 	Collider2D::Collider2D(const std::string_view key, eCollider2D_Shape _type)
 		: Collider(key, eDimensionType::_2D)

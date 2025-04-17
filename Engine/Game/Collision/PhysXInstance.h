@@ -2,7 +2,7 @@
 #include "Engine/Util/StaticSingleton.h"
 #include "Engine/Game/Collision/PhysX.h"
 
-namespace ehw
+namespace core
 {
 	class Collider3D;
 	class PhysXInstance : public StaticSingleton<PhysXInstance>

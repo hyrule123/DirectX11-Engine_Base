@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Shader/ComputeShader.h"
 
-namespace ehw
+namespace core
 {
 	class StructBuffer;
 	class ParticleShader 

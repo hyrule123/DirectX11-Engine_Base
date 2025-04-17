@@ -24,7 +24,7 @@
 //아이디어 2(현재 채택)
 //개별 Collider 컴포넌트가 현재 충돌중인 상대방 Collider 주소를 관리
 
-namespace ehw
+namespace core
 {
 	class Scene;
 	class Collision2D;

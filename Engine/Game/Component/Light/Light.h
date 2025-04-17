@@ -2,7 +2,7 @@
 #include "Engine/Game/Component/Component.h"
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
-namespace ehw
+namespace core
 {
     class Light :
         public Component<Light, eComponentCategory::Light>

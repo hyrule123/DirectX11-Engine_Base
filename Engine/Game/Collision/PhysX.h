@@ -15,7 +15,7 @@
 #pragma warning(default : 26451)
 #pragma warning(default : 6297)
 
-namespace ehw
+namespace core
 {
 	//******************* 사용 불가 *******************
 	//RefCount는 Physx 내부 용도로 사용하는듯.

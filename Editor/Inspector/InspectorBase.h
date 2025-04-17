@@ -5,7 +5,7 @@
 
 #include "Editor/Inspector/Inspector_Component.h"
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 	class Resource;

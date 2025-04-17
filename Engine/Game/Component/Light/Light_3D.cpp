@@ -17,7 +17,7 @@
 
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
-namespace ehw
+namespace core
 {
 	Light_3D::Light_3D()
 		: Light(Light_3D::concrete_class_name, eDimensionType::_3D)

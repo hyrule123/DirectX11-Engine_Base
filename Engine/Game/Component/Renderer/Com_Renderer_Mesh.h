@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Renderer/Renderer.h"
 
-namespace ehw
+namespace core
 {
     class Com_Renderer_Mesh :
         public Renderer

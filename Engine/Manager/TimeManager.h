@@ -6,7 +6,7 @@
 
 #include <chrono>
 
-namespace ehw
+namespace core
 {
 	class TimeManager : public StaticSingleton<TimeManager>
 	{

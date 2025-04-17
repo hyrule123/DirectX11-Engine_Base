@@ -4,7 +4,7 @@
 
 #include <Engine/Util/Serialize/Serializable.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorBase 
 		: public EditorEntity

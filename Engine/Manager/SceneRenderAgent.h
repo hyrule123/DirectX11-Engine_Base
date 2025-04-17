@@ -4,7 +4,7 @@
 #include "Engine/DefaultShader/Debug/Debug.hlsli"
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
-namespace ehw {
+namespace core {
 	class Com_Camera;
 	class Renderer;
 	class Light_3D;

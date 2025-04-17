@@ -8,7 +8,7 @@
 #include <bitset>
 //그냥 하나여도 drawindexedinstanced로 호출하는걸로 통일
 //https://www.gamedev.net/forums/topic/654210-drawindexed-vs-drawindexedinstanced/
-namespace  ehw
+namespace  core
 {
 	class Renderer;
 	class SceneRenderer;

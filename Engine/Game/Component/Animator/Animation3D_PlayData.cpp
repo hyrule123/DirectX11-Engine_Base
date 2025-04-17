@@ -12,7 +12,7 @@
 
 #include <fbxsdk/fbxsdk.h>
 
-namespace ehw
+namespace core
 {
 	Animation3D_PlayData::Animation3D_PlayData()
 		: Entity(Animation3D_PlayData::concrete_class_name)

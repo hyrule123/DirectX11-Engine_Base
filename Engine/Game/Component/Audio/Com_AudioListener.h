@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Component.h"
 
-namespace ehw
+namespace core
 {
 	class Com_AudioListener 
 		: public Component<Com_AudioListener, eComponentCategory::AudioListener>

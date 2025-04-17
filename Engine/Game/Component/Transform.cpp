@@ -12,7 +12,7 @@
 
 #include <PhysX/PxPhysicsAPI.h>
 
-namespace ehw
+namespace core
 {
 	Transform::Transform()
 		: Component(Transform::concrete_class_name)

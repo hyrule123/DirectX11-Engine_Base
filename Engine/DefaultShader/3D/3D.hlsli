@@ -51,7 +51,7 @@ struct PSOut_Deffered
 };
 #endif
 #ifdef __cplusplus
-namespace ehw{
+namespace core{
 	enum class eMRT_Deffered
 	{
 		Diffuse,

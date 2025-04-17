@@ -6,7 +6,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 
-namespace ehw
+namespace core
 {
 	Prefab::Prefab()
 		: Resource(Prefab::concrete_class_name)

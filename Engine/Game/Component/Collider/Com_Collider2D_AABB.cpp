@@ -4,7 +4,7 @@
 
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
 		: Collider2D(Com_Collider2D_AABB::concrete_class_name, eCollider2D_Shape::AABB)

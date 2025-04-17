@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
 
-namespace ehw
+namespace core
 {
     class Com_Collider3D_Sphere :
         public Com_Collider3D_Shapes

@@ -11,7 +11,7 @@
 #include <thread>
 #include <vector>
 
-namespace ehw
+namespace core
 {
     class ThreadPoolManager : public StaticSingleton<ThreadPoolManager>
     {

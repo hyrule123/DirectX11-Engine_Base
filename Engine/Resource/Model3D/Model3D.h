@@ -13,7 +13,7 @@ namespace editor
 
 
 
-namespace ehw
+namespace core
 {
 	class Mesh;
 	class Material;

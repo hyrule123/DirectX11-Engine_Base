@@ -2,7 +2,7 @@
 #include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
 
 
-namespace ehw
+namespace core
 {
     class Com_Collider3D_Cube :
         public Com_Collider3D_Shapes

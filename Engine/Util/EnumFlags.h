@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ehw
+namespace core
 {
 	template <typename T, typename Size = unsigned char>
 	class EnumFlags

@@ -7,7 +7,7 @@
 #include "Engine/GPU/StructBuffer.h"
 
 
-namespace ehw
+namespace core
 {
 	ParticleShader::ParticleShader()
 		: ComputeShader(ParticleShader::concrete_class_name, uint3(128, 1, 1))

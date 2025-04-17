@@ -1,7 +1,7 @@
 
 #include "Editor/DebugObject/Object.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorObject::EditorObject()
 		: GameObject()

@@ -7,7 +7,7 @@
 //사용법
 //* tAnimation3D_ComputeShader_Desc 구조체에 필요한 내용을 넣어서 전달.
 
-namespace ehw
+namespace core
 {
 	class StructBuffer;
     class Animation3D_ComputeShader :

@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Resource.h"
 
-namespace ehw
+namespace core
 {
     BASE_RESOURCE(Animation);
     class Animation :

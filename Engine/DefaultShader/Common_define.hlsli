@@ -12,14 +12,14 @@
 #include "Engine/Util/Simplemath.h"
 
 
-using float2 = ehw::math::Vector2;
-using ehw::math::Vector2;
-using float3 = ehw::math::Vector3;
-using ehw::math::Vector3;
-using float4 = ehw::math::Vector4;
-using ehw::math::Vector4;
-using ehw::math::Quaternion;
-using MATRIX = ehw::math::Matrix;
+using float2 = core::math::Vector2;
+using core::math::Vector2;
+using float3 = core::math::Vector3;
+using core::math::Vector3;
+using float4 = core::math::Vector4;
+using core::math::Vector4;
+using core::math::Quaternion;
+using MATRIX = core::math::Matrix;
 using uint = std::uint32_t;
 
 //윈도우 쪽 헤더에 정의되어 있음

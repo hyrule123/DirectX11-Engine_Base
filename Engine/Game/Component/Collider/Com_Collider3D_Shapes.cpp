@@ -12,7 +12,7 @@
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/GameObject.h"
 
-namespace ehw
+namespace core
 {
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes()
 		: Collider3D(Com_Collider3D_Shapes::concrete_class_name, eCollider3DType::Rigid)

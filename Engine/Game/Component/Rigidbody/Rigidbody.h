@@ -6,7 +6,7 @@
 //Rigidbody 생성, 삭제
 //Rigidbody를 Collision3D에 등록(OnEnable), 해제(OnDisable)
 
-namespace ehw
+namespace core
 {
 	class Rigidbody :
 		public Component<Rigidbody, eComponentCategory::Rigidbody>

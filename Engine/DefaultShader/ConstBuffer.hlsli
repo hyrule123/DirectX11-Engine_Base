@@ -25,7 +25,7 @@ CBUFFER(g_CB_noise, tCB_Noise, b, 7);
 
 #ifdef __cplusplus
 
-namespace ehw
+namespace core
 {
 	enum class eCBType
 	{

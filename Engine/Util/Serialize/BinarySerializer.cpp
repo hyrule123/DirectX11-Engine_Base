@@ -3,7 +3,7 @@
 #include "Engine/define_Macro.h"
 
 
-namespace ehw
+namespace core
 {
 	BinarySerializer::BinarySerializer()
 		: m_data()

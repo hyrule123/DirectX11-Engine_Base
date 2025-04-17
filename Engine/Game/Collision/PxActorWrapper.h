@@ -4,7 +4,7 @@
 #include <PhysX/PxPhysicsAPI.h>
 
 
-namespace ehw
+namespace core
 {
 	template <class T> requires std::derived_from<T, physx::PxActor>
 	class PxActorWrapper

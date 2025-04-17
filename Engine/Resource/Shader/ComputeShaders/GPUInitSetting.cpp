@@ -13,7 +13,7 @@
 #endif
 
 
-namespace ehw
+namespace core
 {
 	GPUInitSetting::GPUInitSetting()
 		: ComputeShader(GPUInitSetting::concrete_class_name, uint3(1u, 1u, 1u))

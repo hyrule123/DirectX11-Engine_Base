@@ -9,7 +9,7 @@
 
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	Com_Renderer_Mesh::Com_Renderer_Mesh() 
 		: Renderer(Com_Renderer_Mesh::concrete_class_name)

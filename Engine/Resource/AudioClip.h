@@ -3,7 +3,7 @@
 
 #include "Engine/Manager/AudioManager.h"
 
-namespace ehw
+namespace core
 {
 	BASE_RESOURCE(AudioClip);
 	class AudioClip final : public Resource

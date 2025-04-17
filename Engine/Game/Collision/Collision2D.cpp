@@ -21,7 +21,7 @@
 #undef min
 #endif
 
-namespace ehw
+namespace core
 {
 	//AABB,
 	//OBB,
@@ -228,7 +228,7 @@ namespace ehw
 		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
 
 		////mesh = ResourceManager<Mesh>::get_inst().Find(name::defaultRes::mesh::CircleMesh);
-		////::ehw::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debug_render_data.get());
+		////::core::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debug_render_data.get());
 
 		//
 	}

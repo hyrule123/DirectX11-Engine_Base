@@ -1,6 +1,6 @@
 #include "Engine/Common.h"
 
-namespace ehw
+namespace core
 {
 	tColliderID::tColliderID(uint32 _1, uint32 _2)
 		: ID64()

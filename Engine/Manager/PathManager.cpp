@@ -1,7 +1,7 @@
 #include "PathManager.h"
 #include "Engine/Util/AtExit.h"
 
-namespace ehw
+namespace core
 {
 	PathManager::PathManager()
 		: m_absoluteResourceDir{}
@@ -20,7 +20,7 @@ namespace ehw
 		ASSERT(std::fs::exists(m_relativeResourceDir), "절대경로와 상대경로가 일치하지 않습니다.");
 
 		m_relativeDir_ShaderCSO = ".";
-		m_relativeDir_ShaderCSO /= ehw::name::path::directory::CompiledShader;
+		m_relativeDir_ShaderCSO /= core::name::path::directory::CompiledShader;
 		if (false == std::fs::exists(m_relativeDir_ShaderCSO))
 		{
 			std::fs::create_directories(m_relativeDir_ShaderCSO);

@@ -15,7 +15,7 @@
 #include "Engine/Manager/RenderManager.h"
 
 
-namespace ehw
+namespace core
 {
 	Renderer::Renderer(const std::string_view key)
 		: Component(key)

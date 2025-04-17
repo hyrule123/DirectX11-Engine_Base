@@ -21,7 +21,7 @@ namespace Microsoft::WRL
 }
 
 
-namespace ehw
+namespace core
 {
 	//정점의 최소 데이터 -> 정점을 생성할때는 반드시 이 구조체를 상속받아서 사용
 	struct VertexBase {

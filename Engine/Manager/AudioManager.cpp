@@ -7,7 +7,7 @@
 
 
 
-namespace ehw
+namespace core
 {
 	AudioManager::AudioManager()
 		: mSystem{}

@@ -23,7 +23,7 @@
 #include "Engine/Resource/Model3D/Skeleton.h"
 #include "Engine/Resource/Shader/GraphicsShader.h"
 
-namespace ehw {
+namespace core {
     Default3DMtrl::Default3DMtrl()
         : Material(Default3DMtrl::concrete_class_name)
         , m_default_3D_mtrl_instancing_data()

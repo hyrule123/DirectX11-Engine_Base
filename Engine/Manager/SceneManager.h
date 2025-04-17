@@ -3,7 +3,7 @@
 
 #include "Engine/Game/Scene.h"
 
-namespace ehw
+namespace core
 {
 	class SceneManager : public StaticSingleton<SceneManager>
 	{

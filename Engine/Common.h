@@ -30,7 +30,7 @@ namespace std
 	namespace fs = filesystem;
 }
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 	class Mesh;

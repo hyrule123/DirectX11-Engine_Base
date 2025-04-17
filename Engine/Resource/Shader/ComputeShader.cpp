@@ -14,7 +14,7 @@
 
 #include <fstream>
 
-namespace ehw
+namespace core
 {
 	ComputeShader::ComputeShader(const std::string_view key, uint3 _threadsPerGroup)
 		: Shader(key)
@@ -44,7 +44,7 @@ namespace ehw
 			nullptr, 
 			D3D_COMPILE_STANDARD_FILE_INCLUDE, 
 			std::string(_funcName).c_str(), 
-			ehw::SHADER_VERSION::Compute, 
+			core::SHADER_VERSION::Compute, 
 			0, 
 			0, 
 			m_CSBlob.GetAddressOf(), 

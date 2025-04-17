@@ -13,7 +13,7 @@
 #include <Engine/GameEngine.h>
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	GameObjectHierarchy::GameObjectHierarchy()
 		: EditorWindow(name::GameObjects)

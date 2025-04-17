@@ -10,7 +10,7 @@
 
 #include <chrono>
 
-namespace ehw
+namespace core
 {
 	SceneManager::SceneManager()
 		: m_activeScene{nullptr}

@@ -25,7 +25,7 @@
 #undef max
 #endif
 
-namespace ehw
+namespace core
 {
 	Mesh::Mesh()
 		: Resource(Mesh::concrete_class_name)

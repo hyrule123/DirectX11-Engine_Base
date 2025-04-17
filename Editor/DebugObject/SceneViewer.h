@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Base/EditorWindow.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 	class SceneViewer : public EditorWindow
 	{

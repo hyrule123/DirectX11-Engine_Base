@@ -4,7 +4,7 @@
 
 #include "Engine/Game/Collision/PhysX.h"
 
-namespace ehw
+namespace core
 {
 	class Transform;
 	class Collision3D;

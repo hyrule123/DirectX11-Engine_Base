@@ -6,7 +6,7 @@
 
 #include "Engine/Resource/define_Resource.h"
 
-namespace ehw {
+namespace core {
 
 	VertexBuffer::VertexBuffer()
 		: Resource(VertexBuffer::concrete_class_name)

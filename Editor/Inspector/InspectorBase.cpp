@@ -8,7 +8,7 @@
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Game/GameObject.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	InspectorBase::InspectorBase()
 		: EditorWindow(name::Inspector)
@@ -101,7 +101,7 @@ namespace ehw::editor
 	{
 		for (size_t i = 0; i < mGuiComponents.size(); ++i)
 		{
-			IndicatorButton(::ehw::name::eComponentCategory_String[(UINT)i].data());
+			IndicatorButton(::core::name::eComponentCategory_String[(UINT)i].data());
 
 			if (mTargetGameObject && mGuiComponents[i])
 			{

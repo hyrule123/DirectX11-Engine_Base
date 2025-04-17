@@ -12,7 +12,7 @@ namespace editor
 //쉐이더는 ResourceManager에서 관리받는 리소스로도 생성가능(json 파일로 저장 가능)
 //혹은 Material을 상속받은 클래스에서 직접 생성하는것도 가능하다.
 
-namespace ehw
+namespace core
 {
 	struct tShaderCode
 	{

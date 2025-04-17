@@ -1,7 +1,7 @@
 #include "Widget_ComboBox.h"
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	const EditorWidget_ComboBox::tComboItem EditorWidget_ComboBox::gVoidItem{};
 

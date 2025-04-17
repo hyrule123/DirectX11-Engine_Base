@@ -3,7 +3,7 @@
 #include "Engine/define_Macro.h"
 
 #include "Engine/Util/AtExit.h"
-namespace ehw
+namespace core
 {
 	UINT32 Entity::g_nextID{};
 

@@ -15,7 +15,7 @@ namespace FMOD
 	class Channel;
 }
 
-namespace ehw
+namespace core
 {
 	class AudioManager final : public StaticSingleton<AudioManager>
 	{

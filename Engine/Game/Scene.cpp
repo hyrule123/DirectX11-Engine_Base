@@ -3,7 +3,7 @@
 
 #include "Engine/Game/Collision/CollisionSystem.h"
 
-namespace ehw
+namespace core
 {
 	Scene::Scene(const std::string_view key)
 		: Entity(key)

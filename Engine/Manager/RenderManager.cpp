@@ -21,7 +21,7 @@
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
 
-namespace ehw
+namespace core
 {
 	RenderManager::RenderManager()
 		: m_resolution_x{}
@@ -290,7 +290,7 @@ namespace ehw
 
 	std::shared_ptr<Texture> RenderManager::create_depth_stencil_buffer(UINT _Width, UINT _Height)
 	{
-		std::shared_ptr<Texture> DSTex = std::make_shared<ehw::Texture>();
+		std::shared_ptr<Texture> DSTex = std::make_shared<core::Texture>();
 		
 		if (false == DSTex->create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
 		{

@@ -3,7 +3,7 @@
 
 #include "Engine/Resource/Mesh/Mesh.h"
 
-namespace ehw {
+namespace core {
 	void ResourceManagers::load_default_meshes()
 	{
 #pragma region POINT MESH

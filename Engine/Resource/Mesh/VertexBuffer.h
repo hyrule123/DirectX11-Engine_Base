@@ -5,7 +5,7 @@
 #include "Engine/Util/Serialize/Serializable.h"
 
 
-namespace ehw {
+namespace core {
     struct Vertex2D : public VertexBase
     {
         float2 UV;

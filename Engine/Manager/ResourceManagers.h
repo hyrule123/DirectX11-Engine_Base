@@ -5,7 +5,7 @@
 #include <functional>
 
 
-namespace ehw
+namespace core
 {
 	class ResourceManagers : public StaticSingleton<ResourceManagers>
 	{

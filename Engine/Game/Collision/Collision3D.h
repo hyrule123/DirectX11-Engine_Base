@@ -11,7 +11,7 @@
 //OnDisable 시점에 PhysX에서 해제
 
 
-namespace ehw
+namespace core
 {
 	// 전방 선언
 	class Scene;
@@ -92,4 +92,4 @@ namespace ehw
 	};
 
 
-} // namespace ehw
+} // namespace core

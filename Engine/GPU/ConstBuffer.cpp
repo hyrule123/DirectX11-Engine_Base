@@ -2,7 +2,7 @@
 
 #include "Engine/Manager/RenderManager.h"
 
-namespace ehw
+namespace core
 {
 	ConstBuffer::ConstBuffer(uint _type)
 		: GPUBuffer(ConstBuffer::concrete_class_name, eBufferType::Const)

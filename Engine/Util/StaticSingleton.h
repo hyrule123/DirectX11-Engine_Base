@@ -2,7 +2,7 @@
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
 
-namespace ehw {
+namespace core {
 	template <class T>
 	class StaticSingleton
 	{

@@ -9,13 +9,13 @@
 
 
 
-std::filesystem::path ehw::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::filesystem::path& _extension)
+std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::filesystem::path& _extension)
 {
 	std::vector<std::filesystem::path> extensions = { _extension };
 	return FileDialog(_baseDirectory, extensions);
 }
 
-std::filesystem::path ehw::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::vector<std::filesystem::path>& _extensions)
+std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::vector<std::filesystem::path>& _extensions)
 {
 	//풀경로를 받아올 주소 변수를 만들어주고
 	std::wstring stringPath;
@@ -41,7 +41,7 @@ std::filesystem::path ehw::WinAPI::FileDialog(const std::filesystem::path& _base
 	OPENFILENAMEW OpenFile = {};
 
 	OpenFile.lStructSize = sizeof(OPENFILENAME);	//구조체 크기
-	OpenFile.hwndOwner = ehw::GameEngine::get_inst().GetHwnd();	//관리 핸들
+	OpenFile.hwndOwner = core::GameEngine::get_inst().GetHwnd();	//관리 핸들
 
 	std::vector<wchar_t> extensionFilters;
 	for (size_t i = 0; i < _extensions.size(); ++i)

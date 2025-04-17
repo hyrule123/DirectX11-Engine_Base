@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorEntity
 		: public std::enable_shared_from_this<EditorEntity>

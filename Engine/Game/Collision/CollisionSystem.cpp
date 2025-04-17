@@ -17,7 +17,7 @@
 
 #include "Engine/Manager/SceneManager.h"
 
-namespace ehw
+namespace core
 {
 	CollisionSystem::CollisionSystem(Scene* const _ownerScene)
 		: m_owner{ _ownerScene }

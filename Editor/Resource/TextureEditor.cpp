@@ -1,10 +1,10 @@
 #include "Editor/Resource/TextureEditor.h"
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	TextureEditor::TextureEditor()
-		: ResourceEditor(::ehw::name::path::directory::resource::Texture)
+		: ResourceEditor(::core::name::path::directory::resource::Texture)
 	{
 
 	}

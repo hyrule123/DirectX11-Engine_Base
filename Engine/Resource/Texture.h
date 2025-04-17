@@ -4,7 +4,7 @@
 
 #include <DirectXTex/DirectXTex.h>
 
-namespace ehw
+namespace core
 {
 	BASE_RESOURCE(Texture);
 	class Texture final : public Resource

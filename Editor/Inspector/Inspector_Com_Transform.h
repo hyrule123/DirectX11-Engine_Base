@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Inspector/Inspector_Component.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 	class Inspector_Com_Transform : public Inspector_Component
 	{

@@ -25,7 +25,7 @@
 
 
 
-namespace ehw
+namespace core
 {
 	FontWrapper::FontWrapper()
 		: m_FW1Factory{ nullptr }

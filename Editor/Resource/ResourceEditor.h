@@ -1,7 +1,7 @@
 #pragma once
 #include "Editor/Base/EditorChild.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 	template <class ResourceType>
 	class ResourceEditor : public EditorChild

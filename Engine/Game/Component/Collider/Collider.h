@@ -5,7 +5,7 @@
 
 #include <unordered_set>
 
-namespace ehw
+namespace core
 {
 	class Transform;
 	class CollisionSystem;

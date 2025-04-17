@@ -2,7 +2,7 @@
 #include "Engine/Game/Component/iComponent.h"
 #include <type_traits>
 
-namespace ehw
+namespace core
 {
 	class iComponent;
 

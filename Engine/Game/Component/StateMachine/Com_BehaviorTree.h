@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/StateMachine/StateMachine.h"
 
-namespace ehw
+namespace core
 {
 	class Com_BehaviorTree 
 		: public StateMachine

@@ -8,7 +8,7 @@
 
 #include "Engine/Manager/ResourceManager.h"
 
-namespace ehw {
+namespace core {
 	DebugMaterial::DebugMaterial()
 		: Material(DebugMaterial::concrete_class_name)
 		, m_debug_render_buffer()

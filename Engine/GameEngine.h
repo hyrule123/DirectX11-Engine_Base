@@ -2,7 +2,7 @@
 #include "Engine/Common.h"
 #include "Engine/Util/StaticSingleton.h"
 
-namespace ehw
+namespace core
 {
 	class GameEngine : public StaticSingleton<GameEngine>
 	{

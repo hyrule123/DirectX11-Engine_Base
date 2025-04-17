@@ -9,7 +9,7 @@
 
 #include <Engine/Resource/Texture.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorUVCalculator::EditorUVCalculator()
 		: EditorWindow("UV Calculator")
@@ -43,10 +43,10 @@ namespace ehw::editor
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
-			std::vector<std::fs::path> extensions(::ehw::name::path::extension::Texture_ArrSize);
-			for (size_t i = 0; i < ::ehw::name::path::extension::Texture_ArrSize; ++i)
+			std::vector<std::fs::path> extensions(::core::name::path::extension::Texture_ArrSize);
+			for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
 			{
-				extensions[i] = ::ehw::name::path::extension::Texture[i];
+				extensions[i] = ::core::name::path::extension::Texture[i];
 			}
 
 			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());

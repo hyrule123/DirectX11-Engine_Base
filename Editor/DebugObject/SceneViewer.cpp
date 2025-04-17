@@ -6,7 +6,7 @@
 #include <Engine/Resource/Texture.h>
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	SceneViewer::SceneViewer()
 		: EditorWindow(name::GameViewer)

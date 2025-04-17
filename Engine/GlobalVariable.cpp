@@ -1,6 +1,6 @@
 #include "Engine/GlobalVariable.h"
 
-namespace ehw
+namespace core
 {
 	tGPUInitSetting gGPUInitSetting{};
 	tCB_Global		gGlobal{};

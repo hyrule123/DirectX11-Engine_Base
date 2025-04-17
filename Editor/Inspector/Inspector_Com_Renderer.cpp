@@ -18,7 +18,7 @@
 #include <Engine/Resource/Mesh/Mesh.h>
 #include <Engine/Resource/Material/Material.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	Inspector_Com_Renderer::Inspector_Com_Renderer()
 		: Inspector_Component(eComponentCategory::Renderer)

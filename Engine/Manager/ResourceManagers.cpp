@@ -24,7 +24,7 @@
 #include "Engine/Game/Component/Light/Light_3D.h"
 
 
-namespace ehw
+namespace core
 {
 	void ResourceManagers::CleanUnusedResources()
 	{

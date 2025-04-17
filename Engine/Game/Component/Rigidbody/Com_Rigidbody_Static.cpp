@@ -5,7 +5,7 @@
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	Com_Rigidbody_Static::Com_Rigidbody_Static()
 		: Rigidbody(Com_Rigidbody_Static::concrete_class_name)

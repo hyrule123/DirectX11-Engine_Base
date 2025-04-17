@@ -8,7 +8,7 @@
 #include "Engine/DefaultShader/Debug/Debug.hlsli"
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
-namespace ehw {
+namespace core {
 	//함수명 = resourcemanager key
 	void debug_render_buffer();
 	void light_3D_instancing_buffer();

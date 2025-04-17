@@ -21,7 +21,7 @@
 #include "Engine/Game/Component/Renderer/Renderer.h"
 #include "Engine/Game/Component/Light/Light_3D.h"
 
-namespace ehw
+namespace core
 {
 	Com_Camera::Com_Camera()
 		: Component(Com_Camera::concrete_class_name)
@@ -250,10 +250,10 @@ namespace ehw
 		{
 			switch (m_projectionType)
 			{
-			case ehw::eProjectionType::Perspective:
+			case core::eProjectionType::Perspective:
 				m_cullingAgent = std::make_unique<CullingAgent_Perspective>();
 				break;
-			case ehw::eProjectionType::Orthographic:
+			case core::eProjectionType::Orthographic:
 				m_cullingAgent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:

@@ -6,7 +6,7 @@
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/Component/Transform.h"
 
-namespace ehw
+namespace core
 {
 	Com_Collider3D_Capsule::Com_Collider3D_Capsule()
 		: Com_Collider3D_Shapes(Com_Collider3D_Capsule::concrete_class_name, eCollider3D_Shape::Capsule)

@@ -21,7 +21,7 @@
 #include <PhysX/foundation/PxMat44.h>
 
 
-namespace ehw
+namespace core
 {
 	//1(rad) / 180 * PI = PI / 180
 	constexpr const float g_radianToDegreeFactor = DirectX::XM_PI / 180.f;
@@ -66,7 +66,7 @@ namespace ehw
 	};
 }
 
-namespace ehw::math
+namespace core::math
 {
 	using namespace ::DirectX;
 	struct Vector2;

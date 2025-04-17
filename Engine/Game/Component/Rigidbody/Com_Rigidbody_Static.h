@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Rigidbody/Rigidbody.h"
 
-namespace ehw
+namespace core
 {
 	class Com_Rigidbody_Static :
 		public Rigidbody

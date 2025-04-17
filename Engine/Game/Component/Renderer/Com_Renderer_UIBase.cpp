@@ -7,7 +7,7 @@
 #include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/Material.h"
 
-namespace ehw
+namespace core
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
 		: Com_Renderer_Mesh(Com_Renderer_UIBase::concrete_class_name)

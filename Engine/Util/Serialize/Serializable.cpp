@@ -3,7 +3,7 @@
 #include "BinarySerializer.h"
 #include "JsonSerializer.h"
 
-namespace ehw
+namespace core
 {
 	Serializable::Serializable()
 	{

@@ -1,6 +1,6 @@
 #include "Editor/Resource/ResourceEditor.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 
 }

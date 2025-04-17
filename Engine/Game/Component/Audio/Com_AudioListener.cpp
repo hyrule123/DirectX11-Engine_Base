@@ -12,7 +12,7 @@
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
 
-namespace ehw
+namespace core
 {
 	Com_AudioListener::Com_AudioListener()
 		: Component(Com_AudioListener::concrete_class_name)

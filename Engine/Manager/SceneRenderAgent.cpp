@@ -16,7 +16,7 @@
 #include "Engine/Resource/Mesh/Mesh.h"
 #include "Engine/Resource/Material/DebugMaterial.h"
 
-namespace ehw {
+namespace core {
 	SceneRenderAgent::SceneRenderAgent()
 		: m_cameras{}
 		, m_mainCamIndex(0u)

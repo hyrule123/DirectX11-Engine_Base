@@ -11,7 +11,7 @@
 #include <array>
 
 
-namespace ehw
+namespace core
 {
 	class StructBuffer;
 	class Texture;

@@ -33,7 +33,7 @@ namespace physx
 	class PxActor;
 }
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 	class StructBuffer;

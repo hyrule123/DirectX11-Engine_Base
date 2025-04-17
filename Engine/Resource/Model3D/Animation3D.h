@@ -6,7 +6,7 @@
 
 #include "Engine/Common.h"
 
-namespace ehw
+namespace core
 {
     struct tKeyFrame
     {

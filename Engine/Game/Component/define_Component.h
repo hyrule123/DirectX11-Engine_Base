@@ -2,7 +2,7 @@
 #include "Engine/define_Macro.h"
 #include "Engine/define_Enum.h"
 
-namespace ehw
+namespace core
 {
 	STR_KEY ComponentPrefix = "Com_";
 	enum class eComponentCategory

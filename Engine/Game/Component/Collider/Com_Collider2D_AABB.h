@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Collider/Collider2D.h"
 
-namespace ehw
+namespace core
 {
     class Com_Collider2D_AABB :
         public Collider2D

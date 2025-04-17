@@ -2,7 +2,7 @@
 #include "Editor/Base/EditorBase.h"
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorConsole
 	{

@@ -3,7 +3,7 @@
 
 
 
-namespace ehw
+namespace core
 {
 	class Transform;
 	class Collision2D;

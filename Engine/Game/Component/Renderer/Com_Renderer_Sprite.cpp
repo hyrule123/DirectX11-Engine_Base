@@ -11,7 +11,7 @@
 
 
 
-namespace ehw
+namespace core
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
 		: Com_Renderer_Mesh(Com_Renderer_Sprite::concrete_class_name)

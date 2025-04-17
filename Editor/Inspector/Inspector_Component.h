@@ -3,7 +3,7 @@
 
 #include <Engine/Game/Component/define_Component.h>
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 	namespace editor

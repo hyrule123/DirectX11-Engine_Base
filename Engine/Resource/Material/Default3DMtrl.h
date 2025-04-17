@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Material/Material.h"
 
-namespace ehw {
+namespace core {
     class Default3DMtrl final :
         public Material 
     {

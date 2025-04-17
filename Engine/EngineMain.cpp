@@ -6,7 +6,7 @@
 
 #include "Engine/GameEngine.h"
 
-namespace ehw
+namespace core
 {
     EngineMain::EngineMain(const tDesc_EngineMain& _Desc)
     : m_hinstance{}
@@ -30,7 +30,7 @@ namespace ehw
         
         UpdateWindow(m_hwnd);
 
-        ehw::tGameEngineDesc engineDesc;
+        core::tGameEngineDesc engineDesc;
         engineDesc.Hwnd = m_hwnd;
         engineDesc.Height = _Desc.Height;
         engineDesc.Width = _Desc.Width;
@@ -39,7 +39,7 @@ namespace ehw
         engineDesc.GPUDesc = _Desc.GPUDesc;
         engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
 
-        ehw::GameEngine::get_inst().init(engineDesc);
+        core::GameEngine::get_inst().init(engineDesc);
 
         for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
         {
@@ -87,7 +87,7 @@ namespace ehw
             }
             else
             {
-                bReturn = ehw::GameEngine::get_inst().Run();
+                bReturn = core::GameEngine::get_inst().Run();
             }
         }
 

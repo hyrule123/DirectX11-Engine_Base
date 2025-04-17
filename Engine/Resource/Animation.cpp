@@ -1,6 +1,6 @@
 #include "Engine/Resource/Animation.h"
 
-namespace ehw
+namespace core
 {
 	Animation::Animation(const std::string_view key)
 		:Resource(key)

@@ -2,7 +2,7 @@
 
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	UINT32 EditorEntity::g_NextID{};
 
@@ -21,7 +21,7 @@ namespace ehw::editor
 	
 }
 
-void ehw::editor::HilightText(const char* _label, const ImVec2& _size)
+void core::editor::HilightText(const char* _label, const ImVec2& _size)
 {
 	ImGui::PushID(0);
 	static ImColor highLight = { 144, 12, 63 };

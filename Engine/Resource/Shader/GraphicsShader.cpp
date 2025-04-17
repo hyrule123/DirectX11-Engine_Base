@@ -9,7 +9,7 @@
 
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
-namespace ehw
+namespace core
 {
 	GraphicsShader::GraphicsShader()
 		: Shader(GraphicsShader::concrete_class_name)

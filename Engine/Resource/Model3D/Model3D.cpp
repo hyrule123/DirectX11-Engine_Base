@@ -24,7 +24,7 @@
 
 #include <regex>
 
-namespace ehw
+namespace core
 {
 	Model3D::Model3D()
 		: Resource(Model3D::concrete_class_name)

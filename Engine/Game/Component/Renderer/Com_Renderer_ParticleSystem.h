@@ -3,7 +3,7 @@
 
 #include "Engine/DefaultShader/Particle/Particle.hlsli"
 
-namespace ehw
+namespace core
 {
 	enum class eSimulationSpace
 	{

@@ -7,7 +7,7 @@
 
 #include "Engine/DefaultShader/Animation/Animation2D.hlsli"
 
-namespace ehw
+namespace core
 {
 	Animation2D::Animation2D()
 		: Animation(Animation2D::concrete_class_name)

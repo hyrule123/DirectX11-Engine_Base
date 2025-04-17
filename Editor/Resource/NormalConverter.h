@@ -3,12 +3,12 @@
 
 #include <Engine/Common.h>
 
-namespace ehw
+namespace core
 {
     class Texture;
 }
 
-namespace ehw::editor
+namespace core::editor
 {
     class EditorNormalConverter :
         public EditorWindow

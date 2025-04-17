@@ -3,7 +3,7 @@
 
 #include <functional>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorBase;
 	class Widget_List : public EditorBase

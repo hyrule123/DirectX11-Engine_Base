@@ -18,7 +18,7 @@
 
 #include "Engine/DefaultShader/Animation/Animation2D.hlsli"
 
-namespace ehw
+namespace core
 {
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
 		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::concrete_class_name)

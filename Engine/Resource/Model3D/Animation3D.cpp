@@ -10,7 +10,7 @@
 #include "Engine/Resource/Model3D/Model3D.h"
 #include "Engine/Resource/Model3D/Skeleton.h"
 
-namespace ehw
+namespace core
 {
 	Animation3D::Animation3D()
         : Animation(Animation3D::concrete_class_name)

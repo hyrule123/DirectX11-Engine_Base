@@ -4,7 +4,7 @@
 //#include "Engine/Util/SimpleMath.h"
 //#include "Engine/Game/Collision/PhysX.h"
 //
-//namespace ehw
+//namespace core
 //{
 //	class PhysXConverter
 //	{

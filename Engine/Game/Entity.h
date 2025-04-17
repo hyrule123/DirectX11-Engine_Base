@@ -21,7 +21,7 @@ private: static inline const bool UNIQUE_VAR(unused) = EntityFactory::get_inst()
 
 #define REGISTER_INSTANCE_DEFAULT(_class) REGISTER_INSTANCE(_class, _class::concrete_class_name)
 
-namespace ehw
+namespace core
 {
 	class Entity
 		: public std::enable_shared_from_this<Entity>

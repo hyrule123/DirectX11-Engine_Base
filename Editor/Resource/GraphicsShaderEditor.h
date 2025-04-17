@@ -5,12 +5,12 @@
 
 #include <Engine/GPU/CommonGPU.h>
 
-namespace ehw
+namespace core
 {
 	class GraphicsShader;
 }
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorGraphicsShader
 		: public EditorWindow

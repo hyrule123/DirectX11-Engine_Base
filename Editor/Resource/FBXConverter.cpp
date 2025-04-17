@@ -9,7 +9,7 @@
 #include <Engine/Util/define_Util.h>
 #include <Engine/Resource/Model3D/Model3D.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorFBXConverter::EditorFBXConverter()
 		: EditorWindow("FBX Converter")

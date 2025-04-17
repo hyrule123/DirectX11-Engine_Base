@@ -11,7 +11,7 @@
 
 #define LOAD_COMPUTESHADER(_type) ResourceManager<ComputeShader>::get_inst().load<_type>(#_type)
 
-namespace ehw
+namespace core
 {
 	template <typename T>
 	concept ResourceType =

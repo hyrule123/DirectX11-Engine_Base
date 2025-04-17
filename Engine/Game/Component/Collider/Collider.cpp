@@ -5,7 +5,7 @@
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/Collision/CollisionSystem.h"
 
-namespace ehw
+namespace core
 {
 	Collider::Collider(const std::string_view key, eDimensionType _dimension)
 		: Component(key)

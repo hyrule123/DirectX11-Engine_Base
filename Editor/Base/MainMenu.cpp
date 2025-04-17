@@ -4,7 +4,7 @@
 
 #include <Engine/GameEngine.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorMainMenu::EditorMainMenu()
 		: EditorBase(name::MainMenu)

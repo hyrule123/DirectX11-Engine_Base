@@ -2,7 +2,7 @@
 
 #include <Engine/Game/Component/Component.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	DebugObject::DebugObject()
 	{

@@ -1,7 +1,7 @@
 
 #include "Widget_Tree.h"
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorWidget_Tree::tNode::tNode()
 		: EditorEntity("")

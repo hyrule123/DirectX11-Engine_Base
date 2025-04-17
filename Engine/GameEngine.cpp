@@ -23,7 +23,7 @@
 
 #include "Engine/Game/Scene.h"
 
-namespace ehw
+namespace core
 {
 	GameEngine::GameEngine()
 		: m_hwnd{ nullptr }

@@ -5,7 +5,7 @@
 
 #include "Engine/Resource/Texture.h"
 
-namespace ehw
+namespace core
 {
 	class NormalConvertShader : public ComputeShader
 	{

@@ -9,7 +9,7 @@ namespace std
 	namespace fs = filesystem;
 }
 
-namespace ehw
+namespace core
 {
 	class PathManager : public StaticSingleton<PathManager>
 	{

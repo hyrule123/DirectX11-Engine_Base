@@ -13,7 +13,7 @@
 #error 헤더 include 해주세요
 #endif
 
-namespace ehw
+namespace core
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
 		: ComputeShader(Animation3D_ComputeShader::concrete_class_name, uint3(256u, 1u, 1u))

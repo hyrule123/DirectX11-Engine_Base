@@ -2,12 +2,12 @@
 #include "Editor/Base/EditorChild.h"
 #include "Editor/Widget/Widget_Tree.h"
 
-namespace ehw
+namespace core
 {
 	class GameObject;
 }
 
-namespace ehw::editor
+namespace core::editor
 {
 	class GameObjectHierarchy : public EditorWindow
 	{

@@ -5,12 +5,12 @@
 #include <Engine/Common.h>
 
 //Material 전방선언
-namespace ehw
+namespace core
 {
 	class Material;
 }
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorMaterial
 		: public EditorWindow

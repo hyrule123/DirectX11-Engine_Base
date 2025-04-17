@@ -15,7 +15,7 @@ struct IsBaseResource<_class> {\
 	constexpr static inline const bool is = true;\
 }
 
-namespace ehw
+namespace core
 {
 	class Resource 
 		: public Entity

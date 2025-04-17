@@ -3,7 +3,7 @@
 #include "Engine/define_Macro.h"
 
 
-namespace ehw
+namespace core
 {
 	constexpr const int MRT_MAX = 8;
 
@@ -125,14 +125,14 @@ namespace ehw
 
 	namespace name
 	{
-		constexpr const char* eSamplerType[(int)ehw::eSamplerType::END]
+		constexpr const char* eSamplerType[(int)core::eSamplerType::END]
 		{
 			"Point",
 			"Linear",
 			"Anisotropic",
 		};
 
-		constexpr const char* eRasterizerState[(int)ehw::eRasterizerState::END]
+		constexpr const char* eRasterizerState[(int)core::eRasterizerState::END]
 		{
 			"SolidBack",
 			"SolidFront",
@@ -140,7 +140,7 @@ namespace ehw
 			"WireframeNone",
 		};
 
-		constexpr const char* eDepthStencilState[(int)ehw::eDepthStencilState::END]
+		constexpr const char* eDepthStencilState[(int)core::eDepthStencilState::END]
 		{
 			"Less",
 			"Greater",
@@ -148,7 +148,7 @@ namespace ehw
 			"None",
 		};
 
-		constexpr const char* eBlendState[(int)ehw::eBlendState::END]
+		constexpr const char* eBlendState[(int)core::eBlendState::END]
 		{
 			"Default",
 			"AlphaBlend",

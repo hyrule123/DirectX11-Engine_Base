@@ -19,7 +19,7 @@
 
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	using namespace math;
 

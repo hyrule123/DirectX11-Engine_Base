@@ -1,6 +1,6 @@
 #include "AtExit.h"
 
-namespace ehw {
+namespace core {
 	std::stack<std::function<void()>> AtExit::mAtExitFuncs;
 
 	void AtExit::CallAtExit()

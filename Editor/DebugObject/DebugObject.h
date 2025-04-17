@@ -2,7 +2,7 @@
 #include <Engine/Game/GameObject.h>
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	class DebugObject : public GameObject
 	{

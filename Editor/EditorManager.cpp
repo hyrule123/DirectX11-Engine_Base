@@ -42,7 +42,7 @@
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-namespace ehw::editor
+namespace core::editor
 {
 	constexpr const char* imguiSaveINI = "imgui.ini";
 	constexpr const char* imguiSaveJSON = "imgui.json";
@@ -72,8 +72,8 @@ namespace ehw::editor
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		//mDebugObjects.resize((UINT)eColliderType::END);
 
-		//std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::ehw::name::defaultRes::mesh::DebugRectMesh);
-		//std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::ehw::name::defaultRes::material::DebugMaterial);
+		//std::shared_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
 
 		//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
 		//auto renderer

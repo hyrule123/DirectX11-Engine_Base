@@ -3,7 +3,7 @@
 
 #include "CommonGPU.h"
 
-namespace ehw
+namespace core
 {
 	class Texture;
     class MultiRenderTarget :

@@ -6,7 +6,7 @@
 #include "Engine/Game/Collision/CollisionSystem.h"
 #include "Engine/Game/Collision/Collision3D.h"
 
-namespace ehw
+namespace core
 {
 	Rigidbody::Rigidbody(const std::string_view key)
 		: Component(key)

@@ -5,7 +5,7 @@
 #include <Engine/Game/GameObject.h>
 #include <Engine/Game/Component/Transform.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 
 	Inspector_Com_Transform::Inspector_Com_Transform()

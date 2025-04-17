@@ -12,7 +12,7 @@
 #include <Fmod/fmod_common.h>
 #include <Fmod/fmod_codec.h>
 
-namespace ehw
+namespace core
 {
 	Com_AudioSource::Com_AudioSource()
 		: Component(Com_AudioSource::concrete_class_name)

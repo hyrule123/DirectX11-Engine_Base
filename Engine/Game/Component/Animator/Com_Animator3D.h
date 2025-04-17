@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Animator/Animator.h"
 
-namespace ehw
+namespace core
 {
 	class Animation3D;
 	class Animation3D_PlayData;

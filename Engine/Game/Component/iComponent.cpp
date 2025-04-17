@@ -7,7 +7,7 @@
 #undef max
 #endif
 
-namespace ehw {
+namespace core {
 	iComponent::iComponent(const std::string_view key, eComponentCategory _type)
 		: Entity(key)
 		, m_ComCategory(_type)

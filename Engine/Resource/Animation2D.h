@@ -4,7 +4,7 @@
 #include "Engine/Resource/Texture.h"
 #include "Engine/Util/Serialize/Serializable.h"
 
-namespace ehw
+namespace core
 {
 
 	BASE_RESOURCE(Animation2D);

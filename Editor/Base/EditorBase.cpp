@@ -5,7 +5,7 @@
 #include <Engine/Util/Serialize/JsonSerializer.h>
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	EditorBase::EditorBase(const std::string_view _strName)
 		: EditorEntity(_strName)
@@ -21,7 +21,7 @@ namespace ehw::editor
 	}
 	eResult EditorBase::serialize_json(JsonSerializer* _ser) const
 	{
-		using namespace ehw;
+		using namespace core;
 
 		SERIALIZER_CHECK_PTR(_ser);
 
@@ -56,7 +56,7 @@ namespace ehw::editor
 	}
 	eResult EditorBase::deserialize_json(const JsonSerializer* _ser)
 	{
-		using namespace ehw;
+		using namespace core;
 		SERIALIZER_CHECK_PTR(_ser);
 		
 		const JsonSerializer& ser = *_ser;

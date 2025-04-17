@@ -5,7 +5,7 @@
 
 #include "Engine/Manager/SceneRenderAgent.h"
 
-namespace ehw
+namespace core
 {
 	class ConstBuffer;
 	class StructBuffer;
@@ -107,8 +107,8 @@ namespace ehw
 	
 		ComPtr<IDXGISwapChain> m_swapChain;
 		
-		std::shared_ptr<ehw::Texture> m_render_target;
-		std::shared_ptr<ehw::Texture> m_depth_stencil_buffer;
+		std::shared_ptr<core::Texture> m_render_target;
+		std::shared_ptr<core::Texture> m_depth_stencil_buffer;
 		
 		D3D11_VIEWPORT m_viewport;
 

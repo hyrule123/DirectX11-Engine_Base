@@ -5,7 +5,7 @@
 
 #include "Engine/Resource/Animation2D.h"
 
-namespace ehw
+namespace core
 {
 	class Com_Animator2D 
 		: public Animator

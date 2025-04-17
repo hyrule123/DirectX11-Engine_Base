@@ -6,7 +6,7 @@
 #include <Engine/GlobalVariable.h>
 #include <Engine/Util/Serialize/json.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	namespace name
 	{
@@ -206,7 +206,7 @@ namespace ehw::editor
 			Items.reserve((size_t)eRasterizerState::END);
 			for (size_t i = 0; i < (size_t)eRasterizerState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eRasterizerState[i],});
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eRasterizerState[i],});
 			}
 			mRSTypeCombo.SetItems(Items);
 			mRSTypeCombo.SetStrKey("Rasterizer Type");
@@ -217,7 +217,7 @@ namespace ehw::editor
 			Items.reserve((size_t)eDepthStencilState::END);
 			for (size_t i = 0; i < (size_t)eDepthStencilState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eDepthStencilState[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eDepthStencilState[i], });
 			}
 			mDSTypeCombo.SetItems(Items);
 			mDSTypeCombo.SetStrKey("Depth-Stencil Type");
@@ -228,7 +228,7 @@ namespace ehw::editor
 			Items.reserve((size_t)eBlendState::END);
 			for (size_t i = 0; i < (size_t)eBlendState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::eBlendState[i], });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eBlendState[i], });
 			}
 			mBSTypeCombo.SetItems(Items);
 			mBSTypeCombo.SetStrKey("Blend State");
@@ -240,7 +240,7 @@ namespace ehw::editor
 			Items.reserve((int)eGSStage::END);
 			for (size_t i = 0; i < (int)eGSStage::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::ehw::name::ArrGSPrefix[i] });
+				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::ArrGSPrefix[i] });
 			}
 			mStageTypeCombo.SetItems(Items);
 			mStageTypeCombo.SetStrKey("Shader Type");
@@ -334,7 +334,7 @@ namespace ehw::editor
 
 		for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 		{
-			ImGui::InputText(::ehw::name::ArrGSPrefix[i].data(), &mStageNames[i]);
+			ImGui::InputText(::core::name::ArrGSPrefix[i].data(), &mStageNames[i]);
 		}
 
 		ImGui::Separator();
@@ -381,7 +381,7 @@ namespace ehw::editor
 
 	bool EditorGraphicsShader::CreateDefaultShaders()
 	{
-		using namespace ehw;
+		using namespace core;
 
 		struct tShaderGroup
 		{
@@ -410,11 +410,11 @@ namespace ehw::editor
 
 			for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 			{
-				size_t pos = fileName.find(::ehw::name::ArrGSPrefix[i]);
+				size_t pos = fileName.find(::core::name::ArrGSPrefix[i]);
 				if (std::string::npos != pos)
 				{
-					std::string baseFileName = entry.path().filename().replace_extension(::ehw::name::path::extension::ShaderSetting).string();
-					baseFileName.erase(pos, std::strlen(::ehw::name::ArrGSPrefix[i].data()));
+					std::string baseFileName = entry.path().filename().replace_extension(::core::name::path::extension::ShaderSetting).string();
+					baseFileName.erase(pos, std::strlen(::core::name::ArrGSPrefix[i].data()));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
 					break;
@@ -435,7 +435,7 @@ namespace ehw::editor
 		//map을 순회 돌아주면서
 		for (const auto& iter : umapGSGroup)
 		{
-			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::ehw::name::path::extension::ShaderSetting);
+			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::core::name::path::extension::ShaderSetting);
 
 			//파일이 존재하지 않으면 json 파일 초기화 및 생성을 해준다.
 			if (false == std::fs::exists(ShaderFilePath))
@@ -532,7 +532,7 @@ namespace ehw::editor
 
 	void EditorGraphicsShader::InputElementEditModal()
 	{
-		using namespace ehw;
+		using namespace core;
 		bool bSemanticEditMode = (0 <= mSemanticEditIdx);
 		if (bSemanticEditMode)
 		{
@@ -772,7 +772,7 @@ namespace ehw::editor
 
 	void EditorGraphicsShader::SaveToJson(const std::filesystem::path& _filePath)
 	{
-		using namespace ehw;
+		using namespace core;
 		GraphicsShader shader{};
 
 		//이름 등록
@@ -873,7 +873,7 @@ namespace ehw::editor
 
 	void EditorGraphicsShader::LoadFromJson(const std::filesystem::path& _filePath)
 	{
-		using namespace ehw;
+		using namespace core;
 		GraphicsShader shader{};
 		shader.set_edit_mode(true);
 

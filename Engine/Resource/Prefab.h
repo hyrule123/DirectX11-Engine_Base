@@ -3,7 +3,7 @@
 
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
-namespace ehw
+namespace core
 {
     class GameObject;
 

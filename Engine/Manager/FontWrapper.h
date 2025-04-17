@@ -3,7 +3,7 @@
 
 #include <FW1FontWrapper/FW1FontWrapper.h>
 #include <FW1FontWrapper/FW1CompileSettings.h>
-namespace ehw
+namespace core
 {
 	class FontWrapper : public StaticSingleton<FontWrapper>
 	{

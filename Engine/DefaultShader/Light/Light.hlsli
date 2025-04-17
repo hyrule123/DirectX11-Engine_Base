@@ -27,7 +27,7 @@ struct alignas(16)  tLightCount
 
 #ifdef __cplusplus
 
-	namespace ehw{
+	namespace core{
 	enum class eLightType{
 		Directional,
 		Point,

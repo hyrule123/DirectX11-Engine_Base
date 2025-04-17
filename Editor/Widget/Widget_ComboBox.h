@@ -5,7 +5,7 @@
 
 #include <functional>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorWidget_ComboBox :
 		public EditorBase

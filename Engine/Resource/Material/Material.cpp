@@ -13,7 +13,7 @@
 
 #include "Engine/Game/GameObject.h"
 
-namespace ehw
+namespace core
 {
     Material::Material()
         : Resource(Material::concrete_class_name)

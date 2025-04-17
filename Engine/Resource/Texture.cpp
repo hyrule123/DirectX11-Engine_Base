@@ -20,7 +20,7 @@
 #error "x64만 지원합니다"
 #endif _WIN64
 
-namespace ehw
+namespace core
 {
 	Texture::Texture()
 		: Resource(Texture::concrete_class_name)
@@ -333,10 +333,10 @@ namespace ehw
 	{
 		switch (mCurBoundView)
 		{
-		case ehw::eBufferViewType::NONE:
+		case core::eBufferViewType::NONE:
 			break;
 
-		case ehw::eBufferViewType::SRV:
+		case core::eBufferViewType::SRV:
 		{
 			ASSERT(0 <= mCurBoundRegister, "Bound된 레지스터 번호가 음수입니다.");
 			ID3D11ShaderResourceView* srv = nullptr;
@@ -373,7 +373,7 @@ namespace ehw
 			
 			break;
 		}
-		case ehw::eBufferViewType::UAV:
+		case core::eBufferViewType::UAV:
 		{
 			ID3D11UnorderedAccessView* pUAV = nullptr;
 			uint u = -1;
@@ -387,9 +387,9 @@ namespace ehw
 			break;
 		}
 			
-		case ehw::eBufferViewType::RTV:
+		case core::eBufferViewType::RTV:
 			[[fallthrough]];
-		case ehw::eBufferViewType::DSV:
+		case core::eBufferViewType::DSV:
 		{
 			ID3D11RenderTargetView* pRTV = nullptr;
 			ID3D11DepthStencilView* pDSV = nullptr;

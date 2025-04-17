@@ -6,7 +6,7 @@
 
 #include "Engine/GPU/ConstBuffer.h"
 
-namespace ehw
+namespace core
 {
 	StructBuffer::StructBuffer()
 		: GPUBuffer(StructBuffer::concrete_class_name, eBufferType::Struct)
@@ -435,9 +435,9 @@ namespace ehw
 	{
 		switch (m_curBoundView)
 		{
-		case ehw::eBufferViewType::NONE:
+		case core::eBufferViewType::NONE:
 			break;
-		case ehw::eBufferViewType::SRV:
+		case core::eBufferViewType::SRV:
 		{
 			auto pContext = RenderManager::get_inst().Context();
 
@@ -475,7 +475,7 @@ namespace ehw
 			break;
 		}
 
-		case ehw::eBufferViewType::UAV:
+		case core::eBufferViewType::UAV:
 		{
 			static const UINT v2_Offset = -1;
 			ID3D11UnorderedAccessView* pUAV = nullptr;

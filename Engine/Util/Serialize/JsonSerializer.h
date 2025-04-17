@@ -10,7 +10,7 @@
 
 //CPP에서 include 후 사용해주면 됨(특정 타입을 Json::value 형태로 변환하기 위한 전역 함수 모음임)
 
-namespace ehw
+namespace core
 {
 	//템플릿을 통한 1차 타입 분류
 	//Json 기본 생성자에서 지원하는 타입의 경우 그대로 추가하고,

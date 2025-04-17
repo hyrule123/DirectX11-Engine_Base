@@ -9,7 +9,7 @@
 #include "Engine/Resource/Material/Default3DMtrl.h"
 #include "Engine/Resource/Material/DebugMaterial.h"
 
-namespace ehw {
+namespace core {
 	void ResourceManagers::load_default_materials()
 	{
 		using namespace name::defaultRes;

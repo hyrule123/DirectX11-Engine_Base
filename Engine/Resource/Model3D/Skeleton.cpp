@@ -20,7 +20,7 @@
 
 #include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
 
-namespace ehw
+namespace core
 {
 	Skeleton::Skeleton()
 		: Resource(Skeleton::concrete_class_name)

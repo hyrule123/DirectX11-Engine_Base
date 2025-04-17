@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Game/Component/Renderer/Com_Renderer_Mesh.h"
 
-namespace ehw
+namespace core
 {
 	class Com_Animator2D;
 	class Com_Renderer_Sprite : public Com_Renderer_Mesh

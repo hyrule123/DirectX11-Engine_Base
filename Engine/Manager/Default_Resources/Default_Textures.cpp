@@ -3,7 +3,7 @@
 
 #include "Engine/Resource/Texture.h"
 
-namespace ehw {
+namespace core {
 	void ResourceManagers::load_default_textures()
 	{
 #pragma region STATIC TEXTURE

@@ -2,7 +2,7 @@
 
 #include <Engine/define_Macro.h>
 
-namespace ehw::editor::name
+namespace core::editor::name
 {
 	STR_KEY_DECLARE(MainMenu);
 	STR_KEY EditorGraphicsShader = "Graphics Shader Editor";

@@ -1,7 +1,7 @@
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
 
-namespace ehw {
+namespace core {
 	void RenderManager::create_default_render_states()
 	{
 #pragma region sampler state

@@ -4,7 +4,7 @@
 
 //전방선언 후 CPP에서 include 후 사용할것.
 
-namespace ehw
+namespace core
 {
 	//수동으로 처리해줘야 하는 타입들을 여기 추가할것.
 	template <typename T>

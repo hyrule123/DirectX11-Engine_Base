@@ -3,7 +3,7 @@
 
 #include "Engine/Common.h"
 
-namespace ehw
+namespace core
 {
 	class Com_Renderer_UIBase :
 		public Com_Renderer_Mesh

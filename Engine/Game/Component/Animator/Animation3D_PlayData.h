@@ -14,7 +14,7 @@
 skeleton에서는 render 단계에서 저장된 주소들에 대해 일괄 
 */
 
-namespace ehw
+namespace core
 {
 	class Skeleton;
 	class Animation3D;

@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorObject;
 	class DebugObject;

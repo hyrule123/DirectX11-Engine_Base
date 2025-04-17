@@ -5,7 +5,7 @@
 
 #include "Engine/Util/AtExit.h"
 
-namespace ehw
+namespace core
 {
     ThreadPoolManager::ThreadPoolManager()
         : mNumThread{}

@@ -2,7 +2,7 @@
 #include "Engine/Game/Component/Light/Light.h"
 #include "Engine/GPU/CommonGPU.h"
 
-namespace ehw
+namespace core
 {
 	class StructBuffer;
 	class ConstBuffer;

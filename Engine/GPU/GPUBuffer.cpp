@@ -1,7 +1,7 @@
 #include "Engine/GPU/GPUBuffer.h"
 #include "Engine/Manager/RenderManager.h"
 
-namespace ehw
+namespace core
 {
 	GPUBuffer::GPUBuffer(const std::string_view key, eBufferType _Type)
 		: Resource(key)

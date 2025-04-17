@@ -2,7 +2,7 @@
 
 #include <Engine/Util/StringConverter.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	Widget_List::Widget_List()
 		: EditorBase(name::ListBox)

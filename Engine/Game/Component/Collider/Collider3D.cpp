@@ -10,7 +10,7 @@
 
 #include <PhysX/PxPhysicsAPI.h>
 
-namespace ehw
+namespace core
 {
 	Collider3D::Collider3D(const std::string_view key, eCollider3DType _col3dType)
 		: Collider(key, eDimensionType::_3D)
@@ -80,4 +80,4 @@ namespace ehw
 	//	//트랜스폼의 Scale은 반영하지 않는다
 	//	_worldMatrix = _localMatrix * objectScaleInvMatrix * objectWorldMatrix;
 	//}
-} // namespace ehw
+} // namespace core

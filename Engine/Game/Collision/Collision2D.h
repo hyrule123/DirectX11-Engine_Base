@@ -14,7 +14,7 @@
 
 //설명: 2D 충돌체의 충돌 검사를 수행
 //CollisionManager에서만 생성 가능.
-namespace ehw
+namespace core
 {
 	class CollisionSystem;
 	class Collider2D;

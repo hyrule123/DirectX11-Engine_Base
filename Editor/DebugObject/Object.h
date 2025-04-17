@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/Game/GameObject.h>
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorObject : public GameObject
 	{

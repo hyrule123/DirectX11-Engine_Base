@@ -7,7 +7,7 @@
 
 #include "Engine/define_Macro.h"
 
-namespace ehw
+namespace core
 {
     TimeManager::TimeManager()
         : m_currentDeltaTime{}

@@ -3,7 +3,7 @@
 #include "Editor/Widget/Widget_Tree.h"
 
 
-namespace ehw::editor
+namespace core::editor
 {
 	class EditorResources : public EditorWindow
 	{
