@@ -9,22 +9,6 @@
 #include "RenderManager.h"
 
 
-#ifdef _WIN64
-#ifdef _DEBUG
-#pragma comment(lib, "FW1FontWrapper/x64/Debug/FW1FontWrapperL.lib")
-#else _DEBUG
-#pragma comment(lib, "FW1FontWrapper/x64/release/FW1FontWrapper.lib")
-#endif _DEBUG
-
-
-#else _WIN64
-#error "x64만 지원합니다"
-#endif _WIN64
-
-
-
-
-
 namespace core
 {
 	FontWrapper::FontWrapper()

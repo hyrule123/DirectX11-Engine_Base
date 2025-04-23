@@ -2,7 +2,7 @@
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
 #include "Engine/Resource/Resource.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include "ResourceManagers.h"
 
@@ -20,9 +20,9 @@ namespace core
 		IsBaseResource<T>::is;
 
 	template <ResourceType T> 
-	class ResourceManager : public StaticSingleton<ResourceManager<T>>
+	class ResourceManager : public Singleton<ResourceManager<T>>
 	{
-		friend class StaticSingleton<ResourceManager<T>>;
+		friend class Singleton<ResourceManager<T>>;
 	public:
 		using Resources = 
 			std::unordered_map<std::string, std::shared_ptr<T>, Hasher_StringView, std::equal_to<>>;

@@ -1,5 +1,10 @@
 #pragma once
 
+#pragma comment(lib, "Engine.lib")
 #include <Engine/PCH_Engine.h>
 
-#define EDITOR_INCLUDED 1
+#ifdef ENGINE_MAIN
+#undef ENGINE_MAIN
+#include "Editor/EditorMain.h"
+#define ENGINE_MAIN core::editor::EditorMain
+#endif

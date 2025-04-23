@@ -72,8 +72,8 @@
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
 
-#define SAFE_DELETE(_ptr) if(_ptr) { delete _ptr; _ptr = nullptr; }
-#define SAFE_DELETE_ARRAY(_ptr) if(_ptr) { delete[] _ptr; _ptr = nullptr; }
+#define SAFE_DELETE(_ptr) if (_ptr) { delete _ptr; _ptr = nullptr; }
+#define SAFE_DELETE_ARRAY(_ptr_arr) if (_ptr_arr) { delete[] _ptr_arr; _ptr_arr = nullptr; }
 
 #define CONCAT_INNER(x, y) x ## y
 #define CONCAT(x, y) CONCAT_INNER(x, y)

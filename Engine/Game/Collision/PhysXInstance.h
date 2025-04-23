@@ -1,13 +1,13 @@
 #pragma once
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 #include "Engine/Game/Collision/PhysX.h"
 
 namespace core
 {
 	class Collider3D;
-	class PhysXInstance : public StaticSingleton<PhysXInstance>
+	class PhysXInstance : public Singleton<PhysXInstance>
 	{
-		friend class StaticSingleton<PhysXInstance>;
+		friend class Singleton<PhysXInstance>;
 		friend class GameEngine;
 	private:
 		PhysXInstance();

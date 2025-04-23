@@ -1,15 +1,15 @@
 #pragma once
 #include "Engine/define_Macro.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include <functional>
 
 
 namespace core
 {
-	class ResourceManagers : public StaticSingleton<ResourceManagers>
+	class ResourceManagers : public Singleton<ResourceManagers>
 	{
-		friend class StaticSingleton<ResourceManagers>;
+		friend class Singleton<ResourceManagers>;
 		friend class GameEngine;
 
 	public:

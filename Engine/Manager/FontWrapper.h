@@ -1,13 +1,13 @@
 #pragma once
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include <FW1FontWrapper/FW1FontWrapper.h>
 #include <FW1FontWrapper/FW1CompileSettings.h>
 namespace core
 {
-	class FontWrapper : public StaticSingleton<FontWrapper>
+	class FontWrapper : public Singleton<FontWrapper>
 	{
-		friend class StaticSingleton<FontWrapper>;
+		friend class Singleton<FontWrapper>;
 		friend class GameEngine;
 	private:
 		FontWrapper();

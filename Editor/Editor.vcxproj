@@ -29,6 +29,7 @@
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
     <ClInclude Include="DebugObject\Object.h" />
+    <ClInclude Include="EditorMain.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="DebugObject\SceneViewer.cpp" />
     <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
     <ClCompile Include="DebugObject\Object.cpp" />
+    <ClCompile Include="EditorMain.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\ImGuizmo.cpp" />

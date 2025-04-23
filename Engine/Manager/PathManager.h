@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Resource/define_Resource.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 
 #include <filesystem>
@@ -11,9 +11,9 @@ namespace std
 
 namespace core
 {
-	class PathManager : public StaticSingleton<PathManager>
+	class PathManager : public Singleton<PathManager>
 	{
-		friend class StaticSingleton<PathManager>;
+		friend class Singleton<PathManager>;
 		friend class GameEngine;
 	public:
 		const std::fs::path& GetResPathAbsolute() { return m_absoluteResourceDir; }

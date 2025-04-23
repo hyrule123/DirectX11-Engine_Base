@@ -1,7 +1,5 @@
 #pragma once
 #include "Engine/Common.h"
-#include "Engine/Util/LazySingleton.h"
-
 #include <type_traits>
 
 //클래스의 헤더 최상단에 작성. 클래스별 이름을 등록한다.
@@ -64,13 +62,11 @@ namespace core
 	마찬가지로 AtExit도 사용 불가능 -> 직접 메모리 해제를 해주어야 함
 	*/
 	class EntityFactory
-		: public LazySingleton<EntityFactory>
+		: public Singleton<EntityFactory>
 	{
+		SINGLETON_ONLY(EntityFactory);
+
 		friend class GameEngine;
-		friend class LazySingleton<EntityFactory>;
-	private:
-		EntityFactory();
-		~EntityFactory();
 
 	public:
 		std::unique_ptr<Entity> instantiate(const std::string_view key);

@@ -1,13 +1,13 @@
 #pragma once
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include "Engine/Game/Scene.h"
 
 namespace core
 {
-	class SceneManager : public StaticSingleton<SceneManager>
+	class SceneManager : public Singleton<SceneManager>
 	{
-		friend class StaticSingleton<SceneManager>;
+		friend class Singleton<SceneManager>;
 	private:
 		SceneManager();
 		~SceneManager();

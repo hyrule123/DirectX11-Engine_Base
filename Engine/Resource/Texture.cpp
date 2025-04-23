@@ -8,18 +8,6 @@
 #include "Engine/Manager/ResourceManager.h"
 
 
-#ifdef _WIN64
-#ifdef _DEBUG
-#pragma comment(lib, "DirectXTex/x64/Debug/DirectXTex.lib") 
-#else _DEBUG
-#pragma comment(lib, "DirectXTex/x64/Release/DirectXTex.lib") 
-#endif _DEBUG
-
-
-#else _WIN64
-#error "x64만 지원합니다"
-#endif _WIN64
-
 namespace core
 {
 	Texture::Texture()

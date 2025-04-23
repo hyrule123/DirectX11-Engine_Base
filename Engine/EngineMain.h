@@ -1,32 +1,29 @@
 #pragma once
 #include "Engine/Common.h"
-#include "Engine/Util/StaticSingleton.h"
 
 //설명: 윈도우 인스턴스 초기화 및 GameEngine 루프를 실행하는곳
 namespace core
 {
 	struct tDesc_EngineMain
 	{
-		HINSTANCE Inst;
-		HICON	  WindowIcon;
-		const TCHAR* TitleName;
-		const TCHAR* ClassName;
-		int LeftPos;
-		int TopPos;
-		int Width;
-		int Height;
+		HINSTANCE hInstance;
+		HICON	  windowIcon;
+		const TCHAR* titleName;
+		const TCHAR* className;
+		int leftPos;
+		int topPos;
+		int width;
+		int height;
 
-		std::vector<std::function<void()>> ExternalInitFuncs;
+		std::function<void()> entryFunction;
 
 		core::tGPUManagerDesc GPUDesc;
-
-		std::function<void()> EditorRunFunction;
 	};
 
 	class EngineMain
 	{
 	public:
-		EngineMain(const tDesc_EngineMain& _Desc);
+		EngineMain(const tDesc_EngineMain& _setting);
 		~EngineMain();
 
 		BOOL Run();

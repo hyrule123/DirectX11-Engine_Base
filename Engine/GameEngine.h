@@ -1,17 +1,19 @@
 #pragma once
 #include "Engine/Common.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 namespace core
 {
-	class GameEngine : public StaticSingleton<GameEngine>
+	class GameEngine : public Singleton<GameEngine>
 	{
-		friend class StaticSingleton<GameEngine>;
-	private:
-		GameEngine();
-		~GameEngine();
+		SINGLETON_ONLY(GameEngine);
+
 	public:
 		BOOL init(const tGameEngineDesc& _AppDesc);
+
+		void SetEditorFunc(const std::function<void()>& _editorFunc) {
+			m_editorRunFunction = _editorFunc;
+		}
 
 		void update();
 		void final_update();

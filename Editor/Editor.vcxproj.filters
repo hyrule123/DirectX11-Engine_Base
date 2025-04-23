@@ -40,6 +40,7 @@
     <ClInclude Include="Widget\Widget_List.h" />
     <ClInclude Include="Widget\Widget_Tree.h" />
     <ClInclude Include="EditorManager.h" />
+    <ClInclude Include="EditorMain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp" />
@@ -79,5 +80,6 @@
     <ClCompile Include="Widget\Widget_List.cpp" />
     <ClCompile Include="Widget\Widget_Tree.cpp" />
     <ClCompile Include="EditorManager.cpp" />
+    <ClCompile Include="EditorMain.cpp" />
   </ItemGroup>
 </Project>

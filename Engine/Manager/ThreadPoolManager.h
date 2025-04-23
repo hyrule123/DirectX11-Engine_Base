@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include <chrono>
 #include <condition_variable>
@@ -13,9 +13,9 @@
 
 namespace core
 {
-    class ThreadPoolManager : public StaticSingleton<ThreadPoolManager>
+    class ThreadPoolManager : public Singleton<ThreadPoolManager>
     {
-        friend class StaticSingleton<ThreadPoolManager>;
+        friend class Singleton<ThreadPoolManager>;
         friend class GameEngine;
     public:
         // job 을 추가한다.

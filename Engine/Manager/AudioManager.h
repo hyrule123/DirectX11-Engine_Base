@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Common.h"
 
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 //전방선언
 namespace FMOD
@@ -17,9 +17,9 @@ namespace FMOD
 
 namespace core
 {
-	class AudioManager final : public StaticSingleton<AudioManager>
+	class AudioManager final : public Singleton<AudioManager>
 	{
-		friend class StaticSingleton<AudioManager>;
+		friend class Singleton<AudioManager>;
 	private:
 		AudioManager();
 		~AudioManager();

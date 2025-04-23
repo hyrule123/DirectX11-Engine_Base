@@ -16,6 +16,7 @@
 #include "Engine/define_Enum.h"
 #include "Engine/define_Macro.h"
 
+#include "Engine/Util/Singleton.h"
 #include "Engine/Util/SimpleMath.h"
 #include "Engine/DefaultShader/Common_struct.hlsli"
 //SimpleMath, float2~4, int2~4, uint2~4, BOOL, TRUE, FALSE 등 정의

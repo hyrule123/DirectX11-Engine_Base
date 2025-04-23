@@ -249,7 +249,6 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Sphere.h" />
     <ClInclude Include="Game\Component\Rigidbody\Rigidbody.h" />
     <ClInclude Include="Resource\Mesh\Mesh.h" />
-    <ClInclude Include="Util\StaticSingleton.h" />
     <ClInclude Include="Util\Serialize\JsonSerializer.h" />
     <ClInclude Include="Util\Serialize\BinarySerializer.h" />
     <ClInclude Include="Common.h" />
@@ -310,7 +309,7 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
     <ClInclude Include="Resource\Model3D\Model3D.h" />
     <ClInclude Include="Resource\Shader\Shader.h" />
     <ClInclude Include="Util\SimpleMath.h" />
-    <ClInclude Include="Util\LazySingleton.h" />
+    <ClInclude Include="Util\Singleton.h" />
     <ClInclude Include="Util\Serialize\json-forwards.h" />
     <ClInclude Include="Util\Serialize\json.h" />
     <ClInclude Include="Game\Component\Light\Light_3D.h" />

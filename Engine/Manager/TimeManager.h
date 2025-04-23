@@ -2,15 +2,15 @@
 #include "Engine/define_Enum.h"
 #include "Engine/DefaultSettingVar.h"
 #include "Engine/GlobalVariable.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include <chrono>
 
 namespace core
 {
-	class TimeManager : public StaticSingleton<TimeManager>
+	class TimeManager : public Singleton<TimeManager>
 	{
-		friend class StaticSingleton<TimeManager>;
+		friend class Singleton<TimeManager>;
 		friend class GameEngine;
 	public:
 		__forceinline float DeltaTime() { return m_currentDeltaTime; }

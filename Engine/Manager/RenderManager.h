@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GPU/CommonGPU.h"
 #include "Engine/Common.h"
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include "Engine/Manager/SceneRenderAgent.h"
 
@@ -20,9 +20,9 @@ namespace core
 
 	class MultiRenderTarget;
 
-	class RenderManager : public StaticSingleton<RenderManager>
+	class RenderManager : public Singleton<RenderManager>
 	{
-		friend class StaticSingleton<RenderManager>;
+		friend class Singleton<RenderManager>;
 		friend class GameEngine;
 
 	private:

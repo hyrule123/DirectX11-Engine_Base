@@ -1,8 +1,6 @@
 #ifndef PCH_ENGINE
 #define PCH_ENGINE
 
-
-
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -67,6 +65,15 @@
 
 //FBX
 #pragma comment(lib, "fbxsdk/libfbxsdk-md.lib")
+
+//Font Wrapper
+#pragma comment(lib, "FW1FontWrapper/FW1FontWrapperL.lib")
+
+//DirectXTex
+#pragma comment(lib, "DirectXTex/DirectXTex.lib") 
+
+#include "Engine/EngineMain.h"
+#define ENGINE_MAIN core::EngineMain
 
 #endif
 

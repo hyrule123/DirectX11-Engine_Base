@@ -15,7 +15,7 @@
 #include "Engine/Manager/ThreadPoolManager.h"
 
 
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 #include "Engine/EngineMain.h"
 

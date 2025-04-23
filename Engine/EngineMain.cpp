@@ -8,17 +8,14 @@
 
 namespace core
 {
-    EngineMain::EngineMain(const tDesc_EngineMain& _Desc)
-    : m_hinstance{}
-    , m_hwnd{}
-    , m_hacceltable{}
+    EngineMain::EngineMain(const tDesc_EngineMain& _setting)
     {
-        m_hinstance = _Desc.Inst;
+        m_hinstance = _setting.hInstance;
 
         AddCommonMsgHandleFunc(&Wm_Destroy);
 
-        ASSERT(RegisterClientClass(_Desc), "창 생성 실패");
-        ASSERT(InitInstance(_Desc), "창 생성 실패");
+        ASSERT(RegisterClientClass(_setting), "창 생성 실패");
+        ASSERT(InitInstance(_setting), "창 생성 실패");
 
         //if문 체크 말고 다른방식으로 하면 자꾸 경고뜸
         if (m_hwnd) {
@@ -27,26 +24,22 @@ namespace core
         else {
             ASSERT(false, "HWND가 생성되지 않음.");
         }
-        
+
         UpdateWindow(m_hwnd);
 
         core::tGameEngineDesc engineDesc;
         engineDesc.Hwnd = m_hwnd;
-        engineDesc.Height = _Desc.Height;
-        engineDesc.Width = _Desc.Width;
-        engineDesc.LeftWindowPos = _Desc.LeftPos;
-        engineDesc.TopWindowPos = _Desc.TopPos;
-        engineDesc.GPUDesc = _Desc.GPUDesc;
-        engineDesc.EditorRunFunction = _Desc.EditorRunFunction;
+        engineDesc.Height = _setting.height;
+        engineDesc.Width = _setting.width;
+        engineDesc.LeftWindowPos = _setting.leftPos;
+        engineDesc.TopWindowPos = _setting.topPos;
+        engineDesc.GPUDesc = _setting.GPUDesc;
 
         core::GameEngine::get_inst().init(engineDesc);
 
-        for (size_t i = 0; i < _Desc.ExternalInitFuncs.size(); ++i)
+        if (_setting.entryFunction)
         {
-            if (_Desc.ExternalInitFuncs[i])
-            {
-                _Desc.ExternalInitFuncs[i]();
-            }
+            _setting.entryFunction();
         }
 
         m_hacceltable = LoadAccelerators(m_hinstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
@@ -54,9 +47,10 @@ namespace core
 
     EngineMain::~EngineMain()
     {
+        AtExit::CallAtExit();
+
         m_hinstance = {};
         m_hwnd = {};
-
         m_commonMsgHandleFunctions.clear();
     }
 
@@ -91,8 +85,6 @@ namespace core
             }
         }
 
-        //종료
-        AtExit::CallAtExit();
         return bReturn;
     }
 
@@ -127,12 +119,12 @@ namespace core
         WinClass.cbClsExtra = 0;
         WinClass.cbWndExtra = 0;
         WinClass.hInstance = m_hinstance;
-        WinClass.hIcon = _Desc.WindowIcon;
+        WinClass.hIcon = _Desc.windowIcon;
         WinClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
         WinClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
         WinClass.lpszMenuName = NULL/*MAKEINTRESOURCEW(IDC_MY44ENGINE)*/;
-        WinClass.lpszClassName = _Desc.ClassName;
-        WinClass.hIconSm = _Desc.WindowIcon;
+        WinClass.lpszClassName = _Desc.className;
+        WinClass.hIconSm = _Desc.windowIcon;
 
         return RegisterClassEx(&WinClass);
     }
@@ -140,8 +132,8 @@ namespace core
 
     BOOL EngineMain::InitInstance(const tDesc_EngineMain& _Desc)
     {
-        m_hwnd = CreateWindowW(_Desc.ClassName, _Desc.TitleName, WS_OVERLAPPEDWINDOW,
-            CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _Desc.Inst, nullptr);
+        m_hwnd = CreateWindowW(_Desc.className, _Desc.titleName, WS_OVERLAPPEDWINDOW,
+            CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _Desc.hInstance, nullptr);
         if (!m_hwnd)
         {
             return FALSE;

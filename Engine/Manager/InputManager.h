@@ -2,7 +2,7 @@
 #include "Engine/Util/EnumFlags.h"
 #include "Engine/Common.h"
 
-#include "Engine/Util/StaticSingleton.h"
+#include "Engine/Util/Singleton.h"
 
 namespace core
 {
@@ -42,9 +42,9 @@ namespace core
 
 
 	class InputManager
-		: public StaticSingleton<InputManager>
+		: public Singleton<InputManager>
 	{
-		friend class StaticSingleton<InputManager>;
+		friend class Singleton<InputManager>;
 		friend class GameEngine;
 	public:
 		struct tKey
