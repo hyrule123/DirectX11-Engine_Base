@@ -26,10 +26,10 @@
 namespace core
 {
 	GameEngine::GameEngine()
-		: m_hwnd{ nullptr }
-		, m_hdc{ nullptr }
-		, m_editorRunFunction { nullptr }
-		, m_bRunning { false }
+		: m_hwnd{}
+		, m_hdc{}
+		, m_editorRunFunction{}
+		, m_bRunning{}
 	{
 	}
 

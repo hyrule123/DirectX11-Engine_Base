@@ -219,7 +219,6 @@ namespace core
 			}
 		}
 
-
 		std::wstring Extension = _fullPath.extension().wstring();
 		
 		DirectX::ScratchImage img{};
