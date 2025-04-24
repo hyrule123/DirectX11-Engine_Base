@@ -9,7 +9,7 @@ namespace core
 		SINGLETON_ONLY(GameEngine);
 
 	public:
-		BOOL init(const tGameEngineDesc& _AppDesc);
+		void init(const tGameEngineDesc& _AppDesc);
 
 		void SetEditorFunc(const std::function<void()>& _editorFunc) {
 			m_editorRunFunction = _editorFunc;
@@ -23,7 +23,7 @@ namespace core
 		void frame_end();
 
 		// Running main engine loop
-		bool Run();
+		BOOL Run();
 
 		//사이즈를 입력하면 조절
 		void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);
@@ -41,6 +41,6 @@ namespace core
 
 		std::function<void()> m_editorRunFunction;
 
-		bool m_bRunning;
+		BOOL m_bRunning : 1;
 	};
 }

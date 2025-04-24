@@ -46,12 +46,9 @@ namespace core
 		EntityFactory::Destroy();
 	}
 
-	BOOL GameEngine::init(const tGameEngineDesc& _desc)
+	void GameEngine::init(const tGameEngineDesc& _desc)
 	{
-		if (nullptr == _desc.Hwnd)
-		{
-			return FALSE;
-		}
+		ASSERT(_desc.Hwnd, "Game Engine 초기화 실패.");
 		m_hwnd = _desc.Hwnd;
 		m_hdc = GetDC(_desc.Hwnd);
 
@@ -91,9 +88,7 @@ namespace core
 
 		m_editorRunFunction = _desc.EditorRunFunction;
 
-		m_bRunning = true;
-
-		return TRUE;
+		m_bRunning = TRUE;
 	}
 
 	// 게임 로직 캐릭터 이동 등등 
@@ -136,7 +131,7 @@ namespace core
 	}
 
 	// Running main engine loop
-	bool GameEngine::Run()
+	BOOL GameEngine::Run()
 	{
 		update();
 		final_update();
