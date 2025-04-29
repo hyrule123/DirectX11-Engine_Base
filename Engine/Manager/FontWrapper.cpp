@@ -15,6 +15,8 @@ namespace core
 		: m_FW1Factory{ nullptr }
 		, m_fontWrapper{ nullptr }
 	{
+		AtExit::add_func(FontWrapper::destroy_inst);
+
 		ASSERT(
 			SUCCEEDED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory))
 			,"FW1CreateFactory 실패");

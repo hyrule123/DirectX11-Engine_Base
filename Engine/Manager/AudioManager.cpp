@@ -13,6 +13,8 @@ namespace core
 		: mSystem{}
 		, mCoreSystem{}
 	{
+		AtExit::add_func(AudioManager::destroy_inst);
+
 		void* extraDriverData = NULL;
 
 		FMOD_RESULT result = FMOD::Studio::System::create(&mSystem);
@@ -61,8 +63,4 @@ namespace core
 
 		mCoreSystem->set3DListenerAttributes(0, &fmodPosition, &fmodVelocity, &fmodForward, &fmodUp);
 	}
-
-
-
-
 }

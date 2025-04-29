@@ -20,6 +20,8 @@ namespace core
         , m_accumulatedDeltaTime{}
         , mOneSecond{}
     {
+        AtExit::add_func(TimeManager::destroy_inst);
+
         m_prevTime = std::chrono::high_resolution_clock::now();
 
         SetMaxFixedUpdatesPerFrame(g_maxFixedUpdatesPerFrame);

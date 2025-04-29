@@ -7,11 +7,11 @@ namespace core {
 	{
 		friend class EngineMain;
 	public:
-		static void add_func(const std::function<void()>& _Func) { mAtExitFuncs.push(_Func); }
+		static void add_func(const std::function<void()>& _Func) { m_atExitFuncs.push(_Func); }
 
 	private:
-		static void CallAtExit();
-		static std::stack<std::function<void()>> mAtExitFuncs;
+		static void on_exit();
+		static std::stack<std::function<void()>> m_atExitFuncs;
 
 	private:
 		AtExit() = delete;

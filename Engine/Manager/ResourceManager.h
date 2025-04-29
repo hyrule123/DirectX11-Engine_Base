@@ -141,6 +141,7 @@ namespace core
 		, m_BaseDir{}
 		, m_Resources{}
 	{
+		AtExit::add_func(ResourceManager<T>::destroy_inst);
 	}
 
 	template<ResourceType T>

@@ -8,6 +8,8 @@ namespace core
 		, m_relativeResourceDir{}
 		, m_relativeDir_ShaderCSO{}
 	{
+		AtExit::add_func(PathManager::destroy_inst);
+
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_absoluteResourceDir = std::filesystem::current_path().parent_path().parent_path().parent_path();
 		m_absoluteResourceDir /= name::path::directory::resource::Resource;

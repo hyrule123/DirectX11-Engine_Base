@@ -23,8 +23,9 @@ namespace core
 
 	EntityFactory::EntityFactory()
 	{
+		AtExit::add_func(EntityFactory::destroy_inst);
 	}
-	EntityFactory::~EntityFactory()
+	EntityFactory::~EntityFactory()	
 	{
 	}
 	std::unique_ptr<Entity> EntityFactory::instantiate(const std::string_view key)

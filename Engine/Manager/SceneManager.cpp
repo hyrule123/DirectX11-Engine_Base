@@ -15,6 +15,7 @@ namespace core
 	SceneManager::SceneManager()
 		: m_activeScene{nullptr}
 	{
+		AtExit::add_func(SceneManager::destroy_inst);
 	}
 
 	SceneManager::~SceneManager()

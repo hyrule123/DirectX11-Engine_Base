@@ -17,6 +17,10 @@ namespace core {
 	class SceneRenderAgent
 	{
 		friend class RenderManager;
+	private:
+		SceneRenderAgent();
+		~SceneRenderAgent();
+
 	public:
 		struct MeshMaterialKey {
 			std::shared_ptr<Mesh> mesh;
@@ -30,8 +34,6 @@ namespace core {
 			};
 		};
 	private:
-		SceneRenderAgent();
-		~SceneRenderAgent();
 		void init();
 		void release();
 

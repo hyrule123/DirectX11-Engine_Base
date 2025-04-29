@@ -36,6 +36,8 @@ namespace core
 		, mMousePosPrev()
 		, mMouseDir()
 	{
+		AtExit::add_func(InputManager::destroy_inst);
+
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
 			tKey key;

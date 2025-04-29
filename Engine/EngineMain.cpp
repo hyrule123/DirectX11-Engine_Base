@@ -47,7 +47,7 @@ namespace core
 
     EngineMain::~EngineMain()
     {
-        AtExit::CallAtExit();
+        AtExit::on_exit();
 
         m_hinstance = {};
         m_hwnd = {};

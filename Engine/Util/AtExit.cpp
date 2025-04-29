@@ -1,14 +1,14 @@
 #include "AtExit.h"
 
 namespace core {
-	std::stack<std::function<void()>> AtExit::mAtExitFuncs;
+	std::stack<std::function<void()>> AtExit::m_atExitFuncs;
 
-	void AtExit::CallAtExit()
+	void AtExit::on_exit()
 	{
-		while (false == mAtExitFuncs.empty())
+		while (false == m_atExitFuncs.empty())
 		{
-			mAtExitFuncs.top()();
-			mAtExitFuncs.pop();
+			m_atExitFuncs.top()();
+			m_atExitFuncs.pop();
 		}
 	}
 }
