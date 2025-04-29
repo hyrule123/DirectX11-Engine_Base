@@ -11,10 +11,14 @@ namespace std
 
 namespace core
 {
-	class PathManager : public Singleton<PathManager>
+	class PathManager
 	{
-		friend class Singleton<PathManager>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(PathManager);
+		PathManager();
+		~PathManager();
+
 	public:
 		const std::fs::path& GetResPathAbsolute() { return m_absoluteResourceDir; }
 		const std::fs::path& GetResPathRelative() { return m_relativeResourceDir; }
@@ -22,10 +26,6 @@ namespace core
 		const std::fs::path& GetShaderCSOPath() { return m_relativeDir_ShaderCSO; }
 
 		std::fs::path MakePathStrKey(const std::fs::path& _fullPath);
-
-	private:
-		PathManager();
-		~PathManager();
 
 	private:
 		std::filesystem::path m_absoluteResourceDir;

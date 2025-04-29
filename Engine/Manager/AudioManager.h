@@ -17,9 +17,9 @@ namespace FMOD
 
 namespace core
 {
-	class AudioManager final : public Singleton<AudioManager>
+	class AudioManager final
 	{
-		friend class Singleton<AudioManager>;
+		DECLARE_SINGLETON(AudioManager);
 	private:
 		AudioManager();
 		~AudioManager();

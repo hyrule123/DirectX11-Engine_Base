@@ -26,6 +26,18 @@
 
 namespace core
 {
+	ResourceManagers::ResourceManagers()
+		: m_CleanUnusedResourcesFunction{}
+	{
+		AtExit::add_func(ResourceManagers::destroy_inst);
+	}
+
+	ResourceManagers::~ResourceManagers()
+	{
+		Transform::release_static();
+		m_CleanUnusedResourcesFunction.clear();
+	}
+
 	void ResourceManagers::CleanUnusedResources()
 	{
 		//거꾸로 실행
@@ -33,17 +45,6 @@ namespace core
 		{
 			m_CleanUnusedResourcesFunction[i]();
 		}
-	}
-
-	ResourceManagers::ResourceManagers()
-		: m_CleanUnusedResourcesFunction{}
-	{
-	}
-
-	ResourceManagers::~ResourceManagers()
-	{
-		Transform::release_static();
-		m_CleanUnusedResourcesFunction.clear();
 	}
 
 	void ResourceManagers::init_resource_managers()

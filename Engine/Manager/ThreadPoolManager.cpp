@@ -10,6 +10,7 @@ namespace core
         , mCVJobqueue{}
         , mMtxJobQueue{}
     {
+        AtExit::add_func(ThreadPoolManager::destroy_inst);
     }
     ThreadPoolManager::~ThreadPoolManager()
     {

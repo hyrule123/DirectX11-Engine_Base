@@ -13,18 +13,22 @@
 
 namespace core
 {
-    class ThreadPoolManager : public Singleton<ThreadPoolManager>
+    class ThreadPoolManager
     {
-        friend class Singleton<ThreadPoolManager>;
         friend class GameEngine;
+
+        DECLARE_SINGLETON(ThreadPoolManager);
+    private:
+        ThreadPoolManager();
+        ~ThreadPoolManager();
+        
     public:
         // job 을 추가한다.
         template <class F, class... Args>
         std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F&& f, Args&&... args);
 
     private:
-        ThreadPoolManager();
-        ~ThreadPoolManager();
+        
         void init(size_t _numThread);
 
     private:

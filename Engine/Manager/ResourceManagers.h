@@ -7,10 +7,14 @@
 
 namespace core
 {
-	class ResourceManagers : public Singleton<ResourceManagers>
+	class ResourceManagers
 	{
-		friend class Singleton<ResourceManagers>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(ResourceManagers);
+	private:
+		ResourceManagers();
+		~ResourceManagers();
 
 	public:
 		void CleanUnusedResources();
@@ -21,8 +25,6 @@ namespace core
 		}
 		
 	private:
-		ResourceManagers();
-		~ResourceManagers();
 		void init_resource_managers();
 		void load_default_resources();
 

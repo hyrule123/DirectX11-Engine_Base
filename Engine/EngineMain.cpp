@@ -35,7 +35,7 @@ namespace core
         engineDesc.TopWindowPos = _setting.topPos;
         engineDesc.GPUDesc = _setting.GPUDesc;
 
-        core::GameEngine::get_inst().init(engineDesc);
+        GameEngine::get_inst().init(engineDesc);
 
         if (_setting.entryFunction)
         {

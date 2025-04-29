@@ -31,6 +31,7 @@ namespace core
 		, m_editorRunFunction{}
 		, m_bRunning{}
 	{
+		AtExit::add_func(GameEngine::destroy_inst);
 	}
 
 	GameEngine::~GameEngine()
@@ -43,7 +44,7 @@ namespace core
 		m_editorRunFunction = nullptr;
 
 		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
-		EntityFactory::Destroy();
+		EntityFactory::destroy_inst();
 	}
 
 	void GameEngine::init(const tGameEngineDesc& _desc)

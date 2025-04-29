@@ -4,9 +4,12 @@
 
 namespace core
 {
-	class GameEngine : public Singleton<GameEngine>
+	class GameEngine
 	{
-		SINGLETON_ONLY(GameEngine);
+		DECLARE_SINGLETON(GameEngine);
+	private:
+		GameEngine();
+		~GameEngine();
 
 	public:
 		void init(const tGameEngineDesc& _AppDesc);

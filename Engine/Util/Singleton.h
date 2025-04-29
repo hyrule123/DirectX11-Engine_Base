@@ -2,30 +2,15 @@
 #include "Engine/Util/AtExit.h"
 #include "Engine/Common.h"
 
-#define SINGLETON_ONLY(T) friend class Singleton<T>; private: T(); ~T(); T(const T& _copy) = delete; T(T&& _move) = delete
+//!!! 주의사항: 생성자에서 다른 싱글턴 인스턴스를 호출하지 말 것 !!!
 
-namespace core
-{
-	template<typename T>
-	class Singleton {
-	protected:
-		Singleton() {}
-		~Singleton() {}
-
-	private:
-		static inline T* m_instance = nullptr;
-
-	public:
-		static T& get_inst() {
-			if (nullptr == m_instance)
-			{
-				m_instance = new T;
-			}
-			return *(m_instance);
-		}
-		static void Destroy() { SAFE_DELETE(m_instance); }
-	};
-}
-
+#define DECLARE_SINGLETON(T) \
+public:\
+static T& get_inst() { if (nullptr == m_instance) { m_instance = new T; } return *(m_instance); }\
+static void destroy_inst() { SAFE_DELETE(m_instance); }\
+private:\
+static inline T* m_instance = nullptr;\
+T(const T& _T) = delete;\
+T(T&& _T) = delete
 
 

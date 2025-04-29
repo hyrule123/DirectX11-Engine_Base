@@ -5,11 +5,13 @@
 namespace core {
 	class AtExit
 	{
-	private:
-		static std::stack<std::function<void()>> mAtExitFuncs;
+		friend class EngineMain;
 	public:
-		static void AddFunc(std::function<void()> _Func) { mAtExitFuncs.push(_Func); }
+		static void add_func(const std::function<void()>& _Func) { mAtExitFuncs.push(_Func); }
+
+	private:
 		static void CallAtExit();
+		static std::stack<std::function<void()>> mAtExitFuncs;
 
 	private:
 		AtExit() = delete;

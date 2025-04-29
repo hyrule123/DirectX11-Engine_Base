@@ -8,10 +8,15 @@
 
 namespace core
 {
-	class TimeManager : public Singleton<TimeManager>
+	class TimeManager
 	{
-		friend class Singleton<TimeManager>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(TimeManager);
+	private:
+		TimeManager();
+		~TimeManager();
+
 	public:
 		__forceinline float DeltaTime() { return m_currentDeltaTime; }
 		__forceinline float get_fixed_deltatime() { return m_fixedDeltaTime; }
@@ -29,10 +34,6 @@ namespace core
 		//최대 fixed_update 횟수를 설정할 수 있음.
 		//UINT_MAX로 설정시 무제한
 		void SetMaxFixedUpdatesPerFrame(uint _max);
-
-	private:
-		TimeManager();
-		~TimeManager();
 
 	private:
 		float			m_currentDeltaTime;

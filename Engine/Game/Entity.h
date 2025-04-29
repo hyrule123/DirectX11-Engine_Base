@@ -62,11 +62,13 @@ namespace core
 	마찬가지로 AtExit도 사용 불가능 -> 직접 메모리 해제를 해주어야 함
 	*/
 	class EntityFactory
-		: public Singleton<EntityFactory>
 	{
-		SINGLETON_ONLY(EntityFactory);
-
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(EntityFactory);
+	private:
+		EntityFactory();
+		~EntityFactory();
 
 	public:
 		std::unique_ptr<Entity> instantiate(const std::string_view key);

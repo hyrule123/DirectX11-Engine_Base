@@ -20,11 +20,11 @@ namespace core
 
 	class MultiRenderTarget;
 
-	class RenderManager : public Singleton<RenderManager>
+	class RenderManager
 	{
-		friend class Singleton<RenderManager>;
 		friend class GameEngine;
 
+		DECLARE_SINGLETON(RenderManager);
 	private:
 		RenderManager();
 		~RenderManager();

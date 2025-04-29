@@ -42,6 +42,8 @@ namespace core
 		, m_postProcessTexture{}
 		, m_sceneRenderAgent{}
 	{
+		AtExit::add_func(RenderManager::destroy_inst);
+
 		// Device, Device Context
 		uint DeviceFlag{};
 #ifdef _DEBUG

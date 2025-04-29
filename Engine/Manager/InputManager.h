@@ -42,10 +42,14 @@ namespace core
 
 
 	class InputManager
-		: public Singleton<InputManager>
 	{
-		friend class Singleton<InputManager>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(InputManager);
+	private:
+		InputManager();
+		~InputManager();
+
 	public:
 		struct tKey
 		{
@@ -53,10 +57,6 @@ namespace core
 			eKeyState eState;
 			bool	  bPressed;
 		};
-
-	private:
-		InputManager();
-		~InputManager();
 
 	public:
 		__forceinline eKeyState GetKeyState(eKeyCode keyCode) { return mKeys[static_cast<uint>(keyCode)].eState; }

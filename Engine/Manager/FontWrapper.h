@@ -5,10 +5,11 @@
 #include <FW1FontWrapper/FW1CompileSettings.h>
 namespace core
 {
-	class FontWrapper : public Singleton<FontWrapper>
+	class FontWrapper
 	{
-		friend class Singleton<FontWrapper>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(FontWrapper);
 	private:
 		FontWrapper();
 		~FontWrapper();

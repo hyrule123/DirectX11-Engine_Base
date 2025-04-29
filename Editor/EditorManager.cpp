@@ -65,7 +65,7 @@ namespace core::editor
 	
 	void EditorManager::init()
 	{
-		AtExit::AddFunc(EditorManager::release);
+		AtExit::add_func(EditorManager::release);
 
 		EngineMain::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
 

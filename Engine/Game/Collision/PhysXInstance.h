@@ -5,10 +5,11 @@
 namespace core
 {
 	class Collider3D;
-	class PhysXInstance : public Singleton<PhysXInstance>
+	class PhysXInstance
 	{
-		friend class Singleton<PhysXInstance>;
 		friend class GameEngine;
+
+		DECLARE_SINGLETON(PhysXInstance);
 	private:
 		PhysXInstance();
 		~PhysXInstance();

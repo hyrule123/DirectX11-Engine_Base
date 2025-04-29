@@ -20,9 +20,13 @@ namespace core
 		IsBaseResource<T>::is;
 
 	template <ResourceType T> 
-	class ResourceManager : public Singleton<ResourceManager<T>>
+	class ResourceManager
 	{
-		friend class Singleton<ResourceManager<T>>;
+		DECLARE_SINGLETON(ResourceManager<T>);
+	private:
+		ResourceManager() ;
+		~ResourceManager();
+		
 	public:
 		using Resources = 
 			std::unordered_map<std::string, std::shared_ptr<T>, Hasher_StringView, std::equal_to<>>;
@@ -54,10 +58,6 @@ namespace core
 
 		void SetBaseDir(const std::fs::path& _base_directory);
 		const std::fs::path& GetBaseDir() { return m_BaseDir; }
-
-	private:
-		ResourceManager();
-		~ResourceManager();
 
 	private:
 		bool m_bInitialized;
@@ -157,7 +157,7 @@ namespace core
 
 		ResourceManagers::get_inst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<T>::CleanUnusedResources, this));
 
-		AtExit::AddFunc(std::bind(&ResourceManager<T>::release, this));
+		AtExit::add_func(std::bind(&ResourceManager<T>::release, this));
 	}
 
 	template<ResourceType T>

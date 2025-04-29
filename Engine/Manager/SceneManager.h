@@ -5,9 +5,9 @@
 
 namespace core
 {
-	class SceneManager : public Singleton<SceneManager>
+	class SceneManager
 	{
-		friend class Singleton<SceneManager>;
+		DECLARE_SINGLETON(SceneManager);
 	private:
 		SceneManager();
 		~SceneManager();
