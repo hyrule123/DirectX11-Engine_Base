@@ -12,10 +12,10 @@ namespace core
     {
         m_hinstance = _setting.hInstance;
 
-        AddCommonMsgHandleFunc(&Wm_Destroy);
+        add_common_msg_handle_func(&wm_destroy);
 
-        ASSERT(RegisterClientClass(_setting), "창 생성 실패");
-        ASSERT(InitInstance(_setting), "창 생성 실패");
+        ASSERT(register_client_class(_setting), "창 생성 실패");
+        ASSERT(init_instance(_setting), "창 생성 실패");
 
         //if문 체크 말고 다른방식으로 하면 자꾸 경고뜸
         if (m_hwnd) {
@@ -54,7 +54,7 @@ namespace core
         m_commonMsgHandleFunctions.clear();
     }
 
-    BOOL EngineMain::Run()
+    BOOL EngineMain::run()
     {
         BOOL bReturn = TRUE;
         MSG msg{};
@@ -81,14 +81,14 @@ namespace core
             }
             else
             {
-                bReturn = core::GameEngine::get_inst().Run();
+                bReturn = core::GameEngine::get_inst().run();
             }
         }
 
         return bReturn;
     }
 
-    void EngineMain::AddCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
+    void EngineMain::add_common_msg_handle_func(const WindowMsgHandleFunc& _handleFunc)
     {
         if (_handleFunc)
         {
@@ -96,7 +96,7 @@ namespace core
         }
     }
 
-    void EngineMain::RemoveCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc)
+    void EngineMain::remove_common_msg_handle_func(const WindowMsgHandleFunc& _handleFunc)
     {
         for (auto iter = m_commonMsgHandleFunctions.begin(); m_commonMsgHandleFunctions.end() != iter; ++iter)
         {
@@ -108,14 +108,14 @@ namespace core
         }
     }
 
-    ATOM EngineMain::RegisterClientClass(const tDesc_EngineMain& _Desc)
+    ATOM EngineMain::register_client_class(const tDesc_EngineMain& _Desc)
     {
         WNDCLASSEX WinClass{};
 
         WinClass.cbSize = sizeof(WNDCLASSEX);
 
         WinClass.style = CS_HREDRAW | CS_VREDRAW;
-        WinClass.lpfnWndProc = WndProc;
+        WinClass.lpfnWndProc = wnd_proc;
         WinClass.cbClsExtra = 0;
         WinClass.cbWndExtra = 0;
         WinClass.hInstance = m_hinstance;
@@ -130,7 +130,7 @@ namespace core
     }
 
 
-    BOOL EngineMain::InitInstance(const tDesc_EngineMain& _Desc)
+    BOOL EngineMain::init_instance(const tDesc_EngineMain& _Desc)
     {
         m_hwnd = CreateWindowW(_Desc.className, _Desc.titleName, WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, _Desc.hInstance, nullptr);
@@ -141,7 +141,7 @@ namespace core
         return TRUE;
     }
 
-    LRESULT CALLBACK EngineMain::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+    LRESULT CALLBACK EngineMain::wnd_proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         //참고
         //WM_CLOSE: 윈도우의 X버튼이나 Alt + F4 등의 버튼을 눌렀을 때 전달되는 메시지.
@@ -160,11 +160,11 @@ namespace core
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
 
-    LRESULT WINAPI EngineMain::Wm_Destroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+    LRESULT WINAPI EngineMain::wm_destroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         LRESULT ret = 0;
         if (message == WM_DESTROY) {
-            GameEngine::get_inst().Destroy();
+            GameEngine::get_inst().destroy();
             PostQuitMessage(0);
             ret = 1;
         }

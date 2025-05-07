@@ -111,7 +111,7 @@ namespace core
         mOneSecond += m_deltaTime;
         if (1.0f < mOneSecond)
         {
-            HWND hWnd = GameEngine::get_inst().GetHwnd();
+            HWND hWnd = GameEngine::get_inst().get_HWND();
 
             wchar_t szFloat[50] = {};
             float FPS = 1.f / m_deltaTime;

@@ -14,8 +14,8 @@ namespace core::editor
 	EditorMain::~EditorMain()
 	{
 	}
-	BOOL EditorMain::Run()
+	BOOL EditorMain::run()
 	{
-		return m_engineMain.Run();
+		return m_engineMain.run();
 	}
 }

@@ -1,6 +1,5 @@
 #include "Collision3D.h"
 
-
 #include "Engine/Game/Scene.h"
 #include "Engine/Game/GameObject.h"
 
@@ -369,7 +368,6 @@ namespace core
 
 			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->gameObject();
 			Collider* rightCol = rightObj->GetComponent<Collider>();
-
 
 			if (leftCol == rightCol)
 			{

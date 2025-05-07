@@ -14,7 +14,7 @@ namespace core
 	public:
 		void init(const tGameEngineDesc& _AppDesc);
 
-		void SetEditorFunc(const std::function<void()>& _editorFunc) {
+		void set_editor_func(const std::function<void()>& _editorFunc) {
 			m_editorRunFunction = _editorFunc;
 		}
 
@@ -26,17 +26,17 @@ namespace core
 		void frame_end();
 
 		// Running main engine loop
-		BOOL Run();
+		BOOL run();
 
 		//사이즈를 입력하면 조절
-		void SetWindowPos(int _LeftWindowPos, int _TopWindowPos);
-		void SetWindowSize(int _Width, int _Height);
-		int2 GetWindowSize();
+		void set_window_pos(int _LeftWindowPos, int _TopWindowPos);
+		void set_window_size(int _Width, int _Height);
+		int2 get_window_size();
 
-		HWND GetHwnd() { return m_hwnd; }
+		HWND get_HWND() { return m_hwnd; }
 
-		void Destroy();
-		void ShutDown() { m_bRunning = false; }
+		void destroy();
+		void shutdown() { m_bRunning = false; }
 
 	private:
 		HWND m_hwnd;

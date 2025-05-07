@@ -221,7 +221,7 @@ namespace core
 	{
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 
-		swapChainDesc.OutputWindow = GameEngine::get_inst().GetHwnd();
+		swapChainDesc.OutputWindow = GameEngine::get_inst().get_HWND();
 		swapChainDesc.Windowed = true;
 		swapChainDesc.BufferCount = 2;
 		//DXGI WARNING: IDXGIFactory::CreateSwapChain: Blt-model swap effects (DXGI_SWAP_EFFECT_DISCARD and DXGI_SWAP_EFFECT_SEQUENTIAL) are legacy swap effects that are predominantly superceded by their flip-model counterparts (DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL and DXGI_SWAP_EFFECT_FLIP_DISCARD)
@@ -310,7 +310,7 @@ namespace core
 		m_viewport.MinDepth = (FLOAT)0.f;
 		m_viewport.MaxDepth = (FLOAT)1.f;
 
-		int2 winSize = GameEngine::get_inst().GetWindowSize();
+		int2 winSize = GameEngine::get_inst().get_window_size();
 
 		m_viewport.Width = (FLOAT)winSize.x;
 		m_viewport.Height = (FLOAT)winSize.y;

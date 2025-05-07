@@ -26,16 +26,16 @@ namespace core
 		EngineMain(const tDesc_EngineMain& _setting);
 		~EngineMain();
 
-		BOOL Run();
+		BOOL run();
 
-		static void AddCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc);
-		static void RemoveCommonMsgHandleFunc(const WindowMsgHandleFunc& _handleFunc);
+		static void add_common_msg_handle_func(const WindowMsgHandleFunc& _handleFunc);
+		static void remove_common_msg_handle_func(const WindowMsgHandleFunc& _handleFunc);
 
 	private:
-		ATOM RegisterClientClass(const tDesc_EngineMain& _Desc);
-		BOOL InitInstance(const tDesc_EngineMain& _Desc);
-		static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-		static LRESULT WINAPI Wm_Destroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+		ATOM register_client_class(const tDesc_EngineMain& _Desc);
+		BOOL init_instance(const tDesc_EngineMain& _Desc);
+		static LRESULT CALLBACK wnd_proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+		static LRESULT WINAPI wm_destroy(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	private:
 		HINSTANCE m_hinstance;

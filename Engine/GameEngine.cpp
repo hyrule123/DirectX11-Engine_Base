@@ -48,8 +48,8 @@ namespace core
 		m_hwnd = _desc.Hwnd;
 		m_hdc = GetDC(_desc.Hwnd);
 
-		SetWindowPos(_desc.LeftWindowPos, _desc.TopWindowPos);
-		SetWindowSize(_desc.Width, _desc.Height);
+		set_window_pos(_desc.LeftWindowPos, _desc.TopWindowPos);
+		set_window_size(_desc.Width, _desc.Height);
 
 		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
 		ThreadPoolManager::get_inst().init((size_t)4);
@@ -127,7 +127,7 @@ namespace core
 	}
 
 	// Running main engine loop
-	BOOL GameEngine::Run()
+	BOOL GameEngine::run()
 	{
 		update();
 		final_update();
@@ -138,13 +138,13 @@ namespace core
 		return m_bRunning;
 	}
 
-	void GameEngine::SetWindowPos(int _LeftWindowPos, int _TopWindowPos)
+	void GameEngine::set_window_pos(int _LeftWindowPos, int _TopWindowPos)
 	{
 		//가로세로 길이는 유지하고 위치만 변경
 		UINT flag = SWP_NOSIZE | SWP_NOZORDER;
 		::SetWindowPos(m_hwnd, nullptr, _LeftWindowPos, _TopWindowPos, 0, 0, flag);
 	}
-	void GameEngine::SetWindowSize(int _width, int _height)
+	void GameEngine::set_window_size(int _width, int _height)
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcWindow, rcClient;
@@ -163,7 +163,7 @@ namespace core
 	}
 	
 
-	int2 GameEngine::GetWindowSize()
+	int2 GameEngine::get_window_size()
 	{
 		//클라이언트 영역과 윈도우 영역의 차이를 구해서 정확한 창 크기를 설정(해상도가 조금이라도 차이나면 문제 발생함)
 		RECT rcClient{};
@@ -172,12 +172,12 @@ namespace core
 		return int2{ rcClient.right, rcClient.bottom };
 	}
 
-	void GameEngine::Destroy()
+	void GameEngine::destroy()
 	{
 		//Destroy() 호출 후
 		SceneManager::get_inst().Destroy();
 		
-		Run();
+		run();
 		frame_end();
 
 		//한 프레임 돌려주고(충돌체 해제 등의 작업 진행) 끝낸다

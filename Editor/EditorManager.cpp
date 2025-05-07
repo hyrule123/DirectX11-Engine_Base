@@ -67,7 +67,7 @@ namespace core::editor
 	{
 		AtExit::add_func(EditorManager::release);
 
-		EngineMain::AddCommonMsgHandleFunc(ImGui_ImplWin32_WndProcHandler);
+		EngineMain::add_common_msg_handle_func(ImGui_ImplWin32_WndProcHandler);
 
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 		//mDebugObjects.resize((UINT)eColliderType::END);
@@ -343,7 +343,7 @@ namespace core::editor
 
 
 		// Setup Platform/Renderer backends
-		ImGui_ImplWin32_Init(GameEngine::get_inst().GetHwnd());
+		ImGui_ImplWin32_Init(GameEngine::get_inst().get_HWND());
 		ImGui_ImplDX11_Init(RenderManager::get_inst().Device()
 			, RenderManager::get_inst().Context());
 

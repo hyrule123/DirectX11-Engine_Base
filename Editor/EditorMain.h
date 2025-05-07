@@ -9,7 +9,7 @@ namespace core::editor
 		EditorMain(const tDesc_EngineMain& _desc);
 		~EditorMain();
 
-		BOOL Run();
+		BOOL run();
 
 		EngineMain m_engineMain;
 	};

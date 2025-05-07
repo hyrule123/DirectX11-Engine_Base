@@ -39,7 +39,7 @@ namespace core::editor
 			bool p_open = GetEnable();
 			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
 			{
-				GameEngine::get_inst().ShutDown();
+				GameEngine::get_inst().shutdown();
 			}
 
 			ImGui::EndMenu();
