@@ -202,17 +202,23 @@ namespace core {
 	{
 		RenderManager::get_inst().get_rendertarget(eMRTType::Swapchain)->Bind();
 		m_debug_material->bind_shader();
-		MATRIX VP = GetMainCamera()->GetViewMatrix() * GetMainCamera()->GetProjectionMatrix();
-		for (int i = 0; i < (int)eCollider3D_Shape::END; ++i) {
-			if (m_debug_material && m_debug_meshes_3D[i]) {
 
-				//현재 W까지만 들어있으므로 VP를 곱해서 WVP를 만들어준다.
-				for (tDebugDrawData& data : m_debug_draw_data_3D[i]) {
-					data.WVP *= VP;
+		Com_Camera* mainCam = GetMainCamera();
+
+		if (mainCam)
+		{
+			MATRIX VP = mainCam->GetViewMatrix() * mainCam->GetProjectionMatrix();
+			for (int i = 0; i < (int)eCollider3D_Shape::END; ++i) {
+				if (m_debug_material && m_debug_meshes_3D[i]) {
+
+					//현재 W까지만 들어있으므로 VP를 곱해서 WVP를 만들어준다.
+					for (tDebugDrawData& data : m_debug_draw_data_3D[i]) {
+						data.WVP *= VP;
+					}
+
+					m_debug_material->set_data_and_bind_GPU(m_debug_draw_data_3D[i]);
+					m_debug_meshes_3D[i]->render_instanced((UINT)m_debug_draw_data_3D[i].size());
 				}
-
-				m_debug_material->set_data_and_bind_GPU(m_debug_draw_data_3D[i]);
-				m_debug_meshes_3D[i]->render_instanced((UINT)m_debug_draw_data_3D[i].size());
 			}
 		}
 	}
