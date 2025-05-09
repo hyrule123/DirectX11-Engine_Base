@@ -16,23 +16,16 @@ namespace core
 		Scene(const std::string_view key);
 		virtual ~Scene();
 
-		void SceneInit();
-		void SceneAwake();
-		void SceneFixedUpdate();
-		void SceneUpdate();
-		void SceneFinalUpdate();
-		void SceneFrameEnd();
+		virtual void init();
+		virtual void awake();
+		virtual void on_enter();
 
-		//로직 재정의
-		virtual void init() {}
-		virtual void OnEnter() = 0;//리소스 로드
+		virtual void fixed_update();
+		virtual void update();
+		virtual void final_update();
+		virtual void frame_end();
 
-		virtual void fixed_update() {}
-		virtual void update() {}
-		virtual void final_update() {}
-		virtual void frame_end() {}
-
-		void Destroy();
+		void destroy();
 
 		bool	IsAwaken() const { return m_bAwake; }
 

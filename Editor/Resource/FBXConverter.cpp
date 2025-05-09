@@ -31,16 +31,8 @@ namespace core::editor
 
 	void EditorFBXConverter::update_UI()
 	{
-
 		if (CheckThread())
 			return;
-
-
-
-
-		//if (CheckThread())
-			//return;
-
 
 		HilightText("FBX Source File Path");
 		if (mFBXPath.empty())

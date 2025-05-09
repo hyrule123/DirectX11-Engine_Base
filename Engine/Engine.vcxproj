@@ -116,8 +116,8 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,8 +151,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </FxCompile>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -205,8 +205,8 @@ start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>cd $(SolutionDir)
-start CodeGenerator_$(Platform)_$(Configuration).exe EngineComponent</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>

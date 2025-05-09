@@ -33,7 +33,7 @@ namespace core
 
 			for(uint i = 0; i < fixedUpdateCount; ++i)
 			{
-				m_activeScene->SceneFixedUpdate();
+				m_activeScene->fixed_update();
 			}
 
 			TimeManager::get_inst().SetFixedUpdateMode(false);
@@ -44,7 +44,7 @@ namespace core
 	{
 		if (m_activeScene)
 		{
-			m_activeScene->SceneUpdate();
+			m_activeScene->update();
 		}
 	}
 
@@ -53,7 +53,7 @@ namespace core
 	{
 		if (m_activeScene)
 		{
-			m_activeScene->SceneFinalUpdate();
+			m_activeScene->final_update();
 		}
 	}
 
@@ -61,7 +61,7 @@ namespace core
 	{
 		if (m_activeScene)
 		{
-			m_activeScene->SceneFrameEnd();
+			m_activeScene->frame_end();
 		}
 	}
 
@@ -69,7 +69,7 @@ namespace core
 	{
 		if (m_activeScene)
 		{
-			m_activeScene->Destroy();
+			m_activeScene->destroy();
 		}
 	}
 
@@ -101,9 +101,9 @@ namespace core
 		//}
 
 		//OnEnter 호출
-		m_activeScene->SceneInit();
-		m_activeScene->OnEnter();
-		m_activeScene->SceneAwake();
+		m_activeScene->init();
+		m_activeScene->on_enter();
+		m_activeScene->awake();
 
 		return m_activeScene;
 	}

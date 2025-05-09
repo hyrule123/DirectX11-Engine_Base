@@ -502,38 +502,30 @@ namespace core
 		std::fs::path texDir = ResourceManager<Texture>::get_inst().GetBaseDir();
 		texDir /= _texDestDir;
 
-		//media directory(텍스처같은 파일들) 옮겨졌는지 여부 저장 변수
-		bool bMediaDirMoved = false;
-
 		//텍스처 옮기기 위한 람다 함수
 		auto CopyAndLoadTex =
 			[&](const std::string& _srcTexPath)->std::shared_ptr<Texture>
 			{
 				//비어있을경우 return
 				if (_srcTexPath.empty())
-					return nullptr;
-
-				if (false == bMediaDirMoved)
 				{
-					std::fs::path srcTexPath = _srcTexPath;
-					srcTexPath = srcTexPath.parent_path();
+					return nullptr;
+				}
 
-					if (false == std::fs::exists(texDir))
-					{
-						std::fs::create_directories(texDir);
-					}
+				std::fs::path srcTexPath = _srcTexPath;
 
-					if (std::fs::exists(srcTexPath))
-					{
-						const auto copyOption =
-							std::fs::copy_options::overwrite_existing
-							| std::fs::copy_options::recursive;
+				if (false == std::fs::exists(texDir))
+				{
+					std::fs::create_directories(texDir);
+				}
 
-						std::fs::copy(srcTexPath, texDir, copyOption);
-						std::fs::remove_all(srcTexPath);
+				if (srcTexPath.has_extension() && std::fs::exists(srcTexPath))
+				{
+					const auto copyOption =
+						std::fs::copy_options::overwrite_existing;
 
-						bMediaDirMoved = true;
-					}
+					std::fs::copy(srcTexPath, texDir, copyOption);
+					std::fs::remove(srcTexPath);
 				}
 
 				std::fs::path texKey = _texDestDir.filename();

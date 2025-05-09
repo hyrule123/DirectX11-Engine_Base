@@ -24,27 +24,16 @@ namespace core
 		m_collisionSystem.reset();
 	}
 
-	void Scene::SceneInit()
+	void Scene::on_enter()
 	{
-		//tDesc desc{};
-		//Setting(desc);
-
-		//if (desc.EnableCollision2D || desc.EnableCollision3D)
-		//{
-		//	m_collisionSystem = std::make_unique<CollisionSystem>(this);
-
-		//	if (desc.EnableCollision2D)
-		//	{
-		//		m_collisionSystem->CreateCollision2D();
-		//	}
-		//	if (desc.EnableCollision3D)
-		//	{
-		//		m_collisionSystem->CreateCollision3D();
-		//	}
-		//}
 	}
 
-	void Scene::SceneAwake()
+	void Scene::init()
+	{
+
+	}
+
+	void Scene::awake()
 	{
 		if (m_bAwake)
 		{
@@ -59,10 +48,8 @@ namespace core
 		}
 	}
 
-	void Scene::SceneFixedUpdate()
+	void Scene::fixed_update()
 	{
-		fixed_update();
-
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			m_gameObjects[i]->fixed_update();
@@ -74,10 +61,8 @@ namespace core
 		}
 	}
 
-	void Scene::SceneUpdate()
+	void Scene::update()
 	{
-		update();
-
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
@@ -87,9 +72,8 @@ namespace core
 		}
 	}
 
-	void Scene::SceneFinalUpdate()
+	void Scene::final_update()
 	{
-		final_update();
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
 			if (m_gameObjects[i]->IsActive())
@@ -99,10 +83,8 @@ namespace core
 		}
 	}
 
-	void Scene::SceneFrameEnd()
+	void Scene::frame_end()
 	{
-		frame_end();
-
 		//각 GameObject에 대해 frameend 호출
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
@@ -131,7 +113,7 @@ namespace core
 	}
 
 
-	void Scene::Destroy()
+	void Scene::destroy()
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
