@@ -18,8 +18,8 @@ namespace core
 	{
 		friend class GameObject;
 
-		CLASS_NAME(GameObject);
-		REGISTER_INSTANCE_DEFAULT(GameObject);
+		CLASS_NAME(GameObject, Entity);
+		REGISTER_INSTANCE(GameObject);
 		CLONE_ABLE(GameObject);
 		
 	public:

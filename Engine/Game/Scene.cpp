@@ -6,7 +6,7 @@
 namespace core
 {
 	Scene::Scene(const std::string_view key)
-		: Entity(key)
+		: Super(key)
 		, m_gameObjects{}
 		, m_delayedAddQueue{}
 		, m_FrameEndJobs{}

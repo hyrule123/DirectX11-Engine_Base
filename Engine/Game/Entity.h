@@ -3,8 +3,9 @@
 #include <type_traits>
 
 //클래스의 헤더 최상단에 작성. 클래스별 이름을 등록한다.
-#define CLASS_NAME(_class_) \
-public: static inline constexpr const std::string_view concrete_class_name = #_class_
+#define CLASS_NAME(_class_, _super_) \
+public: static inline constexpr const std::string_view concrete_class_name = #_class_;\
+private: using Super = _super_
 
 //CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
@@ -14,10 +15,11 @@ public: virtual _type* Clone() override { return new _type(*this); }
 #define CLONE_DISABLE(_type) \
 private: virtual _type* Clone() override { return nullptr; }
 
-#define REGISTER_INSTANCE(_class, _key) \
+//고유 이름으로 생성자 등록, 웬만하면 쓸 일 없을듯?
+#define REGISTER_INSTANCE_UNIQUE(_class, _key) \
 private: static inline const bool UNIQUE_VAR(unused) = EntityFactory::get_inst().add_ctor<_class>(_key)
 
-#define REGISTER_INSTANCE_DEFAULT(_class) REGISTER_INSTANCE(_class, _class::concrete_class_name)
+#define REGISTER_INSTANCE(_class) REGISTER_INSTANCE_UNIQUE(_class, _class::concrete_class_name)
 
 namespace core
 {

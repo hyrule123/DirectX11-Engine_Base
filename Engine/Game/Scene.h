@@ -11,7 +11,7 @@ namespace core
 	class Scene 
 		: public Entity
 	{
-		CLASS_NAME(Scene);
+		CLASS_NAME(Scene, Entity);
 	public:
 		Scene(const std::string_view key);
 		virtual ~Scene();
