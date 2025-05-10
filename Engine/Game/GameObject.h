@@ -10,7 +10,7 @@ namespace core
 	class Scene;
 	class Script;
 	class Transform;
-	class iComponent;
+	class Component;
 
 	class GameObject
 		: public Entity
@@ -18,12 +18,12 @@ namespace core
 	{
 		friend class GameObject;
 
-		CLASS_NAME(GameObject, Entity);
-		REGISTER_INSTANCE(GameObject);
+		CLASS_INFO(GameObject, Entity);
+		REGISTER_FACTORY(GameObject);
 		CLONE_ABLE(GameObject);
 		
 	public:
-		using BaseComponents = std::array<iComponent*, (size_t)eComponentCategory::BaseComponentEnd>;
+		using BaseComponents = std::array<Component*, (size_t)eComponentCategory::BaseComponentEnd>;
 		using Scripts = std::vector<Script*>;
 
 		enum class eState
@@ -53,10 +53,10 @@ namespace core
 		void RemoveDestroyed();
 
 	public:
-		iComponent* AddComponent(iComponent* _pCom);
-		template <typename T> requires std::is_base_of_v<iComponent, T>
+		Component* AddComponent(Component* _pCom);
+		template <typename T> requires std::is_base_of_v<Component, T>
 		T* AddComponent();
-		iComponent* AddComponent(const std::string_view _resource_name);
+		Component* AddComponent(const std::string_view _resource_name);
 
 		template <typename T>
 		T* GetComponent();
@@ -70,7 +70,7 @@ namespace core
 
 		Script* GetScript(const std::string_view _resource_name);
 
-		iComponent* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
+		Component* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
 		Transform* transform();
 
 		const BaseComponents& GetComponents() const { return m_baseComponents; }
@@ -121,12 +121,12 @@ namespace core
 	};
 
 
-	template <typename T> requires std::is_base_of_v<iComponent, T>
+	template <typename T> requires std::is_base_of_v<Component, T>
 	T* GameObject::AddComponent()
 	{
 		T* ret = new T;
 
-		eComponentCategory order = T::GetComponentCategoryStatic();
+		eComponentCategory order = ret->GetComponentCategory();
 
 		if (false == IsComponentCategoryValid(order))
 		{
@@ -135,7 +135,7 @@ namespace core
 			return ret;
 		}
 
-		//iComponent로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
+		//Component로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
 		return static_cast<T*>(AddComponent(ret));
 	}
 
@@ -153,17 +153,14 @@ namespace core
 		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
 		else if constexpr (T::template IsBaseComponentType<T>())
 		{
-			eComponentCategory comCategory = T::GetComponentCategoryStatic();
-
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_baseComponents[(int)comCategory]);
+			pCom = static_cast<T*>(m_baseComponents[(int)T::s_order]);
 		}
 
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
 		else //constexpr
 		{
-			eComponentCategory comCategory = T::GetComponentCategoryStatic();
-			pCom = dynamic_cast<T*>(m_baseComponents[(int)comCategory]);
+			pCom = dynamic_cast<T*>(m_baseComponents[(int)T::s_order]);
 		}
 
 		return pCom;

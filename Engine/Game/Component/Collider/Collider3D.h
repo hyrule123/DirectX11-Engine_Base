@@ -10,6 +10,7 @@ namespace core
 	class Collision3D;
 	class Collider3D : public Collider
 	{
+		CLASS_INFO(Collider3D, Collider);
 		CLONE_DISABLE(Collider3D);
 	public:
 		Collider3D(const std::string_view key, eCollider3DType _col3dType);

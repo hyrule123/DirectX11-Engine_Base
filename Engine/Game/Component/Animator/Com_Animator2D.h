@@ -10,7 +10,7 @@ namespace core
 	class Com_Animator2D 
 		: public Animator
 	{
-		CLASS_NAME(Com_Animator2D);
+		CLASS_INFO(Com_Animator2D, Animator);
 		CLONE_ABLE(Com_Animator2D);
 	public:
 		struct tEvents

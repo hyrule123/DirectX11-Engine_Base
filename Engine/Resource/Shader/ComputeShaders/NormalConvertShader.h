@@ -9,7 +9,7 @@ namespace core
 {
 	class NormalConvertShader : public ComputeShader
 	{
-		CLASS_NAME(NormalConvertShader);
+		CLASS_INFO(NormalConvertShader, ComputeShader);
 	public:
 		NormalConvertShader();
 		virtual ~NormalConvertShader();

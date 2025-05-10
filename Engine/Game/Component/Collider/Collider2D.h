@@ -9,7 +9,7 @@ namespace core
 	class Collision2D;
 	class Collider2D : public Collider
 	{
-		CLASS_NAME(Collider2D);
+		CLASS_INFO(Collider2D, Collider);
 		CLONE_DISABLE(Collider2D);
 	public:
 		Collider2D(const std::string_view key, eCollider2D_Shape _type);

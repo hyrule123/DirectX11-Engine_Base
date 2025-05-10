@@ -6,7 +6,7 @@ namespace core
 	class Com_BehaviorTree 
 		: public StateMachine
 	{
-		CLASS_NAME(Com_BehaviorTree);
+		CLASS_INFO(Com_BehaviorTree, StateMachine);
 		
 	public:
 		Com_BehaviorTree();

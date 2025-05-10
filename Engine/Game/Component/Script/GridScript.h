@@ -7,7 +7,7 @@ namespace core
 	class Com_Camera;
 	class GridScript : public Script
 	{
-		CLASS_NAME(GridScript);
+		CLASS_INFO(GridScript, Script);
 		
 	public:
 		GridScript();

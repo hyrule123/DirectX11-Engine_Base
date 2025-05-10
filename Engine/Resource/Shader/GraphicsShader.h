@@ -27,7 +27,7 @@ namespace core
 		: public Shader
 		, public Serializable_Json
 	{
-		CLASS_NAME(GraphicsShader);
+		CLASS_INFO(GraphicsShader, Shader);
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();

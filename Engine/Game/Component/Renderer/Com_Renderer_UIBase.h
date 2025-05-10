@@ -8,8 +8,8 @@ namespace core
 	class Com_Renderer_UIBase :
 		public Com_Renderer_Mesh
 	{
-		CLASS_NAME(Com_Renderer_UIBase);
-		REGISTER_INSTANCE_DEFAULT(Com_Renderer_Mesh);
+		CLASS_INFO(Com_Renderer_UIBase, Com_Renderer_Mesh);
+		REGISTER_FACTORY(Com_Renderer_Mesh);
 		
 	public:
 		Com_Renderer_UIBase();

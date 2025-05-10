@@ -7,7 +7,7 @@ namespace core
 	class ParticleShader 
 		: public ComputeShader
 	{
-		CLASS_NAME(ParticleShader);
+		CLASS_INFO(ParticleShader, ComputeShader);
 	public:
 		ParticleShader();
 		virtual ~ParticleShader();

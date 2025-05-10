@@ -12,7 +12,7 @@ namespace core
 		: public Animation
 		, public Serializable_Json
 	{
-		CLASS_NAME(Animation2D);
+		CLASS_INFO(Animation2D, Animation);
 		CLONE_ABLE(Animation2D);
 	public:
 		struct tSprite

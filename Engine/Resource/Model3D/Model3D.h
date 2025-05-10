@@ -33,8 +33,8 @@ namespace core
 		: public Resource
 		, public Serializable_Json
     {
-		CLASS_NAME(Model3D);
-		REGISTER_INSTANCE_DEFAULT(Model3D);
+		CLASS_INFO(Model3D, Resource);
+		REGISTER_FACTORY(Model3D);
 
 		friend class editor::EditorFBXConverter;
 		

@@ -22,14 +22,13 @@ namespace core
 	class Animation3D_PlayData
 		: public Entity
 	{
-		CLASS_NAME(Animation3D_PlayData);
+		CLASS_INFO(Animation3D_PlayData, Entity);
 		CLONE_ABLE(Animation3D_PlayData);
 	public:
 		Animation3D_PlayData();
 		Animation3D_PlayData(const Animation3D_PlayData& _other);
 
 		virtual ~Animation3D_PlayData();
-
 
 		bool is_pre_updated() const { return m_is_pre_updated; }
 		bool pre_update();

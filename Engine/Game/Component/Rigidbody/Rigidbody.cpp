@@ -9,7 +9,7 @@
 namespace core
 {
 	Rigidbody::Rigidbody(const std::string_view key)
-		: Component(key)
+		: Super(key)
 		, m_rigidActor{}
 		, m_ShapesModified{true}
 	{

@@ -24,8 +24,8 @@ namespace core
 		: public Resource 
 		, Serializable_Binary
 	{
-		CLASS_NAME(Mesh);
-		REGISTER_INSTANCE_DEFAULT(Mesh);
+		CLASS_INFO(Mesh, Resource);
+		REGISTER_FACTORY(Mesh);
 	public:
 		Mesh();
 		virtual ~Mesh();

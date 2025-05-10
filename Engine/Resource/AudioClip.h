@@ -8,7 +8,7 @@ namespace core
 	BASE_RESOURCE(AudioClip);
 	class AudioClip final : public Resource
 	{
-		CLASS_NAME(AudioClip);
+		CLASS_INFO(AudioClip, Resource);
 	public:
 		AudioClip();
 		virtual ~AudioClip();

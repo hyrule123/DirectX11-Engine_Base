@@ -6,8 +6,8 @@ namespace core
 	class Com_Animator2D;
 	class Com_Renderer_Sprite : public Com_Renderer_Mesh
 	{
-		CLASS_NAME(Com_Renderer_Sprite);
-		REGISTER_INSTANCE_DEFAULT(Com_Renderer_Sprite);
+		CLASS_INFO(Com_Renderer_Sprite, Com_Renderer_Mesh);
+		REGISTER_FACTORY(Com_Renderer_Sprite);
 		CLONE_ABLE(Com_Renderer_Sprite);
 	public:
 		Com_Renderer_Sprite();

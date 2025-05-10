@@ -10,7 +10,7 @@
 
 #include "Engine/Util/StringConverter.h"
 
-#include "Engine/Game/Component/iComponent.h"
+#include "Engine/Game/Component/Component.h"
 #include "Engine/Game/Component/Script/Script.h"
 #include "Engine/Game/Component/Transform.h"
 
@@ -52,7 +52,7 @@ namespace core
 			{
 				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
 				//그냥 복사한뒤 주인만 바꾸면 됨.
-				m_baseComponents[i] = static_cast<iComponent*>(_other.m_baseComponents[i]->Clone());
+				m_baseComponents[i] = static_cast<Component*>(_other.m_baseComponents[i]->Clone());
 
 				if (m_baseComponents[i])
 				{
@@ -88,7 +88,7 @@ namespace core
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			iComponent* com = m_baseComponents[i];
+			Component* com = m_baseComponents[i];
 			if (com)
 			{
 				delete com;
@@ -258,17 +258,17 @@ namespace core
 	void GameObject::RemoveDestroyed()
 	{
 		auto needDestroyPred =
-			[](iComponent* const _com)->bool
+			[](Component* const _com)->bool
 			{
-				iComponent::eState state = _com->GetState();
+				Component::eState state = _com->GetState();
 
-				if (iComponent::eState::DestroyReserved == state)
+				if (Component::eState::DestroyReserved == state)
 				{
 					_com->SetEnable(false);
-					_com->SetState(iComponent::eState::Destroy);
+					_com->SetState(Component::eState::Destroy);
 					return false;
 				}
-				else if (iComponent::eState::Destroy == state)
+				else if (Component::eState::Destroy == state)
 				{
 					_com->OnDestroy();
 					delete _com;
@@ -331,16 +331,16 @@ namespace core
 	}
 
 
-	iComponent* GameObject::AddComponent(iComponent* _pCom)
+	Component* GameObject::AddComponent(Component* _pCom)
 	{
-		iComponent* ret = _pCom;
+		Component* ret = _pCom;
 		if (nullptr == ret) {
 			return ret;
 		}
 
 		eComponentCategory ComType = _pCom->GetComponentCategory();
 		
-		if (eComponentCategory::Scripts == ComType)
+		if (eComponentCategory::Script == ComType)
 		{
 			m_scripts.push_back(static_cast<Script*>(_pCom));
 		}
@@ -363,7 +363,7 @@ namespace core
 		if (false == ret->IsInitialized())
 		{
 			ret->init();
-			ret->SetState(iComponent::eState::NotAwaken);
+			ret->SetState(Component::eState::NotAwaken);
 		}
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
@@ -375,14 +375,14 @@ namespace core
 		return ret;
 	}
 
-	iComponent* GameObject::AddComponent(const std::string_view _resource_name)
+	Component* GameObject::AddComponent(const std::string_view _resource_name)
 	{
-		return AddComponent(EntityFactory::get_inst().instantiate<iComponent>(_resource_name).release());
+		return AddComponent(EntityFactory::get_inst().instantiate<Component>(_resource_name).release());
 	}
 
 	Script* GameObject::AddScript(const std::string_view _resource_name)
 	{
-		iComponent* ret = AddComponent(EntityFactory::get_inst().instantiate<Script>(_resource_name).release());
+		Component* ret = AddComponent(EntityFactory::get_inst().instantiate<Script>(_resource_name).release());
 		return static_cast<Script*>(ret);
 	}
 

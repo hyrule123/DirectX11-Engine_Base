@@ -20,6 +20,7 @@ namespace core
 	class Resource 
 		: public Entity
 	{
+		CLASS_INFO(Resource, Entity);
 	public:
 		Resource(const std::string_view _concrete_class_name);
 		Resource(const Resource& _other) = default;

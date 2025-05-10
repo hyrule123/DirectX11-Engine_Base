@@ -9,7 +9,7 @@ namespace core
     class MultiRenderTarget :
         public Entity
     {
-		CLASS_NAME(MultiRenderTarget);
+		CLASS_INFO(MultiRenderTarget, Entity);
 	public:
 		MultiRenderTarget();
 		virtual ~MultiRenderTarget();

@@ -6,8 +6,8 @@ namespace core
     class Com_Collider3D_Sphere :
         public Com_Collider3D_Shapes
     {
-        CLASS_NAME(Com_Collider3D_Sphere);
-        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Sphere);
+        CLASS_INFO(Com_Collider3D_Sphere, Com_Collider3D_Shapes);
+        REGISTER_FACTORY(Com_Collider3D_Sphere);
         
     public:
         Com_Collider3D_Sphere();

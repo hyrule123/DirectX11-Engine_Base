@@ -5,8 +5,8 @@ namespace core {
 	class Light_3D_Material
 		: public Material
 	{
-		CLASS_NAME(Light_3D_Material);
-		REGISTER_INSTANCE_DEFAULT(Light_3D_Material);
+		CLASS_INFO(Light_3D_Material, Material);
+		REGISTER_FACTORY(Light_3D_Material);
 
 	public:
 		Light_3D_Material();

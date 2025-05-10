@@ -3,7 +3,7 @@
 namespace core
 {
 	Light::Light(const std::string_view key, eDimensionType _dimensionType)
-		: Component(key)
+		: Super(key)
 		, mDimension(_dimensionType)
 	{
 	}

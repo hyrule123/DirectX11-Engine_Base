@@ -15,7 +15,7 @@ namespace core
 	class ComputeShader 
 		: public Shader
 	{
-		CLASS_NAME(ComputeShader);
+		CLASS_INFO(ComputeShader, Shader);
 	public:
 		ComputeShader(const std::string_view key, uint3 _threadsPerGroup);
 		virtual ~ComputeShader();

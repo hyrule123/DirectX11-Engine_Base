@@ -6,8 +6,8 @@ namespace core
     class Com_Renderer_Mesh :
         public Renderer
     {
-        CLASS_NAME(Com_Renderer_Mesh);
-        REGISTER_INSTANCE_DEFAULT(Com_Renderer_Mesh);
+        CLASS_INFO(Com_Renderer_Mesh, Renderer);
+        REGISTER_FACTORY(Com_Renderer_Mesh);
         
     public:
         Com_Renderer_Mesh();

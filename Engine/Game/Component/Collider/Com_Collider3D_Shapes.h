@@ -17,8 +17,8 @@ namespace core
     class Com_Collider3D_Shapes :
         public Collider3D
     {
-        CLASS_NAME(Com_Collider3D_Shapes);
-        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Shapes);
+        CLASS_INFO(Com_Collider3D_Shapes, Collider3D);
+        REGISTER_FACTORY(Com_Collider3D_Shapes);
         
     public:
         Com_Collider3D_Shapes();

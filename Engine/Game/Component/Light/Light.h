@@ -1,13 +1,15 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include "Engine/Game/Component/BaseComponent.h"
 #include "Engine/DefaultShader/Light/Light.hlsli"
 
 namespace core
 {
+#define LIGHT_COMPONENT BaseComponent<Light, eComponentCategory::Light>
     class Light :
-        public Component<Light, eComponentCategory::Light>
+        public LIGHT_COMPONENT
     {
-        
+        CLASS_INFO(Light, LIGHT_COMPONENT);
+
     public:
         Light(const std::string_view key, eDimensionType _dimensionType);
         virtual ~Light();

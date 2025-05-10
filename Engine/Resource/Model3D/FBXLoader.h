@@ -114,8 +114,8 @@ namespace core
 	class FBXLoader :
 		public Entity
 	{
-		CLASS_NAME(FBXLoader);
-		REGISTER_INSTANCE_DEFAULT(FBXLoader);
+		CLASS_INFO(FBXLoader, Entity);
+		REGISTER_FACTORY(FBXLoader);
 	public:
 		FBXLoader();
 		virtual ~FBXLoader();

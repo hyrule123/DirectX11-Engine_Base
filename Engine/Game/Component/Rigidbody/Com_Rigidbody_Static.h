@@ -6,8 +6,8 @@ namespace core
 	class Com_Rigidbody_Static :
 		public Rigidbody
 	{
-		CLASS_NAME(Com_Rigidbody_Static);
-		REGISTER_INSTANCE_DEFAULT(Com_Rigidbody_Static);
+		CLASS_INFO(Com_Rigidbody_Static, Rigidbody);
+		REGISTER_FACTORY(Com_Rigidbody_Static);
 		
 	public:
 		Com_Rigidbody_Static();

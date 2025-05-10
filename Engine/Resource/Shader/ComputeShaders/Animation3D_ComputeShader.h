@@ -13,8 +13,8 @@ namespace core
     class Animation3D_ComputeShader :
         public ComputeShader
     {
-		CLASS_NAME(Animation3D_ComputeShader);
-		REGISTER_INSTANCE_DEFAULT(Animation3D_ComputeShader);
+		CLASS_INFO(Animation3D_ComputeShader, ComputeShader);
+		REGISTER_FACTORY(Animation3D_ComputeShader);
 	public:
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();

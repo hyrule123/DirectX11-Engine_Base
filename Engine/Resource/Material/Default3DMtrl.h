@@ -5,8 +5,8 @@ namespace core {
     class Default3DMtrl final :
         public Material 
     {
-        CLASS_NAME(Default3DMtrl);
-        REGISTER_INSTANCE_DEFAULT(Default3DMtrl);
+        CLASS_INFO(Default3DMtrl, Material);
+        REGISTER_FACTORY(Default3DMtrl);
         CLONE_ABLE(Default3DMtrl);
     public:
         Default3DMtrl();

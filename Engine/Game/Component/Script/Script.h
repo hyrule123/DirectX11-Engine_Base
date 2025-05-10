@@ -6,9 +6,10 @@
 namespace core
 {
 	class Script 
-		: public Component<Script, eComponentCategory::Scripts>
+		: public Component
 	{
-		CLASS_NAME(Script);
+		CLASS_INFO(Script, Component);
+
 	public:
 		Script(const std::string_view key);
 		Script(const Script& _other) = default;

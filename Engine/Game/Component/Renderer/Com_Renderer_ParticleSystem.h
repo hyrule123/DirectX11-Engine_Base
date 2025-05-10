@@ -15,8 +15,8 @@ namespace core
 	class StructBuffer;
 	class Com_Renderer_ParticleSystem : public Com_Renderer_Mesh
 	{
-		CLASS_NAME(Com_Renderer_ParticleSystem);
-		REGISTER_INSTANCE_DEFAULT(Com_Renderer_ParticleSystem);
+		CLASS_INFO(Com_Renderer_ParticleSystem, Com_Renderer_Mesh);
+		REGISTER_FACTORY(Com_Renderer_ParticleSystem);
 		CLONE_ABLE(Com_Renderer_ParticleSystem);
 	public:
 		Com_Renderer_ParticleSystem();

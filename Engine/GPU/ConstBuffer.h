@@ -9,7 +9,7 @@ namespace core
 	class ConstBuffer 
 		: public GPUBuffer
 	{
-		CLASS_NAME(ConstBuffer);
+		CLASS_INFO(ConstBuffer, GPUBuffer);
 	public:
 		ConstBuffer(uint _register);
 		virtual ~ConstBuffer();

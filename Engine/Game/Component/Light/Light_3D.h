@@ -10,8 +10,8 @@ namespace core
 	class Material;
 	class Light_3D : public Light
 	{
-		CLASS_NAME(Light_3D);
-		REGISTER_INSTANCE_DEFAULT(Light_3D);
+		CLASS_INFO(Light_3D, Light);
+		REGISTER_FACTORY(Light_3D);
 		CLONE_ABLE(Light_3D);
 	public:
 		Light_3D();

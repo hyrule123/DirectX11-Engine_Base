@@ -22,7 +22,7 @@ namespace core
 		: public Resource
 		, public Serializable_Json
 	{
-		CLASS_NAME(Material);
+		CLASS_INFO(Material, Resource);
 		CLONE_ABLE(Material);
 	public:
 		Material();

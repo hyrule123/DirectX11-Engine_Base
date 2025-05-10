@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_AudioSource::Com_AudioSource()
-		: Component(Com_AudioSource::concrete_class_name)
+		: Super(Com_AudioSource::concrete_class_name)
 		, mAudioClip(nullptr)
 	{
 	}
@@ -26,7 +26,7 @@ namespace core
 	//	{
 	//		return eResult::Fail;
 	//	}
-	//	eResult result = iComponent::SaveJson(_pJson);
+	//	eResult result = Component::SaveJson(_pJson);
 	//	if (eResult_fail(result))
 	//	{
 	//		return result;
@@ -47,7 +47,7 @@ namespace core
 	//	{
 	//		return eResult::Fail;
 	//	}
-	//	eResult result = iComponent::LoadJson(_pJson);
+	//	eResult result = Component::LoadJson(_pJson);
 	//	if (eResult_fail(result))
 	//	{
 	//		return result;

@@ -9,7 +9,7 @@ namespace core
 	class GPUInitSetting :
 		public ComputeShader
 	{
-		CLASS_NAME(GPUInitSetting);
+		CLASS_INFO(GPUInitSetting, ComputeShader);
 	public:
 		GPUInitSetting();
 		virtual ~GPUInitSetting();

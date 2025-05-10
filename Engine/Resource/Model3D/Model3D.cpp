@@ -27,7 +27,7 @@
 namespace core
 {
 	Model3D::Model3D()
-		: Resource(Model3D::concrete_class_name)
+		: Super(Model3D::concrete_class_name)
 	{
 	}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include "Engine/Game/Component/BaseComponent.h"
 #include "Engine/Game/Collision/PxActorWrapper.h"
 
 //이 클래스가 담당하는일
@@ -8,9 +8,12 @@
 
 namespace core
 {
+#define RIGIDBODY_COMPONENT BaseComponent<Rigidbody, eComponentCategory::Rigidbody>
+
 	class Rigidbody :
-		public Component<Rigidbody, eComponentCategory::Rigidbody>
+		public RIGIDBODY_COMPONENT
 	{
+		CLASS_INFO(Rigidbody, RIGIDBODY_COMPONENT);
 	public:
 		Rigidbody(const std::string_view key);
 		virtual ~Rigidbody();

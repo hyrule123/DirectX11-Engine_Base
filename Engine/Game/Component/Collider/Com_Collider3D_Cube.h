@@ -7,8 +7,8 @@ namespace core
     class Com_Collider3D_Cube :
         public Com_Collider3D_Shapes
     {
-        CLASS_NAME(Com_Collider3D_Cube);
-        REGISTER_INSTANCE_DEFAULT(Com_Collider3D_Cube);
+        CLASS_INFO(Com_Collider3D_Cube, Com_Collider3D_Shapes);
+        REGISTER_FACTORY(Com_Collider3D_Cube);
         
     public:
         Com_Collider3D_Cube();

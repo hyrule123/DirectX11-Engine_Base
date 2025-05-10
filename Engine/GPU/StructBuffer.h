@@ -13,7 +13,7 @@ namespace core
 	class StructBuffer 
 		: public GPUBuffer
 	{
-        CLASS_NAME(StructBuffer);
+        CLASS_INFO(StructBuffer, GPUBuffer);
         CLONE_ABLE(StructBuffer);
     public:
         struct Desc

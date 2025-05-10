@@ -19,7 +19,7 @@ namespace core
 		: public Resource
 		, public Serializable_Binary
 	{
-		CLASS_NAME(Skeleton);
+		CLASS_INFO(Skeleton, Resource);
 	public:
 		Skeleton();
 		virtual ~Skeleton();

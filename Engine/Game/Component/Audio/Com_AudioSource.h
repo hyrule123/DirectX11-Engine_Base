@@ -1,13 +1,14 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include "Engine/Game/Component/BaseComponent.h"
 
 namespace core
 {
+#define BASECOMPONENT_AUDIOSOURCE BaseComponent<Com_AudioSource, eComponentCategory::AudioSource>
 	class AudioClip;
 	class Com_AudioSource 
-		: public Component<Com_AudioSource, eComponentCategory::AudioSource>
+		: public BASECOMPONENT_AUDIOSOURCE
 	{
-		CLASS_NAME(Com_AudioSource);
+		CLASS_INFO(Com_AudioSource, BASECOMPONENT_AUDIOSOURCE);
 		//다 같이 공유하는 '리소스' 포인터만 변수로 가지고 있으므로 기본 복사 생성자로도 충분하다.
 		CLONE_ABLE(Com_AudioSource);
 	public:

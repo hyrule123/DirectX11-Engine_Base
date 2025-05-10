@@ -9,7 +9,7 @@ namespace core
 	class Com_Animator3D :
 		public Animator
 	{
-		CLASS_NAME(Com_Animator3D);
+		CLASS_INFO(Com_Animator3D, Animator);
 		CLONE_ABLE(Com_Animator3D);
 	public:
 		Com_Animator3D();

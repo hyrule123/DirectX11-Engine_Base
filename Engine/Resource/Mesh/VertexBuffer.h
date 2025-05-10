@@ -30,8 +30,8 @@ namespace core {
         : public Resource
         , public Serializable_Binary
     {
-        CLASS_NAME(VertexBuffer);
-        REGISTER_INSTANCE_DEFAULT(VertexBuffer);
+        CLASS_INFO(VertexBuffer, Resource);
+        REGISTER_FACTORY(VertexBuffer);
 
     public:
         VertexBuffer();

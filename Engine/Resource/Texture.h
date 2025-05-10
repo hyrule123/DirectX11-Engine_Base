@@ -9,7 +9,7 @@ namespace core
 	BASE_RESOURCE(Texture);
 	class Texture final : public Resource
 	{
-		CLASS_NAME(Texture);
+		CLASS_INFO(Texture, Resource);
 	public:
 		Texture();
 		virtual ~Texture();

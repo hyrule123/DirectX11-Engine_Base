@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include "Engine/Game/Component/BaseComponent.h"
 
 namespace core
 {
@@ -11,9 +11,12 @@ namespace core
 		Dynamic
 	};
 
+#define RENDERER_COMPONENT BaseComponent<Renderer, eComponentCategory::Renderer>
 	class Renderer 
-		: public Component<Renderer, eComponentCategory::Renderer>
+		: public RENDERER_COMPONENT
 	{
+		CLASS_INFO(Renderer, RENDERER_COMPONENT);
+
 	public:
 		Renderer(const std::string_view key);
 

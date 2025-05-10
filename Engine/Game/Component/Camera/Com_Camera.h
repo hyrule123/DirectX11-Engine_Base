@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include "Engine/Game/Component/BaseComponent.h"
 
 #include "Engine/define_Enum.h"
 
@@ -16,10 +16,11 @@ namespace  core
 	class ConstBuffer;
 	class StructBuffer;
 
+#define CAMERA_COMPONENT BaseComponent<Com_Camera, eComponentCategory::Camera>
 	class Com_Camera 
-		: public Component<Com_Camera, eComponentCategory::Camera>
+		: public CAMERA_COMPONENT
 	{
-		CLASS_NAME(Com_Camera);
+		CLASS_INFO(Com_Camera, CAMERA_COMPONENT);
 		
 		class CullingAgent;
 	public:
@@ -97,7 +98,7 @@ namespace  core
 
 		class CullingAgent_Orthographic : public CullingAgent
 		{
-			CLASS_NAME(CullingAgent_Orthographic);
+			CLASS_INFO(CullingAgent_Orthographic, CullingAgent);
 		public:
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
@@ -107,7 +108,7 @@ namespace  core
 
 		class CullingAgent_Perspective : public CullingAgent
 		{
-			CLASS_NAME(CullingAgent_Perspective);
+			CLASS_INFO(CullingAgent_Perspective, CullingAgent);
 		public:
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();

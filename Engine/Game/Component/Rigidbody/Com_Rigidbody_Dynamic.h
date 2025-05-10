@@ -8,8 +8,8 @@ namespace core
     class Com_Rigidbody_Dynamic :
         public Rigidbody
     {
-        CLASS_NAME(Com_Rigidbody_Dynamic);
-        REGISTER_INSTANCE_DEFAULT(Com_Rigidbody_Dynamic);
+        CLASS_INFO(Com_Rigidbody_Dynamic, Rigidbody);
+        REGISTER_FACTORY(Com_Rigidbody_Dynamic);
         
     public:
         Com_Rigidbody_Dynamic();

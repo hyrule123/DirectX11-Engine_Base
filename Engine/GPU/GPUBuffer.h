@@ -15,6 +15,7 @@ namespace core
 	class GPUBuffer
 		: public Resource
 	{
+		CLASS_INFO(GPUBuffer, Resource);
 	public:
 		GPUBuffer(const std::string_view key, eBufferType _Type);
 

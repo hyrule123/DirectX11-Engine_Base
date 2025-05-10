@@ -388,7 +388,6 @@
     <ClCompile Include="Game\Component\Rigidbody\Rigidbody.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
-    <ClCompile Include="Game\Component\iComponent.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
     <ClCompile Include="Resource\Material\Default3DMtrl.cpp" />
     <ClCompile Include="Resource\Mesh\Mesh.cpp" />
@@ -402,6 +401,7 @@
     <ClCompile Include="Manager\Default_Resources\Default_RenderStates.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
     <ClCompile Include="Game\Entity.cpp" />
+    <ClCompile Include="Game\Component\Component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -412,9 +412,6 @@
     </ClInclude>
     <ClInclude Include="Game\GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Component\Component.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Material\Material.h">
       <Filter>Resource\Material</Filter>
@@ -655,7 +652,6 @@
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="DefaultSettingVar.h" />
     <ClInclude Include="Resource\Resource.h" />
-    <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
     <ClInclude Include="Resource\Mesh\Mesh.h" />
     <ClInclude Include="Resource\Mesh\VertexBuffer.h" />
@@ -663,6 +659,8 @@
     <ClInclude Include="Resource\Material\DebugMaterial.h" />
     <ClInclude Include="Resource\Material\Light_3D_Material.h" />
     <ClInclude Include="Game\Entity.h" />
+    <ClInclude Include="Game\Component\Component.h" />
+    <ClInclude Include="Game\Component\BaseComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

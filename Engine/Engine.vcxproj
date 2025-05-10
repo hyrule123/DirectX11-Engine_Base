@@ -223,6 +223,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Component\Component.h" />
+    <ClInclude Include="Game\Component\BaseComponent.h" />
     <ClInclude Include="Game\Entity.h" />
     <ClInclude Include="Resource\Material\Light_3D_Material.h" />
     <ClInclude Include="Resource\Material\DebugMaterial.h" />
@@ -231,7 +233,6 @@
     <None Include="DefaultShader\Initialize\GPU_Init_Setting.hlsli" />
     <ClInclude Include="Resource\Material\Default3DMtrl.h" />
     <ClInclude Include="Manager\SceneRenderAgent.h" />
-    <ClInclude Include="Game\Component\iComponent.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.h" />
     <ClInclude Include="Game\Component\Rigidbody\Com_Rigidbody_Static.h" />
     <ClInclude Include="Game\Component\Collider\Com_Collider3D_Capsule.h" />
@@ -295,7 +296,6 @@
     <ClInclude Include="define_Macro.h" />
     <ClInclude Include="Resource\define_Resource.h" />
     <ClInclude Include="GPU\GPUBuffer.h" />
-    <ClInclude Include="Game\Component\Component.h" />
     <ClInclude Include="Resource\Shader\ComputeShader.h" />
     <ClInclude Include="GPU\ConstBuffer.h" />
     <ClInclude Include="PCH_Engine.h" />
@@ -336,6 +336,7 @@
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Component\Component.cpp" />
     <ClCompile Include="Game\Entity.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_RenderStates.cpp" />
@@ -347,7 +348,6 @@
     <ClCompile Include="Resource\Material\DebugMaterial.cpp" />
     <ClCompile Include="Resource\Material\Default3DMtrl.cpp" />
     <ClCompile Include="Manager\SceneRenderAgent.cpp" />
-    <ClCompile Include="Game\Component\iComponent.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Dynamic.cpp" />
     <ClCompile Include="Game\Component\Rigidbody\Com_Rigidbody_Static.cpp" />
     <ClCompile Include="Game\Component\Collider\Com_Collider3D_Capsule.cpp" />

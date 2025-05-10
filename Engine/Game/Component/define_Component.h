@@ -4,6 +4,7 @@
 
 namespace core
 {
+
 	STR_KEY ComponentPrefix = "Com_";
 	enum class eComponentCategory
 	{
@@ -22,7 +23,7 @@ namespace core
 
 		BaseComponentEnd,
 
-		Scripts = BaseComponentEnd,
+		Script = BaseComponentEnd,
 
 		END
 	};
@@ -47,7 +48,7 @@ namespace core
 			"AudioListener",
 
 			"BehaviorTree",
-			"Scripts"
+			"Script"
 		};
 		
 		inline STR_KEY GetComponentCategoryName(eComponentCategory _category)

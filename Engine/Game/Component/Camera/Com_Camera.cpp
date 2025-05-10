@@ -24,7 +24,7 @@
 namespace core
 {
 	Com_Camera::Com_Camera()
-		: Component(Com_Camera::concrete_class_name)
+		: Super(Com_Camera::concrete_class_name)
 		, m_camera_matrices{}
 		, m_projectionType(eProjectionType::None)
 		, m_isEnableCulling(true)

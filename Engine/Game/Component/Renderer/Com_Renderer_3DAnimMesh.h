@@ -6,8 +6,8 @@ namespace core
 	class Com_Renderer_3DAnimMesh :
 		public Com_Renderer_Mesh
 	{
-		CLASS_NAME(Com_Renderer_3DAnimMesh);
-		REGISTER_INSTANCE_DEFAULT(Com_Renderer_3DAnimMesh);
+		CLASS_INFO(Com_Renderer_3DAnimMesh, Com_Renderer_Mesh);
+		REGISTER_FACTORY(Com_Renderer_3DAnimMesh);
 		
 	public:
 		Com_Renderer_3DAnimMesh();

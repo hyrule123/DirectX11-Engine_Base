@@ -33,8 +33,8 @@ namespace core
 	{
         friend class Skeleton;
 
-        CLASS_NAME(Animation3D);
-        REGISTER_INSTANCE_DEFAULT(Animation3D);
+        CLASS_INFO(Animation3D, Animation);
+        REGISTER_FACTORY(Animation3D);
         CLONE_ABLE(Animation3D);
         
 	public:

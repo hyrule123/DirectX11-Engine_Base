@@ -3,7 +3,7 @@
 namespace core
 {
 	Script::Script(const std::string_view key)
-		: Component(key)
+		: Component(key, eComponentCategory::Script)
 	{
 	}
 

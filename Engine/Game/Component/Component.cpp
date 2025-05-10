@@ -1,4 +1,4 @@
-#include "Engine/Game/Component/iComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 #include "Engine/Game/GameObject.h"
 #include "Engine/Game/Scene.h"
@@ -8,7 +8,7 @@
 #endif
 
 namespace core {
-	iComponent::iComponent(const std::string_view key, eComponentCategory _type)
+	Component::Component(const std::string_view key, eComponentCategory _type)
 		: Entity(key)
 		, m_ComCategory(_type)
 		, m_ownerGameObject()
@@ -18,7 +18,7 @@ namespace core {
 	{
 	}
 
-	iComponent::iComponent(const iComponent& _other)
+	Component::Component(const Component& _other)
 		: Entity(_other)
 		, m_ComCategory(_other.m_ComCategory)
 		, m_ownerGameObject()
@@ -28,11 +28,11 @@ namespace core {
 	{
 	}
 
-	iComponent::~iComponent()
+	Component::~Component()
 	{
 	}
 
-	void iComponent::SetEnable(bool _bEnable)
+	void Component::SetEnable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
 		if (m_isEnabled == _bEnable)

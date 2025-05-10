@@ -11,7 +11,7 @@ namespace core
 	class Prefab final
 		: public Resource
 	{
-        CLASS_NAME(Prefab);
+        CLASS_INFO(Prefab, Resource);
     public:
         Prefab();
         virtual ~Prefab();

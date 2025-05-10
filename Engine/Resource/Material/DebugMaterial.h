@@ -7,8 +7,8 @@ namespace core {
 	class DebugMaterial
 		: public Material
 	{
-		CLASS_NAME(DebugMaterial);
-		REGISTER_INSTANCE_DEFAULT(DebugMaterial);
+		CLASS_INFO(DebugMaterial, Material);
+		REGISTER_FACTORY(DebugMaterial);
 	public:
 		DebugMaterial();
 		virtual ~DebugMaterial();

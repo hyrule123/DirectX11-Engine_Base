@@ -2,6 +2,10 @@
 #include <string>
 #include <cassert>
 
+#define CLASS_INFO(_class_, _super_) \
+public: static inline constexpr const std::string_view concrete_class_name = #_class_;\
+private: using Super = _super_
+
 #ifdef _DEBUG
 
 //release 모드에서도 작동

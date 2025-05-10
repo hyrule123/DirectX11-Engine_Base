@@ -6,8 +6,8 @@ namespace core
     class Com_Collider2D_AABB :
         public Collider2D
     {
-        CLASS_NAME(Com_Collider2D_AABB);
-        REGISTER_INSTANCE_DEFAULT(Com_Collider2D_AABB);
+        CLASS_INFO(Com_Collider2D_AABB, Collider2D);
+        REGISTER_FACTORY(Com_Collider2D_AABB);
     public:
         Com_Collider2D_AABB();
         virtual ~Com_Collider2D_AABB();
