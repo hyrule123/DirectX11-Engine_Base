@@ -8,7 +8,7 @@
 namespace core
 {
 	Collider::Collider(const std::string_view key, eDimensionType _dimension)
-		: Super(key)
+		: Super(key, eComponentOrder::Collider)
 		, m_dimension(_dimension)
 		, m_isTriggerMode(false)
 		, m_transform(nullptr)

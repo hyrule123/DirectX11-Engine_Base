@@ -15,7 +15,7 @@
 namespace core
 {
 	Transform::Transform()
-		: Super(Transform::concrete_class_name)
+		: Super(Transform::concrete_class_name, eComponentOrder::Transform)
 		, m_localScale(float3::One)
 		, m_localRotation(Quaternion::Identity)
 		, m_localPosition(float3::Zero)

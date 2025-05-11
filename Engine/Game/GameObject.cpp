@@ -299,10 +299,10 @@ namespace core
 			return;
 		}
 
-		if (m_baseComponents[(int)eComponentCategory::Renderer] && 
-			m_baseComponents[(int)eComponentCategory::Renderer]->IsEnabled())
+		if (m_baseComponents[(int)eComponentOrder::Renderer] && 
+			m_baseComponents[(int)eComponentOrder::Renderer]->IsEnabled())
 		{
-			//static_cast<Renderer*>(m_baseComponents[(int)eComponentCategory::Renderer])->render();
+			//static_cast<Renderer*>(m_baseComponents[(int)eComponentOrder::Renderer])->render();
 		}
 	}
 
@@ -338,9 +338,9 @@ namespace core
 			return ret;
 		}
 
-		eComponentCategory ComType = _pCom->GetComponentCategory();
+		eComponentOrder ComType = _pCom->GetComponentCategory();
 		
-		if (eComponentCategory::Script == ComType)
+		if (eComponentOrder::Script == ComType)
 		{
 			m_scripts.push_back(static_cast<Script*>(_pCom));
 		}

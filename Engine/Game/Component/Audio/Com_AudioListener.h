@@ -1,13 +1,12 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 namespace core
 {
-#define BASECOMPONENT_AUDIOLISTENER BaseComponent<Com_AudioListener, eComponentCategory::AudioListener>
 	class Com_AudioListener 
-		: public BASECOMPONENT_AUDIOLISTENER
+		: public Component
 	{
-		CLASS_INFO(Com_AudioListener, BASECOMPONENT_AUDIOLISTENER);
+		CLASS_INFO(Com_AudioListener, Component);
 		
 	public:
 		Com_AudioListener();

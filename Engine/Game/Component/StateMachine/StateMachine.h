@@ -1,13 +1,12 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 namespace core
 {
-#define BASECOMPONENT_STATEMACHINE BaseComponent<StateMachine, eComponentCategory::BehaviorTree>
     class StateMachine :
-        public BASECOMPONENT_STATEMACHINE
+        public Component
     {
-        CLASS_INFO(StateMachine, BASECOMPONENT_STATEMACHINE);
+        CLASS_INFO(StateMachine, Component);
     public:
         StateMachine(const std::string_view key);
         virtual ~StateMachine();

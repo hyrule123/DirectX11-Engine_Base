@@ -224,7 +224,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game\Component\Component.h" />
-    <ClInclude Include="Game\Component\BaseComponent.h" />
     <ClInclude Include="Game\Entity.h" />
     <ClInclude Include="Resource\Material\Light_3D_Material.h" />
     <ClInclude Include="Resource\Material\DebugMaterial.h" />

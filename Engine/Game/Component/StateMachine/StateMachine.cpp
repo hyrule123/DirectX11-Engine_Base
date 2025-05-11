@@ -3,7 +3,7 @@
 namespace core
 {
 	StateMachine::StateMachine(const std::string_view key)
-		: Super(key)
+		: Super(key, eComponentOrder::StateMachine)
 	{
 	}
 	StateMachine::~StateMachine()

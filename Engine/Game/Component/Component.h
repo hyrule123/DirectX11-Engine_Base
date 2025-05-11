@@ -33,7 +33,7 @@ namespace core {
 			Destroy
 		};
 
-		Component(const std::string_view key, eComponentCategory _type);
+		Component(const std::string_view key, eComponentOrder _type);
 
 		Component(const Component& _other);
 		
@@ -60,7 +60,7 @@ namespace core {
 		inline GameObject* gameObject() const { return m_ownerGameObject; }
 		inline void Set_gameObject(GameObject* _owner) { m_ownerGameObject = _owner; }
 
-		eComponentCategory GetComponentCategory() const { return m_ComCategory; };
+		eComponentOrder GetComponentCategory() const { return m_ComCategory; };
 
 		bool IsStarted() const { return m_isStarted; }
 
@@ -79,7 +79,7 @@ namespace core {
 	private:
 		inline void SetState(eState _state) { m_state = _state; }
 
-		const eComponentCategory m_ComCategory;
+		const eComponentOrder m_ComCategory;
 		GameObject* m_ownerGameObject;
 
 		eState m_state;

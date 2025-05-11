@@ -21,7 +21,7 @@
 namespace core::editor
 {
 	Inspector_Com_Renderer::Inspector_Com_Renderer()
-		: Inspector_Component(eComponentCategory::Renderer)
+		: Inspector_Component(eComponentOrder::Renderer)
 		, m_mesh{}
 		, m_material{}
 	{

@@ -16,14 +16,14 @@ namespace core::editor
 		, mTargetResource()
 	{
 		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)eComponentCategory::END);
+		mGuiComponents.resize((int)eComponentOrder::END);
 		//mGuiResources.resize((int)eResourceType::END);
 
-		mGuiComponents[(int)eComponentCategory::Transform] = new Inspector_Com_Transform;
-		mGuiComponents[(int)eComponentCategory::Transform]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)eComponentOrder::Transform] = new Inspector_Com_Transform;
+		mGuiComponents[(int)eComponentOrder::Transform]->SetSize(ImVec2(0.f, 100.f));
 
-		mGuiComponents[(int)eComponentCategory::Renderer] = new Inspector_Com_Renderer;
-		mGuiComponents[(int)eComponentCategory::Renderer]->SetSize(ImVec2(0.f, 100.f));
+		mGuiComponents[(int)eComponentOrder::Renderer] = new Inspector_Com_Renderer;
+		mGuiComponents[(int)eComponentOrder::Renderer]->SetSize(ImVec2(0.f, 100.f));
 
 		//mGuiResources[(int)eResourceType::Texture] = new TextureEditor;
 	}

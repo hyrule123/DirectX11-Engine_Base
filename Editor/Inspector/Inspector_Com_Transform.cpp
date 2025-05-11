@@ -9,7 +9,7 @@ namespace core::editor
 {
 
 	Inspector_Com_Transform::Inspector_Com_Transform()
-		: Inspector_Component(eComponentCategory::Transform)
+		: Inspector_Component(eComponentOrder::Transform)
 	{
 		//SetSize(ImVec2(200.0f, 120.0f));
 	}

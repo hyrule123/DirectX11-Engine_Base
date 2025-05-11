@@ -33,7 +33,7 @@ namespace core
 		Collider3D::Awake();
 
 		Rigidbody* rigidbody = 
-			static_cast<Rigidbody*>(gameObject()->GetComponent(eComponentCategory::Rigidbody));
+			static_cast<Rigidbody*>(gameObject()->GetComponent(eComponentOrder::Rigidbody));
 
 		if (nullptr == rigidbody)
 		{

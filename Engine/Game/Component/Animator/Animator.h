@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 #include "Engine/Common.h"
 
@@ -8,13 +8,10 @@
 namespace core
 {
 	class Animation;
-
-#define ANIMATOR_COMPONENT BaseComponent<Animator, eComponentCategory::Animator>
-
 	class Animator :
-		public ANIMATOR_COMPONENT
+		public Component
 	{
-		CLASS_INFO(Animator, ANIMATOR_COMPONENT);
+		CLASS_INFO(Animator, Component);
 		
 
 	public:

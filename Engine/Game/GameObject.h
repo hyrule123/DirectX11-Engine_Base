@@ -23,7 +23,7 @@ namespace core
 		CLONE_ABLE(GameObject);
 		
 	public:
-		using BaseComponents = std::array<Component*, (size_t)eComponentCategory::BaseComponentEnd>;
+		using BaseComponents = std::array<Component*, (size_t)eComponentOrder::BaseComponentEnd>;
 		using Scripts = std::vector<Script*>;
 
 		enum class eState
@@ -70,7 +70,7 @@ namespace core
 
 		Script* GetScript(const std::string_view _resource_name);
 
-		Component* GetComponent(eComponentCategory _type) { return m_baseComponents[(int)_type]; }
+		Component* GetComponent(eComponentOrder _type) { return m_baseComponents[(int)_type]; }
 		Transform* transform();
 
 		const BaseComponents& GetComponents() const { return m_baseComponents; }
@@ -126,7 +126,7 @@ namespace core
 	{
 		T* ret = new T;
 
-		eComponentCategory order = ret->GetComponentCategory();
+		eComponentOrder order = ret->GetComponentCategory();
 
 		if (false == IsComponentCategoryValid(order))
 		{
@@ -151,16 +151,16 @@ namespace core
 		}
 
 		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
-		else if constexpr (T::template IsBaseComponentType<T>())
+		else if constexpr (is_base_component<T>())
 		{
 			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_baseComponents[(int)T::s_order]);
+			pCom = static_cast<T*>(m_baseComponents[(int)BaseComponent<T>::s_order]);
 		}
 
 		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
 		else //constexpr
 		{
-			pCom = dynamic_cast<T*>(m_baseComponents[(int)T::s_order]);
+			pCom = dynamic_cast<T*>(m_baseComponents[(int)BaseComponent<T>::s_order]);
 		}
 
 		return pCom;
@@ -181,6 +181,6 @@ namespace core
 
 	inline Transform* GameObject::transform()
 	{
-		return (Transform*)m_baseComponents[(int)eComponentCategory::Transform];
+		return (Transform*)m_baseComponents[(int)eComponentOrder::Transform];
 	};
 }

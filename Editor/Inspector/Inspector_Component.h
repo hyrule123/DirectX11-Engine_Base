@@ -11,14 +11,14 @@ namespace core
 		class Inspector_Component : public EditorChild
 		{
 		public:
-			Inspector_Component(eComponentCategory _type);
+			Inspector_Component(eComponentOrder _type);
 			virtual ~Inspector_Component();
 
 			void SetTarget(GameObject* _target) { mTarget = _target; }
 			GameObject* GetTarget() { return mTarget; }
 
 		private:
-			eComponentCategory m_ComCategory;
+			eComponentOrder m_ComCategory;
 			GameObject* mTarget;
 		};
 	}

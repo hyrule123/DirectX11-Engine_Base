@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 #include "Engine/DefaultShader/Common_struct.hlsli"
 
@@ -38,12 +38,10 @@ namespace core
 	class GameObject;
 	class StructBuffer;
 
-#define TRANSFORM_COMPONENT BaseComponent<Transform, eComponentCategory::Transform>
-
 	class Transform
-		: public TRANSFORM_COMPONENT
+		: public Component
 	{
-		CLASS_INFO(Transform, TRANSFORM_COMPONENT);
+		CLASS_INFO(Transform, Component);
 		REGISTER_FACTORY(Transform);
 		CLONE_ABLE(Transform);
 		

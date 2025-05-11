@@ -18,7 +18,7 @@
 namespace core
 {
 	Renderer::Renderer(const std::string_view key)
-		: Super(key)
+		: Super(key, eComponentOrder::Renderer)
 		, m_mesh(nullptr)
 		, m_shared_material(nullptr)
 		, m_dynamic_material(nullptr)

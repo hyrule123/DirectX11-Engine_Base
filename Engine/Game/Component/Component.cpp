@@ -8,7 +8,7 @@
 #endif
 
 namespace core {
-	Component::Component(const std::string_view key, eComponentCategory _type)
+	Component::Component(const std::string_view key, eComponentOrder _type)
 		: Entity(key)
 		, m_ComCategory(_type)
 		, m_ownerGameObject()

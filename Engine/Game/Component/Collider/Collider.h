@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 #include "Engine/Common.h"
 
@@ -9,12 +9,11 @@ namespace core
 {
 	class Transform;
 	class CollisionSystem;
-
-#define COLLIDER_COMPONENT BaseComponent<Collider, eComponentCategory::Collider>
+	
 	class Collider
-		: public COLLIDER_COMPONENT
+		: public Component
 	{
-		CLASS_INFO(Collider, COLLIDER_COMPONENT);
+		CLASS_INFO(Collider, Component);
 		friend class Collision2D;
 		friend class Collision3D;
 		friend class ContactPair;

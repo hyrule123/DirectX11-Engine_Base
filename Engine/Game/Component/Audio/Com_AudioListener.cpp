@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_AudioListener::Com_AudioListener()
-		: Super(Com_AudioListener::concrete_class_name)
+		: Super(Com_AudioListener::concrete_class_name, eComponentOrder::AudioListener)
 	{
 	}
 

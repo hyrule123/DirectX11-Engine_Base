@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_AudioSource::Com_AudioSource()
-		: Super(Com_AudioSource::concrete_class_name)
+		: Super(Com_AudioSource::concrete_class_name, eComponentOrder::AudioSource)
 		, mAudioClip(nullptr)
 	{
 	}

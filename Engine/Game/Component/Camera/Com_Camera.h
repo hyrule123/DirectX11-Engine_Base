@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/BaseComponent.h"
+#include "Engine/Game/Component/Component.h"
 
 #include "Engine/define_Enum.h"
 
@@ -16,11 +16,10 @@ namespace  core
 	class ConstBuffer;
 	class StructBuffer;
 
-#define CAMERA_COMPONENT BaseComponent<Com_Camera, eComponentCategory::Camera>
 	class Com_Camera 
-		: public CAMERA_COMPONENT
+		: public Component
 	{
-		CLASS_INFO(Com_Camera, CAMERA_COMPONENT);
+		CLASS_INFO(Com_Camera, Component);
 		
 		class CullingAgent;
 	public:
