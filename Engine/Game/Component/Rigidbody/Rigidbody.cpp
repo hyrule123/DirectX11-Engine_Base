@@ -9,7 +9,7 @@
 namespace core
 {
 	Rigidbody::Rigidbody(const std::string_view key)
-		: Super(key, eComponentOrder::Rigidbody)
+		: Super(key, s_component_order)
 		, m_rigidActor{}
 		, m_ShapesModified{true}
 	{
@@ -31,7 +31,12 @@ namespace core
 	}
 	void Rigidbody::OnEnable()
 	{
-		CollisionSystem* colsys = gameObject()->scene()->GetCollisionSystem();
+		s_ptr<GameObject> owner = get_owner();
+		ASSERT(owner, "owner 게임오브젝트가 없습니다.");
+		s_ptr<Scene> scene = owner->get_scene();
+		ASSERT(scene, "scene이 없습니다.");
+
+		CollisionSystem* colsys = scene->GetCollisionSystem();
 		if (colsys)
 		{
 			Collision3D* col3d = colsys->GetCollision3D();
@@ -77,7 +82,13 @@ namespace core
 	}
 	void Rigidbody::SyncToPhysXGlobalPose()
 	{
-		Transform* tr = gameObject()->transform();
+		s_ptr<GameObject> owner = get_owner();
+		
+		if (nullptr == owner) { 
+			return; 
+		}
+
+		s_ptr<Transform> tr = owner->GetComponent<Transform>();
 		if (false == tr->is_transform_updated())
 		{
 			return;
@@ -92,7 +103,10 @@ namespace core
 
 	void Rigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
 	{
-		Transform* tr = gameObject()->transform();
+		s_ptr<GameObject> owner = get_owner();
+
+		if (nullptr == owner) { return; }
+		s_ptr<Transform> tr = owner->GetComponent<Transform>();
 
 		tr->set_world_position(_pxTransform.p);
 		tr->set_local_rotation(_pxTransform.q);

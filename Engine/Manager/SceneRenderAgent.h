@@ -23,8 +23,8 @@ namespace core {
 
 	public:
 		struct MeshMaterialKey {
-			std::shared_ptr<Mesh> mesh;
-			std::shared_ptr<Material> material;
+			s_ptr<Mesh> mesh;
+			s_ptr<Material> material;
 
 			bool operator == (const MeshMaterialKey& _other) const {
 				return (mesh == _other.mesh && material == _other.material);
@@ -80,12 +80,12 @@ namespace core {
 		//Light Material
 
 		//Deffered Merge
-		std::shared_ptr<Mesh> m_deffered_merge_rectmesh;
-		std::shared_ptr<Material> m_deffered_merge_material;
+		s_ptr<Mesh> m_deffered_merge_rectmesh;
+		s_ptr<Material> m_deffered_merge_material;
 
-		std::shared_ptr<Mesh> m_debug_meshes_3D[(int)eCollider3D_Shape::END];
+		s_ptr<Mesh> m_debug_meshes_3D[(int)eCollider3D_Shape::END];
 		std::vector<tDebugDrawData> m_debug_draw_data_3D[(int)eCollider3D_Shape::END];
-		std::shared_ptr<DebugMaterial> m_debug_material;
+		s_ptr<DebugMaterial> m_debug_material;
 
 		std::vector<Light_3D*> m_light_3D_instances[(int)eLightType::END];
 	};

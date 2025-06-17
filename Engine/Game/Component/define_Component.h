@@ -22,10 +22,7 @@ namespace core
 
 		StateMachine,
 
-		BaseComponentEnd,
-
-		Script = BaseComponentEnd,
-
+		Script,
 		END
 	};
 	inline bool IsComponentCategoryValid(eComponentOrder _cat)
@@ -57,31 +54,4 @@ namespace core
 			return eComponentCategory_String[(int)_category];
 		}
 	}
-
-	template <typename T>
-	struct BaseComponent {
-		constexpr static inline const eComponentOrder s_order = eComponentOrder::END;
-	};
-
-	template <typename T>
-	constexpr bool is_base_component()
-	{
-		return BaseComponent<T>::s_order != eComponentOrder::END;
-	}
-
-#define BASE_COMPONENT(_class_, _component_order_) \
-template <>\
-struct BaseComponent<class _class_> {\
-	constexpr static inline const eComponentOrder s_order = _component_order_;\
-}
-	BASE_COMPONENT(Transform, eComponentOrder::Transform);
-	BASE_COMPONENT(Rigidbody, eComponentOrder::Rigidbody);
-	BASE_COMPONENT(Collider, eComponentOrder::Collider);
-	BASE_COMPONENT(Animator, eComponentOrder::Animator);
-	BASE_COMPONENT(Light, eComponentOrder::Light);
-	BASE_COMPONENT(Com_Camera, eComponentOrder::Camera);
-	BASE_COMPONENT(Renderer, eComponentOrder::Renderer);
-	BASE_COMPONENT(Com_AudioSource, eComponentOrder::AudioSource);
-	BASE_COMPONENT(Com_AudioListener, eComponentOrder::AudioListener);
-	BASE_COMPONENT(StateMachine, eComponentOrder::StateMachine);
 }

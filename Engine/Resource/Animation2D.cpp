@@ -10,8 +10,7 @@
 namespace core
 {
 	Animation2D::Animation2D()
-		: Animation(Animation2D::concrete_class_name)
-		, mAnimator(nullptr)
+		: Animation(Animation2D::s_concrete_class_name)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}
 		, mIndex(-1)
@@ -22,7 +21,6 @@ namespace core
 
 	Animation2D::Animation2D(const Animation2D& _other)
 		: Animation(_other)
-		, mAnimator() //이건 이 애니메이션을 복사해서 가져가는 주인이 새로 설정해줘야함
 		, mAnimationName(_other.mAnimationName)
 		, mAtlas(_other.mAtlas) //Atlas == Texture -> 공유하는 리소스
 		, mSpriteSheet(_other.mSpriteSheet) //vector도 value를 담고 있는 경우에는 그냥 복사하면 됨
@@ -82,7 +80,7 @@ namespace core
 	}
 
 	void Animation2D::create(const std::string_view _name
-		, std::shared_ptr<Texture> _atlas
+		, s_ptr<Texture> _atlas
 		, float2 _leftTop, float2 _size, float2 _offset
 		, uint _spriteLegth, float _duration)
 	{
@@ -111,7 +109,7 @@ namespace core
 
 	}
 
-	void Animation2D::CreateXY(const std::string_view _name, std::shared_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration)
+	void Animation2D::CreateXY(const std::string_view _name, s_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration)
 	{
 		mAnimationName = _name;
 

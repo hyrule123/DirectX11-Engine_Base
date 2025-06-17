@@ -12,7 +12,7 @@
 namespace core
 {
 	Com_Renderer_Mesh::Com_Renderer_Mesh() 
-		: Renderer(Com_Renderer_Mesh::concrete_class_name)
+		: Renderer(Com_Renderer_Mesh::s_concrete_class_name)
 	{
 	}
 	Com_Renderer_Mesh::Com_Renderer_Mesh(const std::string_view key)
@@ -30,7 +30,7 @@ namespace core
 	//	if (false == IsRenderReady())
 	//		return;
 
-	//	auto tr = gameObject()->GetComponent<Transform>();
+	//	auto tr = get_owner()->GetComponent<Transform>();
 	//	tr->bind_buffer_to_GPU_register();
 
 	//	//Render

@@ -3,7 +3,7 @@
 namespace core
 {
 	Animator::Animator(const std::string_view key, eDimensionType _type)
-		: Super(key, eComponentOrder::Animator)
+		: Super(key, s_component_order)
 		, mDimensionType(_type)
 	{
 	}

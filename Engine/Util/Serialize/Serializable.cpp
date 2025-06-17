@@ -11,7 +11,7 @@ namespace core
 	Serializable::~Serializable()
 	{
 	}
-	std::shared_ptr<std::ofstream> Serializable::OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
+	s_ptr<std::ofstream> Serializable::OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
 	{
 		std::fs::path parentDir = _fullPath.parent_path();
 
@@ -33,7 +33,7 @@ namespace core
 		}
 
 		//저장할 파일 오픈
-		std::shared_ptr<std::ofstream> ofs = std::make_shared<std::ofstream>(_fullPath, _mode);
+		s_ptr<std::ofstream> ofs = std::make_shared<std::ofstream>(_fullPath, _mode);
 		if (false == ofs->is_open())
 		{
 			ERROR_MESSAGE("파일 열기 실패");
@@ -43,7 +43,7 @@ namespace core
 		return ofs;
 	}
 
-	std::shared_ptr<std::ifstream> Serializable::OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
+	s_ptr<std::ifstream> Serializable::OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
 	{
 		if (false == std::fs::exists(_fullPath))
 		{
@@ -52,7 +52,7 @@ namespace core
 		}
 
 		//파일 오픈
-		std::shared_ptr<std::ifstream> ifs = std::make_shared<std::ifstream>(_fullPath, std::ios::binary);
+		s_ptr<std::ifstream> ifs = std::make_shared<std::ifstream>(_fullPath, std::ios::binary);
 		if (false == ifs->is_open())
 		{
 			ERROR_MESSAGE("파일을 열지 못했습니다.");
@@ -70,7 +70,7 @@ namespace core
 	}
 	eResult Serializable_Binary::SaveFile_Binary(std::fs::path const& _fullPath) const
 	{
-		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
+		s_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 
 		if (nullptr == ofs)
 		{
@@ -94,7 +94,7 @@ namespace core
 
 	eResult Serializable_Binary::LoadFile_Binary(std::fs::path const& _fullPath)
 	{
-		std::shared_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
+		s_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
 		if (nullptr == ifs)
 		{
 			return eResult::Fail_Nullptr;
@@ -119,7 +119,7 @@ namespace core
 
 	eResult Serializable_Json::SaveFile_Json(std::fs::path const& _fullPath) const
 	{
-		std::shared_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
+		s_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
 
 		if (nullptr == ofs)
 		{
@@ -143,7 +143,7 @@ namespace core
 
 	eResult Serializable_Json::LoadFile_Json(std::fs::path const& _fullPath)
 	{
-		std::shared_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
+		s_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
 		if (nullptr == ifs)
 		{
 			return eResult::Fail_Nullptr;

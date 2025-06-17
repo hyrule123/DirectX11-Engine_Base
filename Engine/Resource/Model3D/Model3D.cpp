@@ -27,7 +27,7 @@
 namespace core
 {
 	Model3D::Model3D()
-		: Super(Model3D::concrete_class_name)
+		: Super(Model3D::s_concrete_class_name)
 	{
 	}
 
@@ -110,7 +110,7 @@ namespace core
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"]["concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
+				meshContainer["mesh"]["s_concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
 				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_name();
 
 				//material
@@ -120,7 +120,7 @@ namespace core
 					ERROR_MESSAGE("재질 정보 저장 실패");
 					return result;
 				}
-				meshContainer["material"]["concrete_class_name"]
+				meshContainer["material"]["s_concrete_class_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
 				meshContainer["material"]["resource_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_resource_name();
@@ -179,7 +179,7 @@ namespace core
 					std::string class_name;
 					std::string res_name;
 					meshContainer["mesh"]["resource_name"] >> res_name;
-					meshContainer["mesh"]["concrete_class_name"] >> class_name;
+					meshContainer["mesh"]["s_concrete_class_name"] >> class_name;
 					
 					m_mesh_mtrl_pairs[i].mesh = ResourceManager<Mesh>::get_inst().load(res_name, class_name);
 					if (nullptr == m_mesh_mtrl_pairs[i].mesh)
@@ -192,7 +192,7 @@ namespace core
 					//material
 					class_name.clear(); res_name.clear();
 					meshContainer["material"]["resource_name"] >> res_name;
-					meshContainer["material"]["concrete_class_name"] >> class_name;
+					meshContainer["material"]["s_concrete_class_name"] >> class_name;
 					m_mesh_mtrl_pairs[i].material = 
 						ResourceManager<Material>::get_inst().load(res_name, class_name);
 
@@ -212,22 +212,22 @@ namespace core
 		return eResult::Success;
 	}
 
-	std::vector<std::unique_ptr<GameObject>> Model3D::instantiate()
+	std::vector<s_ptr<GameObject>> Model3D::instantiate()
 	{
-		std::vector<std::unique_ptr<GameObject>> newObjects{};
-		newObjects.push_back(std::make_unique<GameObject>());
-		GameObject* root = newObjects.back().get();
+		std::vector<s_ptr<GameObject>> newObjects{};
+
+		s_ptr<GameObject> root = std::make_shared<GameObject>();
+		newObjects.push_back(root);
 
 		root->SetName(get_concrete_class_name());
 
-		Transform* rootTransform = root->GetComponent<Transform>();
-
+		s_ptr<Transform> rootTransform = root->GetComponent<Transform>();
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
-		std::shared_ptr<Animation3D_PlayData> sharedAnimationData{};
+		s_ptr<Animation3D_PlayData> sharedAnimationData{};
 		if (m_skeleton)
 		{
-			Com_Animator3D* rootAnimator = root->AddComponent<Com_Animator3D>();
+			s_ptr<Com_Animator3D> rootAnimator = root->AddComponent<Com_Animator3D>();
 
 			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
 			sharedAnimationData->set_skeleton(m_skeleton);
@@ -236,12 +236,12 @@ namespace core
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
 		if (1u == (UINT)m_mesh_mtrl_pairs.size())
 		{
-			Com_Renderer_Mesh* renderer = nullptr;
+			s_ptr<Com_Renderer_Mesh> renderer = nullptr;
 			if (sharedAnimationData)
 			{
 				//수동으로 애니메이터를 설정
-				Com_Renderer_3DAnimMesh* renderer3D = root->AddComponent<Com_Renderer_3DAnimMesh>();
-				renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
+				s_ptr<Com_Renderer_3DAnimMesh> renderer3D = root->AddComponent<Com_Renderer_3DAnimMesh>();
+				renderer = static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 			}
 			else
 			{
@@ -263,20 +263,20 @@ namespace core
 			{
 				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
-				rootTransform->add_child(child->transform());
+				rootTransform->add_child(child->GetComponent<Transform>());
 
 				child->SetName(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
-				Com_Renderer_Mesh* renderer = nullptr;
+				s_ptr<Com_Renderer_Mesh> renderer = nullptr;
 				if (sharedAnimationData)
 				{
-					Com_Animator3D* childAnimator = child->AddComponent<Com_Animator3D>();
+					s_ptr<Com_Animator3D> childAnimator = child->AddComponent<Com_Animator3D>();
 					childAnimator->SetSharedAnimationData(sharedAnimationData);
 
 					//수동으로 애니메이터를 설정
 					auto renderer3D = child->AddComponent<Com_Renderer_3DAnimMesh>();
-					renderer = static_cast<Com_Renderer_Mesh*>(renderer3D);
+					renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 				}
 				else
 				{
@@ -310,7 +310,8 @@ namespace core
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
-		result = ResourceManager<Model3D>::get_inst().save_as(shared_from_this_cast<Model3D>(), _dirAndFileName);
+		result = ResourceManager<Model3D>::get_inst().save_as(
+			std::static_pointer_cast<Model3D>(this->shared_from_this()), _dirAndFileName);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("Model3D 저장에 실패했습니다.");
@@ -388,7 +389,7 @@ namespace core
 				}
 			}
 			//vertex buffer은 container당 하나
-			std::shared_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
+			s_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
 			vb->set_resource_name((_dir_name / cont.Name).string());
 			vb->create_vertex_buffer(vertices_3d);
 			//ResourceManager<VertexBuffer>::get_inst().save(vb);
@@ -453,7 +454,7 @@ namespace core
 			return result;
 		}
 
-		std::shared_ptr<Skeleton> skeletonOfFBX = std::make_shared<Skeleton>();
+		s_ptr<Skeleton> skeletonOfFBX = std::make_shared<Skeleton>();
 		result = skeletonOfFBX->create_from_FBX(&loader);
 		if (eResult_fail(result))
 		{
@@ -462,7 +463,7 @@ namespace core
 		}
 
 		//지금 필요한건 FBX에 저장된 Skeleton과 Animation 정보 뿐임
-		std::shared_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::get_inst().load((_meshDataName / _meshDataName).string());
+		s_ptr<Skeleton> skeletonOfProj = ResourceManager<Skeleton>::get_inst().load((_meshDataName / _meshDataName).string());
 
 		//Skeleton의 실제 경로 예시: Player/Player
 		if (eResult_fail(result))
@@ -480,14 +481,14 @@ namespace core
 		return eResult::Success;
 	}
 
-	std::shared_ptr<Material> Model3D::convert_material(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
+	s_ptr<Material> Model3D::convert_material(const tFBXMaterial* _fbxMtrl, const std::fs::path& _texDestDir)
 	{
 		if (nullptr == _fbxMtrl || _texDestDir.empty())
 		{
 			return nullptr;
 		}
 		//material 하나 생성
-		std::shared_ptr<Material> mtrl = std::make_shared<Default3DMtrl>();
+		s_ptr<Material> mtrl = std::make_shared<Default3DMtrl>();
 
 		std::fs::path name = _texDestDir.filename();
 		name /= _fbxMtrl->strMtrlName;
@@ -504,7 +505,7 @@ namespace core
 
 		//텍스처 옮기기 위한 람다 함수
 		auto CopyAndLoadTex =
-			[&](const std::string& _srcTexPath)->std::shared_ptr<Texture>
+			[&](const std::string& _srcTexPath)->s_ptr<Texture>
 			{
 				//비어있을경우 return
 				if (_srcTexPath.empty())
@@ -531,7 +532,7 @@ namespace core
 				std::fs::path texKey = _texDestDir.filename();
 				texKey /= std::fs::path(_srcTexPath).filename();
 
-				std::shared_ptr<Texture> newTex = ResourceManager<Texture>::get_inst().load(texKey.string());
+				s_ptr<Texture> newTex = ResourceManager<Texture>::get_inst().load(texKey.string());
 				//바로 Texture Load. 로드 실패 시 false 반환
 				if (nullptr == newTex)
 				{
@@ -546,7 +547,7 @@ namespace core
 		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
 		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
 
-		std::shared_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+		s_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 		mtrl->set_shader(defferedShader);
 
 		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);
@@ -590,7 +591,7 @@ namespace core
 		bool isMHTex = false;
 		for (size_t i = 0; i < texSuffixSize; ++i)
 		{
-			const std::shared_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
+			const s_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
 				std::string texKey{ tex->get_resource_name() };
@@ -615,13 +616,13 @@ namespace core
 			for (size_t i = 0; i < texSuffixSize; ++i)
 			{
 				//i번째 텍스처가 있고
-				std::shared_ptr<Texture> tex = _mtrl->get_texture((eTextureSlot)i);
+				s_ptr<Texture> tex = _mtrl->get_texture((eTextureSlot)i);
 				if (tex)
 				{
 					for (size_t j = 0; j < texSuffixSize; ++j)
 					{
 						//j번째 텍스처는 없다면
-						std::shared_ptr<Texture> newTex = _mtrl->get_texture((eTextureSlot)j);
+						s_ptr<Texture> newTex = _mtrl->get_texture((eTextureSlot)j);
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
@@ -661,7 +662,7 @@ namespace core
 		}
 	}
 
-	bool Model3D::set_data_to_renderer(Com_Renderer_Mesh* _renderer, UINT _idx)
+	bool Model3D::set_data_to_renderer(const s_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;

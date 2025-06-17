@@ -10,7 +10,7 @@
 
 namespace core {
 	DebugMaterial::DebugMaterial()
-		: Material(DebugMaterial::concrete_class_name)
+		: Material(DebugMaterial::s_concrete_class_name)
 		, m_debug_render_buffer()
 	{
 		m_debug_render_buffer = ResourceManager<StructBuffer>::get_inst().find("debug_render_buffer");

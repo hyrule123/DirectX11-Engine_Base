@@ -10,12 +10,12 @@ namespace core {
 		{
 			std::vector<Vertex2D> vertices_2D = { {} };
 
-			std::shared_ptr<Mesh> pointMesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> pointMesh = std::make_shared<Mesh>();
 			pointMesh->set_engine_default_res(true);
 
 			std::vector<uint> pointIndex = { 0 };
 
-			std::shared_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
+			s_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
 
 			if (false == vb->create_vertex_buffer(vertices_2D)) {
 				ASSERT(false, "point vertex 생성 실패");
@@ -55,7 +55,7 @@ namespace core {
 			vtx2d = Vertex2D{};
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> rect_mesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> rect_mesh = std::make_shared<Mesh>();
 			rect_mesh->set_engine_default_res(true);
 
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
@@ -90,7 +90,7 @@ namespace core {
 			vtx2d = Vertex2D{};
 
 			// CreateBuffer Mesh
-			std::shared_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> debugmesh = std::make_shared<Mesh>();
 			debugmesh->set_engine_default_res(true);
 
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugRectMesh, debugmesh);
@@ -140,7 +140,7 @@ namespace core {
 			VecIdx.push_back((uint)VecVtx2D.size() - 1u);
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> circle_mesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> circle_mesh = std::make_shared<Mesh>();
 			circle_mesh->set_engine_default_res(true);
 			circle_mesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ASSERT(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
@@ -364,7 +364,7 @@ namespace core {
 			}
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> cubMesh = std::make_shared<Mesh>();
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::CubeMesh, cubMesh);
 			ASSERT(cubMesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
 		}
@@ -408,7 +408,7 @@ namespace core {
 			};
 
 			// Crate Mesh
-			std::shared_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> debugCubeMesh = std::make_shared<Mesh>();
 			ASSERT(debugCubeMesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugCubeMesh 생성 실패");
 			debugCubeMesh->set_engine_default_res(true);
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
@@ -524,7 +524,7 @@ namespace core {
 				indices.push_back(iBottomIdx - (i + 1));
 			}
 
-			std::shared_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
+			s_ptr<Mesh> sphereMesh = std::make_shared<Mesh>();
 			ASSERT(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
 			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::SphereMesh, sphereMesh);
 		}

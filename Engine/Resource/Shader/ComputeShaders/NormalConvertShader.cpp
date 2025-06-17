@@ -22,7 +22,7 @@
 namespace core
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(NormalConvertShader::concrete_class_name, uint3{32, 32, 1})
+		: ComputeShader(NormalConvertShader::s_concrete_class_name, uint3{32, 32, 1})
 		, mSrcTex()
 		, mDestTex()
 		
@@ -39,7 +39,7 @@ namespace core
 		return ComputeShader::compile_from_byte_code(NormalConverter_CS, sizeof(NormalConverter_CS));
 	}
 
-	std::shared_ptr<Texture> NormalConvertShader::Convert(std::shared_ptr<Texture> _srcTex)
+	s_ptr<Texture> NormalConvertShader::Convert(s_ptr<Texture> _srcTex)
 	{
 		if (nullptr == _srcTex)
 			return nullptr;
@@ -48,7 +48,7 @@ namespace core
 		
 		on_execute();
 
-		std::shared_ptr<Texture> retTex = mDestTex;
+		s_ptr<Texture> retTex = mDestTex;
 		mDestTex = nullptr;
 		return retTex;
 	}

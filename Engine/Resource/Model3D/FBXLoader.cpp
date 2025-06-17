@@ -17,7 +17,7 @@ namespace core
 	
 
 	FBXLoader::FBXLoader()
-		: Entity(FBXLoader::concrete_class_name)
+		: Entity(FBXLoader::s_concrete_class_name)
 		, mManager()
 		, mScene()
 		, mBones{}
@@ -690,7 +690,7 @@ namespace core
 	//			//std::string strName = strPath;
 
 	//			// 이미 로딩된 재질이면 로딩된 것을 사용
-	//			std::shared_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(mContainers[i].vecMtrl[j].strMtrlName);
+	//			s_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(mContainers[i].vecMtrl[j].strMtrlName);
 	//			if (nullptr != pMaterial) {
 	//				continue;
 	//			}
@@ -703,14 +703,14 @@ namespace core
 	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-	//			const std::shared_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 
 	//			ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
 	//			pMaterial->set_shader(defferedShader);
 	//			
 	//			{
-	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
+	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strDiffuseTex);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Diffuse, pTex);
@@ -718,7 +718,7 @@ namespace core
 	//			}
 	//				
 	//			{
-	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strNormalTex);
+	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strNormalTex);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Normal, pTex);
@@ -726,7 +726,7 @@ namespace core
 	//			}
 
 	//			{
-	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strSpecularTex);
+	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(mContainers[i].vecMtrl[j].strSpecularTex);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Specular, pTex);
@@ -734,7 +734,7 @@ namespace core
 	//			}
 
 	//			{
-	//				std::shared_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
+	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(mContainers[i].vecMtrl[j].strEmissiveTex);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Emissive, pTex);

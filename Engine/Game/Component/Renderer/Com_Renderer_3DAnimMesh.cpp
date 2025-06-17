@@ -13,7 +13,7 @@
 namespace core
 {
 	Com_Renderer_3DAnimMesh::Com_Renderer_3DAnimMesh()
-		: Com_Renderer_Mesh(Com_Renderer_3DAnimMesh::concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_3DAnimMesh::s_concrete_class_name)
 	{
 	}
 
@@ -27,7 +27,7 @@ namespace core
 		//3D 애니메이터가 아니거나
 		//재생 중이 아니거나
 		//->일반 Mesh 타입으로 렌더링
-	//	auto animator = gameObject()->GetComponent<Com_Animator3D>();
+	//	auto animator = get_owner()->GetComponent<Com_Animator3D>();
 	//	if (
 	//		nullptr == animator ||
 	//		false == animator->is_playing()
@@ -43,7 +43,7 @@ namespace core
 	//	}
 	//		
 
-	//	auto tr = gameObject()->GetComponent<Transform>();
+	//	auto tr = get_owner()->GetComponent<Transform>();
 	//	tr->clear_buffer_data();
 	//	tr->add_to_buffer();
 	//	tr->bind_buffer_to_GPU_register();

@@ -6,7 +6,7 @@
 namespace core
 {
 	MultiRenderTarget::MultiRenderTarget()
-		: Entity(MultiRenderTarget::concrete_class_name)
+		: Entity(MultiRenderTarget::s_concrete_class_name)
 		, mRenderTargetTextures{}
 		, mRenderTargetViews{}
 		, mDSTexture{}
@@ -16,7 +16,7 @@ namespace core
 	MultiRenderTarget::~MultiRenderTarget()
 	{
 	}
-	bool MultiRenderTarget::create(std::shared_ptr<Texture> _texture[MRT_MAX], std::shared_ptr<Texture> _dsTexture)
+	bool MultiRenderTarget::create(s_ptr<Texture> _texture[MRT_MAX], s_ptr<Texture> _dsTexture)
 	{
 		ASSERT(nullptr != _texture[0], "렌더타겟이 하나도 없습니다.");
 

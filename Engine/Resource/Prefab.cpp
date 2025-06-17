@@ -9,7 +9,7 @@
 namespace core
 {
 	Prefab::Prefab()
-		: Resource(Prefab::concrete_class_name)
+		: Resource(Prefab::s_concrete_class_name)
 		, m_prefab()
 	{
 	}
@@ -39,13 +39,13 @@ namespace core
 	}
 
 
-	std::shared_ptr<GameObject> Prefab::instantiate()
+	s_ptr<GameObject> Prefab::instantiate()
 	{
-		std::shared_ptr<GameObject> obj{};
+		s_ptr<GameObject> obj{};
 		
 		if (m_prefab)
 		{
-			obj = std::shared_ptr<GameObject>(m_prefab->Clone());
+			obj = std::static_pointer_cast<GameObject>(m_prefab->Clone());
 		}
 
 		return obj;

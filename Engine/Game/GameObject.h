@@ -23,8 +23,8 @@ namespace core
 		CLONE_ABLE(GameObject);
 		
 	public:
-		using BaseComponents = std::array<Component*, (size_t)eComponentOrder::BaseComponentEnd>;
-		using Scripts = std::vector<Script*>;
+		using BaseComponents = std::array<s_ptr<Component>, (size_t)eComponentOrder::END>;
+		using Scripts = std::vector<s_ptr<Script>>;
 
 		enum class eState
 		{
@@ -53,25 +53,48 @@ namespace core
 		void RemoveDestroyed();
 
 	public:
-		Component* AddComponent(Component* _pCom);
-		template <typename T> requires std::is_base_of_v<Component, T>
-		T* AddComponent();
-		Component* AddComponent(const std::string_view _resource_name);
+		s_ptr<Component> AddComponent(const s_ptr<Component>& _pCom);
 
 		template <typename T>
-		T* GetComponent();
-
-		template <typename T> requires std::is_base_of_v<Script, T>
-		T* AddScript();
-		Script* AddScript(const std::string_view _resource_name);
+		s_ptr<T> AddComponent();
+		s_ptr<Component> AddComponent(const std::string_view _resource_name);
 
 		template <typename T>
-		T* GetScript();
+		s_ptr<T> GetComponent() {
+			static_assert(std::is_base_of_v<Component, T>, "Component의 하위 클래스가 아닙니다.");
 
-		Script* GetScript(const std::string_view _resource_name);
+			s_ptr<T> ret = nullptr;
+			//Script는 이름을 통한 비교
+			if constexpr (std::is_base_of_v<Script, T>)
+			{
+				ret = GetScript<T>();
+			}
+			//이외의 
+			else //constexpr
+			{
+				ret = std::dynamic_pointer_cast<T>(m_baseComponents[(int)T::s_component_order]);
+			}
 
-		Component* GetComponent(eComponentOrder _type) { return m_baseComponents[(int)_type]; }
-		Transform* transform();
+			return ret;
+		}
+
+		template <typename T>
+		s_ptr<T> AddScript() {
+			static_assert(std::is_base_of_v<Script, T>, "Script의 하위 클래스가 아닙니다.");
+			return AddComponent<T>();
+		};
+
+		s_ptr<Script> AddScript(const std::string_view _resource_name);
+
+		template <typename T>
+		s_ptr<T> GetScript() {
+			static_assert(std::is_base_of_v<Script, T>, "Script의 하위 클래스가 아닙니다.");
+			return std::dynamic_pointer_cast<T>(GetScript(T::s_concrete_class_name));
+		}
+
+		s_ptr<Script> GetScript(const std::string_view _resource_name);
+
+		s_ptr<Component> GetComponent(eComponentOrder _type) { return m_baseComponents[(int)_type]; }
 
 		const BaseComponents& GetComponents() const { return m_baseComponents; }
 		
@@ -92,10 +115,9 @@ namespace core
 		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
 		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
-		Scene* scene() { return m_scene; }
-		Scene* scene() const { return m_scene; }
-		void SetScene(Scene* _scene) { m_scene = _scene; }
-		bool IsInScene() const { return (nullptr != m_scene); }
+		s_ptr<Scene> get_scene() const { return m_scene.lock(); }
+		void set_scene(const s_ptr<Scene>& _scene) { m_scene = _scene; }
+		bool IsInScene() const { return (false == m_scene.expired()); }
 
 		void SetLayer(uint32 _layer);
 		uint32 GetLayer() const { return m_layer; }
@@ -108,7 +130,7 @@ namespace core
 	private:
 		std::string m_name;
 
-		Scene* m_scene;
+		w_ptr<Scene> m_scene;
 		uint32 m_layer;
 
 		BaseComponents	m_baseComponents;
@@ -121,66 +143,15 @@ namespace core
 	};
 
 
-	template <typename T> requires std::is_base_of_v<Component, T>
-	T* GameObject::AddComponent()
-	{
-		T* ret = new T;
-
-		eComponentOrder order = ret->GetComponentCategory();
-
-		if (false == IsComponentCategoryValid(order))
-		{
-			delete ret;
-			ret = nullptr;
-			return ret;
-		}
-
-		//Component로 캐스팅해서 AddComponent 함수 호출 후 다시 T타입으로 바꿔서 반환
-		return static_cast<T*>(AddComponent(ret));
-	}
-
 	template <typename T>
-	T* GameObject::GetComponent()
+	s_ptr<T> GameObject::AddComponent()
 	{
-		T* pCom = nullptr;
+		static_assert(std::is_base_of_v<Component, T>, "Component의 하위 클래스가 아닙니다.");
 
-		//Script는 이름을 통한 비교
-		if constexpr (std::is_base_of_v<Script, T>)
-		{
-			pCom = GetScript<T>();
-		}
+		s_ptr<T> ret = std::make_shared<T>();
 
-		//Script 아니고 Base Component 타입으로 반환을 요청한 경우
-		else if constexpr (is_base_component<T>())
-		{
-			//Base Component 타입으로 요청했을 경우에는 static cast 후 반환
-			pCom = static_cast<T*>(m_baseComponents[(int)BaseComponent<T>::s_order]);
-		}
+		ret = std::static_pointer_cast<T>(AddComponent(ret));
 
-		//Base Component 타입으로 반환이 아닐 경우 타입 검증 후 반환
-		else //constexpr
-		{
-			pCom = dynamic_cast<T*>(m_baseComponents[(int)BaseComponent<T>::s_order]);
-		}
-
-		return pCom;
+		return ret;
 	}
-
-	template<typename T> requires std::is_base_of_v<Script, T>
-	inline T* GameObject::AddScript()
-	{
-		return AddComponent<T>();
-	};
-
-
-	template<typename T>
-	inline T* GameObject::GetScript()
-	{
-		return static_cast<T*>(GetScript(T::concrete_class_name));
-	};
-
-	inline Transform* GameObject::transform()
-	{
-		return (Transform*)m_baseComponents[(int)eComponentOrder::Transform];
-	};
 }

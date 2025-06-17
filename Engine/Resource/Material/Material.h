@@ -36,7 +36,7 @@ namespace core
 		// 필수 재정의 함수들 //
 		void bind_shader();
 		virtual void clear_instancing_buffer() {}; //버퍼 클리어
-		virtual void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) {};
+		virtual void set_data_to_instancing_buffer(const std::vector<s_ptr<GameObject>>& _objs) {};
 		virtual void bind_instancing_buffer_to_GPU_register() {};
 		///////////////////////////////
 
@@ -46,11 +46,11 @@ namespace core
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void set_shader(const std::shared_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
-		const std::shared_ptr<GraphicsShader>& get_shader() const { return m_shader; }
+		void set_shader(const s_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
+		const s_ptr<GraphicsShader>& get_shader() const { return m_shader; }
 
-		void set_texture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture);
-		const std::shared_ptr<Texture>& get_texture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
+		void set_texture(eTextureSlot _slot, const s_ptr<Texture>& _texture);
+		const s_ptr<Texture>& get_texture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
 
 		eRenderingMode get_rendering_mode() const { return m_renderingMode; }
 		void set_rendering_mode(eRenderingMode _mode) { m_renderingMode = _mode; }
@@ -71,8 +71,8 @@ namespace core
 		void SetEmissiveColor(const float4& _emsv)	{ m_shared_material_data.emissive = _emsv; }
 			
 	private:
-		std::shared_ptr<GraphicsShader> m_shader;
-		std::array<std::shared_ptr<Texture>, (int)eTextureSlot::END> m_textures;
+		s_ptr<GraphicsShader> m_shader;
+		std::array<s_ptr<Texture>, (int)eTextureSlot::END> m_textures;
 
 		eRenderingMode m_renderingMode;
 		tSharedMaterialData m_shared_material_data;

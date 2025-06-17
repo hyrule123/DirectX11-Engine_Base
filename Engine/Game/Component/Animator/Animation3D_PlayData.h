@@ -44,8 +44,8 @@ namespace core
 		uint get_bone_count() const { return m_animation3D_data.BoneCount; }
 		uint get_model_inst_ID() const { return m_animation3D_data.model_inst_ID; }
 
-		std::shared_ptr<Animation3D> get_current_animation() { return m_currentAnimation; }
-		std::shared_ptr<Animation3D> get_next_animation() { return m_nextAnimation; }
+		s_ptr<Animation3D> get_current_animation() { return m_currentAnimation; }
+		s_ptr<Animation3D> get_next_animation() { return m_nextAnimation; }
 		const tAnimation3D_ComputeShader_Data& get_compute_shader_data() const { return m_animation3D_data; }
 		
 		int get_prev_frame() const { return m_PrevFrame; }
@@ -54,18 +54,18 @@ namespace core
 
 		void update_prev_frame() { m_PrevFrame = m_animation3D_data.CurrentFrame; }
 
-		std::shared_ptr<Skeleton> get_skeleton() { return m_skeleton; }
-		void set_skeleton(const std::shared_ptr<Skeleton> _skeleton);
+		s_ptr<Skeleton> get_skeleton() { return m_skeleton; }
+		void set_skeleton(const s_ptr<Skeleton> _skeleton);
 		
 
 
 	private:
-		bool play_internal(const std::shared_ptr<Animation3D>& _animation, float _blendTime);
+		bool play_internal(const s_ptr<Animation3D>& _animation, float _blendTime);
 
 	private:
-		std::shared_ptr<Skeleton>						m_skeleton;
-		std::shared_ptr<Animation3D>					m_currentAnimation;
-		std::shared_ptr<Animation3D>					m_nextAnimation;
+		s_ptr<Skeleton>						m_skeleton;
+		s_ptr<Animation3D>					m_currentAnimation;
+		s_ptr<Animation3D>					m_nextAnimation;
 
 		//이전 프레임(현재 프레임은 아래 구조체에 저장되어 있음)
 		int								m_PrevFrame;

@@ -16,14 +16,14 @@ namespace core
 
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-		std::shared_ptr<Texture> Convert(std::shared_ptr<Texture> _srcTex);
+		s_ptr<Texture> Convert(s_ptr<Texture> _srcTex);
 
 	protected:
 		virtual bool bind_buffer_to_GPU_register() override;
 		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:
-		std::shared_ptr<Texture> mSrcTex;
-		std::shared_ptr<Texture> mDestTex;
+		s_ptr<Texture> mSrcTex;
+		s_ptr<Texture> mDestTex;
 	};
 }

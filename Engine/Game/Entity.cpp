@@ -28,9 +28,9 @@ namespace core
 	EntityFactory::~EntityFactory()	
 	{
 	}
-	std::unique_ptr<Entity> EntityFactory::instantiate(const std::string_view key)
+	s_ptr<Entity> EntityFactory::instantiate(const std::string_view key)
 	{
-		std::unique_ptr<Entity> ret = nullptr;
+		s_ptr<Entity> ret = nullptr;
 		auto iter = m_ctors.find(key);
 		if (iter != m_ctors.end()) {
 			ret = iter->second();

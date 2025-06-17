@@ -28,11 +28,11 @@ namespace core
 
 		virtual bool AddEvent(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func) override;
 
-		std::shared_ptr<Animation3D_PlayData> CreateSharedAnimationData();
-		void SetSharedAnimationData(const std::shared_ptr<Animation3D_PlayData>& _sharedData) {
+		s_ptr<Animation3D_PlayData> CreateSharedAnimationData();
+		void SetSharedAnimationData(const s_ptr<Animation3D_PlayData>& _sharedData) {
 			m_sharedPlayData = _sharedData;
 		}
-		std::shared_ptr<Skeleton> get_skeleton();
+		s_ptr<Skeleton> get_skeleton();
 
 		bool Play(const std::string_view _strAnimName, float _blendTime = 0.f);
 
@@ -41,12 +41,12 @@ namespace core
 
 		void bind_computed_final_bone_matrix();
 
-		std::shared_ptr<Animation3D_PlayData> get_shared_play_data() {
+		s_ptr<Animation3D_PlayData> get_shared_play_data() {
 			return m_sharedPlayData;
 		}
 
 	private:
-		std::shared_ptr<Animation3D_PlayData> m_sharedPlayData;
+		s_ptr<Animation3D_PlayData> m_sharedPlayData;
 	};
 }
 

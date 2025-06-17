@@ -15,7 +15,7 @@
 namespace core
 {
 	Animation3D_PlayData::Animation3D_PlayData()
-		: Entity(Animation3D_PlayData::concrete_class_name)
+		: Entity(Animation3D_PlayData::s_concrete_class_name)
 		, m_skeleton()
 		//, m_iFramePerSecond(30)
 		, m_PrevFrame(-1)
@@ -165,7 +165,7 @@ namespace core
 		return -1;
 	}
 
-	void Animation3D_PlayData::set_skeleton(const std::shared_ptr<Skeleton> _skeleton)
+	void Animation3D_PlayData::set_skeleton(const s_ptr<Skeleton> _skeleton)
 	{
 		//스켈레톤 주소를 받아서
 		m_skeleton = _skeleton;
@@ -180,7 +180,7 @@ namespace core
 	{
 		if (m_skeleton)
 		{
-			std::shared_ptr<Animation3D> anim = m_skeleton->find_animation(_animationName);
+			s_ptr<Animation3D> anim = m_skeleton->find_animation(_animationName);
 			return play_internal(anim, _blendTime);
 		}
 
@@ -229,7 +229,7 @@ namespace core
 	}
 
 
-	bool Animation3D_PlayData::play_internal(const std::shared_ptr<Animation3D>& _anim, float _blendTime)
+	bool Animation3D_PlayData::play_internal(const s_ptr<Animation3D>& _anim, float _blendTime)
 	{
 		if (nullptr == _anim)
 			return false;

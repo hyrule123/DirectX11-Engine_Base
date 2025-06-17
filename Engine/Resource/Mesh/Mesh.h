@@ -36,7 +36,7 @@ namespace core
 		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
 
-		void set_vertex_buffer(const std::shared_ptr<VertexBuffer>& _buf) {
+		void set_vertex_buffer(const s_ptr<VertexBuffer>& _buf) {
 			m_vertex_buffer = _buf;
 		}
 
@@ -65,8 +65,8 @@ namespace core
 			return result;
 		}
 
-		void set_skeleton(const std::shared_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
-		std::shared_ptr<Skeleton> get_skeleton() const { return m_skeleton; }
+		void set_skeleton(const s_ptr<Skeleton>& _pSkeleton) { m_skeleton = _pSkeleton; }
+		s_ptr<Skeleton> get_skeleton() const { return m_skeleton; }
 		
 		void render() const;
 		void render_instanced(UINT _instanceCount) const;
@@ -75,7 +75,7 @@ namespace core
 		bool create_index_buffer(const UINT* _data, UINT _dataCount);
 		bool create_index_buffer_internal(const UINT* _data, UINT _dataCount);
 	private:
-		std::shared_ptr<VertexBuffer> m_vertex_buffer;
+		s_ptr<VertexBuffer> m_vertex_buffer;
 		ComPtr<ID3D11Buffer>    m_index_buffer;
 		
 		//Index Buffer Data
@@ -87,6 +87,6 @@ namespace core
 		D3D11_PRIMITIVE_TOPOLOGY m_index_topology;
 
 		//주소는 MeshData에서 관리
-		std::shared_ptr<Skeleton>	m_skeleton;
+		s_ptr<Skeleton>	m_skeleton;
 	};
 }

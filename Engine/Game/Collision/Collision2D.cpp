@@ -86,11 +86,11 @@ namespace core
 	{
 	}
 
-	void Collision2D::Enqueue(Collider2D* const _obj)
+	void Collision2D::Enqueue(const s_ptr<Collider2D>& _obj)
 	{
 		if (_obj)
 		{
-			m_collidersInLayer[_obj->gameObject()->GetLayer()].push_back(_obj);
+			m_collidersInLayer[_obj->get_owner()->GetLayer()].push_back(_obj);
 		}
 	}
 
@@ -111,13 +111,13 @@ namespace core
 					continue;
 				}
 
-				const std::vector<Collider2D*>& lefts = m_collidersInLayer[i];
-				const std::vector<Collider2D*>& rights = m_collidersInLayer[j];
+				const std::vector<s_ptr<Collider2D>>& lefts = m_collidersInLayer[i];
+				const std::vector<s_ptr<Collider2D>>& rights = m_collidersInLayer[j];
 
 
 				for (size_t l = 0; l < lefts.size(); ++l)
 				{
-					Collider2D* const left = lefts[l];
+					const s_ptr<Collider2D>& left = lefts[l];
 
 					//동일 레이어 간 충돌일 시, r의 시작번호는 i + 1
 					size_t r = 0;
@@ -128,7 +128,7 @@ namespace core
 
 					for (r; r < rights.size(); ++r)
 					{
-						Collider2D* const right = rights[r];
+						const s_ptr<Collider2D>& const right = rights[r];
 						
 						left->ColliderUpdate();
 						right->ColliderUpdate();
@@ -243,10 +243,10 @@ namespace core
 
 
 
-	bool Collision2D::CheckIntersect_AABB_AABB(Collider2D* const _AABB1, Collider2D* const _AABB2, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_AABB_AABB(const s_ptr<Collider2D>& _AABB1, const s_ptr<Collider2D>& _AABB2, float2& _contactPoint)
 	{
-		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1);
-		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2);
+		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1.get());
+		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2.get());
 
 		if (colA->Left() > colB->Right())
 		{
@@ -270,23 +270,23 @@ namespace core
 	}
 
 
-	bool Collision2D::CheckIntersect_AABB_OBB(Collider2D* const _AABB, Collider2D* const _OBB, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_AABB_OBB(const s_ptr<Collider2D>& _AABB, const s_ptr<Collider2D>& _OBB, float2& _contactPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_AABB_Circle(Collider2D* const _AABB, Collider2D* const _circle, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_AABB_Circle(const s_ptr<Collider2D>& _AABB, const s_ptr<Collider2D>& _circle, float2& _contactPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_OBB(Collider2D* const _OBB1, Collider2D* const _OBB2, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_OBB_OBB(const s_ptr<Collider2D>& _OBB1, const s_ptr<Collider2D>& _OBB2, float2& _contactPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_OBB_Circle(Collider2D* const _OBB, Collider2D* const _circle, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_OBB_Circle(const s_ptr<Collider2D>& _OBB, const s_ptr<Collider2D>& _circle, float2& _contactPoint)
 	{
 		return false;
 	}
-	bool Collision2D::CheckIntersect_Circle_Circle(Collider2D* const _circle1, Collider2D* const _circle2, float2& _contactPoint)
+	bool Collision2D::CheckIntersect_Circle_Circle(const s_ptr<Collider2D>& _circle1, const s_ptr<Collider2D>& _circle2, float2& _contactPoint)
 	{
 		return false;
 	}

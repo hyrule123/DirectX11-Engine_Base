@@ -52,12 +52,12 @@ namespace core
 		void final_update();
 		void render();
 
-		void create(const std::string_view _name, std::shared_ptr<Texture> _atlas
+		void create(const std::string_view _name, s_ptr<Texture> _atlas
 			, float2 _leftTop, float2 _size, float2 _offset
 			, uint _spriteLegth, float _duration);
 
 		//아틀라스를 균일하게 조각조각 내줌
-		void CreateXY(const std::string_view _name, std::shared_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
+		void CreateXY(const std::string_view _name, s_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
 		void bind_buffer_to_GPU_register();
 		void Reset();
@@ -68,9 +68,8 @@ namespace core
 		inline float2 GetSpriteSize(UINT _spriteIdx);
 
 	private:
-		class Com_Animator2D* mAnimator;
 		std::string mAnimationName;
-		std::shared_ptr<Texture> mAtlas;
+		s_ptr<Texture> mAtlas;
 		std::vector<tSprite> mSpriteSheet;
 		int mIndex;
 		float mTime;

@@ -10,7 +10,7 @@
 namespace core
 {
 	ParticleShader::ParticleShader()
-		: ComputeShader(ParticleShader::concrete_class_name, uint3(128, 1, 1))
+		: ComputeShader(ParticleShader::s_concrete_class_name, uint3(128, 1, 1))
 		, mBuffer(nullptr)
 		, mSharedBuffer(nullptr)
 	{

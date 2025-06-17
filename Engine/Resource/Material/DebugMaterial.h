@@ -17,13 +17,13 @@ namespace core {
 
 		//미사용//
 		void clear_instancing_buffer() final {}; //버퍼 클리어
-		void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) final {};	//미사용
+		void set_data_to_instancing_buffer(const std::vector<s_ptr<GameObject>>& _objs) final {};	//미사용
 		void bind_instancing_buffer_to_GPU_register() final {};
 		///////////////
 
 	private:
 
-		std::shared_ptr<StructBuffer> m_debug_render_buffer;
+		s_ptr<StructBuffer> m_debug_render_buffer;
 	};
 }
 

@@ -8,7 +8,7 @@
 namespace core
 {
 	Com_Rigidbody_Static::Com_Rigidbody_Static()
-		: Rigidbody(Com_Rigidbody_Static::concrete_class_name)
+		: Rigidbody(Com_Rigidbody_Static::s_concrete_class_name)
 	{
 	}
 
@@ -18,12 +18,15 @@ namespace core
 
 	physx::PxRigidActor* Com_Rigidbody_Static::CreateRigidbody()
 	{
-		Transform* tr = gameObject()->transform();
+		if (get_owner())
+		{
+			s_ptr<Transform> tr = get_owner()->GetComponent<Transform>();
+			physx::PxTransform pxTr{};
+			pxTr.p = tr->get_world_position();
+			pxTr.q = tr->get_local_rotation();
+			return PhysXInstance::get_inst().GetPhysX().createRigidStatic(pxTr);
+		}
 
-		physx::PxTransform pxTr{};
-		pxTr.p = tr->get_world_position();
-		pxTr.q = tr->get_local_rotation();
-
-		return PhysXInstance::get_inst().GetPhysX().createRigidStatic(pxTr);
+		return nullptr;
 	}
 }

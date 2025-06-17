@@ -17,7 +17,7 @@ namespace core {
 
 	void ResourceManagers::create_default_buffers()
 	{
-		std::shared_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
+		s_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
 		debug_render_buffer();
@@ -27,7 +27,7 @@ namespace core {
 	}
 	void debug_render_buffer()
 	{
-		std::shared_ptr<StructBuffer> debug_render_buffer = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> debug_render_buffer = std::make_shared<StructBuffer>();
 		debug_render_buffer->set_engine_default_res(true);
 
 		StructBuffer::Desc desc{};
@@ -41,7 +41,7 @@ namespace core {
 	}
 	void light_3D_instancing_buffer()
 	{
-		std::shared_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
 		light_3d_instancing_buffer->set_engine_default_res(true);
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;
@@ -53,7 +53,7 @@ namespace core {
 	}
 	void light_3D_const_buffer()
 	{
-		std::shared_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
+		s_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
 		light_3d_const_buffer->set_engine_default_res(true);
 		light_3d_const_buffer->create<tLightCount>();
 		light_3d_const_buffer->SetPresetTargetStage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
@@ -62,7 +62,7 @@ namespace core {
 	}
 	void default_3D_material_instancing_buffer()
 	{
-		std::shared_ptr<StructBuffer> buf = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> buf = std::make_shared<StructBuffer>();
 		buf->set_engine_default_res(true);
 		StructBuffer::Desc desc{};
 		desc.eSBufferType = eStructBufferType::READ_ONLY;

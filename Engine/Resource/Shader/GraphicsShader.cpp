@@ -12,7 +12,7 @@
 namespace core
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(GraphicsShader::concrete_class_name)
+		: Shader(GraphicsShader::s_concrete_class_name)
 		, m_inputLayoutDescs{}
 		, m_inputLayout{}
 		, m_arrShaderCode{}

@@ -14,6 +14,8 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Collider, Component);
+		BASE_COMPONENT(eComponentOrder::Collider);
+
 		friend class Collision2D;
 		friend class Collision3D;
 		friend class ContactPair;
@@ -25,12 +27,12 @@ namespace core
 		virtual void init() override;
 		virtual void Awake() override;
 
-		void OnCollisionEnter(Collider* _collider, const float3& _contactPoint);
-		void OnCollisionStay(Collider* _collider, const float3& _contactPoint);
-		void OnCollisionExit(Collider* _collider);
-		void OnTriggerEnter(Collider* _collider);
-		void OnTriggerStay(Collider* _collider);
-		void OnTriggerExit(Collider* _collider);
+		void OnCollisionEnter(const s_ptr<Collider>& _collider, const float3& _contactPoint);
+		void OnCollisionStay(const s_ptr<Collider>& _collider, const float3& _contactPoint);
+		void OnCollisionExit(const s_ptr<Collider>& _collider);
+		void OnTriggerEnter(const s_ptr<Collider>& _collider);
+		void OnTriggerStay(const s_ptr<Collider>& _collider);
+		void OnTriggerExit(const s_ptr<Collider>& _collider);
 
 		inline eDimensionType GetColliderType() const { return m_dimension; }
 		inline bool IsTriggerMode() const { return m_isTriggerMode; }
@@ -40,7 +42,7 @@ namespace core
 		virtual MATRIX GetColliderMatrix() = 0;
 
 	protected:
-		inline Transform* GetTransform() { return m_transform; }
+		inline s_ptr<Transform> GetTransform() { return m_transform.lock(); }
 		inline CollisionSystem* GetCollisionSystem() { return m_collisionSystem; }
 		inline void AddCollisionCount() { ++m_collisionCount; }
 		inline void SubCollisionCount();
@@ -50,7 +52,7 @@ namespace core
 		bool m_isTriggerMode;
 
 		//Transform을 많이 사용하므로 아예 주소를 받아 놓는다.
-		Transform* m_transform;
+		w_ptr<Transform> m_transform;
 		CollisionSystem* m_collisionSystem;
 
 		int m_collisionCount;
@@ -66,5 +68,6 @@ namespace core
 		}
 	}
 }
+
 
 

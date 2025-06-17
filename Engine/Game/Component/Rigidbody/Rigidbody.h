@@ -12,6 +12,8 @@ namespace core
 		public Component
 	{
 		CLASS_INFO(Rigidbody, Component);
+		BASE_COMPONENT(eComponentOrder::Rigidbody);
+
 	public:
 		Rigidbody(const std::string_view key);
 		virtual ~Rigidbody();

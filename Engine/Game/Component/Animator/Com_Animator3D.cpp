@@ -20,7 +20,7 @@
 namespace core
 {
 	Com_Animator3D::Com_Animator3D()
-		: Animator(Com_Animator3D::concrete_class_name, eDimensionType::_3D)
+		: Animator(Com_Animator3D::s_concrete_class_name, eDimensionType::_3D)
 		, m_sharedPlayData()
 	{
 	}
@@ -31,7 +31,8 @@ namespace core
 	{
 		if (_other.m_sharedPlayData)
 		{
-			m_sharedPlayData = std::shared_ptr<Animation3D_PlayData>(_other.m_sharedPlayData->Clone());
+			auto cloned = _other.m_sharedPlayData->Clone();
+			m_sharedPlayData = std::static_pointer_cast<Animation3D_PlayData>(cloned);
 		}
 	}
 
@@ -64,7 +65,7 @@ namespace core
 		//이전 프레임 번호 업데이트 및 이벤트함수 호출
 		if (m_sharedPlayData->get_prev_frame() != m_sharedPlayData->get_current_frame())
 		{
-			const std::shared_ptr<Animation3D>& curAnim = m_sharedPlayData->get_current_animation();
+			const s_ptr<Animation3D>& curAnim = m_sharedPlayData->get_current_animation();
 
 			Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_sharedPlayData->get_current_frame() - curAnim->get_start_frame());
 		}
@@ -87,13 +88,13 @@ namespace core
 			return false;
 		}
 
-		std::shared_ptr<Skeleton> skeleton = m_sharedPlayData->get_skeleton();
+		s_ptr<Skeleton> skeleton = m_sharedPlayData->get_skeleton();
 		if (nullptr == m_sharedPlayData->get_skeleton())
 		{
 			return false;
 		}
 
-		std::shared_ptr<Animation3D> anim = skeleton->find_animation(_animName);
+		s_ptr<Animation3D> anim = skeleton->find_animation(_animName);
 		if (nullptr == anim)
 		{
 			return false;
@@ -110,7 +111,7 @@ namespace core
 		return true;
 	}
 
-	std::shared_ptr<Animation3D_PlayData> Com_Animator3D::CreateSharedAnimationData()
+	s_ptr<Animation3D_PlayData> Com_Animator3D::CreateSharedAnimationData()
 	{
 		m_sharedPlayData = std::make_shared<Animation3D_PlayData>();
 
@@ -124,9 +125,9 @@ namespace core
 
 
 
-	std::shared_ptr<Skeleton> Com_Animator3D::get_skeleton()
+	s_ptr<Skeleton> Com_Animator3D::get_skeleton()
 	{
-		std::shared_ptr<Skeleton> ret{};
+		s_ptr<Skeleton> ret{};
 		if (m_sharedPlayData) {
 			ret = m_sharedPlayData->get_skeleton();
 		}

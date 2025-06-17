@@ -16,7 +16,7 @@
 namespace core
 {
     Material::Material()
-        : Resource(Material::concrete_class_name)
+        : Resource(Material::s_concrete_class_name)
         , m_shared_material_data{}
         , m_renderingMode(eRenderingMode::forward_opaque)
         , m_shader{}
@@ -156,7 +156,7 @@ namespace core
             {
                 std::string name{};
                 textures[i] >> name;
-                const std::shared_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load(name);
+                const s_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load(name);
                 if (tex)
                 {
                     set_texture((eTextureSlot)i, tex);
@@ -183,7 +183,7 @@ namespace core
         return eResult::Success;
     }
 
-    void Material::set_texture(eTextureSlot _slot, const std::shared_ptr<Texture>& _texture)
+    void Material::set_texture(eTextureSlot _slot, const s_ptr<Texture>& _texture)
     {
         m_textures[(UINT)_slot] = _texture;
         BOOL bTex = nullptr != _texture ? TRUE : FALSE;

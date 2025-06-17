@@ -9,7 +9,7 @@ namespace core {
 #pragma region STATIC TEXTURE
 		using namespace name::defaultRes;
 
-		std::shared_ptr<Texture> pTex = nullptr;
+		s_ptr<Texture> pTex = nullptr;
 
 		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_01);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
@@ -32,7 +32,7 @@ namespace core {
 #pragma endregion
 
 		//noise
-		//std::shared_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
+		//s_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
 		//m_noiseTexture->CreateBuffer(RenderManager::get_inst().GetResolutionX(), RenderManager::get_inst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 		//m_noiseTexture->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::Pixel);
 	}

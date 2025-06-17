@@ -42,6 +42,7 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Transform, Component);
+		BASE_COMPONENT(eComponentOrder::Transform);
 		REGISTER_FACTORY(Transform);
 		CLONE_ABLE(Transform);
 		
@@ -71,16 +72,15 @@ namespace core
 		static void bind_buffer_to_GPU_register();
 
 #pragma region //Hierarchy
-		Transform* get_parent() const { return m_parent; }
-		void set_parent(Transform* _transform) { m_parent = _transform; }
+		s_ptr<Transform> get_parent() const { return m_parent.lock(); }
+		void set_parent(const s_ptr<Transform>& _transform) { m_parent = _transform; }
 		void unlink_parent();
 
-		void add_child(Transform* _transform);
-		const std::vector<Transform*>& get_childs() const { return m_childs; }
+		void add_child(const s_ptr<Transform>& _transform);
+		const std::vector<w_ptr<Transform>>& get_childs() const { return m_childs; }
 
-		std::vector<GameObject*> get_gameobject_hierarchy();
-		void get_gameobject_hierarchy_recursive(std::vector<GameObject*>& _retObjects);
-
+		std::vector<s_ptr<GameObject>> get_gameobject_hierarchy();
+		void get_gameobject_hierarchy_recursive(std::vector<s_ptr<GameObject>>& _ret);
 		
 #pragma region //Hierarchy
 		bool is_transform_updated() const { return m_transform_updated; }
@@ -183,7 +183,7 @@ namespace core
 		const MATRIX& get_world_matix_internal() const { return m_worldMatrix; }
 
 		//아래의 2개 함수는 GameObject에서 호출됨.
-		void remove_child_ptr(Transform* _pTransform);
+		void remove_child_ptr(const s_ptr<Transform>& _pTransform);
 		void destroy_childs_recursive();
 
 		void update_local_matrix();
@@ -243,10 +243,10 @@ namespace core
 
 //The other, related, is that parent / child is mostly about the things a Transform holds(this may be what dan_wipf is getting at).
 // When you change position / scale / rotation in a Transform, you run through it’s child Transforms and update their stats.
-// It’s all Transforms – you never touch a gameObject.And it’s just as easy to walk through a tree of Transforms as one of gameObjects.
+// It’s all Transforms – you never touch a get_owner.And it’s just as easy to walk through a tree of Transforms as one of gameObjects.
 // It feels a little weird to walk from sub - object to sub - object, but it works fine.Esp. for people who prefer using: public Transform cow; as the primary way to link to gameObjects.
-		Transform* m_parent;
-		std::vector<Transform*> m_childs;
+		w_ptr<Transform> m_parent;
+		std::vector<w_ptr<Transform>> m_childs;
 	};
 
 	//Decompose 이론 - 참고만

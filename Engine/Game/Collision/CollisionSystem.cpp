@@ -97,17 +97,17 @@ namespace core
 
 	//void CollisionSystem::LayerCollision(Scene* _scene, uint32 _left, uint32 _right)
 	//{
-		//const std::vector<std::shared_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
-		//const std::vector<std::shared_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
+		//const std::vector<s_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
+		//const std::vector<s_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
 
-		//for (const std::shared_ptr<GameObject>& left : lefts)
+		//for (const s_ptr<GameObject>& left : lefts)
 		//{
 		//	if (false == left->IsActive())
 		//		continue;
 		//	if (left->GetComponent<Collider2D>() == nullptr)
 		//		continue;
 
-		//	for (const std::shared_ptr<GameObject>& right : rights)
+		//	for (const s_ptr<GameObject>& right : rights)
 		//	{
 		//		if (false == left->IsActive())
 		//			continue;
@@ -125,7 +125,7 @@ namespace core
 
 	//}
 
-	//void CollisionSystem::ColliderCollision(const std::shared_ptr<Collider2D>& _left, const std::shared_ptr<Collider2D>& _right)
+	//void CollisionSystem::ColliderCollision(const s_ptr<Collider2D>& _left, const s_ptr<Collider2D>& _right)
 	//{
 		//// 두 충돌체 레이어로 구성된 ID 확인
 		//union_ColliderID colliderID;
@@ -212,7 +212,7 @@ namespace core
 		//}
 	//}
 
-	//bool CollisionSystem::Intersect(const std::shared_ptr<Collider2D>& _left, const std::shared_ptr<Collider2D>& _right)
+	//bool CollisionSystem::Intersect(const s_ptr<Collider2D>& _left, const s_ptr<Collider2D>& _right)
 	//{
 		//// Rect vs Rect 
 		//// 0 --- 1

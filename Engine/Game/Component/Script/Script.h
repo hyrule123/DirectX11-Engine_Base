@@ -9,6 +9,7 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Script, Component);
+		BASE_COMPONENT(eComponentOrder::Script);
 
 	public:
 		Script(const std::string_view key);
@@ -24,12 +25,12 @@ namespace core
 		virtual void update() override {};
 		virtual void final_update() final {};
 
-		virtual void OnCollisionEnter(Collider* const _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionStay(Collider* const _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionExit(Collider* const _collider) {};
+		virtual void OnCollisionEnter(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
+		virtual void OnCollisionStay(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
+		virtual void OnCollisionExit(const s_ptr<Collider>& _collider) {};
 
-		virtual void OnTriggerEnter(Collider* const _collider) {};
-		virtual void OnTriggerStay(Collider* const _collider) {};
-		virtual void OnTriggerExit(Collider* const _collider) {};
+		virtual void OnTriggerEnter(const s_ptr<Collider>& _collider) {};
+		virtual void OnTriggerStay(const s_ptr<Collider>& _collider) {};
+		virtual void OnTriggerExit(const s_ptr<Collider>& _collider) {};
 	};
 }

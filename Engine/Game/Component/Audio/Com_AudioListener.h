@@ -7,6 +7,7 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Com_AudioListener, Component);
+		BASE_COMPONENT(eComponentOrder::AudioListener);
 		
 	public:
 		Com_AudioListener();

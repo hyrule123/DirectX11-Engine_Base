@@ -20,7 +20,7 @@
 namespace core
 {
 	Light_3D::Light_3D()
-		: Light(Light_3D::concrete_class_name, eDimensionType::_3D)
+		: Light(Light_3D::s_concrete_class_name, eDimensionType::_3D)
 	{
 	}
 
@@ -112,7 +112,10 @@ namespace core
 	//트랜스폼을 업데이트
 	void Light_3D::update()
 	{
-		auto tr = gameObject()->GetComponent<Transform>();
+		s_ptr<GameObject> owner = get_owner();
+		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
+
+		auto tr = owner->GetComponent<Transform>();
 		if (nullptr == tr) {
 			return;
 		}
@@ -139,7 +142,10 @@ namespace core
 	//트랜스폼으로부터 데이터를 업데이트
 	void Light_3D::final_update()
 	{
-		auto tr = gameObject()->GetComponent<Transform>();
+		s_ptr<GameObject> owner = get_owner();
+		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
+
+		auto tr = owner->GetComponent<Transform>();
 		if (nullptr == tr)
 		{
 			return;

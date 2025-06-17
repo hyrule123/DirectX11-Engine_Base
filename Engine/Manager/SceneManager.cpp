@@ -20,7 +20,6 @@ namespace core
 
 	SceneManager::~SceneManager()
 	{
-		SAFE_DELETE(m_activeScene);
 	}
 
 	void SceneManager::fixed_update()
@@ -73,13 +72,13 @@ namespace core
 		}
 	}
 
-	Scene* SceneManager::LoadScene(std::unique_ptr<Scene> _scene)
+	s_ptr<Scene> SceneManager::LoadScene(const s_ptr<Scene>& _scene)
 	{
-		ASSERT(nullptr != _scene, "해당 이름의 씬이 없습니다.");
+		ASSERT(nullptr != _scene, "scene이 nullptr 입니다.");
 
 			// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
 			//ASSERT(false, "미구현");
-			//std::vector<std::shared_ptr<GameObject>> dontDestroyObjs;
+			//std::vector<s_ptr<GameObject>> dontDestroyObjs;
 
 			//if (m_activeScene)
 			//{
@@ -90,8 +89,7 @@ namespace core
 			//	m_activeScene->OnExit();
 
 		//씬 갈아끼우기
-		SAFE_DELETE(m_activeScene);
-		m_activeScene = _scene.release();
+		m_activeScene = _scene;
 
 		//ASSERT(false, "미구현");
 		//for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
@@ -108,11 +106,11 @@ namespace core
 		return m_activeScene;
 	}
 
-	Scene* SceneManager::LoadScene(const std::string_view _resource_name)
+	s_ptr<Scene> SceneManager::LoadScene(const std::string_view _resource_name)
 	{
-		std::unique_ptr<Scene> s(EntityFactory::get_inst().instantiate<Scene>(_resource_name));
-
-		return LoadScene(std::move(s));
+		s_ptr<Scene> loaded = 
+			std::dynamic_pointer_cast<Scene>(EntityFactory::get_inst().instantiate(_resource_name));
+		return LoadScene(loaded);
 	}
 
 }

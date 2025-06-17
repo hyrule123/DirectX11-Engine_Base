@@ -15,7 +15,7 @@
 namespace core
 {
 	Transform::Transform()
-		: Super(Transform::concrete_class_name, eComponentOrder::Transform)
+		: Super(Transform::s_concrete_class_name, Transform::s_component_order)
 		, m_localScale(float3::One)
 		, m_localRotation(Quaternion::Identity)
 		, m_localPosition(float3::Zero)
@@ -32,7 +32,6 @@ namespace core
 		, m_childs()
 	{
 	}
-
 
 	Transform::~Transform()
 	{
@@ -97,37 +96,37 @@ namespace core
 
 	void Transform::unlink_parent()
 	{
-		if (m_parent)
+		if (m_parent.lock())
 		{
-			m_parent->remove_child_ptr(this);
-			m_parent = nullptr;
+			m_parent.lock()->remove_child_ptr(std::static_pointer_cast<Transform>(this->shared_from_this()));
+			m_parent.reset();
 		}
 	}
 
-	void Transform::add_child(Transform* _transform)
+	void Transform::add_child(const s_ptr<Transform>& _transform)
 	{
 		if (_transform)
 		{
 			m_childs.push_back(_transform);
 
-			_transform->set_parent(this);
+			_transform->set_parent(std::static_pointer_cast<Transform>(this->shared_from_this()));
 			_transform->reserve_update_recursive();
 		}
 	}
 
-	std::vector<GameObject*> Transform::get_gameobject_hierarchy()
+	std::vector<s_ptr<GameObject>> Transform::get_gameobject_hierarchy()
 	{
-		std::vector<GameObject*> ret{};
+		std::vector<s_ptr<GameObject>> ret{};
 		get_gameobject_hierarchy_recursive(ret);
 		return ret;
 	}
 
-	void Transform::get_gameobject_hierarchy_recursive(std::vector<GameObject*>& _retObjects)
+	void Transform::get_gameobject_hierarchy_recursive(std::vector<s_ptr<GameObject>>& _ret)
 	{
-		_retObjects.push_back(gameObject());
+		_ret.push_back(get_owner());
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			m_childs[i]->get_gameobject_hierarchy_recursive(_retObjects);
+			m_childs[i].lock()->get_gameobject_hierarchy_recursive(_ret);
 		}
 	}
 
@@ -144,8 +143,8 @@ namespace core
 
 		//부모행렬 업데이트(재귀)
 		if (m_parent_updated) {
-			if (m_parent) {
-				m_parent->update_world_matrix_recursive();
+			if (m_parent.lock()) {
+				m_parent.lock()->update_world_matrix_recursive();
 			}
 			m_parent_updated = false;
 		}
@@ -155,10 +154,10 @@ namespace core
 			m_worldMatrix = m_localMatrix;
 			m_worldRotation = m_localRotation;
 			m_worldScale = m_localScale;
-			if (m_parent)
+			if (m_parent.lock())
 			{
 				//부모 매트릭스를 받아온다.
-				MATRIX parentMat = m_parent->get_world_matix_internal();
+				MATRIX parentMat = m_parent.lock()->get_world_matix_internal();
 				constexpr size_t rowErasebytes = sizeof(float) * 3;
 
 				//크기 무시
@@ -183,7 +182,7 @@ namespace core
 						parentMat.Up(parentMat.Up().Normalize());
 						parentMat.Forward(parentMat.Forward().Normalize());
 
-						m_worldRotation *= m_parent->get_world_rotation_internal();
+						m_worldRotation *= m_parent.lock()->get_world_rotation_internal();
 					}
 				}
 
@@ -199,12 +198,12 @@ namespace core
 						memset(parentMat.m[2], 0, rowErasebytes);
 
 						//WorldScale을 집어넣어준다.
-						const float3& worldScale = m_parent->get_world_scale();
+						const float3& worldScale = m_parent.lock()->get_world_scale();
 						parentMat._11 = worldScale.x;
 						parentMat._22 = worldScale.y;
 						parentMat._33 = worldScale.z;
 
-						m_worldScale *= m_parent->get_world_scale();
+						m_worldScale *= m_parent.lock()->get_world_scale();
 					}
 
 					//크기 반영 + 회전 반영 -> 그냥 바로 적용
@@ -225,15 +224,15 @@ namespace core
 	{
 		m_parent_updated = true;
 		m_local_updated = true;
-		for (Transform* t : m_childs) {
-			t->reserve_update_recursive();
+		for (const auto& wp_t : m_childs) {
+			wp_t.lock()->reserve_update_recursive();
 		}
 	}
 
 	void Transform::set_world_scale(const float3& _worldScale)
 	{
 		//부모 스케일 무시 or 부모 트랜스폼 없을 경우
-		if (m_is_ignore_parent_scale || nullptr == m_parent)
+		if (m_is_ignore_parent_scale || m_parent.expired())
 		{
 			set_local_scale(_worldScale);
 		}
@@ -242,33 +241,33 @@ namespace core
 		else 
 		{
 			//자신의 월드행렬은 업데이트 할 필요 없음
-			m_parent->update_world_matrix_recursive();
+			m_parent.lock()->update_world_matrix_recursive();
 
 			//설정하려는 World Scale을 부모의 World Scale로 나눠 주면 Local Scale을 얼마나 지정해야하는지 알 수 있다.
-			set_local_scale(_worldScale / m_parent->get_world_scale_internal());
+			set_local_scale(_worldScale / m_parent.lock()->get_world_scale_internal());
 		}
 	}
 	void Transform::set_world_rotation(const math::Quaternion& _worldRotation)
 	{
 		//부모 스케일 무시 or 부모 트랜스폼 없을 경우
-		if (m_is_ignore_parent_rotation || nullptr == m_parent)
+		if (m_is_ignore_parent_rotation || m_parent.expired())
 		{
 			set_local_rotation(_worldRotation);
 		}
 		else
 		{
 			//부모의 월드행렬까지만 업데이트(자신은 로컬만 업데이트하면 됨)
-			m_parent->update_world_matrix_recursive();
+			m_parent.lock()->update_world_matrix_recursive();
 
 			//설정하려는 World Rotation을 부모의 World Rotation로 나눠 주면 Local Rotation을 얼마나 지정해야하는지 알 수 있다.
-			set_local_rotation(_worldRotation / m_parent->get_world_rotation_internal());
+			set_local_rotation(_worldRotation / m_parent.lock()->get_world_rotation_internal());
 		}
 	}
 
 	void Transform::set_world_position(const float3& _worldPosition)
 	{
 		//부모 트랜스폼 없을 경우
-		if (nullptr == m_parent)
+		if (m_parent.expired())
 		{
 			set_local_position(_worldPosition);
 		}
@@ -282,7 +281,7 @@ namespace core
 
 			//update_world_matrix_recursive() 호출 시 Local Matrix, World Matrix 전부 새걸로 갱신되어 있는 상태이므로(flag들이 모두 false 가 되어있는 상태)
 			//추가적으로 작업을 안해줘도 됨. -> Set함수를 통하지 않고 변경.
-			MATRIX local_diff = m_worldMatrix * m_parent->get_world_matix_internal().Invert();
+			MATRIX local_diff = m_worldMatrix * m_parent.lock()->get_world_matix_internal().Invert();
 			m_localPosition = local_diff.Translation();
 
 			//오차를 최대한 줄이기 위해 position만 가져온다.
@@ -290,11 +289,11 @@ namespace core
 		}
 	}
 
-	void Transform::remove_child_ptr(Transform* _pTransform)
+	void Transform::remove_child_ptr(const s_ptr<Transform>& _pTransform)
 	{
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			if (_pTransform == m_childs[i])
+			if (_pTransform == m_childs[i].lock())
 			{
 				m_childs.erase((m_childs.begin() + i));
 				break;
@@ -306,12 +305,19 @@ namespace core
 	{
 		//swap 하는 이유: 지워질때마다 UnlinkParent가 호출되어 m_childs에서 자신을 지워달라고 요청함.
 		//미리 m_childs를 비워놔야 에러가 안 발생함
-		std::vector<Transform*> childs{};
+		std::vector<w_ptr<Transform>> childs{};
 		childs.swap(m_childs);
 		for (size_t i = 0; i < m_childs.size(); ++i)
 		{
-			childs[i]->set_parent(nullptr);
-			childs[i]->gameObject()->Destroy();
+			s_ptr<Transform> child = childs[i].lock();
+			if (child)
+			{
+				child->set_parent(nullptr);
+				if (child->get_owner())
+				{
+					child->get_owner()->Destroy();
+				}
+			}
 		}
 	}
 }

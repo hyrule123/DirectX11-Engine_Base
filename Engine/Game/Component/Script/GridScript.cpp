@@ -16,7 +16,7 @@ namespace core
 	
 
 	GridScript::GridScript()
-		: Script(GridScript::concrete_class_name)
+		: Script(GridScript::s_concrete_class_name)
 		, mCamera(nullptr)
 	{
 
@@ -45,7 +45,7 @@ namespace core
 			return;
 		}
 
-		const auto& gameObj = mCamera->gameObject();
+		const auto& gameObj = mCamera->get_owner();
 		const auto& TR = gameObj->GetComponent<Transform>();
 		
 		float3 cameraPosition = TR->get_local_position();

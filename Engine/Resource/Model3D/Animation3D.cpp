@@ -13,7 +13,7 @@
 namespace core
 {
 	Animation3D::Animation3D()
-        : Animation(Animation3D::concrete_class_name)
+        : Animation(Animation3D::s_concrete_class_name)
         , m_OwnerSkeleton{}
         , m_StartFrameIdx{}
         , m_EndFrameIdx{}
@@ -43,7 +43,7 @@ namespace core
         , m_SBufferKeyFrame{}
         
     {
-        m_SBufferKeyFrame = std::shared_ptr<StructBuffer>(_other.m_SBufferKeyFrame->Clone());
+        m_SBufferKeyFrame = std::static_pointer_cast<StructBuffer>(_other.m_SBufferKeyFrame->Clone());
     }
 
     Animation3D::~Animation3D()
@@ -145,7 +145,7 @@ namespace core
     }
 
 
-	eResult Animation3D::load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip)
+	eResult Animation3D::load_from_fbx(const s_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip)
 	{
 		if (nullptr == _skeleton || nullptr == _clip)
 			return eResult::Fail_Nullptr;

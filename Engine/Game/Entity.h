@@ -8,17 +8,19 @@
 
 //CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
-public: virtual _type* Clone() override { return new _type(*this); }
+public: virtual s_ptr<Entity> Clone() override { \
+return std::make_shared<_type>(*this); \
+}
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_DISABLE(_type) \
-private: virtual _type* Clone() override { return nullptr; }
+private: virtual s_ptr<Entity> Clone() override { return nullptr; }
 
 //고유 이름으로 생성자 등록, 웬만하면 쓸 일 없을듯?
 #define REGISTER_FACTORY_UNIQUE(_class, _key) \
 private: static inline const bool UNIQUE_VAR(unused) = EntityFactory::get_inst().add_ctor<_class>(_key)
 
-#define REGISTER_FACTORY(_class) REGISTER_FACTORY_UNIQUE(_class, _class::concrete_class_name)
+#define REGISTER_FACTORY(_class) REGISTER_FACTORY_UNIQUE(_class, _class::s_concrete_class_name)
 
 namespace core
 {
@@ -30,7 +32,7 @@ namespace core
 		Entity(const Entity& _other);
 
 		//Clone을 지원하지 않을 경우 nullptr이 반환된다.
-		virtual Entity* Clone() { return nullptr; }
+		virtual s_ptr<Entity> Clone() { return nullptr; }
 
 		virtual ~Entity();
 
@@ -38,11 +40,6 @@ namespace core
 			return m_concrete_class_name;
 		}
 		uint32 GetID() const { return m_ID; }
-
-		template <typename T>
-		std::shared_ptr<T> shared_from_this_cast() {
-			return std::dynamic_pointer_cast<T>(shared_from_this());
-		}
 
 	private:
 		const uint32 m_ID;
@@ -72,16 +69,12 @@ namespace core
 		~EntityFactory();
 
 	public:
-		std::unique_ptr<Entity> instantiate(const std::string_view key);
+		s_ptr<Entity> instantiate(const std::string_view key);
 
 		template <typename T>
-		std::unique_ptr<T> instantiate(const std::string_view key) {
-			std::unique_ptr<Entity> inst = instantiate(key);
-			std::unique_ptr<T> ret(dynamic_cast<T*>(inst.get()));
-			if (ret) {
-				inst.release();
-			}
-			return ret;
+		s_ptr<T> instantiate() {
+			//혹시나 모를 fail safe - T 클래스에 이름을 등록해놓지 않았을 경우 대참사가 날수도 있음
+			return std::dynamic_pointer_cast<T>(instantiate(T::s_concrete_class_name));
 		}
 
 		template <typename T, typename... ARGS>
@@ -89,17 +82,17 @@ namespace core
 			ASSERT_DEBUG(false == _name.empty(), "이름이 비어있습니다.");
 
 			m_ctors[_name] =
-				[_arg...]()->std::unique_ptr<Entity> {
+				[_arg...]()->s_ptr<Entity> {
 
 				//static_cast가 Entity 에러를 막아줌
-				return std::make_unique<T>(_arg...);
+				return std::make_shared<T>(_arg...);
 				};
 
 			return true;
 		}
 
 	private:
-		std::unordered_map<std::string_view, std::function<std::unique_ptr<Entity>()>> m_ctors;
+		std::unordered_map<std::string_view, std::function<s_ptr<Entity>()>> m_ctors;
 	};
 }
 

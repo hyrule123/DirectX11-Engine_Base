@@ -53,7 +53,7 @@ namespace core
 		
 		if (m_col2dManager)
 		{
-			m_col2dManager->Enqueue(this);
+			m_col2dManager->Enqueue(std::static_pointer_cast<Collider2D>(this->shared_from_this()));
 		}
 	}
 

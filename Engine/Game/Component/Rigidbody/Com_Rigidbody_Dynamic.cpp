@@ -10,7 +10,7 @@
 namespace core
 {
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
-		: Rigidbody(Com_Rigidbody_Dynamic::concrete_class_name)
+		: Rigidbody(Com_Rigidbody_Dynamic::s_concrete_class_name)
 		, m_isMassMode {false}
 		, m_densityOrMass {g_defaultDensity}
 	{
@@ -31,7 +31,10 @@ namespace core
 
 	physx::PxRigidActor* Com_Rigidbody_Dynamic::CreateRigidbody()
 	{
-		Transform* tr = gameObject()->transform();
+		s_ptr<GameObject> owner = get_owner();
+		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
+
+		s_ptr<Transform> tr = owner->GetComponent<Transform>();
 
 		physx::PxTransform pxTr{};
 		pxTr.p = tr->get_world_position();

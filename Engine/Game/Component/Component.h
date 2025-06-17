@@ -9,6 +9,12 @@ Component 클래스를 직접 상속 X, BaseComponent를 직접 상속해서 반
 Transform 에서 예시 확인
 */
 
+
+//static_assert(is_base_component<type>, "Component의 하위 클래스가 아닙니다.");
+
+#define BASE_COMPONENT(component_order) \
+public: constexpr inline static const eComponentOrder s_component_order = component_order
+
 namespace core {
 	class GameObject;
 	class Scene;
@@ -56,9 +62,8 @@ namespace core {
 		//레이어 변경시 호출됨. GameObject::Awake() 때 한번 호출됨.
 		virtual void OnLayerChange(uint32 _layer) {}
 
-		inline GameObject* gameObject() { return m_ownerGameObject; }
-		inline GameObject* gameObject() const { return m_ownerGameObject; }
-		inline void Set_gameObject(GameObject* _owner) { m_ownerGameObject = _owner; }
+		inline s_ptr<GameObject> get_owner() const { return m_ownerGameObject.lock(); }
+		inline void Set_gameObject(const s_ptr<GameObject>& _owner) { m_ownerGameObject = _owner; }
 
 		eComponentOrder GetComponentCategory() const { return m_ComCategory; };
 
@@ -70,45 +75,31 @@ namespace core {
 		void SetEnable(bool _bEnable);
 
 		bool IsDestroyed() const { return eState::DestroyReserved <= m_state; }
-		inline void Destroy();
+		inline void Destroy() {
+			if (IsDestroyed()) { return; }
+			m_state = eState::DestroyReserved;
+		}
 
 		inline eState GetState() const { return m_state; }
 
-		inline bool UpdateDestroyState();
+		bool UpdateDestroyState();
 
 	private:
 		inline void SetState(eState _state) { m_state = _state; }
 
 		const eComponentOrder m_ComCategory;
-		GameObject* m_ownerGameObject;
+		w_ptr<GameObject> m_ownerGameObject;
 
 		eState m_state;
 		bool m_isStarted;
 		bool m_isEnabled;
 	};
 
-	inline void Component::Destroy()
+	template <typename T>
+	concept is_base_component = requires(T t)
 	{
-		if (IsDestroyed())
-		{
-			return;
-		}
-
-		m_state = eState::DestroyReserved;
-	}
-
-	inline bool Component::UpdateDestroyState()
-	{
-		if (eState::Destroy == m_state)
-		{
-			return true;
-		}
-		else if (eState::DestroyReserved == m_state)
-		{
-			m_state = eState::Destroy;
-		}
-
-		return false;
-	}
+		std::is_base_of_v<Component, T>;
+		{ t.get_component_order() } -> std::same_as<eComponentOrder>;
+	};
 }
 

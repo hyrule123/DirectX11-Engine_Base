@@ -16,7 +16,7 @@
 namespace core
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(Animation3D_ComputeShader::concrete_class_name, uint3(256u, 1u, 1u))
+		: ComputeShader(Animation3D_ComputeShader::s_concrete_class_name, uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}

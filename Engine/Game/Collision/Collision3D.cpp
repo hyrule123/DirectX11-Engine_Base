@@ -311,11 +311,11 @@ namespace core
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->gameObject();
-			Collider* leftCol = leftObj->GetComponent<Collider>();
+			s_ptr<GameObject> leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->get_owner();
+			s_ptr<Collider> leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->gameObject();
-			Collider* rightCol = rightObj->GetComponent<Collider>();
+			s_ptr<GameObject> rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->get_owner();
+			s_ptr<Collider> rightCol = rightObj->GetComponent<Collider>();
 
 			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
 			{
@@ -363,11 +363,11 @@ namespace core
 				continue;
 			}
 
-			GameObject* leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->gameObject();
-			Collider* leftCol = leftObj->GetComponent<Collider>();
+			s_ptr<GameObject> leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->get_owner();
+			s_ptr<Collider> leftCol = leftObj->GetComponent<Collider>();
 
-			GameObject* rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->gameObject();
-			Collider* rightCol = rightObj->GetComponent<Collider>();
+			s_ptr<GameObject> rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->get_owner();
+			s_ptr<Collider> rightCol = rightObj->GetComponent<Collider>();
 
 			if (leftCol == rightCol)
 			{

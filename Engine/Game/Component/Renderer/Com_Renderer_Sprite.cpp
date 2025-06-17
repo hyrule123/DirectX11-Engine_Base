@@ -14,8 +14,8 @@
 namespace core
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
-		: Com_Renderer_Mesh(Com_Renderer_Sprite::concrete_class_name)
-		, mAnimator(nullptr)
+		: Com_Renderer_Mesh(Com_Renderer_Sprite::s_concrete_class_name)
+		, mAnimator()
 	{
 	}
 
@@ -32,17 +32,17 @@ namespace core
 		//	재질 2. 텍스처
 
 		//기본 Rect Mesh로 메쉬를 설정
-		std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		s_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
 		set_mesh(mesh);
 
 		//Sprite Material을 받아온다
-		std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::SpriteMaterial);
+		s_ptr<Material> material = ResourceManager<Material>::get_inst().find(name::defaultRes::material::SpriteMaterial);
 		set_material(material);
 	}
 
 	void Com_Renderer_Sprite::Awake()
 	{
-		mAnimator = gameObject()->GetComponent<Com_Animator2D>();
+		mAnimator = get_owner()->GetComponent<Com_Animator2D>();
 	}
 
 	//void Com_Renderer_Sprite::render()

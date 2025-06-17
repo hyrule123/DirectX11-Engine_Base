@@ -17,7 +17,7 @@
 namespace core
 {
 	GameObject::GameObject()
-		: Entity(GameObject::concrete_class_name)
+		: Entity(GameObject::s_concrete_class_name)
 		, m_baseComponents()
 		, m_scene()
 		, m_layer(UINT_MAX)
@@ -52,11 +52,12 @@ namespace core
 			{
 				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
 				//그냥 복사한뒤 주인만 바꾸면 됨.
-				m_baseComponents[i] = static_cast<Component*>(_other.m_baseComponents[i]->Clone());
+				m_baseComponents[i] = std::static_pointer_cast<Component>(_other.m_baseComponents[i]->Clone());
 
 				if (m_baseComponents[i])
 				{
-					m_baseComponents[i]->Set_gameObject(this);
+					s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
+					m_baseComponents[i]->Set_gameObject(my);
 				}
 			}
 		}
@@ -65,11 +66,12 @@ namespace core
 		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
 		for (size_t i = 0; i < _other.m_scripts.size(); ++i)
 		{
-			Script* cloned = static_cast<Script*>(_other.m_scripts[i]->Clone());
+			s_ptr<Script> cloned = std::static_pointer_cast<Script>(_other.m_scripts[i]->Clone());
 			if (cloned)
 			{
+				s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
+				cloned->Set_gameObject(my);
 				m_scripts.push_back(cloned);
-				m_scripts.back()->Set_gameObject(this);
 			}
 #ifdef _DEBUG
 			else
@@ -86,23 +88,6 @@ namespace core
 
 	GameObject::~GameObject()
 	{
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
-		{
-			Component* com = m_baseComponents[i];
-			if (com)
-			{
-				delete com;
-			}
-		}
-
-		for (size_t i = 0; i < m_scripts.size(); ++i)
-		{
-			Script* script = m_scripts[i];
-			if (script)
-			{
-				delete script;
-			}
-		}
 	}
 
 
@@ -182,10 +167,18 @@ namespace core
 		SetLayer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
-		const std::vector<Transform*>& childs = GetComponent<Transform>()->get_childs();
+		const std::vector<w_ptr<Transform>>& childs = GetComponent<Transform>()->get_childs();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
-			childs[i]->gameObject()->Awake();
+			auto child = childs[i].lock();
+			if (childs[i].lock())
+			{
+				auto owner = child->get_owner();
+				if (owner)
+				{
+					owner->Awake();
+				}
+			}
 		}
 	}
 
@@ -257,8 +250,9 @@ namespace core
 
 	void GameObject::RemoveDestroyed()
 	{
+		//람다 쓰는 이유: BaseComponents와 Scripts 두군데에 적용해야함
 		auto needDestroyPred =
-			[](Component* const _com)->bool
+			[](const s_ptr<Component>& _com)->bool
 			{
 				Component::eState state = _com->GetState();
 
@@ -271,22 +265,25 @@ namespace core
 				else if (Component::eState::Destroy == state)
 				{
 					_com->OnDestroy();
-					delete _com;
 					return true;
 				}
 
 				return false;
 			};
 
-		//개별 Component Destroy 여부 확인 후 true 반환될 시 제거
+		//BaseComponents
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && needDestroyPred(m_baseComponents[i]))
+			if (m_baseComponents[i])
 			{
-				m_baseComponents[i] = nullptr;
+				if (needDestroyPred(m_baseComponents[i]))
+				{
+					m_baseComponents[i] = nullptr;
+				}
 			}
 		}
 
+		//Scripts
 		std::erase_if(m_scripts, needDestroyPred);
 	}
 
@@ -331,59 +328,57 @@ namespace core
 	}
 
 
-	Component* GameObject::AddComponent(Component* _pCom)
+	s_ptr<Component> GameObject::AddComponent(const s_ptr<Component>& _pCom)
 	{
-		Component* ret = _pCom;
-		if (nullptr == ret) {
-			return ret;
-		}
+		if (nullptr == _pCom) { return nullptr; }
 
 		eComponentOrder ComType = _pCom->GetComponentCategory();
 		
 		if (eComponentOrder::Script == ComType)
 		{
-			m_scripts.push_back(static_cast<Script*>(_pCom));
+			m_scripts.push_back(static_pointer_cast<Script>(_pCom));
 		}
 		else
 		{
-			//해당 컴포넌트 카테고리가 비어있을 경우 컴포넌트를 집어넣는다.
-			if (nullptr == m_baseComponents[(int)ComType])
+#ifdef _DEBUG
+			if (m_baseComponents[(int)ComType])
 			{
-				m_baseComponents[(int)ComType] = _pCom;
+				ERROR_MESSAGE("동일한 Component가 들어가 있습니다.");
 			}
-			else {
-				delete ret;
-				ret = nullptr;
-				return ret;
-			}
+#endif
+			m_baseComponents[(int)ComType] = _pCom;
 		}
 
-		ret->Set_gameObject(this);
+		s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
+		_pCom->Set_gameObject(my);
 
-		if (false == ret->IsInitialized())
+		if (false == _pCom->IsInitialized())
 		{
-			ret->init();
-			ret->SetState(Component::eState::NotAwaken);
+			_pCom->init();
+			_pCom->SetState(Component::eState::NotAwaken);
 		}
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
 		if (IsActive() && m_isAwaken)
 		{
-			ret->Awake();
+			_pCom->Awake();
 		}
 
+		return _pCom;
+	}
+
+	s_ptr<Component> GameObject::AddComponent(const std::string_view _resource_name)
+	{
+		s_ptr<Component> ret = 
+			std::dynamic_pointer_cast<Component>(EntityFactory::get_inst().instantiate(_resource_name));
 		return ret;
 	}
 
-	Component* GameObject::AddComponent(const std::string_view _resource_name)
+	s_ptr<Script> GameObject::AddScript(const std::string_view _resource_name)
 	{
-		return AddComponent(EntityFactory::get_inst().instantiate<Component>(_resource_name).release());
-	}
-
-	Script* GameObject::AddScript(const std::string_view _resource_name)
-	{
-		Component* ret = AddComponent(EntityFactory::get_inst().instantiate<Script>(_resource_name).release());
-		return static_cast<Script*>(ret);
+		s_ptr<Script> ret =
+			std::dynamic_pointer_cast<Script>(EntityFactory::get_inst().instantiate(_resource_name));
+		return ret;
 	}
 
 	void GameObject::SetActive(bool _bActive)
@@ -394,9 +389,11 @@ namespace core
 		}
 
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
-		if (m_scene->IsAwaken())
+		s_ptr<Scene> scene = m_scene.lock();
+		ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
+		if (scene->IsAwaken())
 		{
-			m_scene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
+			scene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
@@ -406,7 +403,7 @@ namespace core
 		}
 
 		//자식이 있을경우 전부 InActive
-		const auto& childs = transform()->get_gameobject_hierarchy();
+		const auto& childs = GetComponent<Transform>()->get_gameobject_hierarchy();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
 			childs[i]->SetActive(false);
@@ -437,7 +434,7 @@ namespace core
 			}
 		}
 
-		Transform* const tr = transform();
+		s_ptr<Transform> tr = GetComponent<Transform>();
 		tr->unlink_parent();
 		tr->destroy_childs_recursive();
 	}
@@ -472,8 +469,10 @@ namespace core
 			{
 				m_state = eState::Active;
 
+				s_ptr<Scene> scene = m_scene.lock();
+				ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
 				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
-				if (m_scene->IsAwaken() && false == m_isAwaken)
+				if (scene->IsAwaken() && false == m_isAwaken)
 				{
 					m_isAwaken = true;
 
@@ -508,9 +507,9 @@ namespace core
 		}
 	}
 
-	Script* GameObject::GetScript(const std::string_view _resource_name)
+	s_ptr<Script> GameObject::GetScript(const std::string_view _resource_name)
 	{
-		Script* retScript = nullptr;
+		s_ptr<Script> retScript = nullptr;
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{

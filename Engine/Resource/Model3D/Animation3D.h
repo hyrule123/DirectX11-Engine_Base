@@ -53,7 +53,7 @@ namespace core
         eResult serialize_binary(BinarySerializer* _ser) const override;
         eResult deserialize_binary(const BinarySerializer* _ser) override;
 
-        eResult load_from_fbx(const std::shared_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
+        eResult load_from_fbx(const s_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
         uint get_start_frame() const { return m_StartFrameIdx; }
         uint get_end_frame() const { return m_EndFrameIdx; }
@@ -63,15 +63,15 @@ namespace core
         double get_time_length() const { return m_TimeLength; }
         float get_update_time() const { return m_UpdateTime; }
         uint get_FPS() const { return m_FramePerSec; }
-        std::shared_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
-        void set_skeleton(const std::shared_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
-        std::shared_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_SBufferKeyFrame; }
+        s_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
+        void set_skeleton(const s_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
+        s_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_SBufferKeyFrame; }
 
     private:
         bool create_keyframe_sbuffer();
 
     private:
-        std::weak_ptr<Skeleton> m_OwnerSkeleton;
+        w_ptr<Skeleton> m_OwnerSkeleton;
 
         uint				m_StartFrameIdx;
         uint				m_EndFrameIdx;
@@ -86,7 +86,7 @@ namespace core
 
         //이중 배열 형태임
         std::vector<tKeyFramesPerBone>          m_KeyFramesPerBone;
-        std::shared_ptr<StructBuffer>			m_SBufferKeyFrame;
+        s_ptr<StructBuffer>			m_SBufferKeyFrame;
 	};
 }
 

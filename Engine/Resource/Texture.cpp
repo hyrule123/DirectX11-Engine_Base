@@ -11,7 +11,7 @@
 namespace core
 {
 	Texture::Texture()
-		: Resource(Texture::concrete_class_name)
+		: Resource(Texture::s_concrete_class_name)
 		, mDesc()
 		, mTexture()
 		, mImage()

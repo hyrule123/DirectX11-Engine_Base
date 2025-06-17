@@ -54,14 +54,32 @@ namespace core {
 				}
 			};
 
-		Scene* scene = m_ownerGameObject->scene();
-		if (scene->IsAwaken())
+		if (m_ownerGameObject.lock())
 		{
-			scene->AddFrameEndJob(onEnableDisable);
+			s_ptr<Scene> scene = m_ownerGameObject.lock()->get_scene();
+			if (scene->IsAwaken())
+			{
+				scene->AddFrameEndJob(onEnableDisable);
+			}
+			else
+			{
+				onEnableDisable();
+			}
 		}
-		else
+
+	}
+
+	bool Component::UpdateDestroyState()
+	{
+		if (eState::Destroy == m_state)
 		{
-			onEnableDisable();
+			return true;
 		}
+		else if (eState::DestroyReserved == m_state)
+		{
+			m_state = eState::Destroy;
+		}
+
+		return false;
 	}
 }

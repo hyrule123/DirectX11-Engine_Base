@@ -29,7 +29,7 @@ namespace core
 		friend class CollisionSystem;
 		//리턴값: bool, 인자: 왼쪽 충돌체, 오른쪽 충돌체, Contact Point(부딫힌 지점)
 		using CheckIntersectFunction = 
-			std::function<bool(Collider2D* const, Collider2D* const, float2& _contactPoint)>;
+			std::function<bool(const s_ptr<Collider2D>&, const s_ptr<Collider2D>&, float2& _contactPoint)>;
 
 	public:
 		Collision2D(CollisionSystem* const _owner);
@@ -40,26 +40,26 @@ namespace core
 		void frame_end();
 
 	private:
-		void Enqueue(Collider2D* const _obj);
+		void Enqueue(const s_ptr<Collider2D>& const _obj);
 
 		static bool CheckIntersect_AABB_AABB(
-			Collider2D* const _AABB1, Collider2D* const _AABB2, float2& _contactPoint);
+			const s_ptr<Collider2D>& _AABB1, const s_ptr<Collider2D>& _AABB2, float2& _contactPoint);
 		static bool CheckIntersect_AABB_OBB(
-			Collider2D* const _AABB, Collider2D* const _OBB, float2& _contactPoint);
+			const s_ptr<Collider2D>& _AABB, const s_ptr<Collider2D>& _OBB, float2& _contactPoint);
 		static bool CheckIntersect_AABB_Circle(
-			Collider2D* const _AABB, Collider2D* const _circle, float2& _contactPoint);
+			const s_ptr<Collider2D>& _AABB, const s_ptr<Collider2D>& _circle, float2& _contactPoint);
 		static bool CheckIntersect_OBB_OBB(
-			Collider2D* const _OBB1, Collider2D* const _OBB2, float2& _contactPoint);
+			const s_ptr<Collider2D>& _OBB1, const s_ptr<Collider2D>& _OBB2, float2& _contactPoint);
 		static bool CheckIntersect_OBB_Circle(
-			Collider2D* const _OBB, Collider2D* const _circle, float2& _contactPoint);
+			const s_ptr<Collider2D>& _OBB, const s_ptr<Collider2D>& _circle, float2& _contactPoint);
 		static bool CheckIntersect_Circle_Circle(
-			Collider2D* const _circle1, Collider2D* const _circle2, float2& _contactPoint);
+			const s_ptr<Collider2D>& _circle1, const s_ptr<Collider2D>& _circle2, float2& _contactPoint);
 
 
 	private:
 		CollisionSystem* const m_owner;
 
-		std::array<std::vector<Collider2D*>, g_maxLayer> m_collidersInLayer;
+		std::array<std::vector<s_ptr<Collider2D>>, g_maxLayer> m_collidersInLayer;
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
 		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯

@@ -182,7 +182,7 @@ namespace core {
 				myqueue.material = _render->GetCurrentMaterial();
 			}
 
-			myqueue.objects_to_render.push_back(_render->gameObject());
+			myqueue.objects_to_render.push_back(_render->get_owner());
 		}
 	}
 

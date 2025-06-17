@@ -10,7 +10,7 @@ namespace core
 	{
 	public:
 		ContactPair() = delete;
-		ContactPair(Collider* const _left, Collider* const _right);
+		ContactPair(const s_ptr<Collider>& _left, const s_ptr<Collider>& _right);
 		ContactPair(const ContactPair& _other) = default;
 		ContactPair(ContactPair&& _right) noexcept = default;
 		~ContactPair();
@@ -22,9 +22,8 @@ namespace core
 		void Exit();
 
 	private:
-		Collider* m_left;
-		Collider* m_right;
-
+		s_ptr<Collider> m_left;
+		s_ptr<Collider> m_right;
 	};
 }
 

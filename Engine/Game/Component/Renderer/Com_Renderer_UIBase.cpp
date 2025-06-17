@@ -10,14 +10,14 @@
 namespace core
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
-		: Com_Renderer_Mesh(Com_Renderer_UIBase::concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_UIBase::s_concrete_class_name)
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정
-		std::shared_ptr<Mesh> uiMesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		s_ptr<Mesh> uiMesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
 		set_mesh(uiMesh);
 
-		std::shared_ptr<Material> uiMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::UIMaterial);
+		s_ptr<Material> uiMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::UIMaterial);
 		set_material(uiMaterial);
 		SetMaterialMode(eMaterialMode::Dynamic);
 	}

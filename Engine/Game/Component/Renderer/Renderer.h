@@ -15,6 +15,7 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Renderer, Component);
+		BASE_COMPONENT(eComponentOrder::Renderer);
 
 	public:
 		Renderer(const std::string_view key);
@@ -28,20 +29,20 @@ namespace core
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		void set_mesh(const std::shared_ptr<Mesh>& _mesh) { m_mesh = _mesh; }
-		std::shared_ptr<Mesh> GetMesh() { return m_mesh; }
+		void set_mesh(const s_ptr<Mesh>& _mesh) { m_mesh = _mesh; }
+		s_ptr<Mesh> GetMesh() { return m_mesh; }
 
 		//인스턴싱 구현 전까지는 일단 Material을 복사해서 사용
-		void set_material(const std::shared_ptr<Material>& mtrl);
-		std::shared_ptr<Material> SetMaterialMode(eMaterialMode _mode);
+		void set_material(const s_ptr<Material>& mtrl);
+		s_ptr<Material> SetMaterialMode(eMaterialMode _mode);
 
-		std::shared_ptr<Material> GetSharedMaterial() {
+		s_ptr<Material> GetSharedMaterial() {
 			return m_shared_material;
 		}
-		std::shared_ptr<Material> GetDynamicMaterial() {
+		s_ptr<Material> GetDynamicMaterial() {
 			return m_dynamic_material;
 		}
-		std::shared_ptr<Material> GetCurrentMaterial() {
+		s_ptr<Material> GetCurrentMaterial() {
 			return m_current_material;
 		}
 
@@ -51,10 +52,10 @@ namespace core
 		bool IsCullingEnabled() const { return m_bCullingEnable; }
 
 	private:
-		std::shared_ptr<Mesh> m_mesh;
-		std::shared_ptr<Material> m_shared_material;
-		std::shared_ptr<Material> m_dynamic_material;
-		std::shared_ptr<Material> m_current_material;
+		s_ptr<Mesh> m_mesh;
+		s_ptr<Material> m_shared_material;
+		s_ptr<Material> m_dynamic_material;
+		s_ptr<Material> m_current_material;
 
 		eMaterialMode m_material_mode;
 

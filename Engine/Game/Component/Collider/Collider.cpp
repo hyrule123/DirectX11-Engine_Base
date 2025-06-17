@@ -1,17 +1,19 @@
 #include "Engine/Game/Component/Collider/Collider.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Script/Script.h"
 #include "Engine/Game/Scene.h"
+#include "Engine/Game/GameObject.h"
 #include "Engine/Game/Collision/CollisionSystem.h"
+#include "Engine/Game/Component/Transform.h"
+#include "Engine/Game/Component/Script/Script.h"
+
 
 namespace core
 {
 	Collider::Collider(const std::string_view key, eDimensionType _dimension)
-		: Super(key, eComponentOrder::Collider)
+		: Super(key, s_component_order)
 		, m_dimension(_dimension)
 		, m_isTriggerMode(false)
-		, m_transform(nullptr)
+		, m_transform()
 		, m_collisionSystem(nullptr)
 		, m_collisionCount(0)
 	{
@@ -24,19 +26,19 @@ namespace core
 
 	void Collider::init()
 	{
-		m_transform = gameObject()->transform();
+		m_transform = get_owner()->GetComponent<Transform>();
 	}
 
 	void Collider::Awake()
 	{
-		m_collisionSystem = gameObject()->scene()->GetCollisionSystem();
+		m_collisionSystem = get_owner()->get_scene()->GetCollisionSystem();
 	}
 
-	void Collider::OnCollisionEnter(Collider* _collider, const float3& _contactPoint)
+	void Collider::OnCollisionEnter(const s_ptr<Collider>& _collider, const float3& _contactPoint)
 	{
 		AddCollisionCount();
 
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -44,9 +46,9 @@ namespace core
 		}
 	}
 
-	void Collider::OnCollisionStay(Collider* _collider, const float3& _contactPoint)
+	void Collider::OnCollisionStay(const s_ptr<Collider>& _collider, const float3& _contactPoint)
 	{
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -54,11 +56,11 @@ namespace core
 		}
 	}
 
-	void Collider::OnCollisionExit(Collider* _collider)
+	void Collider::OnCollisionExit(const s_ptr<Collider>& _collider)
 	{
 		SubCollisionCount();
 
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -66,11 +68,11 @@ namespace core
 		}
 	}
 
-	void Collider::OnTriggerEnter(Collider* _collider)
+	void Collider::OnTriggerEnter(const s_ptr<Collider>& _collider)
 	{
 		AddCollisionCount();
 
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -78,9 +80,9 @@ namespace core
 		}
 	}
 
-	void Collider::OnTriggerStay(Collider* _collider)
+	void Collider::OnTriggerStay(const s_ptr<Collider>& _collider)
 	{
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{
@@ -88,11 +90,11 @@ namespace core
 		}
 	}
 
-	void Collider::OnTriggerExit(Collider* _collider)
+	void Collider::OnTriggerExit(const s_ptr<Collider>& _collider)
 	{
 		SubCollisionCount();
 
-		const GameObject::Scripts& scripts = gameObject()->GetScripts();
+		const GameObject::Scripts& scripts = get_owner()->GetScripts();
 
 		for (size_t i = 0; i < scripts.size(); ++i)
 		{

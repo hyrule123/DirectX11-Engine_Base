@@ -5,7 +5,7 @@
 namespace core
 {
 	ConstBuffer::ConstBuffer(uint _type)
-		: GPUBuffer(ConstBuffer::concrete_class_name, eBufferType::Const)
+		: GPUBuffer(ConstBuffer::s_concrete_class_name, eBufferType::Const)
 		, m_constBufferType(_type)
 		, mDataSize()
 		, mDataCount()

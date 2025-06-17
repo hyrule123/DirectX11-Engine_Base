@@ -20,6 +20,7 @@ namespace  core
 		: public Component
 	{
 		CLASS_INFO(Com_Camera, Component);
+		BASE_COMPONENT(eComponentOrder::Camera);
 		
 		class CullingAgent;
 	public:
@@ -73,16 +74,16 @@ namespace  core
 
 		std::bitset<g_maxLayer> m_layerMasks;
 
-		std::vector<GameObject*> m_layer_filtered_objects;
+		std::vector<s_ptr<GameObject>> m_layer_filtered_objects;
 		std::vector<tTransform> m_transform_data;
 
 		//Light 관련
-		std::shared_ptr<Mesh> m_light_3D_volume_meshes[(int)eLightType::END];
-		std::shared_ptr<Material> m_light_3D_materials[(int)eLightType::END];
+		s_ptr<Mesh> m_light_3D_volume_meshes[(int)eLightType::END];
+		s_ptr<Material> m_light_3D_materials[(int)eLightType::END];
 		std::vector<tLightAttribute> m_light_3D_instancing_datas[(int)eLightType::END];
 
-		std::shared_ptr<ConstBuffer> m_light_3D_const_buffer;
-		std::shared_ptr<StructBuffer> m_light_3D_instancing_buffer;
+		s_ptr<ConstBuffer> m_light_3D_const_buffer;
+		s_ptr<StructBuffer> m_light_3D_instancing_buffer;
 
 	public:
 		class CullingAgent : public Entity

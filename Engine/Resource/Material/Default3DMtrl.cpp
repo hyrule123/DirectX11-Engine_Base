@@ -25,7 +25,7 @@
 
 namespace core {
     Default3DMtrl::Default3DMtrl()
-        : Material(Default3DMtrl::concrete_class_name)
+        : Material(Default3DMtrl::s_concrete_class_name)
         , m_default_3D_mtrl_instancing_data()
         , m_default_3D_mtrl_instancing_buffer()
     {
@@ -43,7 +43,7 @@ namespace core {
         m_default_3D_mtrl_instancing_data.clear();
     }
 
-    void Default3DMtrl::set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs)
+    void Default3DMtrl::set_data_to_instancing_buffer(const std::vector<s_ptr<GameObject>>& _objs)
     {
         m_default_3D_mtrl_instancing_data.clear();
 
@@ -55,14 +55,14 @@ namespace core {
         m_default_3D_mtrl_instancing_data.reserve(_objs.size());
 
         //애니메이션의 최종 행렬을 먼저 계산 후 바인딩한다.
-        auto* animator = _objs.front()->GetComponent<Com_Animator3D>();
+        s_ptr<Com_Animator3D> animator = _objs.front()->GetComponent<Com_Animator3D>();
         if (animator)
         {
             animator->bind_computed_final_bone_matrix();
         }
 
-        for (GameObject* obj : _objs) {
-            auto* animator = obj->GetComponent<Com_Animator3D>();
+        for (const s_ptr<GameObject>& obj : _objs) {
+            s_ptr<Com_Animator3D> animator = obj->GetComponent<Com_Animator3D>();
             tDefault3DMtrl_InstancingData data{};
 
             if (animator && animator->is_playing()) {

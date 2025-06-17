@@ -15,7 +15,7 @@ namespace core {
         virtual ~Default3DMtrl();
 
         void clear_instancing_buffer() final;
-        void set_data_to_instancing_buffer(const std::vector<GameObject*>& _objs) final;
+        void set_data_to_instancing_buffer(const std::vector<s_ptr<GameObject>>& _objs) final;
         void bind_instancing_buffer_to_GPU_register() final;
 
         void set_forward3D_shader();
@@ -25,7 +25,7 @@ namespace core {
         std::vector<tDefault3DMtrl_InstancingData> m_default_3D_mtrl_instancing_data;
 
         //공용 버퍼(ResourceManager가 보유)
-        std::shared_ptr<StructBuffer> m_default_3D_mtrl_instancing_buffer;
+        s_ptr<StructBuffer> m_default_3D_mtrl_instancing_buffer;
     };
 }
 

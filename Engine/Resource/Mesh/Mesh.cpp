@@ -28,7 +28,7 @@
 namespace core
 {
 	Mesh::Mesh()
-		: Resource(Mesh::concrete_class_name)
+		: Resource(Mesh::s_concrete_class_name)
 		, m_vertex_buffer{}
 		, m_index_buffer{}
 		, m_index_topology{}

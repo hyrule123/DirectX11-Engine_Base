@@ -75,16 +75,16 @@ namespace core::editor
 		mTreeWidget->SetEnable(true);
 	}
 
-	void GameObjectHierarchy::AddGameObject(EditorWidget_Tree::tNode* parent, GameObject* gameObject)
+	void GameObjectHierarchy::AddGameObject(EditorWidget_Tree::tNode* parent, GameObject* get_owner)
 	{
-		std::string name(gameObject->GetName());
+		std::string name(get_owner->GetName());
 		if (name.empty())
 		{
 			name = "NoName";
 		}
 
 		tDataPtr data{};
-		data.SetDataPtr(gameObject);
+		data.SetDataPtr(get_owner);
 
 		EditorWidget_Tree::tNode* node = mTreeWidget->AddNode(parent, name, data);
 	}

@@ -37,13 +37,13 @@ namespace core
 		//Animation 3D
 		const std::vector<tMTBone>& get_bones() const { return m_vecBones; }
 		UINT get_bone_count() const { return (UINT)m_vecBones.size(); }
-		std::shared_ptr<StructBuffer> get_bone_offset_buffer() { return m_pBoneOffset; }	   // 각 뼈의 offset 행렬
+		s_ptr<StructBuffer> get_bone_offset_buffer() { return m_pBoneOffset; }	   // 각 뼈의 offset 행렬
 
 		//반환타입 변수길이가 좀 김
-		const std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>& 
+		const std::unordered_map<std::string, s_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>& 
 			get_animations() const { return m_animations; }
 
-		std::shared_ptr<Animation3D> find_animation(const std::string_view _strAnimName);
+		s_ptr<Animation3D> find_animation(const std::string_view _strAnimName);
 		
 		//return value: 인덱스 번호
 		uint add_compute_queue(Animation3D_PlayData* _play_data) {
@@ -65,14 +65,14 @@ namespace core
 		std::vector<tMTBone>							m_vecBones;
 
 		// 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
-		std::shared_ptr<StructBuffer>					m_pBoneOffset;	  
+		s_ptr<StructBuffer>					m_pBoneOffset;	  
 
-		std::unordered_map<std::string, std::shared_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>	m_animations;
+		std::unordered_map<std::string, s_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>	m_animations;
 
 		//특정 프레임의 최종 행렬(여러개의 애니메이션을 받음)
 		std::vector<Animation3D_PlayData*> m_compute_queue;
 		std::unique_ptr<StructBuffer>	m_final_matrix_buffer;
-		std::shared_ptr<Animation3D_ComputeShader>	m_compute_shader;
+		s_ptr<Animation3D_ComputeShader>	m_compute_shader;
 	};
 }
 

@@ -184,7 +184,7 @@ namespace core
 	{
 		bool bResult = false;
 		//1. 스왑체인 및 최종 렌더타겟 생성
-		std::shared_ptr<Texture> RenderTex = create_swapchain(_resX, _resY, m_refreshRate);
+		s_ptr<Texture> RenderTex = create_swapchain(_resX, _resY, m_refreshRate);
 		if (nullptr == RenderTex)
 		{
 			ERROR_MESSAGE("렌더타겟 생성 실패");
@@ -193,7 +193,7 @@ namespace core
 		m_render_target = RenderTex;
 
 		//3. DS 텍스처 다시 생성
-		std::shared_ptr<Texture> DSTex = create_depth_stencil_buffer(_resX, _resY);
+		s_ptr<Texture> DSTex = create_depth_stencil_buffer(_resX, _resY);
 		if (nullptr == DSTex)
 		{
 			ERROR_MESSAGE("Depth-Stencil 텍스처 생성 실패");
@@ -217,7 +217,7 @@ namespace core
 		return true;
 	}
 
-	std::shared_ptr<Texture> RenderManager::create_swapchain(UINT _resX, UINT _resY, UINT _RefreshRate)
+	s_ptr<Texture> RenderManager::create_swapchain(UINT _resX, UINT _resY, UINT _RefreshRate)
 	{
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 
@@ -266,7 +266,7 @@ namespace core
 
 		
 		//최종 렌더타겟 생성
-		std::shared_ptr<Texture> ReturnTex = std::make_shared<Texture>();
+		s_ptr<Texture> ReturnTex = std::make_shared<Texture>();
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> renderTarget = nullptr;
 
 		// Get rendertarget for swapchain
@@ -289,9 +289,9 @@ namespace core
 	}
 
 
-	std::shared_ptr<Texture> RenderManager::create_depth_stencil_buffer(UINT _Width, UINT _Height)
+	s_ptr<Texture> RenderManager::create_depth_stencil_buffer(UINT _Width, UINT _Height)
 	{
-		std::shared_ptr<Texture> DSTex = std::make_shared<core::Texture>();
+		s_ptr<Texture> DSTex = std::make_shared<core::Texture>();
 		
 		if (false == DSTex->create(_Width, _Height, DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL))
 		{
@@ -356,7 +356,7 @@ namespace core
 
 	void RenderManager::bind_noise_texture()
 	{
-		std::shared_ptr<Texture> noise = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::noise_03);
+		s_ptr<Texture> noise = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::noise_03);
 		noise->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
@@ -373,7 +373,7 @@ namespace core
 	}
 	void RenderManager::copy_rendertarget()
 	{
-		std::shared_ptr<Texture> renderTarget = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::RenderTarget);
+		s_ptr<Texture> renderTarget = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::RenderTarget);
 
 		//renderTarget->unbind_buffer();
 
@@ -424,8 +424,8 @@ namespace core
 	{
 		{
 			//Swapchain MRT
-			std::shared_ptr<Texture> arrRTTex[8] = {};
-			std::shared_ptr<Texture> dsTex = nullptr;
+			s_ptr<Texture> arrRTTex[8] = {};
+			s_ptr<Texture> dsTex = nullptr;
 
 			arrRTTex[0] = RenderManager::get_inst().get_rendertarget_buffer();
 			dsTex = RenderManager::get_inst().get_depth_stencil_buffer();
@@ -441,8 +441,8 @@ namespace core
 
 		// Deffered MRT
 		{
-			std::shared_ptr<Texture> arrRTTex[MRT_MAX] = {};
-			std::shared_ptr<Texture> dsTex = nullptr;
+			s_ptr<Texture> arrRTTex[MRT_MAX] = {};
+			s_ptr<Texture> dsTex = nullptr;
 
 			for (int i = 0; i < (int)eMRT_Deffered::END; ++i)
 			{
@@ -466,11 +466,11 @@ namespace core
 
 		// Light MRT
 		{
-			std::shared_ptr<Texture> arrRTTex[MRT_MAX] = { };
+			s_ptr<Texture> arrRTTex[MRT_MAX] = { };
 
 			for (int i = 0; i < (int)eMRT_Light::END; ++i)
 			{
-				std::shared_ptr<Texture> defferedTex = std::make_shared<Texture>();
+				s_ptr<Texture> defferedTex = std::make_shared<Texture>();
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
@@ -492,15 +492,15 @@ namespace core
 		//Light_Diffuse와 Light_Specular을 렌더타겟으로 설정 후(SV_Target0, SV_Target1)
 		//Diffuse, Normal, Specular, Emissive, Roughness/Metalic, View Position 렌더타겟을 "텍스처"로 바인딩
 		{
-			std::shared_ptr<Material> lightDirMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightDirMaterial);
+			s_ptr<Material> lightDirMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightDirMaterial);
 
-			std::shared_ptr<Material> lightPointMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightPointMaterial);
+			s_ptr<Material> lightPointMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightPointMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
 			{
 				//Diffuse Target
-				std::shared_ptr<Texture> diffuse =
+				s_ptr<Texture> diffuse =
 					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Diffuse);
 				lightDirMtrl->set_texture(eTextureSlot::rendertarget_diffuse, diffuse);
 				lightPointMtrl->set_texture(eTextureSlot::rendertarget_diffuse, diffuse);
@@ -508,7 +508,7 @@ namespace core
 
 			{
 				//Specular Target
-				std::shared_ptr<Texture> specularTarget =
+				s_ptr<Texture> specularTarget =
 					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Specular);
 
 				lightDirMtrl->set_texture(eTextureSlot::rendertarget_specular, specularTarget);
@@ -517,7 +517,7 @@ namespace core
 
 			{
 				//Normal Target
-				std::shared_ptr<Texture> normalTarget =
+				s_ptr<Texture> normalTarget =
 					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Normal);
 
 				lightDirMtrl->set_texture(eTextureSlot::rendertarget_normal, normalTarget);
@@ -526,7 +526,7 @@ namespace core
 
 			{
 				//View Position Target
-				std::shared_ptr<Texture> view_position = 
+				s_ptr<Texture> view_position = 
 					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::ViewPosition);
 
 				lightDirMtrl->set_texture(eTextureSlot::rendertarget_view_position, view_position);
@@ -535,7 +535,7 @@ namespace core
 
 			{
 				//Routhness/Metalic Target
-				std::shared_ptr<Texture> rmt =
+				s_ptr<Texture> rmt =
 					DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Roughness_Metalic);
 				lightDirMtrl->set_texture(eTextureSlot::rendertarget_roughness_metalic, rmt);
 				lightPointMtrl->set_texture(eTextureSlot::rendertarget_roughness_metalic, rmt);
@@ -544,47 +544,47 @@ namespace core
 
 		//Merge: Deffered, Light 렌더타겟 전부 바인딩
 		{
-			std::shared_ptr<Material> mergeMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
+			s_ptr<Material> mergeMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{
-				std::shared_ptr<Texture> AlbedoRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Diffuse);
+				s_ptr<Texture> AlbedoRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Diffuse);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_diffuse, AlbedoRT);
 			}
 
 			{
-				std::shared_ptr<Texture> NormalRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Normal);
+				s_ptr<Texture> NormalRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Normal);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_normal, NormalRT);
 			}
 
 			{
-				std::shared_ptr<Texture> SpecularRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Specular);
+				s_ptr<Texture> SpecularRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Specular);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_specular, SpecularRT);
 			}
 
 			{
-				std::shared_ptr<Texture> EmissiveRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Emissive);
+				s_ptr<Texture> EmissiveRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Emissive);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_emissive, EmissiveRT);
 			}
 
 			{
-				std::shared_ptr<Texture> RoughnessMetailcRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Roughness_Metalic);
+				s_ptr<Texture> RoughnessMetailcRT = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::Roughness_Metalic);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_roughness_metalic, RoughnessMetailcRT);
 			}
 
 			{
-				std::shared_ptr<Texture> PosRenderTarget = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::ViewPosition);
+				s_ptr<Texture> PosRenderTarget = DefferedMRT->get_rendertarget((uint)eMRT_Deffered::ViewPosition);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_view_position, PosRenderTarget);
 			}
 
 			//Light MRT의 0, 1을 6, 7번 텍스처로 바인딩
 			MultiRenderTarget* LightMRT = m_multi_render_targets[(uint)eMRTType::Light].get();
 			{
-				std::shared_ptr<Texture> g_diffuse_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Diffuse_Light);
+				s_ptr<Texture> g_diffuse_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Diffuse_Light);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_diffuse_light, g_diffuse_light_rendertarget);
 			}
 			{
-				std::shared_ptr<Texture> g_specular_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Specular_Light);
+				s_ptr<Texture> g_specular_light_rendertarget = LightMRT->get_rendertarget((uint)eMRT_Light::Specular_Light);
 				mergeMaterial->set_texture(eTextureSlot::rendertarget_specular_light, g_specular_light_rendertarget);
 			}	
 		}

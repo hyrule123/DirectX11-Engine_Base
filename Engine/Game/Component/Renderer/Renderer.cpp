@@ -18,7 +18,7 @@
 namespace core
 {
 	Renderer::Renderer(const std::string_view key)
-		: Super(key, eComponentOrder::Renderer)
+		: Super(key, s_component_order)
 		, m_mesh(nullptr)
 		, m_shared_material(nullptr)
 		, m_dynamic_material(nullptr)
@@ -47,7 +47,7 @@ namespace core
 		//Dynamic Material은 고유 항목이므로 Clone해서 이쪽도 마찬가지로 고유 항목 생성
 		if (_other.m_dynamic_material)
 		{
-			m_dynamic_material = std::unique_ptr<Material>(static_cast<Material*>(_other.m_dynamic_material->Clone()));
+			m_dynamic_material = std::dynamic_pointer_cast<Material>(_other.m_dynamic_material->Clone());
 		}
 	}
 
@@ -138,15 +138,15 @@ namespace core
 		return eResult();
 	}
 
-	void Renderer::set_material(const std::shared_ptr<Material>& _mtrl)
+	void Renderer::set_material(const s_ptr<Material>& _mtrl)
 	{
 		m_shared_material = _mtrl;
 		m_current_material = m_shared_material;
 	}
 
-	std::shared_ptr<Material> Renderer::SetMaterialMode(eMaterialMode _mode)
+	s_ptr<Material> Renderer::SetMaterialMode(eMaterialMode _mode)
 	{
-		std::shared_ptr<Material> mtrl = nullptr;
+		s_ptr<Material> mtrl = nullptr;
 		if (m_shared_material)
 		{
 			if (eMaterialMode::Shared == _mode)
@@ -156,14 +156,9 @@ namespace core
 			else if (eMaterialMode::Dynamic == _mode)
 			{
 				if (nullptr == m_dynamic_material) {
-					//clone 후 shared_ptr로 넣어준다
-					std::shared_ptr<Entity> clone = 
-						std::shared_ptr<Entity>(static_cast<Entity*>(m_shared_material->Clone()));
-					ASSERT(clone, "복제 실패");
-					//dynamic_cast 수행
-					if (clone) {
-						m_dynamic_material = std::dynamic_pointer_cast<Material>(clone);
-					}
+					m_dynamic_material = std::dynamic_pointer_cast<Material>(m_shared_material->Clone());
+
+					ASSERT_DEBUG(m_dynamic_material, "복제 실패");
 				}
 				m_current_material = m_dynamic_material;
 			}

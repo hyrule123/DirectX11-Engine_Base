@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_AudioSource::Com_AudioSource()
-		: Super(Com_AudioSource::concrete_class_name, eComponentOrder::AudioSource)
+		: Super(Com_AudioSource::s_concrete_class_name, s_component_order)
 		, mAudioClip(nullptr)
 	{
 	}
@@ -81,7 +81,7 @@ namespace core
 
 	void Com_AudioSource::final_update()
 	{
-		const auto& tr = gameObject()->GetComponent<Transform>();
+		const auto& tr = get_owner()->GetComponent<Transform>();
 		float3 pos = tr->get_local_position();
 		float3 foward = tr->get_local_direction(eDirection::Forward);
 

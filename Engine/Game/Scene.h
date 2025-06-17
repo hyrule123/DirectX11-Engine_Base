@@ -29,36 +29,32 @@ namespace core
 
 		bool	IsAwaken() const { return m_bAwake; }
 
-		GameObject* AddGameObject(std::unique_ptr<GameObject>& _newObject, const uint _layer);
+		s_ptr<GameObject> AddGameObject(const s_ptr<GameObject>& _newObject);
 
 		//들어간 갯수
-		size_t AddGameObjects(GameObjects& _gameObjects, const uint _layer);
+		std::vector<s_ptr<GameObject>> AddGameObjects(const std::vector<s_ptr<GameObject>>& _gameObjects);
 
-		GameObjects		GetDontDestroyGameObjects();
-		const GameObjects& GetGameObjects() { return m_gameObjects; }
+		std::vector<s_ptr<GameObject>>		GetDontDestroyGameObjects();
+		const std::vector<s_ptr<GameObject>>& GetGameObjects() { return m_gameObjects; }
 
-		CollisionSystem* GetCollisionSystem() { 
-			if (nullptr == m_collisionSystem) { CreateCollisionSystem(); }
-			return m_collisionSystem.get(); 
-		}
+		//있음이 보장됨
+		CollisionSystem* GetCollisionSystem() { return m_collisionSystem.get(); }
 
 		template <class F, class... Args>
 		inline void AddFrameEndJob(F&& _func, Args&&... _args);
 
 	private:
-		void CreateCollisionSystem();
 		void RemoveDestroyed();
 
 		//true: 문제 발생, false: 문제 없음 - stl pred func에 필요함
-		bool SetGameObjectInfo(std::unique_ptr<GameObject>& _obj, const uint _layer);
-		void AddGameObjectInternal(std::unique_ptr<GameObject>& _obj);
-		void AddGameObjectsInternal(GameObjects& _from);
+		bool validate_object(const s_ptr<GameObject>& _obj);
+		void AddGameObjectInternal(const s_ptr<GameObject>& _obj);
 		
 	private:
-		GameObjects m_gameObjects;
+		std::vector<s_ptr<GameObject>> m_gameObjects;
 
 		//Scene 진행 중일 경우에는 여기에 임시로 넣었다가 씬에 추가함
-		GameObjects m_delayedAddQueue;
+		std::vector<s_ptr<GameObject>> m_delayedAddQueue;
 
 		std::vector<std::function<void()>> m_FrameEndJobs;
 

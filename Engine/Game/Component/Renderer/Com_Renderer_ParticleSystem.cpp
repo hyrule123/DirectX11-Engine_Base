@@ -21,7 +21,7 @@
 namespace core
 {
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
-		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::s_concrete_class_name)
 		, mMaxParticles(100)
 		, mStartSize(float4(50.0f, 50.0f, 1.0f, 1.0f))
 		, mStartColor(float4(1.0f, 0.2f, 0.2f, 1.0f))
@@ -89,14 +89,14 @@ namespace core
 		using namespace name::defaultRes;
 		mCS = LOAD_COMPUTESHADER(ParticleShader);
 
-		std::shared_ptr<Mesh> point = ResourceManager<Mesh>::get_inst().find(mesh::PointMesh);
+		s_ptr<Mesh> point = ResourceManager<Mesh>::get_inst().find(mesh::PointMesh);
 		set_mesh(point);
 
 		// Material 세팅
-		std::shared_ptr<Material> material = ResourceManager<Material>::get_inst().find(material::ParticleMaterial);
+		s_ptr<Material> material = ResourceManager<Material>::get_inst().find(material::ParticleMaterial);
 		set_material(material);
 
-		std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().find(texture::CartoonSmoke);
+		s_ptr<Texture> tex = ResourceManager<Texture>::get_inst().find(texture::CartoonSmoke);
 		material->set_texture(eTextureSlot::diffuse_texture, tex);
 
 		tParticle particles[100] = {};
@@ -147,7 +147,7 @@ namespace core
 		}
 
 		mMaxParticles = m_buffer->GetStride();
-		float3 pos = gameObject()->GetComponent<Transform>()->get_local_position();
+		float3 pos = get_owner()->GetComponent<Transform>()->get_local_position();
 		mCBData.worldPosition = float4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
 		mCBData.radius = mRadius;
@@ -174,7 +174,7 @@ namespace core
 	//	if (false == IsRenderReady())
 	//		return;
 	//	
-	//	gameObject()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
+	//	get_owner()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
 	//	m_buffer->bind_buffer_as_SRV(GPU::Register::t::g_diffuse_texture, eShaderStageFlag::Geometry);
 
 	//	GetCurrentMaterial(0)->bind_buffer_to_gpu_register();

@@ -43,10 +43,10 @@ namespace core
 		void clear_rendertarget();// 화면 지워주기
 		void present(bool _bVSync = false);
 
-		std::shared_ptr<Texture> get_rendertarget_buffer() {
+		s_ptr<Texture> get_rendertarget_buffer() {
 			return m_render_target;
 		}
-		std::shared_ptr<Texture> get_depth_stencil_buffer() {
+		s_ptr<Texture> get_depth_stencil_buffer() {
 			return m_depth_stencil_buffer;
 		}
 
@@ -80,8 +80,8 @@ namespace core
 
 	private:
 		//스왑체인 + 렌더타겟 생성하여 반환
-		std::shared_ptr<Texture> create_swapchain(UINT _resX, UINT _resY, UINT _RefreshRate);
-		std::shared_ptr<Texture> create_depth_stencil_buffer(UINT _resX, UINT _resY);
+		s_ptr<Texture> create_swapchain(UINT _resX, UINT _resY, UINT _RefreshRate);
+		s_ptr<Texture> create_depth_stencil_buffer(UINT _resX, UINT _resY);
 
 		//Application의 창 크기를 따라감
 		void create_main_viewport();
@@ -107,8 +107,8 @@ namespace core
 	
 		ComPtr<IDXGISwapChain> m_swapChain;
 		
-		std::shared_ptr<core::Texture> m_render_target;
-		std::shared_ptr<core::Texture> m_depth_stencil_buffer;
+		s_ptr<core::Texture> m_render_target;
+		s_ptr<core::Texture> m_depth_stencil_buffer;
 		
 		D3D11_VIEWPORT m_viewport;
 
@@ -120,8 +120,8 @@ namespace core
 		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depthStencilStates;
 		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blendStates;
 
-		std::shared_ptr<Texture>				m_postProcessTexture;
-		std::shared_ptr<Texture>				m_noiseTexture;
+		s_ptr<Texture>				m_postProcessTexture;
+		s_ptr<Texture>				m_noiseTexture;
 
 		SceneRenderAgent m_sceneRenderAgent;
 	};

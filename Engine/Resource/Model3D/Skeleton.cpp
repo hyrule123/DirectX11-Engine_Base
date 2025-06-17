@@ -23,7 +23,7 @@
 namespace core
 {
 	Skeleton::Skeleton()
-		: Resource(Skeleton::concrete_class_name)
+		: Resource(Skeleton::s_concrete_class_name)
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}
@@ -126,7 +126,7 @@ namespace core
 					continue;
 				}
 				
-				std::shared_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
+				s_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
 				eResult result = a3d->LoadFile_Binary(filePath);
 				if (eResult_fail(result))
 				{
@@ -242,8 +242,8 @@ namespace core
 		{
 			std::unique_ptr<Animation3D> anim = std::make_unique<Animation3D>();
 
-			std::shared_ptr<Skeleton> sklt =
-				shared_from_this_cast<Skeleton>();
+			s_ptr<Skeleton> sklt =
+				std::static_pointer_cast<Skeleton>(shared_from_this());
 
 			eResult result = anim->load_from_fbx(sklt, &animClip[i]);
 
@@ -313,11 +313,13 @@ namespace core
 		for (const auto& otherAnim : _other.m_animations)
 		{
 			//일단 다른쪽의 애니메이션을 복사해온다.
-			std::shared_ptr<Animation3D> ourAnim = std::shared_ptr<Animation3D>(otherAnim.second->Clone());
+			auto cloned = otherAnim.second->Clone();
+			ASSERT_DEBUG(cloned, "nullptr 에러");
+			s_ptr<Animation3D> ourAnim = std::static_pointer_cast<Animation3D>(cloned);
 
 			//스켈레톤 주소를 자신의것으로 변경
-			std::shared_ptr<Skeleton> my_shared_ptr =
-				std::static_pointer_cast<Skeleton>(shared_from_this_cast<Skeleton>());
+			s_ptr<Skeleton> my_shared_ptr =
+				std::static_pointer_cast<Skeleton>(this->shared_from_this());
 			ourAnim->set_skeleton(my_shared_ptr);
 
 			//위에서 찾은 일치하는 Bone 번호 인덱스를 가져온다.
@@ -396,9 +398,9 @@ namespace core
 		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}
 
-	std::shared_ptr<Animation3D> Skeleton::find_animation(const std::string_view _strAnimName)
+	s_ptr<Animation3D> Skeleton::find_animation(const std::string_view _strAnimName)
 	{
-		std::shared_ptr<Animation3D> retPtr = nullptr;
+		s_ptr<Animation3D> retPtr = nullptr;
 		const auto& iter = m_animations.find(_strAnimName);
 		if (iter != m_animations.end())
 		{
@@ -427,7 +429,7 @@ namespace core
 
 			desc.current_animation_key_frame_buffer = m_compute_queue[i]->get_current_animation()->get_keyframe_sbuffer().get();
 
-			std::shared_ptr<Animation3D> next_anim = m_compute_queue[i]->get_next_animation();
+			s_ptr<Animation3D> next_anim = m_compute_queue[i]->get_next_animation();
 			if (next_anim)
 			{
 				desc.next_animation_keyframe_buffer = next_anim->get_keyframe_sbuffer().get();

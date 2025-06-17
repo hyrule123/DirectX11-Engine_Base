@@ -20,12 +20,12 @@ namespace core
 
 		void Destroy();
 
-		Scene*  LoadScene(std::unique_ptr<Scene> _scene);
-		Scene*	LoadScene(const std::string_view _resource_name);
-		Scene* GetActiveScene() { return m_activeScene; }
+		s_ptr<Scene>  LoadScene(const s_ptr<Scene>& _scene);
+		s_ptr<Scene>	LoadScene(const std::string_view _scene_name);
+		s_ptr<Scene> GetActiveScene() { return m_activeScene; }
 
 	private:
-		Scene*				m_activeScene;
+		s_ptr<Scene>				m_activeScene;
 
 		bool m_isFixedUpdating;
 	};

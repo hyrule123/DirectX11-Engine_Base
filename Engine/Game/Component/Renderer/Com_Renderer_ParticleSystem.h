@@ -38,7 +38,7 @@ namespace core
 #pragma endregion
 
 #pragma region tParticle GraphicsShader 관련 변수 선언
-		std::shared_ptr<ParticleShader> mCS;
+		s_ptr<ParticleShader> mCS;
 		tCB_ParticleSystem mCBData;
 #pragma endregion
 

@@ -12,7 +12,7 @@ namespace core
 		public Component
 	{
 		CLASS_INFO(Animator, Component);
-		
+		BASE_COMPONENT(eComponentOrder::Animator);
 
 	public:
 		struct tEvent

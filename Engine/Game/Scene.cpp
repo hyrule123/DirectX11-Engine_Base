@@ -24,13 +24,13 @@ namespace core
 		m_collisionSystem.reset();
 	}
 
-	void Scene::on_enter()
-	{
-	}
-
 	void Scene::init()
 	{
+		m_collisionSystem = std::make_unique<CollisionSystem>(this);
+	}
 
+	void Scene::on_enter()
+	{
 	}
 
 	void Scene::awake()
@@ -108,10 +108,13 @@ namespace core
 		//마지막으로 Scene 작동 중 추가된 GameObject를 추가
 		if (false == m_delayedAddQueue.empty()) 
 		{
-			AddGameObjectsInternal(m_delayedAddQueue);
+			for (const s_ptr<GameObject>& obj : m_delayedAddQueue)
+			{
+				AddGameObject(obj);
+			}
+
 		}
 	}
-
 
 	void Scene::destroy()
 	{
@@ -121,17 +124,15 @@ namespace core
 		}
 	}
 
-	GameObject* Scene::AddGameObject(std::unique_ptr<GameObject>& _newObject, const uint _layer)
+	s_ptr<GameObject> Scene::AddGameObject(const s_ptr<GameObject>& _newObject)
 	{
-		GameObject* ret = nullptr;
+		s_ptr<GameObject> ret = nullptr;
 		//true가 반환되면 에러 있다는 뜻
-		if (SetGameObjectInfo(_newObject, _layer))
+		if (validate_object(_newObject))
 		{
-			ERROR_MESSAGE("문제발생");
-			return ret;
+			DEBUG_MESSAGE("Scene에 추가하려는 GameObject에 문제가 있어 추가하지 못했습니다.");
+			return nullptr;
 		}
-
-		ret = _newObject.get();
 
 		if (false == m_bAwake)
 		{
@@ -141,80 +142,49 @@ namespace core
 		//Scene이 재생 중일 경우에는 한 프레임이 끝난 후 추가한다.
 		else
 		{
-			std::unique_ptr<GameObject> temp{};
-			temp.swap(_newObject);
-			m_delayedAddQueue.push_back(std::move(temp));
+			m_delayedAddQueue.push_back(_newObject);
 		}
 
 		return ret;
 	}
 
-	size_t Scene::AddGameObjects(GameObjects& _gameObjects, const uint _layer)
+	std::vector<s_ptr<GameObject>> Scene::AddGameObjects(const std::vector<s_ptr<GameObject>>& _gameObjects)
 	{
-		size_t inserted = 0;
+		std::vector<s_ptr<GameObject>> inserted;
+		inserted.reserve(_gameObjects.size());
 
-		//복사
-		GameObjects gameObjects{};
-		gameObjects.swap(_gameObjects);
-
-		std::function<bool(std::unique_ptr<GameObject>&)> predFunc =
-			std::bind(&Scene::SetGameObjectInfo, this, std::placeholders::_1, _layer);
-
-		std::erase_if(gameObjects, predFunc);
-
-		inserted = gameObjects.size();
-
-		if (m_bAwake)
+		for (const s_ptr<GameObject>& obj : _gameObjects)
 		{
-			m_delayedAddQueue.insert(m_delayedAddQueue.end()
-				, std::make_move_iterator(gameObjects.begin())
-				, std::make_move_iterator(gameObjects.end())
-			);
-		}
-		else
-		{
-			AddGameObjectsInternal(gameObjects);
+			s_ptr<GameObject> result = AddGameObject(obj);
+			if (result)
+			{
+				inserted.push_back(obj);
+			}
 		}
 
 		return inserted;
 	}
 
-	std::vector<std::unique_ptr<GameObject>> Scene::GetDontDestroyGameObjects()
+	std::vector<s_ptr<GameObject>> Scene::GetDontDestroyGameObjects()
 	{
-		std::vector<std::unique_ptr<GameObject>> dontGameObjs{};
+		std::vector<s_ptr<GameObject>> ret{};
 
-		//false인 것들이 뒤에 모임
-		auto iter = std::partition(m_gameObjects.begin(), m_gameObjects.end(),
-			[](const std::unique_ptr<GameObject>& _gameObj)->bool
+		for (const s_ptr<GameObject>& obj : m_gameObjects)
+		{
+			if (obj->IsDontDestroyOnLoad())
 			{
-				return !_gameObj->IsDontDestroyOnLoad();
+				ret.push_back(obj);
 			}
-		);
+		}
 
-		//resize 해야 할 사이즈 미리 받아놓고
-		size_t iterPos = iter - m_gameObjects.begin();
-
-		dontGameObjs.insert(dontGameObjs.end(),
-			std::make_move_iterator(iter),
-			std::make_move_iterator(m_gameObjects.end())
-		);
-
-		//resize 해주고
-		m_gameObjects.resize(iterPos);
-
-		return dontGameObjs;
-	}
-
-	void Scene::CreateCollisionSystem()
-	{
-		m_collisionSystem = std::make_unique<CollisionSystem>(this);
+		return ret;
 	}
 
 	void Scene::RemoveDestroyed()
 	{
 		//Destroy 상태의 Object 제거
 		std::erase_if(m_gameObjects,
-			[](const std::unique_ptr<GameObject>& _obj)->bool
+			[](const s_ptr<GameObject>& _obj)->bool
 			{
 				GameObject::eState state = _obj->GetState();
 				if (GameObject::eState::Destroy == state)
@@ -231,62 +201,36 @@ namespace core
 		);
 	}
 
-	bool Scene::SetGameObjectInfo(std::unique_ptr<GameObject>& _obj, const uint _layer)
+	bool Scene::validate_object(const s_ptr<GameObject>& _obj)
 	{
 		if (nullptr == _obj)
 		{
 			DEBUG_MESSAGE("object가 nullptr 입니다.");
-			return true;
+			return false;
 		}
-		else if (false == IsLayerValid(_layer))
+		if (false == IsLayerValid(_obj->GetLayer()))
 		{
 			DEBUG_MESSAGE("Layer 번호가 유효하지 않습니다.(0~31)");
-			return true;
+			return false;
 		}
 
-		//레이어는 일단 변경시켜줌
-		_obj->SetLayer(_layer);
-
-		//OwnerScene이 이미 this가 되었다는건 이미 m_gameObjects에 들어왔다는 뜻
-		//release를 통해서 자동 메모리 관리를 해제하고 true를 반환한다.
-		if (this == _obj->scene())
+		//이미 scene에 들어간 GameObject는 넣지 않는다.
+		if (this == _obj->get_scene().get())
 		{
-			_obj.release();
-			return true;
-		}
-		else
-		{
-			_obj->SetScene(this);
+			DEBUG_MESSAGE("이미 Scene에 들어간 GameObject 입니다.");
+			return false;
 		}
 
-		return false;
+		_obj->set_scene(std::static_pointer_cast<Scene>(this->shared_from_this()));
+		return true;
 	}
 
-	void Scene::AddGameObjectInternal(std::unique_ptr<GameObject>& _obj)
+	void Scene::AddGameObjectInternal(const s_ptr<GameObject>& _obj)
 	{
-		std::unique_ptr<GameObject> temp{};
-		temp.swap(_obj);
-		m_gameObjects.push_back(std::move(temp));
+		m_gameObjects.push_back(_obj);
 		if (m_bAwake)
 		{
-			m_gameObjects.back()->Awake();
-		}
-	}
-
-	void Scene::AddGameObjectsInternal(GameObjects& _from)
-	{
-		auto iter = m_gameObjects.insert(m_gameObjects.end()
-			, std::make_move_iterator(_from.begin())
-			, std::make_move_iterator(_from.end())
-		);
-		_from.clear();
-
-		for (iter; iter != m_gameObjects.end(); ++iter)
-		{
-			if (m_bAwake)
-			{
-				(*iter)->Awake();
-			}
+			_obj->Awake();
 		}
 	}
 }

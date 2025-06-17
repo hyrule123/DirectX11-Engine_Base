@@ -33,6 +33,11 @@ namespace std
 
 namespace core
 {
+	template <typename T>
+	using s_ptr = std::shared_ptr<T>;
+	template <typename T>
+	using w_ptr = std::weak_ptr<T>;
+
 	class GameObject;
 	class Mesh;
 	class Material;
@@ -47,7 +52,6 @@ namespace core
 	using uint64 = std::uint64_t;
 
 	using uint = unsigned int;
-	using GameObjects = std::vector<std::unique_ptr<GameObject>>;
 
 	struct tGPUManagerDesc
 	{
@@ -142,8 +146,8 @@ namespace core
 
 
 	struct tRenderQueue {
-		std::shared_ptr<Mesh> mesh;
-		std::shared_ptr<Material> material;
-		std::vector<GameObject*> objects_to_render;
+		s_ptr<Mesh> mesh;
+		s_ptr<Material> material;
+		std::vector<s_ptr<GameObject>> objects_to_render;
 	};
 }

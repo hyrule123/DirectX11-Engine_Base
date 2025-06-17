@@ -3,7 +3,7 @@
 #include "Engine/Game/Component/Collider/Collider.h"
 namespace core
 {
-	ContactPair::ContactPair(Collider* const _left, Collider* const _right)
+	ContactPair::ContactPair(const s_ptr<Collider>& const _left, const s_ptr<Collider>& _right)
 		: m_left(_left)
 		, m_right(_right)
 	{

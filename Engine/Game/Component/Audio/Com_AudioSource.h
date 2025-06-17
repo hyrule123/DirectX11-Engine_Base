@@ -8,6 +8,8 @@ namespace core
 		: public Component
 	{
 		CLASS_INFO(Com_AudioSource, Component);
+		BASE_COMPONENT(eComponentOrder::AudioSource);
+
 		//다 같이 공유하는 '리소스' 포인터만 변수로 가지고 있으므로 기본 복사 생성자로도 충분하다.
 		CLONE_ABLE(Com_AudioSource);
 	public:
@@ -25,10 +27,10 @@ namespace core
 		void Stop();
 		void SetLoop(bool _loop);
 
-		void SetClip(std::shared_ptr<AudioClip> _clip) { mAudioClip = _clip; }
-		std::shared_ptr<AudioClip> GetClip() const { return mAudioClip; }
+		void SetClip(s_ptr<AudioClip> _clip) { mAudioClip = _clip; }
+		s_ptr<AudioClip> GetClip() const { return mAudioClip; }
 
 	private:
-		std::shared_ptr<AudioClip> mAudioClip;
+		s_ptr<AudioClip> mAudioClip;
 	};
 }

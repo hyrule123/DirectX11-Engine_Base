@@ -9,7 +9,7 @@
 namespace core
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Shapes(Com_Collider3D_Sphere::concrete_class_name, eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(Com_Collider3D_Sphere::s_concrete_class_name, eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}
@@ -29,7 +29,7 @@ namespace core
 		}
 		physx::PxMaterial* mtrl = col3dMgr->GetDefaultPxMaterial();
 
-		Transform* tr = GetTransform();
+		s_ptr<Transform> tr = GetTransform();
 
 		const MATRIX& worldMat = tr->get_world_matrix();
 		m_sphereGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;

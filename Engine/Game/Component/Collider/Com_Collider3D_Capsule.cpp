@@ -9,7 +9,7 @@
 namespace core
 {
 	Com_Collider3D_Capsule::Com_Collider3D_Capsule()
-		: Com_Collider3D_Shapes(Com_Collider3D_Capsule::concrete_class_name, eCollider3D_Shape::Capsule)
+		: Com_Collider3D_Shapes(Com_Collider3D_Capsule::s_concrete_class_name, eCollider3D_Shape::Capsule)
 		, m_offsetPosition()
 		, m_offsetRatio_Radius(1.f)
 		, m_offsetRatio_HalfHeight(1.f)
@@ -32,7 +32,7 @@ namespace core
 		physx::PxMaterial* mtrl = col3dMgr->GetDefaultPxMaterial();
 		ASSERT_DEBUG(mtrl, "Default PxMaterial 인스턴스가 없습니다.");
 
-		Transform* tr = GetTransform();
+		s_ptr<Transform> tr = GetTransform();
 
 		const MATRIX& worldMat = tr->get_world_matrix();
 		m_capsuleGeometry.radius = worldMat.Axis(eAxis3D::X).Length() * m_offsetRatio_Radius;

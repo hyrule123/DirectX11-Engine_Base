@@ -33,8 +33,8 @@ namespace core
 		Serializable();
 		virtual ~Serializable();
 
-		std::shared_ptr<std::ofstream> OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
-		std::shared_ptr<std::ifstream> OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
+		s_ptr<std::ofstream> OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
+		s_ptr<std::ifstream> OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
 	};
 
 

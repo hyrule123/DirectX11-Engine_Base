@@ -24,6 +24,6 @@ namespace core
 		//virtual void render() override;
 
 	private:
-		Com_Animator2D* mAnimator;
+		w_ptr<Com_Animator2D> mAnimator;
 	};
 }

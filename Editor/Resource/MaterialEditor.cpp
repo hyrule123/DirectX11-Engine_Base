@@ -335,7 +335,7 @@ namespace core::editor
 
 		//저장할 때는 Key값을 바꿔야 하기 때문에 Clone 해서 저장해야 한다.
 		//기존 리소스를 그대로 Save하게 되면 Key 값이 변경되어 에러가 발생할 수 있음.
-		mTargetMaterial = std::shared_ptr<Material>(dynamic_cast<Material*>(mTargetMaterial->Clone()));
+		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->Clone());
 
 		std::string name = outputPath.filename().string();
 		mTargetMaterial->set_resource_name(name);
@@ -368,7 +368,7 @@ namespace core::editor
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())
 						{
-							mtrl = std::shared_ptr<Material>(dynamic_cast<Material*>(mtrl->Clone()));
+							mtrl = std::dynamic_pointer_cast<Material>(mtrl->Clone());
 							mtrl->set_engine_default_res(false);
 						}
 

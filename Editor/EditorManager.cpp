@@ -190,7 +190,7 @@ namespace core::editor
 
 	void EditorManager::render()
 	{
-		Scene* scene = SceneManager::get_inst().GetActiveScene();
+		s_ptr<Scene> scene = SceneManager::get_inst().GetActiveScene();
 		if (scene)
 		{
 			CollisionSystem* colsys = scene->GetCollisionSystem();

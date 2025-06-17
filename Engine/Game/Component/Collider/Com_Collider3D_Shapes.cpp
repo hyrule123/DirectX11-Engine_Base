@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_Collider3D_Shapes::Com_Collider3D_Shapes()
-		: Collider3D(Com_Collider3D_Shapes::concrete_class_name, eCollider3DType::Rigid)
+		: Collider3D(Com_Collider3D_Shapes::s_concrete_class_name, eCollider3DType::Rigid)
 		, m_pxShapes{}
 	{
 	}
@@ -32,18 +32,20 @@ namespace core
 	{
 		Collider3D::Awake();
 
-		Rigidbody* rigidbody = 
-			static_cast<Rigidbody*>(gameObject()->GetComponent(eComponentOrder::Rigidbody));
+		s_ptr<GameObject> owner = get_owner();
+		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
+
+		s_ptr<Rigidbody> rigidbody = owner->GetComponent<Rigidbody>();
 
 		if (nullptr == rigidbody)
 		{
-			rigidbody = gameObject()->AddComponent<Com_Rigidbody_Static>();
+			rigidbody = owner->AddComponent<Com_Rigidbody_Static>();
 			ASSERT_DEBUG(rigidbody, "rigidbody 생성되지 않음.");
 		}
 
 		Collision3D* col3d = GetCollision3D();
 		
-		uint32 layer = gameObject()->GetLayer();
+		uint32 layer = owner->GetLayer();
 		if (col3d)
 		{
 			m_collisionMask = col3d->GetCollisionFilterData(layer);

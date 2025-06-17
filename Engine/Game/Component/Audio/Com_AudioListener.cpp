@@ -15,7 +15,7 @@
 namespace core
 {
 	Com_AudioListener::Com_AudioListener()
-		: Super(Com_AudioListener::concrete_class_name, eComponentOrder::AudioListener)
+		: Super(Com_AudioListener::s_concrete_class_name, s_component_order)
 	{
 	}
 
@@ -43,7 +43,7 @@ namespace core
 
 	void Com_AudioListener::final_update()
 	{
-		const auto& tr = gameObject()->GetComponent<Transform>();
+		const auto& tr = get_owner()->GetComponent<Transform>();
 		float3 pos = tr->get_world_position();
 
 		float3 foward = tr->get_world_direction(eDirection::Forward);

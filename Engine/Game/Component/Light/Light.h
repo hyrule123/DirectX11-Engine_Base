@@ -8,6 +8,7 @@ namespace core
         public Component
     {
         CLASS_INFO(Light, Component);
+        BASE_COMPONENT(eComponentOrder::Light);
 
     public:
         Light(const std::string_view key, eDimensionType _dimensionType);

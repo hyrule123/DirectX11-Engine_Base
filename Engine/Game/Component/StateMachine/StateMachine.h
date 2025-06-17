@@ -7,6 +7,8 @@ namespace core
         public Component
     {
         CLASS_INFO(StateMachine, Component);
+        BASE_COMPONENT(eComponentOrder::StateMachine);
+
     public:
         StateMachine(const std::string_view key);
         virtual ~StateMachine();

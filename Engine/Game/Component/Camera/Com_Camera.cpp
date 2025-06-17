@@ -24,7 +24,7 @@
 namespace core
 {
 	Com_Camera::Com_Camera()
-		: Super(Com_Camera::concrete_class_name, eComponentOrder::Camera)
+		: Super(Com_Camera::s_concrete_class_name, s_component_order)
 		, m_camera_matrices{}
 		, m_projectionType(eProjectionType::None)
 		, m_isEnableCulling(true)
@@ -88,7 +88,7 @@ namespace core
 		m_transform_data.clear();
 
 		//출력할 레이어만 걸러낸다. 가장 기본적인 Transform 버퍼는 여기서 업로드 한다.
-		for (GameObject* obj : _render_queue.objects_to_render) {
+		for (const s_ptr<GameObject>& obj : _render_queue.objects_to_render) {
 			if (true == m_layerMasks[obj->GetLayer()]) {
 				m_layer_filtered_objects.push_back(obj);
 
@@ -122,8 +122,10 @@ namespace core
 
 		//나중에 컬링도 진행할것.
 		for (auto* l : _lights) {
-			GameObject* obj = l->gameObject();
-			if (true == m_layerMasks[obj->GetLayer()]) {
+			s_ptr<GameObject> obj = l->get_owner();
+
+			//레이어 마스크와 일치하는지 확인(bit mask)
+			if (obj && true == m_layerMasks[obj->GetLayer()]) {
 				//transform 데이터 넣고
 				tTransform trdata{};
 				trdata.World = obj->GetComponent<Transform>()->get_world_matrix();
@@ -160,7 +162,13 @@ namespace core
 
 	void Com_Camera::CreateViewMatrix()
 	{
-		auto tr = gameObject()->transform();
+		if (nullptr == get_owner())
+		{
+			DEBUG_MESSAGE("owner 게임오브젝트가 없음");
+			return;
+		}
+
+		auto tr = get_owner()->GetComponent<Transform>();
 
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
 		if (false == tr->is_transform_updated())
@@ -332,14 +340,14 @@ namespace core
 	}
 
 	Com_Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
-		: Com_Camera::CullingAgent(CullingAgent_Orthographic::concrete_class_name)
+		: Com_Camera::CullingAgent(CullingAgent_Orthographic::s_concrete_class_name)
 	{
 	}
 	Com_Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::CullingAgent_Perspective()
-		: Com_Camera::CullingAgent(CullingAgent_Perspective::concrete_class_name)
+		: Com_Camera::CullingAgent(CullingAgent_Perspective::s_concrete_class_name)
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::~CullingAgent_Perspective()

@@ -20,7 +20,7 @@ namespace core::editor
 
 		void GameobjectSelectCallback(tDataPtr _data);
 		void InitializeScene();
-		void AddGameObject(EditorWidget_Tree::tNode* parent, GameObject* gameObject);
+		void AddGameObject(EditorWidget_Tree::tNode* parent, GameObject* get_owner);
 
 	private:
 		std::shared_ptr<EditorWidget_Tree> mTreeWidget;
