@@ -94,7 +94,7 @@ namespace core
 		s_ptr<Animation2D> animation = find_animation(_name);
 		if (animation) { 
 			DEBUG_MESSAGE("같은 이름의 Animation이 존재합니다.");
-			return nullptr; 
+			return nullptr;
 		}
 
 		animation = std::make_shared<Animation2D>();

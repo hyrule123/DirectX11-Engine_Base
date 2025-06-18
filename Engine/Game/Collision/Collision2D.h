@@ -40,7 +40,7 @@ namespace core
 		void frame_end();
 
 	private:
-		void Enqueue(const s_ptr<Collider2D>& const _obj);
+		void Enqueue(const s_ptr<Collider2D>& _obj);
 
 		static bool CheckIntersect_AABB_AABB(
 			const s_ptr<Collider2D>& _AABB1, const s_ptr<Collider2D>& _AABB2, float2& _contactPoint);

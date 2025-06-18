@@ -59,10 +59,12 @@ namespace core
 			const std::fs::path& _fbxPath, bool _bStatic,
 			const std::fs::path& _dirAndFileName);
 
-	private:
 		//기존에 존재하는 변환된 데이터에 애니메이션만 추가
 		//조건: 스켈레톤이 동일해야 함
 		static eResult add_animation_from_FBX(const std::fs::path& _fbxPath, const std::fs::path& _meshDataName);
+
+	private:
+
 
 		//_defaultMtrlStrKey: FBX 변환된 재질이 이름이 없을수도 있음 -> 만약 없을 경우 사용할 기본 키 이름
 		s_ptr<Material> convert_material(const tFBXMaterial* _material, const std::fs::path& _texDestDir);

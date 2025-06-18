@@ -37,21 +37,21 @@ namespace core
 		GameObject();
 		GameObject(const std::string_view _name);
 		GameObject(const GameObject& _other);
-		
 
 		virtual ~GameObject();
 
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
+		virtual void init();
+		virtual void Awake();
+		virtual void fixed_update();
+		virtual void update();
+		virtual void final_update();
+		virtual void render();
+		virtual void frame_end();
 
-		void Awake();
-		void fixed_update();
-		void update();
-		void final_update();
-		void render();
-		void frame_end();
 		void RemoveDestroyed();
 
+		virtual eResult serialize_json(JsonSerializer* _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 	public:
 		s_ptr<Component> AddComponent(const s_ptr<Component>& _pCom);
 

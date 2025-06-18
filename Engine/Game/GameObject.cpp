@@ -18,15 +18,7 @@ namespace core
 {
 	GameObject::GameObject()
 		: Entity(GameObject::s_concrete_class_name)
-		, m_baseComponents()
-		, m_scene()
-		, m_layer(UINT_MAX)
-		, m_name()
-		, m_state(eState::Active)
-		, m_isAwaken(false)
-		, m_bDontDestroyOnLoad(false)
 	{
-		AddComponent<Transform>();
 	}
 
 	GameObject::GameObject(const std::string_view _name)
@@ -85,12 +77,9 @@ namespace core
 		}
 	}
 
-
 	GameObject::~GameObject()
 	{
 	}
-
-
 
 	eResult GameObject::serialize_json(JsonSerializer* _ser) const
 	{
@@ -124,6 +113,19 @@ namespace core
 		ASSERT(false, "미구현");
 
 		return eResult::Success;
+	}
+
+	void GameObject::init()
+	{
+		m_baseComponents;
+		m_scene;
+		m_layer = UINT_MAX;
+		m_name;
+		m_state = eState::Active;
+		m_isAwaken = false;
+		m_bDontDestroyOnLoad = false;
+
+		AddComponent<Transform>();
 	}
 
 	void GameObject::Awake()

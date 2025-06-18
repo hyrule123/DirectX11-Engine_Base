@@ -128,7 +128,7 @@ namespace core
 
 					for (r; r < rights.size(); ++r)
 					{
-						const s_ptr<Collider2D>& const right = rights[r];
+						const s_ptr<Collider2D>& right = rights[r];
 						
 						left->ColliderUpdate();
 						right->ColliderUpdate();

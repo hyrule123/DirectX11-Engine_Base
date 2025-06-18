@@ -59,13 +59,13 @@ namespace core::editor
 	{
 		mTreeWidget->Clear();
 
-		Scene* scene = SceneManager::get_inst().GetActiveScene();
+		s_ptr<Scene> scene = SceneManager::get_inst().GetActiveScene();
 		if (nullptr == scene) { return; }
 		std::string sceneName(scene->get_concrete_class_name());
 
 		EditorWidget_Tree::tNode* root = mTreeWidget->AddNode(nullptr, sceneName, tDataPtr{}, true);
 
-		const GameObjects& gameObjects = scene->GetGameObjects();
+		const std::vector<s_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 		for (size_t i = 0; i < gameObjects.size(); ++i)
 		{
