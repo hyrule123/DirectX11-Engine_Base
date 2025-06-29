@@ -29,7 +29,7 @@ namespace core::editor
 
         
     private:
-        std::shared_ptr<Texture>        mTextureSrc;
+        s_ptr<Texture>        mTextureSrc;
         std::filesystem::path               mTextureDestDir;
     };
 

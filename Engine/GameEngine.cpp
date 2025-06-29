@@ -19,7 +19,7 @@
 
 #include "Engine/EngineMain.h"
 
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 
 #include "Engine/Game/Scene.h"
 

@@ -7,7 +7,7 @@
 namespace core
 {
 	Com_Collider2D_AABB::Com_Collider2D_AABB()
-		: Collider2D(Com_Collider2D_AABB::s_concrete_class_name, eCollider2D_Shape::AABB)
+		: Collider2D(Com_Collider2D_AABB::s_static_type_name, eCollider2D_Shape::AABB)
 		, m_offsetScale(100.f)
 		, m_leftBottom(0.f, 0.f)
 		, m_rightTop(100.f, 100.f)
@@ -20,7 +20,7 @@ namespace core
 
 	void Com_Collider2D_AABB::UpdateShape()
 	{
-		s_ptr<Transform> tr = get_owner()->GetComponent<Transform>();
+		s_ptr<Transform> tr = get_owner()->get_component<Transform>();
 
 		if (false == m_isOffsetScaleUpdated && false == tr->is_transform_updated())
 		{

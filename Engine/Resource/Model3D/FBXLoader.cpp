@@ -17,7 +17,7 @@ namespace core
 	
 
 	FBXLoader::FBXLoader()
-		: Entity(FBXLoader::s_concrete_class_name)
+		: Entity(FBXLoader::s_static_type_name)
 		, mManager()
 		, mScene()
 		, mBones{}
@@ -215,7 +215,7 @@ namespace core
 	{
 		tFBXContainer cont{};// = mContainers.back();
 
-		cont.Name = _pFBXMesh->GetName();
+		cont.Name = _pFBXMesh->get_name();
 
 		// ControlPoint 는 위치정보를 담고 있는 배열이다.
 		// 이 배열의 개수는 곧 정점의 개수가 된다.
@@ -334,7 +334,7 @@ namespace core
 	{
 		tFBXMaterial tMtrlInfo{};
 
-		tMtrlInfo.strMtrlName = _pMtrlSur->GetName();
+		tMtrlInfo.strMtrlName = _pMtrlSur->get_name();
 
 		// diffuse
 		tMtrlInfo.DiffuseColor = get_material_data(_pMtrlSur
@@ -779,7 +779,7 @@ namespace core
 		{
 			tFBXBone bone{};
 
-			bone.strBoneName = _pNode->GetName();
+			bone.strBoneName = _pNode->get_name();
 			if (mbMixamo)
 			{
 				bone.strBoneName.erase(0, 10);
@@ -819,7 +819,7 @@ namespace core
 			//mScene->SetCurrentAnimationStack();
 			tFBXAnimClip clip{};
 
-			clip.strName = pAnimStack->GetName();
+			clip.strName = pAnimStack->get_name();
 			if (clip.strName.empty()) {
 				clip.strName = mFileName + "_Anim_" + std::to_string(i);
 			}
@@ -906,7 +906,7 @@ namespace core
 					if (nullptr == cluster->GetLink())
 						continue;
 
-					std::string boneName = cluster->GetLink()->GetName();
+					std::string boneName = cluster->GetLink()->get_name();
 					if (mbMixamo)
 					{
 						boneName.erase(0, 10);

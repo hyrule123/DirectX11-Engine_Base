@@ -16,16 +16,16 @@ namespace core::editor
 
 	void TextureEditor::update_UI()
 	{
-		if (GetTarget().expired())
+		if (get_target().expired())
 		{
 			return;
 		}
 
-		const auto& targetTex = GetTarget().lock();
+		const auto& targetTex = get_target().lock();
 
 		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
 
-		const std::string_view key = targetTex->get_resource_name();
+		const std::string& key = targetTex->get_resource_name();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"

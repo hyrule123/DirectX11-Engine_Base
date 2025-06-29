@@ -336,7 +336,7 @@
     <ClCompile Include="Resource\Shader\ComputeShaders\GPUInitSetting.cpp">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalVariable.cpp">
+    <ClCompile Include="Global.cpp">
       <Filter>Common\define</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp">
@@ -593,7 +593,7 @@
     <ClInclude Include="Resource\Shader\ComputeShaders\GPUInitSetting.h">
       <Filter>Resource\Shaders\Compute</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalVariable.h">
+    <ClInclude Include="Global.h">
       <Filter>Common\define</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h">

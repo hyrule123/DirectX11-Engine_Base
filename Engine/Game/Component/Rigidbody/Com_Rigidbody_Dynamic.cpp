@@ -10,7 +10,7 @@
 namespace core
 {
 	Com_Rigidbody_Dynamic::Com_Rigidbody_Dynamic()
-		: Rigidbody(Com_Rigidbody_Dynamic::s_concrete_class_name)
+		: Rigidbody(Com_Rigidbody_Dynamic::s_static_type_name)
 		, m_isMassMode {false}
 		, m_densityOrMass {g_defaultDensity}
 	{
@@ -34,7 +34,7 @@ namespace core
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
 
-		s_ptr<Transform> tr = owner->GetComponent<Transform>();
+		s_ptr<Transform> tr = owner->get_component<Transform>();
 
 		physx::PxTransform pxTr{};
 		pxTr.p = tr->get_world_position();
@@ -50,7 +50,7 @@ namespace core
 		if (rigidActor)
 		{
 			rigidActor->addForce(_force, physx::PxForceMode::eACCELERATION);
-			//Transform* transform = GetOwner()->GetComponent<Transform>();
+			//Transform* transform = GetOwner()->get_component<Transform>();
 			//physx::PxRigidDynamic*Ext::addForceAtPos(*rigidActor, PhysXConverter::ToPxVec3(force), PhysXConverter::ToPxVec3(transform->get_world_position()));
 		}
 	}

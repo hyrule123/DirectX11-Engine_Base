@@ -1,5 +1,5 @@
 #pragma once
-#include "Editor/Inspector/Inspector_Component.h"
+#include "Editor/Inspector/ComponentInspector.h"
 
 namespace core
 {
@@ -9,11 +9,11 @@ namespace core
 
 namespace core::editor
 {
-	class Inspector_Com_Renderer : public Inspector_Component
+	class RendererInspcetor : public ComponentInspector
 	{
 	public:
-		Inspector_Com_Renderer();
-		virtual ~Inspector_Com_Renderer();
+		RendererInspcetor();
+		virtual ~RendererInspcetor();
 
 		virtual void update() override;
 
@@ -23,7 +23,7 @@ namespace core::editor
 		void set_material(const std::string& _key_path);
 
 	private:
-		std::weak_ptr<Mesh> m_mesh;
-		std::weak_ptr<Material> m_material;
+		w_ptr<Mesh> m_mesh;
+		w_ptr<Material> m_material;
 	};
 }

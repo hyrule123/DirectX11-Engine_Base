@@ -34,7 +34,7 @@ namespace core::editor
 		if (CheckThread())
 			return;
 
-		HilightText("FBX Source File Path");
+		hilight_text("FBX Source File Path");
 		if (mFBXPath.empty())
 		{
 			ImGui::Text("Empty");
@@ -58,7 +58,7 @@ namespace core::editor
 		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 		ImGui::Separator();
 
-		HilightText("Convert Setting");
+		hilight_text("Convert Setting");
 		ImGui::InputText("Output Directory Name", &mOutputDirName);
 
 		ImGui::Checkbox("Static Mesh?", &mbStatic);
@@ -112,7 +112,7 @@ namespace core::editor
 				{
 					loading += ".";
 				}
-				HilightText(loading.c_str());
+				hilight_text(loading.c_str());
 			}
 		}
 		return working;
@@ -149,7 +149,7 @@ namespace core::editor
 			mFutureConvertResult = ThreadPoolManager::get_inst().EnqueueJob(
 				[this]()->eResult
 				{
-					std::shared_ptr<Model3D> meshData = std::make_shared<Model3D>();
+					s_ptr<Model3D> meshData = std::make_shared<Model3D>();
 					return meshData->convert_fbx(mFBXPath, mbStatic, mOutputDirName);
 				}
 			);
@@ -158,10 +158,10 @@ namespace core::editor
 
 	void EditorFBXConverter::AddAnimationFromSameModeling()
 	{
-		HilightText("Add Animation to Project Model3D");
+		hilight_text("Add Animation to Project Model3D");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
 
-		mProjMeshDataCombo.final_update();
+		m_model3D_combobox.final_update();
 		if (ImGui::Button("Refresh List"))
 		{
 			LoadProjMeshDataCombo();
@@ -175,21 +175,21 @@ namespace core::editor
 			{
 				NOTIFICATION("FBX 경로를 설정하지 않았습니다.");
 			}
-			else if (mProjMeshDataCombo.GetCurrentSelected().strName.empty())
+			else if (m_model3D_combobox.get_current_selected().m_name.empty())
 			{
 				NOTIFICATION("목표 메쉬 데이터를 설정하지 않았습니다.");
 			}
 			else
 			{
-				Model3D::add_animation_from_FBX(mFBXPath, mProjMeshDataCombo.GetCurrentSelected().strName);
+				Model3D::add_animation_from_FBX(mFBXPath, m_model3D_combobox.get_current_selected().m_name);
 			}
 		}
 	}
 
 	void EditorFBXConverter::LoadProjMeshDataCombo()
 	{
-		mProjMeshDataCombo.SetStrKey("Model3D List");
-		mProjMeshDataCombo.ClearItems();
+		m_model3D_combobox.set_unique_name("Model3D List");
+		m_model3D_combobox.reset();
 		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
 
 		try
@@ -198,7 +198,9 @@ namespace core::editor
 			{
 				if (std::fs::is_directory(entry.path()))
 				{
-					mProjMeshDataCombo.AddItem(entry.path().filename().string());
+					tComboItem item{};
+					item.m_name = entry.path().filename().string();
+					m_model3D_combobox.add_item(item);
 				}
 			}
 		}

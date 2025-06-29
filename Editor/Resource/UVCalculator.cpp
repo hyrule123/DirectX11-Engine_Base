@@ -27,7 +27,7 @@ namespace core::editor
 
 	void EditorUVCalculator::init()
 	{
-		SetFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+		set_window_flag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 	}
 
 	void EditorUVCalculator::update_UI()
@@ -85,7 +85,9 @@ namespace core::editor
 	{
 		if (mTexture)
 		{
-			AddFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
+			ImGuiWindowFlags flag = get_window_flag();
+			flag |= ImGuiWindowFlags_::ImGuiWindowFlags_NoMove;
+			set_window_flag(flag);
 
 			ImGui::SetWindowSize(ImVec2(mTexRenderSize.x + 50.f, mTexRenderSize.y + 100.f));
 
@@ -120,7 +122,10 @@ namespace core::editor
 		else
 		{
 			ImGui::SetWindowSize(ImVec2(0.f, 0.f));
-			SubFlag(ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
+
+			ImGuiWindowFlags flag = get_window_flag();
+			flag &= ~ImGuiWindowFlags_::ImGuiWindowFlags_NoMove;
+			set_window_flag(flag);
 		}
 	}
 	void EditorUVCalculator::UpdateUVIndicator()
@@ -162,7 +167,7 @@ namespace core::editor
 			End.x /= mTexRenderSize.x;
 			End.y /= mTexRenderSize.y;
 
-			HilightText("UV");
+			hilight_text("UV");
 
 			ImGui::DragFloat2("Start", reinterpret_cast<float*>(&Start));
 			ImGui::DragFloat2("End", reinterpret_cast<float*>(&End));

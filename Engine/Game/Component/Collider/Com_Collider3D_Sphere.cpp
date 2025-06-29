@@ -9,7 +9,7 @@
 namespace core
 {
 	Com_Collider3D_Sphere::Com_Collider3D_Sphere()
-		: Com_Collider3D_Shapes(Com_Collider3D_Sphere::s_concrete_class_name, eCollider3D_Shape::Sphere)
+		: Com_Collider3D_Shapes(Com_Collider3D_Sphere::s_static_type_name, eCollider3D_Shape::Sphere)
 		, m_offsetRatio_Radius(1.f)
 	{
 	}

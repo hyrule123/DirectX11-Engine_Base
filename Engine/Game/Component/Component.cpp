@@ -32,6 +32,11 @@ namespace core {
 	{
 	}
 
+	void Component::init()
+	{
+		Super::init();
+	}
+
 	void Component::SetEnable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return

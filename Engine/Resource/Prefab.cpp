@@ -9,7 +9,7 @@
 namespace core
 {
 	Prefab::Prefab()
-		: Resource(Prefab::s_concrete_class_name)
+		: Resource(Prefab::s_static_type_name)
 		, m_prefab()
 	{
 	}

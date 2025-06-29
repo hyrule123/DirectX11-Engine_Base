@@ -48,27 +48,29 @@ namespace core::editor
 	void EditorMaterial::init()
 	{
 		//쉐이더 파일 목록 업데이트
-		mShaderCombo.SetStrKey("Shader Lists");
+		mShaderCombo.set_unique_name("Shader Lists");
 		RefreshShaderSettingFiles();
 
 		//렌더링 모드 UI 생성
-		mRenderingModeCombo.SetStrKey("Rendering Mode");
+		mRenderingModeCombo.set_unique_name("Rendering Mode");
 		{
 			for (int i = 0; i < (int)eRenderingMode::END; ++i)
 			{
-				mRenderingModeCombo.AddItem(eRenderingMode_String[i]);
+				tComboItem item{};
+				item.m_name = eRenderingMode_String[i];
+				mRenderingModeCombo.add_item(item);
 			}
 		}
 	}
 
 	void EditorMaterial::update()
 	{
-		if (mShaderCombo.IsSelectionChanged())
+		if (mShaderCombo.is_selection_changed())
 		{
-			std::string shaderName = mShaderCombo.GetCurrentSelected().strName;
+			std::string shaderName = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderName.empty())
 			{
-				std::shared_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load(shaderName);
+				s_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load(shaderName);
 			}
 		}
 	}
@@ -110,20 +112,23 @@ namespace core::editor
 			return;
 		}
 
-		mShaderCombo.ClearItems();
+		mShaderCombo.reset();
 
 		std::fs::directory_iterator dirIter(shaderPath);
 		for (auto& entry : dirIter)
 		{
 			std::fs::path relPath = entry.path().lexically_relative(shaderPath);
-			mShaderCombo.AddItem(relPath.string());
+
+			tComboItem item;
+			item.m_name = relPath.string();
+			mShaderCombo.add_item(item);
 		}
 	}
 	void EditorMaterial::UpdateShader()
 	{
 		std::string strCurShader = "Current Shader: ";
 		{
-			std::shared_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
+			s_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
 				strCurShader += curShader->get_resource_name();
@@ -142,18 +147,18 @@ namespace core::editor
 			RefreshShaderSettingFiles();
 		}
 
-		if (mShaderCombo.IsSelectionChanged())
+		if (mShaderCombo.is_selection_changed())
 		{
-			const std::string& shaderKey = mShaderCombo.GetCurrentSelected().strName;
+			const std::string& shaderKey = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderKey.empty())
 			{
-				std::shared_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load(shaderKey);
+				s_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
 
 		std::string shaderKey = "Shader: ";
-		std::shared_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
+		s_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
 			shaderKey += shader->get_resource_name();
@@ -204,7 +209,7 @@ namespace core::editor
 				{
 					std::fs::path PathstrKey = PathManager::get_inst().MakePathStrKey(receivedPath);
 
-					std::shared_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey.string());
+					s_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey.string());
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -229,11 +234,11 @@ namespace core::editor
 	void EditorMaterial::UpdateRenderingMode()
 	{
 		eRenderingMode mode = mTargetMaterial->get_rendering_mode();
-		mRenderingModeCombo.SetCurrentIndex((int)mode);
+		mRenderingModeCombo.set_current_idx((int)mode);
 		mRenderingModeCombo.final_update();
-		if (mRenderingModeCombo.IsSelectionChanged())
+		if (mRenderingModeCombo.is_selection_changed())
 		{
-			int idx = mRenderingModeCombo.GetCurrentIndex();
+			int idx = mRenderingModeCombo.get_current_idx();
 			if (0 <= idx)
 			{
 				mode = (eRenderingMode)idx;
@@ -293,11 +298,13 @@ namespace core::editor
 			mSaveLoadFileName.clear();
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
-			mCurrentLoadedMtrl.ClearItems();
+			mCurrentLoadedMtrl.reset();
 			const auto& materials = ResourceManager<Material>::get_inst().GetResources();
 			for (auto& mtrl : materials)
 			{
-				mCurrentLoadedMtrl.AddItem(mtrl.second->get_resource_name());
+				tComboItem item{};
+				item.m_name = mtrl.second->get_resource_name();
+				mCurrentLoadedMtrl.add_item(item);
 			}
 		}
 		LoadFromFile();
@@ -351,19 +358,19 @@ namespace core::editor
 			ImGui::OpenPopup("Material Load");
 			if (ImGui::BeginPopupModal("Material Load"))
 			{
-				HilightText("Res/Material");
+				hilight_text("Res/Material");
 				mCurrentLoadedMtrl.final_update();
 
 				if (ImGui::Button("Load##Material", ImVec2(100.f, 35.f)))
 				{
-					const std::string& mtrlKey = mCurrentLoadedMtrl.GetCurrentSelected().strName;
+					const std::string& mtrlKey = mCurrentLoadedMtrl.get_current_selected().m_name;
 					if (mtrlKey.empty())
 					{
 						NOTIFICATION("파일을 선택하세요.");
 					}
 					else
 					{
-						std::shared_ptr<Material> mtrl = ResourceManager<Material>::get_inst().find(mtrlKey);
+						s_ptr<Material> mtrl = ResourceManager<Material>::get_inst().find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->IsEngineDefaultRes())

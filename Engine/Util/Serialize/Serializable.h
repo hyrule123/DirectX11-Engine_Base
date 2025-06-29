@@ -60,6 +60,18 @@ namespace core
 #include "json-forwards.h"
 #define JSON_KEY(_varName) #_varName
 
+#ifdef _DEBUG
+#define JSON_TRY try
+#define JSON_CATCH 	catch (const std::exception& _err) {\
+ERROR_MESSAGE_A(_err.what());\
+return eResult::Fail;\
+}
+#elif
+#define JSON_TRY 
+#define JSON_CATCH 
+#endif
+
+
 //Json의 경우 try-catch문 안에 넣어줄것(Json 라이브러리가 해당 방식으로 에러 핸들링을 하고있음)
 namespace core
 {

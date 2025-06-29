@@ -6,7 +6,7 @@
 namespace core
 {
 	MultiRenderTarget::MultiRenderTarget()
-		: Entity(MultiRenderTarget::s_concrete_class_name)
+		: Entity(MultiRenderTarget::s_static_type_name)
 		, mRenderTargetTextures{}
 		, mRenderTargetViews{}
 		, mDSTexture{}

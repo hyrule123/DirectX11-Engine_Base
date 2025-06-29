@@ -274,7 +274,7 @@
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_Mesh.h" />
     <ClInclude Include="Game\Component\Renderer\Com_Renderer_UIBase.h" />
-    <ClInclude Include="GlobalVariable.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Resource\Model3D\FBXLoader.h" />
     <ClInclude Include="EngineMain.h" />
     <ClInclude Include="Manager\RenderManager.h" />
@@ -390,7 +390,7 @@
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_3DAnimMesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_Mesh.cpp" />
     <ClCompile Include="Game\Component\Renderer\Com_Renderer_UIBase.cpp" />
-    <ClCompile Include="GlobalVariable.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Resource\Model3D\FBXLoader.cpp" />
     <ClCompile Include="EngineMain.cpp" />
     <ClCompile Include="Manager\RenderManager.cpp" />

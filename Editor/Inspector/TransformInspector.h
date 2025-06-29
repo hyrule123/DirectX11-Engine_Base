@@ -1,13 +1,13 @@
 #pragma once
-#include "Editor/Inspector/Inspector_Component.h"
+#include "Editor/Inspector/ComponentInspector.h"
 
 namespace core::editor
 {
-	class Inspector_Com_Transform : public Inspector_Component
+	class TransformInspector : public ComponentInspector
 	{
 	public:
-		Inspector_Com_Transform();
-		virtual ~Inspector_Com_Transform();
+		TransformInspector();
+		virtual ~TransformInspector();
 
 		virtual void update() override;
 		virtual void update_UI() override;

@@ -1,10 +1,10 @@
 #pragma once
-#include "Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorWindow.h"
 
 namespace core::editor
 {
 	template <class ResourceType>
-	class ResourceEditor : public EditorChild
+	class ResourceEditor : public EditorWindow
 	{
 	public:
 		ResourceEditor(const std::string_view _resTypeName);
@@ -12,16 +12,16 @@ namespace core::editor
 
 		void update_UI() override;
 		
-		void SetTarget(const std::weak_ptr<ResourceType>& _target) { mTarget = _target; }
-		const std::weak_ptr<ResourceType>& GetTarget() const { return mTarget; }
+		void set_target(const w_ptr<ResourceType>& _target) { mTarget = _target; }
+		const w_ptr<ResourceType>& get_target() const { return mTarget; }
 
 	private:
-		std::weak_ptr<ResourceType> mTarget;
+		w_ptr<ResourceType> mTarget;
 	};
 
 	template<class ResourceType>
 	inline ResourceEditor<ResourceType>::ResourceEditor(const std::string_view _resTypeName)
-		: EditorChild(_resTypeName)
+		: EditorWindow(_resTypeName)
 	{
 	}
 

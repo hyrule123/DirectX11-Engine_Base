@@ -10,7 +10,7 @@
 namespace core
 {
 	Com_Renderer_UIBase::Com_Renderer_UIBase()
-		: Com_Renderer_Mesh(Com_Renderer_UIBase::s_concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_UIBase::s_static_type_name)
 		, mUIData()
 	{
 		//기본 UI Mesh, Material을 설정

@@ -52,7 +52,7 @@ namespace core::editor
 
 	void EditorNormalConverter::SrcTextureUpdate()
 	{
-		HilightText("Source Texture");
+		hilight_text("Source Texture");
 
 		{
 			std::string curText = "* Current: ";
@@ -97,7 +97,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 	void EditorNormalConverter::DestTextureUpdate()
 	{
 		using namespace core;
-		HilightText("Dest Texture Save Directory");
+		hilight_text("Dest Texture Save Directory");
 		{
 			std::string curText = "* Current: ";
 
@@ -158,9 +158,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			std::shared_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
+			s_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
 
-			std::shared_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
+			s_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
 
 			if (convertedTex)
 			{

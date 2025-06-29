@@ -15,7 +15,7 @@
 namespace core
 {
 	Animation3D_PlayData::Animation3D_PlayData()
-		: Entity(Animation3D_PlayData::s_concrete_class_name)
+		: Entity(Animation3D_PlayData::s_static_type_name)
 		, m_skeleton()
 		//, m_iFramePerSecond(30)
 		, m_PrevFrame(-1)

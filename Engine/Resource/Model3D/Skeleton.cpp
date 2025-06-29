@@ -23,7 +23,7 @@
 namespace core
 {
 	Skeleton::Skeleton()
-		: Resource(Skeleton::s_concrete_class_name)
+		: Resource(Skeleton::s_static_type_name)
 		, m_vecBones{}
 		, m_pBoneOffset{}
 		, m_animations{}

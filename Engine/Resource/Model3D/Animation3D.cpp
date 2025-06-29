@@ -13,7 +13,7 @@
 namespace core
 {
 	Animation3D::Animation3D()
-        : Animation(Animation3D::s_concrete_class_name)
+        : Animation(Animation3D::s_static_type_name)
         , m_OwnerSkeleton{}
         , m_StartFrameIdx{}
         , m_EndFrameIdx{}

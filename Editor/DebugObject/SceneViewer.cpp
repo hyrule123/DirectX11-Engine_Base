@@ -19,10 +19,10 @@ namespace core::editor
 
 	void SceneViewer::update_UI()
 	{
-		std::shared_ptr<Texture> renderTarget
+		s_ptr<Texture> renderTarget
 			= RenderManager::get_inst().get_rendertarget_buffer();
 
-		std::shared_ptr<Texture> gameTex
+		s_ptr<Texture> gameTex
 			= std::make_shared<Texture>();
 		gameTex->create(RenderManager::get_inst().GetResolutionX(), RenderManager::get_inst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
 		

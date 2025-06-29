@@ -2,7 +2,7 @@
 
 namespace core {
 	Light_3D_Material::Light_3D_Material()
-		: Material(Light_3D_Material::s_concrete_class_name)
+		: Material(Light_3D_Material::s_static_type_name)
 	{
 	}
 

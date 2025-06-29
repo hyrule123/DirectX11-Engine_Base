@@ -16,7 +16,7 @@ namespace core
 	
 
 	GridScript::GridScript()
-		: Script(GridScript::s_concrete_class_name)
+		: Script(GridScript::s_static_type_name)
 		, mCamera(nullptr)
 	{
 
@@ -29,7 +29,7 @@ namespace core
 
 	void GridScript::Awake()
 	{
-		//eSceneType type = SceneManager::GetActiveScene()->GetSceneType();
+		//eSceneType type = SceneManager::get_active_scene()->GetSceneType();
 		mCamera = RenderManager::get_inst().sceneRenderAgent().GetCamera(0);
 	}
 
@@ -46,7 +46,7 @@ namespace core
 		}
 
 		const auto& gameObj = mCamera->get_owner();
-		const auto& TR = gameObj->GetComponent<Transform>();
+		const auto& TR = gameObj->get_component<Transform>();
 		
 		float3 cameraPosition = TR->get_local_position();
 		float4 position = float4(cameraPosition.x, cameraPosition.y, cameraPosition.z, 1.0f);

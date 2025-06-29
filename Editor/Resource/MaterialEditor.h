@@ -45,7 +45,7 @@ namespace core::editor
 		
 
 	private:
-		std::shared_ptr<Material>	mTargetMaterial;
+		s_ptr<Material>	mTargetMaterial;
 
 		//기존의 재질을 수정중인지 신규 재질을 수정 중인지
 		bool							mbNewMaterial;

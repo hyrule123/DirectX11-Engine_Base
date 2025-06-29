@@ -88,7 +88,7 @@ namespace core
 			return; 
 		}
 
-		s_ptr<Transform> tr = owner->GetComponent<Transform>();
+		s_ptr<Transform> tr = owner->get_component<Transform>();
 		if (false == tr->is_transform_updated())
 		{
 			return;
@@ -106,7 +106,7 @@ namespace core
 		s_ptr<GameObject> owner = get_owner();
 
 		if (nullptr == owner) { return; }
-		s_ptr<Transform> tr = owner->GetComponent<Transform>();
+		s_ptr<Transform> tr = owner->get_component<Transform>();
 
 		tr->set_world_position(_pxTransform.p);
 		tr->set_local_rotation(_pxTransform.q);

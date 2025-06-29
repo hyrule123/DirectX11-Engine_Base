@@ -4,9 +4,7 @@
 
 #include <Engine/GPU/CommonGPU.h>
 
-#include "Editor/Base/EditorChild.h"
 #include "imgui/ImGuizmo.h"
-
 
 #include <unordered_map>
 #include <functional>
@@ -15,97 +13,88 @@ namespace core::editor
 {
 	class EditorObject;
 	class DebugObject;
-
+	class EditorBase;
+	class EditorMainMenu;
 
 	class EditorManager
 	{
+		DECLARE_SINGLETON(EditorManager);
+	private:
+		EditorManager();
+		~EditorManager();
+
 	public:
-		static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> GetEditorWindowHandleFunction();
-		static std::function<void()> GetEditorRunFunction();
+		std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> get_editor_window_func();
+		std::function<void()> get_editor_run_func();
 
-		static inline void SetEnable(bool _bEnable);
-		static inline bool GetEnable() { return mbEnable; }
-		static inline void ToggleEnable() { SetEnable(!mbEnable); }
-		static void OpenEditorAsDefault(bool _enable) { m_IsOpenEditorAsDefault = _enable; }
+		void set_enable(bool _bEnable);
+		inline bool get_enable() { return mbEnable; }
+		inline void toggle_enable() { set_enable(!mbEnable); }
+		void open_editor_as_default(bool _enable) { m_IsOpenEditorAsDefault = _enable; }
 
-		static std::shared_ptr<EditorBase> FindGuiWindow(const std::string_view _key_path);
+		s_ptr<EditorBase> find_editor_window(const std::string_view _UI_name);
 
 		template <typename T>
-		static std::shared_ptr<T> NewGuiWindow();
+		s_ptr<T> new_editor_UI();
 
-		static const std::unordered_map<std::string, std::shared_ptr<EditorBase>, Hasher_StringView, std::equal_to<>>&
-			GetGUIs() { return mGuiWindows; }
+		const std::vector<s_ptr<EditorBase>>&
+			get_editor_windows() { return m_editor_UIs; }
 
 	private:
-		static void Run();
+		void run();
 
-		static void init();
-		static void release();
+		void init();
+		void release();
 
-		static void update();
-		static void final_update();
-		static void render();
+		void update();
+		void final_update();
+		void render();
 
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
-		static Json::Value* CheckJsonSaved(const std::string& _key_path);
+		Json::Value* check_json_saved(const std::string& _key_path);
 
-		static void InitGuiWindows();
+		void init_default_windows();
 
 		//=================== IMGUI ===========================
-		static void ImGuiInitialize();
-		static void ImGuiRelease();
+		void imgui_initialize();
+		void imgui_release();
 
-		static void ImGuiNewFrame();
-		static void ImGuiRender();
+		void imgui_new_frame();
+		void imgui_render();
 		
-		static bool AddGuiWindow(const std::shared_ptr<EditorBase>& _pBase);
-
-		static inline std::string CreateUniqueImGuiKey(const std::string_view _str, int i);
+		s_ptr<EditorBase> add_editor_window(const s_ptr<EditorBase>& _new_widget);
 
 	private:
-		static std::unordered_map<std::string, std::shared_ptr<EditorBase>, Hasher_StringView, std::equal_to<>> mGuiWindows;
+		std::vector<s_ptr<EditorBase>> m_editor_UIs;
 
-		static std::vector<std::shared_ptr<EditorObject>> mEditorObjects;
-		static std::vector<std::shared_ptr<DebugObject>> mDebugObjects;
+		std::unique_ptr<EditorMainMenu> m_editor_main_menu;
+
+		std::vector<s_ptr<EditorObject>> mEditorObjects;
+		std::vector<s_ptr<DebugObject>> mDebugObjects;
 
 		//현재 GUI를 표시할지 여부
-		static bool mbEnable;
+		bool mbEnable;
 
 		//GUI가 최초 1회 초기화 되었는지 여부
-		static bool mbInitialized;
+		bool mbInitialized;
 
-		static bool m_IsOpenEditorAsDefault;
+		bool m_IsOpenEditorAsDefault;
 
-		static std::unique_ptr<Json::Value> mJsonUIData;
+		std::unique_ptr<Json::Value> mJsonUIData;
 
 	private:
-		static ImGuizmo::OPERATION mCurrentGizmoOperation;
-		static void RenderGuizmo();
+		ImGuizmo::OPERATION mCurrentGizmoOperation;
+		void RenderGuizmo();
 	};
 
-	inline void EditorManager::SetEnable(bool _bEnable)
-	{
-		mbEnable = _bEnable;
-
-		if (mbEnable && (false == mbInitialized))
-		{
-			EditorManager::init();
-			mbInitialized = true;
-		}
-	}
-
-
 	template<typename T>
-	inline std::shared_ptr<T> EditorManager::NewGuiWindow()
+	inline s_ptr<T> EditorManager::new_editor_UI()
 	{
 		static_assert(std::is_base_of_v<EditorBase, T>);
 
-		//editor Child는 무조건 child로 들어가기위한 용도이므로 assert
-		static_assert(false == std::is_base_of_v<EditorChild, T>);
+		s_ptr<T> retPtr = new_entity<T>();
 
-		std::shared_ptr<T> retPtr = std::make_shared<T>();
-
-		if (false == AddGuiWindow(std::static_pointer_cast<EditorBase>(retPtr)))
+		if (nullptr == add_editor_window(std::static_pointer_cast<EditorBase>(retPtr)))
 		{
 			return nullptr;
 		}
@@ -113,14 +102,5 @@ namespace core::editor
 		return retPtr;
 	}
 
-	inline std::string EditorManager::CreateUniqueImGuiKey(const std::string_view _str, int i)
-	{
-		std::string uniqStr;
-		uniqStr.reserve(_str.size() + 5);
-		uniqStr += _str;
-		uniqStr += "##";
-		uniqStr += std::to_string(i);
-		return uniqStr;
-	}
 }
 

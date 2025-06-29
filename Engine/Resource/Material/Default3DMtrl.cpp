@@ -25,7 +25,7 @@
 
 namespace core {
     Default3DMtrl::Default3DMtrl()
-        : Material(Default3DMtrl::s_concrete_class_name)
+        : Material(Default3DMtrl::s_static_type_name)
         , m_default_3D_mtrl_instancing_data()
         , m_default_3D_mtrl_instancing_buffer()
     {
@@ -55,14 +55,14 @@ namespace core {
         m_default_3D_mtrl_instancing_data.reserve(_objs.size());
 
         //애니메이션의 최종 행렬을 먼저 계산 후 바인딩한다.
-        s_ptr<Com_Animator3D> animator = _objs.front()->GetComponent<Com_Animator3D>();
+        s_ptr<Com_Animator3D> animator = _objs.front()->get_component<Com_Animator3D>();
         if (animator)
         {
             animator->bind_computed_final_bone_matrix();
         }
 
         for (const s_ptr<GameObject>& obj : _objs) {
-            s_ptr<Com_Animator3D> animator = obj->GetComponent<Com_Animator3D>();
+            s_ptr<Com_Animator3D> animator = obj->get_component<Com_Animator3D>();
             tDefault3DMtrl_InstancingData data{};
 
             if (animator && animator->is_playing()) {

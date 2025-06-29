@@ -12,7 +12,7 @@
 namespace core
 {
 	Com_Collider3D_Cube::Com_Collider3D_Cube()
-		: Com_Collider3D_Shapes(Com_Collider3D_Cube::s_concrete_class_name, eCollider3D_Shape::Cube)
+		: Com_Collider3D_Shapes(Com_Collider3D_Cube::s_static_type_name, eCollider3D_Shape::Cube)
 		, m_offsetHalfScale(1.f)
 		, m_offsetPosition(physx::PxIdentity)
 		, m_offsetScale(1.f)

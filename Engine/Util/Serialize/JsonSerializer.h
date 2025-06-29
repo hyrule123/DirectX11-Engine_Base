@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 #include "Engine/Common.h"
 
 #include "Engine/Util/type_traits_Ex.h"

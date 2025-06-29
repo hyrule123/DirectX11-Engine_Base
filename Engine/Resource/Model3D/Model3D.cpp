@@ -27,7 +27,7 @@
 namespace core
 {
 	Model3D::Model3D()
-		: Super(Model3D::s_concrete_class_name)
+		: Super(Model3D::s_static_type_name)
 	{
 	}
 
@@ -110,7 +110,7 @@ namespace core
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"]["s_concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
+				meshContainer["mesh"]["s_static_type_name"] = m_mesh_mtrl_pairs[i].mesh->get_static_type_name();
 				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_name();
 
 				//material
@@ -120,8 +120,8 @@ namespace core
 					ERROR_MESSAGE("재질 정보 저장 실패");
 					return result;
 				}
-				meshContainer["material"]["s_concrete_class_name"]
-					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
+				meshContainer["material"]["s_static_type_name"]
+					<< m_mesh_mtrl_pairs[i].material->get_static_type_name();
 				meshContainer["material"]["resource_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_resource_name();
 			}
@@ -179,7 +179,7 @@ namespace core
 					std::string class_name;
 					std::string res_name;
 					meshContainer["mesh"]["resource_name"] >> res_name;
-					meshContainer["mesh"]["s_concrete_class_name"] >> class_name;
+					meshContainer["mesh"]["s_static_type_name"] >> class_name;
 					
 					m_mesh_mtrl_pairs[i].mesh = ResourceManager<Mesh>::get_inst().load(res_name, class_name);
 					if (nullptr == m_mesh_mtrl_pairs[i].mesh)
@@ -192,7 +192,7 @@ namespace core
 					//material
 					class_name.clear(); res_name.clear();
 					meshContainer["material"]["resource_name"] >> res_name;
-					meshContainer["material"]["s_concrete_class_name"] >> class_name;
+					meshContainer["material"]["s_static_type_name"] >> class_name;
 					m_mesh_mtrl_pairs[i].material = 
 						ResourceManager<Material>::get_inst().load(res_name, class_name);
 
@@ -219,15 +219,15 @@ namespace core
 		s_ptr<GameObject> root = std::make_shared<GameObject>();
 		newObjects.push_back(root);
 
-		root->SetName(get_concrete_class_name());
+		root->set_name(get_static_type_name());
 
-		s_ptr<Transform> rootTransform = root->GetComponent<Transform>();
+		s_ptr<Transform> rootTransform = root->get_component<Transform>();
 
 		//스켈레톤 있고 + 애니메이션 데이터가 있을 경우 Animator 생성
 		s_ptr<Animation3D_PlayData> sharedAnimationData{};
 		if (m_skeleton)
 		{
-			s_ptr<Com_Animator3D> rootAnimator = root->AddComponent<Com_Animator3D>();
+			s_ptr<Com_Animator3D> rootAnimator = root->add_component<Com_Animator3D>();
 
 			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
 			sharedAnimationData->set_skeleton(m_skeleton);
@@ -240,12 +240,12 @@ namespace core
 			if (sharedAnimationData)
 			{
 				//수동으로 애니메이터를 설정
-				s_ptr<Com_Renderer_3DAnimMesh> renderer3D = root->AddComponent<Com_Renderer_3DAnimMesh>();
+				s_ptr<Com_Renderer_3DAnimMesh> renderer3D = root->add_component<Com_Renderer_3DAnimMesh>();
 				renderer = static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 			}
 			else
 			{
-				renderer = root->AddComponent<Com_Renderer_Mesh>();
+				renderer = root->add_component<Com_Renderer_Mesh>();
 			}
 
 			if (false == set_data_to_renderer(renderer, 0))
@@ -263,24 +263,24 @@ namespace core
 			{
 				newObjects.push_back(std::make_unique<GameObject>());
 				GameObject* child = newObjects.back().get();
-				rootTransform->add_child(child->GetComponent<Transform>());
+				rootTransform->add_child(child->get_component<Transform>());
 
-				child->SetName(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
+				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				s_ptr<Com_Renderer_Mesh> renderer = nullptr;
 				if (sharedAnimationData)
 				{
-					s_ptr<Com_Animator3D> childAnimator = child->AddComponent<Com_Animator3D>();
+					s_ptr<Com_Animator3D> childAnimator = child->add_component<Com_Animator3D>();
 					childAnimator->SetSharedAnimationData(sharedAnimationData);
 
 					//수동으로 애니메이터를 설정
-					auto renderer3D = child->AddComponent<Com_Renderer_3DAnimMesh>();
+					auto renderer3D = child->add_component<Com_Renderer_3DAnimMesh>();
 					renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
 				}
 				else
 				{
-					renderer = child->AddComponent<Com_Renderer_Mesh>();
+					renderer = child->add_component<Com_Renderer_Mesh>();
 				}
 
 				if (false == set_data_to_renderer(renderer, (UINT)i))

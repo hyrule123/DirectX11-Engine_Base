@@ -1,5 +1,5 @@
 #pragma once
-#include "Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorWindow.h"
 
 #include <Engine/Common.h>
 
@@ -7,57 +7,84 @@
 
 namespace core::editor
 {
-	class EditorWidget_Tree : public EditorChild
+	class EditorWidget_Tree;
+	class TreeNode : public EditorEntity
 	{
+		CLASS_INFO(TreeNode, EditorEntity);
+		friend class EditorWidget_Tree;
+
 	public:
-		struct tNode : public EditorEntity
-		{
-			tNode();
-			virtual ~tNode();
+		TreeNode();
 
-			void update_UI();
+		virtual void init() override;
 
-			void set_data(tDataPtr _data) { mData = _data; }
+		virtual ~TreeNode();
 
-			void SetStem(bool bEnable) { mbStem = bEnable; }
+		void update_UI();
 
-			tNode* AddNode();
-			const std::vector<tNode*>& get_childs() { return m_Childs; }
+		//내부에서 w_ptr로 저장됨 - 데이터 관리가 필요하면 별도의 공간에 s_ptr로 저장할것
+		void set_data_ptr(const s_ptr<void>& _ptr) { m_data_ptr = _ptr; }
+		s_ptr<void> get_data_ptr() const { return m_data_ptr.lock(); }
 
-			EditorWidget_Tree* mTreeWidget;
-			tDataPtr mData;
+		s_ptr<TreeNode> get_parent() const { return m_parent.lock(); }
+		void set_parent(const s_ptr<TreeNode>& _parent) { m_parent = _parent; }
 
-			tNode* m_Parent;
-			std::vector<tNode*> m_Childs;
+		void add_child(const s_ptr<TreeNode>& _node);
+		const std::vector<s_ptr<TreeNode>>& get_childs() { return m_childs; }
 
-			bool mbStem;
-			bool mbSelected;
-		};
+		void remove_child(const s_ptr<TreeNode>& _node);
 
+		void set_root(bool _is_root) { m_b_root = _is_root; }
+		bool is_root() const { return m_b_root; }
+
+		ImGuiTreeNodeFlags get_flag() const { return m_flag; }
+		void set_flag(ImGuiTreeNodeFlags _flag) { m_flag = _flag; }
+		void add_flag(ImGuiTreeNodeFlags _flag) { m_flag |= _flag; }
+		void sub_flag(ImGuiTreeNodeFlags _flag) { m_flag &= ~_flag; }
+
+		s_ptr<EditorWidget_Tree> get_owner() const { return m_owner.lock(); }
+		void set_owner(const s_ptr<EditorWidget_Tree>& _owner) { m_owner = _owner; }
+
+	private:
+		w_ptr<EditorWidget_Tree> m_owner;
+
+		//얘 때문에 데이터가 남아있는 것을 방지하기 위해 일단은 w_ptr 사용 중
+		w_ptr<void> m_data_ptr;
+
+		w_ptr<TreeNode> m_parent;
+		std::vector<s_ptr<TreeNode>> m_childs;
+
+		ImGuiTreeNodeFlags m_flag;
+
+		bool m_b_root;
+	};
+
+	class EditorWidget_Tree : public EditorWindow
+	{
+		CLASS_INFO(EditorWidget_Tree, EditorWindow);
+	public:
 		EditorWidget_Tree();
+		void init() override;
+
 		virtual ~EditorWidget_Tree();
 
 		virtual void update_UI() override;
 
-		tNode* AddNode(tNode* parent, const std::string& name, tDataPtr data, bool stem = false);
-		void Clear();
-		void SetDummyRoot(bool enable) { mbDummyRootUse = enable; }
-		void SetSelectedNode(tNode* node);
+		TreeNode& get_root() const { return *m_root; }
 
-		void SetEvent(EditorBase* widget, std::function<void(tDataPtr)> func)
-		{
-			mEventGUI = widget;
-			mEvent = func;
+		void clear();
+		void set_selected_node(const s_ptr<TreeNode>& node);
+
+		//함수 caller를 w_ptr로 별도 저장 
+		void set_selected_callaback_func(const std::function<void(w_ptr<void>)>& func) {
+			m_selected_callback = func;
 		}
 
-
 	private:
-		std::unique_ptr<tNode> mRoot;
+		s_ptr<TreeNode> m_root;
 
-		bool mbDummyRootUse;
-		tNode* mSelectedNode;
+		w_ptr<TreeNode> m_selected_node;
 
-		EditorBase* mEventGUI;
-		std::function<void(tDataPtr data)> mEvent;
+		std::function<void(w_ptr<void>)> m_selected_callback;
 	};
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "Editor/Base/EditorChild.h"
+#include "Editor/Base/EditorWindow.h"
 #include "Editor/Widget/Widget_Tree.h"
 
 
@@ -16,32 +16,12 @@ namespace core::editor
 		void ResetContent();
 
 	private:
-		template <typename T>
-		void AddResources(const char* name)
-		{
-			//const std::vector<std::shared_ptr<Resource>>& resources
-			//	= ResourceManager<T>::get_inst().GetResourcesVector();
+		void ToInspectorTexture(w_ptr<void> _ptr);
+		void ToInspectorMaterial(w_ptr<void> _ptr);
+		void ToInspectorMesh(w_ptr<void> _ptr);
 
-			//EditorWidget_Tree::tNode* stemNode
-			//	= mTreeWidget->AddNode(rootNode, name, tDataPtr{}, true);
-
-			//for (const auto& resource : resources)
-			//{
-			//	tDataPtr data{};
-			//	data.SetDataPtr(resource.second.get());
-			//	mTreeWidget->AddNode(stemNode, resource, data);
-			//}
-		}
-
-
-
-		void ToInspectorTexture(tDataPtr _data);
-		void ToInspectorMaterial(tDataPtr _data);
-		void ToInspectorMesh(tDataPtr _data);
-
-
-		std::shared_ptr<EditorWidget_Tree> m_textureTree;
-		std::shared_ptr<EditorWidget_Tree> m_materialTree;
-		std::shared_ptr<EditorWidget_Tree> m_meshTree;
+		s_ptr<EditorWidget_Tree> m_textureTree;
+		s_ptr<EditorWidget_Tree> m_materialTree;
+		s_ptr<EditorWidget_Tree> m_meshTree;
 	};
 }

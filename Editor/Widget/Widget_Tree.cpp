@@ -3,54 +3,45 @@
 
 namespace core::editor
 {
-	EditorWidget_Tree::tNode::tNode()
-		: EditorEntity("")
-		, mTreeWidget(nullptr)
-		, mData{}
-		, m_Parent(nullptr)
-		, mbSelected(false)
-		, mbStem(false)
+	TreeNode::TreeNode()
+		: EditorEntity(TreeNode::s_static_type_name)
 	{
 	}
-	EditorWidget_Tree::tNode::~tNode()
+
+	void TreeNode::init()
 	{
-		for (tNode* child : m_Childs)
-		{
-			delete child;
-			child = nullptr;
-		}
+		Super::init();
+
+		m_owner;
+		m_data_ptr;
+		m_parent;
+		m_childs;
+	}
+
+	TreeNode::~TreeNode()
+	{
 	}
 	// Node
-	void EditorWidget_Tree::tNode::update_UI()
+	void TreeNode::update_UI()
 	{
-		//ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Framed;
+		ImGuiTreeNodeFlags flag = m_flag;
 
-		int flag = 0;
-
-		if (mbStem)
-		{
-			flag |= ImGuiTreeNodeFlags_Framed;
-		}
-		if (mbSelected)
-		{
-			flag |= ImGuiTreeNodeFlags_Selected;
-		}
-		if (m_Childs.empty())
+		if (m_childs.empty())
 		{
 			flag |= ImGuiTreeNodeFlags_Leaf;
 		}
-		if (mbStem && m_Childs.empty())
+
+		if (ImGui::TreeNodeEx(get_unique_name().c_str(), flag))
 		{
-			SetStrKey("\t" + get_resource_name());
-		}
-		if (ImGui::TreeNodeEx(get_resource_name().c_str(), flag))
-		{
-			if (!mbStem && ImGui::IsItemHovered(0) && ImGui::IsMouseClicked(0))
+			if (ImGui::IsItemHovered(0) && ImGui::IsMouseClicked(0))
 			{
-				mTreeWidget->SetSelectedNode(this);
+				if (m_owner.lock())
+				{
+					m_owner.lock()->set_selected_node(std::static_pointer_cast<TreeNode>(shared_from_this()));
+				}
 			}
 
-			for (tNode* node : m_Childs)
+			for (const s_ptr<TreeNode>& node : m_childs)
 			{
 				node->update_UI();
 			}
@@ -59,91 +50,88 @@ namespace core::editor
 		}
 	}
 
-	EditorWidget_Tree::tNode* EditorWidget_Tree::tNode::AddNode()
+	void TreeNode::add_child(const s_ptr<TreeNode>& _node)
 	{
-		m_Childs.push_back(new tNode);
-		m_Childs.back()->m_Parent = this;
-		return m_Childs.back();
+		if (nullptr == _node) { return; }
+
+		if (_node->get_parent())
+		{
+			_node->get_parent()->remove_child(_node);
+		}
+
+		_node->set_parent(std::static_pointer_cast<TreeNode>(shared_from_this()));
+		_node->set_owner(m_owner.lock());
+		m_childs.push_back(_node);
 	}
 
+	void TreeNode::remove_child(const s_ptr<TreeNode>& _node)
+	{
+		auto iter = m_childs.begin();
+		auto iter_end = m_childs.end();
+		for (iter; iter != iter_end; ++iter)
+		{
+			if (_node == (*iter))
+			{
+				m_childs.erase(iter);
+				break;
+			}
+		}
+	}
 
 
 	// Tree
 	EditorWidget_Tree::EditorWidget_Tree()
-		: EditorChild(name::EditorWidget_Tree)
-		, mRoot(nullptr)
-		, mbDummyRootUse{}
-		, mSelectedNode{}
-		, mEventGUI{}
-		, mEvent{}
+		: EditorWindow(name::EditorWidget_Tree)
 	{
+	}
+
+	void EditorWidget_Tree::init()
+	{
+		Super::init();
+
+		m_root = new_entity<TreeNode>();
+		m_selected_node;
+		m_selected_callback = nullptr;
 	}
 
 	EditorWidget_Tree::~EditorWidget_Tree()
 	{
 	}
 
-
 	void EditorWidget_Tree::update_UI()
 	{
-		if (mRoot == nullptr)
+		Super::update_UI();
+
+		m_root->update_UI();
+	}
+
+	void EditorWidget_Tree::clear()
+	{
+		m_root = nullptr;
+		m_root = new_entity<TreeNode>();
+
+		m_root->set_owner(std::static_pointer_cast<EditorWidget_Tree>(shared_from_this()));
+		m_root->m_b_root = true;
+	}
+	void EditorWidget_Tree::set_selected_node(const s_ptr<TreeNode>& node)
+	{
+		s_ptr<TreeNode> selected = m_selected_node.lock();
+
+		if (selected)
 		{
-			return;
+			selected->sub_flag(ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Selected);
 		}
 
-		if (!mbDummyRootUse)
+		m_selected_node = node;
+		if (node)
 		{
-			mRoot->update_UI();
-		}
-		else
-		{
-			const std::vector<tNode*>& childs = mRoot->get_childs();
-			for (tNode* child : childs)
+			node->add_flag(ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Selected);
+
+			//caller과 콜백함수 모두 살아있을 경우 함수를 호출한다
+			if (m_selected_callback)
 			{
-				child->update_UI();
+				m_selected_callback(node->m_data_ptr);
 			}
-		}
-	}
-
-	EditorWidget_Tree::tNode* EditorWidget_Tree::AddNode(tNode* parent, const std::string& name, tDataPtr data, bool isFrame)
-	{
-		tNode* retNode = nullptr;
-
-		if (nullptr == parent)
-		{
-			mRoot = std::make_unique<tNode>();
-			retNode = mRoot.get();
-		}
-		else
-		{
-			retNode = parent->AddNode();
-		}
-
-		retNode->SetStrKey(name);
-		retNode->set_data(data);
-		retNode->SetStem(isFrame);
-		retNode->mTreeWidget = this;
-
-		return retNode;
-	}
-
-	void EditorWidget_Tree::Clear()
-	{
-		mRoot.reset();
-	}
-	void EditorWidget_Tree::SetSelectedNode(tNode* node)
-	{
-		if (nullptr != mSelectedNode)
-		{
-			mSelectedNode->mbSelected = false;
-		}
-
-		mSelectedNode = node;
-		mSelectedNode->mbSelected = true;
-
-		if (mSelectedNode && mEvent)
-		{
-			mEvent(mSelectedNode->mData);
 		}
 	}
 }

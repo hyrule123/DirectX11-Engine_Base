@@ -39,7 +39,7 @@ namespace core::editor
 
 		std::future<eResult> mFutureConvertResult;
 
-		EditorWidget_ComboBox		mProjMeshDataCombo;
+		EditorWidget_ComboBox		m_model3D_combobox;
 	};
 }
 

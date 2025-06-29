@@ -75,7 +75,7 @@ namespace core
 
 		try
 		{
-			Json::Value& renderer = ser[get_concrete_class_name()];
+			Json::Value& renderer = ser[get_static_type_name()];
 
 			//m_mesh
 			renderer[JSON_KEY(m_mesh)] << m_mesh->get_resource_name();
@@ -107,7 +107,7 @@ namespace core
 
 		try
 		{
-			const Json::Value& renderer = ser[get_concrete_class_name()];
+			const Json::Value& renderer = ser[get_static_type_name()];
 
 			//m_mesh
 			{

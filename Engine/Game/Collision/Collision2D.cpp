@@ -90,7 +90,7 @@ namespace core
 	{
 		if (_obj)
 		{
-			m_collidersInLayer[_obj->get_owner()->GetLayer()].push_back(_obj);
+			m_collidersInLayer[_obj->get_owner()->get_layer()].push_back(_obj);
 		}
 	}
 

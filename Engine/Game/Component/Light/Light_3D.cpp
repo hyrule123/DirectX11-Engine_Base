@@ -20,7 +20,7 @@
 namespace core
 {
 	Light_3D::Light_3D()
-		: Light(Light_3D::s_concrete_class_name, eDimensionType::_3D)
+		: Light(Light_3D::s_static_type_name, eDimensionType::_3D)
 	{
 	}
 
@@ -46,7 +46,7 @@ namespace core
 
 		try
 		{
-			Json::Value& light3d = ser[get_concrete_class_name()];
+			Json::Value& light3d = ser[get_static_type_name()];
 
 			//m_attribute
 			{
@@ -84,7 +84,7 @@ namespace core
 
 		try
 		{
-			const Json::Value& light3d = ser[get_concrete_class_name()];
+			const Json::Value& light3d = ser[get_static_type_name()];
 
 			//m_attribute
 			{
@@ -115,7 +115,7 @@ namespace core
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
 
-		auto tr = owner->GetComponent<Transform>();
+		auto tr = owner->get_component<Transform>();
 		if (nullptr == tr) {
 			return;
 		}
@@ -145,7 +145,7 @@ namespace core
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
 
-		auto tr = owner->GetComponent<Transform>();
+		auto tr = owner->get_component<Transform>();
 		if (nullptr == tr)
 		{
 			return;

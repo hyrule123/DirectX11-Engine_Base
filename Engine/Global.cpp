@@ -1,4 +1,4 @@
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 
 namespace core
 {

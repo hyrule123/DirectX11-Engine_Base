@@ -8,7 +8,7 @@
 namespace core
 {
 	Com_Rigidbody_Static::Com_Rigidbody_Static()
-		: Rigidbody(Com_Rigidbody_Static::s_concrete_class_name)
+		: Rigidbody(Com_Rigidbody_Static::s_static_type_name)
 	{
 	}
 
@@ -20,7 +20,7 @@ namespace core
 	{
 		if (get_owner())
 		{
-			s_ptr<Transform> tr = get_owner()->GetComponent<Transform>();
+			s_ptr<Transform> tr = get_owner()->get_component<Transform>();
 			physx::PxTransform pxTr{};
 			pxTr.p = tr->get_world_position();
 			pxTr.q = tr->get_local_rotation();

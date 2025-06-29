@@ -3,7 +3,7 @@
 namespace core
 {
     Com_BehaviorTree::Com_BehaviorTree()
-        : StateMachine(Com_BehaviorTree::s_concrete_class_name)
+        : StateMachine(Com_BehaviorTree::s_static_type_name)
     {
     }
     Com_BehaviorTree::~Com_BehaviorTree()

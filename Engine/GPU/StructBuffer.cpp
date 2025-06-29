@@ -9,7 +9,7 @@
 namespace core
 {
 	StructBuffer::StructBuffer()
-		: GPUBuffer(StructBuffer::s_concrete_class_name, eBufferType::Struct)
+		: GPUBuffer(StructBuffer::s_static_type_name, eBufferType::Struct)
 		, m_desc()
 		, m_data_stride()
 		, m_size()

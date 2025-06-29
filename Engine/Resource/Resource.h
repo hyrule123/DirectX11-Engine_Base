@@ -22,13 +22,13 @@ namespace core
 	{
 		CLASS_INFO(Resource, Entity);
 	public:
-		Resource(const std::string_view _concrete_class_name);
+		Resource(const std::string_view _static_type_name);
 		Resource(const Resource& _other) = default;
 
 		virtual ~Resource();
 
 		void set_resource_name(const std::string_view _resource_name) { m_resource_name = _resource_name; }
-		const std::string_view get_resource_name() const { return m_resource_name; }
+		const std::string& get_resource_name() const { return m_resource_name; }
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨

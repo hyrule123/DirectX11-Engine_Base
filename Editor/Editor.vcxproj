@@ -20,15 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\EditorBase.h" />
-    <ClInclude Include="Base\EditorChild.h" />
     <ClInclude Include="Base\EditorEntity.h" />
-    <ClInclude Include="Base\MainMenu.h" />
+    <ClInclude Include="UI\EditorMainMenu.h" />
     <ClInclude Include="Base\EditorWindow.h" />
     <ClInclude Include="DebugObject\Console.h" />
     <ClInclude Include="DebugObject\DebugObject.h" />
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
     <ClInclude Include="DebugObject\Object.h" />
+    <ClInclude Include="define_Editor.h" />
     <ClInclude Include="EditorMain.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -41,9 +41,9 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="Inspector\Inspector_Component.h" />
-    <ClInclude Include="Inspector\Inspector_Com_Renderer.h" />
-    <ClInclude Include="Inspector\Inspector_Com_Transform.h" />
+    <ClInclude Include="Inspector\ComponentInspector.h" />
+    <ClInclude Include="Inspector\RendererInspector.h" />
+    <ClInclude Include="Inspector\TransformInspector.h" />
     <ClInclude Include="Inspector\InspectorBase.h" />
     <ClInclude Include="PCH_Editor.h" />
     <ClInclude Include="Resource\FBXConverter.h" />
@@ -62,9 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\EditorBase.cpp" />
-    <ClCompile Include="Base\EditorChild.cpp" />
     <ClCompile Include="Base\EditorEntity.cpp" />
-    <ClCompile Include="Base\MainMenu.cpp" />
+    <ClCompile Include="UI\EditorMainMenu.cpp" />
     <ClCompile Include="Base\EditorWindow.cpp" />
     <ClCompile Include="DebugObject\Console.cpp" />
     <ClCompile Include="DebugObject\DebugObject.cpp" />
@@ -82,9 +81,9 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Inspector\Inspector_Component.cpp" />
-    <ClCompile Include="Inspector\Inspector_Com_Renderer.cpp" />
-    <ClCompile Include="Inspector\Inspector_Com_Transform.cpp" />
+    <ClCompile Include="Inspector\ComponentInspector.cpp" />
+    <ClCompile Include="Inspector\RendererInspector.cpp" />
+    <ClCompile Include="Inspector\TransformInspector.cpp" />
     <ClCompile Include="Inspector\InspectorBase.cpp" />
     <ClCompile Include="PCH_Editor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

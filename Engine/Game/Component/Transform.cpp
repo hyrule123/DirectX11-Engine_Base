@@ -15,7 +15,7 @@
 namespace core
 {
 	Transform::Transform()
-		: Super(Transform::s_concrete_class_name, Transform::s_component_order)
+		: Super(Transform::s_static_type_name, Transform::s_component_order)
 		, m_localScale(float3::One)
 		, m_localRotation(Quaternion::Identity)
 		, m_localPosition(float3::Zero)
@@ -315,7 +315,7 @@ namespace core
 				child->set_parent(nullptr);
 				if (child->get_owner())
 				{
-					child->get_owner()->Destroy();
+					child->get_owner()->destroy();
 				}
 			}
 		}

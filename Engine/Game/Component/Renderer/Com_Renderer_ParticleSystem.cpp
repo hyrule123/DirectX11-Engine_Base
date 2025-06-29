@@ -21,7 +21,7 @@
 namespace core
 {
 	Com_Renderer_ParticleSystem::Com_Renderer_ParticleSystem()
-		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::s_concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_ParticleSystem::s_static_type_name)
 		, mMaxParticles(100)
 		, mStartSize(float4(50.0f, 50.0f, 1.0f, 1.0f))
 		, mStartColor(float4(1.0f, 0.2f, 0.2f, 1.0f))
@@ -147,7 +147,7 @@ namespace core
 		}
 
 		mMaxParticles = m_buffer->GetStride();
-		float3 pos = get_owner()->GetComponent<Transform>()->get_local_position();
+		float3 pos = get_owner()->get_component<Transform>()->get_local_position();
 		mCBData.worldPosition = float4(pos.x, pos.y, pos.z, 1.0f);
 		mCBData.maxParticles = mMaxParticles;
 		mCBData.radius = mRadius;
@@ -174,7 +174,7 @@ namespace core
 	//	if (false == IsRenderReady())
 	//		return;
 	//	
-	//	get_owner()->GetComponent<Transform>()->bind_buffer_to_GPU_register();
+	//	get_owner()->get_component<Transform>()->bind_buffer_to_GPU_register();
 	//	m_buffer->bind_buffer_as_SRV(GPU::Register::t::g_diffuse_texture, eShaderStageFlag::Geometry);
 
 	//	GetCurrentMaterial(0)->bind_buffer_to_gpu_register();

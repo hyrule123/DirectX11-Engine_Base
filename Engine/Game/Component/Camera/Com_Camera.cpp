@@ -24,7 +24,7 @@
 namespace core
 {
 	Com_Camera::Com_Camera()
-		: Super(Com_Camera::s_concrete_class_name, s_component_order)
+		: Super(Com_Camera::s_static_type_name, s_component_order)
 		, m_camera_matrices{}
 		, m_projectionType(eProjectionType::None)
 		, m_isEnableCulling(true)
@@ -89,11 +89,11 @@ namespace core
 
 		//출력할 레이어만 걸러낸다. 가장 기본적인 Transform 버퍼는 여기서 업로드 한다.
 		for (const s_ptr<GameObject>& obj : _render_queue.objects_to_render) {
-			if (true == m_layerMasks[obj->GetLayer()]) {
+			if (true == m_layerMasks[obj->get_layer()]) {
 				m_layer_filtered_objects.push_back(obj);
 
 				tTransform trdata{};
-				trdata.World = obj->GetComponent<Transform>()->get_world_matrix();
+				trdata.World = obj->get_component<Transform>()->get_world_matrix();
 				trdata.InverseWorld = trdata.World.Invert();
 				trdata.WorldView = trdata.World * m_camera_matrices.view;
 				trdata.WVP = trdata.WorldView * m_camera_matrices.projection;
@@ -125,10 +125,10 @@ namespace core
 			s_ptr<GameObject> obj = l->get_owner();
 
 			//레이어 마스크와 일치하는지 확인(bit mask)
-			if (obj && true == m_layerMasks[obj->GetLayer()]) {
+			if (obj && true == m_layerMasks[obj->get_layer()]) {
 				//transform 데이터 넣고
 				tTransform trdata{};
-				trdata.World = obj->GetComponent<Transform>()->get_world_matrix();
+				trdata.World = obj->get_component<Transform>()->get_world_matrix();
 				trdata.InverseWorld = trdata.World.Invert();
 				trdata.WorldView = trdata.World * m_camera_matrices.view;
 				trdata.WVP = trdata.WorldView * m_camera_matrices.projection;
@@ -168,7 +168,7 @@ namespace core
 			return;
 		}
 
-		auto tr = get_owner()->GetComponent<Transform>();
+		auto tr = get_owner()->get_component<Transform>();
 
 		//트랜스폼이 업데이트 되지 않았을 경우 자신도 업데이트 할 필요 없음
 		if (false == tr->is_transform_updated())
@@ -340,14 +340,14 @@ namespace core
 	}
 
 	Com_Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
-		: Com_Camera::CullingAgent(CullingAgent_Orthographic::s_concrete_class_name)
+		: Com_Camera::CullingAgent(CullingAgent_Orthographic::s_static_type_name)
 	{
 	}
 	Com_Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::CullingAgent_Perspective()
-		: Com_Camera::CullingAgent(CullingAgent_Perspective::s_concrete_class_name)
+		: Com_Camera::CullingAgent(CullingAgent_Perspective::s_static_type_name)
 	{
 	}
 	Com_Camera::CullingAgent_Perspective::~CullingAgent_Perspective()

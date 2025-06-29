@@ -46,7 +46,7 @@ namespace core
 		//physx::PxVec3 direction{};
 		//physx::PxF32  depth{};
 
-		//Collider3D* otherCollider = other->GetComponent<Collider3D>();
+		//Collider3D* otherCollider = other->get_component<Collider3D>();
 		//const bool		  isPenetrating = physx::PxGeometryQuery::computePenetration(direction, depth,
 		//	m_shape->getGeometry(),
 		//	m_shape->getActor()->getGlobalPose(),
@@ -72,10 +72,10 @@ namespace core
 	//	_localMatrix *= MATRIX::CreateTranslation(m_offsetPosition);
 
 	//	//트랜스폼의 크기 정보는 제거
-	//	const float3 objectScale = GetOwner()->GetComponent<Transform>()->get_world_scale();
+	//	const float3 objectScale = GetOwner()->get_component<Transform>()->get_world_scale();
 	//	const MATRIX objectScaleInvMatrix = MATRIX::CreateScale(objectScale).Invert();
 
-	//	const MATRIX  objectWorldMatrix = GetOwner()->GetComponent<Transform>()->get_world_matrix();
+	//	const MATRIX  objectWorldMatrix = GetOwner()->get_component<Transform>()->get_world_matrix();
 	//	// 충돌체 상대행렬 * 오브젝트 월드 크기 역행렬 * 오브젝트 월드 행렬(크기 * 회전 * 이동)
 	//	//트랜스폼의 Scale은 반영하지 않는다
 	//	_worldMatrix = _localMatrix * objectScaleInvMatrix * objectWorldMatrix;

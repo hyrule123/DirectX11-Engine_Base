@@ -10,7 +10,7 @@
 namespace core
 {
 	Animation2D::Animation2D()
-		: Animation(Animation2D::s_concrete_class_name)
+		: Animation(Animation2D::s_static_type_name)
 		, mAtlas(nullptr)
 		, mSpriteSheet{}
 		, mIndex(-1)

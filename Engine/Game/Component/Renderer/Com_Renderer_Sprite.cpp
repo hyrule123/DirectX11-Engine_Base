@@ -14,7 +14,7 @@
 namespace core
 {
 	Com_Renderer_Sprite::Com_Renderer_Sprite()
-		: Com_Renderer_Mesh(Com_Renderer_Sprite::s_concrete_class_name)
+		: Com_Renderer_Mesh(Com_Renderer_Sprite::s_static_type_name)
 		, mAnimator()
 	{
 	}
@@ -42,7 +42,7 @@ namespace core
 
 	void Com_Renderer_Sprite::Awake()
 	{
-		mAnimator = get_owner()->GetComponent<Com_Animator2D>();
+		mAnimator = get_owner()->get_component<Com_Animator2D>();
 	}
 
 	//void Com_Renderer_Sprite::render()

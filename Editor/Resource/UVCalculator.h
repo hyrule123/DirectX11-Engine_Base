@@ -28,7 +28,7 @@ namespace core
             void UpdateUVIndicator();
 
         private:
-            std::shared_ptr<Texture> mTexture;
+            s_ptr<Texture> mTexture;
             ImVec2                      mTexRenderSize;
 
             ImVec2 mCursorPos;

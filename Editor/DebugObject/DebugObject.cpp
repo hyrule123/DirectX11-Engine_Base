@@ -15,7 +15,7 @@ namespace core::editor
 
 	void DebugObject::final_update()
 	{
-		const auto& vecCom = GetComponents();
+		const auto& vecCom = get_components();
 		for (size_t i = 0; i < vecCom.size(); ++i)
 		{
 			if (nullptr == vecCom[i])

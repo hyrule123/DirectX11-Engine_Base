@@ -42,7 +42,7 @@ namespace core
 		template <typename Derived = T>
 		s_ptr<Derived> load(const std::string_view _resource_name);
 
-		s_ptr<T> load(const std::string_view _resource_name, const std::string_view _concrete_class_name);
+		s_ptr<T> load(const std::string_view _resource_name, const std::string_view _static_type_name);
 
 		template <typename Derived = T>
 		void insert(const std::string_view _resource_name, s_ptr<Derived> _Res);
@@ -190,13 +190,13 @@ namespace core
 	}
 
 	template<ResourceType T>
-	inline s_ptr<T> ResourceManager<T>::load(const std::string_view _resource_name, const std::string_view _concrete_class_name)
+	inline s_ptr<T> ResourceManager<T>::load(const std::string_view _resource_name, const std::string_view _static_type_name)
 	{
 		s_ptr<T> ret = find<T>(_resource_name);
 
 		//없을 경우 클래스 이름을 통해 새로 생성
 		if (nullptr == ret) {
-			ret = std::dynamic_pointer_cast<T>(EntityFactory::get_inst().instantiate(_concrete_class_name));
+			ret = std::dynamic_pointer_cast<T>(EntityFactory::get_inst().instantiate(_static_type_name));
 
 			if (ret && eResult_success(ret->load(m_BaseDir, _resource_name))) {
 				ret->set_resource_name(_resource_name);

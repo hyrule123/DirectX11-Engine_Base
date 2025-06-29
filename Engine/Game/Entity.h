@@ -20,7 +20,7 @@ private: virtual s_ptr<Entity> Clone() override { return nullptr; }
 #define REGISTER_FACTORY_UNIQUE(_class, _key) \
 private: static inline const bool UNIQUE_VAR(unused) = EntityFactory::get_inst().add_ctor<_class>(_key)
 
-#define REGISTER_FACTORY(_class) REGISTER_FACTORY_UNIQUE(_class, _class::s_concrete_class_name)
+#define REGISTER_FACTORY(_class) REGISTER_FACTORY_UNIQUE(_class, _class::s_static_type_name)
 
 namespace core
 {
@@ -28,22 +28,23 @@ namespace core
 		: public std::enable_shared_from_this<Entity>
 	{
 	public:
-		Entity(const std::string_view _class_concrete_name);
-		Entity(const Entity& _other);
+		Entity(const std::string_view _static_type_name);
+		virtual void init();
+		virtual ~Entity();
 
+		Entity(const Entity& _other);
 		//Clone을 지원하지 않을 경우 nullptr이 반환된다.
 		virtual s_ptr<Entity> Clone() { return nullptr; }
 
-		virtual ~Entity();
-
-		const std::string_view get_concrete_class_name() const {
-			return m_concrete_class_name;
+		//런타임 멤버함수
+		const std::string_view get_static_type_name() const {
+			return m_static_type_name;
 		}
 		uint32 GetID() const { return m_ID; }
 
 	private:
 		const uint32 m_ID;
-		const std::string_view m_concrete_class_name;
+		const std::string_view m_static_type_name;
 
 		static uint32 g_nextID;
 	};
@@ -71,20 +72,12 @@ namespace core
 	public:
 		s_ptr<Entity> instantiate(const std::string_view key);
 
-		template <typename T>
-		s_ptr<T> instantiate() {
-			//혹시나 모를 fail safe - T 클래스에 이름을 등록해놓지 않았을 경우 대참사가 날수도 있음
-			return std::dynamic_pointer_cast<T>(instantiate(T::s_concrete_class_name));
-		}
-
 		template <typename T, typename... ARGS>
 		bool add_ctor(const std::string_view _name, ARGS&&... _arg) {
 			ASSERT_DEBUG(false == _name.empty(), "이름이 비어있습니다.");
 
 			m_ctors[_name] =
 				[_arg...]()->s_ptr<Entity> {
-
-				//static_cast가 Entity 에러를 막아줌
 				return std::make_shared<T>(_arg...);
 				};
 
@@ -94,6 +87,21 @@ namespace core
 	private:
 		std::unordered_map<std::string_view, std::function<s_ptr<Entity>()>> m_ctors;
 	};
+
+	//전역 변수
+	inline s_ptr<Entity> new_entity(const std::string_view _class_name)
+	{
+		return EntityFactory::get_inst().instantiate(_class_name);
+	}
+	template <typename T> 
+	inline s_ptr<T> new_entity()
+	{
+		static_assert(std::is_base_of_v<Entity, T>, "Entity를 상속받은 클래스가 아님");
+		s_ptr<T> new_ent = std::make_shared<T>();
+		new_ent->init();
+		//혹시나 모를 fail safe - T 클래스에 이름을 등록해놓지 않았을 경우 대참사가 날수도 있음
+		return new_ent;
+	}
 }
 
 

@@ -65,7 +65,7 @@ namespace core
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			if (m_gameObjects[i]->IsActive())
+			if (m_gameObjects[i]->is_active())
 			{
 				m_gameObjects[i]->update();
 			}
@@ -76,7 +76,7 @@ namespace core
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			if (m_gameObjects[i]->IsActive())
+			if (m_gameObjects[i]->is_active())
 			{
 				m_gameObjects[i]->final_update();
 			}
@@ -110,7 +110,7 @@ namespace core
 		{
 			for (const s_ptr<GameObject>& obj : m_delayedAddQueue)
 			{
-				AddGameObject(obj);
+				add_game_object_recursive(obj);
 			}
 
 		}
@@ -120,11 +120,11 @@ namespace core
 	{
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->Destroy();
+			m_gameObjects[i]->destroy();
 		}
 	}
 
-	s_ptr<GameObject> Scene::AddGameObject(const s_ptr<GameObject>& _newObject)
+	s_ptr<GameObject> Scene::add_game_object_recursive(const s_ptr<GameObject>& _newObject)
 	{
 		s_ptr<GameObject> ret = nullptr;
 		//true가 반환되면 에러 있다는 뜻
@@ -155,7 +155,7 @@ namespace core
 
 		for (const s_ptr<GameObject>& obj : _gameObjects)
 		{
-			s_ptr<GameObject> result = AddGameObject(obj);
+			s_ptr<GameObject> result = add_game_object_recursive(obj);
 			if (result)
 			{
 				inserted.push_back(obj);
@@ -171,7 +171,7 @@ namespace core
 
 		for (const s_ptr<GameObject>& obj : m_gameObjects)
 		{
-			if (obj->IsDontDestroyOnLoad())
+			if (obj->is_not_destroyed_on_load())
 			{
 				ret.push_back(obj);
 			}
@@ -186,14 +186,14 @@ namespace core
 		std::erase_if(m_gameObjects,
 			[](const s_ptr<GameObject>& _obj)->bool
 			{
-				GameObject::eState state = _obj->GetState();
+				GameObject::eState state = _obj->get_state();
 				if (GameObject::eState::Destroy == state)
 				{
 					return true;
 				}
 				else
 				{
-					_obj->RemoveDestroyed();
+					_obj->remove_destroyed();
 				}
 
 				return false;
@@ -208,7 +208,7 @@ namespace core
 			DEBUG_MESSAGE("object가 nullptr 입니다.");
 			return false;
 		}
-		if (false == IsLayerValid(_obj->GetLayer()))
+		if (false == IsLayerValid(_obj->get_layer()))
 		{
 			DEBUG_MESSAGE("Layer 번호가 유효하지 않습니다.(0~31)");
 			return false;

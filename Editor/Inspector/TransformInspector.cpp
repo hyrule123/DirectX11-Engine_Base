@@ -1,4 +1,4 @@
-#include "Editor/Inspector/Inspector_Com_Transform.h"
+#include "Editor/Inspector/TransformInspector.h"
 
 #include "Editor/Inspector/InspectorBase.h"
 
@@ -8,40 +8,40 @@
 namespace core::editor
 {
 
-	Inspector_Com_Transform::Inspector_Com_Transform()
-		: Inspector_Component(eComponentOrder::Transform)
+	TransformInspector::TransformInspector()
+		: ComponentInspector(eComponentOrder::Transform)
 	{
 		//SetSize(ImVec2(200.0f, 120.0f));
 	}
 
-	Inspector_Com_Transform::~Inspector_Com_Transform()
+	TransformInspector::~TransformInspector()
 	{
 
 	}
 
-	void Inspector_Com_Transform::update()
+	void TransformInspector::update()
 	{
-		if (nullptr == GetTarget())
+		if (nullptr == get_target())
 		{
 			return;
 		}
 
-		const auto& tr = GetTarget()->GetComponent<Transform>();
+		const auto& tr = get_target()->get_component<Transform>();
 
 		m_position = tr->get_local_position();
 		m_rotation = tr->get_local_rotation();
 		m_scale = tr->get_local_scale();
 	}
 
-	void Inspector_Com_Transform::update_UI()
+	void TransformInspector::update_UI()
 	{
 		ImGui::DragFloat3("Position", (float*)&m_position);
 		ImGui::DragFloat3("Rotation", (float*)&m_rotation);
 		ImGui::DragFloat3("Scale", (float*)&m_scale);
 
-		if (GetTarget())
+		if (get_target())
 		{
-			const auto& tr = GetTarget()->GetComponent<Transform>();
+			const auto& tr = get_target()->get_component<Transform>();
 
 			tr->set_local_position(m_position);
 			tr->set_local_rotation(m_rotation);

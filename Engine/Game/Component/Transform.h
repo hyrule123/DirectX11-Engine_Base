@@ -72,6 +72,7 @@ namespace core
 		static void bind_buffer_to_GPU_register();
 
 #pragma region //Hierarchy
+		bool is_root() const { return m_parent.expired(); }
 		s_ptr<Transform> get_parent() const { return m_parent.lock(); }
 		void set_parent(const s_ptr<Transform>& _transform) { m_parent = _transform; }
 		void unlink_parent();

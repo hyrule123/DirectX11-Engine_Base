@@ -27,7 +27,7 @@ namespace core::editor
 	private:
 		void LoadShaderSettingComboBox();
 
-		void DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item);
+		void DXGISelectCallback(const tComboItem& _item);
 
 		void InputElementEditModal();
 

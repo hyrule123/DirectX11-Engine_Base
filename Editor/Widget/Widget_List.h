@@ -12,14 +12,14 @@ namespace core::editor
 		Widget_List();
 		virtual ~Widget_List();
 
-		virtual bool BeginUI() final;
+		virtual bool begin_UI() final;
 		virtual void update_UI() override;
-		virtual void EndUI() final;
+		virtual void end_UI() final;
 
 		void SetEvent(EditorBase* widget, std::function<void(const std::string& key)> event)
 		{
-			mEventGUI = widget;
-			mEvent = std::move(event);
+			m_event_GUI = widget;
+			m_selected_callback = std::move(event);
 		}
 
 		void SetItemList(const std::vector<std::wstring>& _vecItem);
@@ -31,7 +31,7 @@ namespace core::editor
 
 		ImVec2 mSize;
 
-		EditorBase* mEventGUI;
-		std::function<void(std::string key)> mEvent;
+		EditorBase* m_event_GUI;
+		std::function<void(std::string key)> m_selected_callback;
 	};
 }

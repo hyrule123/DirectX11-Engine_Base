@@ -40,7 +40,7 @@ namespace core
 
 		virtual ~GameObject();
 
-		virtual void init();
+		virtual void init() override { Super::init(); };
 		virtual void Awake();
 		virtual void fixed_update();
 		virtual void update();
@@ -48,26 +48,26 @@ namespace core
 		virtual void render();
 		virtual void frame_end();
 
-		void RemoveDestroyed();
+		void remove_destroyed();
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 	public:
-		s_ptr<Component> AddComponent(const s_ptr<Component>& _pCom);
+		s_ptr<Component> add_component(const s_ptr<Component>& _pCom);
 
 		template <typename T>
-		s_ptr<T> AddComponent();
-		s_ptr<Component> AddComponent(const std::string_view _resource_name);
+		s_ptr<T> add_component();
+		s_ptr<Component> add_component(const std::string_view _resource_name);
 
 		template <typename T>
-		s_ptr<T> GetComponent() {
+		s_ptr<T> get_component() {
 			static_assert(std::is_base_of_v<Component, T>, "Component의 하위 클래스가 아닙니다.");
 
 			s_ptr<T> ret = nullptr;
 			//Script는 이름을 통한 비교
 			if constexpr (std::is_base_of_v<Script, T>)
 			{
-				ret = GetScript<T>();
+				ret = get_script<T>();
 			}
 			//이외의 
 			else //constexpr
@@ -79,53 +79,54 @@ namespace core
 		}
 
 		template <typename T>
-		s_ptr<T> AddScript() {
+		s_ptr<T> add_script() {
 			static_assert(std::is_base_of_v<Script, T>, "Script의 하위 클래스가 아닙니다.");
-			return AddComponent<T>();
+			return add_component<T>();
 		};
 
-		s_ptr<Script> AddScript(const std::string_view _resource_name);
+		s_ptr<Script> add_script(const std::string_view _resource_name);
 
 		template <typename T>
-		s_ptr<T> GetScript() {
+		s_ptr<T> get_script() {
 			static_assert(std::is_base_of_v<Script, T>, "Script의 하위 클래스가 아닙니다.");
-			return std::dynamic_pointer_cast<T>(GetScript(T::s_concrete_class_name));
+			return std::dynamic_pointer_cast<T>(get_script(T::s_static_type_name));
 		}
 
-		s_ptr<Script> GetScript(const std::string_view _resource_name);
+		s_ptr<Script> get_script(const std::string_view _resource_name);
 
-		s_ptr<Component> GetComponent(eComponentOrder _type) { return m_baseComponents[(int)_type]; }
+		s_ptr<Transform> get_transform() const;
+		s_ptr<Component> get_component(eComponentOrder _type) const { return m_baseComponents[(int)_type]; }
 
-		const BaseComponents& GetComponents() const { return m_baseComponents; }
+		const BaseComponents& get_components() const { return m_baseComponents; }
 		
-		const Scripts& GetScripts() const { return m_scripts; }
+		const Scripts& get_scripts() const { return m_scripts; }
 
-		void SetName(const std::string_view _Name) { m_name = _Name; }
-		const std::string& GetName() const { return m_name; }
+		void set_name(const std::string_view _Name) { m_name = _Name; }
+		const std::string& get_name() const { return m_name; }
 		
-		void SetActive(bool _bActive);
-		bool IsActive() const { return eState::Active == m_state; }
+		void set_active(bool _bActive);
+		bool is_active() const { return eState::Active == m_state; }
 
-		eState GetState() const { return m_state; }
-		void SetState(eState _state) { m_state = _state; }
+		eState get_state() const { return m_state; }
+		void set_state(eState _state) { m_state = _state; }
 
-		void Destroy();
-		bool IsDestroyed() const { return (eState::DestroyReserved <= m_state); }
+		void destroy();
+		bool is_destroyed() const { return (eState::DestroyReserved <= m_state); }
 
-		bool IsDontDestroyOnLoad() const { return m_bDontDestroyOnLoad; }
-		void DontDestroyOnLoad(bool _enable) { m_bDontDestroyOnLoad = _enable; }
+		bool is_not_destroyed_on_load() const { return m_bDontDestroyOnLoad; }
+		void dont_destroy_on_load(bool _enable) { m_bDontDestroyOnLoad = _enable; }
 		
 		s_ptr<Scene> get_scene() const { return m_scene.lock(); }
 		void set_scene(const s_ptr<Scene>& _scene) { m_scene = _scene; }
-		bool IsInScene() const { return (false == m_scene.expired()); }
+		bool is_in_scene() const { return (false == m_scene.expired()); }
 
-		void SetLayer(uint32 _layer);
-		uint32 GetLayer() const { return m_layer; }
+		void set_layer(uint32 _layer);
+		uint32 get_layer() const { return m_layer; }
 
-		bool IsAwaken() const { return m_isAwaken; }
+		bool is_awaken() const { return m_isAwaken; }
 
 	protected:
-		void SetActiveInternal(bool _bActive);
+		void set_active_internal(bool _bActive);
 
 	private:
 		std::string m_name;
@@ -144,13 +145,13 @@ namespace core
 
 
 	template <typename T>
-	s_ptr<T> GameObject::AddComponent()
+	s_ptr<T> GameObject::add_component()
 	{
 		static_assert(std::is_base_of_v<Component, T>, "Component의 하위 클래스가 아닙니다.");
 
 		s_ptr<T> ret = std::make_shared<T>();
 
-		ret = std::static_pointer_cast<T>(AddComponent(ret));
+		ret = std::static_pointer_cast<T>(add_component(ret));
 
 		return ret;
 	}

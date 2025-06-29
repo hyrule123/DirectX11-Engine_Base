@@ -55,7 +55,7 @@ namespace core
 		}
 
 		
-		//Scene* scene = SceneManager::GetActiveScene();
+		//Scene* scene = SceneManager::get_active_scene();
 		//if (nullptr == scene)
 		//{
 		//	return;
@@ -97,26 +97,26 @@ namespace core
 
 	//void CollisionSystem::LayerCollision(Scene* _scene, uint32 _left, uint32 _right)
 	//{
-		//const std::vector<s_ptr<GameObject>>& lefts = _scene->GetGameObjects(_left);
-		//const std::vector<s_ptr<GameObject>>& rights = _scene->GetGameObjects(_right);
+		//const std::vector<s_ptr<GameObject>>& lefts = _scene->get_game_objects(_left);
+		//const std::vector<s_ptr<GameObject>>& rights = _scene->get_game_objects(_right);
 
 		//for (const s_ptr<GameObject>& left : lefts)
 		//{
-		//	if (false == left->IsActive())
+		//	if (false == left->is_active())
 		//		continue;
-		//	if (left->GetComponent<Collider2D>() == nullptr)
+		//	if (left->get_component<Collider2D>() == nullptr)
 		//		continue;
 
 		//	for (const s_ptr<GameObject>& right : rights)
 		//	{
-		//		if (false == left->IsActive())
+		//		if (false == left->is_active())
 		//			continue;
-		//		if (right->GetComponent<Collider2D>() == nullptr)
+		//		if (right->get_component<Collider2D>() == nullptr)
 		//			continue;
 		//		/*if (left == right) //지워도 상관없어서 주석처리 (오류나면 수정)
 		//			continue;*/
 
-		//		ColliderCollision(left->GetComponent<Collider2D>(), right->GetComponent<Collider2D>());
+		//		ColliderCollision(left->get_component<Collider2D>(), right->get_component<Collider2D>());
 		//	}
 
 		//	/*if ((uint)left == (uint)right)  
@@ -226,8 +226,8 @@ namespace core
 		//	,float3{-0.5f, -0.5f, 0.0f}
 		//};
 
-		//const auto& leftTr = _left->GetOwner()->GetComponent<Transform>();
-		//const auto& rightTr = _right->GetOwner()->GetComponent<Transform>();
+		//const auto& leftTr = _left->GetOwner()->get_component<Transform>();
+		//const auto& rightTr = _right->GetOwner()->get_component<Transform>();
 		//if (false == (leftTr && rightTr))
 		//	return false;
 

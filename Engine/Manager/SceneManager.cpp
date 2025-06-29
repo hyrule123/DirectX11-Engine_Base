@@ -95,7 +95,7 @@ namespace core
 		//for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		//{
 		//	
-		//	m_activeScene->AddGameObject(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
+		//	m_activeScene->add_game_object_recursive(dontDestroyObjs[i]->GetLayerType(), dontDestroyObjs[i]);
 		//}
 
 		//OnEnter 호출

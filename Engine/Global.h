@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <string>
 
+//전역변수 및 전역함수 모음
 namespace core
 {
 	extern tGPUInitSetting		gGPUInitSetting;

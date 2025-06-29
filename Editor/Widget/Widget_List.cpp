@@ -8,18 +8,18 @@ namespace core::editor
 		: EditorBase(name::ListBox)
 		, mListIndex(-1)
 		, mSize(200.f, 200.f)
-		, mEventGUI()
+		, m_event_GUI()
 	{
-		//SetState(eState::Paused);
+		//set_state(eState::Paused);
 	}
 
 	Widget_List::~Widget_List()
 	{
 	}
 
-	bool Widget_List::BeginUI()
+	bool Widget_List::begin_UI()
 	{
-		bool retval = ImGui::BeginListBox(get_resource_name().c_str(), mSize);
+		bool retval = ImGui::BeginListBox(get_unique_name().c_str(), mSize);
 		if (retval)
 		{
 			ImGui::SetNextWindowFocus();
@@ -29,7 +29,7 @@ namespace core::editor
 
 	void Widget_List::update_UI()
 	{
-		ImGui::SetWindowFocus(get_resource_name().c_str());
+		ImGui::SetWindowFocus(get_unique_name().c_str());
 		for (size_t i = 0; i < mResourceList.size(); i++)
 		{
 			bool bselectable = (mListIndex == i);
@@ -47,19 +47,19 @@ namespace core::editor
 			if (ImGui::IsItemHovered() 
 				&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
-				if (mEventGUI && mEvent)
+				if (m_event_GUI && m_selected_callback)
 				{
-					mEvent(mResourceList[i].c_str());
+					m_selected_callback(mResourceList[i].c_str());
 				}
 				mResourceList.clear();
 				ImGui::SetWindowFocus(nullptr);
-				Close();
+				close();
 			}
 		}
 		
 	}
 
-	void Widget_List::EndUI()
+	void Widget_List::end_UI()
 	{
 		ImGui::EndListBox();
 	}

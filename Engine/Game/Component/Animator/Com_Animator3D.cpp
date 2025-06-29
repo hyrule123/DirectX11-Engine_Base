@@ -20,7 +20,7 @@
 namespace core
 {
 	Com_Animator3D::Com_Animator3D()
-		: Animator(Com_Animator3D::s_concrete_class_name, eDimensionType::_3D)
+		: Animator(Com_Animator3D::s_static_type_name, eDimensionType::_3D)
 		, m_sharedPlayData()
 	{
 	}

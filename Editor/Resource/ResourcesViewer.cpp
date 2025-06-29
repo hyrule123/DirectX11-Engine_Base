@@ -15,10 +15,6 @@
 #include <Engine/Resource/Shader/GraphicsShader.h>
 
 
-
-
-
-
 namespace core::editor
 {
 	using namespace math;
@@ -37,24 +33,21 @@ namespace core::editor
 
 	void EditorResources::init()
 	{
-		m_textureTree = add_child<EditorWidget_Tree>();
-		m_materialTree = add_child<EditorWidget_Tree>();
-		m_meshTree = add_child<EditorWidget_Tree>();
+		m_textureTree = new_entity<EditorWidget_Tree>();
+		m_materialTree = new_entity<EditorWidget_Tree>();
+		m_meshTree = new_entity<EditorWidget_Tree>();
 
+		s_ptr<EditorResources> ths = std::static_pointer_cast<EditorResources>(shared_from_this());
 
-		m_textureTree->SetEvent(this
-			, std::bind(&EditorResources::ToInspectorTexture, this, std::placeholders::_1));
-		//m_textureTree->SetDummyRoot(true);
+		m_textureTree->set_selected_callaback_func(
+			std::bind(&EditorResources::ToInspectorTexture, this, std::placeholders::_1)
+		);
 
+		//m_materialTree->set_selected_callaback_func(this
+		//	, std::bind(&EditorResources::ToInspectorMaterial, this, std::placeholders::_1));
 
-		m_materialTree->SetEvent(this
-			, std::bind(&EditorResources::ToInspectorMaterial, this, std::placeholders::_1));
-		//m_materialTree->SetDummyRoot(true);
-
-
-		m_meshTree->SetEvent(this
-			, std::bind(&EditorResources::ToInspectorMesh, this, std::placeholders::_1));
-		//m_meshTree->SetDummyRoot(true);
+		//m_meshTree->set_selected_callaback_func(this
+		//	, std::bind(&EditorResources::ToInspectorMesh, this, std::placeholders::_1));
 
 		ResetContent();
 	}
@@ -68,7 +61,7 @@ namespace core::editor
 		//m_meshTree->Clear();
 
 
-		///*EditorWidget_Tree::tNode* pRootNode = mTreeWidget->AddNode(nullptr, "GameResources", tDataPtr{}, true);*/
+		///*TreeNode* pRootNode = m_tree_widget->add_child(nullptr, "GameResources", DataPtr{}, true);*/
 
 
 
@@ -78,21 +71,20 @@ namespace core::editor
 		//AddResources<GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void EditorResources::ToInspectorTexture(tDataPtr _data)
+	void EditorResources::ToInspectorTexture(w_ptr<void> _ptr)
 	{
-		const auto& resource = 
-			std::static_pointer_cast<Resource>((static_cast<Resource*>(_data.pData))->shared_from_this());
-		
+		s_ptr<Resource> res = std::reinterpret_pointer_cast<Resource>(_ptr.lock());
 
-		std::shared_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::FindGuiWindow(name::Inspector));
-		inspector->SetTargetResource(resource);
+		s_ptr<InspectorBase> inspector = 
+			std::static_pointer_cast<InspectorBase>(EditorManager::get_inst().find_editor_window(name::Inspector));
+		inspector->SetTargetResource(res);
 	}
 
-	void EditorResources::ToInspectorMaterial(tDataPtr _data)
+	void EditorResources::ToInspectorMaterial(w_ptr<void> _ptr)
 	{
 	}
 
-	void EditorResources::ToInspectorMesh(tDataPtr _data)
+	void EditorResources::ToInspectorMesh(w_ptr<void> _ptr)
 	{
 	}
 

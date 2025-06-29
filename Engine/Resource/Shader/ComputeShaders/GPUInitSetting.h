@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/Resource/Shader/ComputeShader.h"
 
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 
 namespace core
 {

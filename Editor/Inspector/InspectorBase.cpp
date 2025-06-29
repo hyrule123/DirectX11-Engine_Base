@@ -2,8 +2,8 @@
 
 #include "Editor/Resource/TextureEditor.h"
 
-#include "Editor/Inspector/Inspector_Com_Transform.h"
-#include "Editor/Inspector/Inspector_Com_Renderer.h"
+#include "Editor/Inspector/TransformInspector.h"
+#include "Editor/Inspector/RendererInspector.h"
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Game/GameObject.h>
@@ -12,110 +12,71 @@ namespace core::editor
 {
 	InspectorBase::InspectorBase()
 		: EditorWindow(name::Inspector)
-		, mTargetGameObject()
-		, mTargetResource()
 	{
-		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)eComponentOrder::END);
-		//mGuiResources.resize((int)eResourceType::END);
-
-		mGuiComponents[(int)eComponentOrder::Transform] = new Inspector_Com_Transform;
-		mGuiComponents[(int)eComponentOrder::Transform]->SetSize(ImVec2(0.f, 100.f));
-
-		mGuiComponents[(int)eComponentOrder::Renderer] = new Inspector_Com_Renderer;
-		mGuiComponents[(int)eComponentOrder::Renderer]->SetSize(ImVec2(0.f, 100.f));
-
-		//mGuiResources[(int)eResourceType::Texture] = new TextureEditor;
 	}
 
 	InspectorBase::~InspectorBase()
 	{
-		for (size_t i = 0; i < mGuiComponents.size(); ++i)
-		{
-			if (mGuiComponents[i])
-			{
-				delete mGuiComponents[i];
-			}
-		}
-
-		//for (size_t i = 0; i < mGuiResources.size(); ++i)
-		//{
-		//	if (mGuiResources[i])
-		//	{
-		//		delete mGuiResources[i];
-		//	}
-		//}
 	}
 
 	void InspectorBase::init()
 	{
-		for (size_t i = 0; i < mGuiComponents.size(); ++i)
-		{
-			if (mGuiComponents[i])
-				mGuiComponents[i]->InitRecursive();
-		}
+		mTargetGameObject;
+		mTargetResource;
+
+		//컴포넌트의 경우 수동 관리
+		mGuiComponents.resize((int)eComponentOrder::END);
+
+		mGuiComponents[(int)eComponentOrder::Transform] = new_entity<TransformInspector>();
+		mGuiComponents[(int)eComponentOrder::Transform]->set_size(ImVec2(0.f, 100.f));
+
+		mGuiComponents[(int)eComponentOrder::Renderer] = new_entity<RendererInspcetor>();
+		mGuiComponents[(int)eComponentOrder::Renderer]->set_size(ImVec2(0.f, 100.f));
 
 		//for (size_t i = 0; i < mGuiResources.size(); ++i)
 		//{
 		//	if (mGuiResources[i])
-		//		mGuiResources[i]->InitRecursive();
+		//		mGuiResources[i]->init_recursive();
 		//}
 	}
 
 	void InspectorBase::update()
 	{
-		if (mTargetGameObject && mTargetGameObject->IsDestroyed())
+		s_ptr<GameObject> target = mTargetGameObject.lock();
+		if (target)
 		{
-			mTargetGameObject = nullptr;
-		}
-
-		for (size_t i = 0; i < mGuiComponents.size(); ++i)
-		{
-			if (mGuiComponents[i])
+			if (target->is_destroyed())
 			{
-				if (mTargetGameObject)
+				mTargetGameObject.reset();
+			}
+
+			for (size_t i = 0; i < mGuiComponents.size(); ++i)
+			{
+				if (mGuiComponents[i])
 				{
-					mGuiComponents[i]->SetTarget(mTargetGameObject);
+					mGuiComponents[i]->set_target(target);
 					mGuiComponents[i]->update();
 				}
 			}
 		}
-
-		
-		//for (size_t i = 0; i < mGuiResources.size(); ++i)
-		//{
-
-		//	if (mGuiResources[i])
-		//	{
-		//		if (false == mTargetGameObject.expired())
-		//		{
-		//			mGuiResources[i]->SetTarget(mTargetResource);
-		//			mGuiResources[i]->update();
-		//		}
-		//	}
-		//		
-		//}
 	}
 
 	void InspectorBase::update_UI()
 	{
-		for (size_t i = 0; i < mGuiComponents.size(); ++i)
-		{
-			IndicatorButton(::core::name::eComponentCategory_String[(UINT)i].data());
+		s_ptr<GameObject> target = mTargetGameObject.lock();
 
-			if (mTargetGameObject && mGuiComponents[i])
+		if (target)
+		{
+			for (size_t i = 0; i < mGuiComponents.size(); ++i)
 			{
-				mGuiComponents[i]->final_update();
+				IndicatorButton(::core::name::eComponentCategory_String[(UINT)i].data());
+
+				if (mGuiComponents[i])
+				{
+					mGuiComponents[i]->final_update();
+				}
 			}
 		}
-
-		//for (size_t i = 0; i < mGuiResources.size(); ++i)
-		//{
-		//	if ((false == mTargetResource.expired()) && mGuiResources[i])
-		//	{
-		//		mGuiResources[i]->final_update();
-		//	}
-		//}
 	}
 
 	void InspectorBase::IndicatorButton(const char* _strButtonName)

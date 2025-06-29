@@ -3,7 +3,7 @@
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Resource/Shader/GraphicsShader.h>
-#include <Engine/GlobalVariable.h>
+#include <Engine/Global.h>
 #include <Engine/Util/Serialize/json.h>
 
 namespace core::editor
@@ -180,70 +180,80 @@ namespace core::editor
 	void EditorGraphicsShader::init()
 	{
 		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
+			std::vector<tComboItem> Items;
 			Items.reserve(name::DXGI_FORMAT_StringSize);
 			for (size_t i = 0; i < name::DXGI_FORMAT_StringSize; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ name::DXGI_FORMAT_String[i], });
+				tComboItem item{};
+				item.m_name = name::DXGI_FORMAT_String[i];
+				Items.push_back(item);
 			}
-			mDXGIFormatCombo.SetItems(Items);
-			mDXGIFormatCombo.SetStrKey("DXGI Format");
+			mDXGIFormatCombo.set_items(Items);
+			mDXGIFormatCombo.set_unique_name("DXGI Format");
 		}
 
 		//{
-		//	std::vector<EditorWidget_ComboBox::tComboItem> Items;
+		//	std::vector<tComboItem> Items;
 		//	Items.reserve(name::D3D_PRIMITIVE_TOPOLOGY_StringSize);
 		//	for (size_t i = 0; i < name::D3D_PRIMITIVE_TOPOLOGY_StringSize; ++i)
 		//	{
-		//		Items.push_back(EditorWidget_ComboBox::tComboItem{ name::D3D_PRIMITIVE_TOPOLOGY_String[i], });
+		//		Items.push_back(tComboItem{ name::D3D_PRIMITIVE_TOPOLOGY_String[i], });
 		//	}
-		//	mTopologyCombo.SetItems(Items);
-		//	mTopologyCombo.SetStrKey("Topology Type");
+		//	mTopologyCombo.set_items(Items);
+		//	mTopologyCombo.set_unique_name("Topology Type");
 		//}
 
 		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
+			std::vector<tComboItem> Items;
 			Items.reserve((size_t)eRasterizerState::END);
 			for (size_t i = 0; i < (size_t)eRasterizerState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eRasterizerState[i],});
+				tComboItem item{};
+				item.m_name = ::core::name::eRasterizerState[i];
+				Items.push_back(item);
 			}
-			mRSTypeCombo.SetItems(Items);
-			mRSTypeCombo.SetStrKey("Rasterizer Type");
+			mRSTypeCombo.set_items(Items);
+			mRSTypeCombo.set_unique_name("Rasterizer Type");
 		}
 
 		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
+			std::vector<tComboItem> Items;
 			Items.reserve((size_t)eDepthStencilState::END);
 			for (size_t i = 0; i < (size_t)eDepthStencilState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eDepthStencilState[i], });
+				tComboItem item{};
+				item.m_name = ::core::name::eDepthStencilState[i];
+				Items.push_back(item);
 			}
-			mDSTypeCombo.SetItems(Items);
-			mDSTypeCombo.SetStrKey("Depth-Stencil Type");
+			mDSTypeCombo.set_items(Items);
+			mDSTypeCombo.set_unique_name("Depth-Stencil Type");
 		}
 
 		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
+			std::vector<tComboItem> Items;
 			Items.reserve((size_t)eBlendState::END);
 			for (size_t i = 0; i < (size_t)eBlendState::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::eBlendState[i], });
+				tComboItem item{};
+				item.m_name = ::core::name::eBlendState[i];
+				Items.push_back(item);
 			}
-			mBSTypeCombo.SetItems(Items);
-			mBSTypeCombo.SetStrKey("Blend State");
+			mBSTypeCombo.set_items(Items);
+			mBSTypeCombo.set_unique_name("Blend State");
 		}
 		LoadShaderSettingComboBox();
 
 		{
-			std::vector<EditorWidget_ComboBox::tComboItem> Items;
+			std::vector<tComboItem> Items;
 			Items.reserve((int)eGSStage::END);
 			for (size_t i = 0; i < (int)eGSStage::END; ++i)
 			{
-				Items.push_back(EditorWidget_ComboBox::tComboItem{ ::core::name::ArrGSPrefix[i] });
+				tComboItem item{};
+				item.m_name = ::core::name::ArrGSPrefix[i];
+				Items.push_back(item);
 			}
-			mStageTypeCombo.SetItems(Items);
-			mStageTypeCombo.SetStrKey("Shader Type");
+			mStageTypeCombo.set_items(Items);
+			mStageTypeCombo.set_unique_name("Shader Type");
 		}
 	}
 
@@ -281,7 +291,7 @@ namespace core::editor
 					mSemanticName.clear();
 				
 				mDescForEdit = mInputLayoutDescs[i];
-				mDXGIFormatCombo.SetCurrentIndex((int)mDescForEdit.Format);
+				mDXGIFormatCombo.set_current_idx((int)mDescForEdit.Format);
 			}
 
 
@@ -377,8 +387,6 @@ namespace core::editor
 		LoadModal();
 	}
 
-
-
 	bool EditorGraphicsShader::CreateDefaultShaders()
 	{
 		using namespace core;
@@ -398,7 +406,6 @@ namespace core::editor
 			MessageBoxW(nullptr, L"쉐이더 파일이 없습니다.", nullptr, MB_OK);
 			return false;
 		}
-
 
 		//폴더 순회 돌면서 쉐이더 분류
 		for (const auto& entry : std::fs::directory_iterator(shaderPath))
@@ -422,10 +429,8 @@ namespace core::editor
 			}
 		}
 
-
-
 		//쉐이더 세팅 파일 경로 확인
-		std::vector<std::string> vecNewShaderGroup;
+		std::vector<tComboItem> new_shader_groups;
 		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
@@ -476,19 +481,23 @@ namespace core::editor
 				ofs << jVal;
 				ofs.close();
 
-				vecNewShaderGroup.push_back(iter.first.string());
+				{
+					tComboItem item{};
+					item.m_name = iter.first.string();
+					new_shader_groups.push_back(item);
+				}
 
-				mLoadFileCombo.SetItems(vecNewShaderGroup);
+				mLoadFileCombo.set_items(new_shader_groups);
 			}
 		}
 
 		//새 쉐이더 그룹이 발견되면 어떤 쉐이더 그룹이 새로 만들었는지 
-		if (false == vecNewShaderGroup.empty())
+		if (false == new_shader_groups.empty())
 		{
 			std::string Message = "New Shader Detected!\n";
-			for (size_t i = 0; i < vecNewShaderGroup.size(); ++i)
+			for (size_t i = 0; i < new_shader_groups.size(); ++i)
 			{
-				Message += vecNewShaderGroup[i];
+				Message += new_shader_groups[i].m_name;
 				Message += "\n";
 			}
 
@@ -510,7 +519,7 @@ namespace core::editor
 			return;
 		}
 
-		std::vector<EditorWidget_ComboBox::tComboItem> Items;
+		std::vector<tComboItem> Items;
 		for (const auto& entry : std::fs::directory_iterator(GSSettingsPath))
 		{
 			if (entry.is_directory())
@@ -519,11 +528,11 @@ namespace core::editor
 			Items.emplace_back(entry.path().filename().string());
 		}
 
-		mLoadFileCombo.SetItems(Items);
-		mLoadFileCombo.SetStrKey("Shader Setting Files");
+		mLoadFileCombo.set_items(Items);
+		mLoadFileCombo.set_unique_name("Shader Setting Files");
 	}
 
-	void EditorGraphicsShader::DXGISelectCallback(const EditorWidget_ComboBox::tComboItem& _item)
+	void EditorGraphicsShader::DXGISelectCallback(const tComboItem& _item)
 	{
 
 	}
@@ -579,7 +588,7 @@ namespace core::editor
 
 						mDescForEdit.SemanticName = pair.first->c_str();
 
-						int curSel = mDXGIFormatCombo.GetCurrentIndex();
+						int curSel = mDXGIFormatCombo.get_current_idx();
 
 						if (curSel < 0)
 							break;
@@ -593,7 +602,7 @@ namespace core::editor
 
 
 					mInputLayoutDescs[mSemanticEditIdx] = mDescForEdit;
-					mDXGIFormatCombo.UnSelect();
+					mDXGIFormatCombo.unselect();
 					mSemanticEditIdx = -1;
 				}
 				ImGui::SameLine();
@@ -601,7 +610,7 @@ namespace core::editor
 				{
 					mSemanticName.clear();
 					mDescForEdit = D3D11_INPUT_ELEMENT_DESC{};
-					mDXGIFormatCombo.UnSelect();
+					mDXGIFormatCombo.unselect();
 
 					mSemanticEditIdx = -1;
 				}
@@ -711,7 +720,7 @@ namespace core::editor
 
 						SaveToJson(FileName);
 
-						mStageTypeCombo.UnSelect();
+						mStageTypeCombo.unselect();
 						mSaveFileName.clear();
 						mbSaveModal = false;
 						ImGui::CloseCurrentPopup();
@@ -719,7 +728,7 @@ namespace core::editor
 				}
 				if (ImGui::Button("Cancel"))
 				{
-					mStageTypeCombo.UnSelect();
+					mStageTypeCombo.unselect();
 					mSaveFileName.clear();
 					mbSaveModal = false;
 					ImGui::CloseCurrentPopup();
@@ -743,7 +752,7 @@ namespace core::editor
 
 				if (ImGui::Button("Load File"))
 				{
-					std::string FileName = mLoadFileCombo.GetCurrentSelected().strName;
+					std::string FileName = mLoadFileCombo.get_current_selected().m_name;
 					if (FileName.empty())
 					{
 						MessageBoxW(nullptr, L"불러올 쉐이더를 선택하지 않았습니다.", nullptr, MB_OK);
@@ -758,7 +767,7 @@ namespace core::editor
 				}
 				if (ImGui::Button("Cancel"))
 				{
-					mLoadFileCombo.UnSelect();
+					mLoadFileCombo.unselect();
 					mbLoadModal = false;
 					ImGui::CloseCurrentPopup();
 				}
@@ -789,7 +798,7 @@ namespace core::editor
 		shader.SetInputLayoutDesc(mInputLayoutDescs);
 
 		//{
-		//	int curSel = mTopologyCombo.GetCurrentIndex();
+		//	int curSel = mTopologyCombo.get_current_idx();
 		//	if (curSel >= 0)
 		//	{
 		//		D3D_PRIMITIVE_TOPOLOGY topology = (D3D_PRIMITIVE_TOPOLOGY)curSel;
@@ -816,7 +825,7 @@ namespace core::editor
 
 
 		{
-			int curSel = mRSTypeCombo.GetCurrentIndex();
+			int curSel = mRSTypeCombo.get_current_idx();
 			if (0 <= curSel && curSel < (int)eRasterizerState::END)
 			{
 				eRasterizerState Type = (eRasterizerState)curSel;
@@ -830,7 +839,7 @@ namespace core::editor
 		}
 
 		{
-			int curSel = mDSTypeCombo.GetCurrentIndex();
+			int curSel = mDSTypeCombo.get_current_idx();
 			if (0 <= curSel && curSel < (int)eDepthStencilState::END)
 			{
 				eDepthStencilState Type = (eDepthStencilState)curSel;
@@ -844,7 +853,7 @@ namespace core::editor
 		}
 
 		{
-			int curSel = mBSTypeCombo.GetCurrentIndex();
+			int curSel = mBSTypeCombo.get_current_idx();
 
 			if (0 <= curSel && curSel < (int)eBlendState::END)
 			{
@@ -888,15 +897,15 @@ namespace core::editor
 
 		mInputLayoutDescs = shader.GetInputLayoutDescs();
 		
-		//mTopologyCombo.SetCurrentIndex((int)shader.get_topology());
+		//mTopologyCombo.set_current_idx((int)shader.get_topology());
 
 		for (size_t i = 0; i < mStageNames.size(); ++i)
 		{	
 			mStageNames[i] = shader.get_shader_name((eGSStage)i);
 		}
 
-		mRSTypeCombo.SetCurrentIndex((int)shader.get_rasterizer_state());
-		mDSTypeCombo.SetCurrentIndex((int)shader.get_depth_stencil_state());
-		mBSTypeCombo.SetCurrentIndex((int)shader.get_blend_state());
+		mRSTypeCombo.set_current_idx((int)shader.get_rasterizer_state());
+		mDSTypeCombo.set_current_idx((int)shader.get_depth_stencil_state());
+		mBSTypeCombo.set_current_idx((int)shader.get_blend_state());
 	}
 }

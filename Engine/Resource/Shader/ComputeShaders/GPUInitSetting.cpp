@@ -16,7 +16,7 @@
 namespace core
 {
 	GPUInitSetting::GPUInitSetting()
-		: ComputeShader(GPUInitSetting::s_concrete_class_name, uint3(1u, 1u, 1u))
+		: ComputeShader(GPUInitSetting::s_static_type_name, uint3(1u, 1u, 1u))
 	{
 		set_engine_default_res(true);
 	}

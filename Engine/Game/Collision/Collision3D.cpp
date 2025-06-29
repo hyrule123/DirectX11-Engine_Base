@@ -75,7 +75,7 @@ namespace core
 		m_pxScene = PhysXInstance::get_inst().GetPhysX().createScene(sceneDescription);
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
-		m_pxScene->setName(gameScene->get_concrete_class_name().data());
+		m_pxScene->setName(gameScene->get_static_type_name().data());
 
 		m_pxScene->userData = this;
 	}
@@ -312,10 +312,10 @@ namespace core
 			}
 
 			s_ptr<GameObject> leftObj = static_cast<Rigidbody*>(contactpair.triggerActor->userData)->get_owner();
-			s_ptr<Collider> leftCol = leftObj->GetComponent<Collider>();
+			s_ptr<Collider> leftCol = leftObj->get_component<Collider>();
 
 			s_ptr<GameObject> rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->get_owner();
-			s_ptr<Collider> rightCol = rightObj->GetComponent<Collider>();
+			s_ptr<Collider> rightCol = rightObj->get_component<Collider>();
 
 			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
 			{
@@ -364,10 +364,10 @@ namespace core
 			}
 
 			s_ptr<GameObject> leftObj = static_cast<Rigidbody*>(pairHeader.actors[0]->userData)->get_owner();
-			s_ptr<Collider> leftCol = leftObj->GetComponent<Collider>();
+			s_ptr<Collider> leftCol = leftObj->get_component<Collider>();
 
 			s_ptr<GameObject> rightObj = static_cast<Rigidbody*>(pairHeader.actors[1]->userData)->get_owner();
-			s_ptr<Collider> rightCol = rightObj->GetComponent<Collider>();
+			s_ptr<Collider> rightCol = rightObj->get_component<Collider>();
 
 			if (leftCol == rightCol)
 			{

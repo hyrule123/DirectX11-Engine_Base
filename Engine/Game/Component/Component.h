@@ -40,13 +40,10 @@ namespace core {
 		};
 
 		Component(const std::string_view key, eComponentOrder _type);
-
 		Component(const Component& _other);
-		
-
 		virtual ~Component();
 
-		virtual void init() {}
+		virtual void init() override;
 		virtual void Awake() {}
 		virtual void OnEnable() {}
 		virtual void Start() {}
@@ -80,12 +77,12 @@ namespace core {
 			m_state = eState::DestroyReserved;
 		}
 
-		inline eState GetState() const { return m_state; }
+		inline eState get_state() const { return m_state; }
 
 		bool UpdateDestroyState();
 
 	private:
-		inline void SetState(eState _state) { m_state = _state; }
+		inline void set_state(eState _state) { m_state = _state; }
 
 		const eComponentOrder m_ComCategory;
 		w_ptr<GameObject> m_ownerGameObject;

@@ -16,7 +16,7 @@
 namespace core
 {
     Material::Material()
-        : Resource(Material::s_concrete_class_name)
+        : Resource(Material::s_static_type_name)
         , m_shared_material_data{}
         , m_renderingMode(eRenderingMode::forward_opaque)
         , m_shader{}

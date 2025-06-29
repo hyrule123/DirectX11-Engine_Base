@@ -4,6 +4,7 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <unordered_map>
 
 #if defined (_WIN64) || (_WIN32)
 #define WIN32_LEAN_AND_MEAN
@@ -82,16 +83,8 @@ namespace core
 		std::size_t operator()(std::string const& str) const { return hash_type{}(str); }
 	};
 
-	//Shared_ptr은 std::hash에 자체적으로 .get 해서 해싱을 하는 기능이 있음(굳이 내가 따로 선언할 필요가 없음)
-	struct tDataPtr
-	{
-		void* pData;
-		size_t size;
-
-		template <typename T>
-		void SetDataPtr(const T& _pData) { pData = (void*)_pData; size = sizeof(T); }
-	};
-
+	template <typename T>
+	using umap_string = std::unordered_map<std::string, T, Hasher_StringView, std::equal_to<>>;
 
 	struct tMTBone
 	{

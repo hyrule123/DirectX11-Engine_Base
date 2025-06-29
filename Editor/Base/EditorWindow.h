@@ -6,22 +6,30 @@ namespace core::editor
 	class EditorWindow :
 		public EditorBase
 	{
-
+		CLASS_INFO(EditorWindow, EditorBase);
 	public:
-		EditorWindow(const std::string_view _strName);
+		EditorWindow(const std::string_view _static_type_name);
+		virtual void init() override;
+
 		virtual ~EditorWindow();
 
-		virtual bool BeginUI() override;
-		virtual void update_UI() {};
-		virtual void EndUI() override;
+		virtual bool begin_UI() final;
+		//virtual void update_UI() override;
+		virtual void end_UI() final;
 
-		void SetFlag(ImGuiWindowFlags _flag) { mWindowFlag = _flag; }
-		void AddFlag(ImGuiWindowFlags _flag) { mWindowFlag |= _flag; }
-		void SubFlag(ImGuiWindowFlags _flag) { mWindowFlag &= ~_flag; }
-		ImGuiWindowFlags GetImGuiWindowFlag() const { return mWindowFlag; }
+		void set_size(ImVec2 _v2Size) { m_widget_size = _v2Size; }
+
+		void add_window_flag(ImGuiWindowFlags _flag) { m_ImGui_window_flag |= _flag; }
+		void sub_window_flag(ImGuiWindowFlags _flag) { m_ImGui_window_flag &= ~_flag; }
+		void set_window_flag(ImGuiWindowFlags _flag) { m_ImGui_window_flag = _flag; }
+		ImGuiWindowFlags get_window_flag() const { return m_ImGui_window_flag; }
 
 	private:
-		ImGuiWindowFlags mWindowFlag;
+		ImVec2 m_widget_size;
+
+		ImGuiWindowFlags m_ImGui_window_flag;
+
+		bool m_b_border;
 	};
 }
 

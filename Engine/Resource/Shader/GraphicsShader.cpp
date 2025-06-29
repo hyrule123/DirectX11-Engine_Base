@@ -1,6 +1,6 @@
 #include "Engine/Resource/Shader/GraphicsShader.h"
 
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 
 #include "Engine/Manager/RenderManager.h"
 #include "Engine/Manager/ResourceManager.h"
@@ -12,7 +12,7 @@
 namespace core
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(GraphicsShader::s_concrete_class_name)
+		: Shader(GraphicsShader::s_static_type_name)
 		, m_inputLayoutDescs{}
 		, m_inputLayout{}
 		, m_arrShaderCode{}

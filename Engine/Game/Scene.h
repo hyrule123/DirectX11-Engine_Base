@@ -29,13 +29,13 @@ namespace core
 
 		bool	IsAwaken() const { return m_bAwake; }
 
-		s_ptr<GameObject> AddGameObject(const s_ptr<GameObject>& _newObject);
+		s_ptr<GameObject> add_game_object_recursive(const s_ptr<GameObject>& _newObject);
 
 		//들어간 갯수
 		std::vector<s_ptr<GameObject>> AddGameObjects(const std::vector<s_ptr<GameObject>>& _gameObjects);
 
 		std::vector<s_ptr<GameObject>>		GetDontDestroyGameObjects();
-		const std::vector<s_ptr<GameObject>>& GetGameObjects() { return m_gameObjects; }
+		const std::vector<s_ptr<GameObject>>& get_game_objects() { return m_gameObjects; }
 
 		//있음이 보장됨
 		CollisionSystem* GetCollisionSystem() { return m_collisionSystem.get(); }

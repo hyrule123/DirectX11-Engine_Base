@@ -17,7 +17,7 @@
 namespace core
 {
 	GameObject::GameObject()
-		: Entity(GameObject::s_concrete_class_name)
+		: Entity(GameObject::s_static_type_name)
 	{
 	}
 
@@ -69,7 +69,7 @@ namespace core
 			else
 			{
 				std::wstringstream stream{};
-				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->get_concrete_class_name());
+				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->get_static_type_name());
 				stream << L"스크립트 복사 실패.\n";
 				DEBUG_LOG_W(stream.str().c_str());
 			}
@@ -125,12 +125,12 @@ namespace core
 		m_isAwaken = false;
 		m_bDontDestroyOnLoad = false;
 
-		AddComponent<Transform>();
+		add_component<Transform>();
 	}
 
 	void GameObject::Awake()
 	{
-		if (m_isAwaken || false == IsActive())
+		if (m_isAwaken || false == is_active())
 		{
 			return;
 		}
@@ -166,10 +166,10 @@ namespace core
 		}
 
 		//OnLayerChange 호출
-		SetLayer(m_layer);
+		set_layer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
-		const std::vector<w_ptr<Transform>>& childs = GetComponent<Transform>()->get_childs();
+		const std::vector<w_ptr<Transform>>& childs = get_component<Transform>()->get_childs();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
 			auto child = childs[i].lock();
@@ -250,18 +250,18 @@ namespace core
 	}
 
 
-	void GameObject::RemoveDestroyed()
+	void GameObject::remove_destroyed()
 	{
 		//람다 쓰는 이유: BaseComponents와 Scripts 두군데에 적용해야함
 		auto needDestroyPred =
 			[](const s_ptr<Component>& _com)->bool
 			{
-				Component::eState state = _com->GetState();
+				Component::eState state = _com->get_state();
 
 				if (Component::eState::DestroyReserved == state)
 				{
 					_com->SetEnable(false);
-					_com->SetState(Component::eState::Destroy);
+					_com->set_state(Component::eState::Destroy);
 					return false;
 				}
 				else if (Component::eState::Destroy == state)
@@ -293,7 +293,7 @@ namespace core
 	//이 함수는 다른 카메라가 호출함
 	void GameObject::render()
 	{
-		if (false == IsActive())
+		if (false == is_active())
 		{
 			return;
 		}
@@ -307,7 +307,7 @@ namespace core
 
 	void GameObject::frame_end()
 	{
-		if (false == IsActive())
+		if (false == is_active())
 		{
 			return;
 		}
@@ -329,8 +329,12 @@ namespace core
 		}
 	}
 
+	s_ptr<Transform> GameObject::get_transform() const
+	{
+		return std::static_pointer_cast<Transform>(get_component(eComponentOrder::Transform));
+	}
 
-	s_ptr<Component> GameObject::AddComponent(const s_ptr<Component>& _pCom)
+	s_ptr<Component> GameObject::add_component(const s_ptr<Component>& _pCom)
 	{
 		if (nullptr == _pCom) { return nullptr; }
 
@@ -357,11 +361,11 @@ namespace core
 		if (false == _pCom->IsInitialized())
 		{
 			_pCom->init();
-			_pCom->SetState(Component::eState::NotAwaken);
+			_pCom->set_state(Component::eState::NotAwaken);
 		}
 
 		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
-		if (IsActive() && m_isAwaken)
+		if (is_active() && m_isAwaken)
 		{
 			_pCom->Awake();
 		}
@@ -369,23 +373,23 @@ namespace core
 		return _pCom;
 	}
 
-	s_ptr<Component> GameObject::AddComponent(const std::string_view _resource_name)
+	s_ptr<Component> GameObject::add_component(const std::string_view _resource_name)
 	{
 		s_ptr<Component> ret = 
 			std::dynamic_pointer_cast<Component>(EntityFactory::get_inst().instantiate(_resource_name));
 		return ret;
 	}
 
-	s_ptr<Script> GameObject::AddScript(const std::string_view _resource_name)
+	s_ptr<Script> GameObject::add_script(const std::string_view _resource_name)
 	{
 		s_ptr<Script> ret =
 			std::dynamic_pointer_cast<Script>(EntityFactory::get_inst().instantiate(_resource_name));
 		return ret;
 	}
 
-	void GameObject::SetActive(bool _bActive)
+	void GameObject::set_active(bool _bActive)
 	{
-		if (IsDestroyed() || IsActive() == _bActive)
+		if (is_destroyed() || is_active() == _bActive)
 		{
 			return;
 		}
@@ -395,26 +399,26 @@ namespace core
 		ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
 		if (scene->IsAwaken())
 		{
-			scene->AddFrameEndJob(&GameObject::SetActiveInternal, this, _bActive);
+			scene->AddFrameEndJob(&GameObject::set_active_internal, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
 		else
 		{
-			SetActiveInternal(_bActive);
+			set_active_internal(_bActive);
 		}
 
 		//자식이 있을경우 전부 InActive
-		const auto& childs = GetComponent<Transform>()->get_gameobject_hierarchy();
+		const auto& childs = get_component<Transform>()->get_gameobject_hierarchy();
 		for (size_t i = 0; i < childs.size(); ++i)
 		{
-			childs[i]->SetActive(false);
+			childs[i]->set_active(false);
 		}
 	}
 
-	void GameObject::Destroy()
+	void GameObject::destroy()
 	{
-		if (IsDestroyed())
+		if (is_destroyed())
 		{
 			return;
 		}
@@ -436,12 +440,12 @@ namespace core
 			}
 		}
 
-		s_ptr<Transform> tr = GetComponent<Transform>();
+		s_ptr<Transform> tr = get_component<Transform>();
 		tr->unlink_parent();
 		tr->destroy_childs_recursive();
 	}
 
-	void GameObject::SetLayer(uint32 _layer)
+	void GameObject::set_layer(uint32 _layer)
 	{
 
 		m_layer = _layer;
@@ -462,10 +466,10 @@ namespace core
 		}
 	}
 
-	void GameObject::SetActiveInternal(bool _bActive)
+	void GameObject::set_active_internal(bool _bActive)
 	{
 		//제거 대기 상태가 아님 && 바꾸고자 하는 상태가 현재 상태와 다른 경우에만
-		if (false == IsDestroyed() && IsActive() != _bActive)
+		if (false == is_destroyed() && is_active() != _bActive)
 		{
 			if (_bActive)
 			{
@@ -509,13 +513,13 @@ namespace core
 		}
 	}
 
-	s_ptr<Script> GameObject::GetScript(const std::string_view _resource_name)
+	s_ptr<Script> GameObject::get_script(const std::string_view _resource_name)
 	{
 		s_ptr<Script> retScript = nullptr;
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (_resource_name == m_scripts[i]->get_concrete_class_name())
+			if (_resource_name == m_scripts[i]->get_static_type_name())
 			{
 				retScript = m_scripts[i];
 				break;

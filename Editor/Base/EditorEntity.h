@@ -2,6 +2,8 @@
 #include <Engine/Common.h>
 #include <Engine/define_Enum.h>
 
+#include <Engine/Game/Entity.h>
+
 #include "Editor/imgui/imgui.h"
 #include "Editor/imgui/imgui_stdlib.h"
 
@@ -10,38 +12,31 @@
 namespace core::editor
 {
 	class EditorEntity
-		: public std::enable_shared_from_this<EditorEntity>
+		: public Entity
 	{
+		CLASS_INFO(EditorEntity, Entity);
+
 	public:
-		EditorEntity(const std::string_view _strName);
+		EditorEntity(const std::string_view _concrete_name);
+		virtual void init() override;
+
 		virtual ~EditorEntity();
 
-		UINT32 GetID() const { return m_ID; }
+		void set_save_enable(bool _bSaveEnable) { m_b_enable_save = _bSaveEnable; }
+		bool is_save_enable() const { return m_b_enable_save; }
 
-		const std::string& GetName() const { return m_Name; }
-
-		void MakeUniqueKeyByName() { m_StrKey += "##"; m_StrKey += std::to_string(m_ID); }
-		void SetStrKey(const std::string_view _key_path) { m_StrKey = _key_path; }
-		const std::string& get_resource_name() const { return m_StrKey; }
-		
-		void SetSaveEnable(bool _bSaveEnable) { m_bSaveEnable = _bSaveEnable; }
-		bool IsSaveEnable() const { return m_bSaveEnable; }
+		void set_unique_name(const std::string_view _name) { m_unique_name = _name; }
+		const std::string& get_unique_name() const { return m_unique_name; }
 
 	private:
-		static UINT32				g_NextID;
-		const UINT32				m_ID;
-
-		//이름(중복 가능)
-		std::string					m_Name;
-		
-		//Key(중복 불가)
-		std::string					m_StrKey;
-
 		//데이터를 저장할지 말지 결정(기본 Off)
-		bool						m_bSaveEnable;
+		bool						m_b_enable_save;
+
+		//저장용으로 사용되는 이름
+		std::string m_unique_name;
 	};
 
-	void HilightText(const char* _label, const ImVec2& _size = ImVec2(0.f, 0.f));
+	void hilight_text(const char* _label, const ImVec2& _size = ImVec2(0.f, 0.f));
 }
 
 

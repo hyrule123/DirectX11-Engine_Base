@@ -7,7 +7,7 @@
 namespace core
 {
 	Com_Animator2D::Com_Animator2D()
-		: Animator(Com_Animator2D::s_concrete_class_name, eDimensionType::_2D)
+		: Animator(Com_Animator2D::s_static_type_name, eDimensionType::_2D)
 		, mAnimations{}
 		, mActiveAnimation(nullptr)
 		, mbLoop(false)
@@ -120,7 +120,7 @@ namespace core
 		mAnimations.insert(std::make_pair(_name, animation));		
 
 		//사이즈 수정
-		const auto& tr = get_owner()->GetComponent<Transform>(); 
+		const auto& tr = get_owner()->get_component<Transform>(); 
 		if (tr)
 		{
 			float2 size = animation->GetSpriteSize(0u);

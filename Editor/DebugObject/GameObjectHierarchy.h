@@ -1,6 +1,5 @@
 #pragma once
-#include "Editor/Base/EditorChild.h"
-#include "Editor/Widget/Widget_Tree.h"
+#include "Editor/Base/EditorWindow.h"
 
 namespace core
 {
@@ -9,6 +8,9 @@ namespace core
 
 namespace core::editor
 {
+	class TreeNode;
+	class EditorWidget_Tree;
+
 	class GameObjectHierarchy : public EditorWindow
 	{
 	public:
@@ -18,11 +20,13 @@ namespace core::editor
 		virtual void init() override;
 		virtual void update() override;
 
-		void GameobjectSelectCallback(tDataPtr _data);
+		//콜백함수 등록 용도
+		void GameobjectSelectCallback(w_ptr<void> _gameobj);
 		void InitializeScene();
-		void AddGameObject(EditorWidget_Tree::tNode* parent, GameObject* get_owner);
+
+		s_ptr<TreeNode> add_game_object_recursive(const s_ptr<GameObject>& _root_obj);
 
 	private:
-		std::shared_ptr<EditorWidget_Tree> mTreeWidget;
+		s_ptr<EditorWidget_Tree> m_tree_widget;
 	};
 }

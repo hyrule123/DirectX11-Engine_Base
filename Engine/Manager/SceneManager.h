@@ -22,7 +22,7 @@ namespace core
 
 		s_ptr<Scene>  LoadScene(const s_ptr<Scene>& _scene);
 		s_ptr<Scene>	LoadScene(const std::string_view _scene_name);
-		s_ptr<Scene> GetActiveScene() { return m_activeScene; }
+		s_ptr<Scene> get_active_scene() { return m_activeScene; }
 
 	private:
 		s_ptr<Scene>				m_activeScene;

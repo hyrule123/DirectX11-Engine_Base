@@ -1,6 +1,6 @@
 #include "Engine/Resource/Mesh/Mesh.h"
 
-#include "Engine/GlobalVariable.h"
+#include "Engine/Global.h"
 
 #include "Engine/GPU/StructBuffer.h"
 
@@ -28,7 +28,7 @@
 namespace core
 {
 	Mesh::Mesh()
-		: Resource(Mesh::s_concrete_class_name)
+		: Resource(Mesh::s_static_type_name)
 		, m_vertex_buffer{}
 		, m_index_buffer{}
 		, m_index_topology{}

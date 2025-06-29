@@ -2,26 +2,39 @@
 
 namespace core::editor
 {
-	EditorWindow::EditorWindow(const std::string_view _strName)
-		: EditorBase(_strName)
-		, mWindowFlag()
+	EditorWindow::EditorWindow(const std::string_view _static_type_name)
+		: EditorBase(_static_type_name)
 	{
-		SetSaveEnable(true);
 	}
+	void EditorWindow::init()
+	{
+		Super::init();
+
+		set_save_enable(true);
+
+		m_widget_size = {};
+		m_ImGui_window_flag = ImGuiWindowFlags_::ImGuiWindowFlags_None;
+		m_b_border = false;
+
+
+	}
+
 	EditorWindow::~EditorWindow()
 	{
 	}
-	bool EditorWindow::BeginUI()
+
+	bool EditorWindow::begin_UI()
 	{
-		bool retVal = ImGui::Begin(get_resource_name().c_str(), GetEnablePtr(), mWindowFlag);
-		if(false == retVal)
+		if (false == 
+			ImGui::Begin(get_unique_name().c_str(), is_enabled_ptr(), m_ImGui_window_flag))
 		{
 			ImGui::End();
+			return false;
 		}
-
-		return retVal;
+		return true;
 	}
-	void EditorWindow::EndUI()
+
+	void EditorWindow::end_UI()
 	{
 		ImGui::End();
 	}
