@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
 float4 main(VS_OUT _in) : SV_TARGET
 {

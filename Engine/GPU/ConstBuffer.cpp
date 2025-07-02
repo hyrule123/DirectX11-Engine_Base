@@ -1,6 +1,6 @@
-#include "Engine/GPU/ConstBuffer.h"
 
-#include "Engine/Manager/RenderManager.h"
+#include "ConstBuffer.h"
+#include <Engine/Manager/RenderManager.h>
 
 namespace core
 {

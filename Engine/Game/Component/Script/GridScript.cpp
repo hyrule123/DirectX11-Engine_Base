@@ -1,15 +1,16 @@
-#include "Engine/Game/Component/Script/GridScript.h"
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/Game/GameObject.h"
-#include "Engine/GameEngine.h"
+#include "GridScript.h"
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/SceneManager.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/Game/GameObject.h>
+#include <Engine/GameEngine.h>
+
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/SceneManager.h>
 
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Camera/Com_Camera.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Camera/Com_Camera.h>
 
 namespace core
 {

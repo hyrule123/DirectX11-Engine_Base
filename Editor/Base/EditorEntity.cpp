@@ -1,4 +1,4 @@
-#include "Editor/Base/EditorEntity.h"
+#include <Editor/Base/EditorEntity.h>
 
 namespace core::editor
 {

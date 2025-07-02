@@ -1,18 +1,19 @@
-#include "Engine/Game/GameObject.h"
 
-#include "Engine/Manager/SceneManager.h"
+#include "GameObject.h"
 
-#include "Engine/Util/Serialize/json.h"
+#include <Engine/Manager/SceneManager.h>
 
-#include "Engine/Resource/Prefab.h"
+#include <Engine/Util/Serialize/json.h>
 
-#include "Engine/Game/Component/Renderer/Renderer.h"
+#include <Engine/Resource/Prefab.h>
 
-#include "Engine/Util/StringConverter.h"
+#include <Engine/Game/Component/Renderer/Renderer.h>
 
-#include "Engine/Game/Component/Component.h"
-#include "Engine/Game/Component/Script/Script.h"
-#include "Engine/Game/Component/Transform.h"
+#include <Engine/Util/StringConverter.h>
+
+#include <Engine/Game/Component/Component.h>
+#include <Engine/Game/Component/Script/Script.h>
+#include <Engine/Game/Component/Transform.h>
 
 namespace core
 {
@@ -117,6 +118,8 @@ namespace core
 
 	void GameObject::init()
 	{
+		Super::init();
+
 		m_baseComponents;
 		m_scene;
 		m_layer = UINT_MAX;

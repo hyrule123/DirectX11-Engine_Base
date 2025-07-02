@@ -1,14 +1,15 @@
-#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
 
-#include "Engine/Manager/RenderManager.h"
+#include "Animation3D_ComputeShader.h"
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+
+#include <Engine/DefaultShader/Common_register.hlsli>
 
 #if defined (_WIN64) && (_DEBUG)
-#include "Engine/CompiledShaderHeader/Animation3D_CS_x64_Debug.h"
+#include <Engine/CompiledShaderHeader/Animation3D_CS_x64_Debug.h>
 #else
 #error 헤더 include 해주세요
 #endif

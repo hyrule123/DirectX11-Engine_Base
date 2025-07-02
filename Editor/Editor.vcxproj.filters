@@ -18,10 +18,8 @@
     <ClInclude Include="UI\EditorMainMenu.h" />
     <ClInclude Include="Base\EditorWindow.h" />
     <ClInclude Include="DebugObject\Console.h" />
-    <ClInclude Include="DebugObject\DebugObject.h" />
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
-    <ClInclude Include="DebugObject\Object.h" />
     <ClInclude Include="Inspector\RendererInspector.h" />
     <ClInclude Include="Inspector\TransformInspector.h" />
     <ClInclude Include="Inspector\InspectorBase.h" />
@@ -58,10 +56,8 @@
     <ClCompile Include="UI\EditorMainMenu.cpp" />
     <ClCompile Include="Base\EditorWindow.cpp" />
     <ClCompile Include="DebugObject\Console.cpp" />
-    <ClCompile Include="DebugObject\DebugObject.cpp" />
     <ClCompile Include="DebugObject\SceneViewer.cpp" />
     <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
-    <ClCompile Include="DebugObject\Object.cpp" />
     <ClCompile Include="Inspector\RendererInspector.cpp" />
     <ClCompile Include="Inspector\TransformInspector.cpp" />
     <ClCompile Include="Inspector\InspectorBase.cpp" />

@@ -1,7 +1,7 @@
-#include "Engine/Manager/Resourcemanagers.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/Resourcemanagers.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
+#include <Engine/Resource/Mesh/Mesh.h>
 
 namespace core {
 	void ResourceManagers::load_default_meshes()

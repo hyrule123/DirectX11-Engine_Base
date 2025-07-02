@@ -1,10 +1,11 @@
-#include "Engine/Resource/Mesh/VertexBuffer.h"
 
-#include "Engine/Manager/RenderManager.h"
+#include "VertexBuffer.h"
 
-#include "Engine/Util/Serialize/BinarySerializer.h"
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/Resource/define_Resource.h"
+#include <Engine/Util/Serialize/BinarySerializer.h>
+
+#include <Engine/Resource/define_Resource.h>
 
 namespace core {
 
@@ -45,7 +46,7 @@ namespace core {
 		return create_vertex_buffer_internal();
 	}
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/ResourceManager.h>
 	void VertexBuffer::IA_set_vertex_buffer()
 	{
 		if (m_buffer) {

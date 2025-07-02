@@ -1,6 +1,5 @@
 #pragma once
-
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 #include <memory>
 
 namespace core

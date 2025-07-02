@@ -1,21 +1,22 @@
-#include "Engine/Game/Collision/CollisionSystem.h"
 
-#include "Engine/Game/Scene.h"
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Collider/Collider2D.h"
-#include "Engine/Game/Collision/Collision2D.h"
-#include "Engine/Game/Collision/Collision3D.h"
+#include "CollisionSystem.h"
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Game/Scene.h>
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Collider/Collider2D.h>
+#include <Engine/Game/Collision/Collision2D.h>
+#include <Engine/Game/Collision/Collision3D.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
 
-#include "Engine/Util/AtExit.h"
+#include <Engine/GPU/StructBuffer.h>
 
-#include "Engine/Manager/SceneManager.h"
+#include <Engine/Util/AtExit.h>
+
+#include <Engine/Manager/SceneManager.h>
 
 namespace core
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Game/Component/Light/Light.h"
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/Game/Component/Light/Light.h>
+#include <Engine/GPU/CommonGPU.h>
 
 namespace core
 {

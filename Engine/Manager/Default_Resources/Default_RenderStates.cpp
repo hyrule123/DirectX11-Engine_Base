@@ -1,5 +1,5 @@
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
 namespace core {
 	void RenderManager::create_default_render_states()

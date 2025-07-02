@@ -1,15 +1,16 @@
-#include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
 
-#include "Engine/GPU/StructBuffer.h"
+#include "GPUInitSetting.h"
 
-#include "Engine/DefaultShader/Common_struct.hlsli"
-#include "Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli"
+#include <Engine/GPU/StructBuffer.h>
+
+#include <Engine/DefaultShader/Common_struct.hlsli>
+#include <Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli>
 
 #if defined (_WIN64) && !(NDEBUG)
-#include "Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Debug.h"
+#include <Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Debug.h>
 #endif
 #if defined(_WIN64) && (NDEBUG)
-#include "Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Release.h"
+#include <Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Release.h>
 #endif
 
 

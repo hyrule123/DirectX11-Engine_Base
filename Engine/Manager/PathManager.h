@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Resource/define_Resource.h"
-#include "Engine/Util/Singleton.h"
+#include <Engine/Resource/define_Resource.h>
+#include <Engine/Util/Singleton.h>
 
 
 #include <filesystem>

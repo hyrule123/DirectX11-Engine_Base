@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/Util/EnumFlags.h"
-#include "Engine/Common.h"
+#include <Engine/Util/EnumFlags.h>
+#include <Engine/Common.h>
 
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/Singleton.h>
 
 namespace core
 {

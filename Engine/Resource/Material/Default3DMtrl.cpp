@@ -1,27 +1,28 @@
-#include "Engine/Resource/Material/Default3DMtrl.h"
 
-#include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/GPU/StructBuffer.h"
+#include "Default3DMtrl.h"
+
+#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/GPU/StructBuffer.h>
 
 #ifdef _DEBUG
-#include "Engine/CompiledShaderHeader/Deffered3D_VS_x64_Debug.h"
-#include "Engine/CompiledShaderHeader/Deffered3D_PS_x64_Debug.h"
+#include <Engine/CompiledShaderHeader/Deffered3D_VS_x64_Debug.h>
+#include <Engine/CompiledShaderHeader/Deffered3D_PS_x64_Debug.h>
 #else
-#include "Engine/CompiledShaderHeader/Deffered3D_VS_x64_Release.h"
-#include "Engine/CompiledShaderHeader/Deffered3D_PS_x64_Release.h"
+#include <Engine/CompiledShaderHeader/Deffered3D_VS_x64_Release.h>
+#include <Engine/CompiledShaderHeader/Deffered3D_PS_x64_Release.h>
 #endif
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Game/Component/Animator/Com_Animator3D.h"
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Animator/Com_Animator3D.h"
-#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
+#include <Engine/Game/Component/Animator/Com_Animator3D.h>
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Animator/Com_Animator3D.h>
+#include <Engine/Game/Component/Animator/Animation3D_PlayData.h>
 
-#include "Engine/Resource/Model3D/Skeleton.h"
-#include "Engine/Resource/Shader/GraphicsShader.h"
+#include <Engine/Resource/Model3D/Skeleton.h>
+#include <Engine/Resource/Shader/GraphicsShader.h>
 
 namespace core {
     Default3DMtrl::Default3DMtrl()

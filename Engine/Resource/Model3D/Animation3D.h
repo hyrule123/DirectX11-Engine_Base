@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Resource/Animation.h"
+#include <Engine/Resource/Animation.h>
 
-#include "Engine/Util/SimpleMath.h"
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Util/SimpleMath.h>
+#include <Engine/Util/Serialize/Serializable.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
 namespace core
 {

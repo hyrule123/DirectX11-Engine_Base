@@ -1,13 +1,14 @@
-#include "Engine/Resource/Shader/GraphicsShader.h"
 
-#include "Engine/Global.h"
+#include "GraphicsShader.h"
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/PathManager.h"
+#include <Engine/Global.h>
 
-#include "Engine/Util/Serialize/JsonSerializer.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/PathManager.h>
+
+#include <Engine/Util/Serialize/JsonSerializer.h>
 
 namespace core
 {

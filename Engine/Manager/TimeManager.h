@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/define_Enum.h"
-#include "Engine/DefaultSettingVar.h"
-#include "Engine/Global.h"
-#include "Engine/Util/Singleton.h"
+#include <Engine/define_Enum.h>
+#include <Engine/DefaultSettingVar.h>
+#include <Engine/Global.h>
+#include <Engine/Util/Singleton.h>
 
 #include <chrono>
 

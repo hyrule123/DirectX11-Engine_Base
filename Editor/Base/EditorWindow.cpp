@@ -1,4 +1,4 @@
-#include "Editor/Base/EditorWindow.h"
+#include <Editor/Base/EditorWindow.h>
 
 namespace core::editor
 {
@@ -25,8 +25,8 @@ namespace core::editor
 
 	bool EditorWindow::begin_UI()
 	{
-		if (false == 
-			ImGui::Begin(get_unique_name().c_str(), is_enabled_ptr(), m_ImGui_window_flag))
+		bool result = ImGui::Begin(get_unique_name().c_str(), is_enabled_ptr(), m_ImGui_window_flag);
+		if (false == result)
 		{
 			ImGui::End();
 			return false;

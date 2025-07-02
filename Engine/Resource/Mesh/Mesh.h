@@ -1,12 +1,12 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
-#include "Engine/Util/Serialize/Serializable.h"
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/Util/Serialize/Serializable.h>
+#include <Engine/GPU/CommonGPU.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
-#include "Engine/Resource/Mesh/VertexBuffer.h"
+#include <Engine/Resource/Mesh/VertexBuffer.h>
 //Vertex Buffer: 여러 Mesh에서 데이터 공유
 //Index Buffer: Mesh마다 딱 하나씩 들고 있음
 

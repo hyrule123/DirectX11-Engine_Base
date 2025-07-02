@@ -1,10 +1,11 @@
-#include "Engine/GPU/StructBuffer.h"
-
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/RenderManager.h"
+#include "StructBuffer.h"
 
 
-#include "Engine/GPU/ConstBuffer.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/RenderManager.h>
+
+
+#include <Engine/GPU/ConstBuffer.h>
 
 namespace core
 {

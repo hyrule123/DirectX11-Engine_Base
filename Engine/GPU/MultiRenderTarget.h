@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Entity.h"
+#include <Engine/Game/Entity.h>
 
-#include "CommonGPU.h"
+#include <Engine/GPU/CommonGPU.h>
 
 namespace core
 {

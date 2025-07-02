@@ -1,13 +1,14 @@
-#include "Engine/Game/Component/Renderer/Com_Renderer_Sprite.h"
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Animator/Com_Animator2D.h"
 
-#include "Engine/Manager/ResourceManager.h"
+#include "Com_Renderer_Sprite.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Animator/Com_Animator2D.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
+
+#include <Engine/Game/GameObject.h>
 
 
 

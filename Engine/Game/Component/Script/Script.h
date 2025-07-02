@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include <Engine/Game/Component/Component.h>
 
-#include "Engine/Game/Component/Collider/Collider2D.h"
+#include <Engine/Game/Component/Collider/Collider2D.h>
 
 namespace core
 {

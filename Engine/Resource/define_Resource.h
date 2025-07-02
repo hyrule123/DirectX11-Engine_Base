@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/define_Macro.h"
-#include "Engine/define_Enum.h"
+#include <Engine/define_Macro.h>
+#include <Engine/define_Enum.h>
 
 namespace core
 {
@@ -23,7 +23,7 @@ namespace core
 
 					//모델링 설정에 따라 애니메이션을 사용할수도 안할수도 있음
 					STR_KEY Model3D = "Model3D";
-					//STR_KEY Skeleton = "Engine/Resource/Model3D/Skeleton";
+					//STR_KEY Skeleton = <Engine/Resource/Model3D/Skeleton";
 
 					STR_KEY AudioClip = "AudioClip";
 

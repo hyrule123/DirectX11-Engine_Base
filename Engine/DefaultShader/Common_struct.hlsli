@@ -1,6 +1,6 @@
 #ifndef COMMON_STRUCT_HLSLI
 #define COMMON_STRUCT_HLSLI
-#include "Engine/DefaultShader/Common_define.hlsli"
+#include <Engine/DefaultShader/Common_define.hlsli>
 
 //C++와 공동으로 사용하는 구조체 모음
 struct alignas(16)  tGPUInitSetting

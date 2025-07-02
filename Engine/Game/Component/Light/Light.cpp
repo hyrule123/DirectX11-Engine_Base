@@ -1,4 +1,5 @@
-#include "Engine/Game/Component/Light/Light.h"
+
+#include "Light.h"
 
 namespace core
 {

@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Common.h"
-#include "Engine/define_Enum.h"
+#include <Engine/Common.h>
+#include <Engine/define_Enum.h>
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
-#include "Engine/Game/Collision/PhysX.h"
+#include <Engine/Game/Collision/PhysX.h>
 
 //작동방식
 //OnEnable 시점에 PhysX에 등록

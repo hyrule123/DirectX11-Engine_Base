@@ -1,27 +1,28 @@
 #include "ResourceManagers.h"
+#include "ResourceManagers.h"
 
-#include "Engine/Util/AtExit.h"
+#include <Engine/Util/AtExit.h>
 
-#include "PathManager.h"
-#include "ResourceManager.h"
+#include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
-#include "Engine/Resource/Model3D/Model3D.h"
-#include "Engine/Resource/Model3D/Skeleton.h"
-#include "Engine/Resource/AudioClip.h"
-#include "Engine/Resource/Animation2D.h"
-#include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/Resource/Shader/ComputeShader.h"
-#include "Engine/Resource/Mesh/VertexBuffer.h"
-#include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Model3D/Model3D.h>
+#include <Engine/Resource/Model3D/Skeleton.h>
+#include <Engine/Resource/AudioClip.h>
+#include <Engine/Resource/Animation2D.h>
+#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/ComputeShader.h>
+#include <Engine/Resource/Mesh/VertexBuffer.h>
+#include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Light/Light_3D.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Light/Light_3D.h>
 
 
 namespace core

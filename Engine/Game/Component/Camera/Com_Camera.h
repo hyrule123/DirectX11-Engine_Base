@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include <Engine/Game/Component/Component.h>
 
-#include "Engine/define_Enum.h"
+#include <Engine/define_Enum.h>
 
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 #include <bitset>
 //그냥 하나여도 drawindexedinstanced로 호출하는걸로 통일

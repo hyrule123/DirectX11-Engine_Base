@@ -1,4 +1,4 @@
-#include "Editor/Resource/GraphicsShaderEditor.h"
+#include "GraphicsShaderEditor.h"
 
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>

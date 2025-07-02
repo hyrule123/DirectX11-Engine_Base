@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Entity.h"
+#include <Engine/Game/Entity.h>
 
-#include "Engine/Resource/define_Resource.h"
+#include <Engine/Resource/define_Resource.h>
 
 template <typename T>
 struct IsBaseResource {

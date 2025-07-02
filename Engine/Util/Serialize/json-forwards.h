@@ -1,5 +1,5 @@
 /// Json-cpp amalgamated forward header (http://jsoncpp.sourceforge.net/).
-/// It is intended to be used with #include "json/json-forwards.h"
+/// It is intended to be used with #include "json/json-forwards.h>
 /// This header provides forward declaration for all JsonCpp types.
 
 // //////////////////////////////////////////////////////////////////////
@@ -329,8 +329,8 @@ extern JSON_API int msvc_pre1900_c99_snprintf(char* outBuf, size_t size,
 
 #if !defined(JSON_IS_AMALGAMATION)
 
-#include "allocator.h"
-#include "version.h"
+#include "allocator.h>
+#include "version.h>
 
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
@@ -402,7 +402,7 @@ using JSONCPP_OSTREAM = Json::OStream;
 #define JSON_FORWARDS_H_INCLUDED
 
 #if !defined(JSON_IS_AMALGAMATION)
-#include "config.h"
+#include "config.h>
 #endif // if !defined(JSON_IS_AMALGAMATION)
 
 namespace Json {

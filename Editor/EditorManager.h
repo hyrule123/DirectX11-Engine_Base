@@ -69,9 +69,6 @@ namespace core::editor
 
 		std::unique_ptr<EditorMainMenu> m_editor_main_menu;
 
-		std::vector<s_ptr<EditorObject>> mEditorObjects;
-		std::vector<s_ptr<DebugObject>> mDebugObjects;
-
 		//현재 GUI를 표시할지 여부
 		bool mbEnable;
 

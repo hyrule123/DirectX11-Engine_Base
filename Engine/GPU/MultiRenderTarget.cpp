@@ -1,7 +1,8 @@
-#include "Engine/GPU/MultiRenderTarget.h"
+#include "MultiRenderTarget.h"
 
-#include "Engine/define_Macro.h"
-#include "Engine/Resource/Texture.h"
+
+#include <Engine/define_Macro.h>
+#include <Engine/Resource/Texture.h>
 
 namespace core
 {

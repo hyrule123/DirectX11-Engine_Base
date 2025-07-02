@@ -1,16 +1,17 @@
-#include "Engine/Game/Collision/Collision2D.h"
 
-#include "Engine/Game/Collision/CollisionSystem.h"
+#include "Collision2D.h"
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/Collision/CollisionSystem.h>
 
-#include "Engine/Game/Component/Camera/Com_Camera.h"
-#include "Engine/Game/Component/Collider/Collider2D.h"
-#include "Engine/Game/Component/Collider/Com_Collider2D_AABB.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Collider/Collider2D.h>
+#include <Engine/Game/Component/Collider/Com_Collider2D_AABB.h>
+
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
 
 

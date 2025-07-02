@@ -1,22 +1,23 @@
-#include "Engine/Game/Component/Renderer/Com_Renderer_ParticleSystem.h"
 
-#include "Engine/Game/Component/Transform.h"
+#include "Com_Renderer_ParticleSystem.h"
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/Component/Transform.h>
 
-#include "Engine/Manager/TimeManager.h"
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
+#include <Engine/Manager/TimeManager.h>
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Shader/ComputeShaders/ParticleShader.h>
 
-#include "Engine/DefaultShader/Animation/Animation2D.hlsli"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+
+#include <Engine/DefaultShader/Animation/Animation2D.hlsli>
 
 namespace core
 {

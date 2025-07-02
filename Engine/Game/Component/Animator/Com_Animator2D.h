@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Game/Component/Animator/Animator.h"
+#include <Engine/Game/Component/Animator/Animator.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
-#include "Engine/Resource/Animation2D.h"
+#include <Engine/Resource/Animation2D.h>
 
 //구현 필요
 //std::vector에 다음 정보를 저장

@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Resource/Shader/Shader.h"
+#include <Engine/Resource/Shader/Shader.h>
 
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/GPU/CommonGPU.h>
 
 //1. bind_buffer_to_GPU_register() 함수를 재정의해서 필요한 데이터를 바인딩하도록 설정
 //2. Clear() 함수를 재정의해서 데이터 바인딩을 해제하는 함수도 재정의

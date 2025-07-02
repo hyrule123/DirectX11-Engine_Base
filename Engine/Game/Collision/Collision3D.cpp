@@ -1,24 +1,25 @@
+
 #include "Collision3D.h"
 
-#include "Engine/Game/Scene.h"
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/Scene.h>
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Collider/Collider3D.h"
-#include "Engine/Game/Component/Collider/Com_Collider3D_Shapes.h"
-#include "Engine/Game/Component/Rigidbody/Rigidbody.h"
-#include "Engine/Game/Component/Camera/Com_Camera.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Collider/Collider3D.h>
+#include <Engine/Game/Component/Collider/Com_Collider3D_Shapes.h>
+#include <Engine/Game/Component/Rigidbody/Rigidbody.h>
+#include <Engine/Game/Component/Camera/Com_Camera.h>
 
-#include "Engine/Game/Collision/CollisionSystem.h"
+#include <Engine/Game/Collision/CollisionSystem.h>
 
-#include "Engine/Manager/TimeManager.h"
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Manager/TimeManager.h>
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Resource/Mesh/Mesh.h"
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Resource/Mesh/Mesh.h>
 
-#include "Engine/Game/Collision/PhysXInstance.h"
-#include "Engine/Game/Collision/PhysXConverter.h"
+#include <Engine/Game/Collision/PhysXInstance.h>
+#include <Engine/Game/Collision/PhysXConverter.h>
 
 #include <chrono>
 

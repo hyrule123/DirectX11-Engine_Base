@@ -1,7 +1,8 @@
-#include "Engine/Manager/Resourcemanagers.h"
-#include "Engine/Manager/ResourceManager.h"
 
-#include "Engine/Resource/Texture.h"
+#include <Engine/Manager/Resourcemanagers.h>
+#include <Engine/Manager/ResourceManager.h>
+
+#include <Engine/Resource/Texture.h>
 
 namespace core {
 	void ResourceManagers::load_default_textures()

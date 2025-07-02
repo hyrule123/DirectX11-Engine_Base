@@ -1,13 +1,13 @@
-#include "Engine/Manager/Resourcemanagers.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/Resourcemanagers.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Material/Material.h>
 
-#include "Engine/Resource/Material/Light_3D_Material.h"
-#include "Engine/Resource/Material/Default3DMtrl.h"
-#include "Engine/Resource/Material/DebugMaterial.h"
+#include <Engine/Resource/Material/Light_3D_Material.h>
+#include <Engine/Resource/Material/Default3DMtrl.h>
+#include <Engine/Resource/Material/DebugMaterial.h>
 
 namespace core {
 	void ResourceManagers::load_default_materials()

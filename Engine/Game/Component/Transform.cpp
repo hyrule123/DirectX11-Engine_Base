@@ -1,14 +1,15 @@
-#include "Engine/Game/Component/Transform.h"
 
-#include "Engine/Game/GameObject.h"
+#include "Transform.h"
 
-#include "Engine/Game/Component/Camera/Com_Camera.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Game/Component/Camera/Com_Camera.h>
 
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/GameEngine.h"
+#include <Engine/GPU/StructBuffer.h>
+
+#include <Engine/GameEngine.h>
 
 #include <PhysX/PxPhysicsAPI.h>
 

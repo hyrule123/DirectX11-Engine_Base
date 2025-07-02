@@ -1,6 +1,6 @@
 #pragma once
-#include "Editor/Base/EditorEntity.h"
-#include "Editor/strKey_Editor.h"
+#include <Editor/Base/EditorEntity.h>
+#include <Editor/strKey_Editor.h>
 
 #include <Engine/Util/Serialize/Serializable.h>
 
@@ -24,7 +24,7 @@ namespace core::editor
 		virtual bool begin_UI() = 0;
 
 		//여기에는 클래스에서 특별하게 호출해야할 레이아웃이 있을 경우 재정의해서 사용하면 됨.
-		virtual void update_UI();
+		virtual void update_UI() {};
 
 		/*
 		* 주의 - 재정의할 경우 Super::end_UI를 가장 마지막에 호출해야함.
@@ -46,8 +46,6 @@ namespace core::editor
 	private:
 		bool						m_b_enable;
 	};
-
-
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef CONST_BUFFER_HLSLI
 #define CONST_BUFFER_HLSLI
 
-#include "Engine/DefaultShader/Common_struct.hlsli"
+#include <Engine/DefaultShader/Common_struct.hlsli>
 
 
 //////////////////////////////////

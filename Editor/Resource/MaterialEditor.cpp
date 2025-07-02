@@ -1,4 +1,4 @@
-#include "Editor/Resource/MaterialEditor.h"
+#include "MaterialEditor.h"
 
 #include <Engine/GameEngine.h>
 

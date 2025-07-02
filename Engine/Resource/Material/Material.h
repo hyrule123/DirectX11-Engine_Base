@@ -1,12 +1,12 @@
 #pragma once
-#include "Engine/define_Macro.h"
-#include "Engine/define_Enum.h"
+#include <Engine/define_Macro.h>
+#include <Engine/define_Enum.h>
 
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/GPU/CommonGPU.h>
 
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Util/Serialize/Serializable.h>
 
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
 #include <array>
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Resource/Material/Material.h>
 
 namespace core {
     class Default3DMtrl final :

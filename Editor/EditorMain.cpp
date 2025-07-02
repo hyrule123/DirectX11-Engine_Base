@@ -1,9 +1,9 @@
-#include "Editor/PCH_Editor.h"
-#include "Editor/EditorMain.h"
+#include <Editor/PCH_Editor.h>
+#include "EditorMain.h"
 
 #include "Engine/GameEngine.h"
 
-#include "Editor/EditorManager.h"
+#include <Editor/EditorManager.h>
 
 namespace core::editor
 {

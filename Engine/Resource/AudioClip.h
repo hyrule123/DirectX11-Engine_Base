@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
-#include "Engine/Manager/AudioManager.h"
+#include <Engine/Manager/AudioManager.h>
 
 namespace core
 {

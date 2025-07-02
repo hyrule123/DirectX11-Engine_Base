@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Animator/Animator.h"
+#include <Engine/Game/Component/Animator/Animator.h>
 
 namespace core
 {

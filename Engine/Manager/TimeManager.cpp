@@ -1,11 +1,12 @@
-#include "Engine/Manager/TimeManager.h"
 
-#include "Engine/Util/AtExit.h"
-#include "Engine/GameEngine.h"
+#include "TimeManager.h"
 
-#include "Engine/Global.h"
+#include <Engine/Util/AtExit.h>
+#include <Engine/GameEngine.h>
 
-#include "Engine/define_Macro.h"
+#include <Engine/Global.h>
+
+#include <Engine/define_Macro.h>
 
 namespace core
 {

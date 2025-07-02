@@ -1,4 +1,4 @@
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
 VS_OUT main(VS_IN _in)
 {

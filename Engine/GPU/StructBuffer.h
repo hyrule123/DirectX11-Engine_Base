@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/GPU/GPUBuffer.h"
+#include <Engine/GPU/GPUBuffer.h>
 
 namespace core
 {

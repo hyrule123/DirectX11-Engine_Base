@@ -1,4 +1,4 @@
-#include "Editor/Resource/ResourceEditor.h"
+#include "ResourceEditor.h"
 
 namespace core::editor
 {

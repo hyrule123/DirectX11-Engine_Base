@@ -1,9 +1,10 @@
-#include "Engine/Game/Component/Rigidbody/Com_Rigidbody_Static.h"
 
-#include "Engine/Game/Collision/PhysXInstance.h"
+#include "Com_Rigidbody_Static.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Transform.h"
+#include <Engine/Game/Collision/PhysXInstance.h>
+
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Component/Transform.h>
 
 namespace core
 {

@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Common.h"
-#include "Engine/GPU/define_GPU.h"
-#include "Engine/DefaultShader/common_struct.hlsli"
+#include <Engine/Common.h>
+#include <Engine/GPU/define_GPU.h>
+#include <Engine/DefaultShader/common_struct.hlsli>
 
-#include "Engine/DefaultShader/ConstBuffer.hlsli"
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include <Engine/DefaultShader/ConstBuffer.hlsli>
+#include <Engine/DefaultShader/Common_register.hlsli>
 
 #include <d3d11.h>
 #include <d3dcompiler.h>

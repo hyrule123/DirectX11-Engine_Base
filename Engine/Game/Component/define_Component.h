@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/define_Macro.h"
-#include "Engine/define_Enum.h"
+#include <Engine/define_Macro.h>
+#include <Engine/define_Enum.h>
 
 //컴포넌트 순서와 Base Component 등록
 

@@ -1,7 +1,8 @@
-#include "Engine/Game/Component/Component.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Scene.h"
+#include "Component.h"
+
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Scene.h>
 
 #ifdef max
 #undef max

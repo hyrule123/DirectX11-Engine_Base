@@ -1,9 +1,10 @@
-#include "Engine/Manager/InputManager.h"
+
+#include "InputManager.h"
 
 
-#include "Engine/GameEngine.h"
+#include <Engine/GameEngine.h>
 
-#include "Engine/Util/AtExit.h"
+#include <Engine/Util/AtExit.h>
 
 namespace core
 {

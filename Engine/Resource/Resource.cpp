@@ -1,6 +1,7 @@
-#include "Engine/Resource/Resource.h"
 
-#include "Engine/Manager/ResourceManager.h"
+#include "Resource.h"
+
+#include <Engine/Manager/ResourceManager.h>
 
 namespace core
 {

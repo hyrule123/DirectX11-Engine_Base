@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
-#include "Engine/Util/Serialize/JsonSerializer.h"
+#include <Engine/Util/Serialize/JsonSerializer.h>
 
 namespace core
 {

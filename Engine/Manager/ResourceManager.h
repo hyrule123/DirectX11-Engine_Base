@@ -1,10 +1,10 @@
 #pragma once
-#include "Engine/Util/AtExit.h"
-#include "Engine/Common.h"
-#include "Engine/Resource/Resource.h"
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/AtExit.h>
+#include <Engine/Common.h>
+#include <Engine/Resource/Resource.h>
+#include <Engine/Util/Singleton.h>
 
-#include "ResourceManagers.h"
+#include <Engine/Manager/ResourceManagers.h>
 
 #include <concepts>
 #include <mutex>

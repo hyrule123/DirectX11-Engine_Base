@@ -1,4 +1,4 @@
-#include "Editor/EditorManager.h"
+#include <Editor/EditorManager.h>
 
 #include <Engine/EngineMain.h>
 #include <Engine/GameEngine.h>
@@ -20,24 +20,22 @@
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/SceneManager.h>
 
-#include "Editor/imgui/imgui.h"
-#include "Editor/imgui/imgui_impl_win32.h"
-#include "Editor/imgui/imgui_impl_dx11.h"
-#include "Editor/Inspector/InspectorBase.h"
-#include "Editor/DebugObject/SceneViewer.h"
-#include "Editor/Base/EditorBase.h"
-#include "Editor/Resource/ResourcesViewer.h"
-#include "Editor/UI/EditorMainMenu.h"
-#include "Editor/DebugObject/Console.h"
-#include "Editor/Widget/Widget_List.h"
-#include "Editor/DebugObject/GameObjectHierarchy.h"
-#include "Editor/Resource/FBXConverter.h"
-#include "Editor/Resource/GraphicsShaderEditor.h"
-#include "Editor/DebugObject/DebugObject.h"
-#include "Editor/DebugObject/Object.h"
-#include "Editor/Resource/MaterialEditor.h"
-#include "Editor/Resource/NormalConverter.h"
-#include "Editor/Resource/UVCalculator.h"
+#include <Editor/imgui/imgui.h>
+#include <Editor/imgui/imgui_impl_win32.h>
+#include <Editor/imgui/imgui_impl_dx11.h>
+#include <Editor/Inspector/InspectorBase.h>
+#include <Editor/DebugObject/SceneViewer.h>
+#include <Editor/Base/EditorBase.h>
+#include <Editor/Resource/ResourcesViewer.h>
+#include <Editor/UI/EditorMainMenu.h>
+#include <Editor/DebugObject/Console.h>
+#include <Editor/Widget/Widget_List.h>
+#include <Editor/DebugObject/GameObjectHierarchy.h>
+#include <Editor/Resource/FBXConverter.h>
+#include <Editor/Resource/GraphicsShaderEditor.h>
+#include <Editor/Resource/MaterialEditor.h>
+#include <Editor/Resource/NormalConverter.h>
+#include <Editor/Resource/UVCalculator.h>
 
 
 
@@ -57,8 +55,6 @@ namespace core::editor
 	void EditorManager::init()
 	{
 		m_editor_UIs;
-		mEditorObjects;
-		mDebugObjects;
 		mbEnable = false;
 		mbInitialized = false;
 		m_IsOpenEditorAsDefault = false;
@@ -165,20 +161,10 @@ namespace core::editor
 	void EditorManager::update()
 	{
 		imgui_new_frame();
-
-		for (const auto& obj : mEditorObjects)
-		{
-			obj->update();
-		}
 	}
 
 	void EditorManager::final_update()
 	{
-		for (const auto& obj : mEditorObjects)
-		{
-			obj->final_update();
-		}
-
 		for (const auto& editor : m_editor_UIs)
 		{
 			if (editor->is_enabled())
@@ -211,11 +197,6 @@ namespace core::editor
 		RenderManager::get_inst().render_debug();
 		
 		//CollisionSystem::Render();
-
-		for (const auto& obj : mEditorObjects)
-		{
-			obj->render();
-		}
 
 		imgui_render();
 	}

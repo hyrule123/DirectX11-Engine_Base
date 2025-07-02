@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
 namespace core
 {

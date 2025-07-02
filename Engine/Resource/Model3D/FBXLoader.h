@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Entity.h"
+#include <Engine/Game/Entity.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
 #include <windef.h>
 

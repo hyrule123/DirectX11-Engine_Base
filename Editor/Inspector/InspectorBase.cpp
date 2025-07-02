@@ -1,9 +1,9 @@
-#include "Editor/Inspector/InspectorBase.h"
+#include <Editor/Inspector/InspectorBase.h>
 
-#include "Editor/Resource/TextureEditor.h"
+#include <Editor/Resource/TextureEditor.h>
 
-#include "Editor/Inspector/TransformInspector.h"
-#include "Editor/Inspector/RendererInspector.h"
+#include <Editor/Inspector/TransformInspector.h>
+#include <Editor/Inspector/RendererInspector.h>
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Game/GameObject.h>

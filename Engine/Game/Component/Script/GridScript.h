@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Script/Script.h"
+#include <Engine/Game/Component/Script/Script.h>
 
 
 namespace core

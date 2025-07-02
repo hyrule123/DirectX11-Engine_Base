@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include <Engine/Game/Component/Component.h>
 
-#include "Engine/DefaultShader/Common_struct.hlsli"
+#include <Engine/DefaultShader/Common_struct.hlsli>
 
-#include "Engine/Game/Collision/PxActorWrapper.h"
+#include <Engine/Game/Collision/PxActorWrapper.h>
 
 //Transform 업데이트 로직
 //모든 작업은 더티 플래그를 통해 지연 계산된다.

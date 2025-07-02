@@ -1,7 +1,7 @@
 #ifndef COMMON_REGISTER_HLSLI
 #define COMMON_REGISTER_HLSLI
 
-#include "Engine/DefaultShader/Common_struct.hlsli"
+#include <Engine/DefaultShader/Common_struct.hlsli>
 
 #ifdef __cplusplus
 REGISTER_DECLARE(NONE, t, -1);

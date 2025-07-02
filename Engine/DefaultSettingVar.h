@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Common.h"
-#include "Engine/define_Enum.h"
+#include <Engine/Common.h>
+#include <Engine/define_Enum.h>
 
 namespace core
 {

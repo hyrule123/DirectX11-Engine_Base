@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Collider/Collider3D.h"
+#include <Engine/Game/Component/Collider/Collider3D.h>
 
 //RigidStatic 또는 RigidDynamic을 가진 Collider
 //기본적으로 Static으로 생성, SetDynamic(true)를 할 시 Dynamic으로 변경

@@ -1,24 +1,25 @@
-#include "Engine/Manager/RenderManager.h"
 
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/TimeManager.h"
+#include "RenderManager.h"
+
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/TimeManager.h>
 
 
-#include "Engine/GameEngine.h"
+#include <Engine/GameEngine.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 
-#include "Engine/Util/AtExit.h"
+#include <Engine/Util/AtExit.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
-#include "Engine/GPU/MultiRenderTarget.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+#include <Engine/GPU/MultiRenderTarget.h>
 
-#include "Engine/DefaultShader/3D/3D.hlsli"
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/DefaultShader/3D/3D.hlsli>
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 
 namespace core

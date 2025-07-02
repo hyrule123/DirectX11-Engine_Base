@@ -1,9 +1,7 @@
 #pragma once
-#include "Editor/Base/EditorWindow.h"
+#include <Editor/Base/EditorWindow.h>
 
 #include <Engine/Common.h>
-
-#include <functional>
 
 namespace core::editor
 {

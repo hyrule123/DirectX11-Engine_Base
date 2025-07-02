@@ -1,12 +1,12 @@
-#include "Editor/Inspector/RendererInspector.h"
+#include <Editor/Inspector/RendererInspector.h>
 
-#include "Editor/Widget/Widget_List.h"
-#include "Editor/Inspector/InspectorBase.h"
+#include <Editor/Widget/Widget_List.h>
+#include <Editor/Inspector/InspectorBase.h>
 
-#include "Editor/Resource/MaterialEditor.h"
-#include "Editor/Resource/MeshEditor.h"
+#include <Editor/Resource/MaterialEditor.h>
+#include <Editor/Resource/MeshEditor.h>
 
-#include "Editor/EditorManager.h"
+#include <Editor/EditorManager.h>
 
 #include <Engine/Manager/ResourceManager.h>
 

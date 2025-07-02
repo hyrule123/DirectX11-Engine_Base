@@ -1,24 +1,25 @@
-#include "Engine/Resource/Model3D/Skeleton.h"
+
+#include "Skeleton.h"
 
 
-#include "Engine/Util/define_Util.h"
-#include "Engine/Util/StringConverter.h"
-#include "Engine/Util/Serialize/BinarySerializer.h"
+#include <Engine/Util/define_Util.h>
+#include <Engine/Util/StringConverter.h>
+#include <Engine/Util/Serialize/BinarySerializer.h>
 
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include <Engine/DefaultShader/Common_register.hlsli>
 
-#include "Engine/GPU/StructBuffer.h"
-#include "Engine/GPU/ConstBuffer.h"
+#include <Engine/GPU/StructBuffer.h>
+#include <Engine/GPU/ConstBuffer.h>
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Model3D/Model3D.h"
-#include "Engine/Resource/Model3D/Skeleton.h"
-#include "Engine/Resource/Model3D/FBXLoader.h"
-#include "Engine/Resource/Model3D/Animation3D.h"
-#include "Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h"
+#include <Engine/Resource/Model3D/Model3D.h>
+#include <Engine/Resource/Model3D/Skeleton.h>
+#include <Engine/Resource/Model3D/FBXLoader.h>
+#include <Engine/Resource/Model3D/Animation3D.h>
+#include <Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h>
 
-#include "Engine/Game/Component/Animator/Animation3D_PlayData.h"
+#include <Engine/Game/Component/Animator/Animation3D_PlayData.h>
 
 namespace core
 {

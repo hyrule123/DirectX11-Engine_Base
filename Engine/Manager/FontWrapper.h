@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/Singleton.h>
 
 #include <FW1FontWrapper/FW1FontWrapper.h>
 #include <FW1FontWrapper/FW1CompileSettings.h>

@@ -1,6 +1,6 @@
 #ifndef FUNC_DECODE_COLOR_HLSLI
 #define FUNC_DECODE_COLOR_HLSLI
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include <Engine/DefaultShader/Common_register.hlsli>
 
 #ifdef __HLSL
 float4 DecodeColor(float _value)

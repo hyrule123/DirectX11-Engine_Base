@@ -1,10 +1,13 @@
-#include "Engine/Manager/TimeManager.h"
-#include "Engine/Manager/RenderManager.h"
 
-#include "Engine/Resource/Shader/ComputeShaders/ParticleShader.h"
+#include "ParticleShader.h"
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Manager/TimeManager.h>
+#include <Engine/Manager/RenderManager.h>
+
+#include <Engine/Resource/Shader/ComputeShaders/ParticleShader.h>
+
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
 
 
 namespace core

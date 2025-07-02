@@ -1,7 +1,7 @@
 #ifndef LIGHT_HLSLI
 #define LIGHT_HLSLI
-#include "Engine/DefaultShader/Commons.hlsli"
-#include "Engine/DefaultShader/Func_DecodeColor.hlsli"
+#include <Engine/DefaultShader/Commons.hlsli>
+#include <Engine/DefaultShader/Func_DecodeColor.hlsli>
 
 struct alignas(16)    tLightAttribute
 {

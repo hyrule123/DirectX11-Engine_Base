@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/Resource/Resource.h>
+#include <Engine/GPU/CommonGPU.h>
 
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Util/Serialize/Serializable.h>
 
 
 namespace core {

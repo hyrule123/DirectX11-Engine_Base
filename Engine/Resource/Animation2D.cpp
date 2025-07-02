@@ -1,11 +1,12 @@
-#include "Engine/Resource/Animation2D.h"
 
-#include "Engine/Manager/TimeManager.h"
-#include "Engine/Manager/RenderManager.h"
+#include "Animation2D.h"
 
-#include "Engine/GPU/ConstBuffer.h"
+#include <Engine/Manager/TimeManager.h>
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/DefaultShader/Animation/Animation2D.hlsli"
+#include <Engine/GPU/ConstBuffer.h>
+
+#include <Engine/DefaultShader/Animation/Animation2D.hlsli>
 
 namespace core
 {

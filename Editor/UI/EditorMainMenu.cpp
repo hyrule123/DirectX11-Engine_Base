@@ -1,7 +1,7 @@
-#include "Editor/UI/EditorMainMenu.h"
+#include <Editor/UI/EditorMainMenu.h>
 
-#include "Editor/EditorManager.h"
-#include "Editor/Base/EditorWindow.h"
+#include <Editor/EditorManager.h>
+#include <Editor/Base/EditorWindow.h>
 
 #include <Engine/GameEngine.h>
 
@@ -19,8 +19,6 @@ namespace core::editor
 
 	bool EditorMainMenu::begin_UI()
 	{
-		if (false == Super::begin_UI()) { return false; }
-
 		return ImGui::BeginMainMenuBar();
 	}
 
@@ -51,4 +49,8 @@ namespace core::editor
 		}
 	}
 
+	void EditorMainMenu::end_UI()
+	{
+		ImGui::EndMainMenuBar();
+	}
 }

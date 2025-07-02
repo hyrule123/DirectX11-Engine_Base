@@ -1,8 +1,8 @@
-#include "Editor/DebugObject/GameObjectHierarchy.h"
+#include <Editor/DebugObject/GameObjectHierarchy.h>
 
-#include "Editor/EditorManager.h"
-#include "Editor/Inspector/InspectorBase.h"
-#include "Editor/Widget/Widget_Tree.h"
+#include <Editor/EditorManager.h>
+#include <Editor/Inspector/InspectorBase.h>
+#include <Editor/Widget/Widget_Tree.h>
 
 #include <Engine/Game/Scene.h>
 

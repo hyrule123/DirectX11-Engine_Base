@@ -1,9 +1,9 @@
 #pragma once
-#include "Editor/Base/EditorWindow.h"
+#include <Editor/Base/EditorWindow.h>
 
-#include "Editor/Resource/ResourceEditor.h"
+#include <Editor/Resource/ResourceEditor.h>
 
-#include "Editor/Inspector/ComponentInspector.h"
+#include <Editor/Inspector/ComponentInspector.h>
 
 namespace core
 {

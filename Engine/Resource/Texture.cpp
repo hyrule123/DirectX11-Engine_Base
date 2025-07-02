@@ -1,11 +1,12 @@
-#include "Engine/Resource/Texture.h"
+
+#include "Texture.h"
 
 
 
-#include "Engine/Util/define_Util.h"
-#include "Engine/Util/StringConverter.h"
+#include <Engine/Util/define_Util.h>
+#include <Engine/Util/StringConverter.h>
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/ResourceManager.h>
 
 
 namespace core

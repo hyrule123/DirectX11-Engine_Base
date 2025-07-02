@@ -1,5 +1,7 @@
-#include "Engine/GPU/GPUBuffer.h"
-#include "Engine/Manager/RenderManager.h"
+
+#include "GPUBuffer.h"
+
+#include <Engine/Manager/RenderManager.h>
 
 namespace core
 {

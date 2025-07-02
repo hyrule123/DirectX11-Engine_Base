@@ -32,9 +32,9 @@
 #include <future>
 #include <cassert>
 
-#include "Engine/Util/EnumFlags.h"
-#include "Engine/Util/SimpleMath.h"
-#include "Engine/Util/Serialize/json.h"
+#include <Engine/Util/EnumFlags.h>
+#include <Engine/Util/SimpleMath.h>
+#include <Engine/Util/Serialize/json.h>
 
 //PhysX
 #pragma comment(lib, "Physx/PhysX.lib")
@@ -72,7 +72,7 @@
 //DirectXTex
 #pragma comment(lib, "DirectXTex/DirectXTex.lib") 
 
-#include "Engine/EngineMain.h"
+#include <Engine/EngineMain.h>
 #define ENGINE_MAIN core::EngineMain
 
 #endif

@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/Singleton.h>
 
-#include "Engine/Game/Scene.h"
+#include <Engine/Game/Scene.h>
 
 namespace core
 {

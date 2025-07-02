@@ -5,6 +5,6 @@
 
 #ifdef ENGINE_MAIN
 #undef ENGINE_MAIN
-#include "Editor/EditorMain.h"
+#include <Editor/EditorMain.h>
 #define ENGINE_MAIN core::editor::EditorMain
 #endif

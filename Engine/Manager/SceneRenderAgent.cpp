@@ -1,20 +1,22 @@
-#include "Engine/Manager/SceneRenderAgent.h"
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include "SceneRenderAgent.h"
 
-#include "Engine/GPU/MultiRenderTarget.h"
-#include "Engine/GPU/StructBuffer.h"
-#include "Engine/GPU/ConstBuffer.h"
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Light/Light_3D.h"
-#include "Engine/Game/Component/Camera/Com_Camera.h"
-#include "Engine/Game/Component/Renderer/Renderer.h"
-#include "Engine/Game/GameObject.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/DebugMaterial.h"
+#include <Engine/GPU/MultiRenderTarget.h>
+#include <Engine/GPU/StructBuffer.h>
+#include <Engine/GPU/ConstBuffer.h>
+
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Light/Light_3D.h>
+#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Renderer/Renderer.h>
+#include <Engine/Game/GameObject.h>
+
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/DebugMaterial.h>
 
 namespace core {
 	SceneRenderAgent::SceneRenderAgent()

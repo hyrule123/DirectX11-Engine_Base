@@ -93,8 +93,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Engine/PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -127,8 +127,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Engine/PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -160,8 +160,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Engine/PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -194,8 +194,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Engine.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Engine.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Engine/PCH_Engine.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -410,10 +410,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">PCH_Engine.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCH_Engine.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PCH_Engine.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PCH_Engine.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Engine/PCH_Engine.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Engine/PCH_Engine.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClInclude Include="Util\EnumFlags.h" />
     <ClCompile Include="GPU\GPUBuffer.cpp" />

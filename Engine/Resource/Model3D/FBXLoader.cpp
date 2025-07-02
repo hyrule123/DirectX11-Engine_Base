@@ -1,14 +1,15 @@
-#include "Engine/Resource/Model3D/FBXLoader.h"
 
-#include "Engine/Manager/PathManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include "FBXLoader.h"
 
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Material/Material.h"
-#include "Engine/Resource/Shader/GraphicsShader.h"
-#include "Engine/Resource/Model3D/Model3D.h"
+#include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Util/define_Util.h"
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Model3D/Model3D.h>
+
+#include <Engine/Util/define_Util.h>
 
 
 namespace core
@@ -215,7 +216,7 @@ namespace core
 	{
 		tFBXContainer cont{};// = mContainers.back();
 
-		cont.Name = _pFBXMesh->get_name();
+		cont.Name = _pFBXMesh->GetName();
 
 		// ControlPoint 는 위치정보를 담고 있는 배열이다.
 		// 이 배열의 개수는 곧 정점의 개수가 된다.
@@ -334,7 +335,7 @@ namespace core
 	{
 		tFBXMaterial tMtrlInfo{};
 
-		tMtrlInfo.strMtrlName = _pMtrlSur->get_name();
+		tMtrlInfo.strMtrlName = _pMtrlSur->GetName();
 
 		// diffuse
 		tMtrlInfo.DiffuseColor = get_material_data(_pMtrlSur
@@ -779,7 +780,7 @@ namespace core
 		{
 			tFBXBone bone{};
 
-			bone.strBoneName = _pNode->get_name();
+			bone.strBoneName = _pNode->GetName();
 			if (mbMixamo)
 			{
 				bone.strBoneName.erase(0, 10);
@@ -819,7 +820,7 @@ namespace core
 			//mScene->SetCurrentAnimationStack();
 			tFBXAnimClip clip{};
 
-			clip.strName = pAnimStack->get_name();
+			clip.strName = pAnimStack->GetName();
 			if (clip.strName.empty()) {
 				clip.strName = mFileName + "_Anim_" + std::to_string(i);
 			}
@@ -906,7 +907,7 @@ namespace core
 					if (nullptr == cluster->GetLink())
 						continue;
 
-					std::string boneName = cluster->GetLink()->get_name();
+					std::string boneName = cluster->GetLink()->GetName();
 					if (mbMixamo)
 					{
 						boneName.erase(0, 10);

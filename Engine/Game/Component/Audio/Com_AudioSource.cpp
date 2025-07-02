@@ -1,11 +1,12 @@
+
 #include "Com_AudioSource.h"
 
-#include "Engine/Resource/AudioClip.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Resource/AudioClip.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Game/Component/Transform.h"
+#include <Engine/Game/Component/Transform.h>
 
 #include <Fmod/fmod.hpp>
 #include <Fmod/fmod_studio.hpp>

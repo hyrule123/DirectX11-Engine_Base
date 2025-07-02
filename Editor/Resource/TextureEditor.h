@@ -1,5 +1,5 @@
 #pragma once
-#include "Editor/Resource/ResourceEditor.h"
+#include <Editor/Resource/ResourceEditor.h>
 
 #include <Engine/Resource/Texture.h>
 

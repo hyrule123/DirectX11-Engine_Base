@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
-#include "Engine/Game/Collision/PxActorWrapper.h"
+#include <Engine/Game/Component/Component.h>
+#include <Engine/Game/Collision/PxActorWrapper.h>
 
 //이 클래스가 담당하는일
 //Rigidbody 생성, 삭제

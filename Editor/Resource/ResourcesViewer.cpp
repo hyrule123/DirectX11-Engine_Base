@@ -1,9 +1,9 @@
-#include "Editor/Resource/ResourcesViewer.h"
+#include "ResourcesViewer.h"
 
-#include "Editor/EditorManager.h"
+#include <Editor/EditorManager.h>
 
-#include "Editor/Inspector/InspectorBase.h"
-#include "Editor/Resource/ResourceEditor.h"
+#include <Editor/Inspector/InspectorBase.h>
+#include <Editor/Resource/ResourceEditor.h>
 
 #include <Engine/GameEngine.h>
 

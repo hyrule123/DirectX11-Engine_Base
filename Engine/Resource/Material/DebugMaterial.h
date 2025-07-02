@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Resource/Material/Material.h>
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
 namespace core {
 	class DebugMaterial

@@ -1,27 +1,28 @@
-#include "Engine/GameEngine.h"
 
-#include "Engine/Util/AtExit.h"
+#include "GameEngine.h"
 
-#include "Engine/Game/Collision/PhysXInstance.h"
+#include <Engine/Util/AtExit.h>
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/TimeManager.h"
-#include "Engine/Manager/InputManager.h"
-#include "Engine/Manager/SceneManager.h"
-#include "Engine/Manager/ResourceManagers.h"
-#include "Engine/Manager/AudioManager.h"
-#include "Engine/Manager/FontWrapper.h"
-#include "Engine/Manager/PathManager.h"
-#include "Engine/Manager/ThreadPoolManager.h"
+#include <Engine/Game/Collision/PhysXInstance.h>
+
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/TimeManager.h>
+#include <Engine/Manager/InputManager.h>
+#include <Engine/Manager/SceneManager.h>
+#include <Engine/Manager/ResourceManagers.h>
+#include <Engine/Manager/AudioManager.h>
+#include <Engine/Manager/FontWrapper.h>
+#include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/ThreadPoolManager.h>
 
 
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/Singleton.h>
 
-#include "Engine/EngineMain.h"
+#include <Engine/EngineMain.h>
 
-#include "Engine/Global.h"
+#include <Engine/Global.h>
 
-#include "Engine/Game/Scene.h"
+#include <Engine/Game/Scene.h>
 
 namespace core
 {

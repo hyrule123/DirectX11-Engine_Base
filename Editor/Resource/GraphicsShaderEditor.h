@@ -1,7 +1,7 @@
 #pragma once
-#include "Editor/Base/EditorWindow.h"
+#include <Editor/Base/EditorWindow.h>
 
-#include "Editor/Widget/Widget_ComboBox.h"
+#include <Editor/Widget/Widget_ComboBox.h>
 
 #include <Engine/GPU/CommonGPU.h>
 

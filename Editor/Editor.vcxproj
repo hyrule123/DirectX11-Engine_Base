@@ -24,10 +24,8 @@
     <ClInclude Include="UI\EditorMainMenu.h" />
     <ClInclude Include="Base\EditorWindow.h" />
     <ClInclude Include="DebugObject\Console.h" />
-    <ClInclude Include="DebugObject\DebugObject.h" />
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
-    <ClInclude Include="DebugObject\Object.h" />
     <ClInclude Include="define_Editor.h" />
     <ClInclude Include="EditorMain.h" />
     <ClInclude Include="EditorManager.h" />
@@ -66,10 +64,8 @@
     <ClCompile Include="UI\EditorMainMenu.cpp" />
     <ClCompile Include="Base\EditorWindow.cpp" />
     <ClCompile Include="DebugObject\Console.cpp" />
-    <ClCompile Include="DebugObject\DebugObject.cpp" />
     <ClCompile Include="DebugObject\SceneViewer.cpp" />
     <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
-    <ClCompile Include="DebugObject\Object.cpp" />
     <ClCompile Include="EditorMain.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -169,8 +165,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Editor.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Editor/PCH_Editor.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Editor/PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -185,8 +181,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Editor.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Editor/PCH_Editor.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Editor/PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -201,8 +197,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Editor.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Editor/PCH_Editor.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Editor/PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -217,8 +213,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>PCH_Editor.h</PrecompiledHeaderFile>
-      <ForcedIncludeFiles>PCH_Editor.h</ForcedIncludeFiles>
+      <PrecompiledHeaderFile>Editor/PCH_Editor.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>Editor/PCH_Editor.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>

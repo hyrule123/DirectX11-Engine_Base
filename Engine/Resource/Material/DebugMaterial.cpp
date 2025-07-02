@@ -1,12 +1,13 @@
-#include "Engine/Resource/Material/DebugMaterial.h"
 
-#include "Engine/Util/AtExit.h"
+#include "DebugMaterial.h"
 
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Util/AtExit.h>
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
+#include <Engine/GPU/StructBuffer.h>
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
+
+#include <Engine/Manager/ResourceManager.h>
 
 namespace core {
 	DebugMaterial::DebugMaterial()

@@ -1,25 +1,25 @@
-#include "Engine/Game/Component/Camera/Com_Camera.h"
 
-#include "Engine/GameEngine.h"
+#include "Com_Camera.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Scene.h"
+#include <Engine/GameEngine.h>
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/SceneManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Scene.h>
 
-#include "Engine/Resource/Material/Material.h"
-#include "Engine/Resource/Mesh/Mesh.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/SceneManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
+#include <Engine/Resource/Material/Material.h>
+#include <Engine/Resource/Mesh/Mesh.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
-#include "Engine/GPU/MultiRenderTarget.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+#include <Engine/GPU/MultiRenderTarget.h>
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Renderer/Renderer.h"
-#include "Engine/Game/Component/Light/Light_3D.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Renderer/Renderer.h>
+#include <Engine/Game/Component/Light/Light_3D.h>
 
 namespace core
 {

@@ -1,6 +1,6 @@
-#include "Editor/Resource/UVCalculator.h"
+#include "UVCalculator.h"
 
-#include "Editor/Resource/TextureEditor.h"
+#include <Editor/Resource/TextureEditor.h>
 
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/PathManager.h>

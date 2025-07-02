@@ -1,5 +1,5 @@
-#include "Engine/DefaultShader/Light/Light.hlsli"
-#include "Engine/DefaultShader/Light/Light_Func.hlsli"
+#include <Engine/DefaultShader/Light/Light.hlsli>
+#include <Engine/DefaultShader/Light/Light_Func.hlsli>
 
 
 PS_OUT main(VS_OUT_LightPoint _in)

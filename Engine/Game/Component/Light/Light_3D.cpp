@@ -1,21 +1,22 @@
-#include "Engine/Game/Component/Light/Light_3D.h"
 
-#include "Engine/Game/Component/Transform.h"
+#include "Light_3D.h"
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/Component/Transform.h>
 
-#include "Engine/Util/Serialize/JsonSerializer.h"
+#include <Engine/Game/GameObject.h>
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Util/Serialize/JsonSerializer.h>
 
-#include "Engine/Resource/Mesh/Mesh.h"
-#include "Engine/Resource/Material/Material.h"
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
+#include <Engine/Resource/Mesh/Mesh.h>
+#include <Engine/Resource/Material/Material.h>
 
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 namespace core
 {

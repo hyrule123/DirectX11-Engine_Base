@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Resource/Shader/ComputeShader.h"
+#include <Engine/Resource/Shader/ComputeShader.h>
 
 
 
-#include "Engine/Resource/Texture.h"
+#include <Engine/Resource/Texture.h>
 
 namespace core
 {

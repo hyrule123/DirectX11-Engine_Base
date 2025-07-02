@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Util/AtExit.h"
-#include "Engine/Common.h"
+#include <Engine/Util/AtExit.h>
+#include <Engine/Common.h>
 
 //!!! 주의사항: 생성자에서 다른 싱글턴 인스턴스를 호출하지 말 것 !!!
 

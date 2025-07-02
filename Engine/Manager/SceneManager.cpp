@@ -1,12 +1,15 @@
-#include "Engine/Manager/SceneManager.h"
+#include "ResourceManagers.h"
+#include "SceneManager.h"
 
-#include "Engine/Resource/Texture.h"
+#include <Engine/Manager/ResourceManagers.h>
 
-#include "Engine/Util/AtExit.h"
+#include <Engine/Resource/Texture.h>
 
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/TimeManager.h"
+#include <Engine/Util/AtExit.h>
+
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/TimeManager.h>
 
 #include <chrono>
 

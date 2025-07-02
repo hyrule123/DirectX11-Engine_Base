@@ -1,14 +1,15 @@
-#include "Engine/Resource/Model3D/Animation3D.h"
 
-#include "Engine/GPU/StructBuffer.h"
+#include "Animation3D.h"
 
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/GPU/StructBuffer.h>
 
-#include "Engine/Util/Serialize/BinarySerializer.h"
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/Resource/Model3D/FBXLoader.h"
-#include "Engine/Resource/Model3D/Model3D.h"
-#include "Engine/Resource/Model3D/Skeleton.h"
+#include <Engine/Util/Serialize/BinarySerializer.h>
+
+#include <Engine/Resource/Model3D/FBXLoader.h>
+#include <Engine/Resource/Model3D/Model3D.h>
+#include <Engine/Resource/Model3D/Skeleton.h>
 
 namespace core
 {

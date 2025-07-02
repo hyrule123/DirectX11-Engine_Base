@@ -1,4 +1,3 @@
-
 #include "Widget_Tree.h"
 
 namespace core::editor

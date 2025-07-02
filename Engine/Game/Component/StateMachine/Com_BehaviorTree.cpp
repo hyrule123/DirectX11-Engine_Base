@@ -1,4 +1,5 @@
-#include "Engine/Game/Component/StateMachine/Com_BehaviorTree.h"
+
+#include "Com_BehaviorTree.h"
 
 namespace core
 {

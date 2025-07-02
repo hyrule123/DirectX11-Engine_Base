@@ -1,12 +1,12 @@
-#include "Engine/Manager/ResourceManagers.h"
-#include "Engine/Manager/ResourceManager.h"
+#include <Engine/Manager/ResourceManagers.h>
+#include <Engine/Manager/ResourceManager.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/StructBuffer.h"
-#include "Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/StructBuffer.h>
+#include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 namespace core {
 	//함수명 = resourcemanager key

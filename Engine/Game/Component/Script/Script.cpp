@@ -1,4 +1,5 @@
-#include "Engine/Game/Component/Script/Script.h"
+
+#include "Script.h"
 
 namespace core
 {

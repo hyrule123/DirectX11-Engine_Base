@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include <Engine/Game/Component/Component.h>
 
 namespace core
 {

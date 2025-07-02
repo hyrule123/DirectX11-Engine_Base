@@ -1,12 +1,13 @@
-#include "Engine/Game/Component/Collider/Collider3D.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Scene.h"
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Rigidbody/Com_Rigidbody_Static.h"
+#include "Collider3D.h"
 
-#include "Engine/Game/Collision/CollisionSystem.h"
-#include "Engine/Game/Collision/Collision3D.h"
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Scene.h>
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Rigidbody/Com_Rigidbody_Static.h>
+
+#include <Engine/Game/Collision/CollisionSystem.h>
+#include <Engine/Game/Collision/Collision3D.h>
 
 #include <PhysX/PxPhysicsAPI.h>
 

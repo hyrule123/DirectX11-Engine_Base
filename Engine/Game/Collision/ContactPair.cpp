@@ -1,6 +1,7 @@
-#include "Engine/Game/Collision/ContactPair.h"
 
-#include "Engine/Game/Component/Collider/Collider.h"
+#include "ContactPair.h"
+
+#include <Engine/Game/Component/Collider/Collider.h>
 namespace core
 {
 	ContactPair::ContactPair(const s_ptr<Collider>& _left, const s_ptr<Collider>& _right)

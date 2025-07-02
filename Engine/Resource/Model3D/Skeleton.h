@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Resource/Resource.h"
+#include <Engine/Resource/Resource.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Util/Serialize/Serializable.h>
 
 //MeshData에 종속된 클래스
 namespace core

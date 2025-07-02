@@ -1,16 +1,17 @@
-#include "Engine/Resource/Shader/ComputeShader.h"
+
+#include "ComputeShader.h"
 
 
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/PathManager.h"
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/PathManager.h>
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/GPU/ConstBuffer.h"
-#include "Engine/GPU/CommonGPU.h"
+#include <Engine/GPU/ConstBuffer.h>
+#include <Engine/GPU/CommonGPU.h>
 
 
-#include "Engine/Resource/define_Resource.h"
+#include <Engine/Resource/define_Resource.h>
 
 #include <fstream>
 

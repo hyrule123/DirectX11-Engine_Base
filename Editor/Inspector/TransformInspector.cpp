@@ -1,6 +1,6 @@
-#include "Editor/Inspector/TransformInspector.h"
+#include <Editor/Inspector/TransformInspector.h>
 
-#include "Editor/Inspector/InspectorBase.h"
+#include <Editor/Inspector/InspectorBase.h>
 
 #include <Engine/Game/GameObject.h>
 #include <Engine/Game/Component/Transform.h>

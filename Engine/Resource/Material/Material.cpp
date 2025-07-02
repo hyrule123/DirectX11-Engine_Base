@@ -1,17 +1,17 @@
-#include "Engine/Resource/Material/Material.h"
+#include "Material.h"
 
-#include "Engine/GPU/ConstBuffer.h"
+#include <Engine/GPU/ConstBuffer.h>
 
-#include "Engine/Manager/ResourceManager.h"
-#include "Engine/Manager/RenderManager.h"
-#include "Engine/Manager/PathManager.h"
+#include <Engine/Manager/ResourceManager.h>
+#include <Engine/Manager/RenderManager.h>
+#include <Engine/Manager/PathManager.h>
 
-#include "Engine/Util/Serialize/JsonSerializer.h"
+#include <Engine/Util/Serialize/JsonSerializer.h>
 
-#include "Engine/Resource/Texture.h"
-#include "Engine/Resource/Shader/GraphicsShader.h"
+#include <Engine/Resource/Texture.h>
+#include <Engine/Resource/Shader/GraphicsShader.h>
 
-#include "Engine/Game/GameObject.h"
+#include <Engine/Game/GameObject.h>
 
 namespace core
 {

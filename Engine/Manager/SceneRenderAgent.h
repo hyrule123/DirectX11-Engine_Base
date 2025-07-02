@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/Common.h"
-#include "Engine/GPU/define_GPU.h"
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/Common.h>
+#include <Engine/GPU/define_GPU.h>
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 namespace core {
 	class Com_Camera;

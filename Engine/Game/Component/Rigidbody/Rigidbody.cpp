@@ -1,10 +1,11 @@
-#include "Engine/Game/Component/Rigidbody/Rigidbody.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Scene.h"
-#include "Engine/Game/Collision/CollisionSystem.h"
-#include "Engine/Game/Collision/Collision3D.h"
+#include "Rigidbody.h"
+
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Scene.h>
+#include <Engine/Game/Collision/CollisionSystem.h>
+#include <Engine/Game/Collision/Collision3D.h>
 
 namespace core
 {

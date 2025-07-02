@@ -1,8 +1,8 @@
 #pragma once
-#include "Engine/Resource/Animation.h"
+#include <Engine/Resource/Animation.h>
 
-#include "Engine/Resource/Texture.h"
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Resource/Texture.h>
+#include <Engine/Util/Serialize/Serializable.h>
 
 namespace core
 {

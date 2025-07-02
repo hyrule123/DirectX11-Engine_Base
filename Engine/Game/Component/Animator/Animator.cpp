@@ -1,4 +1,5 @@
-#include "Engine/Game/Component/Animator/Animator.h"
+
+#include "Animator.h"
 
 namespace core
 {

@@ -1,15 +1,16 @@
-#include "Engine/Game/Component/Collider/Collider2D.h"
 
-#include "Engine/Game/Component/Transform.h"
-#include "Engine/Game/Component/Script/Script.h"
+#include "Collider2D.h"
 
-#include "Engine/Game/GameObject.h"
-#include "Engine/Game/Scene.h"
+#include <Engine/Game/Component/Transform.h>
+#include <Engine/Game/Component/Script/Script.h>
 
-#include "Engine/Game/Collision/CollisionSystem.h"
-#include "Engine/Game/Collision/Collision2D.h"
+#include <Engine/Game/GameObject.h>
+#include <Engine/Game/Scene.h>
 
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Game/Collision/CollisionSystem.h>
+#include <Engine/Game/Collision/Collision2D.h>
+
+#include <Engine/Manager/RenderManager.h>
 
 
 namespace core

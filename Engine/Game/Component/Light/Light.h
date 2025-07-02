@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/Game/Component/Component.h>
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 namespace core
 {

@@ -1,17 +1,10 @@
 #pragma once
-#include "Engine/define_enum.h"
-#include "Engine/Common.h"
-#include "Engine/Common.h"
+#include <Engine/define_enum.h>
+#include <Engine/Common.h>
 
-#include "Engine/Util/type_traits_Ex.h"
+#include <Engine/Util/type_traits_Ex.h>
 
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
-
-
-#include <unordered_map>
-#include <array>
-#include <bitset>
-
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
 //업데이트 순서
 //1. SceneManager::update: 각 Collider들이 자신의 정보를 등록한다.

@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Component/Component.h"
+#include <Engine/Game/Component/Component.h>
 
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
 #include <unordered_set>
 

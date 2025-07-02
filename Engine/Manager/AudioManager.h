@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Common.h"
+#include <Engine/Common.h>
 
-#include "Engine/Util/Singleton.h"
+#include <Engine/Util/Singleton.h>
 
 //전방선언
 namespace FMOD

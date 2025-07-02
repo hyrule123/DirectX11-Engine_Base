@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/GPU/GPUBuffer.h"
+#include <Engine/GPU/GPUBuffer.h>
 
-#include "Engine/DefaultShader/ConstBuffer.hlsli"
+#include <Engine/DefaultShader/ConstBuffer.hlsli>
 
 namespace core
 {

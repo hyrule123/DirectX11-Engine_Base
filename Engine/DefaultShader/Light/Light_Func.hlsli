@@ -3,7 +3,7 @@
 
 
 #ifndef __cplusplus//HLSL
-#include "Engine/DefaultShader/Light/Light.hlsli"
+#include <Engine/DefaultShader/Light/Light.hlsli>
 
 //2D
 void CalculateLight2D(in out tLightColor pLightColor, float3 position, int idx)

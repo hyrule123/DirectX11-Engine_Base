@@ -1,4 +1,4 @@
-#include "Editor/Inspector/ComponentInspector.h"
+#include <Editor/Inspector/ComponentInspector.h>
 
 
 

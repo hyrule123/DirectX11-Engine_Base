@@ -1,7 +1,7 @@
-#include "Engine/DefaultShader/Animation/Animation3D_Func.hlsli"
+#include <Engine/DefaultShader/Animation/Animation3D_Func.hlsli>
 
-#include "Engine/DefaultShader/ConstBuffer.hlsli"
-#include "Engine/DefaultShader/Common_register.hlsli"
+#include <Engine/DefaultShader/ConstBuffer.hlsli>
+#include <Engine/DefaultShader/Common_register.hlsli>
 
 
 //ThreadID.x = Bone Index

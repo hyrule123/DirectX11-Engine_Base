@@ -1,6 +1,6 @@
 #pragma once
-#include "Engine/Util/EnumFlags.h"
-#include "Engine/Util/type_traits_Ex.h"
+#include <Engine/Util/EnumFlags.h>
+#include <Engine/Util/type_traits_Ex.h>
 
 namespace core
 {

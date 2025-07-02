@@ -1,5 +1,5 @@
-#include "Engine/DefaultShader/Particle/Particle.hlsli"
-#include "Engine/DefaultShader/Func_Blur.hlsli"
+#include <Engine/DefaultShader/Particle/Particle.hlsli>
+#include <Engine/DefaultShader/Func_Blur.hlsli>
 
 //각각의 스레드가 동기화할 데이터가 필요하다
 

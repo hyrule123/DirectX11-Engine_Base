@@ -1,6 +1,6 @@
 #ifndef DEBUG_HLSLI
 #define DEBUG_HLSLI
-#include "Engine/DefaultShader/Common_define.hlsli"
+#include <Engine/DefaultShader/Common_define.hlsli>
 
 struct alignas(16)  tDebugDrawData
 {

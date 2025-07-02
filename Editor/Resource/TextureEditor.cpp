@@ -1,4 +1,4 @@
-#include "Editor/Resource/TextureEditor.h"
+#include <Editor/Resource/TextureEditor.h>
 
 
 namespace core::editor

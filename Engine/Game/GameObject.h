@@ -1,9 +1,9 @@
 #pragma once
-#include "Engine/Game/Entity.h"
+#include <Engine/Game/Entity.h>
 
-#include "Engine/Game/Component/define_Component.h"
+#include <Engine/Game/Component/define_Component.h>
 
-#include "Engine/Util/Serialize/Serializable.h"
+#include <Engine/Util/Serialize/Serializable.h>
 
 namespace core
 {
@@ -40,7 +40,7 @@ namespace core
 
 		virtual ~GameObject();
 
-		virtual void init() override { Super::init(); };
+		virtual void init() override;
 		virtual void Awake();
 		virtual void fixed_update();
 		virtual void update();

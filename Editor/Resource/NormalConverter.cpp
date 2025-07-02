@@ -1,8 +1,8 @@
-#include "Editor/Resource/NormalConverter.h"
+#include "NormalConverter.h"
 
 #include <Engine/define_Enum.h>
 
-#include "Editor/Widget/Widget_ComboBox.h"
+#include <Editor/Widget/Widget_ComboBox.h>
 
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>

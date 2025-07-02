@@ -1,11 +1,9 @@
 #pragma once
-#include "Engine/Common.h"
-#include "Engine/Common.h"
-#include "Engine/define_enum.h"
+#include <Engine/Common.h>
+#include <Engine/define_enum.h>
 
-#include "Engine/Game/Collision/ContactPair.h"
-#include "Engine/DefaultShader/Debug/Debug.hlsli"
-
+#include <Engine/Game/Collision/ContactPair.h>
+#include <Engine/DefaultShader/Debug/Debug.hlsli>
 
 #include <array>
 #include <vector>

@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/Game/Component/Renderer/Com_Renderer_Mesh.h"
+#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
 
-#include "Engine/DefaultShader/Particle/Particle.hlsli"
+#include <Engine/DefaultShader/Particle/Particle.hlsli>
 
 namespace core
 {

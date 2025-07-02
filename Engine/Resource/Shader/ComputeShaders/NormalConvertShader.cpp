@@ -1,22 +1,21 @@
+
 #include "NormalConvertShader.h"
 
-
-
-#include "Engine/DefaultShader/Common_register.hlsli"
-#include "Engine/DefaultShader/NormalConverter/NormalConverter.hlsli"
+#include <Engine/DefaultShader/Common_register.hlsli>
+#include <Engine/DefaultShader/NormalConverter/NormalConverter.hlsli>
 
 #if defined (_WIN64) && !(NDEBUG)
-#include "Engine/CompiledShaderHeader/NormalConverter_CS_x64_Debug.h"
+#include <Engine/CompiledShaderHeader/NormalConverter_CS_x64_Debug.h>
 #endif
 #if defined (_WIN64) && (NDEBUG)
-#include "Engine/CompiledShaderHeader/NormalConverter_CS_x64_Release.h"
+#include <Engine/CompiledShaderHeader/NormalConverter_CS_x64_Release.h>
 #endif
 
-#include "Engine/Resource/Texture.h"
+#include <Engine/Resource/Texture.h>
 
-#include "Engine/Manager/RenderManager.h"
+#include <Engine/Manager/RenderManager.h>
 
-#include "Engine/GPU/ConstBuffer.h"
+#include <Engine/GPU/ConstBuffer.h>
 
 
 namespace core
