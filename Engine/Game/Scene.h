@@ -1,6 +1,5 @@
 #pragma once
 #include <Engine/Game/Entity.h>
-#include <Engine/Game/Entity.h>
 #include <Engine/Common.h>
 #include <Engine/Util/type_traits_Ex.h>
 
@@ -27,28 +26,28 @@ namespace core
 
 		void destroy();
 
-		bool	IsAwaken() const { return m_bAwake; }
+		bool	is_awaken() const { return m_bAwake; }
 
 		s_ptr<GameObject> add_game_object_recursive(const s_ptr<GameObject>& _newObject);
 
 		//들어간 갯수
-		std::vector<s_ptr<GameObject>> AddGameObjects(const std::vector<s_ptr<GameObject>>& _gameObjects);
+		std::vector<s_ptr<GameObject>> add_game_objects(const std::vector<s_ptr<GameObject>>& _gameObjects);
 
-		std::vector<s_ptr<GameObject>>		GetDontDestroyGameObjects();
+		std::vector<s_ptr<GameObject>>		get_dont_destroy_game_objects();
 		const std::vector<s_ptr<GameObject>>& get_game_objects() { return m_gameObjects; }
 
-		//있음이 보장됨
-		CollisionSystem* GetCollisionSystem() { return m_collisionSystem.get(); }
+		//있음이 보장됨 - 전방 선언
+		CollisionSystem* get_collision_system() { return m_collisionSystem.get(); }
 
 		template <class F, class... Args>
-		inline void AddFrameEndJob(F&& _func, Args&&... _args);
+		inline void add_frame_end_job(F&& _func, Args&&... _args);
 
 	private:
-		void RemoveDestroyed();
+		void remove_destroyed();
 
 		//true: 문제 발생, false: 문제 없음 - stl pred func에 필요함
 		bool validate_object(const s_ptr<GameObject>& _obj);
-		void AddGameObjectInternal(const s_ptr<GameObject>& _obj);
+		void add_game_object_internal(const s_ptr<GameObject>& _obj);
 		
 	private:
 		std::vector<s_ptr<GameObject>> m_gameObjects;
@@ -68,7 +67,7 @@ namespace core
 
 	//템플릿의 &&는 상황에 따라서 맞춰서 전달된다.
 	template<class F, class ...Args>
-	inline void Scene::AddFrameEndJob(F&& _func, Args && ..._args)
+	inline void Scene::add_frame_end_job(F&& _func, Args && ..._args)
 	{
 		//forward: 들어온 인자의 레퍼런스에 맞는 타입으로 전달
 		m_FrameEndJobs.push_back(std::bind(std::forward<F>(_func), std::forward<Args>(_args)...));

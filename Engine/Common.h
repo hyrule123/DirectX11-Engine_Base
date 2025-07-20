@@ -56,22 +56,22 @@ namespace core
 
 	struct tGPUManagerDesc
 	{
-		UINT ResolutionX;
-		UINT ResolutionY;
-		UINT RefreshRate;
+		UINT resolution_X;
+		UINT resolution_Y;
+		UINT refresh_rate;
 	};
 
 	struct tGameEngineDesc
 	{
-		HWND Hwnd;
-		int  LeftWindowPos;
-		int	 TopWindowPos;
-		int  Width;
-		int  Height;
-		tGPUManagerDesc GPUDesc;
-		WNDCLASSEX WinClassDesc;
+		HWND hwnd;
+		int  window_left_pos;
+		int	 window_top_pos;
+		int  width;
+		int  height;
+		tGPUManagerDesc GPU_desc;
+		WNDCLASSEX window_class_desc;
 
-		std::function<void()> EditorRunFunction;
+		std::function<void()> editor_run_func;
 	};
 
 	struct Hasher_StringView {
@@ -88,41 +88,44 @@ namespace core
 
 	struct tMTBone
 	{
-		std::string			strBoneName;
-		int					iDepth;
-		int					iParentIndx;
-		MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
-		MATRIX				matBone;	// 이거 안씀
+		std::string			name;
+		int					depth_level;
+		int					parent_idx;
+		MATRIX				offset_matrix;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
+		MATRIX				bone_matrix;	// 이거 안씀
 	};
 
 
-	struct tColliderID
+	class ColliderID
 	{
-		struct tIDPair
+	public:
+		ColliderID() = delete;
+		ColliderID(uint32 _1, uint32 _2);
+		~ColliderID();
+
+		struct tID32Pair
 		{
 			//ID중 낮은쪽
-			uint32 Low32;
+			uint32 lower;
 
 			//ID중 높은쪽
-			uint32 High32;
+			uint32 higher;
+		};
+		union uID
+		{
+			tID32Pair ID32_pair;
+			std::uint64_t ID64;
 		};
 
-		union
-		{
-			tIDPair pair;
-			std::uint64_t ID;
-		} ID64;
+		uID m_ID;
 
-		tColliderID() = delete;
-		tColliderID(uint32 _1, uint32 _2);
-		~tColliderID();
-		operator uint64() const { return ID64.ID; }
+		operator uint64() const { return m_ID.ID64; }
 	};
 
-	struct tColliderID_Hasher
+	struct ColliderID_Hasher
 	{
-		static_assert(sizeof(tColliderID) == sizeof(size_t), "사이즈 미일치. 처리함수를 만드세요.");
-		size_t operator()(tColliderID _id) const { return static_cast<size_t>(_id.ID64.ID); }
+		static_assert(sizeof(ColliderID) == sizeof(size_t), "사이즈 미일치. 처리함수를 만드세요.");
+		size_t operator()(ColliderID _id) const { return static_cast<size_t>(_id.m_ID.ID64); }
 	};
 
 	struct tDebugMesh

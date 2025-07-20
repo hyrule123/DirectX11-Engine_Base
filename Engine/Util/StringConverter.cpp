@@ -2,7 +2,7 @@
 #include "StringConverter.h"
 #include <Windows.h>
 
-void StringConverter::UTF8_to_Unicode(__in const std::string_view _src, __out std::wstring& _dest)
+void StringConverter::UTF8_to_UTF16(__in const std::string_view _src, __out std::wstring& _dest)
 {
 	_dest.clear();
 
@@ -13,7 +13,7 @@ void StringConverter::UTF8_to_Unicode(__in const std::string_view _src, __out st
 	::MultiByteToWideChar(CP_UTF8, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size());
 }
 
-void StringConverter::Unicode_to_UTF8(__in const std::wstring_view _src, __out std::string& _dest)
+void StringConverter::UTF16_to_UTF8(__in const std::wstring_view _src, __out std::string& _dest)
 {
 	_dest.clear();
 
@@ -24,7 +24,7 @@ void StringConverter::Unicode_to_UTF8(__in const std::wstring_view _src, __out s
 	::WideCharToMultiByte(CP_UTF8, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size(), nullptr, nullptr);
 }
 
-std::wstring StringConverter::UTF8_to_Unicode(const std::string_view _src)
+std::wstring StringConverter::UTF8_to_UTF16(const std::string_view _src)
 {
 	std::wstring result;
 
@@ -38,7 +38,7 @@ std::wstring StringConverter::UTF8_to_Unicode(const std::string_view _src)
 	return result;
 }
 
-std::string StringConverter::Unicode_to_UTF8(const std::wstring_view _src)
+std::string StringConverter::UTF16_to_UTF8(const std::wstring_view _src)
 {
 	std::string result;
 
@@ -52,7 +52,7 @@ std::string StringConverter::Unicode_to_UTF8(const std::wstring_view _src)
 	return result;
 }
 
-void StringConverter::Unicode_to_ANSI(__in const std::wstring_view _src, __out std::string& _dest)
+void StringConverter::UTF16_to_ANSI(__in const std::wstring_view _src, __out std::string& _dest)
 {
 	_dest.clear();
 
@@ -63,7 +63,7 @@ void StringConverter::Unicode_to_ANSI(__in const std::wstring_view _src, __out s
 	::WideCharToMultiByte(CP_ACP, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size(), nullptr, nullptr);
 }
 
-void StringConverter::ANSI_to_Unicode(__in const std::string_view _src, __out std::wstring& _dest)
+void StringConverter::ANSI_to_UTF16(__in const std::string_view _src, __out std::wstring& _dest)
 {
 	_dest.clear();
 
@@ -74,7 +74,7 @@ void StringConverter::ANSI_to_Unicode(__in const std::string_view _src, __out st
 	::MultiByteToWideChar(CP_ACP, 0, _src.data(), srcsize, _dest.data(), (int)_dest.size());
 }
 
-std::wstring StringConverter::ANSI_to_Unicode(const std::string_view _src)
+std::wstring StringConverter::ANSI_to_UTF16(const std::string_view _src)
 {
 	std::wstring result;
 
@@ -87,7 +87,7 @@ std::wstring StringConverter::ANSI_to_Unicode(const std::string_view _src)
 	return result;
 }
 
-std::string StringConverter::Unicode_to_ANSI(const std::wstring_view _src)
+std::string StringConverter::UTF16_to_ANSI(const std::wstring_view _src)
 {
 	std::string result;
 
@@ -101,7 +101,7 @@ std::string StringConverter::Unicode_to_ANSI(const std::wstring_view _src)
 	return result;
 }
 
-size_t StringConverter::UTF8_Strlen(const std::string_view _str)
+size_t StringConverter::UTF8_strlen(const std::string_view _str)
 {
 	//UTF-8 길이에 따른 비트 값
 	//1 byte:  0b 0xxx xxxx

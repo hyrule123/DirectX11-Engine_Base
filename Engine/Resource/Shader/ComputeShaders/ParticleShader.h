@@ -15,11 +15,11 @@ namespace core
 		virtual bool bind_buffer_to_GPU_register() override;
 		virtual void unbind_buffer_from_GPU_register() override;
 
-		void SetStrcutedBuffer(StructBuffer* _buffer) { mBuffer = _buffer; }
-		void SetSharedStrutedBuffer(StructBuffer* _buffer) { mSharedBuffer = _buffer; }
+		void set_struct_buffer(const s_ptr<StructBuffer>& _buffer) { m_buffer = _buffer; }
+		void set_shared_struct_buffer(const s_ptr<StructBuffer>& _buffer) { m_shared_buffer = _buffer; }
 
 	private:
-		StructBuffer* mBuffer;
-		StructBuffer* mSharedBuffer;
+		s_ptr<StructBuffer> m_buffer;
+		s_ptr<StructBuffer> m_shared_buffer;
 	};
 }

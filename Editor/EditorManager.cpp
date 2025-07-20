@@ -8,8 +8,8 @@
 #include <Engine/Resource/Mesh/Mesh.h>
 #include <Engine/Resource/Material/Material.h>
 #include <Engine/Game/Component/Transform.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
+#include <Engine/Game/Component/Renderer/StaticMeshRenderer.h>
+#include <Engine/Game/Component/Renderer/StaticMeshRenderer.h>
 
 #include <Engine/Game/Collision/CollisionSystem.h>
 
@@ -25,11 +25,11 @@
 #include <Editor/imgui/imgui_impl_dx11.h>
 #include <Editor/Inspector/InspectorBase.h>
 #include <Editor/DebugObject/SceneViewer.h>
-#include <Editor/Base/EditorBase.h>
+#include <Editor/Base/EditorUIBase.h>
 #include <Editor/Resource/ResourcesViewer.h>
 #include <Editor/UI/EditorMainMenu.h>
 #include <Editor/DebugObject/Console.h>
-#include <Editor/Widget/Widget_List.h>
+#include <Editor/Widget/ListWidget.h>
 #include <Editor/DebugObject/GameObjectHierarchy.h>
 #include <Editor/Resource/FBXConverter.h>
 #include <Editor/Resource/GraphicsShaderEditor.h>
@@ -55,11 +55,11 @@ namespace core::editor
 	void EditorManager::init()
 	{
 		m_editor_UIs;
-		mbEnable = false;
-		mbInitialized = false;
-		m_IsOpenEditorAsDefault = false;
-		mJsonUIData = nullptr;
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		m_b_enable = false;
+		m_b_initialized = false;
+		m_b_open_editor_as_default = false;
+		m_json_UI_data = nullptr;
+		m_current_gizmo_operation = ImGuizmo::TRANSLATE;
 
 		AtExit::add_func(EditorManager::destroy_inst);
 
@@ -73,7 +73,7 @@ namespace core::editor
 
 		//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
 		//auto renderer
-		//	= mDebugObjects[(UINT)eColliderType::Rect]->add_component<Com_Renderer_Mesh>();
+		//	= mDebugObjects[(UINT)eColliderType::Rect]->add_component<StaticMeshRenderer>();
 
 		//renderer->set_material(material, 0);
 		//renderer->set_mesh(rectMesh);
@@ -82,7 +82,7 @@ namespace core::editor
 
 		//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
 		//renderer
-		//	= mDebugObjects[(UINT)eColliderType::Circle]->add_component<Com_Renderer_Mesh>();
+		//	= mDebugObjects[(UINT)eColliderType::Circle]->add_component<StaticMeshRenderer>();
 
 		//renderer->set_material(material, 0);
 		//renderer->set_mesh(circleMesh);
@@ -91,7 +91,7 @@ namespace core::editor
 		//그리드 이쪽으로 옮겨줘야 한다.
 		// Grid Object
 		//EditorObject* gridObject = new EditorObject();
-		//Com_Renderer_Mesh* gridMr = gridObject->add_component<Com_Renderer_Mesh>();
+		//StaticMeshRenderer* gridMr = gridObject->add_component<StaticMeshRenderer>();
 		//gridMr->set_mesh(ResourceManager::Find<Mesh>(L"RectMesh"));
 		//gridMr->set_material(ResourceManager<Material>::get_inst().Find(L"GridMaterial"));
 		//GridScript* gridScript = gridObject->add_component<GridScript>();
@@ -116,36 +116,36 @@ namespace core::editor
 
 	void EditorManager::set_enable(bool _bEnable)
 	{
-		mbEnable = _bEnable;
+		m_b_enable = _bEnable;
 
-		if (mbEnable && (false == mbInitialized))
+		if (m_b_enable && (false == m_b_initialized))
 		{
 			EditorManager::init();
-			mbInitialized = true;
+			m_b_initialized = true;
 		}
 	}
 	
 
 	void EditorManager::run()
 	{
-		if (m_IsOpenEditorAsDefault)
+		if (m_b_open_editor_as_default)
 		{
-			m_IsOpenEditorAsDefault = false;
+			m_b_open_editor_as_default = false;
 			set_enable(true);
 		}
 
 		if (
-			InputManager::get_inst().GetKeyPress(eKeyCode::LCTRL)
+			InputManager::get_inst().is_key_pressed(eKeyCode::LCTRL)
 			&&
-			InputManager::get_inst().GetKeyPress(eKeyCode::LSHIFT)
+			InputManager::get_inst().is_key_pressed(eKeyCode::LSHIFT)
 			&&
-			InputManager::get_inst().GetKeyDown(eKeyCode::E)
+			InputManager::get_inst().is_key_down(eKeyCode::E)
 			)
 		{
 			EditorManager::toggle_enable();
 		}
 
-		if (false == mbEnable)
+		if (false == m_b_enable)
 		{
 			return;
 		}
@@ -154,7 +154,7 @@ namespace core::editor
 		final_update();
 		render();
 
-		mbInitialized = true;
+		m_b_initialized = true;
 	}
 
 
@@ -173,13 +173,13 @@ namespace core::editor
 			}
 		}
 
-		if (InputManager::get_inst().GetKeyPress(eKeyCode::Z))
+		if (InputManager::get_inst().is_key_pressed(eKeyCode::Z))
 		{
-			mCurrentGizmoOperation = ImGuizmo::SCALE;
+			m_current_gizmo_operation = ImGuizmo::SCALE;
 		}
-		if (InputManager::get_inst().GetKeyPress(eKeyCode::X))
+		if (InputManager::get_inst().is_key_pressed(eKeyCode::X))
 		{
-			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+			m_current_gizmo_operation = ImGuizmo::TRANSLATE;
 		}
 	}
 
@@ -188,7 +188,7 @@ namespace core::editor
 		s_ptr<Scene> scene = SceneManager::get_inst().get_active_scene();
 		if (scene)
 		{
-			CollisionSystem* colsys = scene->GetCollisionSystem();
+			CollisionSystem* colsys = scene->get_collision_system();
 			if (colsys)
 			{
 				colsys->render();
@@ -210,9 +210,9 @@ namespace core::editor
 	{
 		Json::Value* retJson = nullptr;
 
-		if (mJsonUIData->isMember(_key_path))
+		if (m_json_UI_data->isMember(_key_path))
 		{
-			retJson = &((*mJsonUIData)[_key_path]);
+			retJson = &((*m_json_UI_data)[_key_path]);
 		}
 
 		return retJson;
@@ -270,7 +270,7 @@ namespace core::editor
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = PathManager::get_inst().GetResPathRelative();
+		const std::fs::path& saveDir = PathManager::get_inst().get_relative_resource_directory();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{
@@ -279,22 +279,21 @@ namespace core::editor
 		
 
 		//프로젝트 세팅 로드
-		mJsonUIData = std::make_unique<Json::Value>();
+		m_json_UI_data = std::make_unique<Json::Value>();
 		savePath.remove_filename();
 		savePath /= imguiSaveJSON;
 		std::ifstream ifs(savePath);
 		if (ifs.is_open())
 		{
-			ifs >> *mJsonUIData;
+			ifs >> *m_json_UI_data;
 			ifs.close();
 		}
 
 
 		// Setup Platform/Renderer backends
 		ImGui_ImplWin32_Init(core::GameEngine::get_inst().get_HWND());
-		ImGui_ImplDX11_Init(RenderManager::get_inst().Device()
-			, RenderManager::get_inst().Context());
-
+		ImGui_ImplDX11_Init(RenderManager::get_inst().get_device().Get()
+			, RenderManager::get_inst().get_context().Get());
 
 
 		//설정 파일들 로드
@@ -372,7 +371,7 @@ namespace core::editor
 		}
 	}
 
-	s_ptr<EditorBase> EditorManager::add_editor_window(const s_ptr<EditorBase>& _new_widget)
+	s_ptr<EditorUIBase> EditorManager::add_editor_window(const s_ptr<EditorUIBase>& _new_widget)
 	{
 		if (nullptr == _new_widget) { return nullptr; }
 
@@ -380,7 +379,7 @@ namespace core::editor
 		const std::string& guiName = _new_widget->get_unique_name();
 
 		//중복되는 이름이 있을 경우 에러 메시지 띄운 후 생성 중단
-		s_ptr<EditorBase> foundPtr = find_editor_window(guiName);
+		s_ptr<EditorUIBase> foundPtr = find_editor_window(guiName);
 		
 		if (foundPtr)
 		{
@@ -509,9 +508,9 @@ namespace core::editor
 	}
 
 
-	s_ptr<EditorBase> EditorManager::find_editor_window(const std::string_view _UI_name)
+	s_ptr<EditorUIBase> EditorManager::find_editor_window(const std::string_view _UI_name)
 	{
-		for (const s_ptr<EditorBase>& ui : m_editor_UIs)
+		for (const s_ptr<EditorUIBase>& ui : m_editor_UIs)
 		{
 			if (ui->get_unique_name() == _UI_name)
 			{

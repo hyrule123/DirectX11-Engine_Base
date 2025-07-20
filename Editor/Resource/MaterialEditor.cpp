@@ -34,7 +34,7 @@ namespace core::editor
 
 
 	EditorMaterial::EditorMaterial()
-		: EditorWindow("Material Editor")
+		: EditorUIWindow("Material Editor")
 		, mTargetMaterial()
 		, mShaderCombo{}
 		, mbNewMaterial()
@@ -49,7 +49,7 @@ namespace core::editor
 	{
 		//쉐이더 파일 목록 업데이트
 		mShaderCombo.set_unique_name("Shader Lists");
-		RefreshShaderSettingFiles();
+		refresh_shader_setting_files();
 
 		//렌더링 모드 UI 생성
 		mRenderingModeCombo.set_unique_name("Rendering Mode");
@@ -77,34 +77,34 @@ namespace core::editor
 
 	void EditorMaterial::update_UI()
 	{
-		UpdateShader();
+		update_shader();
 
 		ImGui::Separator();
 
-		UpdateRenderingMode();
+		update_rendering_mode();
 
 		ImGui::Separator();
 
-		UpdateTextureList();
+		update_texture_list();
 
 		ImGui::Separator();
 
-		UpdateMtrlConstBuffer();
+		update_material_const_buffer();
 
 		ImGui::Separator();
 
 		if(ImGui::Button("New Material", ImVec2(0.f, 35.f)))
 		{
-			NewMaterial();
+			new_material();
 		}
 
 		ImGui::SameLine();
 
-		UpdateSaveLoad();
+		update_save_load();
 	}
-	void EditorMaterial::RefreshShaderSettingFiles()
+	void EditorMaterial::refresh_shader_setting_files()
 	{
-		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
+		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -124,7 +124,7 @@ namespace core::editor
 			mShaderCombo.add_item(item);
 		}
 	}
-	void EditorMaterial::UpdateShader()
+	void EditorMaterial::update_shader()
 	{
 		std::string strCurShader = "Current Shader: ";
 		{
@@ -144,7 +144,7 @@ namespace core::editor
 		mShaderCombo.final_update();
 		if (ImGui::Button("Refresh Shaders"))
 		{
-			RefreshShaderSettingFiles();
+			refresh_shader_setting_files();
 		}
 
 		if (mShaderCombo.is_selection_changed())
@@ -169,7 +169,7 @@ namespace core::editor
 		}
 		ImGui::Text(shaderKey.c_str());
 	}
-	void EditorMaterial::UpdateTextureList()
+	void EditorMaterial::update_texture_list()
 	{
 		for (int i = 0; i < (int)eTextureSlot::END; ++i)
 		{
@@ -197,17 +197,17 @@ namespace core::editor
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ResourceManager<Texture>::get_inst().GetBaseDir();
+				const std::fs::path& texPath = ResourceManager<Texture>::get_inst().get_base_directory();
 				
 				std::vector<std::fs::path> vecExt{};
 				for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
 				{
 					vecExt.push_back(::core::name::path::extension::Texture[i]);
 				}
-				std::fs::path receivedPath = WinAPI::FileDialog(texPath, vecExt);
+				std::fs::path receivedPath = WinAPI::file_open_dialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey = PathManager::get_inst().MakePathStrKey(receivedPath);
+					std::fs::path PathstrKey = PathManager::get_inst().make_path_strkey(receivedPath);
 
 					s_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey.string());
 					if (tex)
@@ -231,7 +231,7 @@ namespace core::editor
 			}
 		}
 	}
-	void EditorMaterial::UpdateRenderingMode()
+	void EditorMaterial::update_rendering_mode()
 	{
 		eRenderingMode mode = mTargetMaterial->get_rendering_mode();
 		mRenderingModeCombo.set_current_idx((int)mode);
@@ -246,45 +246,45 @@ namespace core::editor
 			}
 		}
 	}
-	void EditorMaterial::UpdateMtrlConstBuffer()
+	void EditorMaterial::update_material_const_buffer()
 	{
 		float4 color{};
 		
-		color = mTargetMaterial->GetDiffuseColor();
+		color = mTargetMaterial->get_diffuse_color();
 		if (ImGui::DragFloat4("Diffuse Color",
 			reinterpret_cast<float*>(&color)))
 		{
-			mTargetMaterial->SetDiffuseColor(color);
+			mTargetMaterial->set_diffuse_color(color);
 		}
 
-		color = mTargetMaterial->GetSpecularColor();
+		color = mTargetMaterial->get_specular_color();
 		if (ImGui::DragFloat4("Specular Color",
 			reinterpret_cast<float*>(&color)))
 		{
-			mTargetMaterial->SetSpecularColor(color);
+			mTargetMaterial->set_specular_color(color);
 		}
 
-		color = mTargetMaterial->GetAmbientColor();
+		color = mTargetMaterial->get_ambient_color();
 		if (ImGui::DragFloat4("Ambient Color",
 			reinterpret_cast<float*>(&color)))
 		{
-			mTargetMaterial->SetAmbientColor(color);
+			mTargetMaterial->set_ambient_color(color);
 		}
 
-		color = mTargetMaterial->GetEmissiveColor();
+		color = mTargetMaterial->get_emmisive_color();
 		if (ImGui::DragFloat4("Emissive Color",
 			reinterpret_cast<float*>(&color)))
 		{
-			mTargetMaterial->SetEmissiveColor(color);
+			mTargetMaterial->set_emmisive_color(color);
 		}
 	}
-	void EditorMaterial::UpdateSaveLoad()
+	void EditorMaterial::update_save_load()
 	{
 		if (ImGui::Button("Save to File", ImVec2(0.f, 35.f)))
 		{
-			if (CheckSavePossible())
+			if (check_save_possible())
 			{
-				SaveToFile();
+				save_to_file();
 			}
 			
 		}
@@ -294,12 +294,12 @@ namespace core::editor
 
 		if (ImGui::Button("Load from File", ImVec2(0.f, 35.f)))
 		{
-			mCurContext = eContext::LoadFromFile;
+			mCurContext = eContext::load_from_file;
 			mSaveLoadFileName.clear();
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.reset();
-			const auto& materials = ResourceManager<Material>::get_inst().GetResources();
+			const auto& materials = ResourceManager<Material>::get_inst().get_resources();
 			for (auto& mtrl : materials)
 			{
 				tComboItem item{};
@@ -307,9 +307,9 @@ namespace core::editor
 				mCurrentLoadedMtrl.add_item(item);
 			}
 		}
-		LoadFromFile();
+		load_from_file();
 	}
-	bool EditorMaterial::CheckSavePossible()
+	bool EditorMaterial::check_save_possible()
 	{
 		bool bPossible = true;
 		//저장 조건 확인
@@ -328,12 +328,12 @@ namespace core::editor
 
 		return bPossible;
 	}
-	void EditorMaterial::SaveToFile()
+	void EditorMaterial::save_to_file()
 	{
-		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::get_inst().GetBaseDir());
+		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::get_inst().get_base_directory());
 			
 		outputPath /= mSaveLoadFileName;
-		outputPath = WinAPI::FileDialog(outputPath, ::core::name::path::extension::Material);
+		outputPath = WinAPI::file_open_dialog(outputPath, ::core::name::path::extension::Material);
 
 		if (outputPath.empty())
 		{
@@ -342,16 +342,16 @@ namespace core::editor
 
 		//저장할 때는 Key값을 바꿔야 하기 때문에 Clone 해서 저장해야 한다.
 		//기존 리소스를 그대로 Save하게 되면 Key 값이 변경되어 에러가 발생할 수 있음.
-		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->Clone());
+		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->clone());
 
 		std::string name = outputPath.filename().string();
 		mTargetMaterial->set_resource_name(name);
 
 		ResourceManager<Material>::get_inst().save(mTargetMaterial);
 	}
-	void EditorMaterial::LoadFromFile()
+	void EditorMaterial::load_from_file()
 	{
-		if (eContext::LoadFromFile == mCurContext)
+		if (eContext::load_from_file == mCurContext)
 		{
 			//모달 창 팝업
 			ImGui::SetNextWindowSize(ImVec2{ 400.f, 500.f });
@@ -373,9 +373,9 @@ namespace core::editor
 						s_ptr<Material> mtrl = ResourceManager<Material>::get_inst().find(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
-						if (mtrl->IsEngineDefaultRes())
+						if (mtrl->is_engine_default_res())
 						{
-							mtrl = std::dynamic_pointer_cast<Material>(mtrl->Clone());
+							mtrl = std::dynamic_pointer_cast<Material>(mtrl->clone());
 							mtrl->set_engine_default_res(false);
 						}
 
@@ -404,12 +404,12 @@ namespace core::editor
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
 					//Res/Material 폴더
-					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::get_inst().GetBaseDir());
+					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::get_inst().get_base_directory());
 
 					//Res 폴더
-					const std::fs::path& resDir = PathManager::get_inst().GetResPathAbsolute();
+					const std::fs::path& resDir = PathManager::get_inst().get_absolute_resource_directory();
 
-					std::fs::path filePath = WinAPI::FileDialog(mtrlDir, ".json");
+					std::fs::path filePath = WinAPI::file_open_dialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
 					{
 						NOTIFICATION("파일을 찾지 못했습니다.");
@@ -434,7 +434,7 @@ namespace core::editor
 			}
 		}
 	}
-	void EditorMaterial::NewMaterial()
+	void EditorMaterial::new_material()
 	{
 		mTargetMaterial = std::make_shared<Material>();
 	}

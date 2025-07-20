@@ -1,12 +1,12 @@
 #pragma once
-#include <Editor/Base/EditorBase.h>
+#include <Editor/Base/EditorUIBase.h>
 
 namespace core::editor
 {
-	class EditorWindow;
-	class EditorMainMenu : public EditorBase
+	class EditorUIWindow;
+	class EditorMainMenu : public EditorUIBase
 	{
-		CLASS_INFO(EditorMainMenu, EditorBase);
+		CLASS_INFO(EditorMainMenu, EditorUIBase);
 	public:
 		EditorMainMenu();
 		virtual ~EditorMainMenu();
@@ -15,10 +15,10 @@ namespace core::editor
 		virtual void update_UI() override;
 		virtual void end_UI() final;
 
-		void register_window(const s_ptr<EditorWindow>& _window) {
+		void register_window(const s_ptr<EditorUIWindow>& _window) {
 			if (_window) { m_editor_windows.push_back(_window); }
 		}
 	private:
-		std::vector<w_ptr<EditorWindow>> m_editor_windows;
+		std::vector<w_ptr<EditorUIWindow>> m_editor_windows;
 	};
 }

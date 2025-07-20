@@ -3,7 +3,7 @@
 
 #include <Engine/Game/GameObject.h>
 
-#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Camera/Camera.h>
 
 #include <Engine/Manager/RenderManager.h>
 
@@ -17,15 +17,15 @@ namespace core
 {
 	Transform::Transform()
 		: Super(Transform::s_static_type_name, Transform::s_component_order)
-		, m_localScale(float3::One)
-		, m_localRotation(Quaternion::Identity)
-		, m_localPosition(float3::Zero)
-		, m_localDirection{ float3::Right, float3::Up, float3::Forward }
-		, m_localMatrix(MATRIX::Identity)
-		, m_worldScale(float3::One)
-		, m_worldRotation(math::Quaternion::Identity)
-		, m_worldDirection{ float3::Right, float3::Up, float3::Forward }
-		, m_worldMatrix(MATRIX::Identity)
+		, m_local_scale(float3::One)
+		, m_local_rotation(Quaternion::Identity)
+		, m_local_position(float3::Zero)
+		, m_local_direction{ float3::Right, float3::Up, float3::Forward }
+		, m_local_matrix(MATRIX::Identity)
+		, m_world_scale(float3::One)
+		, m_world_rotation(math::Quaternion::Identity)
+		, m_world_direction{ float3::Right, float3::Up, float3::Forward }
+		, m_world_matrix(MATRIX::Identity)
 		, m_parent_updated(false)
 		, m_local_updated(true)
 		, m_transform_updated(true)
@@ -41,12 +41,12 @@ namespace core
 	void Transform::init_static()
 	{
 		s_buffer = new StructBuffer;
-		StructBuffer::Desc desc{};
-		desc.GPU_register_t_SRV = GPU::Register::t::g_transforms;
-		desc.GPU_register_u_UAV = GPU::Register::u::NONE;
-		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.TargetStageSRV = eShaderStageFlag::ALL;
-		s_buffer->init<tTransform>(desc);
+		StructBuffer::tDesc desc{};
+		desc.m_SRV_target_register_idx = GPU::Register::t::g_transforms;
+		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
+		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_SRV_target_stage = eShaderStageFlag::ALL;
+		s_buffer->create<tTransform>(desc);
 	}
 
 	void Transform::release_static()
@@ -80,19 +80,19 @@ namespace core
 	void Transform::update_local_matrix()
 	{
 		//1. 크기행렬
-		m_localMatrix = MATRIX::CreateScale(m_localScale);
+		m_local_matrix = MATRIX::CreateScale(m_local_scale);
 
 		//2. 회전행렬
-		MATRIX matRot = MATRIX::CreateFromQuaternion(m_localRotation);
-		m_localMatrix *= matRot;
+		MATRIX matRot = MATRIX::CreateFromQuaternion(m_local_rotation);
+		m_local_matrix *= matRot;
 
 		//2-1. 회전행렬으로부터 직관적 방향을 계산한다.
-		m_localDirection[(int)eDirection::Forward] = matRot.Forward();
-		m_localDirection[(int)eDirection::Right] = matRot.Right();
-		m_localDirection[(int)eDirection::Up] = matRot.Up();
+		m_local_direction[(int)eDirection::Forward] = matRot.Forward();
+		m_local_direction[(int)eDirection::Right] = matRot.Right();
+		m_local_direction[(int)eDirection::Up] = matRot.Up();
 
 		//3. 이동행렬
-		m_localMatrix *= MATRIX::CreateTranslation(m_localPosition);
+		m_local_matrix *= MATRIX::CreateTranslation(m_local_position);
 	}
 
 	void Transform::unlink_parent()
@@ -152,9 +152,9 @@ namespace core
 
 		//로컬, 월드 둘중 하나라도 업데이트 되었으면 자신의 월드행렬을 업데이트 한다.
 		if (is_world_need_update) {
-			m_worldMatrix = m_localMatrix;
-			m_worldRotation = m_localRotation;
-			m_worldScale = m_localScale;
+			m_world_matrix = m_local_matrix;
+			m_world_rotation = m_local_rotation;
+			m_world_scale = m_local_scale;
 			if (m_parent.lock())
 			{
 				//부모 매트릭스를 받아온다.
@@ -183,7 +183,7 @@ namespace core
 						parentMat.Up(parentMat.Up().Normalize());
 						parentMat.Forward(parentMat.Forward().Normalize());
 
-						m_worldRotation *= m_parent.lock()->get_world_rotation_internal();
+						m_world_rotation *= m_parent.lock()->get_world_rotation_internal();
 					}
 				}
 
@@ -204,19 +204,19 @@ namespace core
 						parentMat._22 = worldScale.y;
 						parentMat._33 = worldScale.z;
 
-						m_worldScale *= m_parent.lock()->get_world_scale();
+						m_world_scale *= m_parent.lock()->get_world_scale();
 					}
 
 					//크기 반영 + 회전 반영 -> 그냥 바로 적용
 				}
 
-				m_worldMatrix *= parentMat;
+				m_world_matrix *= parentMat;
 			}
 
 			//월드 방향 계산
 			for (int i = 0; i < (int)eDirection::END; ++i)
 			{
-				m_worldDirection[i] = float3(m_worldMatrix.m[i]).Normalize();
+				m_world_direction[i] = float3(m_world_matrix.m[i]).Normalize();
 			}
 		}
 	}
@@ -278,15 +278,15 @@ namespace core
 			update_world_matrix_recursive();
 
 			//World Matrix의 위치 정보를 worldPosition으로 설정
-			m_worldMatrix.Translation(_worldPosition);
+			m_world_matrix.Translation(_worldPosition);
 
 			//update_world_matrix_recursive() 호출 시 Local Matrix, World Matrix 전부 새걸로 갱신되어 있는 상태이므로(flag들이 모두 false 가 되어있는 상태)
 			//추가적으로 작업을 안해줘도 됨. -> Set함수를 통하지 않고 변경.
-			MATRIX local_diff = m_worldMatrix * m_parent.lock()->get_world_matix_internal().Invert();
-			m_localPosition = local_diff.Translation();
+			MATRIX local_diff = m_world_matrix * m_parent.lock()->get_world_matix_internal().Invert();
+			m_local_position = local_diff.Translation();
 
 			//오차를 최대한 줄이기 위해 position만 가져온다.
-			m_localMatrix.Translation(m_localPosition);
+			m_local_matrix.Translation(m_local_position);
 		}
 	}
 

@@ -45,32 +45,32 @@ namespace core
 			{
 				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
 				//그냥 복사한뒤 주인만 바꾸면 됨.
-				m_baseComponents[i] = std::static_pointer_cast<Component>(_other.m_baseComponents[i]->Clone());
+				m_baseComponents[i] = std::static_pointer_cast<Component>(_other.m_baseComponents[i]->clone());
 
 				if (m_baseComponents[i])
 				{
 					s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
-					m_baseComponents[i]->Set_gameObject(my);
+					m_baseComponents[i]->set_game_object(my);
 				}
 			}
 		}
 
 
-		//복사 시 Clone 불가능한 Script는 복사하지 않는다.
+		//복사 시 clone 불가능한 Script는 복사하지 않는다.
 		for (size_t i = 0; i < _other.m_scripts.size(); ++i)
 		{
-			s_ptr<Script> cloned = std::static_pointer_cast<Script>(_other.m_scripts[i]->Clone());
+			s_ptr<Script> cloned = std::static_pointer_cast<Script>(_other.m_scripts[i]->clone());
 			if (cloned)
 			{
 				s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
-				cloned->Set_gameObject(my);
+				cloned->set_game_object(my);
 				m_scripts.push_back(cloned);
 			}
 #ifdef _DEBUG
 			else
 			{
 				std::wstringstream stream{};
-				stream << StringConverter::UTF8_to_Unicode(_other.m_scripts[i]->get_static_type_name());
+				stream << StringConverter::UTF8_to_UTF16(_other.m_scripts[i]->get_static_type_name());
 				stream << L"스크립트 복사 실패.\n";
 				DEBUG_LOG_W(stream.str().c_str());
 			}
@@ -131,7 +131,7 @@ namespace core
 		add_component<Transform>();
 	}
 
-	void GameObject::Awake()
+	void GameObject::awake()
 	{
 		if (m_isAwaken || false == is_active())
 		{
@@ -143,32 +143,32 @@ namespace core
 		{
 			if (m_baseComponents[i])
 			{
-				m_baseComponents[i]->Awake();
+				m_baseComponents[i]->awake();
 			}
 		}
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			m_scripts[i]->Awake();
+			m_scripts[i]->awake();
 		}
 
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 			{
-				m_baseComponents[i]->OnEnable();
+				m_baseComponents[i]->on_enable();
 			}
 		}
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i]->IsEnabled())
+			if (m_scripts[i]->is_enabled())
 			{
-				m_scripts[i]->OnEnable();
+				m_scripts[i]->on_enable();
 			}
 		}
 
-		//OnLayerChange 호출
+		//on_layer_change 호출
 		set_layer(m_layer);
 
 		//Awake의 경우 재귀적으로 호출
@@ -181,7 +181,7 @@ namespace core
 				auto owner = child->get_owner();
 				if (owner)
 				{
-					owner->Awake();
+					owner->awake();
 				}
 			}
 		}
@@ -191,10 +191,10 @@ namespace core
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 			{
-				if (false == m_baseComponents[i]->IsStarted()) {
-					m_baseComponents[i]->Start();
+				if (false == m_baseComponents[i]->is_started()) {
+					m_baseComponents[i]->start();
 				}
 				m_baseComponents[i]->update();
 			}
@@ -202,10 +202,10 @@ namespace core
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			if (m_scripts[i] && m_scripts[i]->is_enabled())
 			{
-				if (false == m_scripts[i]->IsStarted()) {
-					m_scripts[i]->Start();
+				if (false == m_scripts[i]->is_started()) {
+					m_scripts[i]->start();
 				}
 				m_scripts[i]->update();
 			}
@@ -216,7 +216,7 @@ namespace core
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 			{
 				m_baseComponents[i]->fixed_update();
 			}
@@ -224,7 +224,7 @@ namespace core
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			if (m_scripts[i] && m_scripts[i]->is_enabled())
 			{
 				m_scripts[i]->fixed_update();
 			}
@@ -237,7 +237,7 @@ namespace core
 	{
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 			{
 				m_baseComponents[i]->final_update();
 			}
@@ -245,7 +245,7 @@ namespace core
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			if (m_scripts[i] && m_scripts[i]->is_enabled())
 			{
 				m_scripts[i]->final_update();
 			}
@@ -263,13 +263,13 @@ namespace core
 
 				if (Component::eState::DestroyReserved == state)
 				{
-					_com->SetEnable(false);
-					_com->set_state(Component::eState::Destroy);
+					_com->set_enable(false);
+					_com->set_state(Component::eState::destroy);
 					return false;
 				}
-				else if (Component::eState::Destroy == state)
+				else if (Component::eState::destroy == state)
 				{
-					_com->OnDestroy();
+					_com->on_destroy();
 					return true;
 				}
 
@@ -302,7 +302,7 @@ namespace core
 		}
 
 		if (m_baseComponents[(int)eComponentOrder::Renderer] && 
-			m_baseComponents[(int)eComponentOrder::Renderer]->IsEnabled())
+			m_baseComponents[(int)eComponentOrder::Renderer]->is_enabled())
 		{
 			//static_cast<Renderer*>(m_baseComponents[(int)eComponentOrder::Renderer])->render();
 		}
@@ -317,7 +317,7 @@ namespace core
 
 		for (size_t i = 0; i < m_baseComponents.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 			{
 				m_baseComponents[i]->frame_end();
 			}
@@ -325,7 +325,7 @@ namespace core
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (m_scripts[i] && m_scripts[i]->IsEnabled())
+			if (m_scripts[i] && m_scripts[i]->is_enabled())
 			{
 				m_scripts[i]->frame_end();
 			}
@@ -341,7 +341,7 @@ namespace core
 	{
 		if (nullptr == _pCom) { return nullptr; }
 
-		eComponentOrder ComType = _pCom->GetComponentCategory();
+		eComponentOrder ComType = _pCom->get_component_order();
 		
 		if (eComponentOrder::Script == ComType)
 		{
@@ -359,18 +359,18 @@ namespace core
 		}
 
 		s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
-		_pCom->Set_gameObject(my);
+		_pCom->set_game_object(my);
 
-		if (false == _pCom->IsInitialized())
+		if (false == _pCom->is_initialized())
 		{
 			_pCom->init();
 			_pCom->set_state(Component::eState::NotAwaken);
 		}
 
-		//Active 상태이고, Awake 이미 호출되었을 경우 Awake 함수 호출
+		//Active 상태이고, awake 이미 호출되었을 경우 Awake 함수 호출
 		if (is_active() && m_isAwaken)
 		{
-			_pCom->Awake();
+			_pCom->awake();
 		}
 
 		return _pCom;
@@ -400,9 +400,9 @@ namespace core
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
 		s_ptr<Scene> scene = m_scene.lock();
 		ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
-		if (scene->IsAwaken())
+		if (scene->is_awaken())
 		{
-			scene->AddFrameEndJob(&GameObject::set_active_internal, this, _bActive);
+			scene->add_frame_end_job(&GameObject::set_active_internal, this, _bActive);
 		}
 
 		//씬이 작동중이지 않을 경우 바로 호출
@@ -432,14 +432,14 @@ namespace core
 		{
 			if (m_baseComponents[i])
 			{
-				m_baseComponents[i]->Destroy();
+				m_baseComponents[i]->destroy();
 			}
 		}
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
 			if (m_scripts[i])
 			{
-				m_scripts[i]->Destroy();
+				m_scripts[i]->destroy();
 			}
 		}
 
@@ -459,12 +459,12 @@ namespace core
 			{
 				if (m_baseComponents[i])
 				{
-					m_baseComponents[i]->OnLayerChange(_layer);
+					m_baseComponents[i]->on_layer_change(_layer);
 				}
 			}
 			for (size_t i = 0; i < m_scripts.size(); ++i)
 			{
-				m_scripts[i]->OnLayerChange(_layer);
+				m_scripts[i]->on_layer_change(_layer);
 			}
 		}
 	}
@@ -480,22 +480,22 @@ namespace core
 
 				s_ptr<Scene> scene = m_scene.lock();
 				ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
-				//Scene이 작동중인 상태인데 아직 Awake 함수가 호출되지 않았을 경우 Awake 함수 호출
-				if (scene->IsAwaken() && false == m_isAwaken)
+				//Scene이 작동중인 상태인데 아직 awake 함수가 호출되지 않았을 경우 Awake 함수 호출
+				if (scene->is_awaken() && false == m_isAwaken)
 				{
 					m_isAwaken = true;
 
 					for (size_t i = 0; i < m_baseComponents.size(); ++i)
 					{
-						m_baseComponents[i]->Awake();
+						m_baseComponents[i]->awake();
 					}
 				}
 
 				for (size_t i = 0; i < m_baseComponents.size(); ++i)
 				{
-					if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+					if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 					{
-						m_baseComponents[i]->OnEnable();
+						m_baseComponents[i]->on_enable();
 					}
 						
 				}
@@ -507,9 +507,9 @@ namespace core
 				//InActive 상태가 되면 OnDisable은 호출되지만, 각 컴포넌트의 Enabled 상태는 변하지 않음.
 				for (size_t i = 0; i < m_baseComponents.size(); ++i)
 				{
-					if (m_baseComponents[i] && m_baseComponents[i]->IsEnabled())
+					if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
 					{
-						m_baseComponents[i]->OnDisable();
+						m_baseComponents[i]->on_disable();
 					}
 				}
 			}

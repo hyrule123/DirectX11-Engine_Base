@@ -12,35 +12,35 @@ namespace core {
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
 
 
-		Device()->CreateSamplerState
+		get_device()->CreateSamplerState
 		(
 			&samplerDesc
-			, m_samplerStates[(uint)eSamplerType::Point].GetAddressOf()
+			, m_sampler_states[(uint)eSamplerType::Point].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR;
-		Device()->CreateSamplerState
+		get_device()->CreateSamplerState
 		(
 			&samplerDesc
-			, m_samplerStates[(uint)eSamplerType::Linear].GetAddressOf()
+			, m_sampler_states[(uint)eSamplerType::Linear].GetAddressOf()
 		);
 
 		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
-		Device()->CreateSamplerState
+		get_device()->CreateSamplerState
 		(
 			&samplerDesc
-			, m_samplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf()
+			, m_sampler_states[(uint)eSamplerType::Anisotropic].GetAddressOf()
 		);
 
 
-		Context()->PSSetSamplers((uint)eSamplerType::Point
-			, 1, m_samplerStates[(uint)eSamplerType::Point].GetAddressOf());
+		get_context()->PSSetSamplers((uint)eSamplerType::Point
+			, 1, m_sampler_states[(uint)eSamplerType::Point].GetAddressOf());
 
-		Context()->PSSetSamplers((uint)eSamplerType::Linear
-			, 1, m_samplerStates[(uint)eSamplerType::Linear].GetAddressOf());
+		get_context()->PSSetSamplers((uint)eSamplerType::Linear
+			, 1, m_sampler_states[(uint)eSamplerType::Linear].GetAddressOf());
 
-		Context()->PSSetSamplers((uint)eSamplerType::Anisotropic
-			, 1, m_samplerStates[(uint)eSamplerType::Anisotropic].GetAddressOf());
+		get_context()->PSSetSamplers((uint)eSamplerType::Anisotropic
+			, 1, m_sampler_states[(uint)eSamplerType::Anisotropic].GetAddressOf());
 
 #pragma endregion
 	}
@@ -53,27 +53,27 @@ namespace core {
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 		rsDesc.DepthClipEnable = TRUE;
 
-		Device()->CreateRasterizerState(&rsDesc
-			, m_rasterizerStates[(uint)eRasterizerState::SolidBack].GetAddressOf());
+		get_device()->CreateRasterizerState(&rsDesc
+			, m_rasterizer_states[(uint)eRasterizerState::SolidBack].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
 		rsDesc.DepthClipEnable = TRUE;
 
-		Device()->CreateRasterizerState(&rsDesc
-			, m_rasterizerStates[(uint)eRasterizerState::SolidFront].GetAddressOf());
+		get_device()->CreateRasterizerState(&rsDesc
+			, m_rasterizer_states[(uint)eRasterizerState::SolidFront].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
-		Device()->CreateRasterizerState(&rsDesc
-			, m_rasterizerStates[(uint)eRasterizerState::SolidNone].GetAddressOf());
+		get_device()->CreateRasterizerState(&rsDesc
+			, m_rasterizer_states[(uint)eRasterizerState::SolidNone].GetAddressOf());
 
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
 
-		Device()->CreateRasterizerState(&rsDesc
-			, m_rasterizerStates[(uint)eRasterizerState::WireframeNone].GetAddressOf());
+		get_device()->CreateRasterizerState(&rsDesc
+			, m_rasterizer_states[(uint)eRasterizerState::WireframeNone].GetAddressOf());
 #pragma endregion
 	}
 
@@ -82,7 +82,7 @@ namespace core {
 
 #pragma region Blend State
 		//None
-		m_blendStates[(uint)eBlendState::Default] = nullptr;
+		m_blend_states[(uint)eBlendState::Default] = nullptr;
 
 		D3D11_BLEND_DESC bsDesc = {};
 		bsDesc.AlphaToCoverageEnable = false;
@@ -97,7 +97,7 @@ namespace core {
 
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		Device()->CreateBlendState(&bsDesc, m_blendStates[(uint)eBlendState::AlphaBlend].GetAddressOf());
+		get_device()->CreateBlendState(&bsDesc, m_blend_states[(uint)eBlendState::AlphaBlend].GetAddressOf());
 
 		bsDesc.AlphaToCoverageEnable = false;
 		bsDesc.IndependentBlendEnable = false;
@@ -108,7 +108,7 @@ namespace core {
 		bsDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
 		bsDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		Device()->CreateBlendState(&bsDesc, m_blendStates[(uint)eBlendState::OneOne].GetAddressOf());
+		get_device()->CreateBlendState(&bsDesc, m_blend_states[(uint)eBlendState::OneOne].GetAddressOf());
 
 #pragma endregion
 	}
@@ -123,32 +123,32 @@ namespace core {
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = false;
-		Device()->CreateDepthStencilState(&dsDesc
-			, m_depthStencilStates[(uint)eDepthStencilState::Less].GetAddressOf());
+		get_device()->CreateDepthStencilState(&dsDesc
+			, m_depth_stencil_states[(uint)eDepthStencilState::Less].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_GREATER;
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = false;
 
-		Device()->CreateDepthStencilState(&dsDesc
-			, m_depthStencilStates[(uint)eDepthStencilState::Greater].GetAddressOf());
+		get_device()->CreateDepthStencilState(&dsDesc
+			, m_depth_stencil_states[(uint)eDepthStencilState::Greater].GetAddressOf());
 
 		dsDesc.DepthEnable = true;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
 		dsDesc.StencilEnable = false;
 
-		Device()->CreateDepthStencilState(&dsDesc
-			, m_depthStencilStates[(uint)eDepthStencilState::NoWrite].GetAddressOf());
+		get_device()->CreateDepthStencilState(&dsDesc
+			, m_depth_stencil_states[(uint)eDepthStencilState::NoWrite].GetAddressOf());
 
 		dsDesc.DepthEnable = false;
 		dsDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ZERO;
 		dsDesc.StencilEnable = false;
 
-		Device()->CreateDepthStencilState(&dsDesc
-			, m_depthStencilStates[(uint)eDepthStencilState::None].GetAddressOf());
+		get_device()->CreateDepthStencilState(&dsDesc
+			, m_depth_stencil_states[(uint)eDepthStencilState::None].GetAddressOf());
 #pragma endregion
 	}
 }

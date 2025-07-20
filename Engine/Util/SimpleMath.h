@@ -24,12 +24,12 @@
 namespace core
 {
 	//1(rad) / 180 * PI = PI / 180
-	constexpr const float g_radianToDegreeFactor = DirectX::XM_PI / 180.f;
+	constexpr const float g_radian_to_degree_factor = DirectX::XM_PI / 180.f;
 
 	//1(deg) / PI * 180 = 180 / PI
 	constexpr const float g_degreeToRadianFactor = 180.f / DirectX::XM_PI;
-	inline constexpr float ToRadian(float _radian) { return _radian * g_radianToDegreeFactor; }
-	inline constexpr float ToDegree(float _degree) { return _degree * g_degreeToRadianFactor; }
+	inline constexpr float to_radian(float _radian) { return _radian * g_radian_to_degree_factor; }
+	inline constexpr float to_degree(float _degree) { return _degree * g_degreeToRadianFactor; }
 
 	enum class eAxis2D
 	{

@@ -10,7 +10,7 @@
 
 
 #include <Engine/Game/Component/Transform.h>
-#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Camera/Camera.h>
 
 namespace core
 {
@@ -18,7 +18,7 @@ namespace core
 
 	GridScript::GridScript()
 		: Script(GridScript::s_static_type_name)
-		, mCamera(nullptr)
+		, m_camera()
 	{
 
 	}
@@ -28,31 +28,27 @@ namespace core
 
 	}
 
-	void GridScript::Awake()
+	void GridScript::awake()
 	{
 		//eSceneType type = SceneManager::get_active_scene()->GetSceneType();
-		mCamera = RenderManager::get_inst().sceneRenderAgent().GetCamera(0);
+		m_camera = RenderManager::get_inst().sceneRenderAgent().get_camera(0);
 	}
 
 	void GridScript::update()
 	{
-		if (mCamera == nullptr)
+		if (m_camera.expired())
 		{
-			return;
-		}
-		else if (mCamera->IsDestroyed())
-		{
-			mCamera = nullptr;
 			return;
 		}
 
-		const auto& gameObj = mCamera->get_owner();
+		s_ptr<Camera> cam = m_camera.lock();
+		const auto& gameObj = cam->get_owner();
 		const auto& TR = gameObj->get_component<Transform>();
 		
 		float3 cameraPosition = TR->get_local_position();
 		float4 position = float4(cameraPosition.x, cameraPosition.y, cameraPosition.z, 1.0f);
 
-		float scale = mCamera->GetScale();
+		float scale = cam->GetScale();
 
 		RECT winRect;
 		GetClientRect(GameEngine::get_inst().get_HWND(), &winRect);

@@ -33,8 +33,8 @@ namespace core
 		Serializable();
 		virtual ~Serializable();
 
-		s_ptr<std::ofstream> OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
-		s_ptr<std::ifstream> OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
+		s_ptr<std::ofstream> open_ofstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
+		s_ptr<std::ifstream> open_ifstream(std::fs::path const& _fullPath, std::ios::openmode _mode = std::ios::binary) const;
 	};
 
 
@@ -47,8 +47,8 @@ namespace core
 		Serializable_Binary();
 		virtual ~Serializable_Binary();
 
-		eResult SaveFile_Binary(std::fs::path const& _fullPath) const;
-		eResult LoadFile_Binary(std::fs::path const& _fullPath);
+		eResult save_file_binary(std::fs::path const& _fullPath) const;
+		eResult load_file_binary(std::fs::path const& _fullPath);
 		
 		virtual eResult serialize_binary(BinarySerializer* _ser) const = 0;
 		virtual eResult deserialize_binary(const BinarySerializer* _ser) = 0;
@@ -83,8 +83,8 @@ namespace core
 		Serializable_Json();
 		virtual ~Serializable_Json();
 
-		eResult SaveFile_Json(std::fs::path const& _fullPath) const;
-		eResult LoadFile_Json(std::fs::path const& _fullPath);
+		eResult save_file_json(std::fs::path const& _fullPath) const;
+		eResult load_file_json(std::fs::path const& _fullPath);
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const = 0;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) = 0;

@@ -14,14 +14,16 @@ namespace core
 		DECLARE_SINGLETON(ResourceManagers);
 	private:
 		ResourceManagers();
+		void init();
+
 		~ResourceManagers();
 
 	public:
-		void CleanUnusedResources();
+		void clean_unused();
 
-		void AddUnusedResourceCleanFunc(std::function<void()>&& _func) {
+		void add_clean_unused_func(const std::function<void()>& _func) {
 			ASSERT_DEBUG(nullptr != _func, "인자로 들어온 함수가 nullptr입니다.");
-			m_CleanUnusedResourcesFunction.emplace_back(_func);
+			m_clean_unused_functions.push_back(_func);
 		}
 		
 	private:
@@ -34,7 +36,7 @@ namespace core
 		void load_default_meshes();
 		void load_default_materials();
 
-		std::vector<std::function<void()>> m_CleanUnusedResourcesFunction;
+		std::vector<std::function<void()>> m_clean_unused_functions;
 	};
 }
 

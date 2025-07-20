@@ -66,12 +66,12 @@ namespace core
 
     eResult Material::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
-        return SaveFile_Json(_base_directory / _resource_name);
+        return save_file_json(_base_directory / _resource_name);
     }
 
     eResult Material::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
-        return LoadFile_Json(_base_directory / _resource_name);
+        return load_file_json(_base_directory / _resource_name);
     }
 
     eResult Material::serialize_json(JsonSerializer* _ser) const

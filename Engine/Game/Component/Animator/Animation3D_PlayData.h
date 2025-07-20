@@ -33,7 +33,7 @@ namespace core
 		bool is_pre_updated() const { return m_is_pre_updated; }
 		bool pre_update();
 
-		bool is_playing() const { return nullptr != m_currentAnimation; }
+		bool is_playing() const { return nullptr != m_current_animation; }
 		bool play(const std::string_view _animationName, float _blendTime);
 		void play_next();
 
@@ -44,7 +44,7 @@ namespace core
 		uint get_bone_count() const { return m_animation3D_data.BoneCount; }
 		uint get_model_inst_ID() const { return m_animation3D_data.model_inst_ID; }
 
-		s_ptr<Animation3D> get_current_animation() { return m_currentAnimation; }
+		s_ptr<Animation3D> get_current_animation() { return m_current_animation; }
 		s_ptr<Animation3D> get_next_animation() { return m_nextAnimation; }
 		const tAnimation3D_ComputeShader_Data& get_compute_shader_data() const { return m_animation3D_data; }
 		
@@ -64,7 +64,7 @@ namespace core
 
 	private:
 		s_ptr<Skeleton>						m_skeleton;
-		s_ptr<Animation3D>					m_currentAnimation;
+		s_ptr<Animation3D>					m_current_animation;
 		s_ptr<Animation3D>					m_nextAnimation;
 
 		//이전 프레임(현재 프레임은 아래 구조체에 저장되어 있음)

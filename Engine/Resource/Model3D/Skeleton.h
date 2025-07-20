@@ -35,9 +35,9 @@ namespace core
 		StructBuffer* get_bone_final_mat_buffer() { return m_final_matrix_buffer.get(); }
 	
 		//Animation 3D
-		const std::vector<tMTBone>& get_bones() const { return m_vecBones; }
-		UINT get_bone_count() const { return (UINT)m_vecBones.size(); }
-		s_ptr<StructBuffer> get_bone_offset_buffer() { return m_pBoneOffset; }	   // 각 뼈의 offset 행렬
+		const std::vector<tMTBone>& get_bones() const { return m_bones; }
+		UINT get_bone_count() const { return (UINT)m_bones.size(); }
+		s_ptr<StructBuffer> get_bone_offset_buffer() { return m_bone_offset_sbuffer; }	   // 각 뼈의 offset 행렬
 
 		//반환타입 변수길이가 좀 김
 		const std::unordered_map<std::string, s_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>& 
@@ -62,10 +62,10 @@ namespace core
 		void create_bone_offset_buffer();
 
 	private:
-		std::vector<tMTBone>							m_vecBones;
+		std::vector<tMTBone>							m_bones;
 
 		// 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
-		s_ptr<StructBuffer>					m_pBoneOffset;	  
+		s_ptr<StructBuffer>					m_bone_offset_sbuffer;	  
 
 		std::unordered_map<std::string, s_ptr<Animation3D>, Hasher_StringView, std::equal_to<>>	m_animations;
 

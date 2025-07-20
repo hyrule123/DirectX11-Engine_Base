@@ -25,27 +25,27 @@ namespace core
 		virtual ~Collider();
 
 		virtual void init() override;
-		virtual void Awake() override;
+		virtual void awake() override;
 
-		void OnCollisionEnter(const s_ptr<Collider>& _collider, const float3& _contactPoint);
-		void OnCollisionStay(const s_ptr<Collider>& _collider, const float3& _contactPoint);
-		void OnCollisionExit(const s_ptr<Collider>& _collider);
-		void OnTriggerEnter(const s_ptr<Collider>& _collider);
-		void OnTriggerStay(const s_ptr<Collider>& _collider);
-		void OnTriggerExit(const s_ptr<Collider>& _collider);
+		void on_collision_enter(const s_ptr<Collider>& _collider, const float3& _contactPoint);
+		void on_collision_stay(const s_ptr<Collider>& _collider, const float3& _contactPoint);
+		void on_collision_exit(const s_ptr<Collider>& _collider);
+		void on_trigger_enter(const s_ptr<Collider>& _collider);
+		void on_trigger_stay(const s_ptr<Collider>& _collider);
+		void on_trigger_exit(const s_ptr<Collider>& _collider);
 
-		inline eDimensionType GetColliderType() const { return m_dimension; }
-		inline bool IsTriggerMode() const { return m_isTriggerMode; }
+		inline eDimensionType get_collider_type() const { return m_dimension; }
+		inline bool is_trigger_mode() const { return m_isTriggerMode; }
 
-		inline bool IsColliding() const { return (0 < m_collisionCount); }
+		inline bool is_colliding() const { return (0 < m_collisionCount); }
 		
-		virtual MATRIX GetColliderMatrix() = 0;
+		virtual MATRIX get_collider_matrix() = 0;
 
 	protected:
-		inline s_ptr<Transform> GetTransform() { return m_transform.lock(); }
-		inline CollisionSystem* GetCollisionSystem() { return m_collisionSystem; }
-		inline void AddCollisionCount() { ++m_collisionCount; }
-		inline void SubCollisionCount();
+		inline s_ptr<Transform> get_transform() { return m_transform.lock(); }
+		inline CollisionSystem* get_collision_system() { return m_collisionSystem; }
+		inline void add_collision_count() { ++m_collisionCount; }
+		inline void sub_collision_count();
 		
 	private:
 		eDimensionType m_dimension;
@@ -58,7 +58,7 @@ namespace core
 		int m_collisionCount;
 	};
 
-	inline void Collider::SubCollisionCount()
+	inline void Collider::sub_collision_count()
 	{
 		--m_collisionCount;
 		if (m_collisionCount < 0)

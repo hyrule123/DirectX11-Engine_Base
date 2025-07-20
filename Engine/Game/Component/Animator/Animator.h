@@ -17,28 +17,28 @@ namespace core
 	public:
 		struct tEvent
 		{
-			std::unordered_map<int, std::vector<std::function<void()>>> CallBackFunctions;
+			std::unordered_map<int, std::vector<std::function<void()>>> callback_functions;
 		};
 
 	public:
 		Animator(const std::string_view key, eDimensionType _type);
 		virtual ~Animator() {};
 
-		eDimensionType GetDimensionType() const { return mDimensionType; }
+		eDimensionType get_dimension_type() const { return m_dimension_type; }
 
 		//아래 함수를 재정의해서 protected된 AddEvent를 호출하는 방식
-		virtual bool AddEvent(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func) { return false; };
+		virtual bool add_event(const std::string_view _animName, uint _frameIdx, const std::function<void()>& _func) { return false; };
 
 		void CallEvent(Animation* _anim, uint _frameIdx);
 
 	protected:
-		void AddEvent(Animation* _anim, uint _frameIdx, const std::function<void()>& _func);
+		void add_event(Animation* _anim, uint _frameIdx, const std::function<void()>& _func);
 
 	private:
-		eDimensionType mDimensionType;
+		eDimensionType m_dimension_type;
 
 		//애니메이션 포인터 주소
-		std::unordered_map<DWORD_PTR, tEvent> mMapEvent;
+		std::unordered_map<DWORD_PTR, tEvent> m_map_event;
 	};
 }
 

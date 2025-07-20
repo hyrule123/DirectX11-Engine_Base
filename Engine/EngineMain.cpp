@@ -30,12 +30,12 @@ namespace core
         UpdateWindow(m_hwnd);
 
         core::tGameEngineDesc engineDesc;
-        engineDesc.Hwnd = m_hwnd;
-        engineDesc.Height = _setting.height;
-        engineDesc.Width = _setting.width;
-        engineDesc.LeftWindowPos = _setting.leftPos;
-        engineDesc.TopWindowPos = _setting.topPos;
-        engineDesc.GPUDesc = _setting.GPUDesc;
+        engineDesc.hwnd = m_hwnd;
+        engineDesc.height = _setting.height;
+        engineDesc.width = _setting.width;
+        engineDesc.window_left_pos = _setting.leftPos;
+        engineDesc.window_top_pos = _setting.topPos;
+        engineDesc.GPU_desc = _setting.GPUDesc;
 
         GameEngine::get_inst().init(engineDesc);
 

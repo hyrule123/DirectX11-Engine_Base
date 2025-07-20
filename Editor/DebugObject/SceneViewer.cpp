@@ -9,7 +9,7 @@
 namespace core::editor
 {
 	SceneViewer::SceneViewer()
-		: EditorWindow(name::GameViewer)
+		: EditorUIWindow(name::GameViewer)
 	{
 	}
 
@@ -28,7 +28,7 @@ namespace core::editor
 		
 		//61 번 셰이더 리소스 뷰 null초기화
 		ID3D11ShaderResourceView* gameSRV = nullptr;
-		auto pContext = RenderManager::get_inst().Context();
+		auto pContext = RenderManager::get_inst().get_context();
 		pContext->PSSetShaderResources(GPU::Register::t::guiGameTexture, 1u, &gameSRV);
 		pContext->CopyResource(gameTex->get_texture().Get()
 			, renderTarget->get_texture().Get());
@@ -40,7 +40,7 @@ namespace core::editor
 		ImVec4 tintColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 		ImVec2 scene_size = ImVec2(io.DisplaySize.x, io.DisplaySize.y);
 
-		ImGui::Image((void*)gameTex->GetSRV().Get(), panelSize
+		ImGui::Image((void*)gameTex->get_SRV().Get(), panelSize
 				, ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), tintColor);
 	}
 

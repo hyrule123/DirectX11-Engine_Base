@@ -11,5 +11,5 @@ namespace core::editor::name
 	STR_KEY ResourceViewer = "Resource Viewer";
 	STR_KEY GameObjects = "GameObject Viewer";
 	STR_KEY ListBox = "List Box";
-	STR_KEY EditorWidget_Tree = "Tree Widget";
+	STR_KEY HierarchyTreeWidget = "Tree Widget";
 }

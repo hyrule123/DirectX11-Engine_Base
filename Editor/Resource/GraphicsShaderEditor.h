@@ -1,7 +1,7 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
-#include <Editor/Widget/Widget_ComboBox.h>
+#include <Editor/Widget/ComboBoxWidget.h>
 
 #include <Engine/GPU/CommonGPU.h>
 
@@ -13,7 +13,7 @@ namespace core
 namespace core::editor
 {
 	class EditorGraphicsShader
-		: public EditorWindow
+		: public EditorUIWindow
 	{
 	public:
 		EditorGraphicsShader();
@@ -22,50 +22,50 @@ namespace core::editor
 		virtual void init() override;
 		virtual void update_UI() override;
 
-		bool CreateDefaultShaders();
+		bool create_default_shaders();
 		
 	private:
-		void LoadShaderSettingComboBox();
+		void load_shader_setting_combobox();
 
-		void DXGISelectCallback(const tComboItem& _item);
+		void DXGI_select_callback(const tComboItem& _item);
 
-		void InputElementEditModal();
+		void input_element_edit_modal();
 
-		void CreateSTDInputLayout(const eDimensionType _dimType);
+		void create_standard_input_layout(const eDimensionType _dimType);
 
-		void SaveModal();
-		void LoadModal();
+		void save_modal();
+		void load_modal();
 
-		void SaveToJson(const std::filesystem::path& _filePath);
-		void LoadFromJson(const std::filesystem::path& _filePath);
+		void save_to_json(const std::filesystem::path& _filePath);
+		void load_from_json(const std::filesystem::path& _filePath);
 		 
 	private:
-		int		mSemanticEditIdx;
+		int		m_semantic_edit_idx;
 
-		std::vector<D3D11_INPUT_ELEMENT_DESC> mInputLayoutDescs;
+		std::vector<D3D11_INPUT_ELEMENT_DESC> m_input_layout_descs;
 
-		std::string mSemanticName;
-		D3D11_INPUT_ELEMENT_DESC mDescForEdit;
+		std::string m_semantic_name;
+		D3D11_INPUT_ELEMENT_DESC m_desc_for_edit;
 
 
-		EditorWidget_ComboBox mDXGIFormatCombo;
+		ComboBoxWidget m_DXGI_format_combo;
 
-		//EditorWidget_ComboBox mTopologyCombo;
+		//ComboBoxWidget mTopologyCombo;
 
-		std::array<std::string, (int)eGSStage::END> mStageNames;
+		std::array<std::string, (int)eGSStage::END> m_stage_names;
 
-		EditorWidget_ComboBox mRSTypeCombo;
-		EditorWidget_ComboBox mDSTypeCombo;
-		EditorWidget_ComboBox mBSTypeCombo;
+		ComboBoxWidget m_rasterizer_type_combo;
+		ComboBoxWidget m_depth_stencil_type_combo;
+		ComboBoxWidget m_blend_state_type_combo;
 
 		//std::unique_ptr<GraphicsShader> mEditTarget;
 
-		bool mbSaveModal;
-		EditorWidget_ComboBox mStageTypeCombo;
-		std::string mSaveFileName;
+		bool m_b_save_modal;
+		ComboBoxWidget m_stage_type_combo;
+		std::string m_save_file_name;
 
-		bool mbLoadModal;
-		EditorWidget_ComboBox mLoadFileCombo;
+		bool m_b_load_modal;
+		ComboBoxWidget m_load_file_combo;
 	};
 }
 

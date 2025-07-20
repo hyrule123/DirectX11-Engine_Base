@@ -22,43 +22,43 @@ namespace core
 
 	void ContactPair::Enter(const float3& _contactPoint)
 	{
-		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
+		if (m_left->is_trigger_mode() || m_right->is_trigger_mode())
 		{
-			m_left->OnTriggerEnter(m_right);
-			m_right->OnTriggerEnter(m_left);
+			m_left->on_trigger_enter(m_right);
+			m_right->on_trigger_enter(m_left);
 		}
 		else
 		{
-			m_left->OnCollisionEnter(m_right, _contactPoint);
-			m_right->OnCollisionEnter(m_left, _contactPoint);
+			m_left->on_collision_enter(m_right, _contactPoint);
+			m_right->on_collision_enter(m_left, _contactPoint);
 		}
 	}
 
 	void ContactPair::Stay(const float3& _contactPoint)
 	{
-		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
+		if (m_left->is_trigger_mode() || m_right->is_trigger_mode())
 		{
-			m_left->OnTriggerStay(m_right);
-			m_right->OnTriggerStay(m_left);
+			m_left->on_trigger_stay(m_right);
+			m_right->on_trigger_stay(m_left);
 		}
 		else
 		{
-			m_left->OnCollisionStay(m_right, _contactPoint);
-			m_right->OnCollisionStay(m_left, _contactPoint);
+			m_left->on_collision_stay(m_right, _contactPoint);
+			m_right->on_collision_stay(m_left, _contactPoint);
 		}
 	}
 
 	void ContactPair::Exit()
 	{
-		if (m_left->IsTriggerMode() || m_right->IsTriggerMode())
+		if (m_left->is_trigger_mode() || m_right->is_trigger_mode())
 		{
-			m_left->OnTriggerExit(m_right);
-			m_right->OnTriggerExit(m_left);
+			m_left->on_trigger_exit(m_right);
+			m_right->on_trigger_exit(m_left);
 		}
 		else
 		{
-			m_left->OnCollisionExit(m_right);
-			m_right->OnCollisionExit(m_left);
+			m_left->on_collision_exit(m_right);
+			m_right->on_collision_exit(m_left);
 		}
 	}
 }

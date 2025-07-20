@@ -1,5 +1,5 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 #include <Engine/Util/SimpleMath.h>
 
@@ -13,7 +13,7 @@ namespace core
     namespace editor
     {
         class EditorUVCalculator :
-            public EditorWindow
+            public EditorUIWindow
         {
         public:
             EditorUVCalculator();
@@ -23,17 +23,17 @@ namespace core
             virtual void update_UI() override;
 
         private:
-            void UpdateLoadButton();
-            void UpdateTexture();
-            void UpdateUVIndicator();
+            void update_load_button();
+            void update_texture();
+            void update_UV_indicator();
 
         private:
-            s_ptr<Texture> mTexture;
-            ImVec2                      mTexRenderSize;
+            s_ptr<Texture> m_texture;
+            ImVec2                      m_texture_render_size;
 
-            ImVec2 mCursorPos;
-            ImVec2 mDragStartPos;
-            ImVec2 mDragEndPos;
+            ImVec2 m_cursor_position;
+            ImVec2 m_drag_start_position;
+            ImVec2 m_drag_end_position;
         };
     }
 

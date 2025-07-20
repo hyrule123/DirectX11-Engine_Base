@@ -8,7 +8,7 @@
 namespace core::editor
 {
 	EditorMain::EditorMain(const tDesc_EngineMain& _desc)
-		: m_engineMain(_desc)
+		: m_engine_main(_desc)
 	{
 	}
 	EditorMain::~EditorMain()
@@ -17,6 +17,6 @@ namespace core::editor
 	BOOL EditorMain::run()
 	{
 		GameEngine::get_inst().set_editor_func(EditorManager::get_inst().get_editor_run_func());
-		return m_engineMain.run();
+		return m_engine_main.run();
 	}
 }

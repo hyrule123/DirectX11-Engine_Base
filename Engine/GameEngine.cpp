@@ -26,31 +26,36 @@
 
 namespace core
 {
-	GameEngine::GameEngine()
-		: m_hwnd{}
-		, m_hdc{}
-		, m_editorRunFunction{}
-		, m_bRunning{}
+	GameEngine::GameEngine() {}
+
+	void GameEngine::init()
 	{
+		m_hwnd = {};
+		m_hdc = {};
+		m_editor_run_function = {};
+		m_bRunning = {};
+
 		AtExit::add_func(GameEngine::destroy_inst);
 	}
 
 	GameEngine::~GameEngine()
 	{
 		::ReleaseDC(m_hwnd, m_hdc);
-
-		//InstanceManager은 수동 제거(static 초기화 타임에 생성되어 static 컨테이너를 사용하는 AtExit를 사용할 수가 없음..)
-		//EntityFactory::destroy_inst();
 	}
 
 	void GameEngine::init(const tGameEngineDesc& _desc)
 	{
-		ASSERT(_desc.Hwnd, "Game Engine 초기화 실패.");
-		m_hwnd = _desc.Hwnd;
-		m_hdc = GetDC(_desc.Hwnd);
+		if (m_bRunning)
+		{
+			DEBUG_MESSAGE("이미 set_desc 함수가 호출되어 사용 준비가 완료된 상태입니다.");
+		}
 
-		set_window_pos(_desc.LeftWindowPos, _desc.TopWindowPos);
-		set_window_size(_desc.Width, _desc.Height);
+		ASSERT(_desc.hwnd, "Game Engine 초기화 실패.");
+		m_hwnd = _desc.hwnd;
+		m_hdc = GetDC(_desc.hwnd);
+
+		set_window_pos(_desc.window_left_pos, _desc.window_top_pos);
+		set_window_size(_desc.width, _desc.height);
 
 		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
 		ThreadPoolManager::get_inst().init((size_t)4);
@@ -71,7 +76,7 @@ namespace core
 		ResourceManagers::get_inst().load_default_resources();
 
 		//RenderManager 스왑체인 및 뷰포트 생성
-		RenderManager::get_inst().init(_desc.GPUDesc);
+		RenderManager::get_inst().init(_desc.GPU_desc);
 		
 		AudioManager::get_inst();
 		FontWrapper::get_inst();
@@ -83,7 +88,7 @@ namespace core
 		PhysXInstance::get_inst();
 		SceneManager::get_inst();
 
-		m_editorRunFunction = _desc.EditorRunFunction;
+		m_editor_run_function = _desc.editor_run_func;
 
 		m_bRunning = TRUE;
 	}
@@ -111,12 +116,12 @@ namespace core
 
 		RenderManager::get_inst().render();
 
-		if (m_editorRunFunction)
+		if (m_editor_run_function)
 		{
-			m_editorRunFunction();
+			m_editor_run_function();
 		}
 
-		TimeManager::get_inst().RenderFPS();
+		TimeManager::get_inst().render_FPS();
 
 		RenderManager::get_inst().present(true);
 	}
@@ -176,7 +181,7 @@ namespace core
 	void GameEngine::destroy()
 	{
 		//Destroy() 호출 후
-		SceneManager::get_inst().Destroy();
+		SceneManager::get_inst().destroy();
 		
 		run();
 		frame_end();

@@ -7,8 +7,6 @@
 #include <Editor/imgui/imgui.h>
 #include <Editor/imgui/imgui_stdlib.h>
 
-#include <memory>
-
 namespace core::editor
 {
 	class EditorEntity

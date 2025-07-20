@@ -24,7 +24,13 @@ namespace core
 	{
 		DECLARE_SINGLETON(ResourceManager<T>);
 	private:
-		ResourceManager() ;
+		ResourceManager() : m_b_initialized(), m_base_directory(), m_mtx(), m_resources() {}
+		void init()
+		{
+			m_b_initialized = false;
+
+			AtExit::add_func(ResourceManager<T>::destroy_inst);
+		}
 		~ResourceManager();
 		
 	public:
@@ -50,21 +56,21 @@ namespace core
 		template <typename Derived = T>
 		s_ptr<Derived> find(const std::string_view _resource_name);
 
-		const Resources& GetResources() { return m_Resources; }
+		const Resources& get_resources() { return m_resources; }
 
-		std::vector<s_ptr<Resource>> GetResourcesVector();
+		std::vector<s_ptr<Resource>> get_resources_vector();
 
-		void CleanUnusedResources();
+		void clean_unused();
 
-		void SetBaseDir(const std::fs::path& _base_directory);
-		const std::fs::path& GetBaseDir() { return m_BaseDir; }
+		void set_base_directory(const std::fs::path& _base_directory);
+		const std::fs::path& get_base_directory() { return m_base_directory; }
 
 	private:
-		bool m_bInitialized;
-		std::fs::path m_BaseDir;
+		bool m_b_initialized;
+		std::fs::path m_base_directory;
 		std::mutex m_mtx;
 
-		Resources m_Resources;
+		Resources m_resources;
 	};
 
 	template<ResourceType T>
@@ -85,7 +91,7 @@ namespace core
 		if(nullptr == ret)
 		{
 			ret = std::make_shared<Derived>();
-			eResult result = result = ret->load(m_BaseDir, _resource_name);
+			eResult result = result = ret->load(m_base_directory, _resource_name);
 
 			if (eResult_success(result))
 			{
@@ -108,9 +114,9 @@ namespace core
 	{
 		s_ptr<Derived> returnRes = nullptr;
 
-		const auto& iter = m_Resources.find(_resource_name);
+		const auto& iter = m_resources.find(_resource_name);
 
-		if (m_Resources.end() != iter)
+		if (m_resources.end() != iter)
 		{
 			if constexpr (std::is_same_v<T, Derived>) {
 				returnRes = iter->second;
@@ -132,16 +138,7 @@ namespace core
 
 		_Res->set_resource_name(_resource_name);
 		std::lock_guard<std::mutex> locker(m_mtx);
-		m_Resources.insert(std::make_pair(std::string(_resource_name), std::static_pointer_cast<T>(_Res)));
-	}
-
-	template<ResourceType T>
-	inline ResourceManager<T>::ResourceManager()
-		: m_bInitialized{false}
-		, m_BaseDir{}
-		, m_Resources{}
-	{
-		AtExit::add_func(ResourceManager<T>::destroy_inst);
+		m_resources.insert(std::make_pair(std::string(_resource_name), std::static_pointer_cast<T>(_Res)));
 	}
 
 	template<ResourceType T>
@@ -152,11 +149,11 @@ namespace core
 	template<ResourceType T>
 	inline void ResourceManager<T>::init(const std::fs::path& _base_directory)
 	{
-		m_bInitialized = true;
+		m_b_initialized = true;
 
-		SetBaseDir(_base_directory);
+		set_base_directory(_base_directory);
 
-		ResourceManagers::get_inst().AddUnusedResourceCleanFunc(std::bind(&ResourceManager<T>::CleanUnusedResources, this));
+		ResourceManagers::get_inst().add_clean_unused_func(std::bind(&ResourceManager<T>::clean_unused, this));
 
 		AtExit::add_func(std::bind(&ResourceManager<T>::release, this));
 	}
@@ -164,9 +161,9 @@ namespace core
 	template<ResourceType T>
 	inline void ResourceManager<T>::release()
 	{
-		m_bInitialized = false;
-		m_BaseDir.clear();
-		m_Resources.clear();
+		m_b_initialized = false;
+		m_base_directory.clear();
+		m_resources.clear();
 	}
 
 	template<ResourceType T>
@@ -176,7 +173,7 @@ namespace core
 			return eResult::Fail;
 		}
 
-		return _res->save(m_BaseDir, _res->get_resource_name());
+		return _res->save(m_base_directory, _res->get_resource_name());
 	}
 
 	template<ResourceType T>
@@ -186,7 +183,7 @@ namespace core
 			return eResult::Fail;
 		}
 
-		return _res->save(m_BaseDir, _save_as_resource_name);
+		return _res->save(m_base_directory, _save_as_resource_name);
 	}
 
 	template<ResourceType T>
@@ -198,7 +195,7 @@ namespace core
 		if (nullptr == ret) {
 			ret = std::dynamic_pointer_cast<T>(EntityFactory::get_inst().instantiate(_static_type_name));
 
-			if (ret && eResult_success(ret->load(m_BaseDir, _resource_name))) {
+			if (ret && eResult_success(ret->load(m_base_directory, _resource_name))) {
 				ret->set_resource_name(_resource_name);
 			}
 			else {
@@ -210,11 +207,11 @@ namespace core
 	}
 
 	template<ResourceType T>
-	inline std::vector<s_ptr<Resource>> ResourceManager<T>::GetResourcesVector()
+	inline std::vector<s_ptr<Resource>> ResourceManager<T>::get_resources_vector()
 	{
 		std::vector<s_ptr<Resource>> retVec{};
 
-		for (const auto& iter : m_Resources)
+		for (const auto& iter : m_resources)
 		{
 			retVec.emplace_back(std::static_pointer_cast<Resource>(iter.second));
 		}
@@ -223,10 +220,10 @@ namespace core
 	}
 
 	template<ResourceType T>
-	inline void ResourceManager<T>::CleanUnusedResources()
+	inline void ResourceManager<T>::clean_unused()
 	{
-		using pairType = decltype(m_Resources)::value_type;
-		std::erase_if(m_Resources,
+		using pairType = decltype(m_resources)::value_type;
+		std::erase_if(m_resources,
 			[](const pairType& pair)->bool
 			{
 				bool needErase = false;
@@ -240,12 +237,12 @@ namespace core
 	}
 
 	template<ResourceType T>
-	inline void ResourceManager<T>::SetBaseDir(const std::fs::path& _base_directory)
+	inline void ResourceManager<T>::set_base_directory(const std::fs::path& _base_directory)
 	{
-		m_BaseDir = _base_directory;
+		m_base_directory = _base_directory;
 
-		if (false == m_BaseDir.empty() && false == std::fs::exists(m_BaseDir)) {
-			bool result = std::fs::create_directories(m_BaseDir);
+		if (false == m_base_directory.empty() && false == std::fs::exists(m_base_directory)) {
+			bool result = std::fs::create_directories(m_base_directory);
 			ASSERT(result, "리소스 기본 디렉토리 생성에 실패했습니다.");
 		}
 	}

@@ -1,5 +1,5 @@
 #pragma once
-class EditorMesh
+class MeshEditor
 {
 };
 

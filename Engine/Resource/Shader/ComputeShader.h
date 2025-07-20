@@ -44,10 +44,10 @@ namespace core
 		eResult create_shader(const void* _pByteCode, size_t _ByteCodeSize);
 
 	private:
-		Microsoft::WRL::ComPtr<ID3DBlob> m_CSBlob;
-		Microsoft::WRL::ComPtr<ID3D11ComputeShader> m_CS;
+		Microsoft::WRL::ComPtr<ID3DBlob> m_CS_blob;
+		Microsoft::WRL::ComPtr<ID3D11ComputeShader> m_particle_CS;
 
 		//스레드 갯수, 그룹 갯수 등 여기 저장
-		tCB_ComputeShader mCB_ComputeShader;
+		tCB_ComputeShader m_compute_shader_cbuffer;
 	};
 }

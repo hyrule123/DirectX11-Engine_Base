@@ -25,7 +25,7 @@ namespace core
 		, m_fChangeTimeLength()
 		, m_fChangeTimeAccumulate()
 
-		, m_currentAnimation()
+		, m_current_animation()
 		, m_fClipUpdateTime()
 
 		, m_is_pre_updated(false)
@@ -43,7 +43,7 @@ namespace core
 		, m_fChangeTimeLength(_other.m_fChangeTimeLength)
 		, m_fChangeTimeAccumulate(_other.m_fChangeTimeAccumulate)
 
-		, m_currentAnimation(_other.m_currentAnimation)
+		, m_current_animation(_other.m_current_animation)
 		, m_fClipUpdateTime()
 	{
 
@@ -58,7 +58,7 @@ namespace core
 		m_is_pre_updated = true;
 
 		//필요한 요소가 없을 시 return
-		if (nullptr == m_skeleton || nullptr == m_currentAnimation)
+		if (nullptr == m_skeleton || nullptr == m_current_animation)
 		{
 			return false;
 		}
@@ -66,7 +66,7 @@ namespace core
 		bool bChangeEnd = false;
 		if (m_animation3D_data.bChangingAnim)
 		{
-			m_fChangeTimeAccumulate += TimeManager::get_inst().DeltaTime();
+			m_fChangeTimeAccumulate += TimeManager::get_inst().delta_time();
 
 			if (m_fChangeTimeLength < m_fChangeTimeAccumulate)
 			{
@@ -80,22 +80,22 @@ namespace core
 		{
 			double curTime = 0.f;
 			// 현재 재생중인 Clip 의 시간을 진행한다.
-			m_fClipUpdateTime += TimeManager::get_inst().DeltaTime();
+			m_fClipUpdateTime += TimeManager::get_inst().delta_time();
 
 			//애니메이션 재생이 끝났으면 -> 첫 프레임으로
 			//m_fClipUpdateTime = 애니메이션 시작 이후 누적 시간
-			const double frameTime = m_currentAnimation->get_time_length();
+			const double frameTime = m_current_animation->get_time_length();
 			if (frameTime <= m_fClipUpdateTime)
 			{
 				m_fClipUpdateTime = 0.f;
 			}
 
 			//애니메이션의 Start Time에 애니메이션 재생 시작 후 지나간 시간을 더해줌
-			curTime = m_currentAnimation->get_start_time() + m_fClipUpdateTime;
+			curTime = m_current_animation->get_start_time() + m_fClipUpdateTime;
 
 			// 현재 프레임 인덱스 구하기
 			// 현재 애니메이션 시간 * 초당 프레임 수
-			const double dFrameIdx = curTime * (double)m_currentAnimation->get_FPS();
+			const double dFrameIdx = curTime * (double)m_current_animation->get_FPS();
 			
 			m_animation3D_data.CurrentFrame = (uint)dFrameIdx;
 			m_animation3D_data.NextFrame = m_animation3D_data.CurrentFrame + 1;
@@ -105,8 +105,8 @@ namespace core
 				std::clamp((float)(dFrameIdx - (double)m_animation3D_data.CurrentFrame), 0.f, 1.f);
 
 			//인덱스 넘어가면 Start로 돌아가준다(일단 루프 기본적으로 한다고 가정)
-			const uint start_frame_idx = m_currentAnimation->get_start_frame();
-			const uint end_frame_idx = m_currentAnimation->get_end_frame();
+			const uint start_frame_idx = m_current_animation->get_start_frame();
+			const uint end_frame_idx = m_current_animation->get_end_frame();
 			
 			//범위 내로 제한
 			if (m_animation3D_data.CurrentFrame < start_frame_idx) {
@@ -158,9 +158,9 @@ namespace core
 
 	int Animation3D_PlayData::get_start_frame() const
 	{
-		if (m_currentAnimation)
+		if (m_current_animation)
 		{
-			return m_currentAnimation->get_start_frame();
+			return m_current_animation->get_start_frame();
 		}
 
 		return -1;
@@ -200,7 +200,7 @@ namespace core
 		{
 			return;
 		}
-		else if (nullptr == m_currentAnimation || (size_t)1 == anims.size())
+		else if (nullptr == m_current_animation || (size_t)1 == anims.size())
 		{
 			play_internal(anims.begin()->second, true);
 		}
@@ -210,7 +210,7 @@ namespace core
 				iter != anims.end();
 				)
 			{
-				if (iter->second == m_currentAnimation)
+				if (iter->second == m_current_animation)
 				{
 					++iter;
 					if (iter == anims.end())
@@ -238,7 +238,7 @@ namespace core
 		bool bPlayed = false;
 
 		//기존의 애니메이션이 있고 Blend 켰을 경우 Animation Blend 모드 On
-		if (m_currentAnimation && (0.f < _blendTime))
+		if (m_current_animation && (0.f < _blendTime))
 		{
 			m_nextAnimation = _anim;
 			if (m_nextAnimation)
@@ -260,8 +260,8 @@ namespace core
 		//재생중이 아닐경우, 또는 Blend를 활성화하지 않았을 경우
 		else
 		{
-			m_currentAnimation = _anim;
-			if (m_currentAnimation)
+			m_current_animation = _anim;
+			if (m_current_animation)
 			{
 
 				m_fClipUpdateTime = 0.f;
@@ -271,7 +271,7 @@ namespace core
 				m_animation3D_data.CurrentFrame = 0;
 				m_animation3D_data.NextFrame = 1;
 				m_animation3D_data.FrameRatio = 0.f;
-				m_animation3D_data.FrameLength = m_currentAnimation->get_frame_length();
+				m_animation3D_data.FrameLength = m_current_animation->get_frame_length();
 				m_is_pre_updated = false;
 				bPlayed = true;
 			}

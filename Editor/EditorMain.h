@@ -11,7 +11,7 @@ namespace core::editor
 
 		BOOL run();
 
-		EngineMain m_engineMain;
+		EngineMain m_engine_main;
 	};
 }
 

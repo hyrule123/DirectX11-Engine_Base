@@ -55,7 +55,7 @@ namespace core
 	template <JsonBase64Types T>
 	inline void operator <<(Json::Value& _jVal, const T& _data)
 	{
-		_jVal = StringConverter::Base64Encode(_data);
+		_jVal = StringConverter::base64_encode(_data);
 	}
 	
 
@@ -83,7 +83,7 @@ namespace core
 	template <JsonBase64Types T>
 	inline void operator >>(const Json::Value& _jVal, T& _data)
 	{
-		_data = StringConverter::Base64Decode<T>(_jVal.asString());
+		_data = StringConverter::base64_decode<T>(_jVal.asString());
 	}
 
 

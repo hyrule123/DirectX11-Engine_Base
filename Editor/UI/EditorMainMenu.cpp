@@ -1,14 +1,14 @@
 #include <Editor/UI/EditorMainMenu.h>
 
 #include <Editor/EditorManager.h>
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 #include <Engine/GameEngine.h>
 
 namespace core::editor
 {
 	EditorMainMenu::EditorMainMenu()
-		: EditorBase(name::MainMenu)
+		: EditorUIBase(name::MainMenu)
 	{
         //SetSize(ImVec2(100.0f, 100.0f));
 	}
@@ -28,7 +28,7 @@ namespace core::editor
 		{
 			for (size_t i = 0; i < m_editor_windows.size(); ++i)
 			{
-				s_ptr<EditorWindow> ui = m_editor_windows[i].lock();
+				s_ptr<EditorUIWindow> ui = m_editor_windows[i].lock();
 				if (ui)
 				{
 					bool result =

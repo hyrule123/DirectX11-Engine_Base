@@ -33,11 +33,11 @@ namespace core
 		BinarySerializer();
 		~BinarySerializer();
 
-		eResult SaveFile(std::ostream& _os) const;
-		eResult LoadFile(std::istream& _is);
+		eResult save_file(std::ostream& _os) const;
+		eResult load_file(std::istream& _is);
 
-		void Write(const unsigned char* _pSrc, size_t _size);
-		size_t Read(unsigned char* _pDest, size_t _size) const;
+		void write(const unsigned char* _pSrc, size_t _size);
+		size_t read(unsigned char* _pDest, size_t _size) const;
 
 		//Global operator
 		friend std::ostream& operator <<(std::ostream& _os, const BinarySerializer& _ser);
@@ -61,36 +61,35 @@ namespace core
 		template <typename CharType>
 		inline void operator >>(std::basic_string<CharType>& _data) const;
 
-		size_t GetDataSize() const { return m_data.size(); }
-		void ReserveDataSize(size_t _size) { m_data.reserve(_size); }
+		size_t get_data_size() const { return m_data.size(); }
+		void reserve_data_size(size_t _size) { m_data.reserve(_size); }
 
-		size_t GetReadOffset() const { return m_readOffset; }
-		inline size_t SetReadOffset(size_t _offset);
+		size_t get_read_offset() const { return m_read_offset; }
+		inline size_t set_read_offset(size_t _offset);
 
-		size_t GetWriteOffset() const { return m_writeOffset; }
-		inline size_t SetWriteOffset(size_t _offset);
+		size_t get_write_offset() const { return m_write_offset; }
+		inline size_t set_write_offset(size_t _offset);
 
-		void Clear() { m_data.clear(); m_readOffset = (size_t)0; m_writeOffset = (size_t)0; }
+		void clear() { m_data.clear(); m_read_offset = (size_t)0; m_write_offset = (size_t)0; }
 	private:
 		std::vector<unsigned char> m_data;
-		size_t m_writeOffset;
-		mutable size_t m_readOffset;
+		size_t m_write_offset;
+		mutable size_t m_read_offset;
 	};
 
 
 	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator<<(const T& _data)
 	{
-		Write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T));
+		write(reinterpret_cast<const unsigned char*>(&_data), sizeof(T));
 	}
 
 	inline void BinarySerializer::operator<<(const std::string_view _data)
 	{
 		size_t strByteSize = _data.size();
-		Write(reinterpret_cast<const unsigned char*>(&strByteSize), sizeof(strByteSize));
-		Write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
+		write(reinterpret_cast<const unsigned char*>(&strByteSize), sizeof(strByteSize));
+		write(reinterpret_cast<const unsigned char*>(_data.data()), strByteSize);
 	}
-	
 
 	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator<<(const std::vector<T>& _data)
@@ -105,9 +104,8 @@ namespace core
 	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator>>(T& _data) const
 	{
-		Read(reinterpret_cast<unsigned char*>(&_data), sizeof(T));
+		read(reinterpret_cast<unsigned char*>(&_data), sizeof(T));
 	}
-
 
 	template<BinaryDefaultTypes T>
 	inline void BinarySerializer::operator>>(std::vector<T>& _data) const
@@ -125,16 +123,16 @@ namespace core
 	inline void BinarySerializer::operator>>(std::basic_string<CharType>& _data) const
 	{
 		size_t bytesToRead{};
-		Read(reinterpret_cast<unsigned char*>(&bytesToRead), sizeof(size_t));
+		read(reinterpret_cast<unsigned char*>(&bytesToRead), sizeof(size_t));
 		_data.clear();
 		
 		_data.resize(bytesToRead / sizeof(CharType));
 
-		Read(reinterpret_cast<unsigned char*>(_data.data()), bytesToRead);
+		read(reinterpret_cast<unsigned char*>(_data.data()), bytesToRead);
 	}
 
 
-	inline size_t BinarySerializer::SetReadOffset(size_t _offset)
+	inline size_t BinarySerializer::set_read_offset(size_t _offset)
 	{
 		size_t ret = _offset;
 
@@ -142,12 +140,12 @@ namespace core
 		{
 			ret = m_data.size();
 		}
-		m_readOffset = ret;
+		m_read_offset = ret;
 
 		return ret;
 	}
 
-	inline size_t BinarySerializer::SetWriteOffset(size_t _offset)
+	inline size_t BinarySerializer::set_write_offset(size_t _offset)
 	{
 		size_t ret = _offset;
 
@@ -155,7 +153,7 @@ namespace core
 		{
 			ret = m_data.size();
 		}
-		m_writeOffset = ret;
+		m_write_offset = ret;
 
 		return ret;
 	}

@@ -1,11 +1,11 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
-#include <Editor/Widget/Widget_Tree.h>
+#include <Editor/Base/EditorUIWindow.h>
+#include <Editor/Widget/HierarchyTreeWidget.h>
 
 
 namespace core::editor
 {
-	class EditorResources : public EditorWindow
+	class EditorResources : public EditorUIWindow
 	{
 	public:
 		EditorResources();
@@ -16,12 +16,12 @@ namespace core::editor
 		void ResetContent();
 
 	private:
-		void ToInspectorTexture(w_ptr<void> _ptr);
-		void ToInspectorMaterial(w_ptr<void> _ptr);
-		void ToInspectorMesh(w_ptr<void> _ptr);
+		void to_texture_inspector(w_ptr<void> _ptr);
+		void to_material_inspector(w_ptr<void> _ptr);
+		void to_mesh_inspector(w_ptr<void> _ptr);
 
-		s_ptr<EditorWidget_Tree> m_textureTree;
-		s_ptr<EditorWidget_Tree> m_materialTree;
-		s_ptr<EditorWidget_Tree> m_meshTree;
+		s_ptr<HierarchyTreeWidget> m_textureTree;
+		s_ptr<HierarchyTreeWidget> m_materialTree;
+		s_ptr<HierarchyTreeWidget> m_meshTree;
 	};
 }

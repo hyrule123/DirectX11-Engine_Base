@@ -1,5 +1,5 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 #include <Editor/Resource/ResourceEditor.h>
 
@@ -11,9 +11,9 @@ namespace core
 	class Resource;
 	namespace editor
 	{
-		class InspectorBase : public EditorWindow
+		class InspectorBase : public EditorUIWindow
 		{
-			CLASS_INFO(InspectorBase, EditorWindow);
+			CLASS_INFO(InspectorBase, EditorUIWindow);
 			REGISTER_FACTORY(InspectorBase);
 		public:
 			InspectorBase();
@@ -24,21 +24,21 @@ namespace core
 			virtual void update() override;
 			virtual void update_UI() override;
 
-			void SetTargetGameObject(const s_ptr<GameObject>& _targetObj) { mTargetGameObject = _targetObj; }
-			s_ptr<GameObject> GetTargetGameObject() { return mTargetGameObject.lock(); }
+			void set_target_gameobject(const s_ptr<GameObject>& _targetObj) { m_target_gameobject = _targetObj; }
+			s_ptr<GameObject> GetTargetGameObject() { return m_target_gameobject.lock(); }
 
-			void SetTargetResource(const s_ptr<Resource>& _targetRes) { mTargetResource = _targetRes; }
-			s_ptr<Resource> GetTargetResource() const { return mTargetResource.lock(); }
+			void set_target_resource(const s_ptr<Resource>& _targetRes) { m_target_resource = _targetRes; }
+			s_ptr<Resource> get_target_resource() const { return m_target_resource.lock(); }
 
-
-		private:
-			void IndicatorButton(const char* _strButtonName);
 
 		private:
-			w_ptr<GameObject> mTargetGameObject;
-			w_ptr<Resource> mTargetResource;
+			void indicator_button(const char* _strButtonName);
 
-			std::vector<s_ptr<editor::ComponentInspector>> mGuiComponents;
+		private:
+			w_ptr<GameObject> m_target_gameobject;
+			w_ptr<Resource> m_target_resource;
+
+			std::vector<s_ptr<editor::ComponentInspector>> m_component_GUIs;
 			//std::vector<editor::ResourceEditor*> mGuiResources;
 		};
 	}

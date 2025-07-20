@@ -45,7 +45,7 @@ namespace core
 
 		for (size_t i = 0; i < m_gameObjects.size(); ++i)
 		{
-			m_gameObjects[i]->Awake();
+			m_gameObjects[i]->awake();
 		}
 	}
 
@@ -104,7 +104,7 @@ namespace core
 		}
 		m_FrameEndJobs.clear();
 
-		RemoveDestroyed();
+		remove_destroyed();
 
 		//마지막으로 Scene 작동 중 추가된 GameObject를 추가
 		if (false == m_delayedAddQueue.empty()) 
@@ -137,7 +137,7 @@ namespace core
 
 		if (false == m_bAwake)
 		{
-			AddGameObjectInternal(_newObject);
+			add_game_object_internal(_newObject);
 		}
 
 		//Scene이 재생 중일 경우에는 한 프레임이 끝난 후 추가한다.
@@ -149,7 +149,7 @@ namespace core
 		return ret;
 	}
 
-	std::vector<s_ptr<GameObject>> Scene::AddGameObjects(const std::vector<s_ptr<GameObject>>& _gameObjects)
+	std::vector<s_ptr<GameObject>> Scene::add_game_objects(const std::vector<s_ptr<GameObject>>& _gameObjects)
 	{
 		std::vector<s_ptr<GameObject>> inserted;
 		inserted.reserve(_gameObjects.size());
@@ -166,7 +166,7 @@ namespace core
 		return inserted;
 	}
 
-	std::vector<s_ptr<GameObject>> Scene::GetDontDestroyGameObjects()
+	std::vector<s_ptr<GameObject>> Scene::get_dont_destroy_game_objects()
 	{
 		std::vector<s_ptr<GameObject>> ret{};
 
@@ -181,14 +181,14 @@ namespace core
 		return ret;
 	}
 
-	void Scene::RemoveDestroyed()
+	void Scene::remove_destroyed()
 	{
 		//Destroy 상태의 Object 제거
 		std::erase_if(m_gameObjects,
 			[](const s_ptr<GameObject>& _obj)->bool
 			{
 				GameObject::eState state = _obj->get_state();
-				if (GameObject::eState::Destroy == state)
+				if (GameObject::eState::destroy == state)
 				{
 					return true;
 				}
@@ -226,12 +226,12 @@ namespace core
 		return true;
 	}
 
-	void Scene::AddGameObjectInternal(const s_ptr<GameObject>& _obj)
+	void Scene::add_game_object_internal(const s_ptr<GameObject>& _obj)
 	{
 		m_gameObjects.push_back(_obj);
 		if (m_bAwake)
 		{
-			_obj->Awake();
+			_obj->awake();
 		}
 	}
 }

@@ -6,9 +6,9 @@
 
 #include <Engine/Game/Component/Transform.h>
 #include <Engine/Game/Component/Collider/Collider3D.h>
-#include <Engine/Game/Component/Collider/Com_Collider3D_Shapes.h>
+#include <Engine/Game/Component/Collider/Collider3D_Shapes.h>
 #include <Engine/Game/Component/Rigidbody/Rigidbody.h>
-#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Camera/Camera.h>
 
 #include <Engine/Game/Collision/CollisionSystem.h>
 
@@ -112,12 +112,12 @@ namespace core
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
 			Rigidbody* const rigidbody = static_cast<Rigidbody*>(actors[i]->userData);
-			if (rigidbody == nullptr || rigidbody->IsDestroyed())
+			if (rigidbody == nullptr || rigidbody->is_destroyed())
 			{
 				continue;
 			}
 
-			rigidbody->SyncToPhysXGlobalPose();
+			rigidbody->sync_to_physX_global_pose();
 		}
 	}
 
@@ -137,19 +137,19 @@ namespace core
 		for (size_t i = 0; i < actors.size(); ++i)
 		{
 			Rigidbody* rigidbody = static_cast<Rigidbody*>(actors[i]->userData);
-			if (rigidbody == nullptr || rigidbody->IsDestroyed())
+			if (rigidbody == nullptr || rigidbody->is_destroyed())
 			{
 				continue;
 			}
 
-			//else if (rigidbody->IsTrigger())
+			//else if (rigidbody->is_trigger_mode())
 			//{
 			//	continue;
 			//}
 
 			const PxTransform worldTransform = actors[i]->getGlobalPose();
 
-			rigidbody->FetchFromPhysXGlobalPose(worldTransform);
+			rigidbody->fetch_from_physX_global_pose(worldTransform);
 		}
 	}
 
@@ -204,7 +204,7 @@ namespace core
 
 					float3 color = float3(0.f, 1.f, 0.f);
 					Collider* col = static_cast<Collider*>(shapes[i]->userData);
-					if (col && col->IsColliding())
+					if (col && col->is_colliding())
 					{
 						color = float3(1.f, 0.f, 0.f);
 					}
@@ -263,18 +263,18 @@ namespace core
 
 	//		Collider3D* collider = static_cast<Collider3D*>(actor->userData);
 
-	//		if (collider == nullptr || collider->IsDestroyed())
+	//		if (collider == nullptr || collider->is_destroyed())
 	//		{
 	//			continue;
 	//		}
 	//			
 	//		// 충돌체에 대해서 일어난 변화이므로, 이를 Com_Transform에도 반영해야 한다.
-	//		if (collider->IsTrigger())
+	//		if (collider->is_trigger_mode())
 	//		{
 	//			continue;
 	//		}
 	//			
-	//		Transform* tr = collider->GetTransform();
+	//		Transform* tr = collider->get_transform();
 
 	//		//원래 위치 정보에서 크기정보 제거
 	//		const MATRIX from = MATRIX::CreateScale(tr->get_world_scale()).Invert() * tr->get_world_matrix();
@@ -318,7 +318,7 @@ namespace core
 			s_ptr<GameObject> rightObj = static_cast<Rigidbody*>(contactpair.otherActor->userData)->get_owner();
 			s_ptr<Collider> rightCol = rightObj->get_component<Collider>();
 
-			if (leftCol->IsDestroyed() || rightCol->IsDestroyed())
+			if (leftCol->is_destroyed() || rightCol->is_destroyed())
 			{
 				continue;
 			}
@@ -330,24 +330,24 @@ namespace core
 			// process events
 			if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_FOUND))
 			{
-				leftCol->AddCollisionCount();
-				rightCol->AddCollisionCount();
+				leftCol->add_collision_count();
+				rightCol->add_collision_count();
 
-				leftCol->OnTriggerEnter(rightCol);
-				rightCol->OnTriggerEnter(leftCol);
+				leftCol->on_trigger_enter(rightCol);
+				rightCol->on_trigger_enter(leftCol);
 			}
 			else if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_PERSISTS))
 			{
-				leftCol->OnTriggerStay(rightCol);
-				rightCol->OnTriggerStay(leftCol);
+				leftCol->on_trigger_stay(rightCol);
+				rightCol->on_trigger_stay(leftCol);
 			}
 			else if (contactpair.status & (PxPairFlag::eNOTIFY_TOUCH_LOST))
 			{
-				leftCol->SubCollisionCount();
-				rightCol->SubCollisionCount();
+				leftCol->sub_collision_count();
+				rightCol->sub_collision_count();
 
-				leftCol->OnTriggerExit(rightCol);
-				rightCol->OnTriggerExit(leftCol);
+				leftCol->on_trigger_exit(rightCol);
+				rightCol->on_trigger_exit(leftCol);
 			}
 		}
 	}
@@ -378,15 +378,15 @@ namespace core
 			// invoke events
 			if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_FOUND)
 			{
-				leftCol->AddCollisionCount();
-				rightCol->AddCollisionCount();
+				leftCol->add_collision_count();
+				rightCol->add_collision_count();
 
 				PxContactPairPoint collisionPoint{};
 				const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
 				const float3	   collisionPosition = collisionPoint.position;
 
-				leftCol->OnCollisionEnter(rightCol, collisionPosition);
-				rightCol->OnCollisionEnter(leftCol, collisionPosition);
+				leftCol->on_collision_enter(rightCol, collisionPosition);
+				rightCol->on_collision_enter(leftCol, collisionPosition);
 			}
 			else if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
 			{
@@ -394,19 +394,19 @@ namespace core
 				const PxU32		   count = contactpair.extractContacts(&collisionPoint, 1);
 				const float3	   collisionPosition = collisionPoint.position;
 
-				if (false == leftCol->IsDestroyed() && false == rightCol->IsDestroyed())
+				if (false == leftCol->is_destroyed() && false == rightCol->is_destroyed())
 				{
-					leftCol->OnCollisionStay(rightCol, collisionPosition);
-					rightCol->OnCollisionStay(leftCol, collisionPosition);
+					leftCol->on_collision_stay(rightCol, collisionPosition);
+					rightCol->on_collision_stay(leftCol, collisionPosition);
 				}
 			}
 			else if (contactpair.events & PxPairFlag::eNOTIFY_TOUCH_LOST)
 			{
-				leftCol->SubCollisionCount();
-				rightCol->SubCollisionCount();
+				leftCol->sub_collision_count();
+				rightCol->sub_collision_count();
 
-				leftCol->OnCollisionExit(rightCol);
-				rightCol->OnCollisionExit(leftCol);
+				leftCol->on_collision_exit(rightCol);
+				rightCol->on_collision_exit(leftCol);
 			}
 		}
 	}
@@ -429,7 +429,7 @@ namespace core
 		}
 	}
 
-	void Collision3D::EnableGravity(bool _enable, const float3& _gravity) const
+	void Collision3D::set_gravity(bool _enable, const float3& _gravity) const
 	{
 		if (_enable)
 		{

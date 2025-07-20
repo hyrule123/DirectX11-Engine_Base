@@ -17,18 +17,18 @@ namespace core
 	public:
 		struct tSprite
 		{
-			float2 LeftTop;			// 좌측 상단 좌표
-			float2 Size;				// 좌측상단부터 잘라낼 가로 세로의 픽셀 길이
-			float2 Offset;			// 렌더링 위치 조정하기위한 좌표
-			float2 AtlasSize;		// 텍스처 이미지의 크기
-			float Duration;					// 프레임간에 시간 간격
+			float2 left_top;			// 좌측 상단 좌표
+			float2 size;				// 좌측상단부터 잘라낼 가로 세로의 픽셀 길이
+			float2 offset;			// 렌더링 위치 조정하기위한 좌표
+			float2 atlas_size;		// 텍스처 이미지의 크기
+			float duration;					// 프레임간에 시간 간격
 
 			tSprite()
-				: LeftTop(0.0f, 0.0f)
-				, Size(0.0f, 0.0f)
-				, Offset(0.0f, 0.0f)
-				, AtlasSize(0.0f)
-				, Duration(0.1f)
+				: left_top(0.0f, 0.0f)
+				, size(0.0f, 0.0f)
+				, offset(0.0f, 0.0f)
+				, atlas_size(0.0f)
+				, duration(0.1f)
 			{
 
 			}
@@ -57,32 +57,31 @@ namespace core
 			, uint _spriteLegth, float _duration);
 
 		//아틀라스를 균일하게 조각조각 내줌
-		void CreateXY(const std::string_view _name, s_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
+		void create_XY(const std::string_view _name, s_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
 		void bind_buffer_to_GPU_register();
-		void Reset();
+		void reset();
 		void unbind_buffer_from_GPU_register();
 
-		bool IsComplete() const { return mbComplete; }
-		const std::string& GetAnimationName() const { return mAnimationName; }
-		inline float2 GetSpriteSize(UINT _spriteIdx);
+		bool is_complete() const { return m_b_complete; }
+		const std::string& get_animation_name() const { return m_animation_name; }
+		inline float2 get_sprite_size(UINT _spriteIdx);
 
 	private:
-		std::string mAnimationName;
-		s_ptr<Texture> mAtlas;
-		std::vector<tSprite> mSpriteSheet;
-		int mIndex;
-		float mTime;
-		bool mbComplete;
+		std::string m_animation_name;
+		s_ptr<Texture> m_atlas;
+		std::vector<tSprite> m_sprite_sheet;
+		int m_idx;
+		float m_time;
+		bool m_b_complete;
 	};
 
-	inline float2 Animation2D::GetSpriteSize(UINT _spriteIdx)
+	inline float2 Animation2D::get_sprite_size(UINT _spriteIdx)
 	{
-		float2 retSize{};
-		if (_spriteIdx < (UINT)mSpriteSheet.size())
+		if (_spriteIdx < (UINT)m_sprite_sheet.size())
 		{
-			retSize = mSpriteSheet[_spriteIdx].AtlasSize;
+			return m_sprite_sheet[_spriteIdx].atlas_size;
 		}
-		return retSize;
+		return float2{};
 	}
 }

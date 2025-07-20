@@ -10,13 +10,13 @@
 
 
 
-std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::filesystem::path& _extension)
+std::filesystem::path core::WinAPI::file_open_dialog(const std::filesystem::path& _baseDirectory, const std::filesystem::path& _extension)
 {
 	std::vector<std::filesystem::path> extensions = { _extension };
-	return FileDialog(_baseDirectory, extensions);
+	return file_open_dialog(_baseDirectory, extensions);
 }
 
-std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _baseDirectory, const std::vector<std::filesystem::path>& _extensions)
+std::filesystem::path core::WinAPI::file_open_dialog(const std::filesystem::path& _baseDirectory, const std::vector<std::filesystem::path>& _extensions)
 {
 	//풀경로를 받아올 주소 변수를 만들어주고
 	std::wstring stringPath;
@@ -33,7 +33,7 @@ std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _bas
 	else
 	{
 		extension = _baseDirectory.extension().wstring();
-		StringConverter::MakeUpperCase(extension);
+		StringConverter::make_upper_case(extension);
 	}
 	
 	stringPath.resize(MAX_PATH);
@@ -62,7 +62,7 @@ std::filesystem::path core::WinAPI::FileDialog(const std::filesystem::path& _bas
 		extensionFilters.push_back(L'\0');
 
 		//기본 확장자가 들어왔을 경우 해당 확장자와 일치하는 필터를 기본 표시되도록 설정
-		if (false == extension.empty() && extension == StringConverter::UpperCase(_extensions[i].wstring()))
+		if (false == extension.empty() && extension == StringConverter::upper_case(_extensions[i].wstring()))
 		{
 			//인덱스번호는 1을 더해줘야함(1부터 시작함)
 			OpenFile.nFilterIndex = (DWORD)i + (DWORD)1u;

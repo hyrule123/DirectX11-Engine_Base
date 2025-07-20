@@ -16,21 +16,24 @@ namespace core
 		friend class GameEngine;
 
 		DECLARE_SINGLETON(PathManager);
+	private:
 		PathManager();
+		void init();
+
 		~PathManager();
 
 	public:
-		const std::fs::path& GetResPathAbsolute() { return m_absoluteResourceDir; }
-		const std::fs::path& GetResPathRelative() { return m_relativeResourceDir; }
+		const std::fs::path& get_absolute_resource_directory() { return m_absolute_resource_directory; }
+		const std::fs::path& get_relative_resource_directory() { return m_relative_resource_directory; }
 
-		const std::fs::path& GetShaderCSOPath() { return m_relativeDir_ShaderCSO; }
+		const std::fs::path& get_relative_shader_directory() { return m_relative_shader_directory; }
 
-		std::fs::path MakePathStrKey(const std::fs::path& _fullPath);
+		std::fs::path make_path_strkey(const std::fs::path& _fullPath);
 
 	private:
-		std::filesystem::path m_absoluteResourceDir;
-		std::filesystem::path m_relativeResourceDir;
-		std::filesystem::path m_relativeDir_ShaderCSO;
+		std::filesystem::path m_absolute_resource_directory;
+		std::filesystem::path m_relative_resource_directory;
+		std::filesystem::path m_relative_shader_directory;
 	};
 
 

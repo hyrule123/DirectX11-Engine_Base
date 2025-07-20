@@ -1,6 +1,6 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
-#include <Editor/Widget/Widget_ComboBox.h>
+#include <Editor/Base/EditorUIWindow.h>
+#include <Editor/Widget/ComboBoxWidget.h>
 
 #include <Engine/Common.h>
 
@@ -13,7 +13,7 @@ namespace core
 namespace core::editor
 {
 	class EditorMaterial
-		: public EditorWindow
+		: public EditorUIWindow
 	{
 	public:
 		EditorMaterial();
@@ -24,23 +24,23 @@ namespace core::editor
 		virtual void update_UI() override;
 
 	private:
-		void RefreshShaderSettingFiles();
-		void UpdateShader();
-		void UpdateTextureList();
-		void UpdateRenderingMode();
-		void UpdateMtrlConstBuffer();
-		void UpdateSaveLoad();
+		void refresh_shader_setting_files();
+		void update_shader();
+		void update_texture_list();
+		void update_rendering_mode();
+		void update_material_const_buffer();
+		void update_save_load();
 
-		bool CheckSavePossible();
-		void SaveToFile();
-		void LoadFromFile();
+		bool check_save_possible();
+		void save_to_file();
+		void load_from_file();
 
-		void NewMaterial();
+		void new_material();
 
 		enum class eContext
 		{
 			None,
-			LoadFromFile
+			load_from_file
 		};
 		
 
@@ -50,11 +50,11 @@ namespace core::editor
 		//기존의 재질을 수정중인지 신규 재질을 수정 중인지
 		bool							mbNewMaterial;
 
-		EditorWidget_ComboBox		mShaderCombo;
+		ComboBoxWidget		mShaderCombo;
 
-		EditorWidget_ComboBox		mCurrentMaterialsCombo;
+		ComboBoxWidget		mCurrentMaterialsCombo;
 
-		EditorWidget_ComboBox		mRenderingModeCombo;
+		ComboBoxWidget		mRenderingModeCombo;
 
 		//현재 어떤 창을 띄우는 상태인지
 		eContext mCurContext;
@@ -63,7 +63,7 @@ namespace core::editor
 		std::string mSaveLoadFileName;
 
 		//현재 엔진에 로드되어있는 재질 목록 표시용
-		EditorWidget_ComboBox		mCurrentLoadedMtrl;
+		ComboBoxWidget		mCurrentLoadedMtrl;
 	};
 }
 

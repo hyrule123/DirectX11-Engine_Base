@@ -1,10 +1,10 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 namespace core::editor
 {
 	template <class ResourceType>
-	class ResourceEditor : public EditorWindow
+	class ResourceEditor : public EditorUIWindow
 	{
 	public:
 		ResourceEditor(const std::string_view _resTypeName);
@@ -12,16 +12,16 @@ namespace core::editor
 
 		void update_UI() override;
 		
-		void set_target(const w_ptr<ResourceType>& _target) { mTarget = _target; }
-		const w_ptr<ResourceType>& get_target() const { return mTarget; }
+		void set_target(const w_ptr<ResourceType>& _target) { m_target_resource = _target; }
+		const w_ptr<ResourceType>& get_target() const { return m_target_resource; }
 
 	private:
-		w_ptr<ResourceType> mTarget;
+		w_ptr<ResourceType> m_target_resource;
 	};
 
 	template<class ResourceType>
 	inline ResourceEditor<ResourceType>::ResourceEditor(const std::string_view _resTypeName)
-		: EditorWindow(_resTypeName)
+		: EditorUIWindow(_resTypeName)
 	{
 	}
 
@@ -33,7 +33,7 @@ namespace core::editor
 	template<class ResourceType>
 	inline void ResourceEditor<ResourceType>::update_UI()
 	{
-		if (mTarget.expired())
+		if (m_target_resource.expired())
 			return;
 
 		ImGui::PushID(0);

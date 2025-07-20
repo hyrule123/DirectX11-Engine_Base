@@ -1,6 +1,6 @@
-#include <Editor/Inspector/RendererInspector.h>
+#include "RendererInspector.h"
 
-#include <Editor/Widget/Widget_List.h>
+#include <Editor/Widget/ListWidget.h>
 #include <Editor/Inspector/InspectorBase.h>
 
 #include <Editor/Resource/MaterialEditor.h>
@@ -12,8 +12,8 @@
 
 
 #include <Engine/Game/GameObject.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Mesh.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_Sprite.h>
+#include <Engine/Game/Component/Renderer/StaticMeshRenderer.h>
+#include <Engine/Game/Component/Renderer/SpriteRenderer.h>
 
 #include <Engine/Resource/Mesh/Mesh.h>
 #include <Engine/Resource/Material/Material.h>
@@ -37,13 +37,13 @@ namespace core::editor
 		if (get_target())
 		{
 			const auto& meshRenderer
-				= get_target()->get_component<Com_Renderer_Mesh>();
+				= get_target()->get_component<StaticMeshRenderer>();
 
 			if (meshRenderer == nullptr)
 				return;
 
-			m_material = meshRenderer->GetCurrentMaterial();
-			m_mesh = meshRenderer->GetMesh();
+			m_material = meshRenderer->get_current_material();
+			m_mesh = meshRenderer->get_mesh();
 		}
 		else
 		{
@@ -72,13 +72,13 @@ namespace core::editor
 		ImGui::SameLine();
 		if (ImGui::Button("##MeshBtn", ImVec2(15.0f, 15.0f)))
 		{
-			s_ptr<Widget_List> listUI = std::static_pointer_cast<Widget_List>(EditorManager::get_inst().find_editor_window("ListWidget"));
+			s_ptr<ListWidget> listUI = std::static_pointer_cast<ListWidget>(EditorManager::get_inst().find_editor_window("ListWidget"));
 			listUI->set_enable(true);
 			
 
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& meshes 
-				= ResourceManager<Mesh>::get_inst().GetResources();
+				= ResourceManager<Mesh>::get_inst().get_resources();
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -87,8 +87,7 @@ namespace core::editor
 			}
 
 			listUI->SetItemList(name);
-			listUI->SetEvent(this, std::bind(&RendererInspcetor::set_mesh
-				, this, std::placeholders::_1));
+			//listUI->SetEvent(this, std::bind(&RendererInspcetor::set_mesh
 		}
 
 
@@ -100,11 +99,11 @@ namespace core::editor
 		if (ImGui::Button("##MaterialBtn", ImVec2(15.0f, 15.0f)))
 		{
 			
-			s_ptr<Widget_List> listUI = std::static_pointer_cast<Widget_List>(EditorManager::get_inst().find_editor_window("ListWidget"));
+			s_ptr<ListWidget> listUI = std::static_pointer_cast<ListWidget>(EditorManager::get_inst().find_editor_window("ListWidget"));
 			listUI->set_enable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ResourceManager<Material>::get_inst().GetResources();
+				= ResourceManager<Material>::get_inst().get_resources();
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -113,8 +112,7 @@ namespace core::editor
 			}
 
 			listUI->SetItemList(Name);
-			listUI->SetEvent(this, std::bind(&RendererInspcetor::set_material
-				, this, std::placeholders::_1));
+			//listUI->SetEvent(this, std::bind(&RendererInspcetor::set_material
 		}
 	}
 
@@ -132,7 +130,7 @@ namespace core::editor
 		
 		if (targetObj)
 		{
-			targetObj->get_component<Com_Renderer_Mesh>()->set_mesh(mesh);
+			targetObj->get_component<StaticMeshRenderer>()->set_mesh(mesh);
 		}
 	}
 
@@ -148,7 +146,7 @@ namespace core::editor
 
 		if (targetObj)
 		{
-			targetObj->get_component<Com_Renderer_Mesh>()->set_material(material);
+			targetObj->get_component<StaticMeshRenderer>()->set_material(material);
 		}
 	}
 }

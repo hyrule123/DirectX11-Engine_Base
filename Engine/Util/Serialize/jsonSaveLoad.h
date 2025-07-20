@@ -44,7 +44,7 @@ namespace Json
 			(std::is_same_v<std::string, T> || std::is_integral_v<T>)
 			)
 			, bool>* = nullptr>
-		static T ConvertWrite(const T& _srcT)
+		static T convert_write(const T& _srcT)
 		{
 			return _srcT;
 		}
@@ -52,7 +52,7 @@ namespace Json
 		template <typename T, typename std::enable_if_t<(
 			false == need_base64_v<T> &&
 			std::is_enum_v<T>)>* = nullptr>
-		static int ConvertWrite(const T& _srcT)
+		static int convert_write(const T& _srcT)
 		{
 			return (int)_srcT;
 		}
@@ -61,18 +61,18 @@ namespace Json
 			false == need_base64_v<T> &&
 			(std::is_pointer_v<T> || type_traits_Ex::is_smart_ptr_v<T>)
 			)>* = nullptr>
-		static std::string ConvertWrite(const T& _srcT)
+		static std::string convert_write(const T& _srcT)
 		{
 			return _srcT->get_static_type_name();
 		}
 
 		template <typename T, typename
 			std::enable_if_t <need_base64_v<T>, bool>* = nullptr>
-		static std::string ConvertWrite(const T& _srcT)
+		static std::string convert_write(const T& _srcT)
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == type_traits_Ex::is_container_v<T>);
-			return StringConverter::Base64Encode(_srcT);
+			return StringConverter::base64_encode(_srcT);
 		}
 
 
@@ -111,7 +111,7 @@ namespace Json
 		{
 			//컨테이너는 변환 불가
 			static_assert(false == type_traits_Ex::is_container_v<T>);
-			return StringConverter::Base64Decode<T>(_jVal.asString());
+			return StringConverter::base64_decode<T>(_jVal.asString());
 		}
 
 
@@ -119,7 +119,7 @@ namespace Json
 		static  void SaveValue(Json::Value* _pJson, const char* _strKey, const T& _srcT)
 		{
 			Json::Value& jVal = (*_pJson);
-			jVal[_strKey] = ConvertWrite<T>(_srcT);
+			jVal[_strKey] = convert_write<T>(_srcT);
 		}
 
 		template <typename T>
@@ -161,7 +161,7 @@ namespace Json
 			for (size_t i = 0; i < _srcT.size(); ++i)
 			{
 				//3. 순회돌면서 하나씩 추가한다.
-				jVal.append(ConvertWrite(_srcT[i]));
+				jVal.append(convert_write(_srcT[i]));
 			}
 		}
 
@@ -226,7 +226,7 @@ namespace Json
 				}
 				else
 				{
-					_destT = StringConverter::Base64Decode<T>(jVal.asString());
+					_destT = StringConverter::base64_decode<T>(jVal.asString());
 					bResult = true;
 				}
 			}

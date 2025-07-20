@@ -18,7 +18,7 @@ namespace core
 	class Mesh;
 	class Material;
 	class GameObject;
-	class Com_Renderer_Mesh;
+	class StaticMeshRenderer;
 	class Skeleton;
 	struct tFBXMaterial;
 
@@ -74,7 +74,7 @@ namespace core
 		//다행히도 이름이 통일되어 있어서 이를 활용하면 가능할 듯
 		void check_MH_material(Material* _mtrl, const std::fs::path& _texDestDir);
 
-		bool set_data_to_renderer(const s_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx);
+		bool set_data_to_renderer(const s_ptr<StaticMeshRenderer>& _renderer, UINT _idx);
 
 	private:
 		s_ptr<Skeleton> m_skeleton;

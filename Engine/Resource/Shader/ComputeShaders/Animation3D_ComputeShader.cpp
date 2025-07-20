@@ -93,7 +93,7 @@ namespace core
 		m_desc = {};
 	}
 
-	bool Animation3D_ComputeShader::on_execute(const Animation3D_ComputeShader::Desc& _desc)
+	bool Animation3D_ComputeShader::on_execute(const Animation3D_ComputeShader::tDesc& _desc)
 	{
 		m_desc = _desc;
 		return ComputeShader::on_execute();

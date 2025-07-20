@@ -14,14 +14,14 @@ namespace core
 {
 	GraphicsShader::GraphicsShader()
 		: Shader(GraphicsShader::s_static_type_name)
-		, m_inputLayoutDescs{}
-		, m_inputLayout{}
-		, m_arrShaderCode{}
-		, m_vertexShader{}
-		, m_domainShader{}
-		, m_hullShader{}
-		, m_geometryShader{}
-		, m_pixelShader{}
+		, m_input_layout_descs{}
+		, m_input_layout{}
+		, m_shader_codes{}
+		, m_vertex_shader{}
+		, m_domain_shader{}
+		, m_hull_shader{}
+		, m_geometry_shader{}
+		, m_pixel_shader{}
 		, m_rasterizer_state{}
 		, m_blend_state{}
 		, m_depth_stencil_state{}
@@ -31,8 +31,8 @@ namespace core
 		, m_blend_factor{}
 		, m_sample_mask{ UINT_MAX }
 		, m_stencil_ref{ UINT_MAX }
-		, m_errorBlob()
-		, m_bEditMode(false)
+		, m_error_blob()
+		, m_b_edit_mode(false)
 	{
 		m_rasterizer_state = RenderManager::get_inst().get_rasterizer_state(m_rasterizer_type);
 		m_blend_state = RenderManager::get_inst().get_blend_state(m_blend_type);
@@ -45,17 +45,17 @@ namespace core
 
 	eResult GraphicsShader::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
-		return SaveFile_Json(_base_directory / _resource_name);
+		return save_file_json(_base_directory / _resource_name);
 	}
 
 	eResult GraphicsShader::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
-		return LoadFile_Json(_base_directory / _resource_name);
+		return load_file_json(_base_directory / _resource_name);
 	}
 
 	eResult GraphicsShader::compile_from_source_code(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)
 	{
-		m_arrShaderCode[(int)_stage] = {};
+		m_shader_codes[(int)_stage] = {};
 
 		HRESULT hr = D3DCompileFromFile(
 			_FullPath.wstring().c_str(),
@@ -65,35 +65,35 @@ namespace core
 			SHADER_VERSION::Graphics[(int)_stage],
 			0u,
 			0u,
-			m_arrShaderCode[(int)_stage].blob.ReleaseAndGetAddressOf(),
-			m_errorBlob.ReleaseAndGetAddressOf()
+			m_shader_codes[(int)_stage].blob.ReleaseAndGetAddressOf(),
+			m_error_blob.ReleaseAndGetAddressOf()
 		);
 
 		if (FAILED(hr))
 		{
 			std::string ErrMsg = "Failed to compile Graphics GraphicsShader!\n\n";
 			ErrMsg += "<Error Info>\n";
-			ErrMsg += static_cast<const char*>(m_errorBlob->GetBufferPointer());
+			ErrMsg += static_cast<const char*>(m_error_blob->GetBufferPointer());
 			ERROR_MESSAGE_A(ErrMsg.c_str());
 
-			m_errorBlob = nullptr;
+			m_error_blob = nullptr;
 
 			return eResult::Fail_Open;
 		}
 
-		m_arrShaderCode[(int)_stage].pData = 
-			m_arrShaderCode[(int)_stage].blob.Get()->GetBufferPointer();
+		m_shader_codes[(int)_stage].pData = 
+			m_shader_codes[(int)_stage].blob.Get()->GetBufferPointer();
 		return eResult::Success;
 	}
 
 	eResult GraphicsShader::compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
-		m_arrShaderCode[(int)_stage] = {};
+		m_shader_codes[(int)_stage] = {};
 
 		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
 		set_engine_default_res(true);
 
-		tShaderCode& code = m_arrShaderCode[(int)_stage];
+		tShaderCode& code = m_shader_codes[(int)_stage];
 		code.pData = _pByteCode;
 		code.dataSize = _ByteCodeSize;
 
@@ -103,7 +103,7 @@ namespace core
 	eResult GraphicsShader::compile_from_CSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::get_inst().GetShaderCSOPath();
+		std::filesystem::path shaderBinPath = PathManager::get_inst().get_relative_shader_directory();
 		shaderBinPath /= _FileName;
 
 		if (false == std::fs::exists(shaderBinPath))
@@ -123,7 +123,7 @@ namespace core
 		}
 
 		//파일이 열리면 지역변수 Blob을 만들어서 데이터를 옮긴다.
-		tShaderCode& code = m_arrShaderCode[(int)_stage];
+		tShaderCode& code = m_shader_codes[(int)_stage];
 		code = {};
 		code.name = _FileName.string();
 		code.dataSize = sFile.tellg();
@@ -156,50 +156,50 @@ namespace core
 		return Result;
 	}
 
-	void GraphicsShader::AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc)
+	void GraphicsShader::add_input_layout_desc(const D3D11_INPUT_ELEMENT_DESC& _desc)
 	{
-		m_inputLayoutDescs.push_back(_desc);
+		m_input_layout_descs.push_back(_desc);
 
 		//이름을 별도 저장된 공간에 저장된 뒤 해당 주소의 포인터로 교체
-		const auto& pair = g_stringArchive.insert(m_inputLayoutDescs.back().SemanticName);
-		m_inputLayoutDescs.back().SemanticName = pair.first->c_str();
+		const auto& pair = g_string_archive.insert(m_input_layout_descs.back().SemanticName);
+		m_input_layout_descs.back().SemanticName = pair.first->c_str();
 	}
 
-	void GraphicsShader::SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs)
+	void GraphicsShader::set_input_layout_desc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs)
 	{
-		m_inputLayoutDescs = _descs;
+		m_input_layout_descs = _descs;
 
-		for (size_t i = 0; i < m_inputLayoutDescs.size(); ++i)
+		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
 		{
-			if (m_inputLayoutDescs[i].SemanticName)
+			if (m_input_layout_descs[i].SemanticName)
 			{
-				const auto& pair = g_stringArchive.insert(m_inputLayoutDescs[i].SemanticName);
-				m_inputLayoutDescs[i].SemanticName = pair.first->c_str();
+				const auto& pair = g_string_archive.insert(m_input_layout_descs[i].SemanticName);
+				m_input_layout_descs[i].SemanticName = pair.first->c_str();
 			}
 		}
 	}
 
-	eResult GraphicsShader::CreateInputLayout()
+	eResult GraphicsShader::create_input_layout()
 	{
-		const tShaderCode& VS = m_arrShaderCode[(int)eGSStage::Vertex];
+		const tShaderCode& VS = m_shader_codes[(int)eGSStage::Vertex];
 
 		if (nullptr == VS.pData)
 		{
 			ERROR_MESSAGE("정점 쉐이더가 준비되지 않아서 Input Layout을 생성할 수 없습니다.");
 			return eResult::Fail_Create;
 		}
-		else if (m_inputLayoutDescs.empty())
+		else if (m_input_layout_descs.empty())
 		{
 			ERROR_MESSAGE("입력 레이아웃이 설정되어있지 않아 Input Layout을 생성할 수 없습니다.");
 			return eResult::Fail_Create;
 		}
 
-		if (FAILED(RenderManager::get_inst().Device()->CreateInputLayout(
-			m_inputLayoutDescs.data(),
-			(uint)m_inputLayoutDescs.size(),
+		if (FAILED(RenderManager::get_inst().get_device()->CreateInputLayout(
+			m_input_layout_descs.data(),
+			(uint)m_input_layout_descs.size(),
 			VS.pData,
 			VS.dataSize,
-			m_inputLayout.ReleaseAndGetAddressOf()
+			m_input_layout.ReleaseAndGetAddressOf()
 		)))
 		{
 			ERROR_MESSAGE("Input Layout 생성에 실패했습니다.");
@@ -230,14 +230,14 @@ namespace core
 
 	void GraphicsShader::bind_shader()
 	{
-		auto pContext = RenderManager::get_inst().Context();
+		auto pContext = RenderManager::get_inst().get_context();
 		
-		pContext->IASetInputLayout(m_inputLayout.Get());
-		pContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-		pContext->HSSetShader(m_hullShader.Get(), nullptr, 0);
-		pContext->DSSetShader(m_domainShader.Get(), nullptr, 0);
-		pContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-		pContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
+		pContext->IASetInputLayout(m_input_layout.Get());
+		pContext->VSSetShader(m_vertex_shader.Get(), nullptr, 0);
+		pContext->HSSetShader(m_hull_shader.Get(), nullptr, 0);
+		pContext->DSSetShader(m_domain_shader.Get(), nullptr, 0);
+		pContext->GSSetShader(m_geometry_shader.Get(), nullptr, 0);
+		pContext->PSSetShader(m_pixel_shader.Get(), nullptr, 0);
 
 		pContext->RSSetState(m_rasterizer_state.Get());
 		pContext->OMSetBlendState(m_blend_state.Get(), m_blend_factor, m_sample_mask);
@@ -246,7 +246,7 @@ namespace core
 
 	void GraphicsShader::unbind_all_shader()
 	{
-		auto pContext = RenderManager::get_inst().Context();
+		auto pContext = RenderManager::get_inst().get_context();
 
 		pContext->IASetInputLayout(nullptr);
 		pContext->VSSetShader(nullptr, nullptr, 0);
@@ -271,42 +271,42 @@ namespace core
 		JsonSerializer& ser = *_ser;
 
 		//구조체 안에 const char* 타입이 있어서 수동으로 해줘야함
-		Json::Value& jsonInputLayouts = ser[JSON_KEY(m_inputLayoutDescs)];
+		Json::Value& jsonInputLayouts = ser[JSON_KEY(m_input_layout_descs)];
 		jsonInputLayouts = Json::Value(Json::arrayValue);
 
 		//Input Layout Desc
-		for (size_t i = 0; i < m_inputLayoutDescs.size(); ++i)
+		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
 		{
 			Json::Value& InputElement = jsonInputLayouts[i];
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::SemanticName)]		
-				<< m_inputLayoutDescs[i].SemanticName;
+				<< m_input_layout_descs[i].SemanticName;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::SemanticIndex)]		
-				<< m_inputLayoutDescs[i].SemanticIndex;
+				<< m_input_layout_descs[i].SemanticIndex;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::Format)]				
-				<< m_inputLayoutDescs[i].Format;
+				<< m_input_layout_descs[i].Format;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::InputSlot)]			
-				<< m_inputLayoutDescs[i].InputSlot;
+				<< m_input_layout_descs[i].InputSlot;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::AlignedByteOffset)]	
-				<< m_inputLayoutDescs[i].AlignedByteOffset;
+				<< m_input_layout_descs[i].AlignedByteOffset;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::InputSlotClass)]		
-				<< m_inputLayoutDescs[i].InputSlotClass;
+				<< m_input_layout_descs[i].InputSlotClass;
 
 			InputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::InstanceDataStepRate)] 
-				<< m_inputLayoutDescs[i].InstanceDataStepRate;
+				<< m_input_layout_descs[i].InstanceDataStepRate;
 		}
 
 		//쉐이더 파일명
 		{
-			Json::Value& ShaderFileName = ser[JSON_KEY(m_arrShaderCode)];
+			Json::Value& ShaderFileName = ser[JSON_KEY(m_shader_codes)];
 			for (int i = 0; i < (int)eGSStage::END; ++i)
 			{
-				ShaderFileName.append(m_arrShaderCode[i].name);
+				ShaderFileName.append(m_shader_codes[i].name);
 			}
 		}
 
@@ -330,10 +330,10 @@ namespace core
 		const JsonSerializer& ser = *_ser;
 
 		//Input Layout Desc
-		m_inputLayoutDescs.clear();
-		if (ser.isMember(JSON_KEY(m_inputLayoutDescs)))
+		m_input_layout_descs.clear();
+		if (ser.isMember(JSON_KEY(m_input_layout_descs)))
 		{
-			const Json::Value& jsonInputLayouts = ser[JSON_KEY(m_inputLayoutDescs)];
+			const Json::Value& jsonInputLayouts = ser[JSON_KEY(m_input_layout_descs)];
 
 			if (jsonInputLayouts.isArray())
 			{
@@ -360,7 +360,7 @@ namespace core
 						return eResult::Fail_InValid;
 					}
 
-					D3D11_INPUT_ELEMENT_DESC& desc = m_inputLayoutDescs.emplace_back(D3D11_INPUT_ELEMENT_DESC{});
+					D3D11_INPUT_ELEMENT_DESC& desc = m_input_layout_descs.emplace_back(D3D11_INPUT_ELEMENT_DESC{});
 
 					inputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::SemanticName)] >> desc.SemanticName;
 					inputElement[JSON_KEY(D3D11_INPUT_ELEMENT_DESC::SemanticIndex)] >> desc.SemanticIndex;
@@ -375,15 +375,15 @@ namespace core
 
 		//쉐이더
 		{
-			const Json::Value& shaderFileNames = ser[JSON_KEY(m_arrShaderCode)];
+			const Json::Value& shaderFileNames = ser[JSON_KEY(m_shader_codes)];
 
-			if ((size_t)shaderFileNames.size() < m_arrShaderCode.size())
+			if ((size_t)shaderFileNames.size() < m_shader_codes.size())
 			{
 				ERROR_MESSAGE("쉐이더 파일명이 누락되어 있습니다.");
 				return eResult::Fail_InValid;
 			}
 			
-			for (size_t i = 0; i < m_arrShaderCode.size(); ++i)
+			for (size_t i = 0; i < m_shader_codes.size(); ++i)
 			{
 				const Json::Value& shaderFileName = shaderFileNames[i];
 				if (false == shaderFileName.isString())
@@ -392,12 +392,12 @@ namespace core
 					return eResult::Fail_InValid;
 				}
 
-				m_arrShaderCode[i].name = shaderFileName.asString();
+				m_shader_codes[i].name = shaderFileName.asString();
 
 				//에딧 모드가 아닐 경우에만 로드
-				if (false == m_bEditMode && false == m_arrShaderCode[i].name.empty())
+				if (false == m_b_edit_mode && false == m_shader_codes[i].name.empty())
 				{
-					eResult result = compile_from_CSO((eGSStage)i, m_arrShaderCode[i].name);
+					eResult result = compile_from_CSO((eGSStage)i, m_shader_codes[i].name);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("쉐이더 코드 생성 실패");
@@ -416,9 +416,9 @@ namespace core
 		set_depth_stencil_state(m_depth_stencil_type);
 
 		//에디트 모드가 아닐 경우에만 Input Layout 생성.
-		if (false == m_bEditMode)
+		if (false == m_b_edit_mode)
 		{
-			eResult result = CreateInputLayout();
+			eResult result = create_input_layout();
 			if (eResult_fail(result))
 			{
 				ERROR_MESSAGE("INPUT LAYOUT 생성 실패");
@@ -434,12 +434,12 @@ namespace core
 		ASSERT(_pByteCode, "ByteCode 주소가 nullptr입니다.");
 		ASSERT(_ByteCodeSize, "ByteCode의 사이즈가 0입니다.");
 
-		auto pDevice = RenderManager::get_inst().Device();
+		auto pDevice = RenderManager::get_inst().get_device();
 		switch (_stage)
 		{
 		case eGSStage::Vertex:
 		{
-			if (FAILED(pDevice->CreateVertexShader(_pByteCode, _ByteCodeSize, nullptr, m_vertexShader.ReleaseAndGetAddressOf())))
+			if (FAILED(pDevice->CreateVertexShader(_pByteCode, _ByteCodeSize, nullptr, m_vertex_shader.ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE("Vertex GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
@@ -450,7 +450,7 @@ namespace core
 
 		case eGSStage::Hull:
 		{
-			if (FAILED(pDevice->CreateHullShader(_pByteCode, _ByteCodeSize, nullptr, m_hullShader.ReleaseAndGetAddressOf())))
+			if (FAILED(pDevice->CreateHullShader(_pByteCode, _ByteCodeSize, nullptr, m_hull_shader.ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE("Hull GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
@@ -462,7 +462,7 @@ namespace core
 
 		case eGSStage::Domain:
 		{
-			if (FAILED(pDevice->CreateDomainShader(_pByteCode, _ByteCodeSize, nullptr, m_domainShader.ReleaseAndGetAddressOf())))
+			if (FAILED(pDevice->CreateDomainShader(_pByteCode, _ByteCodeSize, nullptr, m_domain_shader.ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE("Domain GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
@@ -474,7 +474,7 @@ namespace core
 
 		case eGSStage::Geometry:
 		{
-			if (FAILED(pDevice->CreateGeometryShader(_pByteCode, _ByteCodeSize, nullptr, m_geometryShader.ReleaseAndGetAddressOf())))
+			if (FAILED(pDevice->CreateGeometryShader(_pByteCode, _ByteCodeSize, nullptr, m_geometry_shader.ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE("Geometry GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;
@@ -486,7 +486,7 @@ namespace core
 
 		case eGSStage::Pixel:
 		{
-			if (FAILED(pDevice->CreatePixelShader(_pByteCode, _ByteCodeSize, nullptr, m_pixelShader.ReleaseAndGetAddressOf())))
+			if (FAILED(pDevice->CreatePixelShader(_pByteCode, _ByteCodeSize, nullptr, m_pixel_shader.ReleaseAndGetAddressOf())))
 			{
 				ERROR_MESSAGE("Pixel GraphicsShader 생성에 실패했습니다.");
 				return eResult::Fail_Create;

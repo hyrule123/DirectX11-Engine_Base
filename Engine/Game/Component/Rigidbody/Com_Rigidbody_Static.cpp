@@ -17,7 +17,7 @@ namespace core
 	{
 	}
 
-	physx::PxRigidActor* Com_Rigidbody_Static::CreateRigidbody()
+	physx::PxRigidActor* Com_Rigidbody_Static::create_rigidbody()
 	{
 		if (get_owner())
 		{

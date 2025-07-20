@@ -12,13 +12,15 @@ namespace core
 		DECLARE_SINGLETON(FontWrapper);
 	private:
 		FontWrapper();
+		void init();
+
 		~FontWrapper();
 
 	public:
-		void DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
+		void draw_font(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
 
 	private:
-		IFW1Factory* m_FW1Factory;
-		IFW1FontWrapper* m_fontWrapper;
+		IFW1Factory* m_FW1_factory;
+		IFW1FontWrapper* m_font_wrapper;
 	};
 }

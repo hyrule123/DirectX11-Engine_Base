@@ -36,7 +36,7 @@ namespace core {
 			NotAwaken,
 			Active,
 			DestroyReserved,
-			Destroy
+			destroy
 		};
 
 		Component(const std::string_view key, eComponentOrder _type);
@@ -44,52 +44,52 @@ namespace core {
 		virtual ~Component();
 
 		virtual void init() override;
-		virtual void Awake() {}
-		virtual void OnEnable() {}
-		virtual void Start() {}
+		virtual void awake() {}
+		virtual void on_enable() {}
+		virtual void start() {}
 		virtual void fixed_update() {}
 		virtual void update() {}
 		virtual void final_update() {}
 
 		virtual void frame_end() {}
 
-		virtual void OnDisable() {}
-		virtual void OnDestroy() {}
+		virtual void on_disable() {}
+		virtual void on_destroy() {}
 
 		//레이어 변경시 호출됨. GameObject::Awake() 때 한번 호출됨.
-		virtual void OnLayerChange(uint32 _layer) {}
+		virtual void on_layer_change(uint32 _layer) {}
 
 		inline s_ptr<GameObject> get_owner() const { return m_ownerGameObject.lock(); }
-		inline void Set_gameObject(const s_ptr<GameObject>& _owner) { m_ownerGameObject = _owner; }
+		inline void set_game_object(const s_ptr<GameObject>& _owner) { m_ownerGameObject = _owner; }
 
-		eComponentOrder GetComponentCategory() const { return m_ComCategory; };
+		eComponentOrder get_component_order() const { return m_component_order; };
 
-		bool IsStarted() const { return m_isStarted; }
+		bool is_started() const { return m_b_start; }
 
-		inline bool IsInitialized() const { return eState::NotInitialzed < m_state; }
+		inline bool is_initialized() const { return eState::NotInitialzed < m_state; }
 
-		inline bool IsEnabled() const { return m_isEnabled; }
-		void SetEnable(bool _bEnable);
+		inline bool is_enabled() const { return m_b_enable; }
+		void set_enable(bool _bEnable);
 
-		bool IsDestroyed() const { return eState::DestroyReserved <= m_state; }
-		inline void Destroy() {
-			if (IsDestroyed()) { return; }
+		bool is_destroyed() const { return eState::DestroyReserved <= m_state; }
+		inline void destroy() {
+			if (is_destroyed()) { return; }
 			m_state = eState::DestroyReserved;
 		}
 
 		inline eState get_state() const { return m_state; }
 
-		bool UpdateDestroyState();
+		bool update_destroy_state();
 
 	private:
 		inline void set_state(eState _state) { m_state = _state; }
 
-		const eComponentOrder m_ComCategory;
+		const eComponentOrder m_component_order;
 		w_ptr<GameObject> m_ownerGameObject;
 
 		eState m_state;
-		bool m_isStarted;
-		bool m_isEnabled;
+		bool m_b_start;
+		bool m_b_enable;
 	};
 
 	template <typename T>

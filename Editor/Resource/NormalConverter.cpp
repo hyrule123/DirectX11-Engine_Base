@@ -2,7 +2,7 @@
 
 #include <Engine/define_Enum.h>
 
-#include <Editor/Widget/Widget_ComboBox.h>
+#include <Editor/Widget/ComboBoxWidget.h>
 
 #include <Engine/Manager/PathManager.h>
 #include <Engine/Manager/ResourceManager.h>
@@ -15,9 +15,9 @@
 namespace core::editor
 {
 	EditorNormalConverter::EditorNormalConverter()
-		: EditorWindow("Normal Converter")
-		, mTextureSrc{}
-		, mTextureDestDir{}
+		: EditorUIWindow("Normal Converter")
+		, m_src_texture{}
+		, m_dest_texture_dir{}
 	{
 	}
 	EditorNormalConverter::~EditorNormalConverter()
@@ -30,35 +30,35 @@ namespace core::editor
 
 	void EditorNormalConverter::update_UI()
 	{
-		SrcTextureUpdate();
+		src_texture_UI_update();
 
 		ImGui::Dummy(ImVec2(0.f, 15.f));
 		ImGui::Separator();
 
-		DestTextureUpdate();
+		dest_texture_UI_update();
 
 		ImGui::Dummy(ImVec2(0.f, 15.f));
 		ImGui::Separator();
 		
-		CopyTextureUpdate();
+		copy_texture_UI_update();
 
 		ImGui::Dummy(ImVec2(0.f, 50.f));
 		ImGui::Separator();
 		if (ImGui::Button("Reset All", ImVec2(0.f, 35.f)))
 		{
-			Reset();
+			reset();
 		}
 	}
 
-	void EditorNormalConverter::SrcTextureUpdate()
+	void EditorNormalConverter::src_texture_UI_update()
 	{
 		hilight_text("Source Texture");
 
 		{
 			std::string curText = "* Current: ";
-			if (mTextureSrc)
+			if (m_src_texture)
 			{
-				curText += mTextureSrc->get_resource_name();
+				curText += m_src_texture->get_resource_name();
 			}
 			else
 			{
@@ -76,38 +76,38 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 		vecExt.push_back(::core::name::path::extension::Texture[i]);
 	}
 
-	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
+	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
 
-	std::fs::path texPath = WinAPI::FileDialog(absTexPath, vecExt);
+	std::fs::path texPath = WinAPI::file_open_dialog(absTexPath, vecExt);
 
-	texPath = PathManager::get_inst().MakePathStrKey(texPath);
+	texPath = PathManager::get_inst().make_path_strkey(texPath);
 
-	mTextureSrc = ResourceManager<Texture>::get_inst().load(texPath.string());
+	m_src_texture = ResourceManager<Texture>::get_inst().load(texPath.string());
 }
 
 ImGui::SameLine();
 
 if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 {
-	mTextureSrc = nullptr;
+	m_src_texture = nullptr;
 }
 
 	}
 
-	void EditorNormalConverter::DestTextureUpdate()
+	void EditorNormalConverter::dest_texture_UI_update()
 	{
 		using namespace core;
 		hilight_text("Dest Texture Save Directory");
 		{
 			std::string curText = "* Current: ";
 
-			if (mTextureDestDir.empty())
+			if (m_dest_texture_dir.empty())
 			{
 				curText += "None";
 			}
 			else
 			{
-				curText += mTextureDestDir.string();
+				curText += m_dest_texture_dir.string();
 			}
 
 
@@ -123,36 +123,36 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				vecExt.push_back(::core::name::path::extension::Texture[i]);
 			}
 
-			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
+			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
 
-			if (mTextureSrc)
+			if (m_src_texture)
 			{
-				texFile /= mTextureSrc->get_resource_name();
+				texFile /= m_src_texture->get_resource_name();
 			}
 
-			mTextureDestDir = WinAPI::FileDialog(texFile, vecExt);
-			mTextureDestDir = mTextureDestDir.parent_path();
+			m_dest_texture_dir = WinAPI::file_open_dialog(texFile, vecExt);
+			m_dest_texture_dir = m_dest_texture_dir.parent_path();
 		}
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Clear##Dest Texture", ImVec2(0.f, 25.f)))
 		{
-			mTextureDestDir.clear();
+			m_dest_texture_dir.clear();
 		}
 	}
 
-	void EditorNormalConverter::CopyTextureUpdate()
+	void EditorNormalConverter::copy_texture_UI_update()
 	{
 		using namespace core;
 		if (ImGui::Button("Convert Normal Map Texture", ImVec2(0.f, 35.f)))
 		{
-			if (nullptr == mTextureSrc)
+			if (nullptr == m_src_texture)
 			{
 				NOTIFICATION("원본 텍스처가 등록되지 않았습니다.");
 				return;
 			}
-			else if (mTextureDestDir.empty())
+			else if (m_dest_texture_dir.empty())
 			{
 				NOTIFICATION("텍스처파일 출력 경로가 등록되지 않았습니다.");
 				return;
@@ -160,11 +160,11 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 			s_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
 
-			s_ptr<Texture> convertedTex = converter->Convert(mTextureSrc);
+			s_ptr<Texture> convertedTex = converter->convert(m_src_texture);
 
 			if (convertedTex)
 			{
-				std::fs::path savePath = mTextureDestDir;
+				std::fs::path savePath = m_dest_texture_dir;
 				std::fs::path texKey = convertedTex->get_resource_name();
 				savePath /= texKey.filename();
 
@@ -196,9 +196,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		}
 	}
 
-	void EditorNormalConverter::Reset()
+	void EditorNormalConverter::reset()
 	{
-		mTextureSrc = nullptr;
-		mTextureDestDir.clear();
+		m_src_texture = nullptr;
+		m_dest_texture_dir.clear();
 	}
 }

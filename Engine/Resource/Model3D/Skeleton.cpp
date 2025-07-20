@@ -25,21 +25,21 @@ namespace core
 {
 	Skeleton::Skeleton()
 		: Resource(Skeleton::s_static_type_name)
-		, m_vecBones{}
-		, m_pBoneOffset{}
+		, m_bones{}
+		, m_bone_offset_sbuffer{}
 		, m_animations{}
 		, m_final_matrix_buffer{}
 	{
 		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
 		ASSERT(nullptr != m_compute_shader, "컴퓨트쉐이더가 없음");
 
-		StructBuffer::Desc desc{};
-		desc.GPU_register_t_SRV = GPU::Register::t::g_FinalBoneMatrixArray;
-		desc.TargetStageSRV = eShaderStageFlag::Vertex;
-		desc.GPU_register_u_UAV = GPU::Register::u::g_FinalBoneMatrixArrayRW;
-		desc.eSBufferType = eStructBufferType::READ_WRITE;
+		StructBuffer::tDesc desc{};
+		desc.m_SRV_target_register_idx = GPU::Register::t::g_FinalBoneMatrixArray;
+		desc.m_SRV_target_stage = eShaderStageFlag::Vertex;
+		desc.m_UAV_target_register_idx = GPU::Register::u::g_FinalBoneMatrixArrayRW;
+		desc.m_buffer_RW_type = eStructBufferType::READ_WRITE;
 		m_final_matrix_buffer = std::make_unique<StructBuffer>();
-		m_final_matrix_buffer->init<MATRIX>(desc);
+		m_final_matrix_buffer->create<MATRIX>(desc);
 	}
 
 	Skeleton::~Skeleton()
@@ -60,7 +60,7 @@ namespace core
 		std::fs::path fullPath = _basePath / _resource_name;
 		fullPath.replace_extension(name::path::extension::Skeleton);
 		//Skeleton
-		eResult result = SaveFile_Binary(fullPath);
+		eResult result = save_file_binary(fullPath);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
@@ -73,12 +73,12 @@ namespace core
 			{
 				fullPath.replace_filename(iter.first);
 				fullPath.replace_extension(name::path::extension::Anim3D);
-				result = iter.second->SaveFile_Binary(fullPath);
+				result = iter.second->save_file_binary(fullPath);
 				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg{};
 					errmsg << L"애니메이션 저장 실패\b실패한 애니메이션 이름: ";
-					errmsg << StringConverter::UTF8_to_Unicode(iter.first);
+					errmsg << StringConverter::UTF8_to_UTF16(iter.first);
 					ERROR_MESSAGE_W(errmsg.str().c_str());
 
 					continue;
@@ -94,7 +94,7 @@ namespace core
 
 		fullPath.replace_extension(name::path::extension::Skeleton);
 		//Skeleton
-		eResult result = LoadFile_Binary(fullPath);
+		eResult result = load_file_binary(fullPath);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
@@ -128,7 +128,7 @@ namespace core
 				}
 				
 				s_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
-				eResult result = a3d->LoadFile_Binary(filePath);
+				eResult result = a3d->load_file_binary(filePath);
 				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg;
@@ -166,19 +166,19 @@ namespace core
 
 		BinarySerializer& ser = *_ser;
 
-		ser << m_vecBones.size();
-		for (size_t i = 0; i < m_vecBones.size(); ++i)
+		ser << m_bones.size();
+		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
 			//std::string			strBoneName{};
 			//int					iDepth;
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			ser << m_vecBones[i].strBoneName;
-			ser << m_vecBones[i].iDepth;
-			ser << m_vecBones[i].iParentIndx;
-			ser << m_vecBones[i].matOffset;
-			ser << m_vecBones[i].matBone;
+			ser << m_bones[i].name;
+			ser << m_bones[i].depth_level;
+			ser << m_bones[i].parent_idx;
+			ser << m_bones[i].offset_matrix;
+			ser << m_bones[i].bone_matrix;
 		}
 
 		return eResult::Success;
@@ -196,19 +196,19 @@ namespace core
 
 		size_t size{};
 		ser >> size;
-		m_vecBones.resize(size);
-		for (size_t i = 0; i < m_vecBones.size(); ++i)
+		m_bones.resize(size);
+		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
 			//std::string			strBoneName{};
 			//int					iDepth;
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			ser >> m_vecBones[i].strBoneName;
-			ser >> m_vecBones[i].iDepth;
-			ser >> m_vecBones[i].iParentIndx;
-			ser >> m_vecBones[i].matOffset;
-			ser >> m_vecBones[i].matBone;
+			ser >> m_bones[i].name;
+			ser >> m_bones[i].depth_level;
+			ser >> m_bones[i].parent_idx;
+			ser >> m_bones[i].offset_matrix;
+			ser >> m_bones[i].bone_matrix;
 		}
 		create_bone_offset_buffer();
 
@@ -224,17 +224,17 @@ namespace core
 		}
 
 		UINT iFrameCount = 0;
-		m_vecBones.reserve(vecBone.size());
+		m_bones.reserve(vecBone.size());
 		for (UINT i = 0; i < vecBone.size(); ++i)
 		{
-			m_vecBones.push_back(tMTBone{});
-			tMTBone& bone = m_vecBones.back();
+			m_bones.push_back(tMTBone{});
+			tMTBone& bone = m_bones.back();
 
-			bone.iDepth = vecBone[i].Depth;
-			bone.iParentIndx = vecBone[i].ParentIndx;
-			bone.matBone = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].matBone);
-			bone.matOffset = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].matOffset);
-			bone.strBoneName = vecBone[i].strBoneName;
+			bone.depth_level = vecBone[i].depth_level;
+			bone.parent_idx = vecBone[i].parent_bone_idx;
+			bone.bone_matrix = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].bone_matrix);
+			bone.offset_matrix = FBXLoader::get_matrix_from_FbxAMatrix(vecBone[i].offset_matrix);
+			bone.name = vecBone[i].bone_name;
 		}
 		create_bone_offset_buffer();
 
@@ -286,18 +286,18 @@ namespace core
 	bool Skeleton::copy_animation_from_other(const Skeleton& _other, const std::fs::path& _saveDir)
 	{
 		//순회를 돌아주면서 내 스켈레톤 인덱스와 매칭되는 상대 스켈레톤 인덱스를 계산
-		if (m_vecBones.size() != _other.m_vecBones.size())
+		if (m_bones.size() != _other.m_bones.size())
 		{
 			ERROR_MESSAGE("본 정보가 일치하지 않습니다.");
 			return false;
 		}
 			
 
-		std::vector<int> matchingIndices(m_vecBones.size());
-		for (size_t i = 0; i < m_vecBones.size(); ++i)
+		std::vector<int> matchingIndices(m_bones.size());
+		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
 			//내 본과 일치하는 본의 인덱스를 찾는다.
-			int otherIdx = _other.find_same_bone_index(m_vecBones[i]);
+			int otherIdx = _other.find_same_bone_index(m_bones[i]);
 
 			//일치하는 본이 없으면 Return
 			if (0 > otherIdx)
@@ -314,7 +314,7 @@ namespace core
 		for (const auto& otherAnim : _other.m_animations)
 		{
 			//일단 다른쪽의 애니메이션을 복사해온다.
-			auto cloned = otherAnim.second->Clone();
+			auto cloned = otherAnim.second->clone();
 			ASSERT_DEBUG(cloned, "nullptr 에러");
 			s_ptr<Animation3D> ourAnim = std::static_pointer_cast<Animation3D>(cloned);
 
@@ -329,7 +329,7 @@ namespace core
 				//인덱스가 서로 다른 경우에 인덱스 번호를 바꿔준다
 				if ((int)i != matchingIndices[i])
 				{
-					std::swap(ourAnim->m_KeyFramesPerBone[i], ourAnim->m_KeyFramesPerBone[matchingIndices[i]]);
+					std::swap(ourAnim->m_key_frames_per_bone[i], ourAnim->m_key_frames_per_bone[matchingIndices[i]]);
 				}
 			}
 
@@ -341,12 +341,12 @@ namespace core
 				iter = m_animations.find(name);
 			}
 
-			std::fs::path fullPath = ResourceManager<Skeleton>::get_inst().GetBaseDir(); 
+			std::fs::path fullPath = ResourceManager<Skeleton>::get_inst().get_base_directory(); 
 			fullPath /= _saveDir.filename();
 			fullPath /= name;
 			fullPath.replace_extension(name::path::extension::Anim3D);
 			
-			if (eResult_fail(ourAnim->SaveFile_Binary(fullPath)))
+			if (eResult_fail(ourAnim->save_file_binary(fullPath)))
 			{
 				ERROR_MESSAGE("Animation 3D 저장 실패");
 				return false;
@@ -361,14 +361,14 @@ namespace core
 
 	int Skeleton::find_same_bone_index(const tMTBone& _other) const
 	{
-		for (size_t i = 0; i < m_vecBones.size(); ++i)
+		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
 			if (
-				m_vecBones[i].strBoneName == _other.strBoneName
+				m_bones[i].name == _other.name
 				&&
-				m_vecBones[i].iDepth == _other.iDepth
+				m_bones[i].depth_level == _other.depth_level
 				&&
-				m_vecBones[i].iParentIndx == _other.iParentIndx
+				m_bones[i].parent_idx == _other.parent_idx
 				)
 			{
 				return (int)i;
@@ -382,19 +382,19 @@ namespace core
 	{
 		// BoneOffet 행렬
 		std::vector<MATRIX> vecOffset;
-		vecOffset.reserve(m_vecBones.size());
-		for (size_t i = 0; i < m_vecBones.size(); ++i)
+		vecOffset.reserve(m_bones.size());
+		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
-			vecOffset.push_back(m_vecBones[i].matOffset);
+			vecOffset.push_back(m_bones[i].offset_matrix);
 		}
 
 		//CreateBuffer
-		StructBuffer::Desc desc{};
-		desc.eSBufferType = eStructBufferType::READ_ONLY;
-		desc.GPU_register_t_SRV = GPU::Register::t::g_BoneOffsetArray;
-		m_pBoneOffset = std::make_shared<StructBuffer>();
+		StructBuffer::tDesc desc{};
+		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_SRV_target_register_idx = GPU::Register::t::g_BoneOffsetArray;
+		m_bone_offset_sbuffer = std::make_shared<StructBuffer>();
 
-		eResult result = m_pBoneOffset->init<MATRIX>(desc, (UINT)vecOffset.size(), vecOffset.data(), (UINT)vecOffset.size());
+		eResult result = m_bone_offset_sbuffer->create<MATRIX>(desc, (UINT)vecOffset.size(), vecOffset.data(), (UINT)vecOffset.size());
 		
 		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}
@@ -418,7 +418,7 @@ namespace core
 		}
 
 		//계산해야 하는 인스턴스 개수만큼 구조화 버퍼 크기를 늘려준다.
-		uint size = (uint)(m_vecBones.size() * m_compute_queue.size());
+		uint size = (uint)(m_bones.size() * m_compute_queue.size());
 		m_final_matrix_buffer->resize(size);
 
 		//UAV에 바인딩한 뒤
@@ -426,7 +426,7 @@ namespace core
 
 		//각자 애니메이션에 대해 업데이트를 수행
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
-			Animation3D_ComputeShader::Desc desc{};
+			Animation3D_ComputeShader::tDesc desc{};
 
 			desc.current_animation_key_frame_buffer = m_compute_queue[i]->get_current_animation()->get_keyframe_sbuffer().get();
 
@@ -436,7 +436,7 @@ namespace core
 				desc.next_animation_keyframe_buffer = next_anim->get_keyframe_sbuffer().get();
 			}
 
-			desc.bone_offset_matrix_buffer = m_pBoneOffset.get();
+			desc.bone_offset_matrix_buffer = m_bone_offset_sbuffer.get();
 
 			desc.final_bone_translation_matrix_buffer = m_final_matrix_buffer.get();
 

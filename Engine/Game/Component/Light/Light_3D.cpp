@@ -20,22 +20,22 @@
 
 namespace core
 {
-	Light_3D::Light_3D()
-		: Light(Light_3D::s_static_type_name, eDimensionType::_3D)
+	Light3D::Light3D()
+		: Light(Light3D::s_static_type_name, eDimensionType::_3D)
 	{
 	}
 
-	Light_3D::Light_3D(const Light_3D& _other)
+	Light3D::Light3D(const Light3D& _other)
 		: Light(_other)
 		, m_attribute(_other.m_attribute)
 	{
 	}
 
-	Light_3D::~Light_3D()
+	Light3D::~Light3D()
 	{
 	}
 
-	eResult Light_3D::serialize_json(JsonSerializer* _ser) const
+	eResult Light3D::serialize_json(JsonSerializer* _ser) const
 	{
 		if (nullptr == _ser)
 		{
@@ -73,7 +73,7 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Light_3D::deserialize_json(const JsonSerializer* _ser)
+	eResult Light3D::deserialize_json(const JsonSerializer* _ser)
 	{
 		if (nullptr == _ser)
 		{
@@ -111,7 +111,7 @@ namespace core
 	}
 
 	//트랜스폼을 업데이트
-	void Light_3D::update()
+	void Light3D::update()
 	{
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
@@ -141,7 +141,7 @@ namespace core
 	}
 
 	//트랜스폼으로부터 데이터를 업데이트
-	void Light_3D::final_update()
+	void Light3D::final_update()
 	{
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
@@ -174,6 +174,7 @@ namespace core
 		float3 position = tr->get_world_position();
 		m_attribute.position = float4(position.x, position.y, position.z, 1.0f);
 
-		RenderManager::get_inst().sceneRenderAgent().enqueue_light_3D((eLightType)m_attribute.lightType, this);
+		s_ptr<Light3D> ths = std::static_pointer_cast<Light3D>(shared_from_this());
+		RenderManager::get_inst().sceneRenderAgent().enqueue_light_3D((eLightType)m_attribute.lightType, ths);
 	}
 }

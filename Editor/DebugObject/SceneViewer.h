@@ -1,9 +1,9 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 namespace core::editor
 {
-	class SceneViewer : public EditorWindow
+	class SceneViewer : public EditorUIWindow
 	{
 	public:
 		SceneViewer();

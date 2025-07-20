@@ -7,7 +7,7 @@ namespace core
 {
 	Resource::Resource(const std::string_view key)
 		: Entity(key)
-		, mbEngineDefaultRes()
+		, m_b_engine_default_resource()
 	{
 	}
 

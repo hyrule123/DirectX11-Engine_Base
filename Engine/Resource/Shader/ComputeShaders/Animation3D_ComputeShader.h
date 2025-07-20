@@ -24,7 +24,7 @@ namespace core
 		virtual bool bind_buffer_to_GPU_register();
 		virtual void unbind_buffer_from_GPU_register();
 
-		struct Desc
+		struct tDesc
 		{
 			const struct tAnimation3D_ComputeShader_Data* shared_animation_data{};
 			class StructBuffer* current_animation_key_frame_buffer{};
@@ -32,10 +32,10 @@ namespace core
 			class StructBuffer* bone_offset_matrix_buffer{};
 			class StructBuffer* final_bone_translation_matrix_buffer{};
 		};
-		bool on_execute(const Animation3D_ComputeShader::Desc& _desc);
+		bool on_execute(const Animation3D_ComputeShader::tDesc& _desc);
 
 	private:
-		Desc m_desc;
+		tDesc m_desc;
     };
 }
 

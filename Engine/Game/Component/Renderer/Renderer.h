@@ -30,26 +30,26 @@ namespace core
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void set_mesh(const s_ptr<Mesh>& _mesh) { m_mesh = _mesh; }
-		s_ptr<Mesh> GetMesh() { return m_mesh; }
+		s_ptr<Mesh> get_mesh() { return m_mesh; }
 
 		//인스턴싱 구현 전까지는 일단 Material을 복사해서 사용
 		void set_material(const s_ptr<Material>& mtrl);
-		s_ptr<Material> SetMaterialMode(eMaterialMode _mode);
+		s_ptr<Material> set_material_mode(eMaterialMode _mode);
 
-		s_ptr<Material> GetSharedMaterial() {
+		s_ptr<Material> get_shared_material() {
 			return m_shared_material;
 		}
-		s_ptr<Material> GetDynamicMaterial() {
+		s_ptr<Material> get_dynamic_material() {
 			return m_dynamic_material;
 		}
-		s_ptr<Material> GetCurrentMaterial() {
+		s_ptr<Material> get_current_material() {
 			return m_current_material;
 		}
 
-		bool IsRenderReady() const { return (m_mesh && m_current_material); }
+		bool is_render_ready() const { return (m_mesh && m_current_material); }
 
-		void SetCullingEnable(bool _bFrustumCull) { m_bCullingEnable = _bFrustumCull; }
-		bool IsCullingEnabled() const { return m_bCullingEnable; }
+		void set_frustum_cull(bool _bFrustumCull) { m_bCullingEnable = _bFrustumCull; }
+		bool is_frustum_cull_enabled() const { return m_bCullingEnable; }
 
 	private:
 		s_ptr<Mesh> m_mesh;

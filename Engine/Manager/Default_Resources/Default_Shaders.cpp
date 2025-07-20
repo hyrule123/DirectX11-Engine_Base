@@ -45,8 +45,8 @@ namespace core {
 			spriteShader->compile_from_byte_code(eGSStage::Vertex, Sprite_VS, sizeof(Sprite_VS));
 			spriteShader->compile_from_byte_code(eGSStage::Pixel, Sprite_PS, sizeof(Sprite_PS));
 			spriteShader->set_rasterizer_state(eRasterizerState::SolidNone);
-			spriteShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			spriteShader->CreateInputLayout();
+			spriteShader->set_input_layout_desc(vecLayoutDesc2D);
+			spriteShader->create_input_layout();
 
 
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::SpriteShader, spriteShader);
@@ -59,8 +59,8 @@ namespace core {
 			uiShader->set_engine_default_res(true);
 			uiShader->compile_from_byte_code(eGSStage::Vertex, UI_VS, sizeof(UI_VS));
 			uiShader->compile_from_byte_code(eGSStage::Pixel, UI_PS, sizeof(UI_PS));
-			uiShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			uiShader->CreateInputLayout();
+			uiShader->set_input_layout_desc(vecLayoutDesc2D);
+			uiShader->create_input_layout();
 
 
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::UIShader, uiShader);
@@ -73,8 +73,8 @@ namespace core {
 			gridShader->set_engine_default_res(true);
 			gridShader->compile_from_byte_code(eGSStage::Vertex, Grid_VS, sizeof(Grid_VS));
 			gridShader->compile_from_byte_code(eGSStage::Pixel, Grid_PS, sizeof(Grid_PS));
-			gridShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			gridShader->CreateInputLayout();
+			gridShader->set_input_layout_desc(vecLayoutDesc2D);
+			gridShader->create_input_layout();
 
 			gridShader->set_rasterizer_state(eRasterizerState::SolidNone);
 			gridShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
@@ -103,8 +103,8 @@ namespace core {
 			debugShader->compile_from_byte_code(eGSStage::Vertex, Debug_VS, sizeof(Debug_VS));
 			debugShader->compile_from_byte_code(eGSStage::Pixel, Debug_PS, sizeof(Debug_PS));
 
-			debugShader->SetInputLayoutDesc(debugLayoutDesc);
-			debugShader->CreateInputLayout();
+			debugShader->set_input_layout_desc(debugLayoutDesc);
+			debugShader->create_input_layout();
 
 			//debugShader->CreateBuffer(eShaderStage::Vertex, "DebugVS.hlsl", "main");
 			//debugShader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
@@ -125,8 +125,8 @@ namespace core {
 			postProcessShader->set_engine_default_res(true);
 			postProcessShader->compile_from_byte_code(eGSStage::Vertex, PostProcess_VS, sizeof(PostProcess_VS));
 			postProcessShader->compile_from_byte_code(eGSStage::Pixel, PostProcess_PS, sizeof(PostProcess_PS));
-			postProcessShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			postProcessShader->CreateInputLayout();
+			postProcessShader->set_input_layout_desc(vecLayoutDesc2D);
+			postProcessShader->create_input_layout();
 
 			postProcessShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::PostProcessShader, postProcessShader);
@@ -209,8 +209,8 @@ namespace core {
 
 			basic3DShader->compile_from_byte_code(eGSStage::Vertex, Forward3D_VS, sizeof(Forward3D_VS));
 			basic3DShader->compile_from_byte_code(eGSStage::Pixel, Forward3D_PS, sizeof(Forward3D_PS));
-			basic3DShader->SetInputLayoutDesc(vecLayoutDesc3D);
-			basic3DShader->CreateInputLayout();
+			basic3DShader->set_input_layout_desc(vecLayoutDesc3D);
+			basic3DShader->create_input_layout();
 
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::Forward3DShader, basic3DShader);
 		}
@@ -224,8 +224,8 @@ namespace core {
 			defferedShader->compile_from_byte_code(eGSStage::Vertex, Deffered3D_VS, sizeof(Deffered3D_VS));
 			defferedShader->compile_from_byte_code(eGSStage::Pixel, Deffered3D_PS, sizeof(Deffered3D_PS));
 
-			defferedShader->SetInputLayoutDesc(vecLayoutDesc3D);
-			defferedShader->CreateInputLayout();
+			defferedShader->set_input_layout_desc(vecLayoutDesc3D);
+			defferedShader->create_input_layout();
 
 			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::Deffered3DShader, defferedShader);
 		}
@@ -238,8 +238,8 @@ namespace core {
 			lightShader->compile_from_byte_code(eGSStage::Vertex, LightDirection_VS, sizeof(LightDirection_VS));
 			lightShader->compile_from_byte_code(eGSStage::Pixel, LightDirection_PS, sizeof(LightDirection_PS));
 
-			lightShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			lightShader->CreateInputLayout();
+			lightShader->set_input_layout_desc(vecLayoutDesc2D);
+			lightShader->create_input_layout();
 
 			lightShader->set_rasterizer_state(eRasterizerState::SolidBack);
 			lightShader->set_depth_stencil_state(eDepthStencilState::None);
@@ -253,8 +253,8 @@ namespace core {
 			lightShader->compile_from_byte_code(eGSStage::Vertex, LightPoint_VS, sizeof(LightPoint_VS));
 			lightShader->compile_from_byte_code(eGSStage::Pixel, LightPoint_PS, sizeof(LightPoint_PS));
 
-			lightShader->SetInputLayoutDesc(vecLayoutDesc3D);
-			lightShader->CreateInputLayout();
+			lightShader->set_input_layout_desc(vecLayoutDesc3D);
+			lightShader->create_input_layout();
 
 			lightShader->set_rasterizer_state(eRasterizerState::SolidFront);
 			lightShader->set_depth_stencil_state(eDepthStencilState::None);
@@ -279,8 +279,8 @@ namespace core {
 			MergeShader->compile_from_byte_code(eGSStage::Vertex, Deffered_Merger_VS, sizeof(Deffered_Merger_VS));
 			MergeShader->compile_from_byte_code(eGSStage::Pixel, Deffered_Merger_PS, sizeof(Deffered_Merger_PS));
 
-			MergeShader->AddInputLayoutDesc(LayoutDesc);
-			MergeShader->CreateInputLayout();
+			MergeShader->add_input_layout_desc(LayoutDesc);
+			MergeShader->create_input_layout();
 
 			MergeShader->set_rasterizer_state(eRasterizerState::SolidBack);
 			MergeShader->set_depth_stencil_state(eDepthStencilState::None);
@@ -307,8 +307,8 @@ namespace core {
 			particleShader->compile_from_byte_code(eGSStage::Vertex, Particle_VS, sizeof(Particle_VS));
 			particleShader->compile_from_byte_code(eGSStage::Geometry, Particle_GS, sizeof(Particle_GS));
 			particleShader->compile_from_byte_code(eGSStage::Pixel, Particle_PS, sizeof(Particle_PS));
-			particleShader->SetInputLayoutDesc(vecLayoutDesc2D);
-			particleShader->CreateInputLayout();
+			particleShader->set_input_layout_desc(vecLayoutDesc2D);
+			particleShader->create_input_layout();
 
 
 			particleShader->set_rasterizer_state(eRasterizerState::SolidNone);

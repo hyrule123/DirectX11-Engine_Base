@@ -1,4 +1,3 @@
-
 #include "Collider2D.h"
 
 #include <Engine/Game/Component/Transform.h>
@@ -17,8 +16,8 @@ namespace core
 {
 	Collider2D::Collider2D(const std::string_view key, eCollider2D_Shape _type)
 		: Collider(key, eDimensionType::_2D)
-		, m_collider2DShape(_type)
-		, m_isColliderUpdated(false)
+		, m_collider_shape_2D(_type)
+		, m_b_collider_updated(false)
 	{
 	}
 
@@ -47,20 +46,20 @@ namespace core
 	{
 		Collider::init();
 
-		if (GetCollisionSystem())
+		if (get_collision_system())
 		{
-			m_col2dManager = GetCollisionSystem()->GetCollision2D();
+			m_collision_manager_2D = get_collision_system()->GetCollision2D();
 		}
 		
-		if (m_col2dManager)
+		if (m_collision_manager_2D)
 		{
-			m_col2dManager->Enqueue(std::static_pointer_cast<Collider2D>(this->shared_from_this()));
+			m_collision_manager_2D->Enqueue(std::static_pointer_cast<Collider2D>(this->shared_from_this()));
 		}
 	}
 
 	void Collider2D::frame_end()
 	{
 		Collider::frame_end();
-		m_isColliderUpdated = false;
+		m_b_collider_updated = false;
 	}
 }

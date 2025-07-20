@@ -10,8 +10,8 @@ namespace core
 {
     struct tKeyFrame
     {
-        double              Time{};
-        tAnimKeyframeTranslation Trans{};
+        double              time{};
+        tAnimKeyframeTranslation translation{};
         //float3              Scale{};
         //math::Quaternion    RotQuat{};
         //float3              Pos{};
@@ -19,8 +19,8 @@ namespace core
 
     struct tKeyFramesPerBone
     {
-        int                         BoneIndex{};
-        std::vector<tKeyFrame>     vecKeyFrame{};
+        int                         bone_idx{};
+        std::vector<tKeyFrame>     key_frames{};
     };
 
 
@@ -55,17 +55,17 @@ namespace core
 
         eResult load_from_fbx(const s_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 
-        uint get_start_frame() const { return m_StartFrameIdx; }
-        uint get_end_frame() const { return m_EndFrameIdx; }
+        uint get_start_frame() const { return m_start_frame_idx; }
+        uint get_end_frame() const { return m_end_frame_idx; }
         uint get_frame_length() const { return m_frame_length; }
-        double get_start_time() const { return m_StartTime; }
-        double get_end_time() const { return m_EndTime; }
-        double get_time_length() const { return m_TimeLength; }
-        float get_update_time() const { return m_UpdateTime; }
-        uint get_FPS() const { return m_FramePerSec; }
+        double get_start_time() const { return m_start_time; }
+        double get_end_time() const { return m_end_time; }
+        double get_time_length() const { return m_time_length; }
+        float get_update_time() const { return m_update_time; }
+        uint get_FPS() const { return m_frame_per_sec; }
         s_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
         void set_skeleton(const s_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
-        s_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_SBufferKeyFrame; }
+        s_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_keyframe_sbuffer; }
 
     private:
         bool create_keyframe_sbuffer();
@@ -73,20 +73,20 @@ namespace core
     private:
         w_ptr<Skeleton> m_OwnerSkeleton;
 
-        uint				m_StartFrameIdx;
-        uint				m_EndFrameIdx;
+        uint				m_start_frame_idx;
+        uint				m_end_frame_idx;
         uint                m_frame_length;
 
-        double			m_StartTime;
-        double			m_EndTime;
-        double			m_TimeLength;
-        float			m_UpdateTime; // 이거 안씀
+        double			m_start_time;
+        double			m_end_time;
+        double			m_time_length;
+        float			m_update_time; // 이거 안씀
 
-        uint         	m_FramePerSec;
+        uint         	m_frame_per_sec;
 
         //이중 배열 형태임
-        std::vector<tKeyFramesPerBone>          m_KeyFramesPerBone;
-        s_ptr<StructBuffer>			m_SBufferKeyFrame;
+        std::vector<tKeyFramesPerBone>          m_key_frames_per_bone;
+        s_ptr<StructBuffer>			m_keyframe_sbuffer;
 	};
 }
 

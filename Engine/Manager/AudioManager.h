@@ -22,16 +22,18 @@ namespace core
 		DECLARE_SINGLETON(AudioManager);
 	private:
 		AudioManager();
+		void init();
+
 		~AudioManager();
 
 	public:
-		bool CreateSound(const std::filesystem::path& _fullPath, FMOD::Sound** _sound);
-		void SoundPlay(FMOD::Sound* _sound, FMOD::Channel** _channel);
-		void Set3DListenerAttributes(const float3* _POS, const float3* _VEL,
+		bool create_sound(const std::filesystem::path& _fullPath, FMOD::Sound** _sound);
+		void sound_play(FMOD::Sound* _sound, FMOD::Channel** _channel);
+		void set_3D_listener_attrib(const float3* _POS, const float3* _VEL,
 			const float3* _forward, const float3* _up);
 
 	private:
-		FMOD::Studio::System* mSystem;
-		FMOD::System* mCoreSystem;
+		FMOD::System* m_FMOD_core_system;
+		FMOD::Studio::System* m_FMOD_system;
 	};
 }

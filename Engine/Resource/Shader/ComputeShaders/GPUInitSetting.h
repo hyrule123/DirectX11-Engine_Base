@@ -21,7 +21,7 @@ namespace core
 		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:
-		std::unique_ptr<StructBuffer> mInitSBuffer;
+		std::unique_ptr<StructBuffer> m_init_sbuffer;
 
 		//define_Global 헤더에 있는 전역변수 사용중
 	};

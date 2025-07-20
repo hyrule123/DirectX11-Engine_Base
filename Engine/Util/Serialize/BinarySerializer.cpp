@@ -8,8 +8,8 @@ namespace core
 {
 	BinarySerializer::BinarySerializer()
 		: m_data()
-		, m_readOffset()
-		, m_writeOffset()
+		, m_read_offset()
+		, m_write_offset()
 	{
 	}
 
@@ -18,13 +18,13 @@ namespace core
 	}
 
 
-	eResult BinarySerializer::SaveFile(std::ostream& _file) const
+	eResult BinarySerializer::save_file(std::ostream& _file) const
 	{
 		_file.write(reinterpret_cast<const char*>(m_data.data()), m_data.size());
 		return eResult::Success;
 	}
 
-	eResult BinarySerializer::LoadFile(std::istream& _file)
+	eResult BinarySerializer::load_file(std::istream& _file)
 	{
 		//원래 위치 받아둔다
 		std::streampos origPos = _file.tellg();
@@ -45,14 +45,14 @@ namespace core
 		return eResult::Success;
 	}
 
-	void BinarySerializer::Write(const unsigned char* _pSrc, size_t _size)
+	void BinarySerializer::write(const unsigned char* _pSrc, size_t _size)
 	{
 		if (nullptr == _pSrc || 0 == _size)
 		{
 			return;
 		}
 
-		size_t reqSize = m_writeOffset + _size;
+		size_t reqSize = m_write_offset + _size;
 		if (m_data.size() < reqSize)
 		{
 			if (m_data.capacity() < reqSize)
@@ -63,38 +63,38 @@ namespace core
 			m_data.resize(reqSize);
 		}
 
-		unsigned char* dest = m_data.data() + m_writeOffset;
-		memcpy_s(dest, m_data.size() - m_writeOffset, _pSrc, _size);
-		m_writeOffset = reqSize;
+		unsigned char* dest = m_data.data() + m_write_offset;
+		memcpy_s(dest, m_data.size() - m_write_offset, _pSrc, _size);
+		m_write_offset = reqSize;
 	}
 
-	size_t BinarySerializer::Read(unsigned char* _pDest, size_t _size) const
+	size_t BinarySerializer::read(unsigned char* _pDest, size_t _size) const
 	{
 		if (nullptr == _pDest || 0 == _size)
 		{
 			return 0;
 		}
 		//이미 끝까지 읽은 경우
-		else if (m_data.size() <= m_readOffset)
+		else if (m_data.size() <= m_read_offset)
 		{
 			return 0;
 		}
 		//읽고자 하는 바이트 수가 최대 사이즈를 넘어설 경우 최대 사이즈까지만 읽음
-		else if (m_data.size() < m_readOffset + _size)
+		else if (m_data.size() < m_read_offset + _size)
 		{
-			_size = m_data.size() - m_readOffset;
+			_size = m_data.size() - m_read_offset;
 		}
 
-		const unsigned char* src = m_data.data() + m_readOffset;
+		const unsigned char* src = m_data.data() + m_read_offset;
 		memcpy_s(_pDest, _size, src, _size);
-		m_readOffset += _size;
+		m_read_offset += _size;
 
 		return _size;
 	}
 
 	std::ostream& operator<<(std::ostream& _os, const BinarySerializer& _ser)
 	{
-		if (eResult_fail(_ser.SaveFile(_os)))
+		if (eResult_fail(_ser.save_file(_os)))
 		{
 			ERROR_MESSAGE("저장 실패.");
 		}
@@ -103,7 +103,7 @@ namespace core
 
 	std::istream& operator>>(std::istream& _is, BinarySerializer& _ser)
 	{
-		if (eResult_fail(_ser.LoadFile(_is)))
+		if (eResult_fail(_ser.load_file(_is)))
 		{
 			ERROR_MESSAGE("불러오기 실패.");
 		}

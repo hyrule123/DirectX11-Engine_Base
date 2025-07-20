@@ -87,18 +87,18 @@ namespace core
 		bool is_transform_updated() const { return m_transform_updated; }
 
 #pragma region //LOCAL
-		const float3& get_local_scale() const { return m_localScale; }
+		const float3& get_local_scale() const { return m_local_scale; }
 
-		const math::Quaternion& get_local_rotation() const { return m_localRotation; }
+		const math::Quaternion& get_local_rotation() const { return m_local_rotation; }
 
-		const float3& get_local_position() const { return m_localPosition; }
+		const float3& get_local_position() const { return m_local_position; }
 
 		const MATRIX& get_local_matrix() {
 			if (m_local_updated) {
 				update_local_matrix();
 				m_local_updated = false;
 			}
-			return m_localMatrix;
+			return m_local_matrix;
 		}
 
 		const std::array<float3, (int)eDirection::END>& get_local_direction() {
@@ -106,7 +106,7 @@ namespace core
 				update_local_matrix();
 				m_local_updated = false;
 			}
-			return m_localDirection;
+			return m_local_direction;
 		}
 
 		const float3& get_local_direction(eDirection _dirType) {
@@ -119,22 +119,22 @@ namespace core
 
 		
 		void set_local_scale(const float3& _localScale) {
-			m_localScale = _localScale;
+			m_local_scale = _localScale;
 			m_local_updated = true;
 			m_transform_updated = true;
 		}
 		void set_local_rotation(const math::Quaternion& _localRotation) {
-			m_localRotation = _localRotation;
+			m_local_rotation = _localRotation;
 			m_local_updated = true;
 			m_transform_updated = true;
 		}
 		void set_local_rotation(const float3& _localRotationEuler) {
-			m_localRotation = Quaternion::CreateFromYawPitchRoll(_localRotationEuler);
+			m_local_rotation = Quaternion::CreateFromYawPitchRoll(_localRotationEuler);
 			m_local_updated = true;
 			m_transform_updated = true;
 		}
 		void set_local_position(const float3& _localPosition) {
-			m_localPosition = _localPosition;
+			m_local_position = _localPosition;
 			m_local_updated = true;
 			m_transform_updated = true;
 		}
@@ -143,28 +143,28 @@ namespace core
 #pragma region //WORLD
 		const float3& get_world_scale() {
 			update_world_matrix_recursive();
-			return m_worldScale;
+			return m_world_scale;
 		}
 		const math::Quaternion& get_world_rotation() {
 			update_world_matrix_recursive();
-			return m_worldRotation;
+			return m_world_rotation;
 		}
 		
 		float3 get_world_position() {
 			update_world_matrix_recursive();
-			return { m_worldMatrix._41, m_worldMatrix._42, m_worldMatrix._43 };
+			return { m_world_matrix._41, m_world_matrix._42, m_world_matrix._43 };
 		}
 		const MATRIX& get_world_matrix() {
 			update_world_matrix_recursive();
-			return m_worldMatrix;
+			return m_world_matrix;
 		}
 		const float3& get_world_direction(eDirection _dirType) {
 			update_world_matrix_recursive();
-			return m_worldDirection[(int)_dirType];
+			return m_world_direction[(int)_dirType];
 		}
 		const std::array<float3, (int)eDirection::END>& get_world_direction() {
 			update_world_matrix_recursive();
-			return m_worldDirection;
+			return m_world_direction;
 		}
 
 		void set_world_scale(const float3& _worldScale);
@@ -179,9 +179,9 @@ namespace core
 		void set_ignore_parent_rotation(bool _b) { m_is_ignore_parent_rotation = _b; }
 
 	protected:
-		const float3& get_world_scale_internal() const { return m_worldScale; }
-		const math::Quaternion& get_world_rotation_internal() const { return m_worldRotation; }
-		const MATRIX& get_world_matix_internal() const { return m_worldMatrix; }
+		const float3& get_world_scale_internal() const { return m_world_scale; }
+		const math::Quaternion& get_world_rotation_internal() const { return m_world_rotation; }
+		const MATRIX& get_world_matix_internal() const { return m_world_matrix; }
 
 		//아래의 2개 함수는 GameObject에서 호출됨.
 		void remove_child_ptr(const s_ptr<Transform>& _pTransform);
@@ -198,33 +198,33 @@ namespace core
 
 #pragma region LOCAL
 		//크기
-		float3 m_localScale;
+		float3 m_local_scale;
 		
 		//회전
-		math::Quaternion m_localRotation;
+		math::Quaternion m_local_rotation;
 
 		//이동
-		float3 m_localPosition;
+		float3 m_local_position;
 
-		MATRIX m_localMatrix;
+		MATRIX m_local_matrix;
 
 		//방향
-		std::array<float3, (int)eDirection::END> m_localDirection;
+		std::array<float3, (int)eDirection::END> m_local_direction;
 #pragma region //LOCAL
 
 
 #pragma region //WORLD
 		//월드 크기
-		float3 m_worldScale;
+		float3 m_world_scale;
 
 		//월드 회전(참고 - 월드 회전은 부모 트랜스폼으로부터 누적시켜서 '비교를 위해서만' 사용한다.
-		math::Quaternion m_worldRotation;
+		math::Quaternion m_world_rotation;
 
 		//월드 위치는 구할 수 없음.
 
-		MATRIX m_worldMatrix;
+		MATRIX m_world_matrix;
 
-		std::array<float3, (int)eDirection::END> m_worldDirection;
+		std::array<float3, (int)eDirection::END> m_world_direction;
 #pragma endregion //WORLD
 
 		//아래 3개 boolean은 매 프레임마다 갱신된다.

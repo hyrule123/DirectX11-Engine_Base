@@ -1,5 +1,5 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 namespace core
 {
@@ -9,9 +9,9 @@ namespace core
 namespace core::editor
 {
 	class TreeNode;
-	class EditorWidget_Tree;
+	class HierarchyTreeWidget;
 
-	class GameObjectHierarchy : public EditorWindow
+	class GameObjectHierarchy : public EditorUIWindow
 	{
 	public:
 		GameObjectHierarchy();
@@ -21,12 +21,12 @@ namespace core::editor
 		virtual void update() override;
 
 		//콜백함수 등록 용도
-		void GameobjectSelectCallback(w_ptr<void> _gameobj);
-		void InitializeScene();
+		void callback_func_when_selected(w_ptr<void> _gameobj);
+		void initialize_scene();
 
 		s_ptr<TreeNode> add_game_object_recursive(const s_ptr<GameObject>& _root_obj);
 
 	private:
-		s_ptr<EditorWidget_Tree> m_tree_widget;
+		s_ptr<HierarchyTreeWidget> m_tree_widget;
 	};
 }

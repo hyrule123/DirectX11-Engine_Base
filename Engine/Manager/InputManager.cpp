@@ -32,22 +32,28 @@ namespace core
 	};
 
 	InputManager::InputManager()
-		: mKeys()
-		, mMousePos()
-		, mMousePosPrev()
-		, mMouseDir()
+		: m_keys{}
+		, m_prev_mouse_position{}
+		, m_mouse_position{}
+		, m_mouse_direction{}
+	{}
+	void InputManager::init()
 	{
-		AtExit::add_func(InputManager::destroy_inst);
-
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
 			tKey key;
-			key.eType = (eKeyCode)i;
-			key.eState = eKeyState::NONE;
-			key.bPressed = false;
+			key.m_key_type = (eKeyCode)i;
+			key.m_status = eKeyState::NONE;
+			key.m_b_pressed = false;
 
-			mKeys.push_back(key);
+			m_keys.push_back(key);
 		}
+
+		m_mouse_position = {};
+		m_prev_mouse_position = {};
+		m_mouse_direction = {};
+
+		AtExit::add_func(InputManager::destroy_inst);
 	}
 
 	InputManager::~InputManager()
@@ -65,47 +71,47 @@ namespace core
 				if (GetAsyncKeyState(ASCII[i]) & 0x8000)
 				{
 					// 이전 프레임에도 눌려 있었다.
-					if (mKeys[i].bPressed)
-						mKeys[i].eState = eKeyState::PRESSED;
+					if (m_keys[i].m_b_pressed)
+						m_keys[i].m_status = eKeyState::PRESSED;
 					else
-						mKeys[i].eState = eKeyState::DOWN;
+						m_keys[i].m_status = eKeyState::DOWN;
 
-					mKeys[i].bPressed = true;
+					m_keys[i].m_b_pressed = true;
 				}
 				else // 해당키가 현재 안눌려있다.
 				{
 					// 이전 프레임에는 눌려 있었다.
-					if (mKeys[i].bPressed)
-						mKeys[i].eState = eKeyState::UP;
+					if (m_keys[i].m_b_pressed)
+						m_keys[i].m_status = eKeyState::UP;
 					else // 이전 프레임에도 안눌려 있었다.
-						mKeys[i].eState = eKeyState::NONE;
+						m_keys[i].m_status = eKeyState::NONE;
 
-					mKeys[i].bPressed = false;
+					m_keys[i].m_b_pressed = false;
 				}
 			}
 			
 			//Mouse 위치 갱신
-			mMousePosPrev = mMousePos;
+			m_prev_mouse_position = m_mouse_position;
 
 			POINT mousePos = {};
 			GetCursorPos(&mousePos);
 			ScreenToClient(GameEngine::get_inst().get_HWND(), &mousePos);
-			mMousePos.x = static_cast<float>(mousePos.x);
-			mMousePos.y = static_cast<float>(mousePos.y);
+			m_mouse_position.x = static_cast<float>(mousePos.x);
+			m_mouse_position.y = static_cast<float>(mousePos.y);
 
-			mMouseDir = mMousePos - mMousePosPrev;
-			mMouseDir.y *= -1.f;
+			m_mouse_direction = m_mouse_position - m_prev_mouse_position;
+			m_mouse_direction.y *= -1.f;
 		}
 		else
 		{
 			for (uint i = 0; i < (uint)eKeyCode::END; ++i)
 			{
-				if (eKeyState::DOWN == mKeys[i].eState || eKeyState::PRESSED == mKeys[i].eState)
-					mKeys[i].eState = eKeyState::UP;
-				else if (eKeyState::UP == mKeys[i].eState)
-					mKeys[i].eState = eKeyState::NONE;
+				if (eKeyState::DOWN == m_keys[i].m_status || eKeyState::PRESSED == m_keys[i].m_status)
+					m_keys[i].m_status = eKeyState::UP;
+				else if (eKeyState::UP == m_keys[i].m_status)
+					m_keys[i].m_status = eKeyState::NONE;
 
-				mKeys[i].bPressed = false;
+				m_keys[i].m_b_pressed = false;
 			}
 		}
 	}

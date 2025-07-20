@@ -1,5 +1,5 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
 #include <Engine/Common.h>
 
@@ -11,7 +11,7 @@ namespace core
 namespace core::editor
 {
     class EditorNormalConverter :
-        public EditorWindow
+        public EditorUIWindow
     {
     public:
         EditorNormalConverter();
@@ -21,16 +21,16 @@ namespace core::editor
         virtual void update_UI() override;
 
     private:
-        void SrcTextureUpdate();
-        void DestTextureUpdate();
-        void CopyTextureUpdate();
+        void src_texture_UI_update();
+        void dest_texture_UI_update();
+        void copy_texture_UI_update();
 
-        void Reset();
+        void reset();
 
         
     private:
-        s_ptr<Texture>        mTextureSrc;
-        std::filesystem::path               mTextureDestDir;
+        s_ptr<Texture>        m_src_texture;
+        std::filesystem::path               m_dest_texture_dir;
     };
 
 }

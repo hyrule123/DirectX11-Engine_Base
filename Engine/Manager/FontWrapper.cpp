@@ -12,34 +12,36 @@
 namespace core
 {
 	FontWrapper::FontWrapper()
-		: m_FW1Factory{ nullptr }
-		, m_fontWrapper{ nullptr }
+		: m_FW1_factory(nullptr)
+		, m_font_wrapper(nullptr)
+	{}
+	void FontWrapper::init()
 	{
+		HRESULT result = FW1CreateFactory(FW1_VERSION, &m_FW1_factory);
+		ASSERT(SUCCEEDED(result) ,"FW1CreateFactory 실패");
+
+		auto device = RenderManager::get_inst().get_device();
+
+		result = m_FW1_factory->CreateFontWrapper(device.Get(), L"Arial", &m_font_wrapper);
+
+		ASSERT(SUCCEEDED(result), "CreateFontWrapper 실패");
+
 		AtExit::add_func(FontWrapper::destroy_inst);
-
-		ASSERT(
-			SUCCEEDED(FW1CreateFactory(FW1_VERSION, &m_FW1Factory))
-			,"FW1CreateFactory 실패");
-
-		auto pDevice = RenderManager::get_inst().Device();
-		ASSERT(
-			SUCCEEDED(m_FW1Factory->CreateFontWrapper(pDevice, L"Arial", &m_fontWrapper))
-			, "CreateFontWrapper 실패");
 	}
 
 	FontWrapper::~FontWrapper()
 	{
-		m_FW1Factory->Release();
-		m_FW1Factory = nullptr;
+		m_FW1_factory->Release();
+		m_FW1_factory = nullptr;
 
-		m_fontWrapper->Release();
-		m_fontWrapper = nullptr;
+		m_font_wrapper->Release();
+		m_font_wrapper = nullptr;
 	}
 
-	void FontWrapper::DrawFont(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb)
+	void FontWrapper::draw_font(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb)
 	{
-		auto context = RenderManager::get_inst().Context();
-		m_fontWrapper->DrawString(context,
+		auto context = RenderManager::get_inst().get_context();
+		m_font_wrapper->DrawString(context.Get(),
 								 _string, // String
 								 _size,// Font size
 								 _x,// X position

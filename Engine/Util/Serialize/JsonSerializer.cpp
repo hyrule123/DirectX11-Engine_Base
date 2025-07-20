@@ -14,7 +14,7 @@ namespace core
 	}
 	void operator>>(const Json::Value& _jVal, const char* _c_str)
 	{
-		const auto& pair = g_stringArchive.insert(_jVal.asString());
+		const auto& pair = g_string_archive.insert(_jVal.asString());
 		_c_str = pair.first->c_str();
 	}
 

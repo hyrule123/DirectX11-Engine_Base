@@ -5,9 +5,9 @@
 namespace core::editor
 {
 	ComponentInspector::ComponentInspector(eComponentOrder _type)
-		: EditorWindow(::core::name::eComponentCategory_String[(int)_type])
-		, m_ComCategory(_type)
-		, mTarget()
+		: EditorUIWindow(::core::name::eComponentCategory_String[(int)_type])
+		, m_component_order(_type)
+		, m_target_gameobject()
 	{
 	}
 

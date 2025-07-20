@@ -13,10 +13,8 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="PCH_Editor.h" />
-    <ClInclude Include="Base\EditorBase.h" />
     <ClInclude Include="Base\EditorEntity.h" />
     <ClInclude Include="UI\EditorMainMenu.h" />
-    <ClInclude Include="Base\EditorWindow.h" />
     <ClInclude Include="DebugObject\Console.h" />
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
@@ -32,13 +30,15 @@
     <ClInclude Include="Resource\ResourcesViewer.h" />
     <ClInclude Include="Resource\TextureEditor.h" />
     <ClInclude Include="Resource\UVCalculator.h" />
-    <ClInclude Include="Widget\Widget_ComboBox.h" />
-    <ClInclude Include="Widget\Widget_List.h" />
-    <ClInclude Include="Widget\Widget_Tree.h" />
+    <ClInclude Include="Widget\ListWidget.h" />
+    <ClInclude Include="Widget\HierarchyTreeWidget.h" />
     <ClInclude Include="EditorManager.h" />
     <ClInclude Include="EditorMain.h" />
     <ClInclude Include="Inspector\ComponentInspector.h" />
     <ClInclude Include="define_Editor.h" />
+    <ClInclude Include="Widget\ComboBoxWidget.h" />
+    <ClInclude Include="Base\EditorUIBase.h" />
+    <ClInclude Include="Base\EditorUIWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp" />
@@ -51,10 +51,10 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="imgui\ImGuizmo.cpp" />
     <ClCompile Include="PCH_Editor.cpp" />
-    <ClCompile Include="Base\EditorBase.cpp" />
+    <ClCompile Include="Base\EditorUIBase.cpp" />
     <ClCompile Include="Base\EditorEntity.cpp" />
     <ClCompile Include="UI\EditorMainMenu.cpp" />
-    <ClCompile Include="Base\EditorWindow.cpp" />
+    <ClCompile Include="Base\EditorUIWindow.cpp" />
     <ClCompile Include="DebugObject\Console.cpp" />
     <ClCompile Include="DebugObject\SceneViewer.cpp" />
     <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
@@ -70,9 +70,9 @@
     <ClCompile Include="Resource\ResourcesViewer.cpp" />
     <ClCompile Include="Resource\TextureEditor.cpp" />
     <ClCompile Include="Resource\UVCalculator.cpp" />
-    <ClCompile Include="Widget\Widget_ComboBox.cpp" />
-    <ClCompile Include="Widget\Widget_List.cpp" />
-    <ClCompile Include="Widget\Widget_Tree.cpp" />
+    <ClCompile Include="Widget\ComboBoxWidget.cpp" />
+    <ClCompile Include="Widget\ListWidget.cpp" />
+    <ClCompile Include="Widget\HierarchyTreeWidget.cpp" />
     <ClCompile Include="EditorManager.cpp" />
     <ClCompile Include="EditorMain.cpp" />
     <ClCompile Include="Inspector\ComponentInspector.cpp" />

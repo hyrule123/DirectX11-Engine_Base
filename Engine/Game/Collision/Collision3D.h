@@ -7,8 +7,8 @@
 #include <Engine/Game/Collision/PhysX.h>
 
 //작동방식
-//OnEnable 시점에 PhysX에 등록
-//OnDisable 시점에 PhysX에서 해제
+//on_enable 시점에 PhysX에 등록
+//on_disable 시점에 PhysX에서 해제
 
 
 namespace core
@@ -49,7 +49,7 @@ namespace core
 		bool AddPxActor(physx::PxActor* _actor);
 		void RemovePxActor(physx::PxActor* _actor);
 
-		void EnableGravity(bool _enable, const float3& _gravity) const;
+		void set_gravity(bool _enable, const float3& _gravity) const;
 
 		//void changeGeometry(Collider3D* _collider, physx::PxShape* shape, eCollider3D_Shape type);
 

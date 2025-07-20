@@ -13,18 +13,18 @@ namespace core
 {
 	Texture::Texture()
 		: Resource(Texture::s_static_type_name)
-		, mDesc()
-		, mTexture()
-		, mImage()
-		, mSRV()
-		, mUAV()
+		, m_texture2D_desc()
+		, m_texture()
+		, m_image()
+		, m_SRV()
+		, m_UAV()
 
-		, mDSV()
-		, mRTV()
+		, m_DSV()
+		, m_RTV()
 
-		, mCurBoundView()
-		, mCurBoundRegister(-1)
-		, mCurBoundStage(eShaderStageFlag::NONE)
+		, m_cur_bound_view()
+		, m_cur_bound_register(-1)
+		, m_cur_bound_stage(eShaderStageFlag::NONE)
 	{
 	}
 
@@ -33,11 +33,11 @@ namespace core
 
 	}
 
-	void Texture::ClearSRV(UINT _startSlot)
+	void Texture::clear_SRV(UINT _startSlot)
 	{
 		ID3D11ShaderResourceView* srv = nullptr;
 
-		auto pContext = RenderManager::get_inst().Context();
+		auto pContext = RenderManager::get_inst().get_context();
 
 		pContext->VSSetShaderResources(_startSlot, 1u, &srv);
 		pContext->HSSetShaderResources(_startSlot, 1u, &srv);
@@ -47,13 +47,13 @@ namespace core
 		pContext->CSSetShaderResources(_startSlot, 1u, &srv);
 	}
 
-	void Texture::ClearAll()
+	void Texture::clear_ALL()
 	{
 		for (int i = 0; i < (int)eTextureSlot::END; ++i)
 		{
 			ID3D11ShaderResourceView* srv = nullptr;
 
-			auto pContext = RenderManager::get_inst().Context();
+			auto pContext = RenderManager::get_inst().get_context();
 			pContext->VSSetShaderResources(i, 1u, &srv);
 			pContext->HSSetShaderResources(i, 1u, &srv);
 			pContext->DSSetShaderResources(i, 1u, &srv);
@@ -65,7 +65,7 @@ namespace core
 
 	bool Texture::create(UINT _width, UINT _height, DXGI_FORMAT _pixelFormat, uint _D3D11_BIND_FLAG, bool _bAllowCPURead)
 	{
-		mDesc.BindFlags = _D3D11_BIND_FLAG;
+		m_texture2D_desc.BindFlags = _D3D11_BIND_FLAG;
 
 		////CPU의 읽기/쓰기 가능 여부를 설정
 		//텍스처는 CPU가 데이터를 쓸 일이 없다.
@@ -73,43 +73,43 @@ namespace core
 		// GPU에서 쓰기 권한 허용(UAV)만 해주면 되는것임
 		if (_bAllowCPURead)
 		{
-			mDesc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ;
-			mDesc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+			m_texture2D_desc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ;
+			m_texture2D_desc.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
 		}
 		else
 		{
-			mDesc.CPUAccessFlags = 0u;
-			mDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+			m_texture2D_desc.CPUAccessFlags = 0u;
+			m_texture2D_desc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 		}
 
-		mDesc.Format = _pixelFormat;
-		mDesc.Width = _width;
-		mDesc.Height = _height;
-		mDesc.ArraySize = 1;
-		mDesc.MiscFlags = 0;
+		m_texture2D_desc.Format = _pixelFormat;
+		m_texture2D_desc.Width = _width;
+		m_texture2D_desc.Height = _height;
+		m_texture2D_desc.ArraySize = 1;
+		m_texture2D_desc.MiscFlags = 0;
 
 		//원본만 생성.(자세한 내용은 밉맵을 찾아볼 것)
-		mDesc.MipLevels = 1;
-		mDesc.SampleDesc.Count = 1;
-		mDesc.SampleDesc.Quality = 0;
+		m_texture2D_desc.MipLevels = 1;
+		m_texture2D_desc.SampleDesc.Count = 1;
+		m_texture2D_desc.SampleDesc.Quality = 0;
 		
 
 		bool bResult = false;
-		auto* pDevice = RenderManager::get_inst().Device();
-		bResult = SUCCEEDED(pDevice->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
+		auto device = RenderManager::get_inst().get_device();
+		HRESULT result = device->CreateTexture2D(&m_texture2D_desc, nullptr, m_texture.GetAddressOf());
 
-		if(false == bResult)
+		if(FAILED(result))
 		{
 			ERROR_MESSAGE("텍스처 생성에 실패 했습니다.");
-			mDesc = {};
+			m_texture2D_desc = {};
 			return false;
 		}
 		
-		bResult = CreateView();
+		bResult = create_view();
 		if (false == bResult)
 		{
-			mTexture = nullptr;
-			mDesc = {};
+			m_texture = nullptr;
+			m_texture2D_desc = {};
 		}
 
 		return bResult;
@@ -117,15 +117,15 @@ namespace core
 
 	bool Texture::create(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture)
 	{
-		mTexture = _texture;
-		mTexture->GetDesc(&mDesc);
+		m_texture = _texture;
+		m_texture->GetDesc(&m_texture2D_desc);
 
-		bool Result = CreateView();
+		bool Result = create_view();
 		
 		if (false == Result)
 		{
-			mTexture = nullptr;
-			mDesc = {};
+			m_texture = nullptr;
+			m_texture2D_desc = {};
 		}
 
 		return Result;
@@ -134,20 +134,20 @@ namespace core
 	bool Texture::create(const D3D11_TEXTURE2D_DESC& _TexDesc)
 	{
 		bool Result = false;
-		mDesc = _TexDesc;
+		m_texture2D_desc = _TexDesc;
 
-		Result = SUCCEEDED(RenderManager::get_inst().Device()->CreateTexture2D(&mDesc, nullptr, mTexture.GetAddressOf()));
+		Result = SUCCEEDED(RenderManager::get_inst().get_device()->CreateTexture2D(&m_texture2D_desc, nullptr, m_texture.GetAddressOf()));
 		if (false == Result)
 		{
 			ERROR_MESSAGE("텍스처 생성에 실패 했습니다.");
-			mDesc = {};
+			m_texture2D_desc = {};
 			return false;
 		}
 
-		Result = CreateView();
+		Result = create_view();
 		if(false == Result)
 		{
-			mDesc = {};
+			m_texture2D_desc = {};
 			Result = false;
 		}
 		
@@ -156,7 +156,7 @@ namespace core
 
 	eResult Texture::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
 	{
-		return SaveFile(_base_directory / _resource_name);
+		return save_file(_base_directory / _resource_name);
 	}
 
 	eResult Texture::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
@@ -171,40 +171,40 @@ namespace core
 			return eResult::Fail_Open;
 		}
 
-		eResult result = LoadFile(fullPath);
+		eResult result = load_file(fullPath);
 
 		if (eResult::Success == result)
 		{
-			InitializeResource();
+			initialize_resource();
 		}
 		return result;
 	}
 
-	eResult Texture::LoadFile(const std::filesystem::path& _fullPath)
+	eResult Texture::load_file(const std::filesystem::path& _fullPath)
 	{
 		std::wstring Extension = _fullPath.extension().wstring();
-		StringConverter::MakeUpperCase(Extension);
+		StringConverter::make_upper_case(Extension);
 
 		if (Extension == L".DDS")
 		{
-			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, nullptr, m_image)))
 				return eResult::Fail_Open;
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, nullptr, m_image)))
 				return eResult::Fail_Open;
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
-			if (FAILED(LoadFromWICFile(_fullPath.c_str(), DirectX::WIC_FLAGS::WIC_FLAGS_NONE, nullptr, mImage)))
+			if (FAILED(LoadFromWICFile(_fullPath.c_str(), DirectX::WIC_FLAGS::WIC_FLAGS_NONE, nullptr, m_image)))
 				return eResult::Fail_Open;
 		}
 
 		return eResult::Success;
 	}
 
-	eResult Texture::SaveFile(const std::filesystem::path& _fullPath) const
+	eResult Texture::save_file(const std::filesystem::path& _fullPath) const
 	{
 		//부모 경로 존재 확인
 		{
@@ -220,16 +220,21 @@ namespace core
 			}
 		}
 
+		auto device = RenderManager::get_inst().get_device();
+		auto context = RenderManager::get_inst().get_context();
+
 		std::wstring Extension = _fullPath.extension().wstring();
-		
+
 		DirectX::ScratchImage img{};
-		if (FAILED(DirectX::CaptureTexture(RenderManager::get_inst().Device(), RenderManager::get_inst().Context(), mTexture.Get(), img)))
+		HRESULT result = DirectX::CaptureTexture(device.Get(), context.Get(), m_texture.Get(), img);
+
+		if (FAILED(result))
 		{
 			ERROR_MESSAGE("Texture를 Scratch Image로 가져오는 데 실패했습니다.");
 			return eResult::Fail_Create;
 		}
 
-		StringConverter::MakeUpperCase(Extension);
+		StringConverter::make_upper_case(Extension);
 		if (Extension == L".DDS")
 		{
 			if (FAILED(DirectX::SaveToDDSFile(img.GetImages(), img.GetImageCount(), img.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
@@ -255,53 +260,53 @@ namespace core
 		return eResult::Success;
 	}
 
-	void Texture::InitializeResource()
+	void Texture::initialize_resource()
 	{
 		CreateShaderResourceView
 		(
-			RenderManager::get_inst().Device(),
-			mImage.GetImages(),
-			mImage.GetImageCount(),
-			mImage.GetMetadata(),
-			mSRV.GetAddressOf()
+			RenderManager::get_inst().get_device().Get(),
+			m_image.GetImages(),
+			m_image.GetImageCount(),
+			m_image.GetMetadata(),
+			m_SRV.GetAddressOf()
 		);
 
-		mSRV->GetResource((ID3D11Resource**)mTexture.GetAddressOf());
-		mTexture->GetDesc(&mDesc);
+		m_SRV->GetResource((ID3D11Resource**)m_texture.GetAddressOf());
+		m_texture->GetDesc(&m_texture2D_desc);
 	}
 
 	void Texture::bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
 		unbind_buffer_from_GPU_register();
 	
-		mCurBoundRegister = (int)_SRVSlot;
-		mCurBoundStage = _stageFlag;
-		mCurBoundView = eBufferViewType::SRV;
+		m_cur_bound_register = (int)_SRVSlot;
+		m_cur_bound_stage = _stageFlag;
+		m_cur_bound_view = eBufferViewType::SRV;
 
-		auto pContext = RenderManager::get_inst().Context();
+		auto pContext = RenderManager::get_inst().get_context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
-			pContext->VSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->VSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 		if (eShaderStageFlag::Hull & _stageFlag)
 		{
-			pContext->HSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->HSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 		if (eShaderStageFlag::Domain & _stageFlag)
 		{
-			pContext->DSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->DSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
-			pContext->GSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->GSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
-			pContext->PSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->PSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 		if (eShaderStageFlag::Compute & _stageFlag)
 		{
-			pContext->CSSetShaderResources(_SRVSlot, 1u, mSRV.GetAddressOf());
+			pContext->CSSetShaderResources(_SRVSlot, 1u, m_SRV.GetAddressOf());
 		}
 	}
 
@@ -309,55 +314,55 @@ namespace core
 	{
 		unbind_buffer_from_GPU_register();
 
-		mCurBoundView = eBufferViewType::UAV;
-		mCurBoundRegister = (int)_startSlot;
+		m_cur_bound_view = eBufferViewType::UAV;
+		m_cur_bound_register = (int)_startSlot;
 
 		uint i = -1;
-		RenderManager::get_inst().Context()->CSSetUnorderedAccessViews(_startSlot, 1, mUAV.GetAddressOf(), &i);
+		RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(_startSlot, 1, m_UAV.GetAddressOf(), &i);
 	}
 
 
 	void Texture::unbind_buffer_from_GPU_register()
 	{
-		switch (mCurBoundView)
+		switch (m_cur_bound_view)
 		{
 		case core::eBufferViewType::NONE:
 			break;
 
 		case core::eBufferViewType::SRV:
 		{
-			ASSERT(0 <= mCurBoundRegister, "Bound된 레지스터 번호가 음수입니다.");
+			ASSERT(0 <= m_cur_bound_register, "Bound된 레지스터 번호가 음수입니다.");
 			ID3D11ShaderResourceView* srv = nullptr;
 
-			auto pContext = RenderManager::get_inst().Context();
+			auto pContext = RenderManager::get_inst().get_context();
 
-			if (eShaderStageFlag::Vertex & mCurBoundStage)
+			if (eShaderStageFlag::Vertex & m_cur_bound_stage)
 			{
-				pContext->VSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->VSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
-			if (eShaderStageFlag::Hull & mCurBoundStage)
+			if (eShaderStageFlag::Hull & m_cur_bound_stage)
 			{
-				pContext->HSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->HSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
-			if (eShaderStageFlag::Domain & mCurBoundStage)
+			if (eShaderStageFlag::Domain & m_cur_bound_stage)
 			{
-				pContext->DSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->DSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
-			if (eShaderStageFlag::Geometry & mCurBoundStage)
+			if (eShaderStageFlag::Geometry & m_cur_bound_stage)
 			{
-				pContext->GSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->GSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
-			if (eShaderStageFlag::Pixel & mCurBoundStage)
+			if (eShaderStageFlag::Pixel & m_cur_bound_stage)
 			{
-				pContext->PSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->PSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
-			if (eShaderStageFlag::Compute & mCurBoundStage)
+			if (eShaderStageFlag::Compute & m_cur_bound_stage)
 			{
-				pContext->CSSetShaderResources(mCurBoundRegister, 1u, &srv);
+				pContext->CSSetShaderResources(m_cur_bound_register, 1u, &srv);
 			}
 
-			mCurBoundRegister = -1;
-			mCurBoundStage = eShaderStageFlag::NONE;
+			m_cur_bound_register = -1;
+			m_cur_bound_stage = eShaderStageFlag::NONE;
 			
 			break;
 		}
@@ -366,11 +371,11 @@ namespace core
 			ID3D11UnorderedAccessView* pUAV = nullptr;
 			uint u = -1;
 
-			RenderManager::get_inst().Context()->CSSetUnorderedAccessViews(mCurBoundRegister, 1, &pUAV, &u);
+			RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(m_cur_bound_register, 1, &pUAV, &u);
 
 			//현재 연결된 레지스터 번호와 파이프라인을 초기화
-			mCurBoundRegister = -1;
-			mCurBoundStage = eShaderStageFlag::NONE;
+			m_cur_bound_register = -1;
+			m_cur_bound_stage = eShaderStageFlag::NONE;
 
 			break;
 		}
@@ -382,7 +387,7 @@ namespace core
 			ID3D11RenderTargetView* pRTV = nullptr;
 			ID3D11DepthStencilView* pDSV = nullptr;
 
-			RenderManager::get_inst().Context()->OMSetRenderTargets(1u, &pRTV, pDSV);
+			RenderManager::get_inst().get_context()->OMSetRenderTargets(1u, &pRTV, pDSV);
 			break;
 		}
 
@@ -391,53 +396,53 @@ namespace core
 		}
 
 
-		mCurBoundView = eBufferViewType::NONE;
+		m_cur_bound_view = eBufferViewType::NONE;
 	}
 
-	bool Texture::CreateView()
+	bool Texture::create_view()
 	{
-		auto pDevice = RenderManager::get_inst().Device();
-		if (mDesc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL)
+		auto pDevice = RenderManager::get_inst().get_device();
+		if (m_texture2D_desc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL)
 		{
-			if (FAILED(pDevice->CreateDepthStencilView(mTexture.Get(), nullptr, mDSV.GetAddressOf())))
+			if (FAILED(pDevice->CreateDepthStencilView(m_texture.Get(), nullptr, m_DSV.GetAddressOf())))
 			{
 				ERROR_MESSAGE("Depth Stencil View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
 
-		if (mDesc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET)
+		if (m_texture2D_desc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET)
 		{
-			if (FAILED(pDevice->CreateRenderTargetView(mTexture.Get(), nullptr, mRTV.GetAddressOf())))
+			if (FAILED(pDevice->CreateRenderTargetView(m_texture.Get(), nullptr, m_RTV.GetAddressOf())))
 			{
 				ERROR_MESSAGE("Render Target View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
 
-		if (mDesc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE)
+		if (m_texture2D_desc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC tSRVDesc = {};
-			tSRVDesc.Format = mDesc.Format;
+			tSRVDesc.Format = m_texture2D_desc.Format;
 			tSRVDesc.Texture2D.MipLevels = 1;
 			tSRVDesc.Texture2D.MostDetailedMip = 0;
 			tSRVDesc.ViewDimension = D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2D;
 
-			if (FAILED(pDevice->CreateShaderResourceView(mTexture.Get(), nullptr, mSRV.GetAddressOf())))
+			if (FAILED(pDevice->CreateShaderResourceView(m_texture.Get(), nullptr, m_SRV.GetAddressOf())))
 			{
 				ERROR_MESSAGE("Shader Resource View 생성에 실패 했습니다.");
 				return false;
 			}
 		}
 
-		if (mDesc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS)
+		if (m_texture2D_desc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS)
 		{
 			D3D11_UNORDERED_ACCESS_VIEW_DESC tUAVDesc = {};
-			tUAVDesc.Format = mDesc.Format;
+			tUAVDesc.Format = m_texture2D_desc.Format;
 			tUAVDesc.Texture2D.MipSlice = 0;
 			tUAVDesc.ViewDimension = D3D11_UAV_DIMENSION::D3D11_UAV_DIMENSION_TEXTURE2D;
 
-			if (FAILED(pDevice->CreateUnorderedAccessView(mTexture.Get(), nullptr, mUAV.GetAddressOf())))
+			if (FAILED(pDevice->CreateUnorderedAccessView(m_texture.Get(), nullptr, m_UAV.GetAddressOf())))
 			{
 				ERROR_MESSAGE("Unordered Access View 생성에 실패 했습니다.");
 				return false;

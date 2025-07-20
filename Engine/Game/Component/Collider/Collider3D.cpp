@@ -1,4 +1,3 @@
-
 #include "Collider3D.h"
 
 #include <Engine/Game/GameObject.h>
@@ -15,8 +14,8 @@ namespace core
 {
 	Collider3D::Collider3D(const std::string_view key, eCollider3DType _col3dType)
 		: Collider(key, eDimensionType::_3D)
-		, m_colliderType{ _col3dType }
-		, m_isSyncScaleToTransform(true)
+		, m_collider_type_3D{ _col3dType }
+		, m_b_sync_scale_to_transform(true)
 	{
 	}
 
@@ -29,14 +28,14 @@ namespace core
 		Collider::init();
 	}
 
-	void Collider3D::Awake()
+	void Collider3D::awake()
 	{
-		Collider::Awake();
+		Collider::awake();
 
-		CollisionSystem* colsys = GetCollisionSystem();
+		CollisionSystem* colsys = get_collision_system();
 		if (colsys)
 		{
-			m_col3dMgr = colsys->GetCollision3D();
+			m_collision_manager_3D = colsys->get_collision_manager_3D();
 		}
 	}
 
@@ -69,8 +68,8 @@ namespace core
 	//void Collider3D::UpdateMatrix()
 	//{
 	//	//이동은 크기에 영향을 받으므로 우선 크기 정보를 반영해서 MATRIX를 만들어줘야 한다.
-	//	_localMatrix = MATRIX::CreateScale(m_offsetScale);
-	//	_localMatrix *= MATRIX::CreateTranslation(m_offsetPosition);
+	//	_localMatrix = MATRIX::CreateScale(m_offset_scale);
+	//	_localMatrix *= MATRIX::CreateTranslation(m_offset_position);
 
 	//	//트랜스폼의 크기 정보는 제거
 	//	const float3 objectScale = GetOwner()->get_component<Transform>()->get_world_scale();

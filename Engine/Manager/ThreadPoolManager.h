@@ -20,12 +20,14 @@ namespace core
         DECLARE_SINGLETON(ThreadPoolManager);
     private:
         ThreadPoolManager();
+        void init();
+
         ~ThreadPoolManager();
         
     public:
         // job 을 추가한다.
         template <class F, class... Args>
-        std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(F&& f, Args&&... args);
+        std::future<typename std::invoke_result<F, Args...>::type> enquque_job(F&& f, Args&&... args);
 
     private:
         
@@ -33,29 +35,29 @@ namespace core
 
     private:
         // Worker 쓰레드
-        void WorkerThread();
+        void worker_thread();
 
     private:
         // 총 Worker 쓰레드의 개수.
-        size_t mNumThread;
+        size_t m_threads_count;
         // Worker 쓰레드를 보관하는 벡터.
-        std::vector<std::thread> mWorkerThreads;
+        std::vector<std::thread> m_threads;
         // 할일들을 보관하는 job 큐.
-        std::queue<std::function<void()>> mJobs;
+        std::queue<std::function<void()>> m_jobs;
         // 위의 job 큐를 위한 cv 와 m.
-        std::condition_variable mCVJobqueue;
-        std::mutex mMtxJobQueue;
+        std::condition_variable m_condition_var_job_queue;
+        std::mutex m_mtx_job_queue;
 
         // 모든 쓰레드 종료
-        bool mStopAll;
+        bool m_b_stop_all;
     };
 
 
     template <class F, class... Args>
     std::future<typename std::invoke_result<F, Args...>::type>
-        ThreadPoolManager::EnqueueJob(F&& f, Args&&... args)
+        ThreadPoolManager::enquque_job(F&& f, Args&&... args)
     {
-        if (mStopAll) {
+        if (m_b_stop_all) {
             throw std::runtime_error("ThreadPoolManager 사용 중지됨");
         }
 
@@ -66,10 +68,10 @@ namespace core
 
         std::future<return_type> job_result_future = job->get_future();
         {
-            std::lock_guard<std::mutex> lock(mMtxJobQueue);
-            mJobs.push([job]() { (*job)(); });
+            std::lock_guard<std::mutex> lock(m_mtx_job_queue);
+            m_jobs.push([job]() { (*job)(); });
         }
-        mCVJobqueue.notify_one();
+        m_condition_var_job_queue.notify_one();
 
         return job_result_future;
     }

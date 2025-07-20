@@ -24,30 +24,30 @@ namespace core
 		void frame_end() override;
 
 		//CollisionManager에서 호출. 충돌체 정보를 계산한다.
-		inline void ColliderUpdate();
-		virtual void UpdateShape() = 0;
+		inline void collider_update();
+		virtual void update_shape() = 0;
 
 		void final_update() final {}
 
-		eCollider2D_Shape GetColliderShape() const { return m_collider2DShape; }
+		eCollider2D_Shape get_collider_shape() const { return m_collider_shape_2D; }
 
 	protected:
-		inline Collision2D* GetCollision2DManager() { return m_col2dManager; };
+		inline Collision2D* get_collision2D_manager() { return m_collision_manager_2D; };
 
 	private:
-		eCollider2D_Shape m_collider2DShape;
-		Collision2D* m_col2dManager;
-		bool m_isColliderUpdated;
+		eCollider2D_Shape m_collider_shape_2D;
+		Collision2D* m_collision_manager_2D;
+		bool m_b_collider_updated;
 	};
 
-	inline void Collider2D::ColliderUpdate()
+	inline void Collider2D::collider_update()
 	{
-		if (m_isColliderUpdated)
+		if (m_b_collider_updated)
 		{
 			return;
 		}
-		m_isColliderUpdated = true;
+		m_b_collider_updated = true;
 
-		UpdateShape();
+		update_shape();
 	}
 }

@@ -12,11 +12,11 @@
 namespace core::editor
 {
 	EditorUVCalculator::EditorUVCalculator()
-		: EditorWindow("UV Calculator")
-		, mTexture()
-		, mCursorPos()
-		, mDragStartPos()
-		, mDragEndPos()
+		: EditorUIWindow("UV Calculator")
+		, m_texture()
+		, m_cursor_position()
+		, m_drag_start_position()
+		, m_drag_end_position()
 		
 	{
 	}
@@ -32,14 +32,14 @@ namespace core::editor
 
 	void EditorUVCalculator::update_UI()
 	{
-		UpdateLoadButton();
+		update_load_button();
 
-		UpdateTexture();
+		update_texture();
 
-		UpdateUVIndicator();
+		update_UV_indicator();
 	}
 
-	void EditorUVCalculator::UpdateLoadButton()
+	void EditorUVCalculator::update_load_button()
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
@@ -49,70 +49,70 @@ namespace core::editor
 				extensions[i] = ::core::name::path::extension::Texture[i];
 			}
 
-			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().GetBaseDir());
+			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
 
-			std::fs::path texPath = WinAPI::FileDialog(absTexPath, extensions);
+			std::fs::path texPath = WinAPI::file_open_dialog(absTexPath, extensions);
 
 
-			texPath = PathManager::get_inst().MakePathStrKey(texPath);
+			texPath = PathManager::get_inst().make_path_strkey(texPath);
 
-			mTexture = ResourceManager<Texture>::get_inst().load(texPath.string());
+			m_texture = ResourceManager<Texture>::get_inst().load(texPath.string());
 
-			if (mTexture)
+			if (m_texture)
 			{
-				float2 texSize = mTexture->GetSizeFloat();
+				float2 texSize = m_texture->get_texture_size_float();
 				if (texSize.x >= texSize.y)
 				{
-					mTexRenderSize = ImVec2(720.f, texSize.y * (720.f / texSize.x));
+					m_texture_render_size = ImVec2(720.f, texSize.y * (720.f / texSize.x));
 				}
 				else
 				{
-					mTexRenderSize = ImVec2(texSize.x * (480.f / texSize.y), 480.f);
+					m_texture_render_size = ImVec2(texSize.x * (480.f / texSize.y), 480.f);
 				}
 			}
 			else
 			{
-				mTexRenderSize = ImVec2{};
+				m_texture_render_size = ImVec2{};
 			}
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Clear##Texture", ImVec2(0.f, 30.f)))
 		{
-			mTexture = nullptr;
+			m_texture = nullptr;
 		}
 	}
-	void EditorUVCalculator::UpdateTexture()
+	void EditorUVCalculator::update_texture()
 	{
-		if (mTexture)
+		if (m_texture)
 		{
 			ImGuiWindowFlags flag = get_window_flag();
 			flag |= ImGuiWindowFlags_::ImGuiWindowFlags_NoMove;
 			set_window_flag(flag);
 
-			ImGui::SetWindowSize(ImVec2(mTexRenderSize.x + 50.f, mTexRenderSize.y + 100.f));
+			ImGui::SetWindowSize(ImVec2(m_texture_render_size.x + 50.f, m_texture_render_size.y + 100.f));
 
 			ImVec2 cursorPos = ImGui::GetCursorScreenPos();
-			ImGui::Image(mTexture->GetSRV().Get(), mTexRenderSize, ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(0.f, 1.f, 0.f, 1.f));
+			ImGui::Image(m_texture->get_SRV().Get(), m_texture_render_size, ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(0.f, 1.f, 0.f, 1.f));
 
 			if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax()))
 			{
 				if (ImGui::IsMouseClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
 				{
-					mDragStartPos = ImGui::GetMousePos();
-					mDragStartPos = ImVec2(mDragStartPos.x - cursorPos.x, mDragStartPos.y - cursorPos.y);
+					m_drag_start_position = ImGui::GetMousePos();
+					m_drag_start_position = ImVec2(m_drag_start_position.x - cursorPos.x, m_drag_start_position.y - cursorPos.y);
 				}
 				if (ImGui::IsMouseDown(ImGuiMouseButton_::ImGuiMouseButton_Left))
 				{
-					mDragEndPos = ImGui::GetMousePos();
-					mDragEndPos = ImVec2(mDragEndPos.x - cursorPos.x, mDragEndPos.y - cursorPos.y);
+					m_drag_end_position = ImGui::GetMousePos();
+					m_drag_end_position = ImVec2(m_drag_end_position.x - cursorPos.x, m_drag_end_position.y - cursorPos.y);
 				}
 			}
 
 
 
 
-			ImVec2 rectStartPos = ImVec2(cursorPos.x + mDragStartPos.x, cursorPos.y + mDragStartPos.y);
-			ImVec2 rectEndPos = ImVec2(cursorPos.x + mDragEndPos.x, cursorPos.y + mDragEndPos.y);
+			ImVec2 rectStartPos = ImVec2(cursorPos.x + m_drag_start_position.x, cursorPos.y + m_drag_start_position.y);
+			ImVec2 rectEndPos = ImVec2(cursorPos.x + m_drag_end_position.x, cursorPos.y + m_drag_end_position.y);
 
 			ImDrawList* draw_list = ImGui::GetForegroundDrawList(); //ImGui::GetWindowDrawList();
 			draw_list->AddRect(rectStartPos, rectEndPos, ImGui::GetColorU32(IM_COL32(0, 130, 216, 255)));   // Border
@@ -128,44 +128,44 @@ namespace core::editor
 			set_window_flag(flag);
 		}
 	}
-	void EditorUVCalculator::UpdateUVIndicator()
+	void EditorUVCalculator::update_UV_indicator()
 	{
 		//UV 계산
-		if (mDragStartPos.x != 0.f
-			|| mDragStartPos.y != 0.f
-			|| mDragEndPos.x != 0.f
-			|| mDragEndPos.y != 0.f
+		if (m_drag_start_position.x != 0.f
+			|| m_drag_start_position.y != 0.f
+			|| m_drag_end_position.x != 0.f
+			|| m_drag_end_position.y != 0.f
 			)
 		{
 			float2 Start{};
 			float2 End{};
-			if (mDragStartPos.x < mDragEndPos.x)
+			if (m_drag_start_position.x < m_drag_end_position.x)
 			{
-				Start.x = mDragStartPos.x;
-				End.x = mDragEndPos.x;
+				Start.x = m_drag_start_position.x;
+				End.x = m_drag_end_position.x;
 			}
 			else
 			{
-				Start.x = mDragEndPos.x;
-				End.x = mDragStartPos.x;
+				Start.x = m_drag_end_position.x;
+				End.x = m_drag_start_position.x;
 			}
 
-			if (mDragStartPos.y < mDragEndPos.y)
+			if (m_drag_start_position.y < m_drag_end_position.y)
 			{
-				Start.y = mDragStartPos.y;
-				End.y = mDragEndPos.y;
+				Start.y = m_drag_start_position.y;
+				End.y = m_drag_end_position.y;
 			}
 			else
 			{
-				Start.y = mDragEndPos.y;
-				End.y = mDragStartPos.y;
+				Start.y = m_drag_end_position.y;
+				End.y = m_drag_start_position.y;
 			}
 
 
-			Start.x /= mTexRenderSize.x;
-			Start.y /= mTexRenderSize.y;
-			End.x /= mTexRenderSize.x;
-			End.y /= mTexRenderSize.y;
+			Start.x /= m_texture_render_size.x;
+			Start.y /= m_texture_render_size.y;
+			End.x /= m_texture_render_size.x;
+			End.y /= m_texture_render_size.y;
 
 			hilight_text("UV");
 

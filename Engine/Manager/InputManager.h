@@ -48,47 +48,49 @@ namespace core
 		DECLARE_SINGLETON(InputManager);
 	private:
 		InputManager();
+		void init();
+
 		~InputManager();
 
 	public:
 		struct tKey
 		{
-			eKeyCode  eType;
-			eKeyState eState;
-			bool	  bPressed;
+			eKeyCode  m_key_type;
+			eKeyState m_status;
+			bool	  m_b_pressed;
 		};
 
 	public:
-		__forceinline eKeyState GetKeyState(eKeyCode keyCode) { return mKeys[static_cast<uint>(keyCode)].eState; }
-		__forceinline float2 GetMousePos() { return mMousePos; }
-		__forceinline float2 GetMouseDir() { return mMouseDir; }
+		inline eKeyState get_key_state(eKeyCode keyCode) { return m_keys[static_cast<uint>(keyCode)].m_status; }
+		inline float2 get_mouse_position() { return m_mouse_position; }
+		inline float2 get_mouse_direction() { return m_mouse_direction; }
 
-		//GetKeyPress()		키를 누르는 시간만큼 true를 반환
-		//GetKeyDown()	키를 눌렀을 때, 딱 한번 true를 반환
-		//GetKeyUp()	키를 누르다 땠을 때, 딱 한번 true를 반환
+		//is_key_pressed()		키를 누르는 시간만큼 true를 반환
+		//is_key_down()	키를 눌렀을 때, 딱 한번 true를 반환
+		//is_key_up()	키를 누르다 땠을 때, 딱 한번 true를 반환
 
-		__forceinline bool GetKeyPress(eKeyCode keyCode)
+		inline bool is_key_pressed(eKeyCode keyCode)
 		{
-			return (eKeyState::PRESSED == mKeys[static_cast<uint>(keyCode)].eState);
+			return (eKeyState::PRESSED == m_keys[static_cast<uint>(keyCode)].m_status);
 		}
 
-		__forceinline bool GetKeyDown(eKeyCode keyCode)
+		inline bool is_key_down(eKeyCode keyCode)
 		{
-			return (eKeyState::DOWN == mKeys[static_cast<uint>(keyCode)].eState);
+			return (eKeyState::DOWN == m_keys[static_cast<uint>(keyCode)].m_status);
 		}
 
-		__forceinline bool GetKeyUp(eKeyCode keyCode)
+		inline bool is_key_up(eKeyCode keyCode)
 		{
-			return (eKeyState::UP == mKeys[static_cast<uint>(keyCode)].eState);
+			return (eKeyState::UP == m_keys[static_cast<uint>(keyCode)].m_status);
 		}	
 
 	private:
 		void update();
 
 	private:
-		std::vector<tKey> mKeys;
-		float2 mMousePos;
-		float2 mMousePosPrev;
-		float2 mMouseDir;
+		std::vector<tKey> m_keys;
+		float2 m_prev_mouse_position;
+		float2 m_mouse_position;
+		float2 m_mouse_direction;
 	};
 }

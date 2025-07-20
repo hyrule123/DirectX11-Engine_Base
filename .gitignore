@@ -403,3 +403,4 @@ FBX/
 *.txt
 /Engine/ComponentInitializer.cpp
 /Engine/Game/Component/ComponentInitializer.cpp
+/Engine/Game/Component/Camera/Camera.h

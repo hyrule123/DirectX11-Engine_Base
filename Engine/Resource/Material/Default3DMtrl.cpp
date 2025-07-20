@@ -16,9 +16,9 @@
 
 #include <Engine/Game/GameObject.h>
 
-#include <Engine/Game/Component/Animator/Com_Animator3D.h>
+#include <Engine/Game/Component/Animator/Animator3D.h>
 #include <Engine/Game/Component/Transform.h>
-#include <Engine/Game/Component/Animator/Com_Animator3D.h>
+#include <Engine/Game/Component/Animator/Animator3D.h>
 #include <Engine/Game/Component/Animator/Animation3D_PlayData.h>
 
 #include <Engine/Resource/Model3D/Skeleton.h>
@@ -56,14 +56,14 @@ namespace core {
         m_default_3D_mtrl_instancing_data.reserve(_objs.size());
 
         //애니메이션의 최종 행렬을 먼저 계산 후 바인딩한다.
-        s_ptr<Com_Animator3D> animator = _objs.front()->get_component<Com_Animator3D>();
+        s_ptr<Animator3D> animator = _objs.front()->get_component<Animator3D>();
         if (animator)
         {
             animator->bind_computed_final_bone_matrix();
         }
 
         for (const s_ptr<GameObject>& obj : _objs) {
-            s_ptr<Com_Animator3D> animator = obj->get_component<Com_Animator3D>();
+            s_ptr<Animator3D> animator = obj->get_component<Animator3D>();
             tDefault3DMtrl_InstancingData data{};
 
             if (animator && animator->is_playing()) {

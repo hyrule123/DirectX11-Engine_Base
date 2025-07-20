@@ -12,10 +12,10 @@
 namespace core::editor
 {
 	EditorFBXConverter::EditorFBXConverter()
-		: EditorWindow("FBX Converter")
-		, mFBXPath()
-		, mOutputDirName()
-		, mbStatic(true)
+		: EditorUIWindow("FBX Converter")
+		, m_fbx_path()
+		, m_output_dir()
+		, m_b_static(true)
 	{
 	}
 
@@ -25,60 +25,60 @@ namespace core::editor
 
 	void EditorFBXConverter::init()
 	{
-		LoadProjMeshDataCombo();
+		load_meshdata_combobox();
 	}
 
 
 	void EditorFBXConverter::update_UI()
 	{
-		if (CheckThread())
+		if (check_thread())
 			return;
 
 		hilight_text("FBX Source File Path");
-		if (mFBXPath.empty())
+		if (m_fbx_path.empty())
 		{
 			ImGui::Text("Empty");
 		}
 		else
 		{
-			ImGui::Text(mFBXPath.c_str());
+			ImGui::Text(m_fbx_path.c_str());
 		}
 
 		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
-		ChooseFBXButton();
+		select_FBX_button();
 
 		ImGui::SameLine();
 		
 		if (ImGui::Button("Clear Path", ImVec2(0.f, 35.f)))
 		{
-			mFBXPath.clear();
+			m_fbx_path.clear();
 		}
 
 		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 		ImGui::Separator();
 
 		hilight_text("Convert Setting");
-		ImGui::InputText("Output Directory Name", &mOutputDirName);
+		ImGui::InputText("Output Directory Name", &m_output_dir);
 
-		ImGui::Checkbox("Static Mesh?", &mbStatic);
+		ImGui::Checkbox("Static Mesh?", &m_b_static);
 
-		ConvertFBXButton();
+		convert_FBX_button();
 
 		ImGui::Dummy(ImVec2(0.0f, 30.0f));
 		ImGui::Separator();
 
-		AddAnimationFromSameModeling();
+		add_animation_from_same_skeleton();
 	}
-	bool EditorFBXConverter::CheckThread()
+	bool EditorFBXConverter::check_thread()
 	{
 		bool working = false;
-		if (mFutureConvertResult.valid())
+		if (m_future_convert_result.valid())
 		{
 			working = true;
 			static float waitDot{};
 			static int waitDotCount{};
-			waitDot += TimeManager::get_inst().DeltaTime();
+			waitDot += TimeManager::get_inst().delta_time();
 			if (1.f < waitDot)
 			{
 				waitDot = 0.f;
@@ -89,10 +89,10 @@ namespace core::editor
 				}
 			}
 
-			std::future_status status = mFutureConvertResult.wait_for(std::chrono::milliseconds(10));
+			std::future_status status = m_future_convert_result.wait_for(std::chrono::milliseconds(10));
 			if (status == std::future_status::ready)
 			{
-				eResult result = mFutureConvertResult.get();
+				eResult result = m_future_convert_result.get();
 				if (eResult_success(result))
 				{
 					NOTIFICATION("저장 성공");
@@ -103,7 +103,7 @@ namespace core::editor
 				}
 
 				//future 초기화해서 invalid로 만들어줌
-				mFutureConvertResult = {};
+				m_future_convert_result = {};
 			}
 			else if (std::future_status::timeout == status)
 			{
@@ -117,80 +117,80 @@ namespace core::editor
 		}
 		return working;
 	}
-	void EditorFBXConverter::ChooseFBXButton()
+	void EditorFBXConverter::select_FBX_button()
 	{
 		if (ImGui::Button("Choose FBX File", ImVec2(0.f, 35.f)))
 		{
 			std::vector<std::fs::path> extensions = { ".fbx" };
 
-			std::fs::path filePath = WinAPI::FileDialog(std::fs::current_path(), extensions);
-			mFBXPath = filePath.string();
+			std::fs::path filePath = WinAPI::file_open_dialog(std::fs::current_path(), extensions);
+			m_fbx_path = filePath.string();
 
-			mOutputDirName = filePath.stem().string();
+			m_output_dir = filePath.stem().string();
 		}
 	}
 
 
-	void EditorFBXConverter::ConvertFBXButton()
+	void EditorFBXConverter::convert_FBX_button()
 	{
 		if (ImGui::Button("Convert FBX File", ImVec2(0.f, 35.f)))
 		{
-			if (mFBXPath.empty())
+			if (m_fbx_path.empty())
 			{
 				MessageBoxW(nullptr, L"FBX 경로를 설정하지 않았습니다.", nullptr, MB_OK);
 				return;
 			}
-			else if (mOutputDirName.empty())
+			else if (m_output_dir.empty())
 			{
 				MessageBoxW(nullptr, L"출력 폴더를 설정하지 않았습니다.", nullptr, MB_OK);
 				return;
 			}
 			
-			mFutureConvertResult = ThreadPoolManager::get_inst().EnqueueJob(
+			m_future_convert_result = ThreadPoolManager::get_inst().enquque_job(
 				[this]()->eResult
 				{
 					s_ptr<Model3D> meshData = std::make_shared<Model3D>();
-					return meshData->convert_fbx(mFBXPath, mbStatic, mOutputDirName);
+					return meshData->convert_fbx(m_fbx_path, m_b_static, m_output_dir);
 				}
 			);
 		}
 	}
 
-	void EditorFBXConverter::AddAnimationFromSameModeling()
+	void EditorFBXConverter::add_animation_from_same_skeleton()
 	{
 		hilight_text("Add Animation to Project Model3D");
 		ImGui::Dummy(ImVec2(0.f, 10.f));
 
-		m_model3D_combobox.final_update();
+		m_skeletal_mesh_combobox.final_update();
 		if (ImGui::Button("Refresh List"))
 		{
-			LoadProjMeshDataCombo();
+			load_meshdata_combobox();
 		}
 
 
 		ImGui::Dummy(ImVec2(0.f, 20.f));
 		if(ImGui::Button("Add Animation", ImVec2(0.f, 35.f)))
 		{
-			if (mFBXPath.empty())
+			if (m_fbx_path.empty())
 			{
 				NOTIFICATION("FBX 경로를 설정하지 않았습니다.");
 			}
-			else if (m_model3D_combobox.get_current_selected().m_name.empty())
+			else if (m_skeletal_mesh_combobox.get_current_selected().m_name.empty())
 			{
 				NOTIFICATION("목표 메쉬 데이터를 설정하지 않았습니다.");
 			}
 			else
 			{
-				Model3D::add_animation_from_FBX(mFBXPath, m_model3D_combobox.get_current_selected().m_name);
+				Model3D::add_animation_from_FBX(m_fbx_path, m_skeletal_mesh_combobox.get_current_selected().m_name);
 			}
 		}
 	}
 
-	void EditorFBXConverter::LoadProjMeshDataCombo()
+	void EditorFBXConverter::load_meshdata_combobox()
 	{
-		m_model3D_combobox.set_unique_name("Model3D List");
-		m_model3D_combobox.reset();
-		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().GetBaseDir();
+		m_skeletal_mesh_combobox.set_unique_name("Model3D List");
+		m_skeletal_mesh_combobox.reset();
+		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().get_base_directory();
 
 		try
 		{
@@ -200,7 +200,7 @@ namespace core::editor
 				{
 					tComboItem item{};
 					item.m_name = entry.path().filename().string();
-					m_model3D_combobox.add_item(item);
+					m_skeletal_mesh_combobox.add_item(item);
 				}
 			}
 		}

@@ -11,21 +11,21 @@
 namespace core {
 	Component::Component(const std::string_view key, eComponentOrder _type)
 		: Entity(key)
-		, m_ComCategory(_type)
+		, m_component_order(_type)
 		, m_ownerGameObject()
 		, m_state(eState::NotInitialzed)
-		, m_isStarted(false)
-		, m_isEnabled(true)
+		, m_b_start(false)
+		, m_b_enable(true)
 	{
 	}
 
 	Component::Component(const Component& _other)
 		: Entity(_other)
-		, m_ComCategory(_other.m_ComCategory)
+		, m_component_order(_other.m_component_order)
 		, m_ownerGameObject()
 		, m_state(_other.m_state)
-		, m_isStarted(_other.m_isStarted)
-		, m_isEnabled(_other.m_isEnabled)
+		, m_b_start(_other.m_b_start)
+		, m_b_enable(_other.m_b_enable)
 	{
 	}
 
@@ -38,34 +38,34 @@ namespace core {
 		Super::init();
 	}
 
-	void Component::SetEnable(bool _bEnable)
+	void Component::set_enable(bool _bEnable)
 	{
 		//제거 예약이 되어있거나 동일한 상태일 경우에는 return
-		if (m_isEnabled == _bEnable)
+		if (m_b_enable == _bEnable)
 		{
 			return;
 		}
 
-		m_isEnabled = _bEnable;
+		m_b_enable = _bEnable;
 
 		auto onEnableDisable = [this]()
 			{
-				if (m_isEnabled)
+				if (m_b_enable)
 				{
-					OnEnable();
+					on_enable();
 				}
 				else
 				{
-					OnDisable();
+					on_disable();
 				}
 			};
 
 		if (m_ownerGameObject.lock())
 		{
 			s_ptr<Scene> scene = m_ownerGameObject.lock()->get_scene();
-			if (scene->IsAwaken())
+			if (scene->is_awaken())
 			{
-				scene->AddFrameEndJob(onEnableDisable);
+				scene->add_frame_end_job(onEnableDisable);
 			}
 			else
 			{
@@ -75,15 +75,15 @@ namespace core {
 
 	}
 
-	bool Component::UpdateDestroyState()
+	bool Component::update_destroy_state()
 	{
-		if (eState::Destroy == m_state)
+		if (eState::destroy == m_state)
 		{
 			return true;
 		}
 		else if (eState::DestroyReserved == m_state)
 		{
-			m_state = eState::Destroy;
+			m_state = eState::destroy;
 		}
 
 		return false;

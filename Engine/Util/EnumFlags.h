@@ -43,9 +43,9 @@ namespace core
 
 		void				clear(T e);
 		void				raise(T e);
-		bool				isSet(T e) const;
-		EnumFlags<T, Size>& setAll(T e);
-		T					Get() const { return static_cast<T>(_bits); }
+		bool				is_set(T e) const;
+		EnumFlags<T, Size>& set_all(T e);
+		T					get() const { return static_cast<T>(_bits); }
 
 	public:
 		friend EnumFlags<T, Size> operator&(T a, EnumFlags<T, Size>& b)
@@ -214,10 +214,10 @@ namespace core
 	void EnumFlags<T, Size>::raise(T e) { _bits |= static_cast<Size>(e); }
 
 	template <typename T, typename Size>
-	bool EnumFlags<T, Size>::isSet(T e) const { return (_bits & static_cast<Size>(e)) == static_cast<Size>(e); }
+	bool EnumFlags<T, Size>::is_set(T e) const { return (_bits & static_cast<Size>(e)) == static_cast<Size>(e); }
 
 	template <typename T, typename Size>
-	EnumFlags<T, Size>& EnumFlags<T, Size>::setAll(T e)
+	EnumFlags<T, Size>& EnumFlags<T, Size>::set_all(T e)
 	{
 		_bits = static_cast<Size>(e);
 		return *this;

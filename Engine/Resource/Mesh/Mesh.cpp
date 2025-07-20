@@ -54,14 +54,14 @@ namespace core
 		std::fs::path key_path = _resource_name;
 		key_path.replace_extension(name::path::extension::Mesh);
 
-		return SaveFile_Binary(_base_directory / key_path);
+		return save_file_binary(_base_directory / key_path);
 	}
 
 	eResult Mesh::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
 	{
 		std::fs::path filePath = _base_directory / _resource_name;
 		filePath.replace_extension(name::path::extension::Mesh);
-		return LoadFile_Binary(filePath);
+		return load_file_binary(filePath);
 	}
 
 	eResult Mesh::serialize_binary(BinarySerializer* _ser) const
@@ -149,7 +149,7 @@ namespace core
 		D3D11_SUBRESOURCE_DATA subData = {};
 		subData.pSysMem = _data;
 
-		HRESULT result = RenderManager::get_inst().Device()->CreateBuffer(&m_index_buffer_desc, &subData, m_index_buffer.ReleaseAndGetAddressOf());
+		HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&m_index_buffer_desc, &subData, m_index_buffer.ReleaseAndGetAddressOf());
 
 		return SUCCEEDED(result);
 	}
@@ -176,7 +176,7 @@ namespace core
 
 	void Mesh::render() const
 	{
-		auto context = RenderManager::get_inst().Context();
+		auto context = RenderManager::get_inst().get_context();
 
 		context->IASetPrimitiveTopology(m_index_topology);
 
@@ -190,7 +190,7 @@ namespace core
 	
 	void Mesh::render_instanced(UINT _instanceCount) const
 	{
-		auto context = RenderManager::get_inst().Context();
+		auto context = RenderManager::get_inst().get_context();
 
 		context->IASetPrimitiveTopology(m_index_topology);
 

@@ -33,25 +33,24 @@ namespace core
 		~CollisionSystem();
 
 		inline Collision2D* GetCollision2D() {
-			if (nullptr == m_col2DManager) {
+			if (nullptr == m_collision2D_manager) {
 				CreateCollision2D();
 			}
-			return m_col2DManager.get(); 
+			return m_collision2D_manager.get(); 
 		}
-		inline Collision3D* GetCollision3D() { 
-			if (nullptr == m_col3DManager) {
+		inline Collision3D* get_collision_manager_3D() { 
+			if (nullptr == m_collision3D_manager) {
 				CreateCollision3D();
 			}
-			return m_col3DManager.get(); 
+			return m_collision3D_manager.get(); 
 		}
-
 
 		template <type_traits_Ex::is_enum_class_v T>
 		inline void SetCollisionMask(T _left, T _right, bool _enable = true);
 		void SetCollisionMask(uint _layerA, uint _layerB, bool _isEnable);
 		
 		inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
-			GetCollisionMask() { return m_collisionMask; }
+			GetCollisionMask() { return m_collision_mask; }
 		inline std::bitset<g_maxLayer> GetLayerCollisionMask(uint _layer) const;
 
 
@@ -59,7 +58,7 @@ namespace core
 		inline void SetRaycastMask(T _left, T _right, bool _enable = true);
 		void SetRaycastMask(uint _layerA, uint _layerB, bool _isEnable);
 		inline const std::array<std::bitset<g_maxLayer>, g_maxLayer>&
-			GetRaycastMask() { return m_raycastMask; };
+			GetRaycastMask() { return m_raycast_mask; };
 		inline std::bitset<g_maxLayer> GetLayerRaycastMask(uint _layer) const;
 
 		inline Scene* GetOwnerScene() { return m_owner; }
@@ -78,11 +77,11 @@ namespace core
 		Scene* const m_owner;
 
 		//레이어끼리의 상호작용 여부를 담아놓은 이차원 배열
-		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collisionMask;
-		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_raycastMask;
+		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_collision_mask;
+		std::array<std::bitset<g_maxLayer>, g_maxLayer> m_raycast_mask;
 
-		std::unique_ptr<Collision2D> m_col2DManager;
-		std::unique_ptr<Collision3D> m_col3DManager;
+		std::unique_ptr<Collision2D> m_collision2D_manager;
+		std::unique_ptr<Collision3D> m_collision3D_manager;
 	};
 
 	template<type_traits_Ex::is_enum_class_v T>
@@ -97,7 +96,7 @@ namespace core
 
 		if (_layer < g_maxLayer)
 		{
-			ret = m_collisionMask[_layer];
+			ret = m_collision_mask[_layer];
 		}
 
 		return ret;
@@ -108,7 +107,7 @@ namespace core
 
 		if (_layer < g_maxLayer)
 		{
-			ret = m_raycastMask[_layer];
+			ret = m_raycast_mask[_layer];
 		}
 
 		return ret;

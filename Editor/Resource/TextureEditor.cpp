@@ -23,7 +23,7 @@ namespace core::editor
 
 		const auto& targetTex = get_target().lock();
 
-		ImGui::Image(targetTex->GetSRV().Get(), ImVec2(150.0f, 150.0f));
+		ImGui::Image(targetTex->get_SRV().Get(), ImVec2(150.0f, 150.0f));
 
 		const std::string& key = targetTex->get_resource_name();
 
@@ -35,8 +35,8 @@ namespace core::editor
 		//ImGui::InputText("##TexPath"
 		//	, (char*)path.data(), path.size(), ImGuiInputTextFlags_ReadOnly);
 
-		int width = (int)targetTex->GetWidth();
-		int height = (int)targetTex->GetHeight();
+		int width = (int)targetTex->get_texture_width();
+		int height = (int)targetTex->get_texture_height();
 
 
 		char wBuffer[256] = "";

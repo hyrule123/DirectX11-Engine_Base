@@ -11,8 +11,8 @@
 #include <Engine/Game/GameObject.h>
 
 #include <Engine/Game/Component/Transform.h>
-#include <Engine/Game/Component/Renderer/Com_Renderer_3DAnimMesh.h>
-#include <Engine/Game/Component/Animator/Com_Animator3D.h>
+#include <Engine/Game/Component/Renderer/SkeletalMeshRenderer.h>
+#include <Engine/Game/Component/Animator/Animator3D.h>
 #include <Engine/Game/Component/Animator/Animation3D_PlayData.h>
 
 #include <Engine/Resource/Shader/GraphicsShader.h>
@@ -47,7 +47,7 @@ namespace core
 		fullPath /= _resource_name;
 		fullPath.replace_extension(name::path::extension::Model3D);
 
-		return LoadFile_Json(fullPath);
+		return load_file_json(fullPath);
 	}
 
 	eResult Model3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
@@ -61,7 +61,7 @@ namespace core
 
 		std::fs::path fullPath = _base_directory / name;
 		fullPath.replace_extension(name::path::extension::Model3D);
-		return SaveFile_Json(fullPath);
+		return save_file_json(fullPath);
 	}
 
 	eResult Model3D::serialize_json(JsonSerializer* _ser) const
@@ -228,25 +228,25 @@ namespace core
 		s_ptr<Animation3D_PlayData> sharedAnimationData{};
 		if (m_skeleton)
 		{
-			s_ptr<Com_Animator3D> rootAnimator = root->add_component<Com_Animator3D>();
+			s_ptr<Animator3D> rootAnimator = root->add_component<Animator3D>();
 
-			sharedAnimationData = rootAnimator->CreateSharedAnimationData();
+			sharedAnimationData = rootAnimator->create_shared_animation_data();
 			sharedAnimationData->set_skeleton(m_skeleton);
 		}
 
 		//사이즈가 딱 하나일 경우: GameObject 본체에 데이터를 생성
 		if (1u == (UINT)m_mesh_mtrl_pairs.size())
 		{
-			s_ptr<Com_Renderer_Mesh> renderer = nullptr;
+			s_ptr<StaticMeshRenderer> renderer = nullptr;
 			if (sharedAnimationData)
 			{
 				//수동으로 애니메이터를 설정
-				s_ptr<Com_Renderer_3DAnimMesh> renderer3D = root->add_component<Com_Renderer_3DAnimMesh>();
-				renderer = static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
+				s_ptr<SkeletalMeshRenderer> renderer3D = root->add_component<SkeletalMeshRenderer>();
+				renderer = static_pointer_cast<StaticMeshRenderer>(renderer3D);
 			}
 			else
 			{
-				renderer = root->add_component<Com_Renderer_Mesh>();
+				renderer = root->add_component<StaticMeshRenderer>();
 			}
 
 			if (false == set_data_to_renderer(renderer, 0))
@@ -269,19 +269,19 @@ namespace core
 				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
-				s_ptr<Com_Renderer_Mesh> renderer = nullptr;
+				s_ptr<StaticMeshRenderer> renderer = nullptr;
 				if (sharedAnimationData)
 				{
-					s_ptr<Com_Animator3D> childAnimator = child->add_component<Com_Animator3D>();
-					childAnimator->SetSharedAnimationData(sharedAnimationData);
+					s_ptr<Animator3D> childAnimator = child->add_component<Animator3D>();
+					childAnimator->set_shared_animation_data(sharedAnimationData);
 
 					//수동으로 애니메이터를 설정
-					auto renderer3D = child->add_component<Com_Renderer_3DAnimMesh>();
-					renderer = std::static_pointer_cast<Com_Renderer_Mesh>(renderer3D);
+					auto renderer3D = child->add_component<SkeletalMeshRenderer>();
+					renderer = std::static_pointer_cast<StaticMeshRenderer>(renderer3D);
 				}
 				else
 				{
-					renderer = child->add_component<Com_Renderer_Mesh>();
+					renderer = child->add_component<StaticMeshRenderer>();
 				}
 
 				if (false == set_data_to_renderer(renderer, (UINT)i))
@@ -372,32 +372,32 @@ namespace core
 			const tFBXContainer& cont = containers[i];
 
 			//버텍스 버퍼 생성
-			std::vector<Vertex3D> vertices_3d(cont.vecPosition.size());
-			for (size_t v = 0; v < cont.vecPosition.size(); ++v)
+			std::vector<Vertex3D> vertices_3d(cont.positions.size());
+			for (size_t v = 0; v < cont.positions.size(); ++v)
 			{
-				vertices_3d[v].position = cont.vecPosition[v];
+				vertices_3d[v].position = cont.positions[v];
 
-				vertices_3d[v].UV = cont.vecUV[v];
+				vertices_3d[v].UV = cont.UVs[v];
 
-				vertices_3d[v].tangent = cont.vecTangent[v];
-				vertices_3d[v].binormal = cont.vecBinormal[v];
-				vertices_3d[v].Normal = cont.vecNormal[v];
+				vertices_3d[v].tangent = cont.tangents[v];
+				vertices_3d[v].binormal = cont.binormals[v];
+				vertices_3d[v].Normal = cont.normals[v];
 
-				if (cont.bAnimation)
+				if (cont.b_animation)
 				{
-					vertices_3d[v].Weights = cont.vecBlendWeight[v];
-					vertices_3d[v].Indices = cont.vecBlendIndex[v];
+					vertices_3d[v].Weights = cont.blend_weights[v];
+					vertices_3d[v].Indices = cont.blend_indices[v];
 				}
 			}
 			//vertex buffer은 container당 하나
 			s_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
-			vb->set_resource_name((_dir_name / cont.Name).string());
+			vb->set_resource_name((_dir_name / cont.name).string());
 			vb->create_vertex_buffer(vertices_3d);
 			//ResourceManager<VertexBuffer>::get_inst().save(vb);
 
 			// 인덱스 정보
-			for (size_t j = 0; j < cont.vecIndexBuffers.size(); ++j) {
-				const auto& indices = cont.vecIndexBuffers[j];
+			for (size_t j = 0; j < cont.index_buffers.size(); ++j) {
+				const auto& indices = cont.index_buffers[j];
 
 				//메쉬
 				tMeshMtrlPair mm_pair{};
@@ -412,7 +412,7 @@ namespace core
 
 				//기본적으로는 컨테이너 이름을 사용
 				//비어있을 경우 이름을 만들어준다
-				std::fs::path name = _dir_name / cont.Name;
+				std::fs::path name = _dir_name / cont.name;
 				name += "_";
 				name += std::to_string(j);
 
@@ -424,7 +424,7 @@ namespace core
 
 				// 메테리얼 가져오기
 				mm_pair.material =
-					convert_material(&(cont.vecMtrl[j]), _dir_name);
+					convert_material(&(cont.materials[j]), _dir_name);
 				if (nullptr == mm_pair.material)
 				{
 					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
@@ -492,16 +492,16 @@ namespace core
 		s_ptr<Material> mtrl = std::make_shared<Default3DMtrl>();
 
 		std::fs::path name = _texDestDir.filename();
-		name /= _fbxMtrl->strMtrlName;
+		name /= _fbxMtrl->name;
 		name.replace_extension(name::path::extension::Material);
 		mtrl->set_resource_name(name.string());
 
-		mtrl->SetDiffuseColor(_fbxMtrl->DiffuseColor);
-		mtrl->SetSpecularColor(_fbxMtrl->SpecularColor);
-		mtrl->SetAmbientColor(_fbxMtrl->AmbientColor);
-		mtrl->SetEmissiveColor(_fbxMtrl->EmissiveColor);
+		mtrl->set_diffuse_color(_fbxMtrl->diffuse_color);
+		mtrl->set_specular_color(_fbxMtrl->specular_color);
+		mtrl->set_ambient_color(_fbxMtrl->ambient_color);
+		mtrl->set_emmisive_color(_fbxMtrl->emissive_color);
 
-		std::fs::path texDir = ResourceManager<Texture>::get_inst().GetBaseDir();
+		std::fs::path texDir = ResourceManager<Texture>::get_inst().get_base_directory();
 		texDir /= _texDestDir;
 
 		//텍스처 옮기기 위한 람다 함수
@@ -543,10 +543,10 @@ namespace core
 				return newTex;
 			};
 
-		mtrl->set_texture(eTextureSlot::diffuse_texture, CopyAndLoadTex(_fbxMtrl->strDiffuseTex));
-		mtrl->set_texture(eTextureSlot::normal_texture, CopyAndLoadTex(_fbxMtrl->strNormalTex));
-		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->strSpecularTex));
-		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->strEmissiveTex));
+		mtrl->set_texture(eTextureSlot::diffuse_texture, CopyAndLoadTex(_fbxMtrl->diffuse_tex_name));
+		mtrl->set_texture(eTextureSlot::normal_texture, CopyAndLoadTex(_fbxMtrl->normal_tex_name));
+		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->specular_tex_name));
+		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->emissive_tex_name));
 
 		s_ptr<GraphicsShader> defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 		mtrl->set_shader(defferedShader);
@@ -663,7 +663,7 @@ namespace core
 		}
 	}
 
-	bool Model3D::set_data_to_renderer(const s_ptr<Com_Renderer_Mesh>& _renderer, UINT _idx)
+	bool Model3D::set_data_to_renderer(const s_ptr<StaticMeshRenderer>& _renderer, UINT _idx)
 	{
 		if (nullptr == _renderer)
 			return false;

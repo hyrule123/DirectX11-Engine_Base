@@ -11,7 +11,7 @@
 namespace core::editor
 {
 	InspectorBase::InspectorBase()
-		: EditorWindow(name::Inspector)
+		: EditorUIWindow(name::Inspector)
 	{
 	}
 
@@ -21,17 +21,17 @@ namespace core::editor
 
 	void InspectorBase::init()
 	{
-		mTargetGameObject;
-		mTargetResource;
+		m_target_gameobject;
+		m_target_resource;
 
 		//컴포넌트의 경우 수동 관리
-		mGuiComponents.resize((int)eComponentOrder::END);
+		m_component_GUIs.resize((int)eComponentOrder::END);
 
-		mGuiComponents[(int)eComponentOrder::Transform] = new_entity<TransformInspector>();
-		mGuiComponents[(int)eComponentOrder::Transform]->set_size(ImVec2(0.f, 100.f));
+		m_component_GUIs[(int)eComponentOrder::Transform] = new_entity<TransformInspector>();
+		m_component_GUIs[(int)eComponentOrder::Transform]->set_size(ImVec2(0.f, 100.f));
 
-		mGuiComponents[(int)eComponentOrder::Renderer] = new_entity<RendererInspcetor>();
-		mGuiComponents[(int)eComponentOrder::Renderer]->set_size(ImVec2(0.f, 100.f));
+		m_component_GUIs[(int)eComponentOrder::Renderer] = new_entity<RendererInspcetor>();
+		m_component_GUIs[(int)eComponentOrder::Renderer]->set_size(ImVec2(0.f, 100.f));
 
 		//for (size_t i = 0; i < mGuiResources.size(); ++i)
 		//{
@@ -42,20 +42,20 @@ namespace core::editor
 
 	void InspectorBase::update()
 	{
-		s_ptr<GameObject> target = mTargetGameObject.lock();
+		s_ptr<GameObject> target = m_target_gameobject.lock();
 		if (target)
 		{
 			if (target->is_destroyed())
 			{
-				mTargetGameObject.reset();
+				m_target_gameobject.reset();
 			}
 
-			for (size_t i = 0; i < mGuiComponents.size(); ++i)
+			for (size_t i = 0; i < m_component_GUIs.size(); ++i)
 			{
-				if (mGuiComponents[i])
+				if (m_component_GUIs[i])
 				{
-					mGuiComponents[i]->set_target(target);
-					mGuiComponents[i]->update();
+					m_component_GUIs[i]->set_target(target);
+					m_component_GUIs[i]->update();
 				}
 			}
 		}
@@ -63,23 +63,23 @@ namespace core::editor
 
 	void InspectorBase::update_UI()
 	{
-		s_ptr<GameObject> target = mTargetGameObject.lock();
+		s_ptr<GameObject> target = m_target_gameobject.lock();
 
 		if (target)
 		{
-			for (size_t i = 0; i < mGuiComponents.size(); ++i)
+			for (size_t i = 0; i < m_component_GUIs.size(); ++i)
 			{
-				IndicatorButton(::core::name::eComponentCategory_String[(UINT)i].data());
+				indicator_button(::core::name::eComponentCategory_String[(UINT)i].data());
 
-				if (mGuiComponents[i])
+				if (m_component_GUIs[i])
 				{
-					mGuiComponents[i]->final_update();
+					m_component_GUIs[i]->final_update();
 				}
 			}
 		}
 	}
 
-	void InspectorBase::IndicatorButton(const char* _strButtonName)
+	void InspectorBase::indicator_button(const char* _strButtonName)
 	{
 		ImGui::PushID(0);
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));

@@ -20,7 +20,7 @@ namespace core::editor
 	using namespace math;
 
 	EditorResources::EditorResources()
-		: EditorWindow(name::ResourceViewer)
+		: EditorUIWindow(name::ResourceViewer)
 		, m_textureTree()
 		, m_materialTree()
 		, m_meshTree()
@@ -33,14 +33,14 @@ namespace core::editor
 
 	void EditorResources::init()
 	{
-		m_textureTree = new_entity<EditorWidget_Tree>();
-		m_materialTree = new_entity<EditorWidget_Tree>();
-		m_meshTree = new_entity<EditorWidget_Tree>();
+		m_textureTree = new_entity<HierarchyTreeWidget>();
+		m_materialTree = new_entity<HierarchyTreeWidget>();
+		m_meshTree = new_entity<HierarchyTreeWidget>();
 
 		s_ptr<EditorResources> ths = std::static_pointer_cast<EditorResources>(shared_from_this());
 
 		m_textureTree->set_selected_callaback_func(
-			std::bind(&EditorResources::ToInspectorTexture, this, std::placeholders::_1)
+			std::bind(&EditorResources::to_texture_inspector, this, std::placeholders::_1)
 		);
 
 		//m_materialTree->set_selected_callaback_func(this
@@ -71,20 +71,20 @@ namespace core::editor
 		//AddResources<GraphicsShader>(pRootNode, "Shaders");
 	}
 
-	void EditorResources::ToInspectorTexture(w_ptr<void> _ptr)
+	void EditorResources::to_texture_inspector(w_ptr<void> _ptr)
 	{
 		s_ptr<Resource> res = std::reinterpret_pointer_cast<Resource>(_ptr.lock());
 
 		s_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::get_inst().find_editor_window(name::Inspector));
-		inspector->SetTargetResource(res);
+		inspector->set_target_resource(res);
 	}
 
-	void EditorResources::ToInspectorMaterial(w_ptr<void> _ptr)
+	void EditorResources::to_material_inspector(w_ptr<void> _ptr)
 	{
 	}
 
-	void EditorResources::ToInspectorMesh(w_ptr<void> _ptr)
+	void EditorResources::to_mesh_inspector(w_ptr<void> _ptr)
 	{
 	}
 

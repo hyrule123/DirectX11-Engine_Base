@@ -35,12 +35,12 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name);
 
-		void set_engine_default_res(bool _bIsDefault) { mbEngineDefaultRes = _bIsDefault; }
-		bool IsEngineDefaultRes() const { return mbEngineDefaultRes; }
+		void set_engine_default_res(bool _bIsDefault) { m_b_engine_default_resource = _bIsDefault; }
+		bool is_engine_default_res() const { return m_b_engine_default_resource; }
 
 	private:
 		std::string m_resource_name;
-		bool mbEngineDefaultRes;
+		bool m_b_engine_default_resource;
 	};
 
 }

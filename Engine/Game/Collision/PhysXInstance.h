@@ -12,6 +12,8 @@ namespace core
 		DECLARE_SINGLETON(PhysXInstance);
 	private:
 		PhysXInstance();
+		void init();
+
 		~PhysXInstance();
 
 	public:

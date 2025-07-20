@@ -14,7 +14,7 @@ namespace core
 		virtual ~Com_Rigidbody_Static();
 
 	protected:
-		physx::PxRigidActor* CreateRigidbody() final;
+		physx::PxRigidActor* create_rigidbody() final;
 	};
 }
 

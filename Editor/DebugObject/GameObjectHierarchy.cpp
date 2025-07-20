@@ -2,7 +2,7 @@
 
 #include <Editor/EditorManager.h>
 #include <Editor/Inspector/InspectorBase.h>
-#include <Editor/Widget/Widget_Tree.h>
+#include <Editor/Widget/HierarchyTreeWidget.h>
 
 #include <Engine/Game/Scene.h>
 
@@ -18,7 +18,7 @@
 namespace core::editor
 {
 	GameObjectHierarchy::GameObjectHierarchy()
-		: EditorWindow(name::GameObjects)
+		: EditorUIWindow(name::GameObjects)
 		, m_tree_widget(nullptr)
 	{
 
@@ -31,19 +31,19 @@ namespace core::editor
 
 	void GameObjectHierarchy::init()
 	{
-		m_tree_widget = new_entity<EditorWidget_Tree>();
+		m_tree_widget = new_entity<HierarchyTreeWidget>();
 
 		m_tree_widget->set_selected_callaback_func(
-			std::bind(&GameObjectHierarchy::GameobjectSelectCallback, this, std::placeholders::_1));
+			std::bind(&GameObjectHierarchy::callback_func_when_selected, this, std::placeholders::_1));
 
-		InitializeScene();
+		initialize_scene();
 	}
 
 	void GameObjectHierarchy::update()
 	{
 	}
 
-	void GameObjectHierarchy::GameobjectSelectCallback(w_ptr<void> _gameobj)
+	void GameObjectHierarchy::callback_func_when_selected(w_ptr<void> _gameobj)
 	{
 		s_ptr<GameObject> obj = std::reinterpret_pointer_cast<GameObject>(_gameobj.lock());
 
@@ -56,10 +56,10 @@ namespace core::editor
 
 		s_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::get_inst().find_editor_window(name::Inspector));
-		inspector->SetTargetGameObject(obj);
+		inspector->set_target_gameobject(obj);
 	}
 
-	void GameObjectHierarchy::InitializeScene()
+	void GameObjectHierarchy::initialize_scene()
 	{
 		m_tree_widget->clear();
 

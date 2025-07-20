@@ -8,18 +8,18 @@ namespace core
 	class ConstBuffer;
 	class Mesh;
 	class Material;
-	class Light_3D : public Light
+	class Light3D : public Light
 	{
-		CLASS_INFO(Light_3D, Light);
-		REGISTER_FACTORY(Light_3D);
-		CLONE_ABLE(Light_3D);
+		CLASS_INFO(Light3D, Light);
+		REGISTER_FACTORY(Light3D);
+		CLONE_ABLE(Light3D);
 	public:
-		Light_3D();
+		Light3D();
 
-		Light_3D(const Light_3D& _other);
+		Light3D(const Light3D& _other);
 		
 
-		~Light_3D() override;
+		~Light3D() override;
 
 		eResult serialize_json(JsonSerializer* _ser) const override;
 		eResult deserialize_json(const JsonSerializer* _ser) override;
@@ -29,15 +29,15 @@ namespace core
 		
 		const tLightAttribute& get_light_3D_attribute() const { return m_attribute; }
 
-		void SetDiffuse(const float4& diffuse) { m_attribute.color.diffuse = diffuse; }
-		void SetSpecular(const float4& spec) { m_attribute.color.specular = spec; }
-		void SetAmbient(const float4& ambient) { m_attribute.color.ambient = ambient; }
-		void SetLightType(eLightType _type) { m_attribute.lightType = (int)_type; }
-		void SetRadius(float radius) { m_attribute.radius = radius; }
-		void SetAngle(float angle) { m_attribute.angle = angle; }
-		const float4& GetDiffuse() { m_attribute.color.diffuse; }
-		float GetRadius() { m_attribute.radius; }
-		float GetAngle() { m_attribute.angle; }
+		void set_diffuse(const float4& diffuse) { m_attribute.color.diffuse = diffuse; }
+		void set_specular(const float4& spec) { m_attribute.color.specular = spec; }
+		void set_ambient(const float4& ambient) { m_attribute.color.ambient = ambient; }
+		void set_light_type(eLightType _type) { m_attribute.lightType = (int)_type; }
+		void set_radius(float radius) { m_attribute.radius = radius; }
+		void set_angle(float angle) { m_attribute.angle = angle; }
+		const float4& get_diffuse() { m_attribute.color.diffuse; }
+		float get_radius() { m_attribute.radius; }
+		float get_angle() { m_attribute.angle; }
 
 	private:
 		tLightAttribute m_attribute;

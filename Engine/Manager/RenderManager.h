@@ -11,11 +11,11 @@ namespace core
 	class StructBuffer;
 	class Texture;
 
-	class Com_Camera;
+	class Camera;
 	class Renderer;
 
 	class Light;
-	class Light_3D;
+	class Light3D;
 	class GameObject;
 
 	class MultiRenderTarget;
@@ -27,14 +27,16 @@ namespace core
 		DECLARE_SINGLETON(RenderManager);
 	private:
 		RenderManager();
+		void init();
+
 		~RenderManager();
 
 		void load_render_states();
 		void init(const tGPUManagerDesc& _Desc);
 
 	public:
-		__forceinline ID3D11Device*			Device() { return m_device.Get(); }
-		__forceinline ID3D11DeviceContext*	Context() { return m_context.Get(); }
+		__forceinline ComPtr<ID3D11Device>			get_device() { return m_device; }
+		__forceinline ComPtr<ID3D11DeviceContext>	get_context() { return m_context; }
 
 		void render();
 		void render_debug();
@@ -50,26 +52,26 @@ namespace core
 			return m_depth_stencil_buffer;
 		}
 
-		bool SetResolution(UINT _resX, UINT _resY);
+		bool set_resolution(UINT _resX, UINT _resY);
 		UINT GetResolutionX() { return m_resolution_x; }
 		UINT GetResolutionY() { return m_resolution_y; }
 		uint2 GetResolution() { return uint2{ m_resolution_x, m_resolution_y }; }
 
-		SceneRenderAgent& sceneRenderAgent() { return m_sceneRenderAgent; }
+		SceneRenderAgent& sceneRenderAgent() { return m_scene_render_agent; }
 
-		ConstBuffer* get_const_buffer(eCBType _Type) { return m_constBuffers[(int)_Type].get(); }
+		ConstBuffer* get_const_buffer(eCBType _Type) { return m_const_buffers[(int)_Type].get(); }
 
 		ComPtr<ID3D11RasterizerState> get_rasterizer_state(eRasterizerState _Type) { 
-			return m_rasterizerStates[(int)_Type]; 
+			return m_rasterizer_states[(int)_Type]; 
 		}
 		ComPtr<ID3D11BlendState> get_blend_state(eBlendState _Type) { 
-			return m_blendStates[(int)_Type]; 
+			return m_blend_states[(int)_Type]; 
 		}
 		ComPtr<ID3D11DepthStencilState> get_depth_stencil_state(eDepthStencilState _Type) { 
-			return m_depthStencilStates[(int)_Type]; 
+			return m_depth_stencil_states[(int)_Type]; 
 		}
 
-		MultiRenderTarget* get_rendertarget(eMRTType _Type) {
+		MultiRenderTarget* get_render_target(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();
 		}
 
@@ -105,7 +107,7 @@ namespace core
 		ComPtr<ID3D11Device> m_device;
 		ComPtr<ID3D11DeviceContext> m_context;
 	
-		ComPtr<IDXGISwapChain> m_swapChain;
+		ComPtr<IDXGISwapChain> m_swap_chain;
 		
 		s_ptr<core::Texture> m_render_target;
 		s_ptr<core::Texture> m_depth_stencil_buffer;
@@ -114,16 +116,16 @@ namespace core
 
 		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multi_render_targets;
 
-		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_constBuffers;
-		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_samplerStates;
-		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizerStates;
-		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depthStencilStates;
-		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blendStates;
+		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_const_buffers;
+		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_sampler_states;
+		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizer_states;
+		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depth_stencil_states;
+		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blend_states;
 
-		s_ptr<Texture>				m_postProcessTexture;
-		s_ptr<Texture>				m_noiseTexture;
+		s_ptr<Texture>				m_post_process_texture;
+		s_ptr<Texture>				m_noise_texture;
 
-		SceneRenderAgent m_sceneRenderAgent;
+		SceneRenderAgent m_scene_render_agent;
 	};
 }
 

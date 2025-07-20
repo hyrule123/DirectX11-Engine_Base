@@ -27,8 +27,10 @@
 
 namespace core
 {
-	ResourceManagers::ResourceManagers()
-		: m_CleanUnusedResourcesFunction{}
+	ResourceManagers::ResourceManagers() 
+		: m_clean_unused_functions{}
+	{}
+	void ResourceManagers::init()
 	{
 		AtExit::add_func(ResourceManagers::destroy_inst);
 	}
@@ -36,22 +38,22 @@ namespace core
 	ResourceManagers::~ResourceManagers()
 	{
 		Transform::release_static();
-		m_CleanUnusedResourcesFunction.clear();
+		m_clean_unused_functions.clear();
 	}
 
-	void ResourceManagers::CleanUnusedResources()
+	void ResourceManagers::clean_unused()
 	{
 		//거꾸로 실행
-		for (size_t i = m_CleanUnusedResourcesFunction.size() - (size_t)1; i >= 0 ; --i)
+		for (size_t i = m_clean_unused_functions.size() - (size_t)1; i >= 0 ; --i)
 		{
-			m_CleanUnusedResourcesFunction[i]();
+			m_clean_unused_functions[i]();
 		}
 	}
 
 	void ResourceManagers::init_resource_managers()
 	{
 		//기본 Resource들 init
-		const std::fs::path& baseDir = PathManager::get_inst().GetResPathRelative();
+		const std::fs::path& baseDir = PathManager::get_inst().get_relative_resource_directory();
 
 		ResourceManager<VertexBuffer>::get_inst().init(baseDir / name::path::directory::resource::Mesh);
 		ResourceManager<Texture>::get_inst().init(baseDir / name::path::directory::resource::Texture);

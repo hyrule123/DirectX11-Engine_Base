@@ -22,8 +22,8 @@ namespace core
 {
 	NormalConvertShader::NormalConvertShader()
 		: ComputeShader(NormalConvertShader::s_static_type_name, uint3{32, 32, 1})
-		, mSrcTex()
-		, mDestTex()
+		, m_src_texture()
+		, m_dest_texture()
 		
 	{
 		set_engine_default_res(true);
@@ -38,54 +38,54 @@ namespace core
 		return ComputeShader::compile_from_byte_code(NormalConverter_CS, sizeof(NormalConverter_CS));
 	}
 
-	s_ptr<Texture> NormalConvertShader::Convert(s_ptr<Texture> _srcTex)
+	s_ptr<Texture> NormalConvertShader::convert(s_ptr<Texture> _srcTex)
 	{
 		if (nullptr == _srcTex)
 			return nullptr;
 
-		mSrcTex = _srcTex;
+		m_src_texture = _srcTex;
 		
 		on_execute();
 
-		s_ptr<Texture> retTex = mDestTex;
-		mDestTex = nullptr;
+		s_ptr<Texture> retTex = m_dest_texture;
+		m_dest_texture = nullptr;
 		return retTex;
 	}
 
 	bool NormalConvertShader::bind_buffer_to_GPU_register()
 	{
-		mDestTex = nullptr;
-		mDestTex = std::make_shared<Texture>();
+		m_dest_texture = nullptr;
+		m_dest_texture = std::make_shared<Texture>();
 
 		//UAV 속성 추가해서 생성
-		D3D11_TEXTURE2D_DESC texDesc = mSrcTex->GetDesc();
+		D3D11_TEXTURE2D_DESC texDesc = m_src_texture->get_texture2D_desc();
 		texDesc.BindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
 
-		if (false == (mDestTex->create(texDesc)))
+		if (false == (m_dest_texture->create(texDesc)))
 		{
-			mDestTex = nullptr;
+			m_dest_texture = nullptr;
 			return false;
 		}
 		
-		mDestTex->set_resource_name(mSrcTex->get_static_type_name());
+		m_dest_texture->set_resource_name(m_src_texture->get_static_type_name());
 
 		//원본
-		mSrcTex->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
+		m_src_texture->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
-		mDestTex->bind_buffer_as_UAV(GPU::Register::u::DestNormalTex);
+		m_dest_texture->bind_buffer_as_UAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
-		ComputeShader::calculate_group_count(uint3{ mDestTex->GetWidth(), mDestTex->GetHeight(), 1u });
+		ComputeShader::calculate_group_count(uint3{ m_dest_texture->get_texture_width(), m_dest_texture->get_texture_height(), 1u });
 
 		return true;
 	}
 
 	void NormalConvertShader::unbind_buffer_from_GPU_register()
 	{
-		mSrcTex->unbind_buffer_from_GPU_register();
-		mSrcTex = nullptr;
+		m_src_texture->unbind_buffer_from_GPU_register();
+		m_src_texture = nullptr;
 		
-		mDestTex->unbind_buffer_from_GPU_register();
+		m_dest_texture->unbind_buffer_from_GPU_register();
 	}
 }

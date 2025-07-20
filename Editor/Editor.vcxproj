@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base\EditorBase.h" />
+    <ClInclude Include="Base\EditorUIBase.h" />
     <ClInclude Include="Base\EditorEntity.h" />
     <ClInclude Include="UI\EditorMainMenu.h" />
-    <ClInclude Include="Base\EditorWindow.h" />
+    <ClInclude Include="Base\EditorUIWindow.h" />
     <ClInclude Include="DebugObject\Console.h" />
     <ClInclude Include="DebugObject\SceneViewer.h" />
     <ClInclude Include="DebugObject\GameObjectHierarchy.h" />
@@ -54,15 +54,15 @@
     <ClInclude Include="Resource\TextureEditor.h" />
     <ClInclude Include="Resource\UVCalculator.h" />
     <ClInclude Include="strKey_Editor.h" />
-    <ClInclude Include="Widget\Widget_ComboBox.h" />
-    <ClInclude Include="Widget\Widget_List.h" />
-    <ClInclude Include="Widget\Widget_Tree.h" />
+    <ClInclude Include="Widget\ComboBoxWidget.h" />
+    <ClInclude Include="Widget\ListWidget.h" />
+    <ClInclude Include="Widget\HierarchyTreeWidget.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\EditorBase.cpp" />
+    <ClCompile Include="Base\EditorUIBase.cpp" />
     <ClCompile Include="Base\EditorEntity.cpp" />
     <ClCompile Include="UI\EditorMainMenu.cpp" />
-    <ClCompile Include="Base\EditorWindow.cpp" />
+    <ClCompile Include="Base\EditorUIWindow.cpp" />
     <ClCompile Include="DebugObject\Console.cpp" />
     <ClCompile Include="DebugObject\SceneViewer.cpp" />
     <ClCompile Include="DebugObject\GameObjectHierarchy.cpp" />
@@ -96,9 +96,9 @@
     <ClCompile Include="Resource\ResourcesViewer.cpp" />
     <ClCompile Include="Resource\TextureEditor.cpp" />
     <ClCompile Include="Resource\UVCalculator.cpp" />
-    <ClCompile Include="Widget\Widget_ComboBox.cpp" />
-    <ClCompile Include="Widget\Widget_List.cpp" />
-    <ClCompile Include="Widget\Widget_Tree.cpp" />
+    <ClCompile Include="Widget\ComboBoxWidget.cpp" />
+    <ClCompile Include="Widget\ListWidget.cpp" />
+    <ClCompile Include="Widget\HierarchyTreeWidget.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -4,7 +4,7 @@
 
 namespace core
 {
-	class Com_Camera;
+	class Camera;
 	class GridScript : public Script
 	{
 		CLASS_INFO(GridScript, Script);
@@ -13,12 +13,12 @@ namespace core
 		GridScript();
 		virtual ~GridScript();
 
-		virtual void Awake();
+		virtual void awake();
 		virtual void update();
 
-		void SetCamera(Com_Camera* camera) { mCamera = camera; }
+		void SetCamera(const s_ptr<Camera>& camera) { m_camera = camera; }
 
 	private:
-		Com_Camera* mCamera;
+		w_ptr<Camera> m_camera;
 	};
 }

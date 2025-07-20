@@ -11,7 +11,7 @@ namespace core
 	Serializable::~Serializable()
 	{
 	}
-	s_ptr<std::ofstream> Serializable::OpenOfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
+	s_ptr<std::ofstream> Serializable::open_ofstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
 	{
 		std::fs::path parentDir = _fullPath.parent_path();
 
@@ -43,7 +43,7 @@ namespace core
 		return ofs;
 	}
 
-	s_ptr<std::ifstream> Serializable::OpenIfstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
+	s_ptr<std::ifstream> Serializable::open_ifstream(std::fs::path const& _fullPath, std::ios::openmode _mode) const
 	{
 		if (false == std::fs::exists(_fullPath))
 		{
@@ -68,9 +68,9 @@ namespace core
 	Serializable_Binary::~Serializable_Binary()
 	{
 	}
-	eResult Serializable_Binary::SaveFile_Binary(std::fs::path const& _fullPath) const
+	eResult Serializable_Binary::save_file_binary(std::fs::path const& _fullPath) const
 	{
-		s_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
+		s_ptr<std::ofstream> ofs = open_ofstream(_fullPath);
 
 		if (nullptr == ofs)
 		{
@@ -92,9 +92,9 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Serializable_Binary::LoadFile_Binary(std::fs::path const& _fullPath)
+	eResult Serializable_Binary::load_file_binary(std::fs::path const& _fullPath)
 	{
-		s_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
+		s_ptr<std::ifstream> ifs = open_ifstream(_fullPath);
 		if (nullptr == ifs)
 		{
 			return eResult::Fail_Nullptr;
@@ -117,9 +117,9 @@ namespace core
 	{
 	}
 
-	eResult Serializable_Json::SaveFile_Json(std::fs::path const& _fullPath) const
+	eResult Serializable_Json::save_file_json(std::fs::path const& _fullPath) const
 	{
-		s_ptr<std::ofstream> ofs = OpenOfstream(_fullPath);
+		s_ptr<std::ofstream> ofs = open_ofstream(_fullPath);
 
 		if (nullptr == ofs)
 		{
@@ -141,9 +141,9 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Serializable_Json::LoadFile_Json(std::fs::path const& _fullPath)
+	eResult Serializable_Json::load_file_json(std::fs::path const& _fullPath)
 	{
-		s_ptr<std::ifstream> ifs = OpenIfstream(_fullPath);
+		s_ptr<std::ifstream> ifs = open_ifstream(_fullPath);
 		if (nullptr == ifs)
 		{
 			return eResult::Fail_Nullptr;

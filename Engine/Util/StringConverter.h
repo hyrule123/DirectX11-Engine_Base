@@ -7,37 +7,38 @@ class StringConverter
 {
 public:
 	// UTF8 <-> Unicode
-	static void UTF8_to_Unicode(__in const std::string_view _src, __out std::wstring& _dest);
-	static void Unicode_to_UTF8(__in const std::wstring_view _src, __out std::string& _dest);
-	static std::string Unicode_to_UTF8(const std::wstring_view _src);
-	static std::wstring UTF8_to_Unicode(const std::string_view _src);
+	static void UTF8_to_UTF16(__in const std::string_view _src, __out std::wstring& _dest);
+	static void UTF16_to_UTF8(__in const std::wstring_view _src, __out std::string& _dest);
+	static std::string UTF16_to_UTF8(const std::wstring_view _src);
+	static std::wstring UTF8_to_UTF16(const std::string_view _src);
 
 	// ANSI <-> UniCode
-	static void Unicode_to_ANSI(__in const std::wstring_view _src, __out std::string& _dest);
-	static void ANSI_to_Unicode(__in const std::string_view _src, __out std::wstring& _dest);
-	static std::wstring ANSI_to_Unicode(const std::string_view _src);
-	static std::string Unicode_to_ANSI(const std::wstring_view _src);
+	static void UTF16_to_ANSI(__in const std::wstring_view _src, __out std::string& _dest);
+	static void ANSI_to_UTF16(__in const std::string_view _src, __out std::wstring& _dest);
+	static std::wstring ANSI_to_UTF16(const std::string_view _src);
+	static std::string UTF16_to_ANSI(const std::wstring_view _src);
 
 	// Strlen(UTF-8 Support)
-	static size_t UTF8_Strlen(const std::string_view _str);
+	static size_t UTF8_strlen(const std::string_view _str);
 
 	//새 string을 만들어서 return 해줌
-	inline static std::string UpperCase(const std::string_view _str);
+	inline static std::string upper_case(const std::string_view _str);
 	//새 wstring을 만들어서 return 해줌
-	inline static std::wstring UpperCase(const std::wstring_view _wstr);
+	inline static std::wstring upper_case(const std::wstring_view _wstr);
 
-	inline static std::string& MakeUpperCase(std::string& _str);
-	inline static std::wstring& MakeUpperCase(std::wstring& _wstr);
+	inline static void make_upper_case(std::string& _str);
+	inline static void make_upper_case(std::wstring& _wstr);
 
 	//T 타입 데이터를 String으로 저장
 	template <typename T>
-	inline static std::string Base64Encode(const T& _srcT);
+	inline static std::string base64_encode(const T& _srcT);
 
+	//type specialization을 위해서 위 함수와 똑같이 const reference로 받아준다.
 	template <>
-	inline static std::string Base64Encode(const std::wstring_view& _srcT);
+	inline static std::string base64_encode(const std::wstring_view& _srcT);
 
 	template <typename T>
-	inline static T Base64Decode(const std::string_view _srcStr);
+	inline static T base64_decode(const std::string_view _srcStr);
 
 
 private:
@@ -45,7 +46,7 @@ private:
 	~StringConverter() = delete;
 };
 
-inline std::string StringConverter::UpperCase(const std::string_view _str)
+inline std::string StringConverter::upper_case(const std::string_view _str)
 {
 	std::string converted(_str);
 
@@ -62,7 +63,7 @@ inline std::string StringConverter::UpperCase(const std::string_view _str)
 	return converted;
 }
 
-inline std::wstring StringConverter::UpperCase(const std::wstring_view _wstr)
+inline std::wstring StringConverter::upper_case(const std::wstring_view _wstr)
 {
 	std::wstring converted(_wstr);
 
@@ -75,7 +76,7 @@ inline std::wstring StringConverter::UpperCase(const std::wstring_view _wstr)
 	return converted;
 }
 
-inline std::string& StringConverter::MakeUpperCase(std::string& _str)
+inline void StringConverter::make_upper_case(std::string& _str)
 {
 	size_t size = _str.size();
 	for (size_t i = 0; i < size; ++i)
@@ -86,36 +87,32 @@ inline std::string& StringConverter::MakeUpperCase(std::string& _str)
 			_str[i] = std::toupper(_str[i]);
 		}
 	}
-
-	return _str;
 }
 
-inline std::wstring& StringConverter::MakeUpperCase(std::wstring& _wstr)
+inline void StringConverter::make_upper_case(std::wstring& _wstr)
 {
 	size_t size = _wstr.size();
 	for (size_t i = 0; i < size; ++i)
 	{
 		_wstr[i] = (wchar_t)std::toupper((int)_wstr[i]);
 	}
-
-	return _wstr;
 }
 
 template<typename T>
-inline std::string StringConverter::Base64Encode(const T& _srcT)
+inline std::string StringConverter::base64_encode(const T& _srcT)
 {
 	return base64_encode((const unsigned char*)&_srcT, sizeof(T));
 }
 
 template<>
-inline std::string StringConverter::Base64Encode(const std::wstring_view& _srcT)
+inline std::string StringConverter::base64_encode(const std::wstring_view& _srcT)
 {
-	return base64_encode(reinterpret_cast<const unsigned char*>(_srcT.data()), (unsigned int)_srcT.size() * 2u);
+	return Base64::encode(reinterpret_cast<const unsigned char*>(_srcT.data()), (unsigned int)_srcT.size() * 2u);
 }
 
 
 template<typename T>
-inline T StringConverter::Base64Decode(const std::string_view _srcStr)
+inline T StringConverter::base64_decode(const std::string_view _srcStr)
 {
 	T returnResult{};
 

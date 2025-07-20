@@ -61,7 +61,7 @@ namespace core
 
 		//지역변수와 swap해서 소멸자에서 CollisionExit()를 호출하게 만드는게 좋은 방법일듯.
 		//->해 보니까 소멸자에서 무조건 호출돼서, 게임 강제 종료할때도 호출이 됨... 좋은방법은 아닌듯
-		std::unordered_map<tColliderID, ContactPair, tColliderID_Hasher> m_collisions;
+		std::unordered_map<ColliderID, ContactPair, ColliderID_Hasher> m_collisions;
 
 		//각 Collider2D 함수 주소를 담고있는 이중 배열
 		//각 Collider2D가 가지고 있는 eCollider2D_Type를 index 번호로 해서 함수를 호출하기 위함

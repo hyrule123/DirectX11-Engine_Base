@@ -11,8 +11,8 @@ namespace core
 {
 	Rigidbody::Rigidbody(const std::string_view key)
 		: Super(key, s_component_order)
-		, m_rigidActor{}
-		, m_ShapesModified{true}
+		, m_rigid_actor{}
+		, m_shapes_modified{true}
 	{
 	}
 
@@ -22,66 +22,66 @@ namespace core
 
 	void Rigidbody::init()
 	{
-		m_rigidActor.Set(CreateRigidbody());
-		ASSERT_DEBUG(m_rigidActor, "PxActor 생성되지 않음.");
+		m_rigid_actor.Set(create_rigidbody());
+		ASSERT_DEBUG(m_rigid_actor, "PxActor 생성되지 않음.");
 		
-		if (m_rigidActor)
+		if (m_rigid_actor)
 		{
-			m_rigidActor->userData = this;
+			m_rigid_actor->userData = this;
 		}
 	}
-	void Rigidbody::OnEnable()
+	void Rigidbody::on_enable()
 	{
 		s_ptr<GameObject> owner = get_owner();
 		ASSERT(owner, "owner 게임오브젝트가 없습니다.");
 		s_ptr<Scene> scene = owner->get_scene();
 		ASSERT(scene, "scene이 없습니다.");
 
-		CollisionSystem* colsys = scene->GetCollisionSystem();
+		CollisionSystem* colsys = scene->get_collision_system();
 		if (colsys)
 		{
-			Collision3D* col3d = colsys->GetCollision3D();
+			Collision3D* col3d = colsys->get_collision_manager_3D();
 			if (col3d)
 			{
-				bool ret = col3d->AddPxActor(m_rigidActor.Get());
+				bool ret = col3d->AddPxActor(m_rigid_actor.Get());
 				ASSERT_DEBUG(ret, "AddPxActor 실패.");
 			}
 		}
 	}
-	void Rigidbody::OnDisable()
+	void Rigidbody::on_disable()
 	{
-		physx::PxScene* scene = m_rigidActor->getScene();
+		physx::PxScene* scene = m_rigid_actor->getScene();
 		if (scene)
 		{
-			scene->removeActor(*(static_cast<physx::PxActor*>(m_rigidActor.Get())));
+			scene->removeActor(*(static_cast<physx::PxActor*>(m_rigid_actor.Get())));
 		}
 	}
 
-	void Rigidbody::OnDestroy()
+	void Rigidbody::on_destroy()
 	{
-		m_rigidActor.Reset();
+		m_rigid_actor.Reset();
 	}
 
 
-	bool Rigidbody::AttachColliderShape(physx::PxShape* _pxShape)
+	bool Rigidbody::attach_collider_shape(physx::PxShape* _pxShape)
 	{
 		bool ret = false;
-		if (m_rigidActor)
+		if (m_rigid_actor)
 		{
-			ret = m_rigidActor->attachShape(*_pxShape);
-			m_ShapesModified = true;
+			ret = m_rigid_actor->attachShape(*_pxShape);
+			m_shapes_modified = true;
 		}
 		return ret;
 	}
-	void Rigidbody::DetachColliderShape(physx::PxShape* _pxShape)
+	void Rigidbody::detach_collider_shape(physx::PxShape* _pxShape)
 	{
-		if (m_rigidActor)
+		if (m_rigid_actor)
 		{
-			m_rigidActor->detachShape(*_pxShape);
-			m_ShapesModified = true;
+			m_rigid_actor->detachShape(*_pxShape);
+			m_shapes_modified = true;
 		}
 	}
-	void Rigidbody::SyncToPhysXGlobalPose()
+	void Rigidbody::sync_to_physX_global_pose()
 	{
 		s_ptr<GameObject> owner = get_owner();
 		
@@ -99,10 +99,10 @@ namespace core
 		transform.p = tr->get_world_position();
 		transform.q = tr->get_local_rotation();
 
-		m_rigidActor->setGlobalPose(transform);
+		m_rigid_actor->setGlobalPose(transform);
 	}
 
-	void Rigidbody::FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform)
+	void Rigidbody::fetch_from_physX_global_pose(const physx::PxTransform& _pxTransform)
 	{
 		s_ptr<GameObject> owner = get_owner();
 
@@ -114,11 +114,11 @@ namespace core
 	}
 
 
-	void Rigidbody::EnableGravity(bool enable)
+	void Rigidbody::set_gravity(bool enable)
 	{
-		if (m_rigidActor)
+		if (m_rigid_actor)
 		{
-			auto flags = m_rigidActor->getActorFlags();
+			auto flags = m_rigid_actor->getActorFlags();
 			if (enable)
 			{
 				flags &= ~physx::PxActorFlag::eDISABLE_GRAVITY;
@@ -128,15 +128,15 @@ namespace core
 				flags |= physx::PxActorFlag::eDISABLE_GRAVITY;
 			}
 
-			m_rigidActor->setActorFlags(flags);
+			m_rigid_actor->setActorFlags(flags);
 		}
 	}
 
-	bool Rigidbody::IsGravityEnabled() const
+	bool Rigidbody::is_gravity_enabled() const
 	{
-		if (m_rigidActor)
+		if (m_rigid_actor)
 		{
-			auto flags = m_rigidActor->getActorFlags();
+			auto flags = m_rigid_actor->getActorFlags();
 
 			if (!(physx::PxActorFlag::eDISABLE_GRAVITY & flags))
 			{

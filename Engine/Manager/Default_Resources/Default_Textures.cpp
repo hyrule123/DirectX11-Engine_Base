@@ -33,8 +33,8 @@ namespace core {
 #pragma endregion
 
 		//noise
-		//s_ptr<Texture> m_noiseTexture = std::make_shared<Texture>();
-		//m_noiseTexture->CreateBuffer(RenderManager::get_inst().GetResolutionX(), RenderManager::get_inst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
-		//m_noiseTexture->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::Pixel);
+		//s_ptr<Texture> m_noise_texture = std::make_shared<Texture>();
+		//m_noise_texture->CreateBuffer(RenderManager::get_inst().GetResolutionX(), RenderManager::get_inst().GetResolutionY(), DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE);
+		//m_noise_texture->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::Pixel);
 	}
 }

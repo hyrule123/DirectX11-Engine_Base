@@ -17,6 +17,10 @@ namespace core
 		, m_dispatcher{ nullptr }
 		, m_PVD{ nullptr }	//PhysX Visualization Debugger
 	{
+	}
+
+	void PhysXInstance::init()
+	{
 		using namespace physx;
 		//CreateBuffer PxFoundation
 		m_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_allocator, m_errorCallback);

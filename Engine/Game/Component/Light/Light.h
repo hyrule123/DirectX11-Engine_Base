@@ -14,10 +14,10 @@ namespace core
         Light(const std::string_view key, eDimensionType _dimensionType);
         virtual ~Light();
 
-        eDimensionType GetDimensionType() const { return mDimension; }
+        eDimensionType get_dimension_type() const { return m_dimension; }
 
     private:
-        eDimensionType mDimension;
+        eDimensionType m_dimension;
     };
 }
 

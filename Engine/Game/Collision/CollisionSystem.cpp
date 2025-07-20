@@ -22,10 +22,10 @@ namespace core
 {
 	CollisionSystem::CollisionSystem(Scene* const _ownerScene)
 		: m_owner{ _ownerScene }
-		, m_collisionMask{}
-		, m_raycastMask{}
-		, m_col2DManager{ nullptr }
-		, m_col3DManager{ nullptr }
+		, m_collision_mask{}
+		, m_raycast_mask{}
+		, m_collision2D_manager{ nullptr }
+		, m_collision3D_manager{ nullptr }
 	{
 	}
 
@@ -35,24 +35,24 @@ namespace core
 
 	void CollisionSystem::CreateCollision2D()
 	{
-		m_col2DManager = std::make_unique<Collision2D>(this);
+		m_collision2D_manager = std::make_unique<Collision2D>(this);
 	}
 
 	void CollisionSystem::CreateCollision3D()
 	{
-		m_col3DManager = std::make_unique<Collision3D>(this);
+		m_collision3D_manager = std::make_unique<Collision3D>(this);
 	}
 
 	void CollisionSystem::fixed_update()
 	{
-		if (m_col2DManager)
+		if (m_collision2D_manager)
 		{
-			m_col2DManager->fixed_update();
+			m_collision2D_manager->fixed_update();
 		}
 		
-		if (m_col3DManager)
+		if (m_collision3D_manager)
 		{
-			m_col3DManager->fixed_update();
+			m_collision3D_manager->fixed_update();
 		}
 
 		
@@ -66,7 +66,7 @@ namespace core
 		//{
 		//	for (uint column = 0; column < g_maxLayer; column++)
 		//	{
-		//		if (m_collisionMask[row][column])
+		//		if (m_collision_mask[row][column])
 		//		{
 		//			LayerCollision(scene, row, column);
 		//		}
@@ -76,21 +76,21 @@ namespace core
 
 	void CollisionSystem::frame_end()
 	{
-		if (m_col2DManager) {
-			m_col2DManager->frame_end();
+		if (m_collision2D_manager) {
+			m_collision2D_manager->frame_end();
 		}
 		
-		if (m_col3DManager) {
-			m_col3DManager->frame_end();
+		if (m_collision3D_manager) {
+			m_collision3D_manager->frame_end();
 		}
 	}
 
 	void CollisionSystem::render() {
-		if (m_col2DManager) {
-			m_col2DManager->render();
+		if (m_collision2D_manager) {
+			m_collision2D_manager->render();
 		}
-		if (m_col3DManager) {
-			m_col3DManager->render();
+		if (m_collision3D_manager) {
+			m_collision3D_manager->render();
 		}
 	}
 
@@ -151,21 +151,21 @@ namespace core
 		//	{
 		//		if (_left->IsTriiger())
 		//		{
-		//			_left->OnTriggerEnter(_right);
+		//			_left->on_trigger_enter(_right);
 		//		}
 		//		else
 		//		{
-		//			_left->OnCollisionEnter(_right);
+		//			_left->on_collision_enter(_right);
 		//		}
 		//			
 
 		//		if (_right->IsTriiger())
 		//		{
-		//			_right->OnTriggerEnter(_left);
+		//			_right->on_trigger_enter(_left);
 		//		}
 		//		else
 		//		{
-		//			_right->OnCollisionEnter(_left);
+		//			_right->on_collision_enter(_left);
 		//		}
 
 		//		iter->second = true;
@@ -174,21 +174,21 @@ namespace core
 		//	{
 		//		if (_left->IsTriiger())
 		//		{
-		//			_left->OnTriggerStay(_right);
+		//			_left->on_trigger_stay(_right);
 		//		}
 		//		else
 		//		{
-		//			_left->OnCollisionStay(_right);
+		//			_left->on_collision_stay(_right);
 		//		}
 		//			
 
 		//		if (_right->IsTriiger())
 		//		{
-		//			_right->OnTriggerStay(_left);
+		//			_right->on_trigger_stay(_left);
 		//		}	
 		//		else
 		//		{
-		//			_right->OnCollisionStay(_left);
+		//			_right->on_collision_stay(_left);
 		//		}
 		//			
 		//	}
@@ -199,14 +199,14 @@ namespace core
 		//	if (iter->second == true)
 		//	{
 		//		if (_left->IsTriiger())
-		//			_left->OnTriggerExit(_right);
+		//			_left->on_trigger_exit(_right);
 		//		else
-		//			_left->OnCollisionExit(_right);
+		//			_left->on_collision_exit(_right);
 
 		//		if (_right->IsTriiger())
-		//			_right->OnTriggerExit(_left);
+		//			_right->on_trigger_exit(_left);
 		//		else
-		//			_right->OnCollisionExit(_left);
+		//			_right->on_collision_exit(_left);
 
 		//		iter->second = false;
 		//	}
@@ -294,8 +294,8 @@ namespace core
 	{
 		if (_layerA < g_maxLayer && _layerB < g_maxLayer)
 		{
-			m_collisionMask[_layerA][_layerB] = _isEnable;
-			m_collisionMask[_layerB][_layerA] = _isEnable;
+			m_collision_mask[_layerA][_layerB] = _isEnable;
+			m_collision_mask[_layerB][_layerA] = _isEnable;
 		}
 	}
 
@@ -303,8 +303,8 @@ namespace core
 	{
 		if (_layerA < g_maxLayer && _layerB < g_maxLayer)
 		{
-			m_raycastMask[_layerA][_layerB] = _isEnable;
-			m_raycastMask[_layerB][_layerA] = _isEnable;
+			m_raycast_mask[_layerA][_layerB] = _isEnable;
+			m_raycast_mask[_layerB][_layerA] = _isEnable;
 		}
 	}
 

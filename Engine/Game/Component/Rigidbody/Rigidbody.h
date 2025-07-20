@@ -4,7 +4,7 @@
 
 //이 클래스가 담당하는일
 //Rigidbody 생성, 삭제
-//Rigidbody를 Collision3D에 등록(OnEnable), 해제(OnDisable)
+//Rigidbody를 Collision3D에 등록(on_enable), 해제(OnDisable)
 
 namespace core
 {
@@ -24,33 +24,33 @@ namespace core
 		void init() final;
 		void final_update() final{}
 
-		void OnEnable() final;
-		void OnDisable() final;
-		void OnDestroy() final;
+		void on_enable() final;
+		void on_disable() final;
+		void on_destroy() final;
 
-		bool AttachColliderShape(physx::PxShape* _pxShape);
-		void DetachColliderShape(physx::PxShape* _pxShape);
+		bool attach_collider_shape(physx::PxShape* _pxShape);
+		void detach_collider_shape(physx::PxShape* _pxShape);
 
 		//Collision3D에서 호출
-		void SyncToPhysXGlobalPose();
-		void FetchFromPhysXGlobalPose(const physx::PxTransform& _pxTransform);
+		void sync_to_physX_global_pose();
+		void fetch_from_physX_global_pose(const physx::PxTransform& _pxTransform);
 
-		void			EnableGravity(bool enable);
-		bool			IsGravityEnabled() const;
+		void			set_gravity(bool enable);
+		bool			is_gravity_enabled() const;
 
 	protected:
-		virtual physx::PxRigidActor* CreateRigidbody() = 0;
-		physx::PxRigidActor* GetPxActor() { return m_rigidActor.Get(); }
-		const physx::PxRigidActor* GetPxActor() const { return m_rigidActor.Get(); }
+		virtual physx::PxRigidActor* create_rigidbody() = 0;
+		physx::PxRigidActor* get_px_actor() { return m_rigid_actor.Get(); }
+		const physx::PxRigidActor* get_px_actor() const { return m_rigid_actor.Get(); }
 
 		//Shape가 추가되거나 제거될 경우 질량(혹은 밀도)를 재계산해줘야 함
-		inline bool IsShapesModified() const { return m_ShapesModified; }
-		inline void SetShapesModified(bool _modified) { m_ShapesModified = _modified; }
+		inline bool is_shapes_modified() const { return m_shapes_modified; }
+		inline void set_shapes_modified(bool _modified) { m_shapes_modified = _modified; }
 
 	private:
-		PxActorWrapper<physx::PxRigidActor> m_rigidActor;
+		PxActorWrapper<physx::PxRigidActor> m_rigid_actor;
 
-		bool m_ShapesModified;
+		bool m_shapes_modified;
 	};
 }
 

@@ -8,13 +8,13 @@
 
 //CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
-public: virtual s_ptr<Entity> Clone() override { \
+public: virtual s_ptr<Entity> clone() override { \
 return std::make_shared<_type>(*this); \
 }
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
 #define CLONE_DISABLE(_type) \
-private: virtual s_ptr<Entity> Clone() override { return nullptr; }
+private: virtual s_ptr<Entity> clone() override { return nullptr; }
 
 //고유 이름으로 생성자 등록, 웬만하면 쓸 일 없을듯?
 #define REGISTER_FACTORY_UNIQUE(_class, _key) \
@@ -34,19 +34,19 @@ namespace core
 
 		Entity(const Entity& _other);
 		//Clone을 지원하지 않을 경우 nullptr이 반환된다.
-		virtual s_ptr<Entity> Clone() { return nullptr; }
+		virtual s_ptr<Entity> clone() { return nullptr; }
 
 		//런타임 멤버함수
 		const std::string_view get_static_type_name() const {
 			return m_static_type_name;
 		}
-		uint32 GetID() const { return m_ID; }
+		uint32 get_ID() const { return m_ID; }
 
 	private:
 		const uint32 m_ID;
 		const std::string_view m_static_type_name;
 
-		static uint32 g_nextID;
+		static uint32 g_next_ID;
 	};
 
 	//이 클래스의 목적: 문자열로 원하는 클래스를 생성
@@ -67,6 +67,8 @@ namespace core
 		DECLARE_SINGLETON(EntityFactory);
 	private:
 		EntityFactory();
+		void init();
+
 		~EntityFactory();
 
 	public:

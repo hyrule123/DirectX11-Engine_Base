@@ -51,7 +51,7 @@ namespace core {
 	{
 		if (m_buffer) {
 			UINT offset = 0u;
-			RenderManager::get_inst().Context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_data_stride, &offset);
+			RenderManager::get_inst().get_context()->IASetVertexBuffers(0, 1, m_buffer.GetAddressOf(), &m_data_stride, &offset);
 		}
 	}
 
@@ -59,7 +59,7 @@ namespace core {
 	{
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
-		return SaveFile_Binary(fullpath);;
+		return save_file_binary(fullpath);;
 	}
 
 	eResult VertexBuffer::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
@@ -67,7 +67,7 @@ namespace core {
 		std::fs::path fullpath = _base_directory / _resource_name;
 		fullpath.replace_extension(name::path::extension::VertexBuffer);
 		reset();
-		return LoadFile_Binary(fullpath);
+		return load_file_binary(fullpath);
 	}
 
 	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
@@ -178,7 +178,7 @@ namespace core {
 		subData.pSysMem = m_data.data();
 
 		if (
-			FAILED(RenderManager::get_inst().Device()->CreateBuffer(&m_desc, &subData, m_buffer.ReleaseAndGetAddressOf()))
+			FAILED(RenderManager::get_inst().get_device()->CreateBuffer(&m_desc, &subData, m_buffer.ReleaseAndGetAddressOf()))
 			)
 		{
 			//실패시 내용 초기화

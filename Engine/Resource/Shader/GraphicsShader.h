@@ -42,13 +42,13 @@ namespace core
 		eResult compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);
 		eResult compile_from_CSO(eGSStage _stage, const std::filesystem::path& _FileName);
 
-		void AddInputLayoutDesc(const D3D11_INPUT_ELEMENT_DESC& _desc);
-		void SetInputLayoutDesc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs);
-		eResult CreateInputLayout();
-		const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutDescs() { return m_inputLayoutDescs; }
+		void add_input_layout_desc(const D3D11_INPUT_ELEMENT_DESC& _desc);
+		void set_input_layout_desc(const std::vector<D3D11_INPUT_ELEMENT_DESC>& _descs);
+		eResult create_input_layout();
+		const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutDescs() { return m_input_layout_descs; }
 
-		ID3D11InputLayout* get_input_layout() { return m_inputLayout.Get(); }
-		ID3D11InputLayout** get_input_layout_pp() { return m_inputLayout.GetAddressOf(); }
+		ID3D11InputLayout* get_input_layout() { return m_input_layout.Get(); }
+		ID3D11InputLayout** get_input_layout_pp() { return m_input_layout.GetAddressOf(); }
 
 		void set_rasterizer_state(eRasterizerState _state);
 		void set_depth_stencil_state(eDepthStencilState _state);
@@ -61,26 +61,26 @@ namespace core
 		static void unbind_all_shader();
 
 		//에디터용
-		void set_edit_mode(bool _bEditMode) { m_bEditMode = _bEditMode; }
+		void set_edit_mode(bool _bEditMode) { m_b_edit_mode = _bEditMode; }
 		void set_shader_name(eGSStage _stage, const std::string_view _resource_name) {
-			m_arrShaderCode[(int)_stage].name = _resource_name;
+			m_shader_codes[(int)_stage].name = _resource_name;
 		}
-		const std::string& get_shader_name(eGSStage _stage) { return m_arrShaderCode[(int)_stage].name; }
+		const std::string& get_shader_name(eGSStage _stage) { return m_shader_codes[(int)_stage].name; }
 
 	private:
 		eResult create_shader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
 
 	private:
-		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputLayoutDescs;
-		ComPtr<ID3D11InputLayout> m_inputLayout;
+		std::vector<D3D11_INPUT_ELEMENT_DESC> m_input_layout_descs;
+		ComPtr<ID3D11InputLayout> m_input_layout;
 
-		std::array<tShaderCode, (int)eGSStage::END>  m_arrShaderCode;
+		std::array<tShaderCode, (int)eGSStage::END>  m_shader_codes;
 
-		ComPtr<ID3D11VertexShader>		m_vertexShader;
-		ComPtr<ID3D11HullShader>		m_hullShader;
-		ComPtr<ID3D11DomainShader>		m_domainShader;
-		ComPtr<ID3D11GeometryShader>	m_geometryShader;
-		ComPtr<ID3D11PixelShader>		m_pixelShader;
+		ComPtr<ID3D11VertexShader>		m_vertex_shader;
+		ComPtr<ID3D11HullShader>		m_hull_shader;
+		ComPtr<ID3D11DomainShader>		m_domain_shader;
+		ComPtr<ID3D11GeometryShader>	m_geometry_shader;
+		ComPtr<ID3D11PixelShader>		m_pixel_shader;
 
 		ComPtr<ID3D11RasterizerState>	m_rasterizer_state;
 		ComPtr<ID3D11BlendState>		m_blend_state;
@@ -94,8 +94,8 @@ namespace core
 		UINT m_sample_mask;
 		UINT m_stencil_ref;
 
-		ComPtr<ID3DBlob> m_errorBlob;
+		ComPtr<ID3DBlob> m_error_blob;
 
-		bool m_bEditMode;
+		bool m_b_edit_mode;
 	};
 }

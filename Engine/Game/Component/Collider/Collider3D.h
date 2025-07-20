@@ -21,23 +21,23 @@ namespace core
 		eResult deserialize_json(const JsonSerializer* _ser) override { return eResult(); };
 
 		void init() override;
-		void Awake() override;
+		void awake() override;
 
-		MATRIX GetColliderMatrix() override { return MATRIX{}; };
+		MATRIX get_collider_matrix() override { return MATRIX{}; };
 
 		//Start 호출 되기 전에만 동작함.
-		void SetSyncScaleToTransfom(bool enable) { m_isSyncScaleToTransform = enable; }
+		void set_sync_scale_to_transform(bool enable) { m_b_sync_scale_to_transform = enable; }
 
 	protected:
-		inline bool IsSyncScaleToTransform() const { return m_isSyncScaleToTransform; }
-		inline Collision3D* GetCollision3D() { return m_col3dMgr; }
+		inline bool is_sync_scale_to_transform() const { return m_b_sync_scale_to_transform; }
+		inline Collision3D* get_collision_manager_3D() { return m_collision_manager_3D; }
 
 	private:
-		eCollider3DType				m_colliderType;
+		eCollider3DType				m_collider_type_3D;
 
-		bool						m_isSyncScaleToTransform;
+		bool						m_b_sync_scale_to_transform;
 
-		Collision3D*				m_col3dMgr;
+		Collision3D*				m_collision_manager_3D;
 	};
 }
 

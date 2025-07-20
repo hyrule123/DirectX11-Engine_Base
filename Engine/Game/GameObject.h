@@ -31,7 +31,7 @@ namespace core
 			InActive,
 			Active,
 			DestroyReserved,
-			Destroy
+			destroy
 		};
 
 		GameObject();
@@ -41,7 +41,7 @@ namespace core
 		virtual ~GameObject();
 
 		virtual void init() override;
-		virtual void Awake();
+		virtual void awake();
 		virtual void fixed_update();
 		virtual void update();
 		virtual void final_update();

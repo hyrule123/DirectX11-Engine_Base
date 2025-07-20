@@ -5,9 +5,9 @@
 
 #include <Engine/Game/GameObject.h>
 
-#include <Engine/Game/Component/Camera/Com_Camera.h>
+#include <Engine/Game/Component/Camera/Camera.h>
 #include <Engine/Game/Component/Collider/Collider2D.h>
-#include <Engine/Game/Component/Collider/Com_Collider2D_AABB.h>
+#include <Engine/Game/Component/Collider/Collider2D_AABB.h>
 
 #include <Engine/Resource/Mesh/Mesh.h>
 #include <Engine/Manager/RenderManager.h>
@@ -98,7 +98,7 @@ namespace core
 	void Collision2D::fixed_update()
 	{
 		//m_collision 데이터를 임시 컨테이너로 옮겨준다
-		std::unordered_map<tColliderID, ContactPair, tColliderID_Hasher> prevCollisions{};
+		std::unordered_map<ColliderID, ContactPair, ColliderID_Hasher> prevCollisions{};
 		m_collisions.swap(prevCollisions);
 
 		const auto& colMask = m_owner->GetCollisionMask();
@@ -131,17 +131,17 @@ namespace core
 					{
 						const s_ptr<Collider2D>& right = rights[r];
 						
-						left->ColliderUpdate();
-						right->ColliderUpdate();
+						left->collider_update();
+						right->collider_update();
 
-						eCollider2D_Shape leftShape = left->GetColliderShape();
-						eCollider2D_Shape rightShape = right->GetColliderShape();
+						eCollider2D_Shape leftShape = left->get_collider_shape();
+						eCollider2D_Shape rightShape = right->get_collider_shape();
 
 						float2 contactPoint{};
 						bool isContact = s_checkIntersectFunctions[(int)leftShape][(int)rightShape]
 						(left, right, contactPoint);
 
-						tColliderID id{ left->GetID(), right->GetID() };
+						ColliderID id{ left->get_ID(), right->get_ID() };
 
 						//충돌했을 경우: 첫 충돌 함수 호출 또는 계속 충돌 함수 호출
 						if (isContact)
@@ -183,7 +183,7 @@ namespace core
 	void Collision2D::render()
 	{
 		////메인 카메라
-		//Com_Camera* mainCam = RenderManager::get_inst().sceneRenderAgent().GetMainCamera();
+		//Camera* mainCam = RenderManager::get_inst().sceneRenderAgent().get_main_camera();
 		//if (nullptr == mainCam)
 		//{
 		//	return;
@@ -208,16 +208,16 @@ namespace core
 		//			continue;
 		//		}
 
-		//		col->ColliderUpdate();
+		//		col->collider_update();
 
 		//		//TODO: Collider 별로 사이즈 제대로 설정하기
 		//		tDebugDrawData debugData{};
-		//		debugData.WVP = col->GetColliderMatrix();
+		//		debugData.WVP = col->get_collider_matrix();
 		//		debugData.WVP *= matView;
 		//		debugData.WVP *= matProj;
-		//		debugData.isColliding = (col->IsColliding() ? TRUE : FALSE);
+		//		debugData.isColliding = (col->is_colliding() ? TRUE : FALSE);
 
-		//		m_debugInstancingData[(int)col->GetColliderShape()].push_back(std::move(debugData));
+		//		m_debugInstancingData[(int)col->get_collider_shape()].push_back(std::move(debugData));
 		//	}
 		//}
 
@@ -246,22 +246,22 @@ namespace core
 
 	bool Collision2D::CheckIntersect_AABB_AABB(const s_ptr<Collider2D>& _AABB1, const s_ptr<Collider2D>& _AABB2, float2& _contactPoint)
 	{
-		Com_Collider2D_AABB* colA = static_cast<Com_Collider2D_AABB*>(_AABB1.get());
-		Com_Collider2D_AABB* colB = static_cast<Com_Collider2D_AABB*>(_AABB2.get());
+		Collider2D_AABB* colA = static_cast<Collider2D_AABB*>(_AABB1.get());
+		Collider2D_AABB* colB = static_cast<Collider2D_AABB*>(_AABB2.get());
 
-		if (colA->Left() > colB->Right())
+		if (colA->left() > colB->right())
 		{
 			return false;
 		}
-		else if (colA->Bottom() > colB->Top())
+		else if (colA->bottom() > colB->top())
 		{
 			return false;
 		}
-		else if (colA->Right() < colB->Left())
+		else if (colA->right() < colB->left())
 		{
 			return false;
 		}
-		else if (colA->Top() < colB->Bottom())
+		else if (colA->top() < colB->bottom())
 		{
 			return false;
 		}

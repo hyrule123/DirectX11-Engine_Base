@@ -16,35 +16,35 @@ namespace core
 	Animation3D::Animation3D()
         : Animation(Animation3D::s_static_type_name)
         , m_OwnerSkeleton{}
-        , m_StartFrameIdx{}
-        , m_EndFrameIdx{}
+        , m_start_frame_idx{}
+        , m_end_frame_idx{}
         , m_frame_length()
-        , m_StartTime{}
-        , m_EndTime{}
-        , m_TimeLength{}
-        , m_UpdateTime{}
-        , m_FramePerSec{}
-        , m_KeyFramesPerBone{}
-        , m_SBufferKeyFrame{}
+        , m_start_time{}
+        , m_end_time{}
+        , m_time_length{}
+        , m_update_time{}
+        , m_frame_per_sec{}
+        , m_key_frames_per_bone{}
+        , m_keyframe_sbuffer{}
     {
 	}
 
     Animation3D::Animation3D(const Animation3D& _other)
         : Animation(_other)
         , m_OwnerSkeleton{ _other.m_OwnerSkeleton }
-        , m_StartFrameIdx{ _other.m_StartFrameIdx }
-        , m_EndFrameIdx{ _other.m_EndFrameIdx}
+        , m_start_frame_idx{ _other.m_start_frame_idx }
+        , m_end_frame_idx{ _other.m_end_frame_idx}
         , m_frame_length(_other.m_frame_length)
-        , m_StartTime{ _other.m_StartTime }
-        , m_EndTime{ _other.m_EndTime }
-        , m_TimeLength{ _other.m_TimeLength }
-        , m_UpdateTime{_other.m_UpdateTime}
-        , m_FramePerSec{_other.m_FramePerSec}
-        , m_KeyFramesPerBone{_other.m_KeyFramesPerBone}
-        , m_SBufferKeyFrame{}
+        , m_start_time{ _other.m_start_time }
+        , m_end_time{ _other.m_end_time }
+        , m_time_length{ _other.m_time_length }
+        , m_update_time{_other.m_update_time}
+        , m_frame_per_sec{_other.m_frame_per_sec}
+        , m_key_frames_per_bone{_other.m_key_frames_per_bone}
+        , m_keyframe_sbuffer{}
         
     {
-        m_SBufferKeyFrame = std::static_pointer_cast<StructBuffer>(_other.m_SBufferKeyFrame->Clone());
+        m_keyframe_sbuffer = std::static_pointer_cast<StructBuffer>(_other.m_keyframe_sbuffer->clone());
     }
 
     Animation3D::~Animation3D()
@@ -53,23 +53,23 @@ namespace core
 
     void Animation3D::bind_buffer_to_GPU_register()
     {
-        ASSERT(m_SBufferKeyFrame, "키프레임 버퍼가 존재하지 않습니다.");
-        m_SBufferKeyFrame->bind_buffer_as_SRV();
+        ASSERT(m_keyframe_sbuffer, "키프레임 버퍼가 존재하지 않습니다.");
+        m_keyframe_sbuffer->bind_buffer_as_SRV();
     }
     void Animation3D::unbind_buffer_from_GPU_register()
     {
-        m_SBufferKeyFrame->unbind_buffer();
+        m_keyframe_sbuffer->unbind_buffer();
     }
 
     eResult Animation3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
     {
-        ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
+        ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
     eResult Animation3D::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
     {
-        ERROR_MESSAGE("Skeleton에서 SaveFile 함수를 통해 저장되는 방식입니다.");
+        ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
@@ -89,20 +89,20 @@ namespace core
 
         BinarySerializer& ser = *_ser;
 
-        ser << m_StartFrameIdx;
-        ser << m_EndFrameIdx;
+        ser << m_start_frame_idx;
+        ser << m_end_frame_idx;
         ser << m_frame_length;
-        ser << m_StartTime;
-        ser << m_EndTime;
-        ser << m_TimeLength;
-        ser << m_UpdateTime;
-        ser << m_FramePerSec;
+        ser << m_start_time;
+        ser << m_end_time;
+        ser << m_time_length;
+        ser << m_update_time;
+        ser << m_frame_per_sec;
 
-        ser << m_KeyFramesPerBone.size();
-        for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
+        ser << m_key_frames_per_bone.size();
+        for (size_t i = 0; i < m_key_frames_per_bone.size(); ++i)
         {
-            ser << m_KeyFramesPerBone[i].BoneIndex;
-            ser << m_KeyFramesPerBone[i].vecKeyFrame;
+            ser << m_key_frames_per_bone[i].bone_idx;
+            ser << m_key_frames_per_bone[i].key_frames;
         }
 
         return eResult::Success;
@@ -118,22 +118,22 @@ namespace core
 
         const BinarySerializer& ser = *_ser;
 
-        ser >> m_StartFrameIdx;
-        ser >> m_EndFrameIdx;
+        ser >> m_start_frame_idx;
+        ser >> m_end_frame_idx;
         ser >> m_frame_length;
-        ser >> m_StartTime;
-        ser >> m_EndTime;
-        ser >> m_TimeLength;
-        ser >> m_UpdateTime;
-        ser >> m_FramePerSec;
+        ser >> m_start_time;
+        ser >> m_end_time;
+        ser >> m_time_length;
+        ser >> m_update_time;
+        ser >> m_frame_per_sec;
 
         size_t vecSize = 0;
         ser >> vecSize;
-        m_KeyFramesPerBone.resize(vecSize);
-        for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
+        m_key_frames_per_bone.resize(vecSize);
+        for (size_t i = 0; i < m_key_frames_per_bone.size(); ++i)
         {
-            ser >> m_KeyFramesPerBone[i].BoneIndex;
-            ser >> m_KeyFramesPerBone[i].vecKeyFrame;
+            ser >> m_key_frames_per_bone[i].bone_idx;
+            ser >> m_key_frames_per_bone[i].key_frames;
         }
 
         if (false == create_keyframe_sbuffer())
@@ -153,27 +153,27 @@ namespace core
 
         m_OwnerSkeleton = _skeleton;
 
-        set_resource_name(_clip->strName);
+        set_resource_name(_clip->name);
 
-        switch (_clip->TimeMode)
+        switch (_clip->time_mode)
         {
         case fbxsdk::FbxTime::eDefaultMode:
-            m_FramePerSec = 30;
+            m_frame_per_sec = 30;
             break;
         case fbxsdk::FbxTime::eFrames120:
-            m_FramePerSec = 120;
+            m_frame_per_sec = 120;
             break;
         case fbxsdk::FbxTime::eFrames100:
-            m_FramePerSec = 100;
+            m_frame_per_sec = 100;
             break;
         case fbxsdk::FbxTime::eFrames60:
-            m_FramePerSec = 60;
+            m_frame_per_sec = 60;
             break;
         case fbxsdk::FbxTime::eFrames50:
-            m_FramePerSec = 50;
+            m_frame_per_sec = 50;
             break;
         case fbxsdk::FbxTime::eFrames48:
-            m_FramePerSec = 48;
+            m_frame_per_sec = 48;
             break;
         case fbxsdk::FbxTime::eFrames30:
             [[fallthrough]];
@@ -182,44 +182,44 @@ namespace core
         case fbxsdk::FbxTime::eNTSCDropFrame:
             [[fallthrough]];
         case fbxsdk::FbxTime::eNTSCFullFrame:
-            m_FramePerSec = 30;
+            m_frame_per_sec = 30;
             break;
         case fbxsdk::FbxTime::ePAL:
-            m_FramePerSec = 25;
+            m_frame_per_sec = 25;
             break;
         case fbxsdk::FbxTime::eFrames24:
-            m_FramePerSec = 24;
+            m_frame_per_sec = 24;
             break;
         case fbxsdk::FbxTime::eFrames1000:
-            m_FramePerSec = 1000;
+            m_frame_per_sec = 1000;
             break;
         case fbxsdk::FbxTime::eCustom:
-            m_FramePerSec = 30;
+            m_frame_per_sec = 30;
             break;
         case fbxsdk::FbxTime::eFrames96:
-            m_FramePerSec = 96;
+            m_frame_per_sec = 96;
             break;
         case fbxsdk::FbxTime::eFrames72:
-            m_FramePerSec = 72;
+            m_frame_per_sec = 72;
             break;
         default:
-            m_FramePerSec = 60;
+            m_frame_per_sec = 60;
             break;
         }
 
-        m_StartTime = _clip->StartTime.GetSecondDouble();
-        if (m_StartTime < 0.0)
+        m_start_time = _clip->start_time.GetSecondDouble();
+        if (m_start_time < 0.0)
         {
-            m_StartTime = 0.0;
+            m_start_time = 0.0;
         }
-        m_EndTime = _clip->EndTime.GetSecondDouble();
-        m_TimeLength = m_EndTime - m_StartTime;
+        m_end_time = _clip->end_time.GetSecondDouble();
+        m_time_length = m_end_time - m_start_time;
 
-        m_StartFrameIdx = (uint)_clip->StartFrameIdx;
-        m_EndFrameIdx = (uint)_clip->EndFrameIdx;
+        m_start_frame_idx = (uint)_clip->start_frame_idx;
+        m_end_frame_idx = (uint)_clip->end_frame_idx;
 
-        ASSERT(m_StartFrameIdx <= m_EndFrameIdx, "3D 애니메이션의 프레임이 음수입니다.");
-        m_frame_length = (uint)_clip->FrameLength;
+        ASSERT(m_start_frame_idx <= m_end_frame_idx, "3D 애니메이션의 프레임이 음수입니다.");
+        m_frame_length = (uint)_clip->frame_length;
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
         //그러므로 CPU 메모리에서는 이중 배열 형태로 저장해 놓고
@@ -228,14 +228,14 @@ namespace core
         // 본1키0|본1키1|본1키2|본1키3|본1키4|
         // 본2키0|본2키1|본2키2|본2키3|본2키4
         //그러므로 하나의 애니메이션은 본의 갯수 * 키프레임 갯수가 된다
-        size_t boneCount = _clip->KeyFramesPerBone.size();
-        m_KeyFramesPerBone.resize(boneCount);//CPU
+        size_t boneCount = _clip->key_frames_per_bone.size();
+        m_key_frames_per_bone.resize(boneCount);//CPU
 
         for (size_t i = 0; i < boneCount; ++i)
         {
-            m_KeyFramesPerBone[i].BoneIndex = _clip->KeyFramesPerBone[i].BoneIndex;
+            m_key_frames_per_bone[i].bone_idx = _clip->key_frames_per_bone[i].bone_idx;
             
-            //m_KeyFramesPerBone[i].vecKeyFrame.resize(m_FrameLength);
+            //m_key_frames_per_bone[i].key_frames.resize(m_FrameLength);
 
             //GPU로 보낼 데이터 세팅
             //GPU는 이중 배열 같은걸 지원 안함
@@ -247,35 +247,35 @@ namespace core
             //본의 사이즈 * 프레임 수(2차 배열 -> 1차 배열)
 
             //전부 동일하게 키프레임을 가지고 있음이 보장됨
-            m_KeyFramesPerBone[i].vecKeyFrame.resize(m_frame_length);
+            m_key_frames_per_bone[i].key_frames.resize(m_frame_length);
             for(uint j = 0; j < m_frame_length; ++j)
             {
                 //우리 포맷 키프레임
-                tKeyFrame& projKeyFrame = m_KeyFramesPerBone[i].vecKeyFrame[j];
+                tKeyFrame& projKeyFrame = m_key_frames_per_bone[i].key_frames[j];
 
                 //FBX 포맷 키프레임
-                const tFBXKeyFrame& fbxKeyFrame = _clip->KeyFramesPerBone[i].vecKeyFrame[j];
+                const tFBXKeyFrame& fbxKeyFrame = _clip->key_frames_per_bone[i].key_frames[j];
 
                 //포맷을 변환해줘야 한다. double -> float
-                projKeyFrame.Time = (float)fbxKeyFrame.Time;
+                projKeyFrame.time = (float)fbxKeyFrame.time;
 
-                const fbxsdk::FbxVector4& fbxPos = fbxKeyFrame.matTransform.GetT();
-                projKeyFrame.Trans.Pos.x = (float)fbxPos.mData[0];
-                projKeyFrame.Trans.Pos.y = (float)fbxPos.mData[1];
-                projKeyFrame.Trans.Pos.z = (float)fbxPos.mData[2];
-                projKeyFrame.Trans.Pos.w = 1.f;
+                const fbxsdk::FbxVector4& fbxPos = fbxKeyFrame.transform_matrix.GetT();
+                projKeyFrame.translation.Pos.x = (float)fbxPos.mData[0];
+                projKeyFrame.translation.Pos.y = (float)fbxPos.mData[1];
+                projKeyFrame.translation.Pos.z = (float)fbxPos.mData[2];
+                projKeyFrame.translation.Pos.w = 1.f;
 
-                const fbxsdk::FbxVector4& fbxScale = fbxKeyFrame.matTransform.GetS();
-                projKeyFrame.Trans.Scale.x = (float)fbxScale.mData[0];
-                projKeyFrame.Trans.Scale.y = (float)fbxScale.mData[1];
-                projKeyFrame.Trans.Scale.z = (float)fbxScale.mData[2];
-                projKeyFrame.Trans.Pos.w = 1.f;
+                const fbxsdk::FbxVector4& fbxScale = fbxKeyFrame.transform_matrix.GetS();
+                projKeyFrame.translation.Scale.x = (float)fbxScale.mData[0];
+                projKeyFrame.translation.Scale.y = (float)fbxScale.mData[1];
+                projKeyFrame.translation.Scale.z = (float)fbxScale.mData[2];
+                projKeyFrame.translation.Pos.w = 1.f;
 
-                const fbxsdk::FbxQuaternion& fbxQuat = fbxKeyFrame.matTransform.GetQ();
-                projKeyFrame.Trans.RotQuat.x = (float)fbxQuat.mData[0];
-                projKeyFrame.Trans.RotQuat.y = (float)fbxQuat.mData[1];
-                projKeyFrame.Trans.RotQuat.z = (float)fbxQuat.mData[2];
-                projKeyFrame.Trans.RotQuat.w = (float)fbxQuat.mData[3];
+                const fbxsdk::FbxQuaternion& fbxQuat = fbxKeyFrame.transform_matrix.GetQ();
+                projKeyFrame.translation.RotQuat.x = (float)fbxQuat.mData[0];
+                projKeyFrame.translation.RotQuat.y = (float)fbxQuat.mData[1];
+                projKeyFrame.translation.RotQuat.z = (float)fbxQuat.mData[2];
+                projKeyFrame.translation.RotQuat.w = (float)fbxQuat.mData[3];
             }
         }
 
@@ -290,31 +290,31 @@ namespace core
 
     bool Animation3D::create_keyframe_sbuffer()
     {
-        ASSERT(false == m_KeyFramesPerBone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
+        ASSERT(false == m_key_frames_per_bone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
 
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
 
-        vecFrameTrans.resize(m_KeyFramesPerBone.size() * (size_t)m_frame_length);
+        vecFrameTrans.resize(m_key_frames_per_bone.size() * (size_t)m_frame_length);
 
-        for (size_t i = 0; i < m_KeyFramesPerBone.size(); ++i)
+        for (size_t i = 0; i < m_key_frames_per_bone.size(); ++i)
         {
-            for (size_t j = 0; j < m_KeyFramesPerBone[i].vecKeyFrame.size(); ++j)
+            for (size_t j = 0; j < m_key_frames_per_bone[i].key_frames.size(); ++j)
             {
                 //i번째 본의 j 키프레임 데이터
-                size_t indexIn1DArray = (m_EndFrameIdx + 1) * i + j;
-                vecFrameTrans[indexIn1DArray] = m_KeyFramesPerBone[i].vecKeyFrame[j].Trans;
+                size_t indexIn1DArray = (m_end_frame_idx + 1) * i + j;
+                vecFrameTrans[indexIn1DArray] = m_key_frames_per_bone[i].key_frames[j].translation;
             }
         }
 
 
-        StructBuffer::Desc desc{};
-        desc.eSBufferType = eStructBufferType::READ_ONLY;
-        desc.GPU_register_t_SRV = GPU::Register::t::g_FrameTransArray;
-        desc.TargetStageSRV = eShaderStageFlag::Compute;
-        m_SBufferKeyFrame = std::make_shared<StructBuffer>();
+        StructBuffer::tDesc desc{};
+        desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+        desc.m_SRV_target_register_idx = GPU::Register::t::g_FrameTransArray;
+        desc.m_SRV_target_stage = eShaderStageFlag::Compute;
+        m_keyframe_sbuffer = std::make_shared<StructBuffer>();
 
         eResult result = 
-            m_SBufferKeyFrame->init<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());
+            m_keyframe_sbuffer->create<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());
         if (eResult_fail(result)) {
             return false;
         }

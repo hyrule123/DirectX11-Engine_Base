@@ -17,98 +17,98 @@ namespace core
 
 	struct tFBXMaterial
 	{
-		std::string		strMtrlName{};
-		std::string		strDiffuseTex{};
-		std::string		strNormalTex{};
-		std::string		strSpecularTex{};
-		std::string		strEmissiveTex{};
+		std::string		name{};
+		std::string		diffuse_tex_name{};
+		std::string		normal_tex_name{};
+		std::string		specular_tex_name{};
+		std::string		emissive_tex_name{};
 
-		float4 DiffuseColor{};
-		float4 SpecularColor{};
-		float4 AmbientColor{};
-		float4 EmissiveColor{};
+		float4 diffuse_color{};
+		float4 specular_color{};
+		float4 ambient_color{};
+		float4 emissive_color{};
 
-		float	SpecularPower{};
-		float	TransparencyFactor{};
-		float	Shininess{};
+		float	specular_power{};
+		float	transparency_factor{};
+		float	shiness{};
 	};
 
 	struct tFBXWeight
 	{
-		int		BoneIdx{};
-		double	Weight{};
+		int		bone_idx{};
+		double	weight{};
 	};
 
 	struct tFBXContainer
 	{
-		std::string								Name{};
-		std::vector<float4>						vecPosition{};
-		std::vector<float2>						vecUV{};
+		std::string								name{};
+		std::vector<float4>						positions{};
+		std::vector<float2>						UVs{};
 
 		//index buffer 수 == material 수
-		std::vector<std::vector<UINT>>			vecIndexBuffers{};
-		std::vector<tFBXMaterial>				vecMtrl{};
+		std::vector<std::vector<UINT>>			index_buffers{};
+		std::vector<tFBXMaterial>				materials{};
 
 		//이 정점이 특정 Bone Index로부터 얼마만큼의 추가 가중치를 받을것인지(배율)
-		std::unordered_map<int, std::vector<tFBXWeight>>	mapWeights{};
+		std::unordered_map<int, std::vector<tFBXWeight>>	weights_table{};
 
 		//bump
-		bool bBump{};
-		std::vector<float3>						vecNormal{};
-		std::vector<float3>						vecBinormal{};
-		std::vector<float3>						vecTangent{};
+		bool b_bump{};
+		std::vector<float3>						normals{};
+		std::vector<float3>						binormals{};
+		std::vector<float3>						tangents{};
 
 		//Animation
-		bool bAnimation{};
-		std::vector<uint4>						vecBlendIndex{};
-		std::vector<float4>						vecBlendWeight{};
+		bool b_animation{};
+		std::vector<uint4>						blend_indices{};
+		std::vector<float4>						blend_weights{};
 
 		void resize_by_vertices_count(int _iSize)
 		{
-			vecPosition.resize(_iSize);
-			vecUV.resize(_iSize);
-			vecTangent.resize(_iSize);
-			vecBinormal.resize(_iSize);
-			vecNormal.resize(_iSize);
+			positions.resize(_iSize);
+			UVs.resize(_iSize);
+			tangents.resize(_iSize);
+			binormals.resize(_iSize);
+			normals.resize(_iSize);
 		}
 	};
 
 	struct tFBXBone
 	{
-		std::string					strBoneName{};
-		int							Depth{};			// 계층구조 깊이
-		int							ParentIndx{};	// 부모 Bone 의 인덱스
-		fbxsdk::FbxAMatrix			matOffset{};		// Offset 행렬( -> 뿌리 -> Local)
-		fbxsdk::FbxAMatrix			matBone{};
+		std::string					bone_name{};
+		int							depth_level{};			// 계층구조 깊이
+		int							parent_bone_idx{};	// 부모 Bone 의 인덱스
+		fbxsdk::FbxAMatrix			offset_matrix{};		// Offset 행렬( -> 뿌리 -> Local)
+		fbxsdk::FbxAMatrix			bone_matrix{};
 	};
 
 	struct tFBXKeyFrame
 	{
-		fbxsdk::FbxAMatrix  matTransform{};
-		double				Time{};
+		fbxsdk::FbxAMatrix  transform_matrix{};
+		double				time{};
 	};
 
 	struct tFBXKeyFramesPerBone
 	{
-		int							BoneIndex{};
-		std::vector<tFBXKeyFrame>	vecKeyFrame{};
+		int							bone_idx{};
+		std::vector<tFBXKeyFrame>	key_frames{};
 	};
 
 
 	struct tFBXAnimClip
 	{
-		std::string		strName{};
-		fbxsdk::FbxTime		StartTime{};
-		fbxsdk::FbxTime		EndTime{};
+		std::string		name{};
+		fbxsdk::FbxTime		start_time{};
+		fbxsdk::FbxTime		end_time{};
 		
-		fbxsdk::FbxLongLong StartFrameIdx{};
-		fbxsdk::FbxLongLong EndFrameIdx{};
-		fbxsdk::FbxLongLong FrameLength{};//전체 길이(EndFrameIdx + 1)
+		fbxsdk::FbxLongLong start_frame_idx{};
+		fbxsdk::FbxLongLong end_frame_idx{};
+		fbxsdk::FbxLongLong frame_length{};//전체 길이(EndFrameIdx + 1)
 
-		fbxsdk::FbxTime::EMode TimeMode{};
+		fbxsdk::FbxTime::EMode time_mode{};
 
 		//각 본 별 키프레임 데이터
-		std::vector<tFBXKeyFramesPerBone> KeyFramesPerBone{};
+		std::vector<tFBXKeyFramesPerBone> key_frames_per_bone{};
 	};
 
 	class FBXLoader :
@@ -128,9 +128,9 @@ namespace core
 		// FbxMatrix -> Matrix(FBX(double) 포맷에서 프로젝트 포맷(float)으로 변환해서 반환해준다
 		static MATRIX get_matrix_from_FbxAMatrix(const fbxsdk::FbxAMatrix& _mat);
 
-		const std::vector<tFBXContainer>& get_containers() const { return mContainers; }
-		const std::vector<tFBXBone>& get_bones() const { return mBones; }
-		const std::vector<tFBXAnimClip>& get_animations() const { return mAnimClips; }
+		const std::vector<tFBXContainer>& get_containers() const { return m_fbx_containers; }
+		const std::vector<tFBXBone>& get_bones() const { return m_fbx_bones; }
+		const std::vector<tFBXAnimClip>& get_animations() const { return m_animation_clips; }
 
 	private:
 		void convert_from_FBX_tree(fbxsdk::FbxNode* _pRoot, bool _bStatic);
@@ -161,27 +161,27 @@ namespace core
 		void load_offset_matrices(tFBXContainer& _container, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform, int _bondIndex);
 		void load_keyframe_transform(tFBXContainer& _container, fbxsdk::FbxNode* _pNode, fbxsdk::FbxCluster* _pCluster, const fbxsdk::FbxAMatrix& _matNodeTransform
 			, int _bondIndex);
-		void CheckWeightAndIndices(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh);
+		void check_weight_and_indices(tFBXContainer& _container, fbxsdk::FbxMesh* _pMesh);
 
-		int FindBoneIndex(const std::string& _strBoneName);
-		fbxsdk::FbxAMatrix GetTransform(fbxsdk::FbxNode* _pNode);
+		int find_bone_index(const std::string& _strBoneName);
+		fbxsdk::FbxAMatrix get_transform_matrix(fbxsdk::FbxNode* _pNode);
 
 
-		int GetAllNodesCountRecursive(fbxsdk::FbxNode* _pNode);
+		int get_all_nodes_count_recursive(fbxsdk::FbxNode* _pNode);
 
 	private:
-		fbxsdk::FbxManager*						mManager;
-		fbxsdk::FbxScene*						mScene;
+		fbxsdk::FbxManager*						m_fbx_manager;
+		fbxsdk::FbxScene*						m_fbx_scene;
 
-		std::vector<tFBXContainer>				mContainers;
+		std::vector<tFBXContainer>				m_fbx_containers;
 
 		// Animation
-		std::vector<tFBXBone>					mBones;
-		fbxsdk::FbxArray<fbxsdk::FbxString*>	mAnimNames;
-		std::vector<tFBXAnimClip>				mAnimClips;
-		bool									mbMixamo;
+		std::vector<tFBXBone>					m_fbx_bones;
+		fbxsdk::FbxArray<fbxsdk::FbxString*>	m_animation_names;
+		std::vector<tFBXAnimClip>				m_animation_clips;
+		bool									m_b_mixamo;
 
-		std::string								mFileName;
+		std::string								m_file_name;
 	};
 }
 

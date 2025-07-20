@@ -14,19 +14,19 @@ namespace core
 {
 	AudioClip::AudioClip()
 		: Resource(AudioClip::s_static_type_name)
-		, mSound(nullptr)
-		, mChannel(nullptr)
-		, mMinDistance(1.0f)
-		, mMaxDistance(1000.0f)
-		, mbLoop(false)
+		, m_sound(nullptr)
+		, m_channel(nullptr)
+		, m_min_distance(1.0f)
+		, m_max_distance(1000.0f)
+		, m_b_loop(false)
 	{
 
 	}
 
 	AudioClip::~AudioClip()
 	{
-		mSound->release();
-		mSound = nullptr;
+		m_sound->release();
+		m_sound = nullptr;
 	}
 
 
@@ -39,34 +39,34 @@ namespace core
 			return eResult::Fail_Open;
 		}
 
-		if (false == AudioManager::get_inst().CreateSound(fullPath, &mSound))
+		if (false == AudioManager::get_inst().create_sound(fullPath, &m_sound))
 			return eResult::Fail_Open;
 
-		mSound->set3DMinMaxDistance(mMinDistance, mMaxDistance);
+		m_sound->set3DMinMaxDistance(m_min_distance, m_max_distance);
 
 		return eResult::Success;
 	}
 
-	void AudioClip::Play()
+	void AudioClip::play()
 	{
-		if (mbLoop)
-			mSound->setMode(FMOD_LOOP_NORMAL);
+		if (m_b_loop)
+			m_sound->setMode(FMOD_LOOP_NORMAL);
 		else
-			mSound->setMode(FMOD_LOOP_OFF);
+			m_sound->setMode(FMOD_LOOP_OFF);
 
-		AudioManager::get_inst().SoundPlay(mSound, &mChannel);
+		AudioManager::get_inst().sound_play(m_sound, &m_channel);
 	} 
 
-	void AudioClip::Stop()
+	void AudioClip::stop()
 	{
-		mChannel->stop();
+		m_channel->stop();
 	}
 
-	void AudioClip::Set3DAttributes(const float3 _pos, const float3 _vel)
+	void AudioClip::set_3D_attributes(const float3 _pos, const float3 _vel)
 	{
 		FMOD_VECTOR fmodPos(_pos.x, _pos.y, _pos.z);
 		FMOD_VECTOR fmodVel(_vel.x, _vel.y, _vel.z);
 
-		mChannel->set3DAttributes(&fmodPos, &fmodVel);
+		m_channel->set3DAttributes(&fmodPos, &fmodVel);
 	}
 }

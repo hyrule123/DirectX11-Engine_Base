@@ -10,6 +10,8 @@ namespace core
 		DECLARE_SINGLETON(SceneManager);
 	private:
 		SceneManager();
+		void init();
+
 		~SceneManager();
 
 	public:
@@ -18,15 +20,15 @@ namespace core
 		void final_update();
 		void frame_end();
 
-		void Destroy();
+		void destroy();
 
-		s_ptr<Scene>  LoadScene(const s_ptr<Scene>& _scene);
-		s_ptr<Scene>	LoadScene(const std::string_view _scene_name);
-		s_ptr<Scene> get_active_scene() { return m_activeScene; }
+		s_ptr<Scene>	load_scene(const s_ptr<Scene>& _scene);
+		s_ptr<Scene>	load_scene(const std::string_view _scene_name);
+		s_ptr<Scene> get_active_scene() { return m_active_scene; }
 
 	private:
-		s_ptr<Scene>				m_activeScene;
+		s_ptr<Scene>				m_active_scene;
 
-		bool m_isFixedUpdating;
+		bool m_b_fixed_update;
 	};
 }

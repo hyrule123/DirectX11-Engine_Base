@@ -6,10 +6,10 @@
 #include <Engine/Util/AtExit.h>
 namespace core
 {
-	UINT32 Entity::g_nextID{};
+	UINT32 Entity::g_next_ID{};
 
 	Entity::Entity(const std::string_view _class_concrete_name)
-		: m_ID(++g_nextID)
+		: m_ID(++g_next_ID)
 		, m_static_type_name(_class_concrete_name)
 	{
 	}
@@ -23,15 +23,17 @@ namespace core
 	}
 
 	Entity::Entity(const Entity& _other)
-		: m_ID(++g_nextID)
+		: m_ID(++g_next_ID)
 		, m_static_type_name(_other.m_static_type_name)
 	{
 	}
 
-	EntityFactory::EntityFactory()
+	EntityFactory::EntityFactory() {}
+	void EntityFactory::init()
 	{
 		AtExit::add_func(EntityFactory::destroy_inst);
 	}
+
 	EntityFactory::~EntityFactory()	
 	{
 	}

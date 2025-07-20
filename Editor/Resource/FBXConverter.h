@@ -1,7 +1,7 @@
 #pragma once
-#include <Editor/Base/EditorWindow.h>
+#include <Editor/Base/EditorUIWindow.h>
 
-#include <Editor/Widget/Widget_ComboBox.h>
+#include <Editor/Widget/ComboBoxWidget.h>
 
 #include <thread>
 #include <future>
@@ -15,7 +15,7 @@ namespace core
 namespace core::editor
 {
 	class EditorFBXConverter :
-		public EditorWindow
+		public EditorUIWindow
 	{
 	public:
 		EditorFBXConverter();
@@ -25,21 +25,21 @@ namespace core::editor
 		virtual void update_UI() override;
 
 	private:
-		bool CheckThread();
-		void ChooseFBXButton();
-		void ConvertFBXButton();
-		void AddAnimationFromSameModeling();
+		bool check_thread();
+		void select_FBX_button();
+		void convert_FBX_button();
+		void add_animation_from_same_skeleton();
 
-		void LoadProjMeshDataCombo();
+		void load_meshdata_combobox();
 
 	private:
-		std::string		mFBXPath;
-		std::string		mOutputDirName;
-		bool			mbStatic;
+		std::string		m_fbx_path;
+		std::string		m_output_dir;
+		bool			m_b_static;
 
-		std::future<eResult> mFutureConvertResult;
+		std::future<eResult> m_future_convert_result;
 
-		EditorWidget_ComboBox		m_model3D_combobox;
+		ComboBoxWidget		m_skeletal_mesh_combobox;
 	};
 }
 

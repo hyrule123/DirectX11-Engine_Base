@@ -155,22 +155,22 @@ namespace core::editor
 
 
 	EditorGraphicsShader::EditorGraphicsShader()
-		: EditorWindow(name::EditorGraphicsShader)
-		, mDescForEdit()
-		, mSemanticEditIdx(-1)
-		, mSemanticName{}
-		, mInputLayoutDescs{}
-		, mDXGIFormatCombo{}
+		: EditorUIWindow(name::EditorGraphicsShader)
+		, m_desc_for_edit()
+		, m_semantic_edit_idx(-1)
+		, m_semantic_name{}
+		, m_input_layout_descs{}
+		, m_DXGI_format_combo{}
 		//, mTopologyCombo{}
-		, mStageNames{}
-		, mRSTypeCombo{}
-		, mDSTypeCombo{}
-		, mBSTypeCombo{}
-		, mbLoadModal()
-		, mbSaveModal()
-		, mStageTypeCombo()
-		, mSaveFileName()
-		, mLoadFileCombo()
+		, m_stage_names{}
+		, m_rasterizer_type_combo{}
+		, m_depth_stencil_type_combo{}
+		, m_blend_state_type_combo{}
+		, m_b_load_modal()
+		, m_b_save_modal()
+		, m_stage_type_combo()
+		, m_save_file_name()
+		, m_load_file_combo()
 	{	
 	}
 	EditorGraphicsShader::~EditorGraphicsShader()
@@ -188,8 +188,8 @@ namespace core::editor
 				item.m_name = name::DXGI_FORMAT_String[i];
 				Items.push_back(item);
 			}
-			mDXGIFormatCombo.set_items(Items);
-			mDXGIFormatCombo.set_unique_name("DXGI Format");
+			m_DXGI_format_combo.set_items(Items);
+			m_DXGI_format_combo.set_unique_name("DXGI Format");
 		}
 
 		//{
@@ -212,8 +212,8 @@ namespace core::editor
 				item.m_name = ::core::name::eRasterizerState[i];
 				Items.push_back(item);
 			}
-			mRSTypeCombo.set_items(Items);
-			mRSTypeCombo.set_unique_name("Rasterizer Type");
+			m_rasterizer_type_combo.set_items(Items);
+			m_rasterizer_type_combo.set_unique_name("Rasterizer Type");
 		}
 
 		{
@@ -225,8 +225,8 @@ namespace core::editor
 				item.m_name = ::core::name::eDepthStencilState[i];
 				Items.push_back(item);
 			}
-			mDSTypeCombo.set_items(Items);
-			mDSTypeCombo.set_unique_name("Depth-Stencil Type");
+			m_depth_stencil_type_combo.set_items(Items);
+			m_depth_stencil_type_combo.set_unique_name("Depth-Stencil Type");
 		}
 
 		{
@@ -238,10 +238,10 @@ namespace core::editor
 				item.m_name = ::core::name::eBlendState[i];
 				Items.push_back(item);
 			}
-			mBSTypeCombo.set_items(Items);
-			mBSTypeCombo.set_unique_name("Blend State");
+			m_blend_state_type_combo.set_items(Items);
+			m_blend_state_type_combo.set_unique_name("Blend State");
 		}
-		LoadShaderSettingComboBox();
+		load_shader_setting_combobox();
 
 		{
 			std::vector<tComboItem> Items;
@@ -252,8 +252,8 @@ namespace core::editor
 				item.m_name = ::core::name::ArrGSPrefix[i];
 				Items.push_back(item);
 			}
-			mStageTypeCombo.set_items(Items);
-			mStageTypeCombo.set_unique_name("Shader Type");
+			m_stage_type_combo.set_items(Items);
+			m_stage_type_combo.set_unique_name("Shader Type");
 		}
 	}
 
@@ -262,17 +262,17 @@ namespace core::editor
 		constexpr const char* cEdit = "Edit##";
 		constexpr const char* cDelete = "Delete##";
 
-		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
+		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
 		{
 			//Delete 버튼
 			std::string Delete = cDelete;
 			Delete += std::to_string(i);
 			if (ImGui::Button(Delete.c_str()))
 			{
-				auto mInputElementsIter = mInputLayoutDescs.begin() + i;
+				auto mInputElementsIter = m_input_layout_descs.begin() + i;
 
 				//다음 이터레이터를 받아서 순회 시작
-				mInputElementsIter = mInputLayoutDescs.erase(mInputElementsIter);
+				mInputElementsIter = m_input_layout_descs.erase(mInputElementsIter);
 				break;
 			}
 
@@ -283,15 +283,15 @@ namespace core::editor
 			Edit += std::to_string(i);
 			if (ImGui::Button(Edit.c_str()))
 			{
-				mSemanticEditIdx = (int)i;
+				m_semantic_edit_idx = (int)i;
 
-				if (mInputLayoutDescs[i].SemanticName)
-					mSemanticName = mInputLayoutDescs[i].SemanticName;
+				if (m_input_layout_descs[i].SemanticName)
+					m_semantic_name = m_input_layout_descs[i].SemanticName;
 				else
-					mSemanticName.clear();
+					m_semantic_name.clear();
 				
-				mDescForEdit = mInputLayoutDescs[i];
-				mDXGIFormatCombo.set_current_idx((int)mDescForEdit.Format);
+				m_desc_for_edit = m_input_layout_descs[i];
+				m_DXGI_format_combo.set_current_idx((int)m_desc_for_edit.Format);
 			}
 
 
@@ -302,36 +302,36 @@ namespace core::editor
 			std::string SemanticNameIdx = cSemantic;
 			SemanticNameIdx += std::to_string(i);
 			
-			if (mInputLayoutDescs[i].SemanticName)
+			if (m_input_layout_descs[i].SemanticName)
 			{
 				SemanticNameIdx += ": ";
-				SemanticNameIdx += mInputLayoutDescs[i].SemanticName;
+				SemanticNameIdx += m_input_layout_descs[i].SemanticName;
 			}
 				
 			ImGui::Text(SemanticNameIdx.c_str());
 
 		}
 
-		InputElementEditModal();
+		input_element_edit_modal();
 
 		if(ImGui::Button("Add Input Layout Desc", ImVec2(0.f, 40.f)))
 		{
 			D3D11_INPUT_ELEMENT_DESC desc{};
-			desc.SemanticIndex = (UINT)mInputLayoutDescs.size();
-			mInputLayoutDescs.emplace_back(desc);
+			desc.SemanticIndex = (UINT)m_input_layout_descs.size();
+			m_input_layout_descs.emplace_back(desc);
 		}
 
 
 		if(ImGui::Button("Standard 2D Input Layout", ImVec2(0.f, 40.f)))
 		{
-			CreateSTDInputLayout(eDimensionType::_2D);
+			create_standard_input_layout(eDimensionType::_2D);
 		}
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Standard 3D Input Layout", ImVec2(0.f, 40.f)))
 		{
-			CreateSTDInputLayout(eDimensionType::_3D);
+			create_standard_input_layout(eDimensionType::_3D);
 		}
 
 		ImGui::Separator();
@@ -344,19 +344,19 @@ namespace core::editor
 
 		for (size_t i = 0; i < (size_t)eGSStage::END; ++i)
 		{
-			ImGui::InputText(::core::name::ArrGSPrefix[i].data(), &mStageNames[i]);
+			ImGui::InputText(::core::name::ArrGSPrefix[i].data(), &m_stage_names[i]);
 		}
 
 		ImGui::Separator();
 
 		//Rasterizer State
-		mRSTypeCombo.final_update();
+		m_rasterizer_type_combo.final_update();
 
 		//Depth Stencil
-		mDSTypeCombo.final_update();
+		m_depth_stencil_type_combo.final_update();
 
 		//Blend State
-		mBSTypeCombo.final_update();
+		m_blend_state_type_combo.final_update();
 
 		
 		ImGui::Spacing();
@@ -364,7 +364,7 @@ namespace core::editor
 
 		if (ImGui::Button("CreateBuffer Default Shaders", ImVec2(0.f, 50.f)))
 		{
-			CreateDefaultShaders();
+			create_default_shaders();
 		}
 
 		ImGui::Separator();
@@ -374,20 +374,20 @@ namespace core::editor
 		ImGui::GetWindowWidth();
 		if (ImGui::Button("Save", ButtonSize))
 		{
-			mbSaveModal = true;
+			m_b_save_modal = true;
 		}
-		SaveModal();
+		save_modal();
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Load", ButtonSize))
 		{
-			mbLoadModal = true;
+			m_b_load_modal = true;
 		}
-		LoadModal();
+		load_modal();
 	}
 
-	bool EditorGraphicsShader::CreateDefaultShaders()
+	bool EditorGraphicsShader::create_default_shaders()
 	{
 		using namespace core;
 
@@ -397,7 +397,7 @@ namespace core::editor
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
-		std::fs::path shaderPath = PathManager::get_inst().GetShaderCSOPath();
+		std::fs::path shaderPath = PathManager::get_inst().get_relative_shader_directory();
 
 		//쉐이더 바이트코드 경로 확인
 		if (false == std::fs::exists(shaderPath))
@@ -431,7 +431,7 @@ namespace core::editor
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<tComboItem> new_shader_groups;
-		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
+		std::fs::path ShaderSettingDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -487,7 +487,7 @@ namespace core::editor
 					new_shader_groups.push_back(item);
 				}
 
-				mLoadFileCombo.set_items(new_shader_groups);
+				m_load_file_combo.set_items(new_shader_groups);
 			}
 		}
 
@@ -508,9 +508,9 @@ namespace core::editor
 	}
 
 
-	void EditorGraphicsShader::LoadShaderSettingComboBox()
+	void EditorGraphicsShader::load_shader_setting_combobox()
 	{
-		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
+		std::fs::path GSSettingsPath = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 
 		if (false == std::fs::exists(GSSettingsPath))
 		{
@@ -528,21 +528,21 @@ namespace core::editor
 			Items.emplace_back(entry.path().filename().string());
 		}
 
-		mLoadFileCombo.set_items(Items);
-		mLoadFileCombo.set_unique_name("Shader Setting Files");
+		m_load_file_combo.set_items(Items);
+		m_load_file_combo.set_unique_name("Shader Setting Files");
 	}
 
-	void EditorGraphicsShader::DXGISelectCallback(const tComboItem& _item)
+	void EditorGraphicsShader::DXGI_select_callback(const tComboItem& _item)
 	{
 
 	}
 
 
 
-	void EditorGraphicsShader::InputElementEditModal()
+	void EditorGraphicsShader::input_element_edit_modal()
 	{
 		using namespace core;
-		bool bSemanticEditMode = (0 <= mSemanticEditIdx);
+		bool bSemanticEditMode = (0 <= m_semantic_edit_idx);
 		if (bSemanticEditMode)
 		{
 			ImGui::SetNextWindowSize(ImVec2{ 400.f, 500.f });
@@ -550,15 +550,15 @@ namespace core::editor
 			if (ImGui::BeginPopupModal("Edit Layout Element"))
 			{
 				//이름은 별도로 저장(저장 버튼 누를떄 가져옴)
-				ImGui::InputText("SemanticName", &mSemanticName);
+				ImGui::InputText("SemanticName", &m_semantic_name);
 
 				//DXGI Format 에딧
-				mDXGIFormatCombo.final_update();
+				m_DXGI_format_combo.final_update();
 
-				int ByteOffset = (int)mDescForEdit.AlignedByteOffset;
+				int ByteOffset = (int)m_desc_for_edit.AlignedByteOffset;
 				if (ImGui::InputInt("AlignedByteOffset", &ByteOffset) && ByteOffset >= 0)
 				{
-					mDescForEdit.AlignedByteOffset = (UINT)ByteOffset;
+					m_desc_for_edit.AlignedByteOffset = (UINT)ByteOffset;
 				}
 
 				//LPCSTR SemanticName; -> 사용
@@ -579,40 +579,40 @@ namespace core::editor
 				{
 					do
 					{
-						if (mSemanticName.empty())
+						if (m_semantic_name.empty())
 						{
 							break;
 						}
 
-						const auto& pair = g_stringArchive.insert(mSemanticName);
+						const auto& pair = g_string_archive.insert(m_semantic_name);
 
-						mDescForEdit.SemanticName = pair.first->c_str();
+						m_desc_for_edit.SemanticName = pair.first->c_str();
 
-						int curSel = mDXGIFormatCombo.get_current_idx();
+						int curSel = m_DXGI_format_combo.get_current_idx();
 
 						if (curSel < 0)
 							break;
 
 						if ((DXGI_FORMAT)curSel <= DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE)
-							mDescForEdit.Format = (DXGI_FORMAT)curSel;
+							m_desc_for_edit.Format = (DXGI_FORMAT)curSel;
 							//else
-							//	mDescForEdit.Format = DXGI_FORMAT_FORCE_UINT;
+							//	m_desc_for_edit.Format = DXGI_FORMAT_FORCE_UINT;
 
 					} while (false);
 
 
-					mInputLayoutDescs[mSemanticEditIdx] = mDescForEdit;
-					mDXGIFormatCombo.unselect();
-					mSemanticEditIdx = -1;
+					m_input_layout_descs[m_semantic_edit_idx] = m_desc_for_edit;
+					m_DXGI_format_combo.unselect();
+					m_semantic_edit_idx = -1;
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", buttonSize))
 				{
-					mSemanticName.clear();
-					mDescForEdit = D3D11_INPUT_ELEMENT_DESC{};
-					mDXGIFormatCombo.unselect();
+					m_semantic_name.clear();
+					m_desc_for_edit = D3D11_INPUT_ELEMENT_DESC{};
+					m_DXGI_format_combo.unselect();
 
-					mSemanticEditIdx = -1;
+					m_semantic_edit_idx = -1;
 				}
 
 
@@ -621,9 +621,9 @@ namespace core::editor
 		}
 	}
 
-	void EditorGraphicsShader::CreateSTDInputLayout(eDimensionType _dimType)
+	void EditorGraphicsShader::create_standard_input_layout(eDimensionType _dimType)
 	{
-		mInputLayoutDescs.clear();
+		m_input_layout_descs.clear();
 
 		D3D11_INPUT_ELEMENT_DESC LayoutDesc{};
 
@@ -633,7 +633,7 @@ namespace core::editor
 		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		LayoutDesc.SemanticName = "POSITION";
 		LayoutDesc.SemanticIndex = 0;
-		mInputLayoutDescs.push_back(LayoutDesc);
+		m_input_layout_descs.push_back(LayoutDesc);
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 
 		LayoutDesc.AlignedByteOffset = 16;
@@ -642,7 +642,7 @@ namespace core::editor
 		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		LayoutDesc.SemanticName = "TEXCOORD";
 		LayoutDesc.SemanticIndex = 0;
-		mInputLayoutDescs.push_back(LayoutDesc);
+		m_input_layout_descs.push_back(LayoutDesc);
 		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 
 		if (_dimType == eDimensionType::_3D)
@@ -654,7 +654,7 @@ namespace core::editor
 			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			LayoutDesc.SemanticName = "TANGENT";
 			LayoutDesc.SemanticIndex = 0;
-			mInputLayoutDescs.push_back(LayoutDesc);
+			m_input_layout_descs.push_back(LayoutDesc);
 
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 			LayoutDesc.AlignedByteOffset = 36;
@@ -663,7 +663,7 @@ namespace core::editor
 			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			LayoutDesc.SemanticName = "BINORMAL";
 			LayoutDesc.SemanticIndex = 0;
-			mInputLayoutDescs.push_back(LayoutDesc);
+			m_input_layout_descs.push_back(LayoutDesc);
 
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 			LayoutDesc.AlignedByteOffset = 48;
@@ -672,7 +672,7 @@ namespace core::editor
 			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			LayoutDesc.SemanticName = "NORMAL";
 			LayoutDesc.SemanticIndex = 0;
-			mInputLayoutDescs.push_back(LayoutDesc);
+			m_input_layout_descs.push_back(LayoutDesc);
 
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 			LayoutDesc.AlignedByteOffset = 60;
@@ -681,7 +681,7 @@ namespace core::editor
 			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			LayoutDesc.SemanticName = "BLENDWEIGHT";
 			LayoutDesc.SemanticIndex = 0;
-			mInputLayoutDescs.push_back(LayoutDesc);
+			m_input_layout_descs.push_back(LayoutDesc);
 
 			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
 			LayoutDesc.AlignedByteOffset = 76;
@@ -690,47 +690,47 @@ namespace core::editor
 			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			LayoutDesc.SemanticName = "BLENDINDICES";
 			LayoutDesc.SemanticIndex = 0;
-			mInputLayoutDescs.push_back(LayoutDesc);
+			m_input_layout_descs.push_back(LayoutDesc);
 		}
 	}
 
-	void EditorGraphicsShader::SaveModal()
+	void EditorGraphicsShader::save_modal()
 	{
-		if (mbSaveModal)
+		if (m_b_save_modal)
 		{
 			ImGui::SetNextWindowSize(ImVec2{ 400.f, 500.f });
 			ImGui::OpenPopup("Save Shader");
 			if (ImGui::BeginPopupModal("Save Shader"))
 			{
-				ImGui::InputText("Shader Name", &mSaveFileName);
+				ImGui::InputText("Shader Name", &m_save_file_name);
 
 				if (ImGui::Button("Save File"))
 				{
-					if (mSaveFileName.empty())
+					if (m_save_file_name.empty())
 					{
 						MessageBoxW(nullptr, L"쉐이더 타입 또는 이름이 제대로 입력되지 않았습니다.", nullptr, MB_OK);
 
-						mSaveFileName.clear();
+						m_save_file_name.clear();
 
-						mbSaveModal = false;
+						m_b_save_modal = false;
 					}
 					else
 					{
-						std::fs::path FileName = mSaveFileName;
+						std::fs::path FileName = m_save_file_name;
 
-						SaveToJson(FileName);
+						save_to_json(FileName);
 
-						mStageTypeCombo.unselect();
-						mSaveFileName.clear();
-						mbSaveModal = false;
+						m_stage_type_combo.unselect();
+						m_save_file_name.clear();
+						m_b_save_modal = false;
 						ImGui::CloseCurrentPopup();
 					}
 				}
 				if (ImGui::Button("Cancel"))
 				{
-					mStageTypeCombo.unselect();
-					mSaveFileName.clear();
-					mbSaveModal = false;
+					m_stage_type_combo.unselect();
+					m_save_file_name.clear();
+					m_b_save_modal = false;
 					ImGui::CloseCurrentPopup();
 				}
 
@@ -739,36 +739,36 @@ namespace core::editor
 		}
 	}
 
-	void EditorGraphicsShader::LoadModal()
+	void EditorGraphicsShader::load_modal()
 	{
-		if (mbLoadModal)
+		if (m_b_load_modal)
 		{
 			ImGui::SetNextWindowSize(ImVec2{ 400.f, 500.f });
 			
 			ImGui::OpenPopup("Load Shader");
 			if (ImGui::BeginPopupModal("Load Shader"))
 			{
-				mLoadFileCombo.final_update();
+				m_load_file_combo.final_update();
 
 				if (ImGui::Button("Load File"))
 				{
-					std::string FileName = mLoadFileCombo.get_current_selected().m_name;
+					std::string FileName = m_load_file_combo.get_current_selected().m_name;
 					if (FileName.empty())
 					{
 						MessageBoxW(nullptr, L"불러올 쉐이더를 선택하지 않았습니다.", nullptr, MB_OK);
 					}
 					else
 					{
-						LoadFromJson(FileName);
+						load_from_json(FileName);
 					}
 
-					mbLoadModal = false;
+					m_b_load_modal = false;
 					ImGui::CloseCurrentPopup();
 				}
 				if (ImGui::Button("Cancel"))
 				{
-					mLoadFileCombo.unselect();
-					mbLoadModal = false;
+					m_load_file_combo.unselect();
+					m_b_load_modal = false;
 					ImGui::CloseCurrentPopup();
 				}
 
@@ -779,15 +779,15 @@ namespace core::editor
 		}
 	}
 
-	void EditorGraphicsShader::SaveToJson(const std::filesystem::path& _filePath)
+	void EditorGraphicsShader::save_to_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
 		GraphicsShader shader{};
 
 		//이름 등록
-		for (size_t i = 0; i < mInputLayoutDescs.size(); ++i)
+		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
 		{
-			if (nullptr == mInputLayoutDescs[i].SemanticName)
+			if (nullptr == m_input_layout_descs[i].SemanticName)
 			{
 				std::wstring errorMsg = std::to_wstring(i);
 				errorMsg += L" 번 입력 레이아웃의 Semantic 이름이 존재하지 않습니다.";
@@ -795,7 +795,7 @@ namespace core::editor
 				return;
 			}
 		}
-		shader.SetInputLayoutDesc(mInputLayoutDescs);
+		shader.set_input_layout_desc(m_input_layout_descs);
 
 		//{
 		//	int curSel = mTopologyCombo.get_current_idx();
@@ -812,20 +812,20 @@ namespace core::editor
 		//}
 
 		{
-			for (size_t i = 0; i < mStageNames.size(); ++i)
+			for (size_t i = 0; i < m_stage_names.size(); ++i)
 			{
-				if (0 == i && mStageNames[i].empty())
+				if (0 == i && m_stage_names[i].empty())
 				{
 					NOTIFICATION("필수인 Vertex Shader가 설정되지 않았습니다.");
 					return;
 				}
-				shader.set_shader_name((eGSStage)i, mStageNames[i]);
+				shader.set_shader_name((eGSStage)i, m_stage_names[i]);
 			}
 		}
 
 
 		{
-			int curSel = mRSTypeCombo.get_current_idx();
+			int curSel = m_rasterizer_type_combo.get_current_idx();
 			if (0 <= curSel && curSel < (int)eRasterizerState::END)
 			{
 				eRasterizerState Type = (eRasterizerState)curSel;
@@ -839,7 +839,7 @@ namespace core::editor
 		}
 
 		{
-			int curSel = mDSTypeCombo.get_current_idx();
+			int curSel = m_depth_stencil_type_combo.get_current_idx();
 			if (0 <= curSel && curSel < (int)eDepthStencilState::END)
 			{
 				eDepthStencilState Type = (eDepthStencilState)curSel;
@@ -853,7 +853,7 @@ namespace core::editor
 		}
 
 		{
-			int curSel = mBSTypeCombo.get_current_idx();
+			int curSel = m_blend_state_type_combo.get_current_idx();
 
 			if (0 <= curSel && curSel < (int)eBlendState::END)
 			{
@@ -868,11 +868,11 @@ namespace core::editor
 		}
 
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 		
 		if (eResult_success(shader.save(baseDir, _filePath)))
 		{
-			LoadShaderSettingComboBox();
+			load_shader_setting_combobox();
 		}
 		else
 		{
@@ -880,32 +880,32 @@ namespace core::editor
 		}
 	}
 
-	void EditorGraphicsShader::LoadFromJson(const std::filesystem::path& _filePath)
+	void EditorGraphicsShader::load_from_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
 		GraphicsShader shader{};
 		shader.set_edit_mode(true);
 
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().GetBaseDir();
+		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 		if (eResult_fail(shader.load(baseDir, _filePath)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;
 		}
 		
-		mSaveFileName = _filePath.string();
+		m_save_file_name = _filePath.string();
 
-		mInputLayoutDescs = shader.GetInputLayoutDescs();
+		m_input_layout_descs = shader.GetInputLayoutDescs();
 		
 		//mTopologyCombo.set_current_idx((int)shader.get_topology());
 
-		for (size_t i = 0; i < mStageNames.size(); ++i)
+		for (size_t i = 0; i < m_stage_names.size(); ++i)
 		{	
-			mStageNames[i] = shader.get_shader_name((eGSStage)i);
+			m_stage_names[i] = shader.get_shader_name((eGSStage)i);
 		}
 
-		mRSTypeCombo.set_current_idx((int)shader.get_rasterizer_state());
-		mDSTypeCombo.set_current_idx((int)shader.get_depth_stencil_state());
-		mBSTypeCombo.set_current_idx((int)shader.get_blend_state());
+		m_rasterizer_type_combo.set_current_idx((int)shader.get_rasterizer_state());
+		m_depth_stencil_type_combo.set_current_idx((int)shader.get_depth_stencil_state());
+		m_blend_state_type_combo.set_current_idx((int)shader.get_blend_state());
 	}
 }

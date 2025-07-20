@@ -21,16 +21,16 @@ namespace core
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void init() {};
-		virtual void Awake() override {};
+		virtual void awake() override {};
 		virtual void update() override {};
 		virtual void final_update() final {};
 
-		virtual void OnCollisionEnter(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionStay(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
-		virtual void OnCollisionExit(const s_ptr<Collider>& _collider) {};
+		virtual void on_collision_enter(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
+		virtual void on_collision_stay(const s_ptr<Collider>& _collider, const float3& _hitPoint) {};
+		virtual void on_collision_exit(const s_ptr<Collider>& _collider) {};
 
-		virtual void OnTriggerEnter(const s_ptr<Collider>& _collider) {};
-		virtual void OnTriggerStay(const s_ptr<Collider>& _collider) {};
-		virtual void OnTriggerExit(const s_ptr<Collider>& _collider) {};
+		virtual void on_trigger_enter(const s_ptr<Collider>& _collider) {};
+		virtual void on_trigger_stay(const s_ptr<Collider>& _collider) {};
+		virtual void on_trigger_exit(const s_ptr<Collider>& _collider) {};
 	};
 }

@@ -15,17 +15,17 @@ namespace core
 
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 		
-		void Play();
-		void Stop();
-		void Set3DAttributes(const float3 _pos, const float3 _vel);
-		void SetLoop(bool _loop) { mbLoop = _loop; }
+		void play();
+		void stop();
+		void set_3D_attributes(const float3 _pos, const float3 _vel);
+		void set_loop(bool _loop) { m_b_loop = _loop; }
 
 	private:
-		FMOD::Sound* mSound;
-		FMOD::Channel* mChannel;
-		float mMinDistance;
-		float mMaxDistance;
-		bool mbLoop;
+		FMOD::Sound* m_sound;
+		FMOD::Channel* m_channel;
+		float m_min_distance;
+		float m_max_distance;
+		bool m_b_loop;
 	};
 }
 
