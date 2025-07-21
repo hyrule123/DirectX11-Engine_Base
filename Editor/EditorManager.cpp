@@ -37,67 +37,67 @@
 #include <Editor/Resource/NormalConverter.h>
 #include <Editor/Resource/UVCalculator.h>
 
-
-
-
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace core::editor
 {
-	EditorManager::EditorManager() {}
-
-	EditorManager::~EditorManager() {}
-
 	constexpr const char* imguiSaveINI = "imgui.ini";
 	constexpr const char* imguiSaveJSON = "imgui.json";
 
 	using namespace math;
+
+	EditorManager::EditorManager()
+		: m_editor_UIs{}
+		, m_b_enable{ false }
+		, m_b_awake{ false }
+		, m_b_open_editor_as_default{ false }
+		, m_json_UI_data{ nullptr }
+		, m_current_gizmo_operation{ ImGuizmo::TRANSLATE }
+	{}
+
+	EditorManager::~EditorManager() {}
 	
 	void EditorManager::init()
 	{
-		m_editor_UIs;
-		m_b_enable = false;
-		m_b_initialized = false;
-		m_b_open_editor_as_default = false;
-		m_json_UI_data = nullptr;
-		m_current_gizmo_operation = ImGuizmo::TRANSLATE;
-
 		AtExit::add_func(EditorManager::destroy_inst);
 
 		EngineMain::add_common_msg_handle_func(ImGui_ImplWin32_WndProcHandler);
+	}
 
+	void EditorManager::awake()
+	{
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
-		//mDebugObjects.resize((UINT)eColliderType::END);
+//mDebugObjects.resize((UINT)eColliderType::END);
 
-		//s_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
-		//s_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
+//s_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
+//s_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
 
-		//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
-		//auto renderer
-		//	= mDebugObjects[(UINT)eColliderType::Rect]->add_component<StaticMeshRenderer>();
+//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
+//auto renderer
+//	= mDebugObjects[(UINT)eColliderType::Rect]->add_component<StaticMeshRenderer>();
 
-		//renderer->set_material(material, 0);
-		//renderer->set_mesh(rectMesh);
+//renderer->set_material(material, 0);
+//renderer->set_mesh(rectMesh);
 
-		//s_ptr<Mesh> circleMesh = ResourceManager<Mesh>::get_inst().Find("CircleMesh");
+//s_ptr<Mesh> circleMesh = ResourceManager<Mesh>::get_inst().Find("CircleMesh");
 
-		//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
-		//renderer
-		//	= mDebugObjects[(UINT)eColliderType::Circle]->add_component<StaticMeshRenderer>();
+//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
+//renderer
+//	= mDebugObjects[(UINT)eColliderType::Circle]->add_component<StaticMeshRenderer>();
 
-		//renderer->set_material(material, 0);
-		//renderer->set_mesh(circleMesh);
+//renderer->set_material(material, 0);
+//renderer->set_mesh(circleMesh);
 
 
-		//그리드 이쪽으로 옮겨줘야 한다.
-		// Grid Object
-		//EditorObject* gridObject = new EditorObject();
-		//StaticMeshRenderer* gridMr = gridObject->add_component<StaticMeshRenderer>();
-		//gridMr->set_mesh(ResourceManager::Find<Mesh>(L"RectMesh"));
-		//gridMr->set_material(ResourceManager<Material>::get_inst().Find(L"GridMaterial"));
-		//GridScript* gridScript = gridObject->add_component<GridScript>();
-		//gridScript->SetCamera(gMainCamera);
+//그리드 이쪽으로 옮겨줘야 한다.
+// Grid Object
+//EditorObject* gridObject = new EditorObject();
+//StaticMeshRenderer* gridMr = gridObject->add_component<StaticMeshRenderer>();
+//gridMr->set_mesh(ResourceManager::Find<Mesh>(L"RectMesh"));
+//gridMr->set_material(ResourceManager<Material>::get_inst().Find(L"GridMaterial"));
+//GridScript* gridScript = gridObject->add_component<GridScript>();
+//gridScript->SetCamera(gMainCamera);
 
-		//mEditorObjects.push_back(gridObject);
+//mEditorObjects.push_back(gridObject);
 
 		imgui_initialize();
 
@@ -118,13 +118,12 @@ namespace core::editor
 	{
 		m_b_enable = _bEnable;
 
-		if (m_b_enable && (false == m_b_initialized))
+		if (m_b_enable && (false == m_b_awake))
 		{
-			EditorManager::init();
-			m_b_initialized = true;
+			EditorManager::awake();
+			m_b_awake = true;
 		}
 	}
-	
 
 	void EditorManager::run()
 	{
@@ -154,7 +153,7 @@ namespace core::editor
 		final_update();
 		render();
 
-		m_b_initialized = true;
+		m_b_awake = true;
 	}
 
 

@@ -41,9 +41,11 @@ namespace core::editor
 			get_editor_windows() { return m_editor_UIs; }
 
 	private:
-		void run();
-
 		void init();
+		void awake();
+
+		void run();
+		
 		void release();
 
 		void update();
@@ -73,7 +75,7 @@ namespace core::editor
 		bool m_b_enable;
 
 		//GUI가 최초 1회 초기화 되었는지 여부
-		bool m_b_initialized;
+		bool m_b_awake;
 
 		bool m_b_open_editor_as_default;
 
