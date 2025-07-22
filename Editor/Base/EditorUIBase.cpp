@@ -7,8 +7,8 @@
 
 namespace core::editor
 {
-	EditorUIBase::EditorUIBase(const std::string_view _strName)
-		: EditorEntity(_strName)
+	EditorUIBase::EditorUIBase()
+		: EditorEntity()
 	{
 	}
 

@@ -63,7 +63,7 @@ namespace Json
 			)>* = nullptr>
 		static std::string convert_write(const T& _srcT)
 		{
-			return _srcT->get_static_type_name();
+			return _srcT->get_concrete_class_name();
 		}
 
 		template <typename T, typename
@@ -134,7 +134,7 @@ namespace Json
 			jVal = "";
 			if (_srcT)
 			{
-				jVal = _srcT->get_static_type_name();
+				jVal = _srcT->get_concrete_class_name();
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace Json
 		}
 
 
-		//get_static_type_name()가 있는 클래스 포인터 한정으로 사용가능
+		//get_concrete_class_name()가 있는 클래스 포인터 한정으로 사용가능
 		template <typename T, typename std::enable_if_t<
 			(true == type_traits_Ex::is_vector_v<T> ||
 				true == type_traits_Ex::is_std_array_v<T>)
@@ -191,7 +191,7 @@ namespace Json
 			{
 				if (_srcT[i])
 				{
-					jVal.append(_srcT[i]->get_static_type_name());
+					jVal.append(_srcT[i]->get_concrete_class_name());
 				}
 				else
 				{

@@ -13,7 +13,7 @@
 namespace core
 {
 	GraphicsShader::GraphicsShader()
-		: Shader(GraphicsShader::s_static_type_name)
+		: Shader()
 		, m_input_layout_descs{}
 		, m_input_layout{}
 		, m_shader_codes{}

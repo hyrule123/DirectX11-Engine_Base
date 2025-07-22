@@ -29,7 +29,7 @@
 namespace core
 {
 	Mesh::Mesh()
-		: Resource(Mesh::s_static_type_name)
+		: Resource()
 		, m_vertex_buffer{}
 		, m_index_buffer{}
 		, m_index_topology{}

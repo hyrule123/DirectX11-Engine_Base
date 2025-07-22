@@ -18,8 +18,8 @@
 
 namespace core
 {
-	Renderer::Renderer(const std::string_view key)
-		: Super(key, s_component_order)
+	Renderer::Renderer()
+		: Super(s_component_order)
 		, m_mesh(nullptr)
 		, m_shared_material(nullptr)
 		, m_dynamic_material(nullptr)
@@ -77,7 +77,7 @@ namespace core
 
 		try
 		{
-			Json::Value& renderer = ser[get_static_type_name()];
+			Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
 			renderer[JSON_KEY(m_mesh)] << m_mesh->get_resource_name();
@@ -109,7 +109,7 @@ namespace core
 
 		try
 		{
-			const Json::Value& renderer = ser[get_static_type_name()];
+			const Json::Value& renderer = ser[get_concrete_class_name()];
 
 			//m_mesh
 			{

@@ -16,15 +16,7 @@
 namespace core
 {
     Material::Material()
-        : Resource(Material::s_static_type_name)
-        , m_shared_material_data{}
-        , m_renderingMode(eRenderingMode::forward_opaque)
-        , m_shader{}
-        , m_textures{}
-    {
-    }
-    Material::Material(std::string_view key)
-        : Resource(key)
+        : Resource()
         , m_shared_material_data{}
         , m_renderingMode(eRenderingMode::forward_opaque)
         , m_shader{}

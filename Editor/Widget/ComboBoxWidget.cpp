@@ -6,7 +6,7 @@ namespace core::editor
 	const tComboItem ComboBoxWidget::g_void_item{};
 
 	ComboBoxWidget::ComboBoxWidget()
-		: EditorUIBase("ComboBox")
+		: EditorUIBase()
 		, m_items()
 		, m_current_selected_idx(-1)
 		, m_combo_flags()

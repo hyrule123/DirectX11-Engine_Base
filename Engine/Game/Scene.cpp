@@ -6,8 +6,8 @@
 
 namespace core
 {
-	Scene::Scene(const std::string_view key)
-		: Super(key)
+	Scene::Scene()
+		: Super()
 		, m_gameObjects{}
 		, m_delayedAddQueue{}
 		, m_FrameEndJobs{}
@@ -27,6 +27,7 @@ namespace core
 
 	void Scene::init()
 	{
+		Super::init();
 		m_collisionSystem = std::make_unique<CollisionSystem>(this);
 	}
 

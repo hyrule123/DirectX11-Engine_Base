@@ -10,7 +10,7 @@
 namespace core
 {
 	BaseUIRenderer::BaseUIRenderer()
-		: StaticMeshRenderer(BaseUIRenderer::s_static_type_name)
+		: StaticMeshRenderer()
 		, m_UI_data()
 	{
 		//기본 UI Mesh, Material을 설정

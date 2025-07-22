@@ -12,8 +12,8 @@
 
 namespace core
 {
-	Collider3D::Collider3D(const std::string_view key, eCollider3DType _col3dType)
-		: Collider(key, eDimensionType::_3D)
+	Collider3D::Collider3D(eCollider3DType _col3dType)
+		: Collider(eDimensionType::_3D)
 		, m_collider_type_3D{ _col3dType }
 		, m_b_sync_scale_to_transform(true)
 	{

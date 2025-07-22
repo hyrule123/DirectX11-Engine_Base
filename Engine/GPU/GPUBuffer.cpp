@@ -5,8 +5,8 @@
 
 namespace core
 {
-	GPUBuffer::GPUBuffer(const std::string_view key, eBufferType _Type)
-		: Resource(key)
+	GPUBuffer::GPUBuffer(eBufferType _Type)
+		: Resource()
 		, m_buffer_type(_Type)
 		, m_buffer_desc{}
 		, m_buffer{}

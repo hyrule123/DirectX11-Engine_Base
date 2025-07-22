@@ -17,7 +17,7 @@
 namespace core
 {
 	Animation3D_ComputeShader::Animation3D_ComputeShader()
-		: ComputeShader(Animation3D_ComputeShader::s_static_type_name, uint3(256u, 1u, 1u))
+		: ComputeShader(uint3(256u, 1u, 1u))
 		, m_desc()
 	{ 
 	}

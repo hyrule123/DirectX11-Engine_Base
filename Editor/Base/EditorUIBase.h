@@ -12,7 +12,7 @@ namespace core::editor
 	{
 		CLASS_INFO(EditorUIBase, EditorEntity);
 	public:
-		EditorUIBase(const std::string_view _strName);
+		EditorUIBase();
 		//virtual void init() override;
 		virtual ~EditorUIBase();
 

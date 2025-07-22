@@ -8,7 +8,7 @@
 namespace core
 {
 	Animator2D::Animator2D()
-		: Animator(Animator2D::s_static_type_name, eDimensionType::_2D)
+		: Animator(eDimensionType::_2D)
 		, m_animations{}
 		, m_active_animation(nullptr)
 		, m_b_loop(false)

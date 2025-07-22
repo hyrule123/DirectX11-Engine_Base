@@ -18,7 +18,7 @@
 namespace core::editor
 {
 	GameObjectHierarchy::GameObjectHierarchy()
-		: EditorUIWindow(name::GameObjects)
+		: EditorUIWindow()
 		, m_tree_widget(nullptr)
 	{
 
@@ -31,6 +31,10 @@ namespace core::editor
 
 	void GameObjectHierarchy::init()
 	{
+		Super::init();
+
+		set_unique_name(name::GameObjects);
+
 		m_tree_widget = new_entity<HierarchyTreeWidget>();
 
 		m_tree_widget->set_selected_callaback_func(
@@ -48,7 +52,7 @@ namespace core::editor
 		s_ptr<GameObject> obj = std::reinterpret_pointer_cast<GameObject>(_gameobj.lock());
 
 		//최소한의 잘못된 캐스팅 방어 수단
-		if (obj->get_static_type_name() != GameObject::s_static_type_name)
+		if (obj->get_concrete_class_name() != GameObject::s_concrete_class_name)
 		{
 			DEBUG_MESSAGE("reinterpret_cast 실패");
 			return;
@@ -65,7 +69,7 @@ namespace core::editor
 
 		s_ptr<Scene> scene = SceneManager::get_inst().get_active_scene();
 		if (nullptr == scene) { return; }
-		std::string sceneName(scene->get_static_type_name());
+		std::string sceneName(scene->get_concrete_class_name());
 
 		TreeNode& root = m_tree_widget->get_root();
 		root.set_unique_name(sceneName);	

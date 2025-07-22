@@ -5,7 +5,7 @@
 namespace core::editor
 {
 	ListWidget::ListWidget()
-		: EditorUIBase(name::ListBox)
+		: EditorUIBase()
 		, m_selected_element_idx(-1)
 		, m_size(200.f, 200.f)
 		//, m_event_GUI()

@@ -17,7 +17,7 @@ namespace core
 	
 
 	GridScript::GridScript()
-		: Script(GridScript::s_static_type_name)
+		: Script()
 		, m_camera()
 	{
 

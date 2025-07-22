@@ -16,7 +16,7 @@
 namespace core
 {
 	Transform::Transform()
-		: Super(Transform::s_static_type_name, Transform::s_component_order)
+		: Super(Transform::s_component_order)
 		, m_local_scale(float3::One)
 		, m_local_rotation(Quaternion::Identity)
 		, m_local_position(float3::Zero)

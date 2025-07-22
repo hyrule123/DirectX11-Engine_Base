@@ -7,8 +7,11 @@ namespace core::editor
 {
 	class TextureEditor : public ResourceEditor<Texture>
 	{
+		CLASS_INFO(TextureEditor, ResourceEditor<Texture>);
 	public:
 		TextureEditor();
+		virtual void init() override;
+
 		virtual ~TextureEditor();
 
 		virtual void update_UI() override;

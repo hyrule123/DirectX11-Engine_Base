@@ -15,7 +15,7 @@
 namespace core
 {
 	AudioSource::AudioSource()
-		: Super(AudioSource::s_static_type_name, s_component_order)
+		: Super(s_component_order)
 		, m_audio_clip(nullptr)
 	{
 	}
@@ -35,7 +35,7 @@ namespace core
 
 	//	if (m_audio_clip)
 	//	{
-	//		jVal[JSON_KEY(m_audio_clip)] = m_audio_clip->get_static_type_name();
+	//		jVal[JSON_KEY(m_audio_clip)] = m_audio_clip->get_concrete_class_name();
 	//	}
 
 	//	return eResult::Success;

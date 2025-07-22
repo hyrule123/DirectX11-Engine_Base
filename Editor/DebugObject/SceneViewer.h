@@ -5,8 +5,11 @@ namespace core::editor
 {
 	class SceneViewer : public EditorUIWindow
 	{
+		CLASS_INFO(SceneViewer, EditorUIWindow);
 	public:
 		SceneViewer();
+		virtual void init() override;
+
 		virtual ~SceneViewer();
 
 

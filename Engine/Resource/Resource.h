@@ -22,7 +22,7 @@ namespace core
 	{
 		CLASS_INFO(Resource, Entity);
 	public:
-		Resource(const std::string_view _static_type_name);
+		Resource();
 		Resource(const Resource& _other) = default;
 
 		virtual ~Resource();

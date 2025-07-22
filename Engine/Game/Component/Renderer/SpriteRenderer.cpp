@@ -14,7 +14,7 @@
 namespace core
 {
 	SpriteRenderer::SpriteRenderer()
-		: StaticMeshRenderer(SpriteRenderer::s_static_type_name)
+		: StaticMeshRenderer()
 		, m_animator()
 	{
 	}

@@ -10,7 +10,7 @@
 namespace core
 {
 	DynamicRigidbody::DynamicRigidbody()
-		: Rigidbody(DynamicRigidbody::s_static_type_name)
+		: Rigidbody()
 		, m_isMassMode {false}
 		, m_densityOrMass {g_defaultDensity}
 	{

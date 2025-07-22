@@ -9,8 +9,8 @@
 
 namespace core
 {
-	Rigidbody::Rigidbody(const std::string_view key)
-		: Super(key, s_component_order)
+	Rigidbody::Rigidbody()
+		: Super(s_component_order)
 		, m_rigid_actor{}
 		, m_shapes_modified{true}
 	{
@@ -22,6 +22,8 @@ namespace core
 
 	void Rigidbody::init()
 	{
+		Super::init();
+
 		m_rigid_actor.Set(create_rigidbody());
 		ASSERT_DEBUG(m_rigid_actor, "PxActor 생성되지 않음.");
 		

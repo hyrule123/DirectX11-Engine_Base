@@ -9,7 +9,7 @@
 namespace core
 {
 	Collider3D_Sphere::Collider3D_Sphere()
-		: Collider3D_Shapes(Collider3D_Sphere::s_static_type_name, eCollider3D_Shape::Sphere)
+		: Collider3D_Shapes(eCollider3D_Shape::Sphere)
 		, m_offset_ratio_radius(1.f)
 	{
 	}

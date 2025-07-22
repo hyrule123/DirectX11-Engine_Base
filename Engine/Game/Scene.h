@@ -12,7 +12,7 @@ namespace core
 	{
 		CLASS_INFO(Scene, Entity);
 	public:
-		Scene(const std::string_view key);
+		Scene();
 		virtual ~Scene();
 
 		virtual void init();

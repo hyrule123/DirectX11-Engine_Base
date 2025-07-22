@@ -15,7 +15,7 @@ namespace core
 		BASE_COMPONENT(eComponentOrder::Rigidbody);
 
 	public:
-		Rigidbody(const std::string_view key);
+		Rigidbody();
 		virtual ~Rigidbody();
 
 		virtual eResult serialize_json(JsonSerializer* _ser) const final { return eResult{}; };

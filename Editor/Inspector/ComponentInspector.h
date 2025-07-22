@@ -10,8 +10,11 @@ namespace core
 	{
 		class ComponentInspector : public EditorUIWindow
 		{
+			CLASS_INFO(ComponentInspector, EditorUIWindow);
 		public:
 			ComponentInspector(eComponentOrder _type);
+			virtual void init() override;
+
 			virtual ~ComponentInspector();
 
 			void set_target(const s_ptr<GameObject>& _target) { m_target_gameobject = _target; }

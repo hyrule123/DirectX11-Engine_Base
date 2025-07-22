@@ -35,12 +35,13 @@ namespace core
 		};
 
 		GameObject();
-		GameObject(const std::string_view _name);
+		virtual void init() override;
+
 		GameObject(const GameObject& _other);
 
 		virtual ~GameObject();
 
-		virtual void init() override;
+		
 		virtual void awake();
 		virtual void fixed_update();
 		virtual void update();
@@ -72,7 +73,7 @@ namespace core
 			//이외의 
 			else //constexpr
 			{
-				ret = std::dynamic_pointer_cast<T>(m_baseComponents[(int)T::s_component_order]);
+				ret = std::dynamic_pointer_cast<T>(m_base_components[(int)T::s_component_order]);
 			}
 
 			return ret;
@@ -89,15 +90,15 @@ namespace core
 		template <typename T>
 		s_ptr<T> get_script() {
 			static_assert(std::is_base_of_v<Script, T>, "Script의 하위 클래스가 아닙니다.");
-			return std::dynamic_pointer_cast<T>(get_script(T::s_static_type_name));
+			return std::dynamic_pointer_cast<T>(get_script(T::s_concrete_class_name));
 		}
 
 		s_ptr<Script> get_script(const std::string_view _resource_name);
 
 		s_ptr<Transform> get_transform() const;
-		s_ptr<Component> get_component(eComponentOrder _type) const { return m_baseComponents[(int)_type]; }
+		s_ptr<Component> get_component(eComponentOrder _type) const { return m_base_components[(int)_type]; }
 
-		const BaseComponents& get_components() const { return m_baseComponents; }
+		const BaseComponents& get_components() const { return m_base_components; }
 		
 		const Scripts& get_scripts() const { return m_scripts; }
 
@@ -113,8 +114,8 @@ namespace core
 		void destroy();
 		bool is_destroyed() const { return (eState::DestroyReserved <= m_state); }
 
-		bool is_not_destroyed_on_load() const { return m_bDontDestroyOnLoad; }
-		void dont_destroy_on_load(bool _enable) { m_bDontDestroyOnLoad = _enable; }
+		bool is_not_destroyed_on_load() const { return m_b_dont_destroy_on_load; }
+		void dont_destroy_on_load(bool _enable) { m_b_dont_destroy_on_load = _enable; }
 		
 		s_ptr<Scene> get_scene() const { return m_scene.lock(); }
 		void set_scene(const s_ptr<Scene>& _scene) { m_scene = _scene; }
@@ -123,7 +124,7 @@ namespace core
 		void set_layer(uint32 _layer);
 		uint32 get_layer() const { return m_layer; }
 
-		bool is_awaken() const { return m_isAwaken; }
+		bool is_awaken() const { return m_b_awake; }
 
 	protected:
 		void set_active_internal(bool _bActive);
@@ -134,13 +135,13 @@ namespace core
 		w_ptr<Scene> m_scene;
 		uint32 m_layer;
 
-		BaseComponents	m_baseComponents;
+		BaseComponents	m_base_components;
 		Scripts m_scripts;
 		
 		eState m_state;
 
-		bool m_isAwaken;
-		bool m_bDontDestroyOnLoad;
+		bool m_b_awake;
+		bool m_b_dont_destroy_on_load;
 	};
 
 

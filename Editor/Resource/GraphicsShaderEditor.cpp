@@ -155,7 +155,7 @@ namespace core::editor
 
 
 	EditorGraphicsShader::EditorGraphicsShader()
-		: EditorUIWindow(name::EditorGraphicsShader)
+		: EditorUIWindow()
 		, m_desc_for_edit()
 		, m_semantic_edit_idx(-1)
 		, m_semantic_name{}
@@ -179,6 +179,10 @@ namespace core::editor
 
 	void EditorGraphicsShader::init()
 	{
+		Super::init();
+
+		set_unique_name(name::EditorGraphicsShader);
+
 		{
 			std::vector<tComboItem> Items;
 			Items.reserve(name::DXGI_FORMAT_StringSize);

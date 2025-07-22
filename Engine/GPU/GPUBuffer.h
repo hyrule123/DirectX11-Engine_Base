@@ -20,7 +20,7 @@ namespace core
 	{
 		CLASS_INFO(GPUBuffer, Resource);
 	public:
-		GPUBuffer(const std::string_view key, eBufferType _Type);
+		GPUBuffer(eBufferType _Type);
 
 		//버퍼까지 복사하지는 않으므로 주의할것
 		GPUBuffer(const GPUBuffer& _other);

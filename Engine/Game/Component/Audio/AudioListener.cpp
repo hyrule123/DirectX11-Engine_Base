@@ -15,7 +15,7 @@
 namespace core
 {
 	AudioListener::AudioListener()
-		: Super(AudioListener::s_static_type_name, s_component_order)
+		: Super(s_component_order)
 	{
 	}
 

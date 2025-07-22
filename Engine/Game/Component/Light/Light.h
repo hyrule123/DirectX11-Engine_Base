@@ -11,7 +11,7 @@ namespace core
         BASE_COMPONENT(eComponentOrder::Light);
 
     public:
-        Light(const std::string_view key, eDimensionType _dimensionType);
+        Light(eDimensionType _dimensionType);
         virtual ~Light();
 
         eDimensionType get_dimension_type() const { return m_dimension; }

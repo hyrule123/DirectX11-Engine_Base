@@ -23,7 +23,7 @@
 namespace core
 {
 	Camera::Camera()
-		: Super(Camera::s_static_type_name, s_component_order)
+		: Super(s_component_order)
 		, m_camera_matrices{}
 		, m_projection_type(eProjectionType::None)
 		, m_b_culling(true)
@@ -337,20 +337,20 @@ namespace core
 		cb->bind_buffer_to_GPU_register();
 	}
 
-	Camera::CullingAgent::CullingAgent(const std::string_view key)
-		: Entity(key)
+	Camera::CullingAgent::CullingAgent()
+		: Entity()
 	{
 	}
 
 	Camera::CullingAgent_Orthographic::CullingAgent_Orthographic()
-		: Camera::CullingAgent(CullingAgent_Orthographic::s_static_type_name)
+		: Camera::CullingAgent()
 	{
 	}
 	Camera::CullingAgent_Orthographic::~CullingAgent_Orthographic()
 	{
 	}
 	Camera::CullingAgent_Perspective::CullingAgent_Perspective()
-		: Camera::CullingAgent(CullingAgent_Perspective::s_static_type_name)
+		: Camera::CullingAgent()
 	{
 	}
 	Camera::CullingAgent_Perspective::~CullingAgent_Perspective()

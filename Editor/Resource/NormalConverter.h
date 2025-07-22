@@ -13,6 +13,7 @@ namespace core::editor
     class EditorNormalConverter :
         public EditorUIWindow
     {
+        CLASS_INFO(EditorNormalConverter, EditorUIWindow);
     public:
         EditorNormalConverter();
         virtual ~EditorNormalConverter();

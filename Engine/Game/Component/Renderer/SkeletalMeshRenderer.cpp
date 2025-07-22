@@ -13,7 +13,7 @@
 namespace core
 {
 	SkeletalMeshRenderer::SkeletalMeshRenderer()
-		: StaticMeshRenderer(SkeletalMeshRenderer::s_static_type_name)
+		: StaticMeshRenderer()
 	{
 	}
 

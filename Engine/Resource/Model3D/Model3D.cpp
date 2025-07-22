@@ -28,7 +28,7 @@
 namespace core
 {
 	Model3D::Model3D()
-		: Super(Model3D::s_static_type_name)
+		: Super()
 	{
 	}
 
@@ -111,7 +111,7 @@ namespace core
 					ERROR_MESSAGE("메쉬 정보 저장 실패");
 					return result;
 				}
-				meshContainer["mesh"]["s_static_type_name"] = m_mesh_mtrl_pairs[i].mesh->get_static_type_name();
+				meshContainer["mesh"]["s_concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
 				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_name();
 
 				//material
@@ -121,8 +121,8 @@ namespace core
 					ERROR_MESSAGE("재질 정보 저장 실패");
 					return result;
 				}
-				meshContainer["material"]["s_static_type_name"]
-					<< m_mesh_mtrl_pairs[i].material->get_static_type_name();
+				meshContainer["material"]["s_concrete_class_name"]
+					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
 				meshContainer["material"]["resource_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_resource_name();
 			}
@@ -180,7 +180,7 @@ namespace core
 					std::string class_name;
 					std::string res_name;
 					meshContainer["mesh"]["resource_name"] >> res_name;
-					meshContainer["mesh"]["s_static_type_name"] >> class_name;
+					meshContainer["mesh"]["s_concrete_class_name"] >> class_name;
 					
 					m_mesh_mtrl_pairs[i].mesh = ResourceManager<Mesh>::get_inst().load(res_name, class_name);
 					if (nullptr == m_mesh_mtrl_pairs[i].mesh)
@@ -193,7 +193,7 @@ namespace core
 					//material
 					class_name.clear(); res_name.clear();
 					meshContainer["material"]["resource_name"] >> res_name;
-					meshContainer["material"]["s_static_type_name"] >> class_name;
+					meshContainer["material"]["s_concrete_class_name"] >> class_name;
 					m_mesh_mtrl_pairs[i].material = 
 						ResourceManager<Material>::get_inst().load(res_name, class_name);
 
@@ -220,7 +220,7 @@ namespace core
 		s_ptr<GameObject> root = std::make_shared<GameObject>();
 		newObjects.push_back(root);
 
-		root->set_name(get_static_type_name());
+		root->set_name(get_concrete_class_name());
 
 		s_ptr<Transform> rootTransform = root->get_component<Transform>();
 

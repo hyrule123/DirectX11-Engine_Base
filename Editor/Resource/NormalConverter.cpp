@@ -15,7 +15,7 @@
 namespace core::editor
 {
 	EditorNormalConverter::EditorNormalConverter()
-		: EditorUIWindow("Normal Converter")
+		: EditorUIWindow()
 		, m_src_texture{}
 		, m_dest_texture_dir{}
 	{
@@ -26,6 +26,9 @@ namespace core::editor
 
 	void EditorNormalConverter::init()
 	{
+		Super::init();
+
+		set_unique_name("Normal Converter");
 	}
 
 	void EditorNormalConverter::update_UI()

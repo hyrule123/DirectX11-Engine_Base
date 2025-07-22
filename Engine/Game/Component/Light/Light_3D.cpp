@@ -21,7 +21,7 @@
 namespace core
 {
 	Light3D::Light3D()
-		: Light(Light3D::s_static_type_name, eDimensionType::_3D)
+		: Light(eDimensionType::_3D)
 	{
 	}
 
@@ -47,7 +47,7 @@ namespace core
 
 		try
 		{
-			Json::Value& light3d = ser[get_static_type_name()];
+			Json::Value& light3d = ser[get_concrete_class_name()];
 
 			//m_attribute
 			{
@@ -85,7 +85,7 @@ namespace core
 
 		try
 		{
-			const Json::Value& light3d = ser[get_static_type_name()];
+			const Json::Value& light3d = ser[get_concrete_class_name()];
 
 			//m_attribute
 			{

@@ -3,7 +3,7 @@
 namespace core
 {
     BehaviorTree::BehaviorTree()
-        : StateMachine(BehaviorTree::s_static_type_name)
+        : StateMachine()
     {
     }
     BehaviorTree::~BehaviorTree()

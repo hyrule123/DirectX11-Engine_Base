@@ -10,7 +10,7 @@ namespace core
         BASE_COMPONENT(eComponentOrder::StateMachine);
 
     public:
-        StateMachine(const std::string_view key);
+        StateMachine();
         virtual ~StateMachine();
 
         virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult::Success; }

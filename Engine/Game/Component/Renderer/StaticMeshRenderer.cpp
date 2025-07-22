@@ -12,11 +12,7 @@
 namespace core
 {
 	StaticMeshRenderer::StaticMeshRenderer() 
-		: Renderer(StaticMeshRenderer::s_static_type_name)
-	{
-	}
-	StaticMeshRenderer::StaticMeshRenderer(const std::string_view key)
-		: Renderer(key)
+		: Renderer()
 	{
 	}
 

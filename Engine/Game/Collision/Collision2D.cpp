@@ -141,7 +141,7 @@ namespace core
 						bool isContact = s_checkIntersectFunctions[(int)leftShape][(int)rightShape]
 						(left, right, contactPoint);
 
-						ColliderID id{ left->get_ID(), right->get_ID() };
+						ColliderID id{ left->get_instance_ID(), right->get_instance_ID() };
 
 						//충돌했을 경우: 첫 충돌 함수 호출 또는 계속 충돌 함수 호출
 						if (isContact)

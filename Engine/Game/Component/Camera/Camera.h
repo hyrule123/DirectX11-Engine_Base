@@ -89,7 +89,7 @@ namespace  core
 		class CullingAgent : public Entity
 		{
 		public:
-			CullingAgent(const std::string_view key);
+			CullingAgent();
 			virtual ~CullingAgent() {};
 
 			virtual void final_update() = 0;

@@ -11,7 +11,7 @@
 
 namespace core {
 	DebugMaterial::DebugMaterial()
-		: Material(DebugMaterial::s_static_type_name)
+		: Material()
 		, m_debug_render_buffer()
 	{
 		m_debug_render_buffer = ResourceManager<StructBuffer>::get_inst().find("debug_render_buffer");

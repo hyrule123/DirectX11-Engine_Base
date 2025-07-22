@@ -18,7 +18,7 @@ namespace core
 		BASE_COMPONENT(eComponentOrder::Renderer);
 
 	public:
-		Renderer(const std::string_view key);
+		Renderer();
 
 		Renderer(const Renderer& _other);
 

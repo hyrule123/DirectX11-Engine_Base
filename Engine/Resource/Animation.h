@@ -8,7 +8,7 @@ namespace core
         public Resource
     {
     protected:
-        Animation(const std::string_view key);
+        Animation();
         virtual ~Animation();
     };
 }

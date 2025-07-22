@@ -12,7 +12,7 @@
 namespace core::editor
 {
 	EditorFBXConverter::EditorFBXConverter()
-		: EditorUIWindow("FBX Converter")
+		: EditorUIWindow()
 		, m_fbx_path()
 		, m_output_dir()
 		, m_b_static(true)
@@ -25,6 +25,10 @@ namespace core::editor
 
 	void EditorFBXConverter::init()
 	{
+		Super::init();
+
+		set_unique_name("FBX Converter");
+
 		load_meshdata_combobox();
 	}
 

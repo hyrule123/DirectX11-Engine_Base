@@ -9,8 +9,14 @@
 namespace core::editor
 {
 	SceneViewer::SceneViewer()
-		: EditorUIWindow(name::GameViewer)
+		: EditorUIWindow()
 	{
+	}
+
+	void SceneViewer::init()
+	{
+		Super::init();
+		set_unique_name(name::GameViewer);
 	}
 
 	SceneViewer::~SceneViewer()

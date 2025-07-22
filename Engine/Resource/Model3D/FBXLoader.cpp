@@ -18,7 +18,7 @@ namespace core
 	
 
 	FBXLoader::FBXLoader()
-		: Entity(FBXLoader::s_static_type_name)
+		: Entity()
 		, m_fbx_manager()
 		, m_fbx_scene()
 		, m_fbx_bones{}

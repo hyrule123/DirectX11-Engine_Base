@@ -9,7 +9,7 @@
 namespace core
 {
 	Collider3D_Capsule::Collider3D_Capsule()
-		: Collider3D_Shapes(Collider3D_Capsule::s_static_type_name, eCollider3D_Shape::Capsule)
+		: Collider3D_Shapes(eCollider3D_Shape::Capsule)
 		, m_offset_position()
 		, m_offset_ratio_radius(1.f)
 		, m_offset_ratio_half_height(1.f)

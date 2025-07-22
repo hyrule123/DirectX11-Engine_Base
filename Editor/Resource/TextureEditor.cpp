@@ -4,9 +4,16 @@
 namespace core::editor
 {
 	TextureEditor::TextureEditor()
-		: ResourceEditor(::core::name::path::directory::resource::Texture)
+		: ResourceEditor()
 	{
 
+	}
+
+	void TextureEditor::init()
+	{
+		Super::init();
+
+		set_unique_name(::core::name::path::directory::resource::Texture);
 	}
 
 	TextureEditor::~TextureEditor()

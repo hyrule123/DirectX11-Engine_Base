@@ -15,6 +15,7 @@ namespace core::editor
 	class EditorGraphicsShader
 		: public EditorUIWindow
 	{
+		CLASS_INFO(EditorGraphicsShader, EditorUIWindow);
 	public:
 		EditorGraphicsShader();
 		virtual ~EditorGraphicsShader();

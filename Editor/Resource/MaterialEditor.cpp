@@ -34,7 +34,7 @@ namespace core::editor
 
 
 	EditorMaterial::EditorMaterial()
-		: EditorUIWindow("Material Editor")
+		: EditorUIWindow()
 		, mTargetMaterial()
 		, mShaderCombo{}
 		, mbNewMaterial()
@@ -47,6 +47,10 @@ namespace core::editor
 
 	void EditorMaterial::init()
 	{
+		Super::init();
+
+		set_unique_name("Material Editor");
+
 		//쉐이더 파일 목록 업데이트
 		mShaderCombo.set_unique_name("Shader Lists");
 		refresh_shader_setting_files();

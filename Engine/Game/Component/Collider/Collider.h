@@ -20,7 +20,7 @@ namespace core
 		friend class Collision3D;
 		friend class ContactPair;
 	public:
-		Collider(const std::string_view key, eDimensionType _dimension);
+		Collider(eDimensionType _dimension);
 		Collider(const Collider& _collider) = default;
 		virtual ~Collider();
 

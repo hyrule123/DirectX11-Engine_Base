@@ -2,16 +2,18 @@
 
 namespace core::editor
 {
-	EditorEntity::EditorEntity(const std::string_view _static_type_name)
-		: Entity(_static_type_name)
-		, m_unique_name(_static_type_name)
+	EditorEntity::EditorEntity()
+		: Entity()
+		, m_unique_name()
+		, m_b_enable_save()
 	{
 	}
 
 	void EditorEntity::init()
 	{
 		Super::init();
-		m_b_enable_save = false;
+
+		m_unique_name = get_concrete_class_name();
 	}
 
 	EditorEntity::~EditorEntity()

@@ -2,14 +2,6 @@
 #include <string>
 #include <cassert>
 
-//참고: 여러 클래스 계층에서 동일한 변수를 가지고 있을때 명시적으로 호출하지 않은 경우 가장 낮은 클래스의 변수를 참조한다.
-//Component(base), Transform(child) 
-// -> Component::s_static_type_name = "Component"
-// -> s:concrete_class_name = "Transform"
-#define CLASS_INFO(_class_, _super_) \
-public: static inline constexpr const std::string_view s_static_type_name = #_class_;\
-private: using Super = _super_
-
 #ifdef _DEBUG
 
 //release 모드에서도 작동

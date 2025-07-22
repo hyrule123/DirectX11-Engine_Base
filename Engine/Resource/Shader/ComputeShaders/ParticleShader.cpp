@@ -13,7 +13,7 @@
 namespace core
 {
 	ParticleShader::ParticleShader()
-		: ComputeShader(ParticleShader::s_static_type_name, uint3(128, 1, 1))
+		: ComputeShader(uint3(128, 1, 1))
 		, m_buffer(nullptr)
 		, m_shared_buffer(nullptr)
 	{

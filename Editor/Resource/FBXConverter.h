@@ -17,6 +17,7 @@ namespace core::editor
 	class EditorFBXConverter :
 		public EditorUIWindow
 	{
+		CLASS_INFO(EditorFBXConverter, EditorUIWindow);
 	public:
 		EditorFBXConverter();
 		virtual ~EditorFBXConverter();

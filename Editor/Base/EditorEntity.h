@@ -15,7 +15,7 @@ namespace core::editor
 		CLASS_INFO(EditorEntity, Entity);
 
 	public:
-		EditorEntity(const std::string_view _concrete_name);
+		EditorEntity();
 		virtual void init() override;
 
 		virtual ~EditorEntity();

@@ -17,8 +17,8 @@
 
 namespace core
 {
-	ComputeShader::ComputeShader(const std::string_view key, uint3 _threadsPerGroup)
-		: Shader(key)
+	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
+		: Shader()
 		, m_CS_blob(nullptr)
 		, m_particle_CS(nullptr)
 		, m_compute_shader_cbuffer{ _threadsPerGroup,  }
@@ -171,11 +171,6 @@ namespace core
 
 		return true;
 	}
-
-
-
-
-
 
 	eResult ComputeShader::create_shader(const void* _pByteCode, size_t _ByteCodeSize)
 	{

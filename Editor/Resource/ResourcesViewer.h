@@ -7,6 +7,7 @@ namespace core::editor
 {
 	class EditorResources : public EditorUIWindow
 	{
+		CLASS_INFO(EditorResources, EditorUIWindow);
 	public:
 		EditorResources();
 		virtual ~EditorResources();

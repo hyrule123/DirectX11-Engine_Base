@@ -3,8 +3,8 @@
 
 namespace core
 {
-	Animation::Animation(const std::string_view key)
-		:Resource(key)
+	Animation::Animation()
+		:Resource()
 	{
 	}
 

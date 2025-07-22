@@ -6,16 +6,20 @@
 #include <Engine/Util/AtExit.h>
 namespace core
 {
-	UINT32 Entity::g_next_ID{};
+	uint32 Entity::s_next_instance_ID = 0;
+	uint32 Entity::s_next_class_ID = 0;
 
-	Entity::Entity(const std::string_view _class_concrete_name)
-		: m_ID(++g_next_ID)
-		, m_static_type_name(_class_concrete_name)
+	Entity::Entity()
+		: m_instance_ID{ ++s_next_instance_ID }
+		, m_concrete_class_ID{}
+		, m_concrete_class_name{}
 	{
 	}
 
 	void Entity::init()
 	{
+		m_concrete_class_ID = get_concrete_class_ID_internal();
+		m_concrete_class_name = get_concrete_class_name_internal();
 	}
 
 	Entity::~Entity()
@@ -23,12 +27,16 @@ namespace core
 	}
 
 	Entity::Entity(const Entity& _other)
-		: m_ID(++g_next_ID)
-		, m_static_type_name(_other.m_static_type_name)
+		: m_instance_ID{ ++s_next_instance_ID }
+		, m_concrete_class_ID{ _other.m_concrete_class_ID }
+		, m_concrete_class_name{ _other.m_concrete_class_name }
 	{
 	}
 
-	EntityFactory::EntityFactory() {}
+	EntityFactory::EntityFactory()
+		: m_ctors{}
+		, m_next_class_ID{}
+	{}
 	void EntityFactory::init()
 	{
 		AtExit::add_func(EntityFactory::destroy_inst);

@@ -21,7 +21,7 @@ namespace core
 		};
 
 	public:
-		Animator(const std::string_view key, eDimensionType _type);
+		Animator(eDimensionType _type);
 		virtual ~Animator() {};
 
 		eDimensionType get_dimension_type() const { return m_dimension_type; }

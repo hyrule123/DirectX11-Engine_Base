@@ -5,8 +5,8 @@
 
 namespace core
 {
-	Resource::Resource(const std::string_view key)
-		: Entity(key)
+	Resource::Resource()
+		: Entity()
 		, m_b_engine_default_resource()
 	{
 	}

@@ -1,9 +1,11 @@
 #include <Editor/Base/EditorUIWindow.h>
 
+#include <Editor/EditorManager.h>
+
 namespace core::editor
 {
-	EditorUIWindow::EditorUIWindow(const std::string_view _static_type_name)
-		: EditorUIBase(_static_type_name)
+	EditorUIWindow::EditorUIWindow()
+		: EditorUIBase()
 	{
 	}
 	void EditorUIWindow::init()
@@ -16,7 +18,7 @@ namespace core::editor
 		m_ImGui_window_flag = ImGuiWindowFlags_::ImGuiWindowFlags_None;
 		m_b_border = false;
 
-
+		
 	}
 
 	EditorUIWindow::~EditorUIWindow()

@@ -10,7 +10,7 @@
 namespace core {
 
 	VertexBuffer::VertexBuffer()
-		: Resource(VertexBuffer::s_static_type_name)
+		: Resource()
 	{
 		reset();
 	}

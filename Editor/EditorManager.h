@@ -38,7 +38,9 @@ namespace core::editor
 		s_ptr<T> new_editor_UI();
 
 		const std::vector<s_ptr<EditorUIBase>>&
-			get_editor_windows() { return m_editor_UIs; }
+			get_all_editor_UIs() { return m_editor_UIs; }
+
+		s_ptr<EditorMainMenu> get_editor_main_menu() const { return m_editor_main_menu; }
 
 	private:
 		void init();
@@ -55,7 +57,7 @@ namespace core::editor
 		//Window 이름으로 저장된 Json 값이 있을 경우 로드함
 		Json::Value* check_json_saved(const std::string& _key_path);
 
-		void init_default_windows();
+		void create_default_UIs();
 
 		//=================== IMGUI ===========================
 		void imgui_initialize();
@@ -64,12 +66,12 @@ namespace core::editor
 		void imgui_new_frame();
 		void imgui_render();
 		
-		s_ptr<EditorUIBase> add_editor_window(const s_ptr<EditorUIBase>& _new_widget);
+		s_ptr<EditorUIBase> add_editor_UI(const s_ptr<EditorUIBase>& _new_widget);
 
 	private:
 		std::vector<s_ptr<EditorUIBase>> m_editor_UIs;
 
-		std::unique_ptr<EditorMainMenu> m_editor_main_menu;
+		std::shared_ptr<EditorMainMenu> m_editor_main_menu;
 
 		//현재 GUI를 표시할지 여부
 		bool m_b_enable;
@@ -93,7 +95,7 @@ namespace core::editor
 
 		s_ptr<T> retPtr = new_entity<T>();
 
-		if (nullptr == add_editor_window(std::static_pointer_cast<EditorUIBase>(retPtr)))
+		if (nullptr == add_editor_UI(std::static_pointer_cast<EditorUIBase>(retPtr)))
 		{
 			return nullptr;
 		}

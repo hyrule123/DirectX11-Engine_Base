@@ -15,6 +15,7 @@ namespace core
         class EditorUVCalculator :
             public EditorUIWindow
         {
+            CLASS_INFO(EditorUVCalculator, EditorUIWindow);
         public:
             EditorUVCalculator();
             virtual ~EditorUVCalculator();

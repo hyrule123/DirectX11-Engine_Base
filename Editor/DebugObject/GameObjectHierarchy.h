@@ -13,6 +13,7 @@ namespace core::editor
 
 	class GameObjectHierarchy : public EditorUIWindow
 	{
+		CLASS_INFO(GameObjectHierarchy, EditorUIWindow);
 	public:
 		GameObjectHierarchy();
 		virtual ~GameObjectHierarchy();

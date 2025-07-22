@@ -2,8 +2,8 @@
 
 namespace core
 {
-	Light::Light(const std::string_view key, eDimensionType _dimensionType)
-		: Super(key, s_component_order)
+	Light::Light(eDimensionType _dimensionType)
+		: Super(s_component_order)
 		, m_dimension(_dimensionType)
 	{
 	}

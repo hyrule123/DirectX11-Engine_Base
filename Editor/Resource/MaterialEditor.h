@@ -15,6 +15,7 @@ namespace core::editor
 	class EditorMaterial
 		: public EditorUIWindow
 	{
+		CLASS_INFO(EditorMaterial, EditorUIWindow);
 	public:
 		EditorMaterial();
 		virtual ~EditorMaterial();

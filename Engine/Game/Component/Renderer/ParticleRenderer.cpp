@@ -21,7 +21,7 @@
 namespace core
 {
 	ParticleRenderer::ParticleRenderer()
-		: StaticMeshRenderer(ParticleRenderer::s_static_type_name)
+		: StaticMeshRenderer()
 		, m_max_particles(100)
 		, m_start_size(float4(50.0f, 50.0f, 1.0f, 1.0f))
 		, m_start_color(float4(1.0f, 0.2f, 0.2f, 1.0f))

@@ -1,11 +1,15 @@
 
 #include "Shader.h"
 
-core::Shader::Shader(const std::string_view key)
-	: Resource(key)
+namespace core
 {
+	Shader::Shader()
+		: Resource()
+	{
+	}
+
+	Shader::~Shader()
+	{
+	}
 }
 
-core::Shader::~Shader()
-{
-}

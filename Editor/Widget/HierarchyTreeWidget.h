@@ -14,8 +14,6 @@ namespace core::editor
 	public:
 		TreeNode();
 
-		virtual void init() override;
-
 		virtual ~TreeNode();
 
 		void update_UI();

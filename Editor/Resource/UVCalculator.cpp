@@ -12,7 +12,7 @@
 namespace core::editor
 {
 	EditorUVCalculator::EditorUVCalculator()
-		: EditorUIWindow("UV Calculator")
+		: EditorUIWindow()
 		, m_texture()
 		, m_cursor_position()
 		, m_drag_start_position()
@@ -27,6 +27,10 @@ namespace core::editor
 
 	void EditorUVCalculator::init()
 	{
+		Super::init();
+
+		set_unique_name("UV Calculator");
+
 		set_window_flag(ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 	}
 

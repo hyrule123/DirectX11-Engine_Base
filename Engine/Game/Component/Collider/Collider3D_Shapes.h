@@ -24,7 +24,7 @@ namespace core
         Collider3D_Shapes();
 
         //상속받아서 사용시
-        Collider3D_Shapes(const std::string_view key, eCollider3D_Shape _shape);
+        Collider3D_Shapes(eCollider3D_Shape _shape);
 
         virtual ~Collider3D_Shapes();
 

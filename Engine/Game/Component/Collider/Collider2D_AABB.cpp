@@ -7,7 +7,7 @@
 namespace core
 {
 	Collider2D_AABB::Collider2D_AABB()
-		: Collider2D(Collider2D_AABB::s_static_type_name, eCollider2D_Shape::AABB)
+		: Collider2D(Collider2D_AABB::s_concrete_class_name, eCollider2D_Shape::AABB)
 		, m_offset_scale(100.f)
 		, m_left_bottom(0.f, 0.f)
 		, m_right_top(100.f, 100.f)

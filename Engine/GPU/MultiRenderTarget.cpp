@@ -7,7 +7,7 @@
 namespace core
 {
 	MultiRenderTarget::MultiRenderTarget()
-		: Entity(MultiRenderTarget::s_static_type_name)
+		: Entity()
 		, m_render_targets{}
 		, m_render_target_views{}
 		, m_depth_stencil_resource{}

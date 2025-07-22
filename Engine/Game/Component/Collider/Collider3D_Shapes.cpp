@@ -15,12 +15,12 @@
 namespace core
 {
 	Collider3D_Shapes::Collider3D_Shapes()
-		: Collider3D(Collider3D_Shapes::s_static_type_name, eCollider3DType::Rigid)
+		: Collider3D(eCollider3DType::Rigid)
 		, m_px_shapes{}
 	{
 	}
-	Collider3D_Shapes::Collider3D_Shapes(const std::string_view key, eCollider3D_Shape _shape)
-		: Collider3D(key, eCollider3DType::Rigid)
+	Collider3D_Shapes::Collider3D_Shapes(eCollider3D_Shape _shape)
+		: Collider3D(eCollider3DType::Rigid)
 		, m_px_shapes{}
 	{
 	}

@@ -20,7 +20,7 @@ namespace core::editor
 	using namespace math;
 
 	EditorResources::EditorResources()
-		: EditorUIWindow(name::ResourceViewer)
+		: EditorUIWindow()
 		, m_textureTree()
 		, m_materialTree()
 		, m_meshTree()
@@ -33,6 +33,10 @@ namespace core::editor
 
 	void EditorResources::init()
 	{
+		Super::init();
+
+		set_unique_name(name::ResourceViewer);
+
 		m_textureTree = new_entity<HierarchyTreeWidget>();
 		m_materialTree = new_entity<HierarchyTreeWidget>();
 		m_meshTree = new_entity<HierarchyTreeWidget>();

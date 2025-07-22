@@ -8,7 +8,7 @@
 namespace core::editor
 {
 	EditorMainMenu::EditorMainMenu()
-		: EditorUIBase(name::MainMenu)
+		: EditorUIBase()
 	{
         //SetSize(ImVec2(100.0f, 100.0f));
 	}

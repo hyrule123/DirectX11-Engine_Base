@@ -11,7 +11,7 @@
 namespace core
 {
 	Animation2D::Animation2D()
-		: Animation(Animation2D::s_static_type_name)
+		: Animation()
 		, m_atlas(nullptr)
 		, m_sprite_sheet{}
 		, m_idx(-1)

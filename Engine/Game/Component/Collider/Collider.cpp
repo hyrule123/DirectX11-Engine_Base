@@ -9,8 +9,8 @@
 
 namespace core
 {
-	Collider::Collider(const std::string_view key, eDimensionType _dimension)
-		: Super(key, s_component_order)
+	Collider::Collider(eDimensionType _dimension)
+		: Super(s_component_order)
 		, m_dimension(_dimension)
 		, m_isTriggerMode(false)
 		, m_transform()
@@ -26,6 +26,7 @@ namespace core
 
 	void Collider::init()
 	{
+		Super::init();
 		m_transform = get_owner()->get_component<Transform>();
 	}
 

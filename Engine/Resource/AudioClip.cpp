@@ -13,7 +13,7 @@
 namespace core
 {
 	AudioClip::AudioClip()
-		: Resource(AudioClip::s_static_type_name)
+		: Resource()
 		, m_sound(nullptr)
 		, m_channel(nullptr)
 		, m_min_distance(1.0f)

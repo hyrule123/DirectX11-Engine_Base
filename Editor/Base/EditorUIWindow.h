@@ -8,7 +8,7 @@ namespace core::editor
 	{
 		CLASS_INFO(EditorUIWindow, EditorUIBase);
 	public:
-		EditorUIWindow(const std::string_view _static_type_name);
+		EditorUIWindow();
 		virtual void init() override;
 
 		virtual ~EditorUIWindow();

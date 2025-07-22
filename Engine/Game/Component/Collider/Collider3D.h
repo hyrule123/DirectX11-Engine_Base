@@ -13,7 +13,7 @@ namespace core
 		CLASS_INFO(Collider3D, Collider);
 		CLONE_DISABLE(Collider3D);
 	public:
-		Collider3D(const std::string_view key, eCollider3DType _col3dType);
+		Collider3D(eCollider3DType _col3dType);
 		
 		virtual ~Collider3D();
 

@@ -21,7 +21,7 @@
 namespace core
 {
 	NormalConvertShader::NormalConvertShader()
-		: ComputeShader(NormalConvertShader::s_static_type_name, uint3{32, 32, 1})
+		: ComputeShader(uint3{32, 32, 1})
 		, m_src_texture()
 		, m_dest_texture()
 		
@@ -67,7 +67,7 @@ namespace core
 			return false;
 		}
 		
-		m_dest_texture->set_resource_name(m_src_texture->get_static_type_name());
+		m_dest_texture->set_resource_name(m_src_texture->get_concrete_class_name());
 
 		//원본
 		m_src_texture->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);

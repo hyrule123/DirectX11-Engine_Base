@@ -101,7 +101,7 @@ namespace core::editor
 
 		imgui_initialize();
 
-		init_default_windows();
+		create_default_UIs();
 	}
 
 	std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> EditorManager::get_editor_window_func()
@@ -202,7 +202,6 @@ namespace core::editor
 
 	void EditorManager::release()
 	{
-
 	}
 
 	Json::Value* EditorManager::check_json_saved(const std::string& _key_path)
@@ -217,9 +216,11 @@ namespace core::editor
 		return retJson;
 	}
 
-	void EditorManager::init_default_windows()
+	void EditorManager::create_default_UIs()
 	{
-		new_editor_UI<EditorMainMenu>();
+		//무조건 가장 먼저 생성할것
+		//다른 EditorWindow 클래스들에서 이 클래스에 자신의 주소를 등록함
+		m_editor_main_menu = new_editor_UI<EditorMainMenu>();
 
 		new_editor_UI<InspectorBase>();
 
@@ -370,7 +371,7 @@ namespace core::editor
 		}
 	}
 
-	s_ptr<EditorUIBase> EditorManager::add_editor_window(const s_ptr<EditorUIBase>& _new_widget)
+	s_ptr<EditorUIBase> EditorManager::add_editor_UI(const s_ptr<EditorUIBase>& _new_widget)
 	{
 		if (nullptr == _new_widget) { return nullptr; }
 

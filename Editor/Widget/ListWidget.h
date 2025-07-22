@@ -9,6 +9,7 @@ namespace core::editor
 
 	class ListWidget : public EditorUIBase
 	{
+		CLASS_INFO(ListWidget, EditorUIBase);
 	public:
 		ListWidget();
 		virtual ~ListWidget();

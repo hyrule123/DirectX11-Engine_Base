@@ -7,7 +7,7 @@ namespace core
 		public Resource
 	{
 	public:
-		Shader(const std::string_view key);
+		Shader();
 		virtual ~Shader();
 	};
 }

@@ -26,7 +26,7 @@
 
 namespace core {
     Default3DMtrl::Default3DMtrl()
-        : Material(Default3DMtrl::s_static_type_name)
+        : Material()
         , m_default_3D_mtrl_instancing_data()
         , m_default_3D_mtrl_instancing_buffer()
     {

@@ -24,7 +24,7 @@
 namespace core
 {
 	Skeleton::Skeleton()
-		: Resource(Skeleton::s_static_type_name)
+		: Resource()
 		, m_bones{}
 		, m_bone_offset_sbuffer{}
 		, m_animations{}

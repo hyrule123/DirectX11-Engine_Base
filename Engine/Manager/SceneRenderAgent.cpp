@@ -242,8 +242,8 @@ namespace core {
 			} pair;
 			size_t key;
 		} keymaker;
-		keymaker.pair.a = _key.mesh->get_ID();
-		keymaker.pair.b = _key.material->get_ID();
+		keymaker.pair.a = _key.mesh->get_instance_ID();
+		keymaker.pair.b = _key.material->get_instance_ID();
 		return keymaker.key;
 	}
 }

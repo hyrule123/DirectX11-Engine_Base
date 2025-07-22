@@ -9,8 +9,8 @@
 #endif
 
 namespace core {
-	Component::Component(const std::string_view key, eComponentOrder _type)
-		: Entity(key)
+	Component::Component(eComponentOrder _type)
+		: Entity()
 		, m_component_order(_type)
 		, m_ownerGameObject()
 		, m_state(eState::NotInitialzed)
@@ -31,11 +31,6 @@ namespace core {
 
 	Component::~Component()
 	{
-	}
-
-	void Component::init()
-	{
-		Super::init();
 	}
 
 	void Component::set_enable(bool _bEnable)

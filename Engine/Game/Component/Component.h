@@ -39,11 +39,12 @@ namespace core {
 			destroy
 		};
 
-		Component(const std::string_view key, eComponentOrder _type);
+		Component(eComponentOrder _type);
+
 		Component(const Component& _other);
 		virtual ~Component();
 
-		virtual void init() override;
+		
 		virtual void awake() {}
 		virtual void on_enable() {}
 		virtual void start() {}

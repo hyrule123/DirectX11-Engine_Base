@@ -11,7 +11,6 @@ namespace core
         
     public:
         StaticMeshRenderer();
-        StaticMeshRenderer(const std::string_view key);
         virtual ~StaticMeshRenderer();
 
         //virtual void render() override;

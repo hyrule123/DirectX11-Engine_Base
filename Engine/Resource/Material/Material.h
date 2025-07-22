@@ -26,7 +26,6 @@ namespace core
 		CLONE_ABLE(Material);
 	public:
 		Material();
-		Material(std::string_view key);
 
 		Material(const Material& _other);
 

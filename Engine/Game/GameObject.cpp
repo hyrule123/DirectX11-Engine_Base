@@ -18,39 +18,40 @@
 namespace core
 {
 	GameObject::GameObject()
-		: Entity(GameObject::s_static_type_name)
+		: Entity()
+		, m_base_components{}
+		, m_scene{}
+		, m_layer{ UINT_MAX }
+		, m_name{}
+		, m_state{ eState::Active }
+		, m_b_awake{ false }
+		, m_b_dont_destroy_on_load { false }
 	{
-	}
-
-	GameObject::GameObject(const std::string_view _name)
-		: GameObject()
-	{
-		m_name = _name;
 	}
 
 	GameObject::GameObject(const GameObject& _other)
 		: Entity(_other)
-		, m_baseComponents()
+		, m_base_components()
 		, m_scene(_other.m_scene)
 		, m_layer(_other.m_layer)
 		, m_name(_other.m_name)
 		, m_state(_other.m_state)
-		, m_isAwaken(_other.m_isAwaken)
-		, m_bDontDestroyOnLoad(_other.m_bDontDestroyOnLoad)
+		, m_b_awake(_other.m_b_awake)
+		, m_b_dont_destroy_on_load(_other.m_b_dont_destroy_on_load)
 	{
 		//1. 컴포넌트 목록 복사
-		for (size_t i = 0; i < _other.m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < _other.m_base_components.size(); ++i)
 		{
-			if (_other.m_baseComponents[i])
+			if (_other.m_base_components[i])
 			{
 				//상대방의 m_baseComponents에 들어왔다는건 AddComponent가 호출되었다는뜻.
 				//그냥 복사한뒤 주인만 바꾸면 됨.
-				m_baseComponents[i] = std::static_pointer_cast<Component>(_other.m_baseComponents[i]->clone());
+				m_base_components[i] = std::static_pointer_cast<Component>(_other.m_base_components[i]->clone());
 
-				if (m_baseComponents[i])
+				if (m_base_components[i])
 				{
 					s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
-					m_baseComponents[i]->set_game_object(my);
+					m_base_components[i]->set_game_object(my);
 				}
 			}
 		}
@@ -70,7 +71,7 @@ namespace core
 			else
 			{
 				std::wstringstream stream{};
-				stream << StringConverter::UTF8_to_UTF16(_other.m_scripts[i]->get_static_type_name());
+				stream << StringConverter::UTF8_to_UTF16(_other.m_scripts[i]->get_concrete_class_name());
 				stream << L"스크립트 복사 실패.\n";
 				DEBUG_LOG_W(stream.str().c_str());
 			}
@@ -94,7 +95,7 @@ namespace core
 
 		ser[JSON_KEY(m_name)] << m_name;
 		ser[JSON_KEY(m_layer)] << m_layer;
-		ser[JSON_KEY(m_bDontDestroyOnLoad)] << m_bDontDestroyOnLoad;
+		ser[JSON_KEY(m_b_dont_destroy_on_load)] << m_b_dont_destroy_on_load;
 
 		ASSERT(false, "미구현");
 
@@ -120,30 +121,22 @@ namespace core
 	{
 		Super::init();
 
-		m_baseComponents;
-		m_scene;
-		m_layer = UINT_MAX;
-		m_name;
-		m_state = eState::Active;
-		m_isAwaken = false;
-		m_bDontDestroyOnLoad = false;
-
 		add_component<Transform>();
 	}
 
 	void GameObject::awake()
 	{
-		if (m_isAwaken || false == is_active())
+		if (m_b_awake || false == is_active())
 		{
 			return;
 		}
 
-		m_isAwaken = true;
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		m_b_awake = true;
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i])
+			if (m_base_components[i])
 			{
-				m_baseComponents[i]->awake();
+				m_base_components[i]->awake();
 			}
 		}
 
@@ -152,11 +145,11 @@ namespace core
 			m_scripts[i]->awake();
 		}
 
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+			if (m_base_components[i] && m_base_components[i]->is_enabled())
 			{
-				m_baseComponents[i]->on_enable();
+				m_base_components[i]->on_enable();
 			}
 		}
 
@@ -189,14 +182,14 @@ namespace core
 
 	void GameObject::update()
 	{
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+			if (m_base_components[i] && m_base_components[i]->is_enabled())
 			{
-				if (false == m_baseComponents[i]->is_started()) {
-					m_baseComponents[i]->start();
+				if (false == m_base_components[i]->is_started()) {
+					m_base_components[i]->start();
 				}
-				m_baseComponents[i]->update();
+				m_base_components[i]->update();
 			}
 		}
 
@@ -214,11 +207,11 @@ namespace core
 
 	void GameObject::fixed_update()
 	{
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+			if (m_base_components[i] && m_base_components[i]->is_enabled())
 			{
-				m_baseComponents[i]->fixed_update();
+				m_base_components[i]->fixed_update();
 			}
 		}
 
@@ -235,11 +228,11 @@ namespace core
 
 	void GameObject::final_update()
 	{
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+			if (m_base_components[i] && m_base_components[i]->is_enabled())
 			{
-				m_baseComponents[i]->final_update();
+				m_base_components[i]->final_update();
 			}
 		}
 
@@ -277,13 +270,13 @@ namespace core
 			};
 
 		//BaseComponents
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i])
+			if (m_base_components[i])
 			{
-				if (needDestroyPred(m_baseComponents[i]))
+				if (needDestroyPred(m_base_components[i]))
 				{
-					m_baseComponents[i] = nullptr;
+					m_base_components[i] = nullptr;
 				}
 			}
 		}
@@ -301,10 +294,10 @@ namespace core
 			return;
 		}
 
-		if (m_baseComponents[(int)eComponentOrder::Renderer] && 
-			m_baseComponents[(int)eComponentOrder::Renderer]->is_enabled())
+		if (m_base_components[(int)eComponentOrder::Renderer] && 
+			m_base_components[(int)eComponentOrder::Renderer]->is_enabled())
 		{
-			//static_cast<Renderer*>(m_baseComponents[(int)eComponentOrder::Renderer])->render();
+			//static_cast<Renderer*>(m_base_components[(int)eComponentOrder::Renderer])->render();
 		}
 	}
 
@@ -315,11 +308,11 @@ namespace core
 			return;
 		}
 
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+			if (m_base_components[i] && m_base_components[i]->is_enabled())
 			{
-				m_baseComponents[i]->frame_end();
+				m_base_components[i]->frame_end();
 			}
 		}
 
@@ -350,12 +343,12 @@ namespace core
 		else
 		{
 #ifdef _DEBUG
-			if (m_baseComponents[(int)ComType])
+			if (m_base_components[(int)ComType])
 			{
 				ERROR_MESSAGE("동일한 Component가 들어가 있습니다.");
 			}
 #endif
-			m_baseComponents[(int)ComType] = _pCom;
+			m_base_components[(int)ComType] = _pCom;
 		}
 
 		s_ptr<GameObject> my = std::static_pointer_cast<GameObject>(this->shared_from_this());
@@ -368,7 +361,7 @@ namespace core
 		}
 
 		//Active 상태이고, awake 이미 호출되었을 경우 Awake 함수 호출
-		if (is_active() && m_isAwaken)
+		if (is_active() && m_b_awake)
 		{
 			_pCom->awake();
 		}
@@ -428,11 +421,11 @@ namespace core
 
 		m_state = eState::DestroyReserved;
 
-		for (size_t i = 0; i < m_baseComponents.size(); ++i)
+		for (size_t i = 0; i < m_base_components.size(); ++i)
 		{
-			if (m_baseComponents[i])
+			if (m_base_components[i])
 			{
-				m_baseComponents[i]->destroy();
+				m_base_components[i]->destroy();
 			}
 		}
 		for (size_t i = 0; i < m_scripts.size(); ++i)
@@ -453,13 +446,13 @@ namespace core
 
 		m_layer = _layer;
 
-		if (m_isAwaken)
+		if (m_b_awake)
 		{
-			for (size_t i = 0; i < m_baseComponents.size(); ++i)
+			for (size_t i = 0; i < m_base_components.size(); ++i)
 			{
-				if (m_baseComponents[i])
+				if (m_base_components[i])
 				{
-					m_baseComponents[i]->on_layer_change(_layer);
+					m_base_components[i]->on_layer_change(_layer);
 				}
 			}
 			for (size_t i = 0; i < m_scripts.size(); ++i)
@@ -481,21 +474,21 @@ namespace core
 				s_ptr<Scene> scene = m_scene.lock();
 				ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
 				//Scene이 작동중인 상태인데 아직 awake 함수가 호출되지 않았을 경우 Awake 함수 호출
-				if (scene->is_awaken() && false == m_isAwaken)
+				if (scene->is_awaken() && false == m_b_awake)
 				{
-					m_isAwaken = true;
+					m_b_awake = true;
 
-					for (size_t i = 0; i < m_baseComponents.size(); ++i)
+					for (size_t i = 0; i < m_base_components.size(); ++i)
 					{
-						m_baseComponents[i]->awake();
+						m_base_components[i]->awake();
 					}
 				}
 
-				for (size_t i = 0; i < m_baseComponents.size(); ++i)
+				for (size_t i = 0; i < m_base_components.size(); ++i)
 				{
-					if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+					if (m_base_components[i] && m_base_components[i]->is_enabled())
 					{
-						m_baseComponents[i]->on_enable();
+						m_base_components[i]->on_enable();
 					}
 						
 				}
@@ -505,11 +498,11 @@ namespace core
 				m_state = eState::InActive;
 
 				//InActive 상태가 되면 OnDisable은 호출되지만, 각 컴포넌트의 Enabled 상태는 변하지 않음.
-				for (size_t i = 0; i < m_baseComponents.size(); ++i)
+				for (size_t i = 0; i < m_base_components.size(); ++i)
 				{
-					if (m_baseComponents[i] && m_baseComponents[i]->is_enabled())
+					if (m_base_components[i] && m_base_components[i]->is_enabled())
 					{
-						m_baseComponents[i]->on_disable();
+						m_base_components[i]->on_disable();
 					}
 				}
 			}
@@ -522,7 +515,7 @@ namespace core
 
 		for (size_t i = 0; i < m_scripts.size(); ++i)
 		{
-			if (_resource_name == m_scripts[i]->get_static_type_name())
+			if (_resource_name == m_scripts[i]->get_concrete_class_name())
 			{
 				retScript = m_scripts[i];
 				break;

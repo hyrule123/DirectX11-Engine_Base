@@ -12,7 +12,7 @@
 namespace core
 {
 	Texture::Texture()
-		: Resource(Texture::s_static_type_name)
+		: Resource()
 		, m_texture2D_desc()
 		, m_texture()
 		, m_image()

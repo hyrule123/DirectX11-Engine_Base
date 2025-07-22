@@ -3,18 +3,12 @@
 namespace core::editor
 {
 	TreeNode::TreeNode()
-		: EditorEntity(TreeNode::s_static_type_name)
+		: EditorEntity()
+		, m_owner{}
+		, m_data_ptr{}
+		, m_parent{}
+		, m_childs{}
 	{
-	}
-
-	void TreeNode::init()
-	{
-		Super::init();
-
-		m_owner;
-		m_data_ptr;
-		m_parent;
-		m_childs;
 	}
 
 	TreeNode::~TreeNode()
@@ -80,13 +74,15 @@ namespace core::editor
 
 	// Tree
 	HierarchyTreeWidget::HierarchyTreeWidget()
-		: EditorUIWindow(name::HierarchyTreeWidget)
+		: EditorUIWindow()
 	{
 	}
 
 	void HierarchyTreeWidget::init()
 	{
 		Super::init();
+
+		set_unique_name(name::HierarchyTreeWidget);
 
 		m_root = new_entity<TreeNode>();
 		m_selected_node;

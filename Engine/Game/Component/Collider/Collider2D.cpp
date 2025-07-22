@@ -15,7 +15,7 @@
 namespace core
 {
 	Collider2D::Collider2D(const std::string_view key, eCollider2D_Shape _type)
-		: Collider(key, eDimensionType::_2D)
+		: Collider(eDimensionType::_2D)
 		, m_collider_shape_2D(_type)
 		, m_b_collider_updated(false)
 	{

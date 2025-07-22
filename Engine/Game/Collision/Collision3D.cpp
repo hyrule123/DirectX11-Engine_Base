@@ -76,7 +76,7 @@ namespace core
 		m_pxScene = PhysXInstance::get_inst().GetPhysX().createScene(sceneDescription);
 		ASSERT(m_pxScene, "pxScene 생성 실패.");
 
-		m_pxScene->setName(gameScene->get_static_type_name().data());
+		m_pxScene->setName(gameScene->get_concrete_class_name().data());
 
 		m_pxScene->userData = this;
 	}

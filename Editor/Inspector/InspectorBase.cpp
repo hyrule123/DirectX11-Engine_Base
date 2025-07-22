@@ -11,7 +11,7 @@
 namespace core::editor
 {
 	InspectorBase::InspectorBase()
-		: EditorUIWindow(name::Inspector)
+		: EditorUIWindow()
 	{
 	}
 
@@ -21,6 +21,10 @@ namespace core::editor
 
 	void InspectorBase::init()
 	{
+		Super::init();
+
+		set_unique_name(name::Inspector);
+
 		m_target_gameobject;
 		m_target_resource;
 

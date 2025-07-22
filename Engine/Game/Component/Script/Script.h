@@ -12,7 +12,7 @@ namespace core
 		BASE_COMPONENT(eComponentOrder::Script);
 
 	public:
-		Script(const std::string_view key);
+		Script();
 		Script(const Script& _other) = default;
 		virtual ~Script();
 

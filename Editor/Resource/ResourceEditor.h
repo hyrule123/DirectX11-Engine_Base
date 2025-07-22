@@ -7,8 +7,8 @@ namespace core::editor
 	class ResourceEditor : public EditorUIWindow
 	{
 	public:
-		ResourceEditor(const std::string_view _resTypeName);
-		virtual ~ResourceEditor();
+		ResourceEditor() {}
+		virtual ~ResourceEditor() {}
 
 		void update_UI() override;
 		
@@ -18,17 +18,6 @@ namespace core::editor
 	private:
 		w_ptr<ResourceType> m_target_resource;
 	};
-
-	template<class ResourceType>
-	inline ResourceEditor<ResourceType>::ResourceEditor(const std::string_view _resTypeName)
-		: EditorUIWindow(_resTypeName)
-	{
-	}
-
-	template<class ResourceType>
-	inline ResourceEditor<ResourceType>::~ResourceEditor()
-	{
-	}
 
 	template<class ResourceType>
 	inline void ResourceEditor<ResourceType>::update_UI()

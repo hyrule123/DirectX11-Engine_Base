@@ -17,7 +17,7 @@ namespace core
 	{
 		CLASS_INFO(ComputeShader, Shader);
 	public:
-		ComputeShader(const std::string_view key, uint3 _threadsPerGroup);
+		ComputeShader(uint3 _threadsPerGroup);
 		virtual ~ComputeShader();
 
 		//컴퓨트쉐이더의 경우 리소스이지만 다형성(상속관계)가 필요하기 때문에
