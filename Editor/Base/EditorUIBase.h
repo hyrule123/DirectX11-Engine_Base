@@ -18,6 +18,7 @@ namespace core::editor
 
 		void final_update();
 
+		virtual void awake();
 		virtual void update() {}
 		
 		//true 반환 시 update_UI와 end_UI를 호출한다.
@@ -35,7 +36,8 @@ namespace core::editor
 		virtual eResult serialize_json(JsonSerializer* _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
-		bool is_enabled() { return m_b_enable; }
+		bool is_awake() const { return m_b_awake; }
+		bool is_enabled() const { return m_b_enable; }
 
 		//ImGui API에 필요
 		bool* is_enabled_ptr() { return &m_b_enable; }
@@ -44,6 +46,7 @@ namespace core::editor
 		void close() { m_b_enable = false; }
 
 	private:
+		bool						m_b_awake;
 		bool						m_b_enable;
 	};
 }

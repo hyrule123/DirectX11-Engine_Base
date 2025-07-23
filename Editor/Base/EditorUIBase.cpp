@@ -9,12 +9,19 @@ namespace core::editor
 {
 	EditorUIBase::EditorUIBase()
 		: EditorEntity()
+		, m_b_awake{}
+		, m_b_enable{}
 	{
 	}
 
 
 	EditorUIBase::~EditorUIBase()
 	{
+	}
+
+	void EditorUIBase::awake()
+	{
+		m_b_awake = true;
 	}
 
 	void EditorUIBase::final_update()

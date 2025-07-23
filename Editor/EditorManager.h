@@ -4,10 +4,7 @@
 
 #include <Engine/GPU/CommonGPU.h>
 
-#include "imgui/ImGuizmo.h"
-
-#include <unordered_map>
-#include <functional>
+#include <Editor/imgui/ImGuizmo.h>
 
 namespace core::editor
 {
@@ -47,8 +44,6 @@ namespace core::editor
 		void awake();
 
 		void run();
-		
-		void release();
 
 		void update();
 		void final_update();
@@ -65,10 +60,10 @@ namespace core::editor
 
 		void imgui_new_frame();
 		void imgui_render();
-		
-		s_ptr<EditorUIBase> add_editor_UI(const s_ptr<EditorUIBase>& _new_widget);
 
 	private:
+		bool add_editor_UI(const s_ptr<EditorUIBase>& _new_widget);
+
 		std::vector<s_ptr<EditorUIBase>> m_editor_UIs;
 
 		std::shared_ptr<EditorMainMenu> m_editor_main_menu;
@@ -93,14 +88,13 @@ namespace core::editor
 	{
 		static_assert(std::is_base_of_v<EditorUIBase, T>);
 
-		s_ptr<T> retPtr = new_entity<T>();
-
-		if (nullptr == add_editor_UI(std::static_pointer_cast<EditorUIBase>(retPtr)))
+		s_ptr<T> new_ui = new_entity<T>();
+		if (false == add_editor_UI(new_ui))
 		{
 			return nullptr;
 		}
 
-		return retPtr;
+		return new_ui;
 	}
 
 }

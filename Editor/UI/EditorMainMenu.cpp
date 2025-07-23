@@ -13,6 +13,13 @@ namespace core::editor
         //SetSize(ImVec2(100.0f, 100.0f));
 	}
 
+	void EditorMainMenu::init()
+	{
+		Super::init();
+
+		set_enable(true);
+	}
+
 	EditorMainMenu::~EditorMainMenu()
 	{
 	}
@@ -32,7 +39,7 @@ namespace core::editor
 				if (ui)
 				{
 					bool result =
-						ImGui::MenuItem(ui->get_unique_name().c_str(), nullptr, is_enabled_ptr());
+						ImGui::MenuItem(ui->get_unique_name().c_str(), nullptr, ui->is_enabled_ptr());
 				}
 			}
 
@@ -53,4 +60,12 @@ namespace core::editor
 	{
 		ImGui::EndMainMenuBar();
 	}
+	void EditorMainMenu::add_window(const s_ptr<EditorUIWindow>& _window)
+	{
+		if (_window) 
+		{ 
+			m_editor_windows.push_back(_window); 
+		}
+	}
+
 }

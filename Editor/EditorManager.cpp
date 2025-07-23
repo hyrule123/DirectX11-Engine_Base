@@ -54,12 +54,13 @@ namespace core::editor
 		, m_current_gizmo_operation{ ImGuizmo::TRANSLATE }
 	{}
 
-	EditorManager::~EditorManager() {}
+	EditorManager::~EditorManager() 
+	{
+	}
 	
 	void EditorManager::init()
 	{
 		AtExit::add_func(EditorManager::destroy_inst);
-
 		EngineMain::add_common_msg_handle_func(ImGui_ImplWin32_WndProcHandler);
 	}
 
@@ -198,10 +199,6 @@ namespace core::editor
 		//CollisionSystem::Render();
 
 		imgui_render();
-	}
-
-	void EditorManager::release()
-	{
 	}
 
 	Json::Value* EditorManager::check_json_saved(const std::string& _key_path)
@@ -371,9 +368,9 @@ namespace core::editor
 		}
 	}
 
-	s_ptr<EditorUIBase> EditorManager::add_editor_UI(const s_ptr<EditorUIBase>& _new_widget)
+	bool EditorManager::add_editor_UI(const s_ptr<EditorUIBase>& _new_widget)
 	{
-		if (nullptr == _new_widget) { return nullptr; }
+		if (nullptr == _new_widget) { return false; }
 
 		//최상위 윈도우는 이름 자체가 고유값이여야 함
 		const std::string& guiName = _new_widget->get_unique_name();
@@ -384,18 +381,22 @@ namespace core::editor
 		if (foundPtr)
 		{
 			ERROR_MESSAGE("루트 UI는 반드시 고유 이름이 필요합니다.");
-			return nullptr;
+			return false;
 		}
 
 		m_editor_UIs.push_back(_new_widget);
+		if (false == _new_widget->is_awake())
+		{
+			_new_widget->awake();
+		}
 
 		Json::Value* pJval = check_json_saved(_new_widget->get_unique_name());
 		if (pJval)
 		{
 			_new_widget->deserialize_json(pJval);
 		}
-
-		return _new_widget;
+		
+		return true;
 	}
 
 	void EditorManager::RenderGuizmo()

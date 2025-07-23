@@ -13,6 +13,7 @@ namespace core::editor
 
 		virtual ~EditorUIWindow();
 
+		virtual void awake() override;
 		virtual bool begin_UI() final;
 		//virtual void update_UI() override;
 		virtual void end_UI() final;
