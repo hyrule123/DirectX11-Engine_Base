@@ -93,7 +93,7 @@ namespace core::editor
 				}
 			}
 
-			std::future_status status = m_future_convert_result.wait_for(std::chrono::milliseconds(10));
+			std::future_status status = m_future_convert_result.wait_for(std::chrono::seconds(0));
 			if (status == std::future_status::ready)
 			{
 				eResult result = m_future_convert_result.get();
@@ -153,7 +153,7 @@ namespace core::editor
 			m_future_convert_result = ThreadPoolManager::get_inst().enquque_job(
 				[this]()->eResult
 				{
-					s_ptr<Model3D> meshData = std::make_shared<Model3D>();
+					s_ptr<Model3D> meshData = new_entity<Model3D>();
 					return meshData->convert_fbx(m_fbx_path, m_b_static, m_output_dir);
 				}
 			);

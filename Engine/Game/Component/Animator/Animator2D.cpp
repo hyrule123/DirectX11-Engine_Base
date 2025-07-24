@@ -98,7 +98,7 @@ namespace core
 			return nullptr;
 		}
 
-		animation = std::make_shared<Animation2D>();
+		animation = new_entity<Animation2D>();
 		animation->create(_name, _atlas, _leftTop, _size, _offset, _spriteLegth, _duration);
 
 		m_animations.insert(std::make_pair(_name, animation));
@@ -115,7 +115,7 @@ namespace core
 		if (animation != nullptr)
 			return false;
 
-		animation = std::make_shared<Animation2D>();
+		animation = new_entity<Animation2D>();
 		animation->create_XY(_name, _atlas, _uColTotal, _uRowTotal, _duration);
 
 		m_animations.insert(std::make_pair(_name, animation));		

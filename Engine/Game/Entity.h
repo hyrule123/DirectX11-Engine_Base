@@ -28,7 +28,7 @@ using Super = _super_
 //CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
 public: virtual s_ptr<Entity> clone() override { \
-return std::make_shared<_type>(*this); \
+return new_entity<_type>(*this); \
 }
 
 //Clone을 지원하지 않을 경우 nullptr이 반환된다.
@@ -80,8 +80,19 @@ private: static inline const bool m_class_ID = EntityFactory::get_inst().add_cto
 		static uint32 s_next_class_ID;
 	};
 
-	//이 클래스의 목적: 문자열로 원하는 클래스를 생성
+	//전방 선언
+	inline s_ptr<Entity> new_entity(const std::string_view _class_name);
+	template <typename T, typename... ARGS>
+	inline s_ptr<T> new_entity(ARGS&& ...args)
+	{
+		static_assert(std::is_base_of_v<Entity, T>, "Entity derived class ONLY");
+		s_ptr<T> new_ent = std::make_shared<T>(args...);
+		new_ent->init();
+		return new_ent;
+	}
 
+
+	//이 클래스의 목적: 문자열로 원하는 클래스를 생성
 	/*
 	* LazySingleton을 사용해야 하는 이유
 	static 변수 초기화 시점에 값이 생성됨
@@ -111,7 +122,7 @@ private: static inline const bool m_class_ID = EntityFactory::get_inst().add_cto
 
 			m_ctors[_name] =
 				[_arg...]()->s_ptr<Entity> {
-				return std::make_shared<T>(_arg...);
+				return new_entity<T>(_arg...);
 				};
 
 			return ++m_next_class_ID;
@@ -126,15 +137,6 @@ private: static inline const bool m_class_ID = EntityFactory::get_inst().add_cto
 	inline s_ptr<Entity> new_entity(const std::string_view _class_name)
 	{
 		return EntityFactory::get_inst().instantiate(_class_name);
-	}
-	template <typename T> 
-	inline s_ptr<T> new_entity()
-	{
-		static_assert(std::is_base_of_v<Entity, T>, "Entity를 상속받은 클래스가 아님");
-		s_ptr<T> new_ent = std::make_shared<T>();
-		new_ent->init();
-		//혹시나 모를 fail safe - T 클래스에 이름을 등록해놓지 않았을 경우 대참사가 날수도 있음
-		return new_ent;
 	}
 }
 

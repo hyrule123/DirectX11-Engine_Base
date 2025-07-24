@@ -51,7 +51,6 @@ namespace core
 		auto iter = m_ctors.find(key);
 		if (iter != m_ctors.end()) {
 			ret = iter->second();
-			ret->init();
 		}
 		return ret;
 	}

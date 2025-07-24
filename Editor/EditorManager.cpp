@@ -72,7 +72,7 @@ namespace core::editor
 //s_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
 //s_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
 
-//mDebugObjects[(UINT)eColliderType::Rect] = std::make_shared<DebugObject>();
+//mDebugObjects[(UINT)eColliderType::Rect] = new_entity<DebugObject>();
 //auto renderer
 //	= mDebugObjects[(UINT)eColliderType::Rect]->add_component<StaticMeshRenderer>();
 
@@ -81,7 +81,7 @@ namespace core::editor
 
 //s_ptr<Mesh> circleMesh = ResourceManager<Mesh>::get_inst().Find("CircleMesh");
 
-//mDebugObjects[(UINT)eColliderType::Circle] = std::make_shared<DebugObject>();
+//mDebugObjects[(UINT)eColliderType::Circle] = new_entity<DebugObject>();
 //renderer
 //	= mDebugObjects[(UINT)eColliderType::Circle]->add_component<StaticMeshRenderer>();
 

@@ -696,7 +696,7 @@ namespace core
 	//				continue;
 	//			}
 
-	//			pMaterial = std::make_shared<Material>();
+	//			pMaterial = new_entity<Material>();
 
 	//			// 상대경로가 곧 키
 	//			pMaterial->set_resource_name(m_fbx_containers[i].materials[j].name);

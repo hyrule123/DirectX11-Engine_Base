@@ -11,10 +11,10 @@ namespace core
         
     public:
         Collider3D_Capsule();
-        virtual ~Collider3D_Capsule();
-
-    protected:
         void init() override;
+
+        virtual ~Collider3D_Capsule();
+        
     private:
         physx::PxCapsuleGeometry m_capsule_geometry;
 

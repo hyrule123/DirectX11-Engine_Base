@@ -489,7 +489,7 @@ namespace core
 			return nullptr;
 		}
 		//material 하나 생성
-		s_ptr<Material> mtrl = std::make_shared<Default3DMtrl>();
+		s_ptr<Material> mtrl = new_entity<Default3DMtrl>();
 
 		std::fs::path name = _texDestDir.filename();
 		name /= _fbxMtrl->name;

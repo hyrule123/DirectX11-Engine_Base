@@ -27,7 +27,7 @@ namespace core {
 	}
 	void debug_render_buffer()
 	{
-		s_ptr<StructBuffer> debug_render_buffer = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> debug_render_buffer = new_entity<StructBuffer>();
 		debug_render_buffer->set_engine_default_res(true);
 
 		StructBuffer::tDesc desc{};
@@ -41,7 +41,7 @@ namespace core {
 	}
 	void light_3D_instancing_buffer()
 	{
-		s_ptr<StructBuffer> light_3d_instancing_buffer = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> light_3d_instancing_buffer = new_entity<StructBuffer>();
 		light_3d_instancing_buffer->set_engine_default_res(true);
 		StructBuffer::tDesc desc{};
 		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
@@ -53,7 +53,7 @@ namespace core {
 	}
 	void light_3D_const_buffer()
 	{
-		s_ptr<ConstBuffer> light_3d_const_buffer = std::make_shared<ConstBuffer>(GPU::Register::b::g_CB_light_count);
+		s_ptr<ConstBuffer> light_3d_const_buffer = new_entity<ConstBuffer>(GPU::Register::b::g_CB_light_count);
 		light_3d_const_buffer->set_engine_default_res(true);
 		light_3d_const_buffer->create<tLightCount>();
 		light_3d_const_buffer->set_target_stage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
@@ -62,7 +62,7 @@ namespace core {
 	}
 	void default_3D_material_instancing_buffer()
 	{
-		s_ptr<StructBuffer> buf = std::make_shared<StructBuffer>();
+		s_ptr<StructBuffer> buf = new_entity<StructBuffer>();
 		buf->set_engine_default_res(true);
 		StructBuffer::tDesc desc{};
 		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;

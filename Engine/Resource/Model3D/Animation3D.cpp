@@ -311,7 +311,7 @@ namespace core
         desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
         desc.m_SRV_target_register_idx = GPU::Register::t::g_FrameTransArray;
         desc.m_SRV_target_stage = eShaderStageFlag::Compute;
-        m_keyframe_sbuffer = std::make_shared<StructBuffer>();
+        m_keyframe_sbuffer = new_entity<StructBuffer>();
 
         eResult result = 
             m_keyframe_sbuffer->create<tAnimKeyframeTranslation>(desc, (uint)vecFrameTrans.size(), vecFrameTrans.data(), (uint)vecFrameTrans.size());

@@ -113,7 +113,7 @@ namespace core
 
 	s_ptr<Animation3D_PlayData> Animator3D::create_shared_animation_data()
 	{
-		m_shared_play_data = std::make_shared<Animation3D_PlayData>();
+		m_shared_play_data = new_entity<Animation3D_PlayData>();
 
 		return m_shared_play_data;
 	}

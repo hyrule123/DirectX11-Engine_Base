@@ -46,7 +46,7 @@ namespace core
 
 		template <typename Vertex> requires std::is_base_of_v<VertexBase, Vertex>
 		bool create_vertex_buffer(const std::vector<Vertex>& _vertices) {
-			m_vertex_buffer = std::make_shared<VertexBuffer>();
+			m_vertex_buffer = new_entity<VertexBuffer>();
 			return m_vertex_buffer->create_vertex_buffer(_vertices);
 		}
 		
