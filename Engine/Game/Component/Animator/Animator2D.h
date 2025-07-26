@@ -18,14 +18,15 @@ namespace core
 	{
 		CLASS_INFO(Animator2D, Animator);
 		CLONE_ABLE(Animator2D);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Animator2D();
 		Animator2D(const Animator2D& _other);
 
 		virtual ~Animator2D();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void update() override; 
 		virtual void final_update() override;

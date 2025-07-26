@@ -3,7 +3,7 @@
 
 #include <Engine/Manager/SceneManager.h>
 
-#include <Engine/Util/Serialize/json.h>
+#include <Engine/Util/Serialize/JsonSerializer.h>
 
 #include <Engine/Resource/Prefab.h>
 
@@ -81,40 +81,6 @@ namespace core
 
 	GameObject::~GameObject()
 	{
-	}
-
-	eResult GameObject::serialize_json(JsonSerializer* _ser) const
-	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		JsonSerializer& ser = *_ser;
-
-		ser[JSON_KEY(m_name)] << m_name;
-		ser[JSON_KEY(m_layer)] << m_layer;
-		ser[JSON_KEY(m_b_dont_destroy_on_load)] << m_b_dont_destroy_on_load;
-
-		ASSERT(false, "미구현");
-
-		return eResult::Success;
-	}
-
-	eResult GameObject::deserialize_json(const JsonSerializer* _ser)
-	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		const JsonSerializer& ser = *_ser;
-
-		ASSERT(false, "미구현");
-
-		return eResult::Success;
 	}
 
 	void GameObject::init()

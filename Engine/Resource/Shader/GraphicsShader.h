@@ -25,9 +25,11 @@ namespace core
 	BASE_RESOURCE(GraphicsShader);
 	class GraphicsShader final 
 		: public Shader
-		, public Serializable_Json
 	{
 		CLASS_INFO(GraphicsShader, Shader);
+
+		NO_SERIALIZE_BINARY;
+
 	public:
 		GraphicsShader();
 		virtual ~GraphicsShader();
@@ -35,8 +37,8 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer& _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
 
 		eResult compile_from_source_code(eGSStage _stage, const std::filesystem::path& _FullPath, const std::string_view _funcName);
 		eResult compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize);

@@ -2,6 +2,8 @@
 #include <Engine/Common.h>
 #include <type_traits>
 
+#include <Engine/Util/Serialize/Serializable.h>
+
 namespace core
 {
 
@@ -23,8 +25,6 @@ static inline const uint32 s_concrete_class_ID = get_next_class_ID();\
 private:\
 using Super = _super_
 
-
-
 //CLONE_ABLE 선언시 반드시 복사생성자를 재정의해줘야 함
 #define CLONE_ABLE(_type) \
 public: virtual s_ptr<Entity> clone() override { \
@@ -41,9 +41,36 @@ private: static inline const bool m_class_ID = EntityFactory::get_inst().add_cto
 
 #define REGISTER_FACTORY(_class) REGISTER_FACTORY_UNIQUE(_class, _class::s_concrete_class_name)
 
+#define NO_SERIALIZE_BINARY \
+private:\
+virtual eResult serialize_binary(BinarySerializer& _ser) const final\
+{\
+	ERROR_MESSAGE("serialization이 불가능한 클래스입니다.");\
+	return eResult::Fail;\
+}\
+virtual eResult deserialize_binary(const BinarySerializer& _ser) final\
+{\
+	ERROR_MESSAGE("serialization이 불가능한 클래스입니다.");\
+	return eResult::Fail;\
+}
+
+#define NO_SERIALIZE_JSON \
+private:\
+virtual eResult serialize_json(JsonSerializer& _ser) const final\
+{\
+	ERROR_MESSAGE("serialization이 불가능한 클래스입니다.");\
+	return eResult::Fail;\
+}\
+virtual eResult deserialize_json(const JsonSerializer& _ser) final\
+{\
+	ERROR_MESSAGE("serialization이 불가능한 클래스입니다.");\
+	return eResult::Fail;\
+}
 
 	class Entity
 		: public std::enable_shared_from_this<Entity>
+		, public Serializable_Binary
+		, public Serializable_Json
 	{
 	public:
 		Entity();
@@ -58,6 +85,12 @@ private: static inline const bool m_class_ID = EntityFactory::get_inst().add_cto
 		uint32 get_instance_ID() const { return m_instance_ID; }
 		uint32 get_concrete_class_ID() const { return m_concrete_class_ID; }
 		std::string_view get_concrete_class_name() const { return m_concrete_class_name; }
+
+		virtual eResult serialize_binary(BinarySerializer& _ser) const override;
+		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
+
+		virtual eResult serialize_json(JsonSerializer& _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
 
 	protected:
 		static uint32 get_next_class_ID() { return ++s_next_class_ID; }

@@ -68,17 +68,6 @@ namespace core
 
 	}
 
-	eResult AudioSource::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult();
-	}
-
-	eResult AudioSource::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult();
-	}
-
-
 	void AudioSource::final_update()
 	{
 		const auto& tr = get_owner()->get_component<Transform>();

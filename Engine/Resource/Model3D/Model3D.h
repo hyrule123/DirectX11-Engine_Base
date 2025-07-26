@@ -31,7 +31,6 @@ namespace core
 	BASE_RESOURCE(Model3D);
     class Model3D final 
 		: public Resource
-		, public Serializable_Json
     {
 		CLASS_INFO(Model3D, Resource);
 		REGISTER_FACTORY(Model3D);
@@ -46,8 +45,8 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 		
-		virtual eResult serialize_json(JsonSerializer* _ser) const final;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) final;
+		virtual eResult serialize_json(JsonSerializer& _ser) const final;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) final;
 
 		std::vector<s_ptr<GameObject>> instantiate();
 

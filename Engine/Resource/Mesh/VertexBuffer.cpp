@@ -70,49 +70,39 @@ namespace core {
 		return load_file_binary(fullpath);
 	}
 
-	eResult VertexBuffer::serialize_binary(BinarySerializer* _ser) const
+	eResult VertexBuffer::serialize_binary(BinarySerializer& _ser) const
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
+		eResult result = Super::serialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 
-		BinarySerializer& ser = *_ser;
-
-		ser << m_desc;
+		_ser << m_desc;
 
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		ser << m_data_stride;
-		ser << m_data_count;
-		ser << m_data;
+		_ser << m_data_stride;
+		_ser << m_data_count;
+		_ser << m_data;
 
-		ser << m_bounding_sphere_radius;
-		ser << m_bounding_box;
+		_ser << m_bounding_sphere_radius;
+		_ser << m_bounding_box;
 
 		m_is_saved = true;
 		return eResult::Success;
 	}
 
-	eResult VertexBuffer::deserialize_binary(const BinarySerializer* _ser)
+	eResult VertexBuffer::deserialize_binary(const BinarySerializer& _ser)
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
+		eResult result = Super::deserialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 
-		const BinarySerializer& ser = *_ser;
-
-		ser >> m_desc;
+		_ser >> m_desc;
 
 		//m_vertexInfo: ID3D11Buffer 포인터를 제외하고 저장
-		ser >> m_data_stride;
-		ser >> m_data_count;
-		ser >> m_data;
+		_ser >> m_data_stride;
+		_ser >> m_data_count;
+		_ser >> m_data;
 
-		ser >> m_bounding_sphere_radius;
-		ser >> m_bounding_box;
+		_ser >> m_bounding_sphere_radius;
+		_ser >> m_bounding_box;
 
 		if (false == create_vertex_buffer_internal()) {
 			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");

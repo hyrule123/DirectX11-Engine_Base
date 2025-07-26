@@ -11,14 +11,15 @@ namespace core
 	{
 		CLASS_INFO(Collider2D, Collider);
 		CLONE_DISABLE(Collider2D);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Collider2D(const std::string_view key, eCollider2D_Shape _type);
 		Collider2D(const Collider2D& _other);
 
 		virtual ~Collider2D();
-
-		eResult serialize_json(JsonSerializer* _ser) const override;
-		eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void init() override;
 		void frame_end() override;

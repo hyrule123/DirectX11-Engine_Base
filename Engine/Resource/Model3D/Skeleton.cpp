@@ -156,17 +156,12 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Skeleton::serialize_binary(BinarySerializer* _ser) const
+	eResult Skeleton::serialize_binary(BinarySerializer& _ser) const
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
+		eResult result = Super::serialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 
-		BinarySerializer& ser = *_ser;
-
-		ser << m_bones.size();
+		_ser << m_bones.size();
 		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
 			//std::string			strBoneName{};
@@ -174,28 +169,23 @@ namespace core
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			ser << m_bones[i].name;
-			ser << m_bones[i].depth_level;
-			ser << m_bones[i].parent_idx;
-			ser << m_bones[i].offset_matrix;
-			ser << m_bones[i].bone_matrix;
+			_ser << m_bones[i].name;
+			_ser << m_bones[i].depth_level;
+			_ser << m_bones[i].parent_idx;
+			_ser << m_bones[i].offset_matrix;
+			_ser << m_bones[i].bone_matrix;
 		}
 
 		return eResult::Success;
 	}
 
-	eResult Skeleton::deserialize_binary(const BinarySerializer* _ser)
+	eResult Skeleton::deserialize_binary(const BinarySerializer& _ser)
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		const BinarySerializer& ser = *_ser;
+		eResult result = Super::deserialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		size_t size{};
-		ser >> size;
+		_ser >> size;
 		m_bones.resize(size);
 		for (size_t i = 0; i < m_bones.size(); ++i)
 		{
@@ -204,11 +194,11 @@ namespace core
 			//int					iParentIndx;
 			//MATRIX				matOffset;	// Offset 행렬(뼈 -> 루트 까지의 행렬)
 			//MATRIX				matBone;	// 이거 안씀
-			ser >> m_bones[i].name;
-			ser >> m_bones[i].depth_level;
-			ser >> m_bones[i].parent_idx;
-			ser >> m_bones[i].offset_matrix;
-			ser >> m_bones[i].bone_matrix;
+			_ser >> m_bones[i].name;
+			_ser >> m_bones[i].depth_level;
+			_ser >> m_bones[i].parent_idx;
+			_ser >> m_bones[i].offset_matrix;
+			_ser >> m_bones[i].bone_matrix;
 		}
 		create_bone_offset_buffer();
 

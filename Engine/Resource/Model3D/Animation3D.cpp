@@ -74,66 +74,63 @@ namespace core
     }
 
 
-    eResult Animation3D::serialize_binary(BinarySerializer* _ser) const
+    eResult Animation3D::serialize_binary(BinarySerializer& _ser) const
     {
-        if (nullptr == _ser)
+        eResult result = Super::serialize_binary(_ser);
+        if (eResult_fail(result))
         {
-            ERROR_MESSAGE("Serializer이 nullptr 입니다.");
-            return eResult::Fail_Nullptr;
+            return result;
         }
+
         if (m_OwnerSkeleton.expired())
         {
             ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
         }
 
-        BinarySerializer& ser = *_ser;
+        _ser << m_start_frame_idx;
+        _ser << m_end_frame_idx;
+        _ser << m_frame_length;
+        _ser << m_start_time;
+        _ser << m_end_time;
+        _ser << m_time_length;
+        _ser << m_update_time;
+        _ser << m_frame_per_sec;
 
-        ser << m_start_frame_idx;
-        ser << m_end_frame_idx;
-        ser << m_frame_length;
-        ser << m_start_time;
-        ser << m_end_time;
-        ser << m_time_length;
-        ser << m_update_time;
-        ser << m_frame_per_sec;
-
-        ser << m_key_frames_per_bone.size();
+        _ser << m_key_frames_per_bone.size();
         for (size_t i = 0; i < m_key_frames_per_bone.size(); ++i)
         {
-            ser << m_key_frames_per_bone[i].bone_idx;
-            ser << m_key_frames_per_bone[i].key_frames;
+            _ser << m_key_frames_per_bone[i].bone_idx;
+            _ser << m_key_frames_per_bone[i].key_frames;
         }
 
         return eResult::Success;
     }
 
-    eResult Animation3D::deserialize_binary(const BinarySerializer* _ser)
+    eResult Animation3D::deserialize_binary(const BinarySerializer& _ser)
     {
-        if (nullptr == _ser)
+        eResult result = Super::deserialize_binary(_ser);
+        if (eResult_fail(result))
         {
-            ERROR_MESSAGE("Serializer이 nullptr 입니다.");
-            return eResult::Fail_Nullptr;
+            return result;
         }
 
-        const BinarySerializer& ser = *_ser;
-
-        ser >> m_start_frame_idx;
-        ser >> m_end_frame_idx;
-        ser >> m_frame_length;
-        ser >> m_start_time;
-        ser >> m_end_time;
-        ser >> m_time_length;
-        ser >> m_update_time;
-        ser >> m_frame_per_sec;
+        _ser >> m_start_frame_idx;
+        _ser >> m_end_frame_idx;
+        _ser >> m_frame_length;
+        _ser >> m_start_time;
+        _ser >> m_end_time;
+        _ser >> m_time_length;
+        _ser >> m_update_time;
+        _ser >> m_frame_per_sec;
 
         size_t vecSize = 0;
-        ser >> vecSize;
+        _ser >> vecSize;
         m_key_frames_per_bone.resize(vecSize);
         for (size_t i = 0; i < m_key_frames_per_bone.size(); ++i)
         {
-            ser >> m_key_frames_per_bone[i].bone_idx;
-            ser >> m_key_frames_per_bone[i].key_frames;
+            _ser >> m_key_frames_per_bone[i].bone_idx;
+            _ser >> m_key_frames_per_bone[i].key_frames;
         }
 
         if (false == create_keyframe_sbuffer())

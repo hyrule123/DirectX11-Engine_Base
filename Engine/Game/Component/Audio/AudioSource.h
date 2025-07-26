@@ -12,14 +12,15 @@ namespace core
 
 		//다 같이 공유하는 '리소스' 포인터만 변수로 가지고 있으므로 기본 복사 생성자로도 충분하다.
 		CLONE_ABLE(AudioSource);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		AudioSource();
 		AudioSource(const AudioSource& _other) = default;
 
 		virtual ~AudioSource();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void final_update() override;
 

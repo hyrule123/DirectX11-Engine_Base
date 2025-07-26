@@ -17,6 +17,9 @@ namespace core
 		CLASS_INFO(Renderer, Component);
 		BASE_COMPONENT(eComponentOrder::Renderer);
 
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Renderer();
 
@@ -25,9 +28,6 @@ namespace core
 		virtual ~Renderer();
 
 		virtual void final_update() override;
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void set_mesh(const s_ptr<Mesh>& _mesh) { m_mesh = _mesh; }
 		s_ptr<Mesh> get_mesh() { return m_mesh; }

@@ -18,14 +18,12 @@ namespace core
 		CLASS_INFO(ParticleRenderer, StaticMeshRenderer);
 		REGISTER_FACTORY(ParticleRenderer);
 		CLONE_ABLE(ParticleRenderer);
+
 	public:
 		ParticleRenderer();
 		ParticleRenderer(const ParticleRenderer& _other);
 
 		~ParticleRenderer();
-
-		virtual eResult serialize_json(JsonSerializer* Json) const override;
-		virtual eResult deserialize_json(const JsonSerializer* Json) override;
 
 		virtual void init() override;
 		virtual void final_update() override;

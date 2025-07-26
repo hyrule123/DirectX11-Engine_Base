@@ -2,8 +2,11 @@
 #include "Entity.h"
 
 #include <Engine/define_Macro.h>
-
 #include <Engine/Util/AtExit.h>
+
+#include <Engine/Util/Serialize/BinarySerializer.h>
+#include <Engine/Util/Serialize/JsonSerializer.h>
+
 namespace core
 {
 	uint32 Entity::s_next_instance_ID = 0;
@@ -32,6 +35,43 @@ namespace core
 		, m_concrete_class_name{ _other.m_concrete_class_name }
 	{
 	}
+
+	eResult Entity::serialize_binary(BinarySerializer& _ser) const
+	{
+		_ser << m_concrete_class_name;
+		return eResult::Success;
+	}
+
+	eResult Entity::deserialize_binary(const BinarySerializer& _ser)
+	{
+		std::string compare;
+		_ser >> compare;
+		if (compare != m_concrete_class_name)
+		{
+			ERROR_MESSAGE("Serialize 대상 클래스 미일치");
+			return eResult::Fail;
+		}
+		return eResult::Success;
+	}
+
+	eResult Entity::serialize_json(JsonSerializer& _ser) const
+	{
+		_ser[JSON_KEY(m_concrete_class_name)] << m_concrete_class_name;
+		return eResult::Success;
+	}
+
+	eResult Entity::deserialize_json(const JsonSerializer& _ser)
+	{
+		std::string compare;
+		_ser[JSON_KEY(m_concrete_class_name)] >> compare;
+		if (compare != m_concrete_class_name)
+		{
+			ERROR_MESSAGE("Serialize 대상 클래스 미일치");
+			return eResult::Fail;
+		}
+		return eResult::Success;
+	}
+
 
 	EntityFactory::EntityFactory()
 		: m_ctors{}

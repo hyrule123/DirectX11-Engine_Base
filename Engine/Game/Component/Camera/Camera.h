@@ -21,14 +21,14 @@ namespace  core
 	{
 		CLASS_INFO(Camera, Component);
 		BASE_COMPONENT(eComponentOrder::Camera);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
 		
 		class CullingAgent;
 	public:
 		Camera();
 		virtual ~Camera();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		void final_update() override;
 		void on_enable() override;

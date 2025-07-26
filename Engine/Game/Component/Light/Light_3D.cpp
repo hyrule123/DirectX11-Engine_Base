@@ -35,19 +35,14 @@ namespace core
 	{
 	}
 
-	eResult Light3D::serialize_json(JsonSerializer* _ser) const
+	eResult Light3D::serialize_json(JsonSerializer& _ser) const
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		JsonSerializer ser = *_ser;
+		eResult result = Super::serialize_json(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		try
 		{
-			Json::Value& light3d = ser[get_concrete_class_name()];
+			Json::Value& light3d = _ser[get_concrete_class_name()];
 
 			//m_attribute
 			{
@@ -73,23 +68,18 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Light3D::deserialize_json(const JsonSerializer* _ser)
+	eResult Light3D::deserialize_json(const JsonSerializer& _ser)
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		const JsonSerializer& ser = *_ser;
+		eResult result = Super::deserialize_json(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		try
 		{
-			const Json::Value& light3d = ser[get_concrete_class_name()];
+			const JsonSerializer& light3d = _ser[get_concrete_class_name()];
 
 			//m_attribute
 			{
-				const Json::Value& attribute = light3d[JSON_KEY(m_attribute)];
+				const JsonSerializer& attribute = light3d[JSON_KEY(m_attribute)];
 
 				attribute[JSON_KEY(m_attribute.angle)] >> m_attribute.angle;
 				attribute[JSON_KEY(m_attribute.color.ambient)] >> m_attribute.color.ambient;

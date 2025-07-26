@@ -9,12 +9,12 @@ namespace core
         CLASS_INFO(StateMachine, Component);
         BASE_COMPONENT(eComponentOrder::StateMachine);
 
+        NO_SERIALIZE_BINARY;
+        NO_SERIALIZE_JSON;
+
     public:
         StateMachine();
         virtual ~StateMachine();
-
-        virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult::Success; }
-        virtual eResult deserialize_json(const JsonSerializer* _ser) override { return eResult::Success; }
     };
 }
 

@@ -20,10 +20,12 @@ namespace core
 	BASE_RESOURCE(Material);
 	class Material 
 		: public Resource
-		, public Serializable_Json
 	{
 		CLASS_INFO(Material, Resource);
 		CLONE_ABLE(Material);
+
+		NO_SERIALIZE_BINARY;
+
 	public:
 		Material();
 
@@ -42,8 +44,8 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer& _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
 
 		void set_shader(const s_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
 		const s_ptr<GraphicsShader>& get_shader() const { return m_shader; }

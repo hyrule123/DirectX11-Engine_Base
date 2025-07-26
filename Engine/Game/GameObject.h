@@ -14,13 +14,15 @@ namespace core
 
 	class GameObject
 		: public Entity
-		, public Serializable_Json
 	{
 		friend class GameObject;
 
 		CLASS_INFO(GameObject, Entity);
 		REGISTER_FACTORY(GameObject);
 		CLONE_ABLE(GameObject);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
 		
 	public:
 		using BaseComponents = std::array<s_ptr<Component>, (size_t)eComponentOrder::END>;
@@ -50,9 +52,6 @@ namespace core
 		virtual void frame_end();
 
 		void remove_destroyed();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 	public:
 		s_ptr<Component> add_component(const s_ptr<Component>& _pCom);
 

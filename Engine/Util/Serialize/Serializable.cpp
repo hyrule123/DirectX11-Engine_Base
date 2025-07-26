@@ -79,7 +79,7 @@ namespace core
 
 		//Serialize
 		BinarySerializer ser{};
-		eResult result = serialize_binary(&ser);
+		eResult result = serialize_binary(ser);
 		if (eResult_fail(result))
 		{
 			return result;
@@ -104,7 +104,7 @@ namespace core
 		(*ifs) >> ser;
 		ifs->close();
 
-		return deserialize_binary(&ser);
+		return deserialize_binary(ser);
 	}
 
 
@@ -128,7 +128,7 @@ namespace core
 
 		//Serialize
 		Json::Value ser{};
-		eResult result = serialize_json(&ser);
+		eResult result = serialize_json(ser);
 		if (eResult_fail(result))
 		{
 			return result;

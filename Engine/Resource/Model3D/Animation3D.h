@@ -29,13 +29,13 @@ namespace core
     class Skeleton;
 	class Animation3D final
         : public Animation
-        , public Serializable_Binary
 	{
         friend class Skeleton;
 
         CLASS_INFO(Animation3D, Animation);
         REGISTER_FACTORY(Animation3D);
         CLONE_ABLE(Animation3D);
+        NO_SERIALIZE_JSON;
         
 	public:
 		Animation3D();
@@ -50,8 +50,8 @@ namespace core
         virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
         virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-        eResult serialize_binary(BinarySerializer* _ser) const override;
-        eResult deserialize_binary(const BinarySerializer* _ser) override;
+        eResult serialize_binary(BinarySerializer& _ser) const override;
+        eResult deserialize_binary(const BinarySerializer& _ser) override;
 
         eResult load_from_fbx(const s_ptr<Skeleton>& _skeleton, const tFBXAnimClip* _clip);
 

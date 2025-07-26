@@ -260,18 +260,16 @@ namespace core
 		pContext->OMSetBlendState(nullptr, nullptr, UINT_MAX);
 	}
 
-	eResult GraphicsShader::serialize_json(JsonSerializer* _ser) const
+	eResult GraphicsShader::serialize_json(JsonSerializer& _ser) const
 	{
-		if (nullptr == _ser)
+		eResult result = Super::serialize_json(_ser);
+		if (eResult_fail(result))
 		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
+			return result;
 		}
 
-		JsonSerializer& ser = *_ser;
-
 		//구조체 안에 const char* 타입이 있어서 수동으로 해줘야함
-		Json::Value& jsonInputLayouts = ser[JSON_KEY(m_input_layout_descs)];
+		Json::Value& jsonInputLayouts = _ser[JSON_KEY(m_input_layout_descs)];
 		jsonInputLayouts = Json::Value(Json::arrayValue);
 
 		//Input Layout Desc
@@ -303,7 +301,7 @@ namespace core
 
 		//쉐이더 파일명
 		{
-			Json::Value& ShaderFileName = ser[JSON_KEY(m_shader_codes)];
+			Json::Value& ShaderFileName = _ser[JSON_KEY(m_shader_codes)];
 			for (int i = 0; i < (int)eGSStage::END; ++i)
 			{
 				ShaderFileName.append(m_shader_codes[i].name);
@@ -311,29 +309,27 @@ namespace core
 		}
 
 		//래스터라이저 상태
-		ser[JSON_KEY(m_rasterizer_type)] << m_rasterizer_type;
-		ser[JSON_KEY(m_blend_type)] << m_blend_type;
-		ser[JSON_KEY(m_depth_stencil_type)] << m_depth_stencil_type;
+		_ser[JSON_KEY(m_rasterizer_type)] << m_rasterizer_type;
+		_ser[JSON_KEY(m_blend_type)] << m_blend_type;
+		_ser[JSON_KEY(m_depth_stencil_type)] << m_depth_stencil_type;
 
 		return eResult::Success;
 	}
 
 
-	eResult GraphicsShader::deserialize_json(const JsonSerializer* _ser)
+	eResult GraphicsShader::deserialize_json(const JsonSerializer& _ser)
 	{
-		if (nullptr == _ser)
+		eResult result = Super::deserialize_json(_ser);
+		if (eResult_fail(result))
 		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
+			return result;
 		}
-
-		const JsonSerializer& ser = *_ser;
 
 		//Input Layout Desc
 		m_input_layout_descs.clear();
-		if (ser.isMember(JSON_KEY(m_input_layout_descs)))
+		if (_ser.isMember(JSON_KEY(m_input_layout_descs)))
 		{
-			const Json::Value& jsonInputLayouts = ser[JSON_KEY(m_input_layout_descs)];
+			const Json::Value& jsonInputLayouts = _ser[JSON_KEY(m_input_layout_descs)];
 
 			if (jsonInputLayouts.isArray())
 			{
@@ -375,7 +371,7 @@ namespace core
 
 		//쉐이더
 		{
-			const Json::Value& shaderFileNames = ser[JSON_KEY(m_shader_codes)];
+			const Json::Value& shaderFileNames = _ser[JSON_KEY(m_shader_codes)];
 
 			if ((size_t)shaderFileNames.size() < m_shader_codes.size())
 			{
@@ -408,9 +404,9 @@ namespace core
 		}
 
 		//래스터라이저 상태
-		ser[JSON_KEY(m_rasterizer_type)] >> m_rasterizer_type;
-		ser[JSON_KEY(m_blend_type)] >> m_blend_type;
-		ser[JSON_KEY(m_depth_stencil_type)] >> m_depth_stencil_type;
+		_ser[JSON_KEY(m_rasterizer_type)] >> m_rasterizer_type;
+		_ser[JSON_KEY(m_blend_type)] >> m_blend_type;
+		_ser[JSON_KEY(m_depth_stencil_type)] >> m_depth_stencil_type;
 		set_rasterizer_state(m_rasterizer_type);
 		set_blend_state(m_blend_type);
 		set_depth_stencil_state(m_depth_stencil_type);

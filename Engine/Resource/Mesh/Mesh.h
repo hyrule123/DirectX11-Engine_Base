@@ -22,10 +22,12 @@ namespace core
 	BASE_RESOURCE(Mesh);
 	class Mesh final 
 		: public Resource 
-		, Serializable_Binary
 	{
 		CLASS_INFO(Mesh, Resource);
 		REGISTER_FACTORY(Mesh);
+
+		NO_SERIALIZE_JSON;
+
 	public:
 		Mesh();
 		virtual ~Mesh();
@@ -33,8 +35,8 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
-		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
+		virtual eResult serialize_binary(BinarySerializer& _ser) const override;
+		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
 
 		void set_vertex_buffer(const s_ptr<VertexBuffer>& _buf) {
 			m_vertex_buffer = _buf;

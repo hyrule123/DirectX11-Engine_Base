@@ -54,16 +54,6 @@ namespace core
 	{
 	}
 
-	eResult Camera::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult();
-	}
-
-	eResult Camera::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult();
-	}
-
 	void Camera::final_update()
 	{
 		ASSERT(eProjectionType::None != m_projection_type, "카메라의 투영행렬 타입을 설정하지 않았습니다.");

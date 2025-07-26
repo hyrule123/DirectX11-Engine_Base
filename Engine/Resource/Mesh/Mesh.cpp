@@ -64,19 +64,10 @@ namespace core
 		return load_file_binary(filePath);
 	}
 
-	eResult Mesh::serialize_binary(BinarySerializer* _ser) const
+	eResult Mesh::serialize_binary(BinarySerializer& _ser) const
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		BinarySerializer& ser = *_ser;
-
-		if (nullptr == m_vertex_buffer) {
-			return eResult::Fail;
-		}
+		eResult result = Super::serialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		//vertex buffer는 필수
 		if (nullptr == m_vertex_buffer) {
@@ -93,42 +84,37 @@ namespace core
 				return result;
 			}
 		}
-		ser << m_vertex_buffer->get_resource_name();
+		_ser << m_vertex_buffer->get_resource_name();
 
-		ser << m_index_topology;
-		ser << m_index_buffer_desc;
-		ser << m_index_count;
-		ser << m_index_buffer_data;
+		_ser << m_index_topology;
+		_ser << m_index_buffer_desc;
+		_ser << m_index_count;
+		_ser << m_index_buffer_data;
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			ser << m_skeleton->get_resource_name();
+			_ser << m_skeleton->get_resource_name();
 		}
 		else {
-			ser << "";
+			_ser << "";
 		}
 
 		return eResult::Success;
 	}
 
-	eResult Mesh::deserialize_binary(const BinarySerializer* _ser)
+	eResult Mesh::deserialize_binary(const BinarySerializer& _ser)
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		const BinarySerializer& ser = *_ser;
+		eResult result = Super::deserialize_binary(_ser);
+		if (eResult_fail(result)) { return result; }
 		
 		//vertex buffer
-		std::string res_name; ser >> res_name;
+		std::string res_name; _ser >> res_name;
 		m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load(res_name);
 
-		ser >> m_index_topology;
-		ser >> m_index_buffer_desc;
-		ser >> m_index_count;
-		ser >> m_index_buffer_data;
+		_ser >> m_index_topology;
+		_ser >> m_index_buffer_desc;
+		_ser >> m_index_count;
+		_ser >> m_index_buffer_data;
 
 		if (false == create_index_buffer_internal(m_index_buffer_data.data(), (UINT)m_index_buffer_data.size())) {
 			ERROR_MESSAGE("인덱스 버퍼 생성에 실패했습니다.");
@@ -136,7 +122,7 @@ namespace core
 		}
 
 		//skeleton
-		ser >> res_name;
+		_ser >> res_name;
 		if (false == res_name.empty()) {
 			m_skeleton = ResourceManager<Skeleton>::get_inst().load(res_name);
 		}

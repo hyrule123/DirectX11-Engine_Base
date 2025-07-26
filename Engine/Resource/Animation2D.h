@@ -10,10 +10,13 @@ namespace core
 	BASE_RESOURCE(Animation2D);
 	class Animation2D final
 		: public Animation
-		, public Serializable_Json
 	{
 		CLASS_INFO(Animation2D, Animation);
 		CLONE_ABLE(Animation2D);
+
+		NO_SERIALIZE_JSON;
+		NO_SERIALIZE_BINARY;
+
 	public:
 		struct tSprite
 		{
@@ -43,10 +46,6 @@ namespace core
 		{ 
 			return eResult::Fail_NotImplemented; 
 		}
-
-		
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		uint update();
 		void final_update();

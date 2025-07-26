@@ -17,9 +17,11 @@ namespace core
 	BASE_RESOURCE(Skeleton);
 	class Skeleton final
 		: public Resource
-		, public Serializable_Binary
 	{
 		CLASS_INFO(Skeleton, Resource);
+
+		NO_SERIALIZE_JSON;
+
 	public:
 		Skeleton();
 		virtual ~Skeleton();
@@ -27,8 +29,8 @@ namespace core
 		virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
 		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
 
-		virtual eResult serialize_binary(BinarySerializer* _ser) const override;
-		virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
+		virtual eResult serialize_binary(BinarySerializer& _ser) const override;
+		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
 
 		eResult create_from_FBX(FBXLoader* _fbxLoader);
 

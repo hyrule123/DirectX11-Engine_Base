@@ -67,15 +67,6 @@ namespace core
 	{
 	}
 
-	eResult Animator2D::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult();
-	}
-	eResult Animator2D::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult();
-	}
-
 	void Animator2D::update()
 	{
 		if (m_active_animation == nullptr)

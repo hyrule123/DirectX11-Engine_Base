@@ -35,17 +35,6 @@ namespace core
 	{
 	}
 
-
-	eResult Animation2D::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult::Fail_NotImplemented;
-	}
-
-	eResult Animation2D::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult::Fail_NotImplemented;
-	}
-
 	uint Animation2D::update()
 	{
 		if (m_b_complete)

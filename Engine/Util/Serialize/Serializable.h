@@ -23,8 +23,6 @@ namespace std
 // Serialize 함수를 재정의할 떄 반드시 포인터 체크를 해줄것.
 //====================================================================================================
 
-#define SERIALIZER_CHECK_PTR(_ser) if(nullptr == _ser) { ERROR_MESSAGE("Serializer가 nullptr 이었습니다."); return eResult::Fail_Nullptr; }
-
 namespace core
 {
 	class Serializable
@@ -50,8 +48,8 @@ namespace core
 		eResult save_file_binary(std::fs::path const& _fullPath) const;
 		eResult load_file_binary(std::fs::path const& _fullPath);
 		
-		virtual eResult serialize_binary(BinarySerializer* _ser) const = 0;
-		virtual eResult deserialize_binary(const BinarySerializer* _ser) = 0;
+		virtual eResult serialize_binary(BinarySerializer& _ser) const = 0;
+		virtual eResult deserialize_binary(const BinarySerializer& _ser) = 0;
 	};
 #pragma endregion //BINARY
 }
@@ -86,8 +84,8 @@ namespace core
 		eResult save_file_json(std::fs::path const& _fullPath) const;
 		eResult load_file_json(std::fs::path const& _fullPath);
 
-		virtual eResult serialize_json(JsonSerializer* _ser) const = 0;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) = 0;
+		virtual eResult serialize_json(JsonSerializer& _ser) const = 0;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) = 0;
 	};
 #pragma endregion //JSON
 }

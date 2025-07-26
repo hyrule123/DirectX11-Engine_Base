@@ -68,17 +68,6 @@ namespace core
 	{
 	}
 
-
-	eResult ParticleRenderer::serialize_json(JsonSerializer* Json) const
-	{
-		return eResult();
-	}
-
-	eResult ParticleRenderer::deserialize_json(const JsonSerializer* Json)
-	{
-		return eResult();
-	}
-
 	void ParticleRenderer::init()
 	{
 		using namespace name::defaultRes;

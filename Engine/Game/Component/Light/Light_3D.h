@@ -13,6 +13,9 @@ namespace core
 		CLASS_INFO(Light3D, Light);
 		REGISTER_FACTORY(Light3D);
 		CLONE_ABLE(Light3D);
+
+		NO_SERIALIZE_BINARY;
+
 	public:
 		Light3D();
 
@@ -21,8 +24,8 @@ namespace core
 
 		~Light3D() override;
 
-		eResult serialize_json(JsonSerializer* _ser) const override;
-		eResult deserialize_json(const JsonSerializer* _ser) override;
+		eResult serialize_json(JsonSerializer& _ser) const override;
+		eResult deserialize_json(const JsonSerializer& _ser) override;
 
 		void update() override;
 		void final_update() override;

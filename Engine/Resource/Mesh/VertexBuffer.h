@@ -28,10 +28,11 @@ namespace core {
     BASE_RESOURCE(VertexBuffer);
     class VertexBuffer 
         : public Resource
-        , public Serializable_Binary
     {
         CLASS_INFO(VertexBuffer, Resource);
         REGISTER_FACTORY(VertexBuffer);
+
+        NO_SERIALIZE_JSON;
 
     public:
         VertexBuffer();
@@ -56,8 +57,8 @@ namespace core {
         virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const;
         virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name);
 
-        virtual eResult serialize_binary(BinarySerializer* _ser) const override;
-        virtual eResult deserialize_binary(const BinarySerializer* _ser) override;
+        virtual eResult serialize_binary(BinarySerializer& _ser) const override;
+        virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
 
         bool is_saved() const { return m_is_saved; }
 

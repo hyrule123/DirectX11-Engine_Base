@@ -8,6 +8,9 @@ namespace core
 	{
 		CLASS_INFO(AudioListener, Component);
 		BASE_COMPONENT(eComponentOrder::AudioListener);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
 		
 	public:
 		AudioListener();
@@ -17,9 +20,6 @@ namespace core
 		CLONE_ABLE(AudioListener);
 
 		virtual ~AudioListener();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		virtual void awake() override;
 		virtual void update() override;

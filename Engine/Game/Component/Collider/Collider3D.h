@@ -12,13 +12,14 @@ namespace core
 	{
 		CLASS_INFO(Collider3D, Collider);
 		CLONE_DISABLE(Collider3D);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Collider3D(eCollider3DType _col3dType);
 		
 		virtual ~Collider3D();
-
-		eResult serialize_json(JsonSerializer* _ser) const override { return eResult(); };
-		eResult deserialize_json(const JsonSerializer* _ser) override { return eResult(); };
 
 		void init() override;
 		void awake() override;

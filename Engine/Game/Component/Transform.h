@@ -45,6 +45,9 @@ namespace core
 		BASE_COMPONENT(eComponentOrder::Transform);
 		REGISTER_FACTORY(Transform);
 		CLONE_ABLE(Transform);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
 		
 		friend class Transtform;
 		friend class GameObject;
@@ -60,9 +63,6 @@ namespace core
 
 		static void init_static();
 		static void release_static();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult(); }
-		virtual eResult deserialize_json(const JsonSerializer* _ser) { return eResult(); }
 		
 		virtual void final_update() override;
 		virtual void frame_end() override;

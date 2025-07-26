@@ -11,14 +11,15 @@ namespace core
 	{
 		CLASS_INFO(Animator3D, Animator);
 		CLONE_ABLE(Animator3D);
+
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Animator3D();
 		Animator3D(const Animator3D& _other);
 
 		virtual ~Animator3D();
-
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
 
 		//virtual void init() override;
 		virtual void final_update() override;

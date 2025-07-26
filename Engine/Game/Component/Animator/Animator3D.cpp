@@ -40,17 +40,6 @@ namespace core
 	{
 	}
 
-	eResult Animator3D::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult();
-	}
-
-	eResult Animator3D::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult();
-	}
-
-
 	void Animator3D::final_update()
 	{
 		if (nullptr == m_shared_play_data) { return; }

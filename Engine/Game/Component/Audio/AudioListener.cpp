@@ -23,16 +23,6 @@ namespace core
 	{
 	}
 
-	eResult AudioListener::serialize_json(JsonSerializer* _ser) const
-	{
-		return eResult();
-	}
-
-	eResult AudioListener::deserialize_json(const JsonSerializer* _ser)
-	{
-		return eResult();
-	}
-
 	void AudioListener::awake()
 	{
 	}

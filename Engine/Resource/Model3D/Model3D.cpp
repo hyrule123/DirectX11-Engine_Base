@@ -64,15 +64,10 @@ namespace core
 		return save_file_json(fullPath);
 	}
 
-	eResult Model3D::serialize_json(JsonSerializer* _ser) const
+	eResult Model3D::serialize_json(JsonSerializer& _ser) const
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Json::Value가 nullptr 입니다.");
-			return eResult::Fail_Nullptr;
-		}
-
-		Json::Value& ser = *_ser;
+		eResult result = Super::serialize_json(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		try
 		{
@@ -85,16 +80,16 @@ namespace core
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					ser[JSON_KEY(m_skeleton)] << m_skeleton->get_resource_name();
+					_ser[JSON_KEY(m_skeleton)] << m_skeleton->get_resource_name();
 				}
 				else {
-					ser[JSON_KEY(m_skeleton)] << "";
+					_ser[JSON_KEY(m_skeleton)] << "";
 				}
 			}
 
 
 			//전부 포인터 형태이므로 StrKey를 등록해 준다.
-			Json::Value& arrMeshCont = (ser)[JSON_KEY(m_mesh_mtrl_pairs)];
+			Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_mesh_mtrl_pairs)];
 			for (size_t i = 0; i < m_mesh_mtrl_pairs.size(); ++i)
 			{
 				//nullptr check
@@ -136,24 +131,19 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult Model3D::deserialize_json(const JsonSerializer* _ser)
+	eResult Model3D::deserialize_json(const JsonSerializer& _ser)
 	{
-		if (nullptr == _ser)
-		{
-			ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-			return eResult::Fail_Nullptr;
-		}
+		eResult result = Super::deserialize_json(_ser);
+		if (eResult_fail(result)) { return result; }
 
 		m_skeleton = nullptr;
 		m_mesh_mtrl_pairs.clear();
-
-		const JsonSerializer& ser = *_ser;
 
 		try {
 			//Skeleton
 			{
 				std::string skeletonStrKey{};
-				ser[JSON_KEY(m_skeleton)] >> skeletonStrKey;
+				_ser[JSON_KEY(m_skeleton)] >> skeletonStrKey;
 
 				if (false == skeletonStrKey.empty())
 				{
@@ -169,7 +159,7 @@ namespace core
 			//MeshContainers
 			{
 				//전부 포인터 형태이므로 StrKey를 등록해 준다.
-				const Json::Value& arrMeshCont = (ser)[JSON_KEY(m_mesh_mtrl_pairs)];
+				const Json::Value& arrMeshCont = (_ser)[JSON_KEY(m_mesh_mtrl_pairs)];
 				size_t meshContSize = (size_t)arrMeshCont.size();
 				m_mesh_mtrl_pairs.resize(meshContSize);
 				for (size_t i = 0; i < m_mesh_mtrl_pairs.size(); ++i)

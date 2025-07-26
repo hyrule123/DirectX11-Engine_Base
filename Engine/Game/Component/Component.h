@@ -21,7 +21,6 @@ namespace core {
 	
 	class Component
 		: public Entity
-		, public Serializable_Json
 	{
 		CLASS_INFO(Component, Entity);
 		CLONE_DISABLE(Component);

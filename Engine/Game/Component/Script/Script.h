@@ -11,14 +11,13 @@ namespace core
 		CLASS_INFO(Script, Component);
 		BASE_COMPONENT(eComponentOrder::Script);
 
+		NO_SERIALIZE_BINARY;
+		NO_SERIALIZE_JSON;
+
 	public:
 		Script();
 		Script(const Script& _other) = default;
 		virtual ~Script();
-
-		//Script의 경우 Serialize 하지 않는 경우도 있으므로 일단 재정의해둔다.
-		virtual eResult serialize_json(JsonSerializer* _ser) const override { return eResult::Success; }
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override { return eResult::Success; }
 
 		virtual void init() {};
 		virtual void awake() override {};

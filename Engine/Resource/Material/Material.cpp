@@ -66,29 +66,25 @@ namespace core
         return load_file_json(_base_directory / _resource_name);
     }
 
-    eResult Material::serialize_json(JsonSerializer* _ser) const
+    eResult Material::serialize_json(JsonSerializer& _ser) const
     {
-        if (nullptr == _ser)
-        {
-            ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-            return eResult::Fail_Nullptr;
-        }
-        JsonSerializer& ser = *_ser;
+        eResult result = Super::serialize_json(_ser);
+        if (eResult_fail(result)) { return result; }
 
         try
         {
             //shader
             if (m_shader)
             {
-                ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
+                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
             }
             else
             {
-                ser[JSON_KEY(m_shader)] << Json::nullValue;
+                _ser[JSON_KEY(m_shader)] << Json::nullValue;
             }
 
             //textures
-            Json::Value& textures = ser[JSON_KEY(m_textures)];
+            Json::Value& textures = _ser[JSON_KEY(m_textures)];
             textures.resize((Json::ArrayIndex)m_textures.size());
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
@@ -103,10 +99,10 @@ namespace core
             }
 
             //renderingMode
-            ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
+            _ser[JSON_KEY(m_renderingMode)] << m_renderingMode;
 
             //const buffer
-            Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
+            Json::Value& cbData = _ser[JSON_KEY(m_shared_material_data)];
             cbData[JSON_KEY(m_shared_material_data.ambient)] << m_shared_material_data.ambient;
             cbData[JSON_KEY(m_shared_material_data.diffuse)] << m_shared_material_data.diffuse;
             cbData[JSON_KEY(m_shared_material_data.emissive)] << m_shared_material_data.emissive;
@@ -122,28 +118,23 @@ namespace core
         return eResult::Success;
     }
 
-    eResult Material::deserialize_json(const JsonSerializer* _ser)
+    eResult Material::deserialize_json(const JsonSerializer& _ser)
     {
-        if (nullptr == _ser)
-        {
-            ERROR_MESSAGE("Serializer가 nullptr 이었습니다.");
-            return eResult::Fail_Nullptr;
-        }
-
-        const JsonSerializer& ser = *_ser;
+        eResult result = Super::deserialize_json(_ser);
+        if (eResult_fail(result)) { return result; }
 
         try
         {
             //shader
             {
                 std::string name{};
-                ser[JSON_KEY(m_shader)] >> name;
+                _ser[JSON_KEY(m_shader)] >> name;
                 m_shader = ResourceManager<GraphicsShader>::get_inst().load(name);
             }
 
 
             //textures
-            const Json::Value& textures = ser[JSON_KEY(m_textures)];
+            const Json::Value& textures = _ser[JSON_KEY(m_textures)];
             for (size_t i = 0; i < m_textures.size(); ++i)
             {
                 std::string name{};
@@ -156,7 +147,7 @@ namespace core
             }
 
             //const buffer
-            const Json::Value& cbData = ser[JSON_KEY(m_shared_material_data)];
+            const Json::Value& cbData = _ser[JSON_KEY(m_shared_material_data)];
             cbData[JSON_KEY(m_shared_material_data.ambient)] >> m_shared_material_data.ambient;
             cbData[JSON_KEY(m_shared_material_data.diffuse)] >> m_shared_material_data.diffuse;
             cbData[JSON_KEY(m_shared_material_data.emissive)] >> m_shared_material_data.emissive;
@@ -164,7 +155,7 @@ namespace core
             //m_constBuffer의 btex는 저장하지 않음(m_textures와 내용 중복)
 
             //renderingMode
-            ser[JSON_KEY(m_renderingMode)] >> m_renderingMode;
+            _ser[JSON_KEY(m_renderingMode)] >> m_renderingMode;
         }
         catch (const Json::Exception& _err)
         {
