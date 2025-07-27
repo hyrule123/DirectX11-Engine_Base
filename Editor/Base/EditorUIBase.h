@@ -8,9 +8,11 @@ namespace core::editor
 {
 	class EditorUIBase 
 		: public EditorEntity
-		, public Serializable_Json
 	{
 		CLASS_INFO(EditorUIBase, EditorEntity);
+
+		NO_SERIALIZE_BINARY;
+
 	public:
 		EditorUIBase();
 		//virtual void init() override;
@@ -33,8 +35,8 @@ namespace core::editor
 		*/
 		virtual void end_UI() {};
 
-		virtual eResult serialize_json(JsonSerializer* _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer* _ser) override;
+		virtual eResult serialize_json(JsonSerializer& _ser) const override;
+		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
 
 		bool is_awake() const { return m_b_awake; }
 		bool is_enabled() const { return m_b_enable; }

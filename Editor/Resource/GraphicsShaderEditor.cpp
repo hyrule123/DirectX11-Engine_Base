@@ -469,7 +469,7 @@ namespace core::editor
 					}
 
 					
-					eResult result = DummyGS.serialize_json(&jVal);
+					eResult result = DummyGS.serialize_json(jVal);
 					if (eResult_fail(result))
 					{
 						ERROR_MESSAGE("json 파일 저장에 실패했습니다.");

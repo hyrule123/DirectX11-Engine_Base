@@ -15,6 +15,7 @@ namespace core::editor
 		public EditorUIBase
 	{
 		CLASS_INFO(ComboBoxWidget, EditorUIBase);
+
 	public:
 		ComboBoxWidget();
 		virtual ~ComboBoxWidget();

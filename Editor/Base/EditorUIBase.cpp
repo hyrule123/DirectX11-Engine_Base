@@ -36,30 +36,34 @@ namespace core::editor
 		}
 	}
 
-	eResult EditorUIBase::serialize_json(JsonSerializer* _ser) const
+	eResult EditorUIBase::serialize_json(JsonSerializer& _ser) const
 	{
-		SERIALIZER_CHECK_PTR(_ser);
-
-		JsonSerializer& ser = *_ser;
+		eResult result = Super::serialize_json(_ser);
+		if (eResult_fail(result))
+		{
+			return result;
+		}
 		
 		JSON_TRY
 		{
-			ser[JSON_KEY(m_b_enable)] << m_b_enable;
+			_ser[JSON_KEY(m_b_enable)] << m_b_enable;
 		}
 		JSON_CATCH;
 
 		return eResult::Success;
 	}
 
-	eResult EditorUIBase::deserialize_json(const JsonSerializer* _ser)
+	eResult EditorUIBase::deserialize_json(const JsonSerializer& _ser)
 	{
-		SERIALIZER_CHECK_PTR(_ser);
-
-		const JsonSerializer& ser = *_ser;
-
+		eResult result = Super::deserialize_json(_ser);
+		if (eResult_fail(result))
+		{
+			return result;
+		}
+		
 		JSON_TRY
 		{
-			ser[JSON_KEY(m_b_enable)] >> m_b_enable;
+			_ser[JSON_KEY(m_b_enable)] >> m_b_enable;
 		}
 		JSON_CATCH;
 
