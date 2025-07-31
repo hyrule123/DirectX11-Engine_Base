@@ -31,9 +31,9 @@ namespace core
 	{
 	}
 
-	eResult ComputeShader::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult ComputeShader::load(const std::fs::path& _base_directory)
 	{
-		return compile_from_CSO(_base_directory / _resource_name);
+		return compile_from_CSO(_base_directory / get_res_filename());
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)

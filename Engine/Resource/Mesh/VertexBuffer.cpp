@@ -55,19 +55,15 @@ namespace core {
 		}
 	}
 
-	eResult VertexBuffer::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	eResult VertexBuffer::save(const std::fs::path& _base_directory) const
 	{
-		std::fs::path fullpath = _base_directory / _resource_name;
-		fullpath.replace_extension(name::path::extension::VertexBuffer);
-		return save_file_binary(fullpath);;
+		return save_file_binary(_base_directory);
 	}
 
-	eResult VertexBuffer::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult VertexBuffer::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path fullpath = _base_directory / _resource_name;
-		fullpath.replace_extension(name::path::extension::VertexBuffer);
 		reset();
-		return load_file_binary(fullpath);
+		return load_file_binary(_base_directory);
 	}
 
 	eResult VertexBuffer::serialize_binary(BinarySerializer& _ser) const

@@ -47,8 +47,8 @@ namespace core
         void bind_buffer_to_GPU_register();
         void unbind_buffer_from_GPU_register();
 
-        virtual eResult save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const override;
-        virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+        virtual eResult save(const std::fs::path& _base_directory) const override;
+        virtual eResult load(const std::fs::path& _base_directory) override;
 
         eResult serialize_binary(BinarySerializer& _ser) const override;
         eResult deserialize_binary(const BinarySerializer& _ser) override;
@@ -63,15 +63,15 @@ namespace core
         double get_time_length() const { return m_time_length; }
         float get_update_time() const { return m_update_time; }
         uint get_FPS() const { return m_frame_per_sec; }
-        s_ptr<Skeleton> get_skeleton() const { return m_OwnerSkeleton.lock(); }
-        void set_skeleton(const s_ptr<Skeleton>& _skeleton) { m_OwnerSkeleton = _skeleton; }
+        s_ptr<Skeleton> get_skeleton() const { return m_owner_skeleton.lock(); }
+        void set_skeleton(const s_ptr<Skeleton>& _skeleton) { m_owner_skeleton = _skeleton; }
         s_ptr<StructBuffer> get_keyframe_sbuffer() const { return m_keyframe_sbuffer; }
 
     private:
         bool create_keyframe_sbuffer();
 
     private:
-        w_ptr<Skeleton> m_OwnerSkeleton;
+        w_ptr<Skeleton> m_owner_skeleton;
 
         uint				m_start_frame_idx;
         uint				m_end_frame_idx;

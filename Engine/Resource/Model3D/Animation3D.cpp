@@ -15,7 +15,7 @@ namespace core
 {
 	Animation3D::Animation3D()
         : Animation()
-        , m_OwnerSkeleton{}
+        , m_owner_skeleton{}
         , m_start_frame_idx{}
         , m_end_frame_idx{}
         , m_frame_length()
@@ -31,7 +31,7 @@ namespace core
 
     Animation3D::Animation3D(const Animation3D& _other)
         : Animation(_other)
-        , m_OwnerSkeleton{ _other.m_OwnerSkeleton }
+        , m_owner_skeleton{ _other.m_owner_skeleton }
         , m_start_frame_idx{ _other.m_start_frame_idx }
         , m_end_frame_idx{ _other.m_end_frame_idx}
         , m_frame_length(_other.m_frame_length)
@@ -61,13 +61,13 @@ namespace core
         m_keyframe_sbuffer->unbind_buffer();
     }
 
-    eResult Animation3D::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+    eResult Animation3D::save(const std::fs::path& _base_directory) const
     {
         ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+    eResult Animation3D::load(const std::fs::path& _base_directory)
     {
         ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
@@ -82,12 +82,13 @@ namespace core
             return result;
         }
 
-        if (m_OwnerSkeleton.expired())
+        if (m_owner_skeleton.expired())
         {
             ERROR_MESSAGE("본 정보가 존재하지 않습니다.");
             return eResult::Fail_Nullptr;
         }
 
+        _ser << m_owner_skeleton.lock()->get_res_filename();
         _ser << m_start_frame_idx;
         _ser << m_end_frame_idx;
         _ser << m_frame_length;
@@ -113,6 +114,19 @@ namespace core
         if (eResult_fail(result))
         {
             return result;
+        }
+        if (nullptr == m_owner_skeleton.lock())
+        {
+            ERROR_MESSAGE("스켈레톤 주소가 없습니다.");
+            return eResult::Fail_Nullptr;
+        }
+
+        std::string test;
+        _ser >> test;
+        if (test != m_owner_skeleton.lock()->get_res_filename())
+        {
+            ERROR_MESSAGE("스켈레톤 정보가 일치하지 않습니다.");
+            return eResult::Fail_InValid;
         }
 
         _ser >> m_start_frame_idx;
@@ -148,9 +162,9 @@ namespace core
 		if (nullptr == _skeleton || nullptr == _clip)
 			return eResult::Fail_Nullptr;
 
-        m_OwnerSkeleton = _skeleton;
+        m_owner_skeleton = _skeleton;
 
-        set_resource_name(_clip->name);
+        get_res_filename(_clip->name);
 
         switch (_clip->time_mode)
         {

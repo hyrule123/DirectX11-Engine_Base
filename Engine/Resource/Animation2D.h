@@ -42,11 +42,6 @@ namespace core
 
 		virtual ~Animation2D();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override
-		{ 
-			return eResult::Fail_NotImplemented; 
-		}
-
 		uint update();
 		void final_update();
 		void render();

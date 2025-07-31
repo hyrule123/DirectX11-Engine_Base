@@ -32,7 +32,7 @@ namespace core::editor
 
 		ImGui::Image(targetTex->get_SRV().Get(), ImVec2(150.0f, 150.0f));
 
-		const std::string& key = targetTex->get_resource_name();
+		const std::string& key = targetTex->get_res_filename();
 
 		ImGui::Text("Key	"); ImGui::SameLine();
 		ImGui::InputText("##TexKey"

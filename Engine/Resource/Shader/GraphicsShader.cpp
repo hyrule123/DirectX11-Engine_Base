@@ -43,14 +43,16 @@ namespace core
 	{
 	}
 
-	eResult GraphicsShader::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	eResult GraphicsShader::save(const std::fs::path& _base_directory) const
 	{
-		return save_file_json(_base_directory / _resource_name);
+		std::fs::path full_path = _base_directory / get_res_filename();
+		return save_file_json(full_path);
 	}
 
-	eResult GraphicsShader::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult GraphicsShader::load(const std::fs::path& _base_directory)
 	{
-		return load_file_json(_base_directory / _resource_name);
+		std::fs::path full_path = _base_directory / get_res_filename();
+		return load_file_json(full_path);
 	}
 
 	eResult GraphicsShader::compile_from_source_code(eGSStage _stage, const std::fs::path& _FullPath, const std::string_view _funcName)

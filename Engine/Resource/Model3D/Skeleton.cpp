@@ -46,21 +46,25 @@ namespace core
 	{
 	}
 
-	eResult Skeleton::save(const std::fs::path& _basePath, const std::fs::path& _resource_name) const
+	eResult Skeleton::save(const std::fs::path& _base_dir) const
 	{
-		//디렉토리가 존재하는지 확인한다.
+		std::fs::path file_path = get_res_filename();
+
+		//A/B.sklt 형식인지 확인한다.
+		if (false == file_path.has_extension())
 		{
-			if (false == std::fs::is_directory((_basePath / _resource_name).remove_filename()))
-			{
-				ERROR_MESSAGE("Skeleton은 반드시 폴더 안에 저장되어야 합니다.");
-				return eResult::Fail;
-			}
+			ERROR_MESSAGE("저장할 파일명이나 확장자가 없습니다.");
+			return eResult::Fail;
+		}
+		if (false == file_path.has_parent_path())
+		{
+			ERROR_MESSAGE("Skeleton은 반드시 폴더 안에 저장되어야 합니다.");
+			return eResult::Fail;
 		}
 
-		std::fs::path fullPath = _basePath / _resource_name;
-		fullPath.replace_extension(name::path::extension::Skeleton);
+		std::fs::path full_path = _base_dir / file_path;
 		//Skeleton
-		eResult result = save_file_binary(fullPath);
+		eResult result = save_file_binary(full_path);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
@@ -71,9 +75,9 @@ namespace core
 		{
 			for (const auto& iter : m_animations)
 			{
-				fullPath.replace_filename(iter.first);
-				fullPath.replace_extension(name::path::extension::Anim3D);
-				result = iter.second->save_file_binary(fullPath);
+				full_path.replace_filename(iter.first);
+				full_path.replace_extension(name::path::extension::Anim3D);
+				result = iter.second->save_file_binary(full_path);
 				if (eResult_fail(result))
 				{
 					std::wstringstream errmsg{};
@@ -88,13 +92,26 @@ namespace core
 
 		return result;
 	}
-	eResult Skeleton::load(const std::fs::path& _basePath, const std::fs::path& _resource_name)
+	eResult Skeleton::load(const std::fs::path& _base_dir)
 	{
-		std::fs::path fullPath = _basePath / _resource_name;
+		std::fs::path file_path = get_res_filename();
 
-		fullPath.replace_extension(name::path::extension::Skeleton);
+		//A/B.sklt 형식인지 확인한다.
+		if (false == file_path.has_extension())
+		{
+			ERROR_MESSAGE("저장할 파일명이나 확장자가 없습니다.");
+			return eResult::Fail;
+		}
+		if (false == file_path.has_parent_path())
+		{
+			ERROR_MESSAGE("Skeleton은 반드시 폴더 안에 저장되어야 합니다.");
+			return eResult::Fail;
+		}
+
+		std::fs::path full_path = _base_dir / file_path;
+
 		//Skeleton
-		eResult result = load_file_binary(fullPath);
+		eResult result = load_file_binary(full_path);
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("스켈레톤 정보 로드 실패.");
@@ -105,16 +122,16 @@ namespace core
 		try
 		{
 			//파일명 제거
-			fullPath.remove_filename();
+			full_path.remove_filename();
 
-			if (false == std::fs::is_directory(fullPath))
+			if (false == std::fs::is_directory(full_path))
 			{
 				ERROR_MESSAGE("경로가 잘못되었습니다.");
 				return eResult::Fail_Open;
 			}
 
 			//내부 순회돌아주면서 a3d 확장자 파일을 모두 불러온다.
-			for (const auto& dirIter : std::fs::directory_iterator(fullPath))
+			for (const auto& dirIter : std::fs::directory_iterator(full_path))
 			{
 				const std::fs::path& filePath = dirIter.path();
 
@@ -128,6 +145,8 @@ namespace core
 				}
 				
 				s_ptr<Animation3D> a3d = std::make_shared<Animation3D>();
+				s_ptr<Skeleton> ths = std::static_pointer_cast<Skeleton>(shared_from_this());
+				a3d->set_skeleton(ths);
 				eResult result = a3d->load_file_binary(filePath);
 				if (eResult_fail(result))
 				{
@@ -244,7 +263,7 @@ namespace core
 				return result;
 			}
 			
-			std::string animName(anim->get_resource_name());
+			std::string animName(anim->get_res_filename());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -331,12 +350,12 @@ namespace core
 				iter = m_animations.find(name);
 			}
 
-			std::fs::path fullPath = ResourceManager<Skeleton>::get_inst().get_base_directory(); 
-			fullPath /= _saveDir.filename();
-			fullPath /= name;
-			fullPath.replace_extension(name::path::extension::Anim3D);
+			std::fs::path full_path = ResourceManager<Skeleton>::get_inst().get_base_directory(); 
+			full_path /= _saveDir.filename();
+			full_path /= name;
+			full_path.replace_extension(name::path::extension::Anim3D);
 			
-			if (eResult_fail(ourAnim->save_file_binary(fullPath)))
+			if (eResult_fail(ourAnim->save_file_binary(full_path)))
 			{
 				ERROR_MESSAGE("Animation 3D 저장 실패");
 				return false;

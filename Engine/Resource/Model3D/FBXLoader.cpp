@@ -64,11 +64,11 @@ namespace core
 		}
 	}
 
-	eResult FBXLoader::load_FBX(const std::fs::path& _strPath, bool _bStatic)
+	eResult FBXLoader::load_FBX(const std::fs::path& _full_path, bool _bStatic)
 	{
 		Reset();
 
-		if (false == std::fs::exists(_strPath))
+		if (false == std::fs::exists(_full_path))
 		{
 			return eResult::Fail_Open;
 		}
@@ -93,7 +93,7 @@ namespace core
 
 		fbxsdk::FbxImporter* importer = fbxsdk::FbxImporter::Create(m_fbx_manager, "");
 
-		if (false == importer->Initialize(_strPath.string().c_str(), -1, m_fbx_manager->GetIOSettings()))
+		if (false == importer->Initialize(_full_path.string().c_str(), -1, m_fbx_manager->GetIOSettings()))
 		{
 			ERROR_MESSAGE("FBX 로더 초기화 실패");
 			Reset();
@@ -110,7 +110,7 @@ namespace core
 			return eResult::Fail;
 		}
 
-		m_file_name = _strPath.stem().string();
+		m_file_name = _full_path.stem().string();
 
 
 		//축 정보 변경
@@ -166,7 +166,7 @@ namespace core
 		//load_textures();
 
 		// 필요한 메테리얼 생성
-		//CreateMaterial(_strPath);
+		//CreateMaterial(_full_path);
 
 		return eResult::Success;
 	}
@@ -659,7 +659,7 @@ namespace core
 		}
 	}
 
-	//void FBXLoader::CreateMaterial(const std::filesystem::path& _strPath)
+	//void FBXLoader::CreateMaterial(const std::filesystem::path& _full_path)
 	//{
 	//	//std::string strMtrlKey;
 	//	//std::string strPath;
@@ -672,7 +672,7 @@ namespace core
 	//			//if (strMtrlKey.empty())
 	//			//{
 	//			//	//파일 이름에서 확장자 제거하고 이름만 받아옴
-	//			//	strMtrlKey = _strPath.stem();
+	//			//	strMtrlKey = _full_path.stem();
 
 	//			//	//번호 붙여줌
 	//			//	strMtrlKey += "_Mtrl";
@@ -699,7 +699,7 @@ namespace core
 	//			pMaterial = new_entity<Material>();
 
 	//			// 상대경로가 곧 키
-	//			pMaterial->set_resource_name(m_fbx_containers[i].materials[j].name);
+	//			pMaterial->get_res_filename(m_fbx_containers[i].materials[j].name);
 
 	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
@@ -754,7 +754,7 @@ namespace core
 	//				ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 	//			}
 
-	//			ResourceManager<Material>::get_inst().insert(pMaterial->get_resource_name(), pMaterial);
+	//			ResourceManager<Material>::get_inst().insert(pMaterial->get_res_filename(), pMaterial);
 	//		}
 	//	}
 	//}

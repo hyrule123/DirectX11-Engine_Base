@@ -14,7 +14,7 @@ namespace core
 		GPUInitSetting();
 		virtual ~GPUInitSetting();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+		virtual eResult load(const std::fs::path& _base_directory) override;
 
 	protected:
 		virtual bool bind_buffer_to_GPU_register() override;

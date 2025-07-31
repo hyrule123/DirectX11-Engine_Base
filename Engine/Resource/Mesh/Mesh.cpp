@@ -49,19 +49,14 @@ namespace core
 	{
 	}
 
-	eResult Mesh::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+	eResult Mesh::save(const std::fs::path& _base_directory) const
 	{
-		std::fs::path key_path = _resource_name;
-		key_path.replace_extension(name::path::extension::Mesh);
-
-		return save_file_binary(_base_directory / key_path);
+		return save_file_binary(_base_directory);
 	}
 
-	eResult Mesh::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult Mesh::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path filePath = _base_directory / _resource_name;
-		filePath.replace_extension(name::path::extension::Mesh);
-		return load_file_binary(filePath);
+		return load_file_binary(_base_directory);
 	}
 
 	eResult Mesh::serialize_binary(BinarySerializer& _ser) const
@@ -84,7 +79,7 @@ namespace core
 				return result;
 			}
 		}
-		_ser << m_vertex_buffer->get_resource_name();
+		_ser << m_vertex_buffer->get_res_filename();
 
 		_ser << m_index_topology;
 		_ser << m_index_buffer_desc;
@@ -93,7 +88,7 @@ namespace core
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			_ser << m_skeleton->get_resource_name();
+			_ser << m_skeleton->get_res_filename();
 		}
 		else {
 			_ser << "";

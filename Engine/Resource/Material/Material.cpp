@@ -56,14 +56,14 @@ namespace core
         m_shader->bind_shader();
     }
 
-    eResult Material::save(const std::fs::path& _base_directory, const std::fs::path& _resource_name) const
+    eResult Material::save(const std::fs::path& _base_directory) const
     {
-        return save_file_json(_base_directory / _resource_name);
+        return save_file_json(_base_directory);
     }
 
-    eResult Material::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+    eResult Material::load(const std::fs::path& _base_directory)
     {
-        return load_file_json(_base_directory / _resource_name);
+        return load_file_json(_base_directory);
     }
 
     eResult Material::serialize_json(JsonSerializer& _ser) const
@@ -76,7 +76,7 @@ namespace core
             //shader
             if (m_shader)
             {
-                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
+                _ser[JSON_KEY(m_shader)] << m_shader->get_res_filename();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace core
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_resource_name();
+                    textures[i] << m_textures[i]->get_res_filename();
                 }
                 else
                 {

@@ -25,7 +25,7 @@ namespace core
 	{
 	}
 
-	eResult Animation3D_ComputeShader::load(const std::fs::path& _base_directory, const std::fs::path& _resource_name)
+	eResult Animation3D_ComputeShader::load(const std::fs::path& _base_directory)
 	{
 		return ComputeShader::compile_from_byte_code(Animation3D_CS, sizeof(Animation3D_CS));
 	}

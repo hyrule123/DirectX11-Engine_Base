@@ -123,7 +123,7 @@ namespace core
 	public:
 		void Reset();
 
-		eResult load_FBX(const std::filesystem::path& _strPath, bool _bStatic = true);
+		eResult load_FBX(const std::filesystem::path& _full_path, bool _bStatic = true);
 
 		// FbxMatrix -> Matrix(FBX(double) 포맷에서 프로젝트 포맷(float)으로 변환해서 반환해준다
 		static MATRIX get_matrix_from_FbxAMatrix(const fbxsdk::FbxAMatrix& _mat);

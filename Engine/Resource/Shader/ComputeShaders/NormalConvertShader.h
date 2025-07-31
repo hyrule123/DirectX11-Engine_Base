@@ -14,7 +14,7 @@ namespace core
 		NormalConvertShader();
 		virtual ~NormalConvertShader();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+		virtual eResult load(const std::fs::path& _base_directory) override;
 
 		s_ptr<Texture> convert(s_ptr<Texture> _srcTex);
 

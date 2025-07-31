@@ -19,7 +19,7 @@ namespace core
 		Animation3D_ComputeShader();
 		virtual ~Animation3D_ComputeShader();
 
-		virtual eResult load(const std::fs::path& _base_directory, const std::fs::path& _resource_name) override;
+		virtual eResult load(const std::fs::path& _base_directory) override;
 
 		virtual bool bind_buffer_to_GPU_register();
 		virtual void unbind_buffer_from_GPU_register();

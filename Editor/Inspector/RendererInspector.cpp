@@ -63,8 +63,8 @@ namespace core::editor
 
 		
 
-		std::string meshName = msh->get_resource_name();
-		std::string materialName = mtrl->get_resource_name();
+		std::string meshName = msh->get_res_filename();
+		std::string materialName = mtrl->get_res_filename();
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()

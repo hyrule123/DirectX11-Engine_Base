@@ -459,7 +459,7 @@ namespace core::editor
 				Json::Value jVal;
 				{
 					GraphicsShader DummyGS;
-					DummyGS.set_resource_name(iter.first.string());
+					DummyGS.get_res_filename(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 
@@ -786,7 +786,7 @@ namespace core::editor
 	void EditorGraphicsShader::save_to_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
-		GraphicsShader shader{};
+		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
 
 		//이름 등록
 		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
@@ -799,14 +799,14 @@ namespace core::editor
 				return;
 			}
 		}
-		shader.set_input_layout_desc(m_input_layout_descs);
+		shader->set_input_layout_desc(m_input_layout_descs);
 
 		//{
 		//	int curSel = mTopologyCombo.get_current_idx();
 		//	if (curSel >= 0)
 		//	{
 		//		D3D_PRIMITIVE_TOPOLOGY topology = (D3D_PRIMITIVE_TOPOLOGY)curSel;
-		//		shader.set_topology(topology);
+		//		shader->set_topology(topology);
 		//	}
 		//	else
 		//	{
@@ -823,7 +823,7 @@ namespace core::editor
 					NOTIFICATION("필수인 Vertex Shader가 설정되지 않았습니다.");
 					return;
 				}
-				shader.set_shader_name((eGSStage)i, m_stage_names[i]);
+				shader->set_shader_name((eGSStage)i, m_stage_names[i]);
 			}
 		}
 
@@ -833,7 +833,7 @@ namespace core::editor
 			if (0 <= curSel && curSel < (int)eRasterizerState::END)
 			{
 				eRasterizerState Type = (eRasterizerState)curSel;
-				shader.set_rasterizer_state(Type);
+				shader->set_rasterizer_state(Type);
 			}
 			else
 			{
@@ -847,7 +847,7 @@ namespace core::editor
 			if (0 <= curSel && curSel < (int)eDepthStencilState::END)
 			{
 				eDepthStencilState Type = (eDepthStencilState)curSel;
-				shader.set_depth_stencil_state(Type);
+				shader->set_depth_stencil_state(Type);
 			}
 			else
 			{
@@ -862,7 +862,7 @@ namespace core::editor
 			if (0 <= curSel && curSel < (int)eBlendState::END)
 			{
 				eBlendState Type = (eBlendState)curSel;
-				shader.set_blend_state(Type);
+				shader->set_blend_state(Type);
 			}
 			else
 			{
@@ -871,10 +871,14 @@ namespace core::editor
 			}
 		}
 
-
-		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 		
-		if (eResult_success(shader.save(baseDir, _filePath)))
+		shader->get_res_filename(_filePath.string());
+
+		//임시로 저장하므로 직접 save() 함수를 호출한다.
+		const std::fs::path& base_dir = 
+			ResourceManager<GraphicsShader>::get_inst().get_base_directory();
+
+		if (eResult_success(shader->save(base_dir)))
 		{
 			load_shader_setting_combobox();
 		}
@@ -887,11 +891,12 @@ namespace core::editor
 	void EditorGraphicsShader::load_from_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
-		GraphicsShader shader{};
-		shader.set_edit_mode(true);
+		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
+		shader->set_edit_mode(true);
+		shader->get_res_filename(_filePath.string());
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
-		if (eResult_fail(shader.load(baseDir, _filePath)))
+		if (eResult_fail(shader->load(baseDir)))
 		{
 			NOTIFICATION("로드 실패.");
 			return;
@@ -899,17 +904,17 @@ namespace core::editor
 		
 		m_save_file_name = _filePath.string();
 
-		m_input_layout_descs = shader.GetInputLayoutDescs();
+		m_input_layout_descs = shader->GetInputLayoutDescs();
 		
-		//mTopologyCombo.set_current_idx((int)shader.get_topology());
+		//mTopologyCombo.set_current_idx((int)shader->get_topology());
 
 		for (size_t i = 0; i < m_stage_names.size(); ++i)
 		{	
-			m_stage_names[i] = shader.get_shader_name((eGSStage)i);
+			m_stage_names[i] = shader->get_shader_name((eGSStage)i);
 		}
 
-		m_rasterizer_type_combo.set_current_idx((int)shader.get_rasterizer_state());
-		m_depth_stencil_type_combo.set_current_idx((int)shader.get_depth_stencil_state());
-		m_blend_state_type_combo.set_current_idx((int)shader.get_blend_state());
+		m_rasterizer_type_combo.set_current_idx((int)shader->get_rasterizer_state());
+		m_depth_stencil_type_combo.set_current_idx((int)shader->get_depth_stencil_state());
+		m_blend_state_type_combo.set_current_idx((int)shader->get_blend_state());
 	}
 }
