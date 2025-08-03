@@ -5,10 +5,12 @@
 
 namespace core
 {
-	BASE_RESOURCE(AudioClip);
-	class AudioClip final : public Resource
+	class AudioClip final
+		: public Resource
 	{
 		CLASS_INFO(AudioClip, Resource);
+		BASE_RESOURCE(AudioClip, eResourceType::AudioClip);
+		REGISTER_FACTORY(AudioClip);
 	public:
 		AudioClip();
 		virtual ~AudioClip();

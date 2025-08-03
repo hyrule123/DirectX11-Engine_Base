@@ -1,17 +1,16 @@
 #pragma once
-#include <Engine/Resource/Animation.h>
+#include <Engine/Resource/Resource.h>
 
 #include <Engine/Resource/Texture.h>
 #include <Engine/Util/Serialize/Serializable.h>
 
 namespace core
 {
-
-	BASE_RESOURCE(Animation2D);
 	class Animation2D final
-		: public Animation
+		: public Resource
 	{
-		CLASS_INFO(Animation2D, Animation);
+		CLASS_INFO(Animation2D, Resource);
+		BASE_RESOURCE(Animation2D, eResourceType::Animation2D);
 		CLONE_ABLE(Animation2D);
 
 		NO_SERIALIZE_JSON;

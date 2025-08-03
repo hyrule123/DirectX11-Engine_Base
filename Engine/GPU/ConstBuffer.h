@@ -5,11 +5,12 @@
 
 namespace core
 {
-	BASE_RESOURCE(ConstBuffer);
 	class ConstBuffer 
 		: public GPUBuffer
 	{
 		CLASS_INFO(ConstBuffer, GPUBuffer);
+		BASE_RESOURCE(ConstBuffer, eResourceType::ConstBuffer);
+
 	public:
 		ConstBuffer(uint _register);
 		virtual ~ConstBuffer();

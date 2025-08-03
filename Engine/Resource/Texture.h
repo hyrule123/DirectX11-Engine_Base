@@ -6,10 +6,11 @@
 
 namespace core
 {
-	BASE_RESOURCE(Texture);
-	class Texture final : public Resource
+	class Texture final 
+		: public Resource
 	{
 		CLASS_INFO(Texture, Resource);
+		BASE_RESOURCE(Texture, eResourceType::Texture);
 	public:
 		Texture();
 		virtual ~Texture();

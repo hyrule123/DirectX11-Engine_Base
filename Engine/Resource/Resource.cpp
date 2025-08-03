@@ -7,8 +7,16 @@ namespace core
 {
 	Resource::Resource()
 		: Entity()
-		, m_b_engine_default_resource()
+		, m_res_filename()
+		, m_res_type()
+		, m_b_engine_default_resource(false)
 	{
+	}
+
+	void Resource::init()
+	{
+		Super::init();
+		m_res_type = get_resource_type_internal();
 	}
 
 	Resource::~Resource()

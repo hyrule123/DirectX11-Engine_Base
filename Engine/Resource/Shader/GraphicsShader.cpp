@@ -13,7 +13,7 @@
 namespace core
 {
 	GraphicsShader::GraphicsShader()
-		: Shader()
+		: Resource()
 		, m_input_layout_descs{}
 		, m_input_layout{}
 		, m_shader_codes{}
@@ -45,13 +45,13 @@ namespace core
 
 	eResult GraphicsShader::save(const std::fs::path& _base_directory) const
 	{
-		std::fs::path full_path = _base_directory / get_res_filename();
+		std::fs::path full_path = _base_directory / get_resource_name();
 		return save_file_json(full_path);
 	}
 
 	eResult GraphicsShader::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path full_path = _base_directory / get_res_filename();
+		std::fs::path full_path = _base_directory / get_resource_name();
 		return load_file_json(full_path);
 	}
 

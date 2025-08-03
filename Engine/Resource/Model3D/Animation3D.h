@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/Resource/Animation.h>
+#include <Engine/Resource/Resource.h>
 
 #include <Engine/Util/SimpleMath.h>
 #include <Engine/Util/Serialize/Serializable.h>
@@ -28,14 +28,16 @@ namespace core
     class StructBuffer;
     class Skeleton;
 	class Animation3D final
-        : public Animation
+        : public Resource
 	{
-        friend class Skeleton;
+        CLASS_INFO(Animation3D, Resource);
+        BASE_RESOURCE(Animation3D, eResourceType::Animation3D);
 
-        CLASS_INFO(Animation3D, Animation);
         REGISTER_FACTORY(Animation3D);
         CLONE_ABLE(Animation3D);
         NO_SERIALIZE_JSON;
+
+        friend class Skeleton;
         
 	public:
 		Animation3D();

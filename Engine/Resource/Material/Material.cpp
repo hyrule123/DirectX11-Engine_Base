@@ -76,7 +76,7 @@ namespace core
             //shader
             if (m_shader)
             {
-                _ser[JSON_KEY(m_shader)] << m_shader->get_res_filename();
+                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace core
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_res_filename();
+                    textures[i] << m_textures[i]->get_resource_name();
                 }
                 else
                 {

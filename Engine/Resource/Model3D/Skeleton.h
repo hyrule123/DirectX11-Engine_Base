@@ -14,12 +14,13 @@ namespace core
 	class StructBuffer;
 	class Animation3D;
 
-	BASE_RESOURCE(Skeleton);
 	class Skeleton final
 		: public Resource
 	{
 		CLASS_INFO(Skeleton, Resource);
+		BASE_RESOURCE(Skeleton, eResourceType::Skeleton);
 
+		REGISTER_FACTORY(Skeleton);
 		NO_SERIALIZE_JSON;
 
 	public:

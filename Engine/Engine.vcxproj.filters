@@ -252,9 +252,6 @@
     <ClCompile Include="Util\AtExit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\Shader\Shader.cpp">
-      <Filter>Resource\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\Shader\GraphicsShader.cpp">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClCompile>
@@ -355,9 +352,6 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Model3D\Animation3D.cpp">
-      <Filter>Resource\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource\Animation.cpp">
       <Filter>Resource\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Game\Component\Script\GridScript.cpp">
@@ -482,9 +476,6 @@
     <ClInclude Include="CompiledShaderHeader\DefaultShaders.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\Shader\Shader.h">
-      <Filter>Resource\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\Shader\GraphicsShader.h">
       <Filter>Resource\Shaders\Graphics</Filter>
     </ClInclude>
@@ -606,9 +597,6 @@
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Model3D\Animation3D.h">
-      <Filter>Resource\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource\Animation.h">
       <Filter>Resource\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Script\GridScript.h">

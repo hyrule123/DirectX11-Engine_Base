@@ -459,7 +459,7 @@ namespace core::editor
 				Json::Value jVal;
 				{
 					GraphicsShader DummyGS;
-					DummyGS.get_res_filename(iter.first.string());
+					DummyGS.set_resource_name(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 
@@ -872,7 +872,7 @@ namespace core::editor
 		}
 
 		
-		shader->get_res_filename(_filePath.string());
+		shader->set_resource_name(_filePath.string());
 
 		//임시로 저장하므로 직접 save() 함수를 호출한다.
 		const std::fs::path& base_dir = 
@@ -893,7 +893,7 @@ namespace core::editor
 		using namespace core;
 		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
 		shader->set_edit_mode(true);
-		shader->get_res_filename(_filePath.string());
+		shader->set_resource_name(_filePath.string());
 
 		const std::fs::path& baseDir = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
 		if (eResult_fail(shader->load(baseDir)))

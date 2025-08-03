@@ -11,7 +11,7 @@
 namespace core
 {
 	Animation2D::Animation2D()
-		: Animation()
+		: Resource()
 		, m_atlas(nullptr)
 		, m_sprite_sheet{}
 		, m_idx(-1)
@@ -21,7 +21,7 @@ namespace core
 	}
 
 	Animation2D::Animation2D(const Animation2D& _other)
-		: Animation(_other)
+		: Resource()
 		, m_animation_name(_other.m_animation_name)
 		, m_atlas(_other.m_atlas) //Atlas == Texture -> 공유하는 리소스
 		, m_sprite_sheet(_other.m_sprite_sheet) //vector도 value를 담고 있는 경우에는 그냥 복사하면 됨

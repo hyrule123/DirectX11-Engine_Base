@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/Resource/Shader/Shader.h>
+#include <Engine/Resource/Resource.h>
 
 #include <Engine/GPU/CommonGPU.h>
 #include <Engine/Util/Serialize/Serializable.h>
@@ -22,11 +22,11 @@ namespace core
 		std::string name;
 	};
 
-	BASE_RESOURCE(GraphicsShader);
 	class GraphicsShader final 
-		: public Shader
+		: public Resource
 	{
-		CLASS_INFO(GraphicsShader, Shader);
+		CLASS_INFO(GraphicsShader, Resource);
+		BASE_RESOURCE(GraphicsShader, eResourceType::GraphicsShader);
 
 		NO_SERIALIZE_BINARY;
 

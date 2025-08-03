@@ -56,7 +56,8 @@ namespace core
 		{
 			const s_ptr<Animation3D>& curAnim = m_shared_play_data->get_current_animation();
 
-			Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_shared_play_data->get_current_frame() - curAnim->get_start_frame());
+			//TODO: 이벤트함수 구현
+			//Animator::CallEvent(static_cast<Animation*>(curAnim.get()), m_shared_play_data->get_current_frame() - curAnim->get_start_frame());
 		}
 	}
 
@@ -95,7 +96,8 @@ namespace core
 			_frameIdx = anim->get_frame_length() - 1;
 		}
 
-		Animator::add_event(static_cast<Animation*>(anim.get()), _frameIdx, _func);
+		//TODO: 이벤트함수 구현
+		//Animator::add_event(static_cast<Animation*>(anim.get()), _frameIdx, _func);
 
 		return true;
 	}

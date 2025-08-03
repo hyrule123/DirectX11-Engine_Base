@@ -39,7 +39,7 @@ namespace core
 
 	eResult Model3D::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path rest_path = get_res_filename();
+		std::fs::path rest_path = get_resource_name();
 		if (rest_path.parent_path().empty()) 
 		{
 			ERROR_MESSAGE("Model3D는 반드시 폴더 안에 저장되어야 합니다.");
@@ -76,7 +76,7 @@ namespace core
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					_ser[JSON_KEY(m_skeleton)] << m_skeleton->get_res_filename();
+					_ser[JSON_KEY(m_skeleton)] << m_skeleton->get_resource_name();
 				}
 				else {
 					_ser[JSON_KEY(m_skeleton)] << "";
@@ -103,7 +103,7 @@ namespace core
 					return result;
 				}
 				meshContainer["mesh"]["s_concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
-				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_res_filename();
+				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_name();
 
 				//material
 				result = ResourceManager<Material>::get_inst().save(m_mesh_mtrl_pairs[i].material);
@@ -115,7 +115,7 @@ namespace core
 				meshContainer["material"]["s_concrete_class_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
 				meshContainer["material"]["resource_name"]
-					<< m_mesh_mtrl_pairs[i].material->get_res_filename();
+					<< m_mesh_mtrl_pairs[i].material->get_resource_name();
 			}
 		}
 		catch (const std::exception& _err)
@@ -252,7 +252,7 @@ namespace core
 				GameObject* child = newObjects.back().get();
 				rootTransform->add_child(child->get_component<Transform>());
 
-				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_res_filename());
+				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_resource_name());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				s_ptr<StaticMeshRenderer> renderer = nullptr;
@@ -296,7 +296,7 @@ namespace core
 
 		std::fs::path res_path = _dirAndFileName / _dirAndFileName;
 		res_path.replace_extension(".json");
-		get_res_filename(res_path.string());
+		set_resource_name(res_path.string());
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
@@ -339,7 +339,7 @@ namespace core
 
 		//Bone 정보 로드
 		m_skeleton = std::make_shared<Skeleton>();
-		m_skeleton->get_res_filename(dir_and_filename.string());
+		m_skeleton->set_resource_name(dir_and_filename.string());
 		result = m_skeleton->create_from_FBX(&loader);
 		//애니메이션 정보가 없을 경우에는 도로 제거
 		if (eResult::Fail_Empty == result)
@@ -379,7 +379,7 @@ namespace core
 			}
 			//vertex buffer은 container당 하나
 			s_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
-			vb->get_res_filename((_dir_name / cont.name).string());
+			vb->set_resource_name((_dir_name / cont.name).string());
 			vb->create_vertex_buffer(vertices_3d);
 			//ResourceManager<VertexBuffer>::get_inst().save(vb);
 
@@ -406,7 +406,7 @@ namespace core
 
 				//.msh로 확장자를 변경
 				//Key로 Mesh를 저장
-				mm_pair.mesh->get_res_filename(
+				mm_pair.mesh->set_resource_name(
 					name.string());
 				//ResourceManager<Mesh>::get_inst().save(mm_pair.mesh);
 
@@ -418,7 +418,7 @@ namespace core
 					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
 					return eResult::Fail_InValid;
 				}
-				mm_pair.material->get_res_filename(name.string());
+				mm_pair.material->set_resource_name(name.string());
 				//ResourceManager<Material>::get_inst().save(mm_pair.material);
 
 				m_mesh_mtrl_pairs.push_back(mm_pair);
@@ -482,7 +482,7 @@ namespace core
 		std::fs::path name = _texDestDir.filename();
 		name /= _fbxMtrl->name;
 		name.replace_extension(name::path::extension::Material);
-		mtrl->get_res_filename(name.string());
+		mtrl->set_resource_name(name.string());
 
 		mtrl->set_diffuse_color(_fbxMtrl->diffuse_color);
 		mtrl->set_specular_color(_fbxMtrl->specular_color);
@@ -583,7 +583,7 @@ namespace core
 			const s_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->get_res_filename() };
+				std::string texKey{ tex->get_resource_name() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -615,7 +615,7 @@ namespace core
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey(tex->get_res_filename());
+							std::string texKey(tex->get_resource_name());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");

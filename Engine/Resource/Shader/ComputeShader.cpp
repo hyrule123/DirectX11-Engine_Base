@@ -18,7 +18,7 @@
 namespace core
 {
 	ComputeShader::ComputeShader(uint3 _threadsPerGroup)
-		: Shader()
+		: Resource()
 		, m_CS_blob(nullptr)
 		, m_particle_CS(nullptr)
 		, m_compute_shader_cbuffer{ _threadsPerGroup,  }
@@ -33,7 +33,7 @@ namespace core
 
 	eResult ComputeShader::load(const std::fs::path& _base_directory)
 	{
-		return compile_from_CSO(_base_directory / get_res_filename());
+		return compile_from_CSO(_base_directory / get_resource_name());
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)

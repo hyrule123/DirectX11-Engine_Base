@@ -14,7 +14,7 @@
 namespace core
 {
 	Animation3D::Animation3D()
-        : Animation()
+        : Resource()
         , m_owner_skeleton{}
         , m_start_frame_idx{}
         , m_end_frame_idx{}
@@ -30,7 +30,7 @@ namespace core
 	}
 
     Animation3D::Animation3D(const Animation3D& _other)
-        : Animation(_other)
+        : Resource(_other)
         , m_owner_skeleton{ _other.m_owner_skeleton }
         , m_start_frame_idx{ _other.m_start_frame_idx }
         , m_end_frame_idx{ _other.m_end_frame_idx}
@@ -88,7 +88,7 @@ namespace core
             return eResult::Fail_Nullptr;
         }
 
-        _ser << m_owner_skeleton.lock()->get_res_filename();
+        _ser << m_owner_skeleton.lock()->get_resource_name();
         _ser << m_start_frame_idx;
         _ser << m_end_frame_idx;
         _ser << m_frame_length;
@@ -123,7 +123,7 @@ namespace core
 
         std::string test;
         _ser >> test;
-        if (test != m_owner_skeleton.lock()->get_res_filename())
+        if (test != m_owner_skeleton.lock()->get_resource_name())
         {
             ERROR_MESSAGE("스켈레톤 정보가 일치하지 않습니다.");
             return eResult::Fail_InValid;
@@ -164,7 +164,7 @@ namespace core
 
         m_owner_skeleton = _skeleton;
 
-        get_res_filename(_clip->name);
+        set_resource_name(_clip->name);
 
         switch (_clip->time_mode)
         {

@@ -28,12 +28,15 @@ namespace core
 		s_ptr<Material>	material;
 	};
 
-	BASE_RESOURCE(Model3D);
     class Model3D final 
 		: public Resource
     {
 		CLASS_INFO(Model3D, Resource);
+		BASE_RESOURCE(Model3D, eResourceType::Model3D);
+
 		REGISTER_FACTORY(Model3D);
+
+		NO_SERIALIZE_BINARY;
 
 		//friend class editor::EditorFBXConverter;
 		

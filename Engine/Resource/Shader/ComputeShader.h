@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/Resource/Shader/Shader.h>
+#include <Engine/Resource/Resource.h>
 
 #include <Engine/GPU/CommonGPU.h>
 
@@ -11,11 +11,12 @@
 
 namespace core
 {
-	BASE_RESOURCE(ComputeShader);
 	class ComputeShader 
-		: public Shader
+		: public Resource
 	{
-		CLASS_INFO(ComputeShader, Shader);
+		CLASS_INFO(ComputeShader, Resource);
+		BASE_RESOURCE(ComputeShader, eResourceType::ComputeShader);
+
 	public:
 		ComputeShader(uint3 _threadsPerGroup);
 		virtual ~ComputeShader();

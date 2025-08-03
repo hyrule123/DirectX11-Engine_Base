@@ -22,7 +22,7 @@ namespace core
 	{
 		if (m_prefab)
 		{
-			return m_prefab->save_file_json(_base_directory / get_res_filename());
+			return m_prefab->save_file_json(_base_directory / get_resource_name());
 		}
 
 		return eResult::Fail_Nullptr;
@@ -31,7 +31,7 @@ namespace core
 	{
 		m_prefab = std::make_shared<GameObject>();
 
-		eResult result = m_prefab->load_file_json(_base_directory / get_res_filename());
+		eResult result = m_prefab->load_file_json(_base_directory / get_resource_name());
 		if (eResult_fail(result))
 		{
 			m_prefab = nullptr;

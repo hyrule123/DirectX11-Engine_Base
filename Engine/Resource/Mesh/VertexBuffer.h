@@ -25,11 +25,11 @@ namespace core {
         float4 Weights;
     };
 
-    BASE_RESOURCE(VertexBuffer);
     class VertexBuffer 
         : public Resource
     {
         CLASS_INFO(VertexBuffer, Resource);
+        BASE_RESOURCE(VertexBuffer, eResourceType::VertexBuffer)
         REGISTER_FACTORY(VertexBuffer);
 
         NO_SERIALIZE_JSON;

@@ -17,11 +17,12 @@ namespace core
 	class Texture;
 	class GraphicsShader;
 
-	BASE_RESOURCE(Material);
 	class Material 
 		: public Resource
 	{
 		CLASS_INFO(Material, Resource);
+		BASE_RESOURCE(Material, eResourceType::Material);
+
 		CLONE_ABLE(Material);
 
 		NO_SERIALIZE_BINARY;

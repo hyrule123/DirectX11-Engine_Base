@@ -32,7 +32,7 @@ namespace core
 
 	eResult AudioClip::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path fullPath = _base_directory / get_res_filename();
+		std::fs::path fullPath = _base_directory / get_resource_name();
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE("파일이 없습니다.");

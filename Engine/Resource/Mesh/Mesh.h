@@ -19,11 +19,12 @@ namespace core
 	class Skeleton;
 	struct tFBXContainer;
 
-	BASE_RESOURCE(Mesh);
 	class Mesh final 
-		: public Resource 
+		: public Resource
 	{
 		CLASS_INFO(Mesh, Resource);
+		BASE_RESOURCE(Mesh, eResourceType::Mesh);
+
 		REGISTER_FACTORY(Mesh);
 
 		NO_SERIALIZE_JSON;

@@ -9,12 +9,13 @@ namespace core
         READ_WRITE  //SRV + UAV(Compute Shader)
     };
 
-    BASE_RESOURCE(StructBuffer);
 	class StructBuffer final
 		: public GPUBuffer
 	{
         CLASS_INFO(StructBuffer, GPUBuffer);
+        BASE_RESOURCE(StructBuffer, eResourceType::StructBuffer);
         CLONE_ABLE(StructBuffer);
+
     public:
         struct tDesc
         {

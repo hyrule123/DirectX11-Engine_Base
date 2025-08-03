@@ -156,12 +156,12 @@ namespace core
 
 	eResult Texture::save(const std::fs::path& _base_directory) const
 	{
-		return save_file(_base_directory / get_res_filename());
+		return save_file(_base_directory / get_resource_name());
 	}
 
 	eResult Texture::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path fullPath = _base_directory / get_res_filename();
+		std::fs::path fullPath = _base_directory / get_resource_name();
 
 		if (false == std::fs::exists(fullPath))
 		{

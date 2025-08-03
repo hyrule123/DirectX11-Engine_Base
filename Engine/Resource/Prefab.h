@@ -7,11 +7,14 @@ namespace core
 {
     class GameObject;
 
-    BASE_RESOURCE(Prefab);
 	class Prefab final
 		: public Resource
 	{
         CLASS_INFO(Prefab, Resource);
+        BASE_RESOURCE(Prefab, eResourceType::Prefab);
+
+        REGISTER_FACTORY(Prefab);
+
     public:
         Prefab();
         virtual ~Prefab();

@@ -14,10 +14,16 @@
 namespace core
 {
 	template <typename T>
-	concept ResourceType =
-		std::is_base_of_v<Resource, T>
-		&&
-		IsBaseResource<T>::is;
+	concept ResourceType = requires {
+		// 1. Check if the function exists and returns bool
+		//    This also implicitly checks if it's callable at compile-time,
+		//    which means it should be constexpr if its result is used in 'requires'.
+		{ T::template is_base_resource<T>() } -> std::same_as<bool>;
+
+		// 2. Check if the function's return value evaluates to true at compile time.
+		//    This is a nested 'requires' clause.
+		requires T::template is_base_resource<T>();
+	};
 
 	template <ResourceType T> 
 	class ResourceManager
@@ -91,7 +97,7 @@ namespace core
 		if(nullptr == ret)
 		{
 			ret = std::make_shared<Derived>();
-			ret->get_res_filename(_resource_name);
+			ret->set_resource_name(_resource_name);
 			eResult result = result = ret->load(m_base_directory);
 
 			if (eResult_success(result))
@@ -137,7 +143,7 @@ namespace core
 		static_assert(std::is_base_of_v<T, Derived>, "넣으려는 리소스 타입이 ResourceTypes의 상속 클래스가 아닙니다.");
 		ASSERT(nullptr == find(_resource_name), "이미 동일한 키값을 가진 리소스가 있습니다.");
 
-		_Res->get_res_filename(_resource_name);
+		_Res->set_resource_name(_resource_name);
 		std::lock_guard<std::mutex> locker(m_mtx);
 		m_resources.insert(std::make_pair(std::string(_resource_name), std::static_pointer_cast<T>(_Res)));
 	}
@@ -170,7 +176,7 @@ namespace core
 	template<ResourceType T>
 	inline eResult ResourceManager<T>::save(const s_ptr<T>& _res)
 	{
-		if (nullptr == _res || _res->get_res_filename().empty()) {
+		if (nullptr == _res || _res->get_resource_name().empty()) {
 			return eResult::Fail;
 		}
 
@@ -185,17 +191,17 @@ namespace core
 		}
 
 		//이전 이름 받아 놓는다
-		std::string prev_name = _res->get_res_filename();
+		std::string prev_name = _res->get_resource_name();
 
 		//새 이름으로 교체
-		_res->get_res_filename(_save_as_resource_name.string());
+		_res->get_resource_name(_save_as_resource_name.string());
 
 		//저장
 		eResult result = save(_res);
 		if (eResult_fail(result)) { return result; }
 
 		//다시 기존 이름으로 변경
-		_res->get_res_filename(prev_name);
+		_res->get_resource_name(prev_name);
 
 		return result;
 	}
@@ -210,7 +216,7 @@ namespace core
 			ret = std::dynamic_pointer_cast<T>(EntityFactory::get_inst().instantiate(_static_type_name));
 
 			if (ret && eResult_success(ret->load(m_base_directory))) {
-				ret->get_res_filename(_resource_name);
+				ret->set_resource_name(_resource_name);
 			}
 			else {
 				ret = nullptr;
@@ -260,15 +266,6 @@ namespace core
 			ASSERT(result, "리소스 기본 디렉토리 생성에 실패했습니다.");
 		}
 	}
-
-
-
-
-
-
-
-
-
 }
 
 

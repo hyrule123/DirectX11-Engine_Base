@@ -4,6 +4,26 @@
 
 namespace core
 {
+	enum class eResourceType
+	{
+		VertexBuffer,
+		Texture,
+		AudioClip,
+		GraphicsShader,
+		ComputeShader,
+		ConstBuffer,
+		StructBuffer,
+		Mesh,
+		Material,
+		Animation2D,
+		Model3D,
+		Skeleton,
+		Animation3D,
+		Prefab,
+		END
+	};
+
+
 	namespace name
 	{
 		namespace path

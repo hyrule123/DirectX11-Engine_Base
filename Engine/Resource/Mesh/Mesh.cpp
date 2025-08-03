@@ -79,7 +79,7 @@ namespace core
 				return result;
 			}
 		}
-		_ser << m_vertex_buffer->get_res_filename();
+		_ser << m_vertex_buffer->get_resource_name();
 
 		_ser << m_index_topology;
 		_ser << m_index_buffer_desc;
@@ -88,7 +88,7 @@ namespace core
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			_ser << m_skeleton->get_res_filename();
+			_ser << m_skeleton->get_resource_name();
 		}
 		else {
 			_ser << "";
