@@ -30,7 +30,7 @@ namespace core
 		, m_animations{}
 		, m_final_matrix_buffer{}
 	{
-		m_compute_shader = LOAD_COMPUTESHADER(Animation3D_ComputeShader);
+		m_compute_shader = ResourceManager::get_inst().load<Animation3D_ComputeShader>("Animation3D_ComputeShader");
 		ASSERT(nullptr != m_compute_shader, "컴퓨트쉐이더가 없음");
 
 		StructBuffer::tDesc desc{};
@@ -48,7 +48,7 @@ namespace core
 
 	eResult Skeleton::save(const std::fs::path& _base_dir) const
 	{
-		std::fs::path file_path = get_resource_name();
+		std::fs::path file_path = get_resource_path();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -94,7 +94,7 @@ namespace core
 	}
 	eResult Skeleton::load(const std::fs::path& _base_dir)
 	{
-		std::fs::path file_path = get_resource_name();
+		std::fs::path file_path = get_resource_path();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -263,7 +263,7 @@ namespace core
 				return result;
 			}
 			
-			std::string animName(anim->get_resource_name());
+			std::string animName(anim->get_resource_path());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -350,7 +350,8 @@ namespace core
 				iter = m_animations.find(name);
 			}
 
-			std::fs::path full_path = ResourceManager<Skeleton>::get_inst().get_base_directory(); 
+			ASSERT(false, "여기 구현");
+			std::fs::path full_path = "";
 			full_path /= _saveDir.filename();
 			full_path /= name;
 			full_path.replace_extension(name::path::extension::Anim3D);

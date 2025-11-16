@@ -3,8 +3,7 @@
 
 
 #include <Engine/Manager/ResourceManager.h>
-#include <Engine/Manager/PathManager.h>
-#include <Engine/Manager/RenderManager.h>
+
 #include <Engine/Manager/RenderManager.h>
 
 #include <Engine/GPU/ConstBuffer.h>
@@ -33,7 +32,7 @@ namespace core
 
 	eResult ComputeShader::load(const std::fs::path& _base_directory)
 	{
-		return compile_from_CSO(_base_directory / get_resource_name());
+		return compile_from_CSO(_base_directory / get_resource_path());
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)
@@ -92,7 +91,7 @@ namespace core
 	eResult ComputeShader::compile_from_CSO(const std::filesystem::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::get_inst().get_relative_shader_directory();
+		std::filesystem::path shaderBinPath = ResourceManager::get_inst().get_shader_directory();
 		shaderBinPath /= _FileName;
 
 		//위에서 만든 파일명을 토대로 디스크에서 파일을 열어준다.(뒤에서부터)

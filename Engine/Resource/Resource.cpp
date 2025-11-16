@@ -7,7 +7,7 @@ namespace core
 {
 	Resource::Resource()
 		: Entity()
-		, m_res_filename()
+		, m_resource_path()
 		, m_res_type()
 		, m_b_engine_default_resource(false)
 	{

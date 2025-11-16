@@ -14,10 +14,10 @@ namespace core
 		, m_UI_data()
 	{
 		//기본 UI Mesh, Material을 설정
-		s_ptr<Mesh> uiMesh = ResourceManager<Mesh>::get_inst().find(name::defaultRes::mesh::RectMesh);
+		s_ptr<Mesh> uiMesh = ResourceManager::get_inst().find<Mesh>(name::defaultRes::mesh::RectMesh);
 		set_mesh(uiMesh);
 
-		s_ptr<Material> uiMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::UIMaterial);
+		s_ptr<Material> uiMaterial = ResourceManager::get_inst().find<Material>(name::defaultRes::material::UIMaterial);
 		set_material(uiMaterial);
 		set_material_mode(eMaterialMode::Dynamic);
 	}

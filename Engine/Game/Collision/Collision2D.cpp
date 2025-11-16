@@ -221,14 +221,14 @@ namespace core
 		//	}
 		//}
 
-		//std::shared_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().Find(name::defaultRes::mesh::DebugRectMesh);
+		//std::shared_ptr<Mesh> mesh = Resources<Mesh>::get_inst().Find(name::defaultRes::mesh::DebugRectMesh);
 
 
 		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::AABB]);
 
 		//m_owner->RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::OBB]);
 
-		////mesh = ResourceManager<Mesh>::get_inst().Find(name::defaultRes::mesh::CircleMesh);
+		////mesh = Resources<Mesh>::get_inst().Find(name::defaultRes::mesh::CircleMesh);
 		////::core::RenderDebugMesh(mesh, m_debugInstancingData[(int)eCollider2D_Shape::Circle], m_debug_render_data.get());
 
 		//

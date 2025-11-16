@@ -8,7 +8,7 @@
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/RenderManager.h>
-#include <Engine/Manager/PathManager.h>
+
 
 #include <Engine/Util/define_Util.h>
 #include <Engine/Util/Serialize/BinarySerializer.h>
@@ -72,14 +72,14 @@ namespace core
 
 		//공유 리소스이므로 한번 저장했으면 더이상 저장할 필요 없음
 		if (false == m_vertex_buffer->is_saved()) {
-			eResult result = ResourceManager<VertexBuffer>::get_inst().save(m_vertex_buffer);
+			eResult result = ResourceManager::get_inst().save(m_vertex_buffer);
 
 			if (eResult_fail(result)) {
 				ERROR_MESSAGE("Vertex Buffer 저장 실패.");
 				return result;
 			}
 		}
-		_ser << m_vertex_buffer->get_resource_name();
+		_ser << m_vertex_buffer->get_resource_path();
 
 		_ser << m_index_topology;
 		_ser << m_index_buffer_desc;
@@ -88,7 +88,7 @@ namespace core
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			_ser << m_skeleton->get_resource_name();
+			_ser << m_skeleton->get_resource_path();
 		}
 		else {
 			_ser << "";
@@ -104,7 +104,7 @@ namespace core
 		
 		//vertex buffer
 		std::string res_name; _ser >> res_name;
-		m_vertex_buffer = ResourceManager<VertexBuffer>::get_inst().load(res_name);
+		m_vertex_buffer = ResourceManager::get_inst().load<VertexBuffer>(res_name);
 
 		_ser >> m_index_topology;
 		_ser >> m_index_buffer_desc;
@@ -119,7 +119,7 @@ namespace core
 		//skeleton
 		_ser >> res_name;
 		if (false == res_name.empty()) {
-			m_skeleton = ResourceManager<Skeleton>::get_inst().load(res_name);
+			m_skeleton = ResourceManager::get_inst().load<Skeleton>(res_name);
 		}
 
 		return eResult::Success;

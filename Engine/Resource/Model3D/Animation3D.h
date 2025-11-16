@@ -31,7 +31,7 @@ namespace core
         : public Resource
 	{
         CLASS_INFO(Animation3D, Resource);
-        BASE_RESOURCE(Animation3D, eResourceType::Animation3D);
+        //BASE_RESOURCE(Animation3D, eResourceType::Animation3D); Skeleton에서 관리되므로 Base Resource 아님
 
         REGISTER_FACTORY(Animation3D);
         CLONE_ABLE(Animation3D);
@@ -41,6 +41,7 @@ namespace core
         
 	public:
 		Animation3D();
+
         Animation3D(const Animation3D& _other);
 
         virtual ~Animation3D();

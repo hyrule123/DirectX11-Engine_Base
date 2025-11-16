@@ -2,7 +2,7 @@
 
 #include <Engine/GameEngine.h>
 
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Material/Material.h>
@@ -74,7 +74,7 @@ namespace core::editor
 			std::string shaderName = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderName.empty())
 			{
-				s_ptr<GraphicsShader> gs = ResourceManager<GraphicsShader>::get_inst().load(shaderName);
+				s_ptr<GraphicsShader> gs = ResourceManager::get_inst().load<GraphicsShader>(shaderName);
 			}
 		}
 	}
@@ -108,7 +108,7 @@ namespace core::editor
 	}
 	void EditorMaterial::refresh_shader_setting_files()
 	{
-		const std::fs::path& shaderPath = ResourceManager<GraphicsShader>::get_inst().get_base_directory();
+		const std::fs::path& shaderPath = ResourceManager::get_inst().get_shader_directory();
 
 		if (false == std::fs::exists(shaderPath))
 		{
@@ -135,7 +135,7 @@ namespace core::editor
 			s_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
-				strCurShader += curShader->get_resource_name();
+				strCurShader += curShader->get_resource_path();
 			}
 			else
 			{
@@ -156,7 +156,7 @@ namespace core::editor
 			const std::string& shaderKey = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderKey.empty())
 			{
-				s_ptr<GraphicsShader> GS = ResourceManager<GraphicsShader>::get_inst().load(shaderKey);
+				s_ptr<GraphicsShader> GS = ResourceManager::get_inst().load<GraphicsShader>(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
@@ -165,7 +165,7 @@ namespace core::editor
 		s_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
-			shaderKey += shader->get_resource_name();
+			shaderKey += shader->get_resource_path();
 		}
 		else
 		{
@@ -188,7 +188,7 @@ namespace core::editor
 			auto Tex = mTargetMaterial->get_texture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_resource_name().data());
+				ImGui::Text(Tex->get_resource_path().data());
 			}
 			else
 			{
@@ -201,7 +201,7 @@ namespace core::editor
 			ButtonName += std::to_string(i);
 			if (ImGui::Button(ButtonName.c_str()))
 			{
-				const std::fs::path& texPath = ResourceManager<Texture>::get_inst().get_base_directory();
+				const std::fs::path& texPath = ResourceManager::get_inst().get_resource_directory();
 				
 				std::vector<std::fs::path> vecExt{};
 				for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
@@ -211,9 +211,10 @@ namespace core::editor
 				std::fs::path receivedPath = WinAPI::file_open_dialog(texPath, vecExt);
 				if (false == receivedPath.empty())
 				{
-					std::fs::path PathstrKey = PathManager::get_inst().make_path_strkey(receivedPath);
+					std::fs::path PathstrKey = ResourceManager::get_inst().create_resource_name_from_full_path(receivedPath);
 
-					s_ptr<Texture> tex = ResourceManager<Texture>::get_inst().load(PathstrKey.string());
+					s_ptr<Texture> tex = ResourceManager::get_inst().load<Texture>(PathstrKey.string());
+
 					if (tex)
 					{
 						mTargetMaterial->set_texture((eTextureSlot)i, tex);
@@ -303,11 +304,11 @@ namespace core::editor
 
 			//ResMgr로부터 로드되어있는 재질 목록 싹 수집
 			mCurrentLoadedMtrl.reset();
-			const auto& materials = ResourceManager<Material>::get_inst().get_resources();
+			const auto& materials = ResourceManager::get_inst().get_resources(eResourceType::Material);
 			for (auto& mtrl : materials)
 			{
 				tComboItem item{};
-				item.m_name = mtrl.second->get_resource_name();
+				item.m_name = mtrl.second->get_resource_path();
 				mCurrentLoadedMtrl.add_item(item);
 			}
 		}
@@ -317,7 +318,7 @@ namespace core::editor
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_resource_name().empty())
+		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_resource_path().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
@@ -334,7 +335,9 @@ namespace core::editor
 	}
 	void EditorMaterial::save_to_file()
 	{
-		std::fs::path outputPath = std::fs::absolute(ResourceManager<Material>::get_inst().get_base_directory());
+		std::fs::path outputPath = ResourceManager::get_inst().get_resource_directory();
+
+		outputPath /= "Material";
 			
 		outputPath /= mSaveLoadFileName;
 		outputPath = WinAPI::file_open_dialog(outputPath, ::core::name::path::extension::Material);
@@ -349,9 +352,9 @@ namespace core::editor
 		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->clone());
 
 		std::string name = outputPath.filename().string();
-		mTargetMaterial->set_resource_name(name);
+		mTargetMaterial->set_resource_path(name);
 
-		ResourceManager<Material>::get_inst().save(mTargetMaterial);
+		ResourceManager::get_inst().save(mTargetMaterial);
 	}
 	void EditorMaterial::load_from_file()
 	{
@@ -374,7 +377,7 @@ namespace core::editor
 					}
 					else
 					{
-						s_ptr<Material> mtrl = ResourceManager<Material>::get_inst().find(mtrlKey);
+						s_ptr<Material> mtrl = ResourceManager::get_inst().find<Material>(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
 						if (mtrl->is_engine_default_res())
@@ -407,11 +410,11 @@ namespace core::editor
 				//파일 선택해서 로드
 				if (ImGui::Button("Load From Other Directory", ImVec2(0.f, 35.f)))
 				{
-					//Res/Material 폴더
-					const std::fs::path& mtrlDir = std::fs::absolute(ResourceManager<Material>::get_inst().get_base_directory());
-
 					//Res 폴더
-					const std::fs::path& resDir = PathManager::get_inst().get_absolute_resource_directory();
+					const std::fs::path& resDir = ResourceManager::get_inst().get_resource_directory();
+
+					//Res/Material 폴더
+					std::fs::path mtrlDir = resDir / "Material";
 
 					std::fs::path filePath = WinAPI::file_open_dialog(mtrlDir, ".json");
 					if (false == std::fs::exists(filePath))
@@ -420,7 +423,8 @@ namespace core::editor
 					}
 					else
 					{
-						mTargetMaterial = ResourceManager<Material>::get_inst().load(filePath.filename().string());
+						ASSERT(false, "미구현");
+						mTargetMaterial = {};// ResourceManager::get_inst().loadResources<Material>::get_inst().load(filePath.filename().string());
 						if (nullptr == mTargetMaterial)
 						{
 							std::wstring errMsg = filePath.wstring();

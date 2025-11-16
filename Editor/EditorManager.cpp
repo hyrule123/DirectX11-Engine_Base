@@ -17,7 +17,7 @@
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/InputManager.h>
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/SceneManager.h>
 
 #include <Editor/imgui/imgui.h>
@@ -69,8 +69,8 @@ namespace core::editor
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 //mDebugObjects.resize((UINT)eColliderType::END);
 
-//s_ptr<Mesh> rectMesh = ResourceManager<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
-//s_ptr<Material> material = ResourceManager<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
+//s_ptr<Mesh> rectMesh = Resources<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
+//s_ptr<Material> material = Resources<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
 
 //mDebugObjects[(UINT)eColliderType::Rect] = new_entity<DebugObject>();
 //auto renderer
@@ -79,7 +79,7 @@ namespace core::editor
 //renderer->set_material(material, 0);
 //renderer->set_mesh(rectMesh);
 
-//s_ptr<Mesh> circleMesh = ResourceManager<Mesh>::get_inst().Find("CircleMesh");
+//s_ptr<Mesh> circleMesh = Resources<Mesh>::get_inst().Find("CircleMesh");
 
 //mDebugObjects[(UINT)eColliderType::Circle] = new_entity<DebugObject>();
 //renderer
@@ -93,8 +93,8 @@ namespace core::editor
 // Grid Object
 //EditorObject* gridObject = new EditorObject();
 //StaticMeshRenderer* gridMr = gridObject->add_component<StaticMeshRenderer>();
-//gridMr->set_mesh(ResourceManager::Find<Mesh>(L"RectMesh"));
-//gridMr->set_material(ResourceManager<Material>::get_inst().Find(L"GridMaterial"));
+//gridMr->set_mesh(Resources::Find<Mesh>(L"RectMesh"));
+//gridMr->set_material(Resources<Material>::get_inst().Find(L"GridMaterial"));
 //GridScript* gridScript = gridObject->add_component<GridScript>();
 //gridScript->SetCamera(gMainCamera);
 
@@ -267,7 +267,7 @@ namespace core::editor
 		}
 
 		//내부 세팅 로드
-		const std::fs::path& saveDir = PathManager::get_inst().get_relative_resource_directory();
+		const std::fs::path& saveDir = ResourceManager::get_inst().get_resource_directory();
 		std::fs::path savePath = saveDir / imguiSaveINI;
 		if (std::fs::exists(savePath))
 		{

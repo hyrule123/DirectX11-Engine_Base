@@ -3,7 +3,7 @@
 #include <Editor/Resource/TextureEditor.h>
 
 #include <Engine/Manager/ResourceManager.h>
-#include <Engine/Manager/PathManager.h>
+
 
 #include <Engine/Util/define_Util.h>
 
@@ -53,30 +53,36 @@ namespace core::editor
 				extensions[i] = ::core::name::path::extension::Texture[i];
 			}
 
-			const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
+			std::fs::path tex_path = ResourceManager::get_inst().get_resource_directory();
+			tex_path /= ::core::name::path::directory::resource::Texture;
 
-			std::fs::path texPath = WinAPI::file_open_dialog(absTexPath, extensions);
+			std::fs::path src_path = WinAPI::file_open_dialog(tex_path, extensions);
 
+			std::fs::path relative_path = src_path.lexically_relative(tex_path);
 
-			texPath = PathManager::get_inst().make_path_strkey(texPath);
-
-			m_texture = ResourceManager<Texture>::get_inst().load(texPath.string());
-
-			if (m_texture)
+			//Resource 디렉토리 안에 존재하는 파일이라면
+			if (std::string::npos == relative_path.string().find(".."))
 			{
-				float2 texSize = m_texture->get_texture_size_float();
-				if (texSize.x >= texSize.y)
+				m_texture = ResourceManager::get_inst().load<Texture>(src_path.string());
+				
+				if (m_texture)
 				{
-					m_texture_render_size = ImVec2(720.f, texSize.y * (720.f / texSize.x));
+					float2 texSize = m_texture->get_texture_size_float();
+					if (texSize.x >= texSize.y)
+					{
+						m_texture_render_size = ImVec2(720.f, texSize.y * (720.f / texSize.x));
+					}
+					else
+					{
+						m_texture_render_size = ImVec2(texSize.x * (480.f / texSize.y), 480.f);
+					}
 				}
 				else
 				{
-					m_texture_render_size = ImVec2(texSize.x * (480.f / texSize.y), 480.f);
+					m_texture_render_size = ImVec2{};
 				}
-			}
-			else
-			{
-				m_texture_render_size = ImVec2{};
+
+				ERROR_MESSAGE("리소스 경로 내부 파일만 로드할 수 있습니다.");
 			}
 		}
 		ImGui::SameLine();

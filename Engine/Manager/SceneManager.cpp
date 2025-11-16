@@ -1,7 +1,7 @@
-#include "ResourceManagers.h"
+#include "ResourceManager.h"
 #include "SceneManager.h"
 
-#include <Engine/Manager/ResourceManagers.h>
+#include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Texture.h>
 

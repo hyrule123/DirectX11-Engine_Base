@@ -40,14 +40,14 @@ namespace core
 		EnableLayerMasks();
 
 		//////////////////////////////// LIGHT //////////////////////////////
-		m_light_3D_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Mesh>::get_inst().load(name::defaultRes::mesh::RectMesh);
-		m_light_3D_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager<Material>::get_inst().load(name::defaultRes::material::LightDirMaterial);
+		m_light_3D_volume_meshes[LIGHT_TYPE_DIRECTIONAL] = ResourceManager::get_inst().load<Mesh>(name::defaultRes::mesh::RectMesh);
+		m_light_3D_materials[LIGHT_TYPE_DIRECTIONAL] = ResourceManager::get_inst().load<Material>(name::defaultRes::material::LightDirMaterial);
 
-		m_light_3D_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager<Mesh>::get_inst().load(name::defaultRes::mesh::SphereMesh);
-		m_light_3D_materials[LIGHT_TYPE_POINT] = ResourceManager<Material>::get_inst().load(name::defaultRes::material::LightPointMaterial);
+		m_light_3D_volume_meshes[LIGHT_TYPE_POINT] = ResourceManager::get_inst().load<Mesh>(name::defaultRes::mesh::SphereMesh);
+		m_light_3D_materials[LIGHT_TYPE_POINT] = ResourceManager::get_inst().load<Material>(name::defaultRes::material::LightPointMaterial);
 
-		m_light_3D_const_buffer = ResourceManager<ConstBuffer>::get_inst().find("light_3D_const_buffer");
-		m_light_3D_instancing_buffer = ResourceManager<StructBuffer>::get_inst().find("light_3D_instancing_buffer");
+		m_light_3D_const_buffer = ResourceManager::get_inst().find<ConstBuffer>("light_3D_const_buffer");
+		m_light_3D_instancing_buffer = ResourceManager::get_inst().find<StructBuffer>("light_3D_instancing_buffer");
 	}
 
 	Camera::~Camera()

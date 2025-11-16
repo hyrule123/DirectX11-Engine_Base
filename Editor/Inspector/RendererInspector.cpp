@@ -63,8 +63,8 @@ namespace core::editor
 
 		
 
-		std::string meshName = msh->get_resource_name();
-		std::string materialName = mtrl->get_resource_name();
+		std::string meshName = msh->get_resource_path();
+		std::string materialName = mtrl->get_resource_path();
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()
@@ -77,8 +77,8 @@ namespace core::editor
 			
 
 			//모든 메쉬의 리소스를 가져와야한다.
-			const auto& meshes 
-				= ResourceManager<Mesh>::get_inst().get_resources();
+			const auto& meshes
+				= ResourceManager::get_inst().get_resources(eResourceType::Mesh);
 
 			std::vector<std::string> name;
 			for (const auto& mesh : meshes)
@@ -103,7 +103,7 @@ namespace core::editor
 			listUI->set_enable(true);
 			//모든 메쉬의 리소스를 가져와야한다.
 			const auto& materials
-				= ResourceManager<Material>::get_inst().get_resources();
+				= ResourceManager::get_inst().get_resources(eResourceType::Material);
 
 			std::vector<std::string> Name;
 			for (const auto& material : materials)
@@ -119,7 +119,7 @@ namespace core::editor
 
 	void RendererInspcetor::set_mesh(const std::string& _key_path)
 	{
-		s_ptr<Mesh> mesh = ResourceManager<Mesh>::get_inst().find(_key_path);
+		s_ptr<Mesh> mesh = ResourceManager::get_inst().find<Mesh>(_key_path);
 
 		s_ptr<InspectorBase> inspector = 
 			std::static_pointer_cast<InspectorBase>(EditorManager::get_inst().find_editor_window("InspectorBase"));
@@ -136,7 +136,7 @@ namespace core::editor
 
 	void RendererInspcetor::set_material(const std::string& _key_path)
 	{
-		s_ptr<Material> material = ResourceManager<Material>::get_inst().find(_key_path);
+		s_ptr<Material> material = ResourceManager::get_inst().find<Material>(_key_path);
 
 		s_ptr<InspectorBase> inspector = std::static_pointer_cast<InspectorBase>(EditorManager::get_inst().find_editor_window("InspectorBase"));
 

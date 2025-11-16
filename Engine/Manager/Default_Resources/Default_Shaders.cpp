@@ -1,6 +1,3 @@
-
-
-#include <Engine/Manager/Resourcemanagers.h>
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/CompiledShaderHeader/DefaultShaders.h>
@@ -12,107 +9,109 @@
 #include <Engine/Resource/Shader/ComputeShaders/ParticleShader.h>
 
 namespace core {
-	void ResourceManagers::load_default_shaders()
+	void ResourceManager::load_default_shaders()
 	{
 #pragma region 2D LAYOUT
 		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc2D;
-		D3D11_INPUT_ELEMENT_DESC LayoutDesc{};
+		D3D11_INPUT_ELEMENT_DESC layout_desc{};
 
-		LayoutDesc.AlignedByteOffset = 0;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "POSITION";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc2D.push_back(LayoutDesc);
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		layout_desc.AlignedByteOffset = 0;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "POSITION";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc2D.push_back(layout_desc);
+		layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 
-		LayoutDesc.AlignedByteOffset = 16;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "TEXCOORD";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc2D.push_back(LayoutDesc);
-		LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+		layout_desc.AlignedByteOffset = 16;
+		layout_desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "TEXCOORD";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc2D.push_back(layout_desc);
+		layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 #pragma endregion
 
 
 #pragma region SPRITE SHADER
 		{
-			s_ptr<GraphicsShader> spriteShader = std::make_shared<GraphicsShader>();
-			spriteShader->set_engine_default_res(true);
-			spriteShader->compile_from_byte_code(eGSStage::Vertex, Sprite_VS, sizeof(Sprite_VS));
-			spriteShader->compile_from_byte_code(eGSStage::Pixel, Sprite_PS, sizeof(Sprite_PS));
-			spriteShader->set_rasterizer_state(eRasterizerState::SolidNone);
-			spriteShader->set_input_layout_desc(vecLayoutDesc2D);
-			spriteShader->create_input_layout();
+			s_ptr<GraphicsShader> sprite_shader = std::make_shared<GraphicsShader>();
+			sprite_shader->set_engine_default_res(true);
+			sprite_shader->compile_from_byte_code(eGSStage::Vertex, Sprite_VS, sizeof(Sprite_VS));
+			sprite_shader->compile_from_byte_code(eGSStage::Pixel, Sprite_PS, sizeof(Sprite_PS));
+			sprite_shader->set_rasterizer_state(eRasterizerState::SolidNone);
+			sprite_shader->set_input_layout_desc(vecLayoutDesc2D);
+			sprite_shader->create_input_layout();
 
-
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::SpriteShader, spriteShader);
+			sprite_shader->set_resource_path(name::defaultRes::shader::graphics::SpriteShader);
+			ResourceManager::get_inst().insert(sprite_shader);
 		}
 
 #pragma endregion
 #pragma region UI SHADER
 		{
-			s_ptr<GraphicsShader> uiShader = std::make_shared<GraphicsShader>();
-			uiShader->set_engine_default_res(true);
-			uiShader->compile_from_byte_code(eGSStage::Vertex, UI_VS, sizeof(UI_VS));
-			uiShader->compile_from_byte_code(eGSStage::Pixel, UI_PS, sizeof(UI_PS));
-			uiShader->set_input_layout_desc(vecLayoutDesc2D);
-			uiShader->create_input_layout();
+			s_ptr<GraphicsShader> ui_shader = std::make_shared<GraphicsShader>();
+			ui_shader->set_engine_default_res(true);
+			ui_shader->compile_from_byte_code(eGSStage::Vertex, UI_VS, sizeof(UI_VS));
+			ui_shader->compile_from_byte_code(eGSStage::Pixel, UI_PS, sizeof(UI_PS));
+			ui_shader->set_input_layout_desc(vecLayoutDesc2D);
+			ui_shader->create_input_layout();
 
-
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::UIShader, uiShader);
+			ui_shader->set_resource_path(name::defaultRes::shader::graphics::UIShader);
+			ResourceManager::get_inst().insert(ui_shader);
 		}
 
 #pragma endregion
 #pragma region GRID SHADER
 		{
-			s_ptr<GraphicsShader> gridShader = std::make_shared<GraphicsShader>();
-			gridShader->set_engine_default_res(true);
-			gridShader->compile_from_byte_code(eGSStage::Vertex, Grid_VS, sizeof(Grid_VS));
-			gridShader->compile_from_byte_code(eGSStage::Pixel, Grid_PS, sizeof(Grid_PS));
-			gridShader->set_input_layout_desc(vecLayoutDesc2D);
-			gridShader->create_input_layout();
+			s_ptr<GraphicsShader> grid_shader = std::make_shared<GraphicsShader>();
+			grid_shader->set_engine_default_res(true);
+			grid_shader->compile_from_byte_code(eGSStage::Vertex, Grid_VS, sizeof(Grid_VS));
+			grid_shader->compile_from_byte_code(eGSStage::Pixel, Grid_PS, sizeof(Grid_PS));
+			grid_shader->set_input_layout_desc(vecLayoutDesc2D);
+			grid_shader->create_input_layout();
 
-			gridShader->set_rasterizer_state(eRasterizerState::SolidNone);
-			gridShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			gridShader->set_blend_state(eBlendState::AlphaBlend);
+			grid_shader->set_rasterizer_state(eRasterizerState::SolidNone);
+			grid_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
+			grid_shader->set_blend_state(eBlendState::AlphaBlend);
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::GridShader, gridShader);
+			grid_shader->set_resource_path(name::defaultRes::shader::graphics::GridShader);
+			ResourceManager::get_inst().insert(grid_shader);
 		}
 
 #pragma endregion
 #pragma region DEBUG SHADER
 		{
 			std::vector<D3D11_INPUT_ELEMENT_DESC> debugLayoutDesc;
-			D3D11_INPUT_ELEMENT_DESC LayoutDesc{};
+			D3D11_INPUT_ELEMENT_DESC layout_desc{};
 
-			LayoutDesc.AlignedByteOffset = 0;
-			LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			LayoutDesc.InputSlot = 0;
-			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-			LayoutDesc.SemanticName = "POSITION";
-			LayoutDesc.SemanticIndex = 0;
-			debugLayoutDesc.push_back(LayoutDesc);
-			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
+			layout_desc.AlignedByteOffset = 0;
+			layout_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			layout_desc.InputSlot = 0;
+			layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			layout_desc.SemanticName = "POSITION";
+			layout_desc.SemanticIndex = 0;
+			debugLayoutDesc.push_back(layout_desc);
+			layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 
-			s_ptr<GraphicsShader> debugShader = std::make_shared<GraphicsShader>();
-			debugShader->set_engine_default_res(true);
-			debugShader->compile_from_byte_code(eGSStage::Vertex, Debug_VS, sizeof(Debug_VS));
-			debugShader->compile_from_byte_code(eGSStage::Pixel, Debug_PS, sizeof(Debug_PS));
+			s_ptr<GraphicsShader> debug_shader = std::make_shared<GraphicsShader>();
+			debug_shader->set_engine_default_res(true);
+			debug_shader->compile_from_byte_code(eGSStage::Vertex, Debug_VS, sizeof(Debug_VS));
+			debug_shader->compile_from_byte_code(eGSStage::Pixel, Debug_PS, sizeof(Debug_PS));
 
-			debugShader->set_input_layout_desc(debugLayoutDesc);
-			debugShader->create_input_layout();
+			debug_shader->set_input_layout_desc(debugLayoutDesc);
+			debug_shader->create_input_layout();
 
-			//debugShader->CreateBuffer(eShaderStage::Vertex, "DebugVS.hlsl", "main");
-			//debugShader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
-			debugShader->set_rasterizer_state(eRasterizerState::WireframeNone);
-			debugShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			debugShader->set_blend_state(eBlendState::Default);
+			//debug_shader->CreateBuffer(eShaderStage::Vertex, "DebugVS.hlsl", "main");
+			//debug_shader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
+			debug_shader->set_rasterizer_state(eRasterizerState::WireframeNone);
+			debug_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
+			debug_shader->set_blend_state(eBlendState::Default);
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::DebugShader, debugShader);
+			debug_shader->set_resource_path(name::defaultRes::shader::graphics::DebugShader);
+			ResourceManager::get_inst().insert(debug_shader);
 		}
 
 #pragma endregion
@@ -121,208 +120,218 @@ namespace core {
 
 #pragma region POST PROCESS SHADER
 		{
-			s_ptr<GraphicsShader> postProcessShader = std::make_shared<GraphicsShader>();
-			postProcessShader->set_engine_default_res(true);
-			postProcessShader->compile_from_byte_code(eGSStage::Vertex, PostProcess_VS, sizeof(PostProcess_VS));
-			postProcessShader->compile_from_byte_code(eGSStage::Pixel, PostProcess_PS, sizeof(PostProcess_PS));
-			postProcessShader->set_input_layout_desc(vecLayoutDesc2D);
-			postProcessShader->create_input_layout();
+			s_ptr<GraphicsShader> post_process_shader = std::make_shared<GraphicsShader>();
+			post_process_shader->set_engine_default_res(true);
+			post_process_shader->compile_from_byte_code(eGSStage::Vertex, PostProcess_VS, sizeof(PostProcess_VS));
+			post_process_shader->compile_from_byte_code(eGSStage::Pixel, PostProcess_PS, sizeof(PostProcess_PS));
+			post_process_shader->set_input_layout_desc(vecLayoutDesc2D);
+			post_process_shader->create_input_layout();
 
-			postProcessShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::PostProcessShader, postProcessShader);
+			post_process_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
+			post_process_shader->set_resource_path(name::defaultRes::shader::graphics::PostProcessShader);
+
+			ResourceManager::get_inst().insert(post_process_shader);
 		}
 #pragma endregion
 
 #pragma region 3D 기본 입력 레이아웃
 		std::vector<D3D11_INPUT_ELEMENT_DESC> vecLayoutDesc3D;
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 0;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "POSITION";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 0;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "POSITION";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 16;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "TEXCOORD";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 16;
+		layout_desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "TEXCOORD";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 24;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "TANGENT";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 24;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "TANGENT";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 36;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "BINORMAL";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 36;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "BINORMAL";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 48;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "NORMAL";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 48;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "NORMAL";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 60;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "BLENDINDICES";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 60;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "BLENDINDICES";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
-		LayoutDesc = {};
-		LayoutDesc.AlignedByteOffset = 76;
-		LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		LayoutDesc.InputSlot = 0;
-		LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-		LayoutDesc.SemanticName = "BLENDWEIGHT";
-		LayoutDesc.SemanticIndex = 0;
-		vecLayoutDesc3D.push_back(LayoutDesc);
+		layout_desc = {};
+		layout_desc.AlignedByteOffset = 76;
+		layout_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		layout_desc.InputSlot = 0;
+		layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		layout_desc.SemanticName = "BLENDWEIGHT";
+		layout_desc.SemanticIndex = 0;
+		vecLayoutDesc3D.push_back(layout_desc);
 
 
 #pragma endregion
 
 #pragma region Forward3D
 		{
-			s_ptr<GraphicsShader> basic3DShader = std::make_shared<GraphicsShader>();
-			basic3DShader->set_engine_default_res(true);
+			s_ptr<GraphicsShader> basic_3D_shader = std::make_shared<GraphicsShader>();
+			basic_3D_shader->set_engine_default_res(true);
 
-			basic3DShader->compile_from_byte_code(eGSStage::Vertex, Forward3D_VS, sizeof(Forward3D_VS));
-			basic3DShader->compile_from_byte_code(eGSStage::Pixel, Forward3D_PS, sizeof(Forward3D_PS));
-			basic3DShader->set_input_layout_desc(vecLayoutDesc3D);
-			basic3DShader->create_input_layout();
+			basic_3D_shader->compile_from_byte_code(eGSStage::Vertex, Forward3D_VS, sizeof(Forward3D_VS));
+			basic_3D_shader->compile_from_byte_code(eGSStage::Pixel, Forward3D_PS, sizeof(Forward3D_PS));
+			basic_3D_shader->set_input_layout_desc(vecLayoutDesc3D);
+			basic_3D_shader->create_input_layout();
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::Forward3DShader, basic3DShader);
+			basic_3D_shader->set_resource_path(name::defaultRes::shader::graphics::Forward3DShader);
+			ResourceManager::get_inst().insert(basic_3D_shader);
 		}
 #pragma endregion
 
 #pragma region Deffered3D
 		{
-			s_ptr<GraphicsShader> defferedShader = std::make_shared<GraphicsShader>();
-			defferedShader->set_engine_default_res(true);
+			s_ptr<GraphicsShader> deffered_shader = std::make_shared<GraphicsShader>();
+			deffered_shader->set_engine_default_res(true);
 
-			defferedShader->compile_from_byte_code(eGSStage::Vertex, Deffered3D_VS, sizeof(Deffered3D_VS));
-			defferedShader->compile_from_byte_code(eGSStage::Pixel, Deffered3D_PS, sizeof(Deffered3D_PS));
+			deffered_shader->compile_from_byte_code(eGSStage::Vertex, Deffered3D_VS, sizeof(Deffered3D_VS));
+			deffered_shader->compile_from_byte_code(eGSStage::Pixel, Deffered3D_PS, sizeof(Deffered3D_PS));
 
-			defferedShader->set_input_layout_desc(vecLayoutDesc3D);
-			defferedShader->create_input_layout();
+			deffered_shader->set_input_layout_desc(vecLayoutDesc3D);
+			deffered_shader->create_input_layout();
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::Deffered3DShader, defferedShader);
+			deffered_shader->set_resource_path(name::defaultRes::shader::graphics::Deffered3DShader);
+			ResourceManager::get_inst().insert(deffered_shader);
 		}
 #pragma endregion
 
 
 #pragma region LIGHT
 		{
-			s_ptr<GraphicsShader> lightShader = std::make_shared<GraphicsShader>();
-			lightShader->compile_from_byte_code(eGSStage::Vertex, LightDirection_VS, sizeof(LightDirection_VS));
-			lightShader->compile_from_byte_code(eGSStage::Pixel, LightDirection_PS, sizeof(LightDirection_PS));
+			s_ptr<GraphicsShader> light_shader = std::make_shared<GraphicsShader>();
+			light_shader->compile_from_byte_code(eGSStage::Vertex, LightDirection_VS, sizeof(LightDirection_VS));
+			light_shader->compile_from_byte_code(eGSStage::Pixel, LightDirection_PS, sizeof(LightDirection_PS));
 
-			lightShader->set_input_layout_desc(vecLayoutDesc2D);
-			lightShader->create_input_layout();
+			light_shader->set_input_layout_desc(vecLayoutDesc2D);
+			light_shader->create_input_layout();
 
-			lightShader->set_rasterizer_state(eRasterizerState::SolidBack);
-			lightShader->set_depth_stencil_state(eDepthStencilState::None);
-			lightShader->set_blend_state(eBlendState::OneOne);
+			light_shader->set_rasterizer_state(eRasterizerState::SolidBack);
+			light_shader->set_depth_stencil_state(eDepthStencilState::None);
+			light_shader->set_blend_state(eBlendState::OneOne);
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::LightDirShader, lightShader);
+			light_shader->set_resource_path(name::defaultRes::shader::graphics::LightDirShader);
+			ResourceManager::get_inst().insert(light_shader);
 		}
 
 		{
-			s_ptr<GraphicsShader> lightShader = std::make_shared<GraphicsShader>();
-			lightShader->compile_from_byte_code(eGSStage::Vertex, LightPoint_VS, sizeof(LightPoint_VS));
-			lightShader->compile_from_byte_code(eGSStage::Pixel, LightPoint_PS, sizeof(LightPoint_PS));
+			s_ptr<GraphicsShader> light_shader = std::make_shared<GraphicsShader>();
+			light_shader->compile_from_byte_code(eGSStage::Vertex, LightPoint_VS, sizeof(LightPoint_VS));
+			light_shader->compile_from_byte_code(eGSStage::Pixel, LightPoint_PS, sizeof(LightPoint_PS));
 
-			lightShader->set_input_layout_desc(vecLayoutDesc3D);
-			lightShader->create_input_layout();
+			light_shader->set_input_layout_desc(vecLayoutDesc3D);
+			light_shader->create_input_layout();
 
-			lightShader->set_rasterizer_state(eRasterizerState::SolidFront);
-			lightShader->set_depth_stencil_state(eDepthStencilState::None);
-			lightShader->set_blend_state(eBlendState::OneOne);
+			light_shader->set_rasterizer_state(eRasterizerState::SolidFront);
+			light_shader->set_depth_stencil_state(eDepthStencilState::None);
+			light_shader->set_blend_state(eBlendState::OneOne);
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::LightPointShader, lightShader);
+			light_shader->set_resource_path(name::defaultRes::shader::graphics::LightPointShader);
+			ResourceManager::get_inst().insert(light_shader);
 		}
 #pragma endregion
 
 #pragma region MERGE
 		{
-			LayoutDesc = D3D11_INPUT_ELEMENT_DESC{};
-			LayoutDesc.AlignedByteOffset = 0;
-			LayoutDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			LayoutDesc.InputSlot = 0;
-			LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-			LayoutDesc.SemanticName = "POSITION";
-			LayoutDesc.SemanticIndex = 0;
+			layout_desc = D3D11_INPUT_ELEMENT_DESC{};
+			layout_desc.AlignedByteOffset = 0;
+			layout_desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			layout_desc.InputSlot = 0;
+			layout_desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			layout_desc.SemanticName = "POSITION";
+			layout_desc.SemanticIndex = 0;
 
-			s_ptr<GraphicsShader> MergeShader = std::make_shared<GraphicsShader>();
-			MergeShader->set_engine_default_res(true);
-			MergeShader->compile_from_byte_code(eGSStage::Vertex, Deffered_Merger_VS, sizeof(Deffered_Merger_VS));
-			MergeShader->compile_from_byte_code(eGSStage::Pixel, Deffered_Merger_PS, sizeof(Deffered_Merger_PS));
+			s_ptr<GraphicsShader> merge_shader = std::make_shared<GraphicsShader>();
+			merge_shader->set_engine_default_res(true);
+			merge_shader->compile_from_byte_code(eGSStage::Vertex, Deffered_Merger_VS, sizeof(Deffered_Merger_VS));
+			merge_shader->compile_from_byte_code(eGSStage::Pixel, Deffered_Merger_PS, sizeof(Deffered_Merger_PS));
 
-			MergeShader->add_input_layout_desc(LayoutDesc);
-			MergeShader->create_input_layout();
+			merge_shader->add_input_layout_desc(layout_desc);
+			merge_shader->create_input_layout();
 
-			MergeShader->set_rasterizer_state(eRasterizerState::SolidBack);
-			MergeShader->set_depth_stencil_state(eDepthStencilState::None);
-			MergeShader->set_blend_state(eBlendState::Default);
+			merge_shader->set_rasterizer_state(eRasterizerState::SolidBack);
+			merge_shader->set_depth_stencil_state(eDepthStencilState::None);
+			merge_shader->set_blend_state(eBlendState::Default);
 
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::MergeShader, MergeShader);
+			merge_shader->set_resource_path(name::defaultRes::shader::graphics::MergeShader);
+			ResourceManager::get_inst().insert(merge_shader);
 		}
 #pragma endregion
 
 
 #pragma region ANIMATION 3D
-		s_ptr<Animation3D_ComputeShader> Anim3DShader = std::make_shared<Animation3D_ComputeShader>();
-		Anim3DShader->set_engine_default_res(true);
-		Anim3DShader->compile_from_byte_code(Animation3D_CS, sizeof(Animation3D_CS));
+		s_ptr<Animation3D_ComputeShader> anim_3D_shader = std::make_shared<Animation3D_ComputeShader>();
+		anim_3D_shader->set_engine_default_res(true);
+		anim_3D_shader->compile_from_byte_code(Animation3D_CS, sizeof(Animation3D_CS));
 
-		ResourceManager<ComputeShader>::get_inst().insert(name::defaultRes::shader::compute::Animation3D, Anim3DShader);
+		anim_3D_shader->set_resource_path(name::defaultRes::shader::compute::Animation3D);
+		ResourceManager::get_inst().insert(anim_3D_shader);
 #pragma endregion
 
 #pragma region PARTICLE SHADER
 		{
-			s_ptr<GraphicsShader> particleShader = std::make_shared<GraphicsShader>();
-			particleShader->set_engine_default_res(true);
+			s_ptr<GraphicsShader> particle_shader = std::make_shared<GraphicsShader>();
+			particle_shader->set_engine_default_res(true);
 
-			particleShader->compile_from_byte_code(eGSStage::Vertex, Particle_VS, sizeof(Particle_VS));
-			particleShader->compile_from_byte_code(eGSStage::Geometry, Particle_GS, sizeof(Particle_GS));
-			particleShader->compile_from_byte_code(eGSStage::Pixel, Particle_PS, sizeof(Particle_PS));
-			particleShader->set_input_layout_desc(vecLayoutDesc2D);
-			particleShader->create_input_layout();
+			particle_shader->compile_from_byte_code(eGSStage::Vertex, Particle_VS, sizeof(Particle_VS));
+			particle_shader->compile_from_byte_code(eGSStage::Geometry, Particle_GS, sizeof(Particle_GS));
+			particle_shader->compile_from_byte_code(eGSStage::Pixel, Particle_PS, sizeof(Particle_PS));
+			particle_shader->set_input_layout_desc(vecLayoutDesc2D);
+			particle_shader->create_input_layout();
 
 
-			particleShader->set_rasterizer_state(eRasterizerState::SolidNone);
-			particleShader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			particleShader->set_blend_state(eBlendState::AlphaBlend);
+			particle_shader->set_rasterizer_state(eRasterizerState::SolidNone);
+			particle_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
+			particle_shader->set_blend_state(eBlendState::AlphaBlend);
 
 			//TODO: 파티클을 위한 토폴로지 설정 해줘야함
-			//particleShader->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-			ResourceManager<GraphicsShader>::get_inst().insert(name::defaultRes::shader::graphics::ParticleShader, particleShader);
+			//particle_shader->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+			particle_shader->set_resource_path(name::defaultRes::shader::graphics::ParticleShader);
+			ResourceManager::get_inst().insert(particle_shader);
 
-			s_ptr<ParticleShader> particleCS = std::make_shared<ParticleShader>();
-			particleCS->set_engine_default_res(true);
-			ResourceManager<ComputeShader>::get_inst().insert(name::defaultRes::shader::compute::ParticleCS, particleCS);
-			particleCS->compile_from_byte_code(Particle_CS, sizeof(Particle_CS));
+			s_ptr<ParticleShader> particle_CS = std::make_shared<ParticleShader>();
+			particle_CS->set_engine_default_res(true);
+			particle_CS->set_resource_path(name::defaultRes::shader::compute::ParticleCS);
+			ResourceManager::get_inst().insert(particle_CS);
+			particle_CS->compile_from_byte_code(Particle_CS, sizeof(Particle_CS));
 		}
 #pragma endregion
 	}

@@ -124,7 +124,6 @@ virtual eResult deserialize_json(const JsonSerializer& _ser) final\
 		return new_ent;
 	}
 
-
 	//이 클래스의 목적: 문자열로 원하는 클래스를 생성
 	/*
 	* LazySingleton을 사용해야 하는 이유

@@ -258,9 +258,6 @@
     <ClCompile Include="Manager\TimeManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Manager\PathManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Component\Renderer\ParticleRenderer.cpp">
       <Filter>Component\Renderer</Filter>
     </ClCompile>
@@ -360,7 +357,6 @@
     <ClCompile Include="Manager\RenderManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Game\Component\StateMachine\StateMachine.cpp" />
     <ClCompile Include="Util\StringConverter.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
@@ -396,6 +392,7 @@
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
     <ClCompile Include="Game\Entity.cpp" />
     <ClCompile Include="Game\Component\Component.cpp" />
+    <ClCompile Include="Manager\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -498,9 +495,6 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Manager\TimeManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager\PathManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Game\Component\Renderer\ParticleRenderer.h">
@@ -607,7 +601,6 @@
     </ClInclude>
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Manager\ResourceManager.h" />
-    <ClInclude Include="Manager\ResourceManagers.h" />
     <ClInclude Include="Game\Component\StateMachine\StateMachine.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\type_traits_Ex.h" />

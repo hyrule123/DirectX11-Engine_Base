@@ -7,10 +7,11 @@ namespace core
 {
 #define BASE_RESOURCE(_class, _eResourceType) \
 public:\
-constexpr static const eResourceType s_resource_type = _eResourceType;\
-virtual eResourceType get_resource_type_internal() const override { return s_resource_type; }\
-template <typename T>\
-constexpr static auto is_base_resource() { return std::is_same_v<_class, T>; }
+	constexpr static const eResourceType s_resource_type = _eResourceType;\
+	template <typename T>\
+	constexpr static bool is_base_resource() { return std::is_same_v<_class, T>; }\
+protected:\
+	virtual eResourceType get_resource_type_internal() const override { return s_resource_type; }\
 
 	class Resource 
 		: public Entity
@@ -25,8 +26,8 @@ constexpr static auto is_base_resource() { return std::is_same_v<_class, T>; }
 
 		virtual ~Resource();
 
-		void set_resource_name(const std::string_view _resource_name) { m_res_filename = _resource_name; }
-		const std::string& get_resource_name() const { return m_res_filename; }
+		void set_resource_path(const std::string_view _resource_name) { m_resource_path = _resource_name; }
+		const std::string& get_resource_path() const { return m_resource_path; }
 
 		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
 		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
@@ -38,10 +39,10 @@ constexpr static auto is_base_resource() { return std::is_same_v<_class, T>; }
 		eResourceType get_resource_type() const { return m_res_type; }
 
 	private:
-		virtual eResourceType get_resource_type_internal() const = 0;
+		virtual eResourceType get_resource_type_internal() const { return eResourceType::UNKNOWN; }
 
 		eResourceType m_res_type;
 		bool m_b_engine_default_resource;
-		std::string m_res_filename;
+		std::string m_resource_path;
 	};
 }

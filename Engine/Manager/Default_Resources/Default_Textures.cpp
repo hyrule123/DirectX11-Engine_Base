@@ -1,33 +1,31 @@
-
-#include <Engine/Manager/Resourcemanagers.h>
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Texture.h>
 
 namespace core {
-	void ResourceManagers::load_default_textures()
+	void ResourceManager::load_default_textures()
 	{
 #pragma region STATIC TEXTURE
 		using namespace name::defaultRes;
 
 		s_ptr<Texture> pTex = nullptr;
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_01);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::noise_01);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_02);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::noise_02);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::noise_03);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::noise_03);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::BasicCube);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::BasicCube);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::BasicCubeNormal);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::BasicCubeNormal);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager<Texture>::get_inst().load(texture::Brick);
+		pTex = ResourceManager::get_inst().load<Texture>(texture::Brick);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 #pragma endregion

@@ -4,7 +4,7 @@
 
 #include <Engine/Manager/TimeManager.h>
 #include <Engine/Manager/ThreadPoolManager.h>
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Util/define_Util.h>
 #include <Engine/Resource/Model3D/Model3D.h>
@@ -194,7 +194,8 @@ namespace core::editor
 	{
 		m_skeletal_mesh_combobox.set_unique_name("Model3D List");
 		m_skeletal_mesh_combobox.reset();
-		const std::fs::path& meshPath = ResourceManager<Model3D>::get_inst().get_base_directory();
+		ASSERT(false, "여기 구현");
+		const std::fs::path& meshPath = "";
 
 		try
 		{

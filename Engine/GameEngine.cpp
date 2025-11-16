@@ -9,10 +9,10 @@
 #include <Engine/Manager/TimeManager.h>
 #include <Engine/Manager/InputManager.h>
 #include <Engine/Manager/SceneManager.h>
-#include <Engine/Manager/ResourceManagers.h>
+#include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/AudioManager.h>
 #include <Engine/Manager/FontWrapper.h>
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/ThreadPoolManager.h>
 
 
@@ -59,21 +59,18 @@ namespace core
 
 		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
 		ThreadPoolManager::get_inst().init((size_t)4);
-
-		//PathManager 인스턴스 생성
-		PathManager::get_inst();
 		
+		//ResourceManager들 인스턴스 생성
+		ResourceManager::get_inst();
+
 		//RenderManager 인스턴스 생성(Device, Context 생성)
 		RenderManager::get_inst();
-
-		//ResourceManager들 인스턴스 생성
-		ResourceManagers::get_inst().init_resource_managers();
 
 		//래스터라이저, 블렌드, 깊이버퍼 등 각종 render state 로드
 		RenderManager::get_inst().load_render_states();
 
 		//기본 리소스(메쉬, 쉐이더, 재질, 텍스처) 로드
-		ResourceManagers::get_inst().load_default_resources();
+		ResourceManager::get_inst().load_default_resources();
 
 		//RenderManager 스왑체인 및 뷰포트 생성
 		RenderManager::get_inst().init(_desc.GPU_desc);

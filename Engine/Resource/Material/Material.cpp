@@ -4,7 +4,7 @@
 
 #include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/RenderManager.h>
-#include <Engine/Manager/PathManager.h>
+
 
 #include <Engine/Util/Serialize/JsonSerializer.h>
 
@@ -76,7 +76,7 @@ namespace core
             //shader
             if (m_shader)
             {
-                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_name();
+                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_path();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace core
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_resource_name();
+                    textures[i] << m_textures[i]->get_resource_path();
                 }
                 else
                 {
@@ -129,7 +129,7 @@ namespace core
             {
                 std::string name{};
                 _ser[JSON_KEY(m_shader)] >> name;
-                m_shader = ResourceManager<GraphicsShader>::get_inst().load(name);
+                m_shader = ResourceManager::get_inst().load<GraphicsShader>(name);
             }
 
 
@@ -139,7 +139,7 @@ namespace core
             {
                 std::string name{};
                 textures[i] >> name;
-                const s_ptr<Texture>& tex = ResourceManager<Texture>::get_inst().load(name);
+                const s_ptr<Texture>& tex = ResourceManager::get_inst().load<Texture>(name);
                 if (tex)
                 {
                     set_texture((eTextureSlot)i, tex);

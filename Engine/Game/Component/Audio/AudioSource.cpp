@@ -57,7 +57,7 @@ namespace core
 	//	if (jVal.isMember(JSON_KEY(m_audio_clip)))
 	//	{
 	//		std::string name = jVal[JSON_KEY(mAudilClip)].asString();
-	//		m_audio_clip = ResourceManager<AudioClip>::get_inst().Load(name);
+	//		m_audio_clip = Resources<AudioClip>::get_inst().Load(name);
 	//	}
 
 	//	return eResult::Success;

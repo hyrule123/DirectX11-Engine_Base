@@ -1,12 +1,9 @@
-
 #include "GraphicsShader.h"
 
 #include <Engine/Global.h>
 
 #include <Engine/Manager/RenderManager.h>
 #include <Engine/Manager/ResourceManager.h>
-#include <Engine/Manager/RenderManager.h>
-#include <Engine/Manager/PathManager.h>
 
 #include <Engine/Util/Serialize/JsonSerializer.h>
 
@@ -45,13 +42,13 @@ namespace core
 
 	eResult GraphicsShader::save(const std::fs::path& _base_directory) const
 	{
-		std::fs::path full_path = _base_directory / get_resource_name();
+		std::fs::path full_path = _base_directory / get_resource_path();
 		return save_file_json(full_path);
 	}
 
 	eResult GraphicsShader::load(const std::fs::path& _base_directory)
 	{
-		std::fs::path full_path = _base_directory / get_resource_name();
+		std::fs::path full_path = _base_directory / get_resource_path();
 		return load_file_json(full_path);
 	}
 
@@ -105,7 +102,7 @@ namespace core
 	eResult GraphicsShader::compile_from_CSO(eGSStage _stage, const std::fs::path& _FileName)
 	{
 		//CSO 파일이 있는 폴더에 접근
-		std::filesystem::path shaderBinPath = PathManager::get_inst().get_relative_shader_directory();
+		std::filesystem::path shaderBinPath = ResourceManager::get_inst().get_shader_directory();
 		shaderBinPath /= _FileName;
 
 		if (false == std::fs::exists(shaderBinPath))

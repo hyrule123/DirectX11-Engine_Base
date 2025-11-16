@@ -2,10 +2,13 @@
 #include <Engine/define_Macro.h>
 #include <Engine/define_Enum.h>
 
+
+
 namespace core
 {
 	enum class eResourceType
 	{
+		UNKNOWN,
 		VertexBuffer,
 		Texture,
 		AudioClip,
@@ -18,11 +21,10 @@ namespace core
 		Animation2D,
 		Model3D,
 		Skeleton,
-		Animation3D,
+		//Animation3D,//Skeleton에서 관리됨
 		Prefab,
 		END
 	};
-
 
 	namespace name
 	{
@@ -73,7 +75,7 @@ namespace core
 					".bmp",
 					".jpg",
 				};
-				constexpr size_t Texture_ArrSize = sizeof(Texture) / sizeof(const char*);
+				constexpr size_t Texture_ArrSize = sizeof(Texture) / sizeof(std::string_view);
 			}
 		}
 

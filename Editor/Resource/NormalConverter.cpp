@@ -4,7 +4,7 @@
 
 #include <Editor/Widget/ComboBoxWidget.h>
 
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Util/define_Util.h>
@@ -61,7 +61,7 @@ namespace core::editor
 			std::string curText = "* Current: ";
 			if (m_src_texture)
 			{
-				curText += m_src_texture->get_resource_name();
+				curText += m_src_texture->get_resource_path();
 			}
 			else
 			{
@@ -79,13 +79,13 @@ if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 		vecExt.push_back(::core::name::path::extension::Texture[i]);
 	}
 
-	const std::fs::path& absTexPath = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
+	const std::fs::path& absTexPath = ResourceManager::get_inst().get_resource_directory();
 
 	std::fs::path texPath = WinAPI::file_open_dialog(absTexPath, vecExt);
 
-	texPath = PathManager::get_inst().make_path_strkey(texPath);
+	texPath = ResourceManager::get_inst().create_resource_name_from_full_path(texPath);
 
-	m_src_texture = ResourceManager<Texture>::get_inst().load(texPath.string());
+	m_src_texture = ResourceManager::get_inst().load<Texture>(texPath.string());
 }
 
 ImGui::SameLine();
@@ -126,11 +126,11 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				vecExt.push_back(::core::name::path::extension::Texture[i]);
 			}
 
-			std::fs::path texFile = std::fs::absolute(ResourceManager<Texture>::get_inst().get_base_directory());
+			std::fs::path texFile = ResourceManager::get_inst().get_resource_directory();
 
 			if (m_src_texture)
 			{
-				texFile /= m_src_texture->get_resource_name();
+				texFile /= m_src_texture->get_resource_path();
 			}
 
 			m_dest_texture_dir = WinAPI::file_open_dialog(texFile, vecExt);
@@ -161,14 +161,14 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			s_ptr<NormalConvertShader> converter = ResourceManager<ComputeShader>::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
+			s_ptr<NormalConvertShader> converter = ResourceManager::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
 
 			s_ptr<Texture> convertedTex = converter->convert(m_src_texture);
 
 			if (convertedTex)
 			{
 				std::fs::path savePath = m_dest_texture_dir;
-				std::fs::path texKey = convertedTex->get_resource_name();
+				std::fs::path texKey = convertedTex->get_resource_path();
 				savePath /= texKey.filename();
 
 				if (std::fs::exists(savePath))
@@ -182,7 +182,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 					}
 				}
 
-				eResult result = ResourceManager<Texture>::get_inst().save_as(convertedTex, savePath.string());
+				eResult result = ResourceManager::get_inst().save_as(convertedTex, savePath.string());
 				if (eResult_fail(result))
 				{
 					NOTIFICATION("변환에 실패했습니다.");

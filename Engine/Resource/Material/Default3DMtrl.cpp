@@ -33,7 +33,7 @@ namespace core {
         set_rendering_mode(eRenderingMode::deffered_opaque);
         set_engine_default_res(true);
 
-        m_default_3D_mtrl_instancing_buffer = ResourceManager<StructBuffer>::get_inst().find("default_3D_material_instancing_buffer");
+        m_default_3D_mtrl_instancing_buffer = ResourceManager::get_inst().find<StructBuffer>("default_3D_material_instancing_buffer");
     }
     Default3DMtrl::~Default3DMtrl()
     {
@@ -85,13 +85,13 @@ namespace core {
 
     void Default3DMtrl::set_forward3D_shader()
     {
-        auto forward = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Forward3DShader);
+        auto forward = ResourceManager::get_inst().find<GraphicsShader>(name::defaultRes::shader::graphics::Forward3DShader);
         set_shader(forward);
     }
 
     void Default3DMtrl::set_deffered3D_shader()
     {
-        auto deffered = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+        auto deffered = ResourceManager::get_inst().find<GraphicsShader>(name::defaultRes::shader::graphics::Deffered3DShader);
         set_shader(deffered);
     }
 }

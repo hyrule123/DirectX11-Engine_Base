@@ -1,7 +1,7 @@
 
 #include "FBXLoader.h"
 
-#include <Engine/Manager/PathManager.h>
+
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Texture.h>
@@ -596,8 +596,9 @@ namespace core
 	void FBXLoader::load_textures()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
-		const std::fs::path& fbxPath = ResourceManager<Model3D>::get_inst().get_base_directory();
-		const std::fs::path& texPath = ResourceManager<Texture>::get_inst().get_base_directory();
+		ASSERT(false, "여기 구현");
+		const std::fs::path& fbxPath = "";
+		const std::fs::path& texPath = "";
 
 		//텍스처 폴더 발견 시 최초 한번 Texture 폴더로 이동시키기 위한 코드
 		std::fs::path srcPathToDelete{};
@@ -628,7 +629,7 @@ namespace core
 				}
 
 				//바로 Texture Load. 로드 실패 시 false 반환
-				if (nullptr == ResourceManager<Texture>::get_inst().load(_TextureRelativePath))
+				if (nullptr == ResourceManager::get_inst().load<Texture>(_TextureRelativePath))
 				{
 					_TextureRelativePath.clear();
 					return;
@@ -691,7 +692,7 @@ namespace core
 	//			//std::string strName = strPath;
 
 	//			// 이미 로딩된 재질이면 로딩된 것을 사용
-	//			s_ptr<Material> pMaterial = ResourceManager<Material>::get_inst().find(m_fbx_containers[i].materials[j].name);
+	//			s_ptr<Material> pMaterial = Resources<Material>::get_inst().find(m_fbx_containers[i].materials[j].name);
 	//			if (nullptr != pMaterial) {
 	//				continue;
 	//			}
@@ -699,19 +700,19 @@ namespace core
 	//			pMaterial = new_entity<Material>();
 
 	//			// 상대경로가 곧 키
-	//			pMaterial->get_resource_name(m_fbx_containers[i].materials[j].name);
+	//			pMaterial->get_resource_path(m_fbx_containers[i].materials[j].name);
 
 	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager<GraphicsShader>::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
 
 	//			ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
 	//			pMaterial->set_shader(defferedShader);
 	//			
 	//			{
-	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(m_fbx_containers[i].materials[j].diffuse_tex_name);
+	//				s_ptr<Texture> pTex = Resources<Texture>::get_inst().load(m_fbx_containers[i].materials[j].diffuse_tex_name);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Diffuse, pTex);
@@ -719,7 +720,7 @@ namespace core
 	//			}
 	//				
 	//			{
-	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(m_fbx_containers[i].materials[j].normal_tex_name);
+	//				s_ptr<Texture> pTex = Resources<Texture>::get_inst().load(m_fbx_containers[i].materials[j].normal_tex_name);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Normal, pTex);
@@ -727,7 +728,7 @@ namespace core
 	//			}
 
 	//			{
-	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().load(m_fbx_containers[i].materials[j].specular_tex_name);
+	//				s_ptr<Texture> pTex = Resources<Texture>::get_inst().load(m_fbx_containers[i].materials[j].specular_tex_name);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Specular, pTex);
@@ -735,7 +736,7 @@ namespace core
 	//			}
 
 	//			{
-	//				s_ptr<Texture> pTex = ResourceManager<Texture>::get_inst().find(m_fbx_containers[i].materials[j].emissive_tex_name);
+	//				s_ptr<Texture> pTex = Resources<Texture>::get_inst().find(m_fbx_containers[i].materials[j].emissive_tex_name);
 	//				if (nullptr != pTex)
 	//				{
 	//					pMaterial->set_texture(eTextureSlot::Emissive, pTex);
@@ -747,14 +748,14 @@ namespace core
 	//			pMaterial->set_ambient_color(m_fbx_containers[i].materials[j].ambient_color);
 	//			pMaterial->set_emmisive_color(m_fbx_containers[i].materials[j].emissive_color);
 
-	//			eResult result = ResourceManager<Material>::get_inst().save(pMaterial);
+	//			eResult result = Resources<Material>::get_inst().save(pMaterial);
 
 	//			if (eResult_fail(result))
 	//			{
 	//				ERROR_MESSAGE("FBX 변환 에러: Material 저장 실패");
 	//			}
 
-	//			ResourceManager<Material>::get_inst().insert(pMaterial->get_resource_name(), pMaterial);
+	//			Resources<Material>::get_inst().insert(pMaterial->get_resource_path(), pMaterial);
 	//		}
 	//	}
 	//}

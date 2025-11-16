@@ -102,8 +102,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
@@ -138,8 +137,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
@@ -173,8 +171,7 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
@@ -209,8 +206,7 @@
       </Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
       <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
@@ -255,11 +251,10 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="GPU\CommonGPU.h" />
     <ClInclude Include="Game\Component\StateMachine\StateMachine.h" />
-    <ClInclude Include="Manager\ResourceManagers.h" />
+    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Resource\Animation2D.h" />
     <ClInclude Include="Resource\Model3D\Animation3D.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.h" />
-    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Util\Serialize\Serializable.h" />
     <ClInclude Include="Util\StringConverter.h" />
     <ClInclude Include="Util\Serialize\base64.h" />
@@ -312,7 +307,6 @@
     <ClInclude Include="Util\Serialize\json.h" />
     <ClInclude Include="Game\Component\Light\Light_3D.h" />
     <ClInclude Include="Resource\Material\Material.h" />
-    <ClInclude Include="Manager\PathManager.h" />
     <ClInclude Include="Game\Component\Renderer\Renderer.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\NormalConvertShader.h" />
     <ClInclude Include="Resource\Shader\ComputeShaders\ParticleShader.h" />
@@ -339,6 +333,7 @@
     <ClCompile Include="Manager\Default_Resources\Default_Shaders.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_RenderStates.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Textures.cpp" />
+    <ClCompile Include="Manager\ResourceManager.cpp" />
     <ClCompile Include="Resource\Material\Light_3D_Material.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Materials.cpp" />
     <ClCompile Include="Manager\Default_Resources\Default_Meshes.cpp" />
@@ -366,7 +361,6 @@
     <ClCompile Include="Util\Serialize\JsonSerializer.cpp" />
     <ClCompile Include="Util\Serialize\BinarySerializer.cpp" />
     <ClCompile Include="Game\Component\StateMachine\StateMachine.cpp" />
-    <ClCompile Include="Manager\ResourceManagers.cpp" />
     <ClCompile Include="Resource\Animation2D.cpp" />
     <ClCompile Include="Resource\Model3D\Animation3D.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\Animation3D_ComputeShader.cpp" />
@@ -430,7 +424,6 @@
     <ClCompile Include="Game\Component\Light\Light_3D.cpp" />
     <ClCompile Include="Resource\Material\Material.cpp" />
     <ClCompile Include="Resource\Model3D\Model3D.cpp" />
-    <ClCompile Include="Manager\PathManager.cpp" />
     <ClCompile Include="Game\Component\Renderer\Renderer.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\NormalConvertShader.cpp" />
     <ClCompile Include="Resource\Shader\ComputeShaders\ParticleShader.cpp" />

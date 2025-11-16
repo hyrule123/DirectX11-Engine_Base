@@ -1,17 +1,16 @@
-#include <Engine/Manager/Resourcemanagers.h>
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/Resource/Mesh/Mesh.h>
 
 namespace core {
-	void ResourceManagers::load_default_meshes()
+	void ResourceManager::load_default_meshes()
 	{
 #pragma region POINT MESH
 		{
 			std::vector<Vertex2D> vertices_2D = { {} };
 
-			s_ptr<Mesh> pointMesh = new_entity<Mesh>();
-			pointMesh->set_engine_default_res(true);
+			s_ptr<Mesh> point_mesh = new_entity<Mesh>();
+			point_mesh->set_engine_default_res(true);
 
 			std::vector<uint> pointIndex = { 0 };
 
@@ -20,38 +19,39 @@ namespace core {
 			if (false == vb->create_vertex_buffer(vertices_2D)) {
 				ASSERT(false, "point vertex 생성 실패");
 			}
-			if (false == pointMesh->create_index_buffer(pointIndex, D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)) {
+			if (false == point_mesh->create_index_buffer(pointIndex, D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)) {
 				ASSERT(false, "point vertex 생성 실패");
 			}
 
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::PointMesh, pointMesh);
+			point_mesh->set_resource_path(name::defaultRes::mesh::PointMesh);
+			ResourceManager::get_inst().insert(point_mesh);
 		}
 
 #pragma endregion
 #pragma region RECT MESH
 		{
-			std::vector<Vertex2D> VecVtx2D;
+			std::vector<Vertex2D> _2d_vertices;
 			Vertex2D vtx2d = {};
 
 			//RECT
 			vtx2d.position = float4(-0.5f, 0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(0.f, 0.f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(0.5f, 0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(1.0f, 0.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(0.5f, -0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(1.0f, 1.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(-0.5f, -0.5f, 0.0f, 1.0f);
 			vtx2d.UV = float2(0.0f, 1.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			// Crate Mesh
@@ -60,41 +60,44 @@ namespace core {
 
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 
-			ASSERT(rect_mesh->create(VecVtx2D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
+			ASSERT(rect_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
 
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::RectMesh, rect_mesh);
+			rect_mesh->set_resource_path(name::defaultRes::mesh::RectMesh);
+			ResourceManager::get_inst().insert(rect_mesh);
 
-			VecVtx2D.clear();
+			_2d_vertices.clear();
 
 #pragma endregion
 #pragma region DEBUG RECTMESH
 
 			vtx2d.position = float4(-0.5f, 0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(0.f, 0.f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(0.5f, 0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(1.0f, 0.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(0.5f, -0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(1.0f, 1.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			vtx2d.position = float4(-0.5f, -0.5f, -0.00001f, 1.0f);
 			vtx2d.UV = float2(0.0f, 1.0f);
-			VecVtx2D.push_back(vtx2d);
+			_2d_vertices.push_back(vtx2d);
 			vtx2d = Vertex2D{};
 
 			// CreateBuffer Mesh
-			s_ptr<Mesh> debugmesh = new_entity<Mesh>();
-			debugmesh->set_engine_default_res(true);
+			s_ptr<Mesh> debug_mesh = new_entity<Mesh>();
+			debug_mesh->set_engine_default_res(true);
 
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugRectMesh, debugmesh);
-			ASSERT(debugmesh->create(VecVtx2D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
+			ASSERT(debug_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
+
+			debug_mesh->set_resource_path(name::defaultRes::mesh::DebugRectMesh);
+			ResourceManager::get_inst().insert(debug_mesh);
 		}
 #pragma endregion
 
@@ -145,9 +148,8 @@ namespace core {
 			circle_mesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ASSERT(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
 
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::CircleMesh, circle_mesh);
-
-
+			circle_mesh->set_resource_path(name::defaultRes::mesh::CircleMesh);
+			ResourceManager::insert(circle_mesh);
 		}
 #pragma endregion
 #pragma region Cube Mesh
@@ -364,9 +366,10 @@ namespace core {
 			}
 
 			// Crate Mesh
-			s_ptr<Mesh> cubMesh = new_entity<Mesh>();
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::CubeMesh, cubMesh);
-			ASSERT(cubMesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
+			s_ptr<Mesh> cube_mesh = new_entity<Mesh>();
+			cube_mesh->set_resource_path(name::defaultRes::mesh::CubeMesh);
+			ResourceManager::get_inst().insert(cube_mesh);
+			ASSERT(cube_mesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
 		}
 #pragma endregion
 
@@ -408,10 +411,12 @@ namespace core {
 			};
 
 			// Crate Mesh
-			s_ptr<Mesh> debugCubeMesh = new_entity<Mesh>();
-			ASSERT(debugCubeMesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugCubeMesh 생성 실패");
-			debugCubeMesh->set_engine_default_res(true);
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::DebugCubeMesh, debugCubeMesh);
+			s_ptr<Mesh> debug_cube_mesh = new_entity<Mesh>();
+			ASSERT(debug_cube_mesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debug_cube_mesh 생성 실패");
+			debug_cube_mesh->set_engine_default_res(true);
+
+			debug_cube_mesh->set_resource_path(name::defaultRes::mesh::DebugCubeMesh);
+			ResourceManager::get_inst().insert(debug_cube_mesh);
 		}
 #pragma endregion //Debug Cube Mesh
 
@@ -526,7 +531,9 @@ namespace core {
 
 			s_ptr<Mesh> sphereMesh = new_entity<Mesh>();
 			ASSERT(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
-			ResourceManager<Mesh>::get_inst().insert(name::defaultRes::mesh::SphereMesh, sphereMesh);
+
+			ResourceManager::get_inst().insert(sphereMesh);
+			sphereMesh->set_resource_path(name::defaultRes::mesh::SphereMesh);
 		}
 
 

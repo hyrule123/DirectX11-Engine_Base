@@ -366,7 +366,7 @@ namespace core
 
 	void RenderManager::bind_noise_texture()
 	{
-		s_ptr<Texture> noise = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::noise_03);
+		s_ptr<Texture> noise = ResourceManager::get_inst().find<Texture>(name::defaultRes::texture::noise_03);
 		noise->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
@@ -383,7 +383,7 @@ namespace core
 	}
 	void RenderManager::copy_rendertarget()
 	{
-		s_ptr<Texture> renderTarget = ResourceManager<Texture>::get_inst().find(name::defaultRes::texture::RenderTarget);
+		s_ptr<Texture> renderTarget = ResourceManager::get_inst().find<Texture>(name::defaultRes::texture::RenderTarget);
 
 		//render_target->unbind_buffer();
 
@@ -459,7 +459,7 @@ namespace core
 				arrRTTex[i] = std::make_shared<Texture>();
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_name(name::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_resource_path(name::eMRT_Deffered_String[i]);
 			}
 
 
@@ -484,7 +484,7 @@ namespace core
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_name(name::eMRT_Light_String[i]);
+				arrRTTex[i]->set_resource_path(name::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();
@@ -502,9 +502,9 @@ namespace core
 		//Light_Diffuse와 Light_Specular을 렌더타겟으로 설정 후(SV_Target0, SV_Target1)
 		//Diffuse, Normal, Specular, Emissive, Roughness/Metalic, View Position 렌더타겟을 "텍스처"로 바인딩
 		{
-			s_ptr<Material> lightDirMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightDirMaterial);
+			s_ptr<Material> lightDirMtrl = ResourceManager::get_inst().find<Material>(name::defaultRes::material::LightDirMaterial);
 
-			s_ptr<Material> lightPointMtrl = ResourceManager<Material>::get_inst().find(name::defaultRes::material::LightPointMaterial);
+			s_ptr<Material> lightPointMtrl = ResourceManager::get_inst().find<Material>(name::defaultRes::material::LightPointMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
@@ -554,7 +554,7 @@ namespace core
 
 		//Merge: Deffered, Light 렌더타겟 전부 바인딩
 		{
-			s_ptr<Material> mergeMaterial = ResourceManager<Material>::get_inst().find(name::defaultRes::material::MergeMaterial);
+			s_ptr<Material> mergeMaterial = ResourceManager::get_inst().find<Material>(name::defaultRes::material::MergeMaterial);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{

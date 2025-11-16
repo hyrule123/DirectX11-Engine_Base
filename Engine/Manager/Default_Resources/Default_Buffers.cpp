@@ -1,4 +1,4 @@
-#include <Engine/Manager/ResourceManagers.h>
+#include <Engine/Manager/ResourceManager.h>
 #include <Engine/Manager/ResourceManager.h>
 
 #include <Engine/GPU/ConstBuffer.h>
@@ -15,9 +15,9 @@ namespace core {
 	void light_3D_const_buffer();
 	void default_3D_material_instancing_buffer();
 
-	void ResourceManagers::create_default_buffers()
+	void ResourceManager::create_default_buffers()
 	{
-		s_ptr<GPUInitSetting> initSetting = ResourceManager<ComputeShader>::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
+		s_ptr<GPUInitSetting> initSetting = ResourceManager::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
 		initSetting->on_execute();
 
 		debug_render_buffer();
@@ -37,7 +37,8 @@ namespace core {
 
 		debug_render_buffer->create<tDebugDrawData>(desc, 100, nullptr, 0);
 
-		ResourceManager<StructBuffer>::get_inst().insert("debug_render_buffer", debug_render_buffer);
+		debug_render_buffer->set_resource_path("debug_render_buffer");
+		ResourceManager::get_inst().insert(debug_render_buffer);
 	}
 	void light_3D_instancing_buffer()
 	{
@@ -49,7 +50,9 @@ namespace core {
 		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
 		light_3d_instancing_buffer->create<tLightAttribute>(desc, 16);
 		light_3d_instancing_buffer->set_pipeline_target(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
-		ResourceManager<StructBuffer>::get_inst().insert("light_3D_instancing_buffer", light_3d_instancing_buffer);
+
+		light_3d_instancing_buffer->set_resource_path("light_3D_instancing_buffer");
+		ResourceManager::get_inst().insert(light_3d_instancing_buffer);
 	}
 	void light_3D_const_buffer()
 	{
@@ -58,7 +61,8 @@ namespace core {
 		light_3d_const_buffer->create<tLightCount>();
 		light_3d_const_buffer->set_target_stage(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
-		ResourceManager<ConstBuffer>::get_inst().insert("light_3D_const_buffer", light_3d_const_buffer);
+		light_3d_const_buffer->set_resource_path("light_3D_const_buffer");
+		ResourceManager::get_inst().insert(light_3d_const_buffer);
 	}
 	void default_3D_material_instancing_buffer()
 	{
@@ -70,6 +74,7 @@ namespace core {
 		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
 		buf->create<tDefault3DMtrl_InstancingData>(desc);
 
-		ResourceManager<StructBuffer>::get_inst().insert("default_3D_material_instancing_buffer", buf);
+		buf->set_resource_path("default_3D_material_instancing_buffer");
+		ResourceManager::get_inst().insert(buf);
 	}
 }
