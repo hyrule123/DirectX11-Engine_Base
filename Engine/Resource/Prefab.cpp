@@ -18,20 +18,20 @@ namespace core
 	Prefab::~Prefab()
 	{
 	}
-	eResult Prefab::save(const std::fs::path& _base_directory) const
+	eResult Prefab::save(const std::fs::path& _full_path) const
 	{
 		if (m_prefab)
 		{
-			return m_prefab->save_file_json(_base_directory / get_resource_path());
+			return m_prefab->save_file_json(_full_path);
 		}
 
 		return eResult::Fail_Nullptr;
 	}
-	eResult Prefab::load(const std::fs::path& _base_directory)
+	eResult Prefab::load(const std::fs::path& _full_path)
 	{
 		m_prefab = std::make_shared<GameObject>();
 
-		eResult result = m_prefab->load_file_json(_base_directory / get_resource_path());
+		eResult result = m_prefab->load_file_json(_full_path);
 		if (eResult_fail(result))
 		{
 			m_prefab = nullptr;

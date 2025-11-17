@@ -54,8 +54,8 @@ namespace core {
 
         void IA_set_vertex_buffer();
 
-        virtual eResult save(const std::fs::path& _base_directory) const;
-        virtual eResult load(const std::fs::path& _base_directory);
+        virtual eResult save(const std::fs::path& _relative_path) const;
+        virtual eResult load(const std::fs::path& _relative_path);
 
         virtual eResult serialize_binary(BinarySerializer& _ser) const override;
         virtual eResult deserialize_binary(const BinarySerializer& _ser) override;

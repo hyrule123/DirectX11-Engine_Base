@@ -49,14 +49,14 @@ namespace core
 	{
 	}
 
-	eResult Mesh::save(const std::fs::path& _base_directory) const
+	eResult Mesh::save(const std::fs::path& _relative_path) const
 	{
-		return save_file_binary(_base_directory);
+		return save_file_binary(_relative_path);
 	}
 
-	eResult Mesh::load(const std::fs::path& _base_directory)
+	eResult Mesh::load(const std::fs::path& _relative_path)
 	{
-		return load_file_binary(_base_directory);
+		return load_file_binary(_relative_path);
 	}
 
 	eResult Mesh::serialize_binary(BinarySerializer& _ser) const
@@ -79,7 +79,7 @@ namespace core
 				return result;
 			}
 		}
-		_ser << m_vertex_buffer->get_resource_path();
+		_ser << m_vertex_buffer->get_res_pathkey();
 
 		_ser << m_index_topology;
 		_ser << m_index_buffer_desc;
@@ -88,7 +88,7 @@ namespace core
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			_ser << m_skeleton->get_resource_path();
+			_ser << m_skeleton->get_res_pathkey();
 		}
 		else {
 			_ser << "";

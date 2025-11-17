@@ -464,7 +464,7 @@ namespace core::editor
 				Json::Value jVal;
 				{
 					GraphicsShader DummyGS;
-					DummyGS.set_resource_path(iter.first.string());
+					DummyGS.set_res_pathkey(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
 
@@ -879,7 +879,7 @@ namespace core::editor
 		}
 
 		
-		shader->set_resource_path(_filePath.string());
+		//shader->set_resource_key(_filePath.string());
 
 		ASSERT(false, "미구현");
 
@@ -902,7 +902,7 @@ namespace core::editor
 		using namespace core;
 		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
 		shader->set_edit_mode(true);
-		shader->set_resource_path(_filePath.string());
+		shader->set_res_pathkey(_filePath.string());
 
 		ASSERT(false, "미구현");
 

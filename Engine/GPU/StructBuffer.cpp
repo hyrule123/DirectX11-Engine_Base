@@ -460,6 +460,16 @@ namespace core
 		return bResult;
 	}
 
+	eResult StructBuffer::save(const std::fs::path& _fullpath) const
+	{
+		return eResult::Fail;
+	}
+
+	eResult StructBuffer::load(const std::fs::path& _fullpath)
+	{
+		return eResult::Fail;
+	}
+
 	void StructBuffer::unbind_buffer()
 	{
 		switch (m_current_bound_view)

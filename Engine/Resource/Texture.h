@@ -24,15 +24,13 @@ namespace core
 		bool create(const D3D11_TEXTURE2D_DESC& _TexDesc);
 
 		//Save / Load
-		virtual eResult save(const std::fs::path& _base_directory) const override;
-		virtual eResult load(const std::fs::path& _base_directory) override;
+		virtual eResult save(const std::fs::path& _full_path) const override;
+		virtual eResult load(const std::fs::path& _full_path) override;
 		void initialize_resource();
-
 
 		void bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
 		void bind_buffer_as_UAV(uint _UAVSlot = 0u);
 		void unbind_buffer_from_GPU_register();
-
 
 		void set_texture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { m_texture = _texture; }
 
@@ -51,8 +49,6 @@ namespace core
 		ComPtr<ID3D11ShaderResourceView> get_SRV() { return m_SRV; }
 
 	private:
-		eResult save_file(const std::filesystem::path& _fullPath) const;
-		eResult load_file(const std::filesystem::path& _fullPath);
 		bool create_view();
 
 	private:

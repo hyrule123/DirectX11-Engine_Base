@@ -26,14 +26,13 @@ namespace core
 		, m_dest_texture()
 		
 	{
-		set_engine_default_res(true);
 	}
 
 	NormalConvertShader::~NormalConvertShader()
 	{
 	}
 
-	eResult NormalConvertShader::load(const std::fs::path& _base_directory)
+	eResult NormalConvertShader::load(const std::fs::path& _relative_path)
 	{
 		return ComputeShader::compile_from_byte_code(NormalConverter_CS, sizeof(NormalConverter_CS));
 	}
@@ -67,7 +66,7 @@ namespace core
 			return false;
 		}
 		
-		m_dest_texture->set_resource_path(m_src_texture->get_concrete_class_name());
+		m_dest_texture->set_res_pathkey(m_src_texture->get_concrete_class_name());
 
 		//원본
 		m_src_texture->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);

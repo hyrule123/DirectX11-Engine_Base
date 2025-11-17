@@ -74,6 +74,9 @@ namespace core
         bool create_SRV();
         bool create_UAV();
 
+        virtual eResult save(const std::fs::path& _fullpath) const override;
+        virtual eResult load(const std::fs::path& _fullpath) override;
+
     private:
         tDesc                        m_struct_buffer_desc;
 

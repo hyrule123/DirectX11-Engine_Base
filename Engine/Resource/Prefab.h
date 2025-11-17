@@ -19,8 +19,8 @@ namespace core
         Prefab();
         virtual ~Prefab();
 
-        virtual eResult save(const std::fs::path& _base_directory) const override;
-        virtual eResult load(const std::fs::path& _base_directoryb) override;
+        virtual eResult save(const std::fs::path& _full_Path) const override;
+        virtual eResult load(const std::fs::path& _full_Path) override;
 
         //virtual eResult SaveJson(Json::Value* _pJVal) override;
         //virtual eResult LoadJson(const Json::Value* _pJVal) override;

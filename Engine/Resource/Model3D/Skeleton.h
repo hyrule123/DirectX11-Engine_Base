@@ -27,8 +27,8 @@ namespace core
 		Skeleton();
 		virtual ~Skeleton();
 
-		virtual eResult save(const std::fs::path& _base_directory) const override;
-		virtual eResult load(const std::fs::path& _base_directory) override;
+		virtual eResult save(const std::fs::path& _full_path) const override;
+		virtual eResult load(const std::fs::path& _full_path) override;
 
 		virtual eResult serialize_binary(BinarySerializer& _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;

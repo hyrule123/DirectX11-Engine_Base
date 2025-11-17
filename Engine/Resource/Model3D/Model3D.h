@@ -45,8 +45,8 @@ namespace core
 		virtual ~Model3D();
 
 		//Model3D의 경로명 = 폴더명
-		virtual eResult save(const std::fs::path& _base_directory) const override;
-		virtual eResult load(const std::fs::path& _base_directory) override;
+		virtual eResult save(const std::fs::path& _relative_path) const override;
+		virtual eResult load(const std::fs::path& _relative_path) override;
 		
 		virtual eResult serialize_json(JsonSerializer& _ser) const final;
 		virtual eResult deserialize_json(const JsonSerializer& _ser) final;

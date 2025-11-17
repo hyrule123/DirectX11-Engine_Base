@@ -4,7 +4,6 @@
 
 #include <Engine/Resource/Resource.h>
 
-
 namespace core
 {
 	template <typename T>
@@ -58,11 +57,22 @@ namespace core
 			if (ret) { return ret; }
 
 			ret = new_entity<T>();
-			ret->set_resource_path(_resource_name);
+			ret->set_res_pathkey(_resource_name);
 			eResult result = load_internal(std::static_pointer_cast<Resource>(ret));
 			if (eResult_fail(result)) { return nullptr; }
 
 			return ret;
+		}
+
+		template <typename T>
+		s_ptr<T> load_default_resource(const std::string_view _relative_path)
+		{
+			s_ptr<T> default_res = load<T>(_relative_path);
+			if (default_res)
+			{
+				m_default_resources.insert(default_res);
+			}
+			return default_res;
 		}
 		
 		s_ptr<Entity> load_from_json(const std::fs::path& _json_path);
@@ -70,7 +80,13 @@ namespace core
 		eResult save(const s_ptr<Resource>& _res);
 		eResult save_as(const s_ptr<Resource>& _res, const std::string_view _res_path);
 
-		eResult insert(const s_ptr<Resource>& _res);
+		eResult insert(const s_ptr<Resource>& _res, const std::string_view _res_name);
+		eResult insert_default_resource(const s_ptr<Resource>& _res, const std::string_view _res_name)
+		{
+			if (nullptr == _res) { return eResult::Fail_Nullptr; }
+			m_default_resources.insert(_res);
+			return insert(_res, _res_name);
+		}
 
 		void clean_unused();
 
@@ -95,6 +111,7 @@ namespace core
 		void load_default_meshes();
 		void load_default_materials();
 
+		std::unordered_set<s_ptr<Resource>> m_default_resources;
 		std::array<umap_string<s_ptr<Resource>>, (int)eResourceType::END> m_resources;
 
 		std::fs::path m_resource_directory;

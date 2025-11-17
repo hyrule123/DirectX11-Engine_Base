@@ -366,7 +366,7 @@ namespace core
 
 	void RenderManager::bind_noise_texture()
 	{
-		s_ptr<Texture> noise = ResourceManager::get_inst().find<Texture>(name::defaultRes::texture::noise_03);
+		s_ptr<Texture> noise = ResourceManager::get_inst().find<Texture>("Texture/noise/noise_03.jpg");
 		noise->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
@@ -459,7 +459,7 @@ namespace core
 				arrRTTex[i] = std::make_shared<Texture>();
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_path(name::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_res_pathkey(name::eMRT_Deffered_String[i]);
 			}
 
 
@@ -484,7 +484,7 @@ namespace core
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_path(name::eMRT_Light_String[i]);
+				arrRTTex[i]->set_res_pathkey(name::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();

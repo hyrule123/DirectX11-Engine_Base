@@ -30,9 +30,14 @@ namespace core
 	{
 	}
 
-	eResult ComputeShader::load(const std::fs::path& _base_directory)
+	eResult ComputeShader::save(const std::fs::path& _relative_path) const
 	{
-		return compile_from_CSO(_base_directory / get_resource_path());
+		return eResult::Fail;
+	}
+
+	eResult ComputeShader::load(const std::fs::path& _relative_path)
+	{
+		return compile_from_CSO(_relative_path / get_res_pathkey());
 	}
 
 	eResult ComputeShader::compile_from_source_code(const std::filesystem::path& _FullPath, const std::string_view _funcName)
@@ -66,9 +71,6 @@ namespace core
 
 	eResult ComputeShader::compile_from_byte_code(const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
-		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
-		set_engine_default_res(true);
-
 		HRESULT hr = D3DCreateBlob(_ByteCodeSize, m_CS_blob.ReleaseAndGetAddressOf());
 		if (FAILED(hr))
 		{

@@ -154,76 +154,19 @@ namespace core
 		return Result;
 	}
 
-	eResult Texture::save(const std::fs::path& _base_directory) const
-	{
-		return save_file(_base_directory / get_resource_path());
-	}
-
-	eResult Texture::load(const std::fs::path& _base_directory)
-	{
-		std::fs::path fullPath = _base_directory / get_resource_path();
-
-		if (false == std::fs::exists(fullPath))
-		{
-			std::wstring errMsg = fullPath.wstring() + L"\n";
-			errMsg += L"파일이 없습니다.";
-			ERROR_MESSAGE_W(errMsg.c_str());
-			return eResult::Fail_Open;
-		}
-
-		eResult result = load_file(fullPath);
-
-		if (eResult::Success == result)
-		{
-			initialize_resource();
-		}
-		return result;
-	}
-
-	eResult Texture::load_file(const std::filesystem::path& _fullPath)
-	{
-		std::wstring Extension = _fullPath.extension().wstring();
-		StringConverter::make_upper_case(Extension);
-
-		if (Extension == L".DDS")
-		{
-			if (FAILED(LoadFromDDSFile(_fullPath.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, nullptr, m_image)))
-				return eResult::Fail_Open;
-		}
-		else if (Extension == L".TGA")
-		{
-			if (FAILED(LoadFromTGAFile(_fullPath.c_str(), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, nullptr, m_image)))
-				return eResult::Fail_Open;
-		}
-		else // WIC (png, jpg, jpeg, bmp )
-		{
-			if (FAILED(LoadFromWICFile(_fullPath.c_str(), DirectX::WIC_FLAGS::WIC_FLAGS_NONE, nullptr, m_image)))
-				return eResult::Fail_Open;
-		}
-
-		return eResult::Success;
-	}
-
-	eResult Texture::save_file(const std::filesystem::path& _fullPath) const
+	eResult Texture::save(const std::fs::path& _full_path) const
 	{
 		//부모 경로 존재 확인
+		if (false == std::fs::create_directories(_full_path.parent_path()))
 		{
-			std::fs::path checkPath = _fullPath.parent_path();
-
-			if (false == std::fs::exists(checkPath))
-			{
-				if (false == std::fs::create_directories(checkPath))
-				{
-					ERROR_MESSAGE("경로가 잘못되었습니다.");
-					return eResult::Fail_Open;
-				}
-			}
+			ERROR_MESSAGE("경로가 올바르지 않습니다..");
+			return eResult::Fail;
 		}
 
 		auto device = RenderManager::get_inst().get_device();
 		auto context = RenderManager::get_inst().get_context();
 
-		std::wstring Extension = _fullPath.extension().wstring();
+		std::wstring Extension = _full_path.extension().wstring();
 
 		DirectX::ScratchImage img{};
 		HRESULT result = DirectX::CaptureTexture(device.Get(), context.Get(), m_texture.Get(), img);
@@ -237,26 +180,66 @@ namespace core
 		StringConverter::make_upper_case(Extension);
 		if (Extension == L".DDS")
 		{
-			if (FAILED(DirectX::SaveToDDSFile(img.GetImages(), img.GetImageCount(), img.GetMetadata(), DirectX::DDS_FLAGS_NONE, _fullPath.wstring().c_str())))
+			if (FAILED(DirectX::SaveToDDSFile(img.GetImages(), img.GetImageCount(), img.GetMetadata(), DirectX::DDS_FLAGS_NONE, _full_path.wstring().c_str())))
 			{
 				return eResult::Fail_Create;
 			}
 		}
 		else if (Extension == L".TGA")
 		{
-			if (FAILED(DirectX::SaveToTGAFile(*(img.GetImage(0, 0, 0)), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, _fullPath.wstring().c_str(), &img.GetMetadata())))
+			if (FAILED(DirectX::SaveToTGAFile(*(img.GetImage(0, 0, 0)), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, _full_path.wstring().c_str(), &img.GetMetadata())))
 			{
 				return eResult::Fail_Create;
 			}
 		}
 		else // WIC (png, jpg, jpeg, bmp )
 		{
-			if (FAILED(DirectX::SaveToWICFile(img.GetImages(), img.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WICCodecs::WIC_CODEC_PNG), _fullPath.wstring().c_str())))
+			if (FAILED(DirectX::SaveToWICFile(img.GetImages(), img.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WICCodecs::WIC_CODEC_PNG), _full_path.wstring().c_str())))
 			{
 				return eResult::Fail_Create;
 			}
 		}
 
+
+		return eResult::Success;
+	}
+
+	eResult Texture::load(const std::fs::path& _full_path)
+	{
+		if (false == std::fs::exists(_full_path))
+		{
+			std::wstring errMsg = _full_path.wstring() + L"\n";
+			errMsg += L"파일이 없습니다.";
+			ERROR_MESSAGE_W(errMsg.c_str());
+			return eResult::Fail_Open;
+		}
+
+		std::wstring Extension = _full_path.extension().wstring();
+		StringConverter::make_upper_case(Extension);
+
+		if (Extension == L".DDS")
+		{
+			if (FAILED(LoadFromDDSFile(_full_path.c_str(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, nullptr, m_image)))
+			{
+				return eResult::Fail_Open;
+			}
+		}
+		else if (Extension == L".TGA")
+		{
+			if (FAILED(LoadFromTGAFile(_full_path.c_str(), DirectX::TGA_FLAGS::TGA_FLAGS_NONE, nullptr, m_image)))
+			{
+				return eResult::Fail_Open;
+			}
+		}
+		else // WIC (png, jpg, jpeg, bmp )
+		{
+			if (FAILED(LoadFromWICFile(_full_path.c_str(), DirectX::WIC_FLAGS::WIC_FLAGS_NONE, nullptr, m_image)))
+			{
+				return eResult::Fail_Open;
+			}
+		}
+
+		initialize_resource();
 		return eResult::Success;
 	}
 

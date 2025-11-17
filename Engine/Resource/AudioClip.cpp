@@ -1,4 +1,3 @@
-
 #include "AudioClip.h"
 
 #include <Engine/Game/Component/Transform.h>
@@ -30,9 +29,14 @@ namespace core
 	}
 
 
-	eResult AudioClip::load(const std::fs::path& _base_directory)
+	eResult AudioClip::save(const std::fs::path& _full_path) const
 	{
-		std::fs::path fullPath = _base_directory / get_resource_path();
+		return eResult::Fail;
+	}
+
+	eResult AudioClip::load(const std::fs::path& _relative_path)
+	{
+		std::fs::path fullPath = _relative_path / get_res_pathkey();
 		if (false == std::fs::exists(fullPath))
 		{
 			ERROR_MESSAGE("파일이 없습니다.");

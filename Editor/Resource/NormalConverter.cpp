@@ -61,7 +61,7 @@ namespace core::editor
 			std::string curText = "* Current: ";
 			if (m_src_texture)
 			{
-				curText += m_src_texture->get_resource_path();
+				curText += m_src_texture->get_res_pathkey();
 			}
 			else
 			{
@@ -130,7 +130,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 
 			if (m_src_texture)
 			{
-				texFile /= m_src_texture->get_resource_path();
+				texFile /= m_src_texture->get_res_pathkey();
 			}
 
 			m_dest_texture_dir = WinAPI::file_open_dialog(texFile, vecExt);
@@ -168,7 +168,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 			if (convertedTex)
 			{
 				std::fs::path savePath = m_dest_texture_dir;
-				std::fs::path texKey = convertedTex->get_resource_path();
+				std::fs::path texKey = convertedTex->get_res_pathkey();
 				savePath /= texKey.filename();
 
 				if (std::fs::exists(savePath))

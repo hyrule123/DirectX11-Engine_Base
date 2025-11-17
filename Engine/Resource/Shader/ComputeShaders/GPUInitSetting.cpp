@@ -19,13 +19,17 @@ namespace core
 	GPUInitSetting::GPUInitSetting()
 		: ComputeShader(uint3(1u, 1u, 1u))
 	{
-		set_engine_default_res(true);
 	}
 	GPUInitSetting::~GPUInitSetting()
 	{
 	}
 
-	eResult GPUInitSetting::load(const std::fs::path& _base_directory)
+	eResult GPUInitSetting::save(const std::fs::path& _full_path) const
+	{
+		return eResult::Fail;
+	}
+
+	eResult GPUInitSetting::load(const std::fs::path& _relative_path)
 	{
 		eResult result = compile_from_byte_code(GPU_Init_Setting_CS, sizeof(GPU_Init_Setting_CS));
 

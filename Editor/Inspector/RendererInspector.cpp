@@ -63,8 +63,8 @@ namespace core::editor
 
 		
 
-		std::string meshName = msh->get_resource_path();
-		std::string materialName = mtrl->get_resource_path();
+		std::string meshName = msh->get_res_pathkey();
+		std::string materialName = mtrl->get_res_pathkey();
 
 		ImGui::Text("Mesh"); 
 		ImGui::InputText("##MeshName", (char*)meshName.data()

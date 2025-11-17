@@ -35,6 +35,18 @@ namespace core
 	{
 	}
 
+	eResult Animation2D::save(const std::fs::path& _full_path) const
+	{
+		ERROR_MESSAGE("미구현");
+		return eResult::Fail;
+	}
+
+	eResult Animation2D::load(const std::fs::path& _full_path)
+	{
+		ERROR_MESSAGE("미구현");
+		return eResult();
+	}
+
 	uint Animation2D::update()
 	{
 		if (m_b_complete)

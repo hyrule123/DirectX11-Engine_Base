@@ -41,6 +41,8 @@ namespace core
 
 		virtual ~Animation2D();
 
+		virtual eResult save(const std::fs::path& _full_path) const override;
+		virtual eResult load(const std::fs::path& _full_path) override;
 		uint update();
 		void final_update();
 		void render();

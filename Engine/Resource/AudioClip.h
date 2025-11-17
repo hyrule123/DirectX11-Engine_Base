@@ -15,7 +15,8 @@ namespace core
 		AudioClip();
 		virtual ~AudioClip();
 
-		virtual eResult load(const std::fs::path& _base_directory) override;
+		virtual eResult save(const std::fs::path& _full_path) const override;
+		virtual eResult load(const std::fs::path& _full_path) override;
 		
 		void play();
 		void stop();

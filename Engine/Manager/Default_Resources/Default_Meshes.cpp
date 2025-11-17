@@ -10,7 +10,6 @@ namespace core {
 			std::vector<Vertex2D> vertices_2D = { {} };
 
 			s_ptr<Mesh> point_mesh = new_entity<Mesh>();
-			point_mesh->set_engine_default_res(true);
 
 			std::vector<uint> pointIndex = { 0 };
 
@@ -23,8 +22,7 @@ namespace core {
 				ASSERT(false, "point vertex 생성 실패");
 			}
 
-			point_mesh->set_resource_path(name::defaultRes::mesh::PointMesh);
-			ResourceManager::get_inst().insert(point_mesh);
+			ResourceManager::get_inst().insert_default_resource(point_mesh, name::defaultRes::mesh::PointMesh);
 		}
 
 #pragma endregion
@@ -56,14 +54,12 @@ namespace core {
 
 			// Crate Mesh
 			s_ptr<Mesh> rect_mesh = new_entity<Mesh>();
-			rect_mesh->set_engine_default_res(true);
 
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 
 			ASSERT(rect_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
 
-			rect_mesh->set_resource_path(name::defaultRes::mesh::RectMesh);
-			ResourceManager::get_inst().insert(rect_mesh);
+			ResourceManager::get_inst().insert_default_resource(rect_mesh, name::defaultRes::mesh::RectMesh);
 
 			_2d_vertices.clear();
 
@@ -92,12 +88,10 @@ namespace core {
 
 			// CreateBuffer Mesh
 			s_ptr<Mesh> debug_mesh = new_entity<Mesh>();
-			debug_mesh->set_engine_default_res(true);
 
 			ASSERT(debug_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
 
-			debug_mesh->set_resource_path(name::defaultRes::mesh::DebugRectMesh);
-			ResourceManager::get_inst().insert(debug_mesh);
+			ResourceManager::get_inst().insert(debug_mesh, name::defaultRes::mesh::DebugRectMesh);
 		}
 #pragma endregion
 
@@ -144,12 +138,11 @@ namespace core {
 
 			// Crate Mesh
 			s_ptr<Mesh> circle_mesh = new_entity<Mesh>();
-			circle_mesh->set_engine_default_res(true);
+
 			circle_mesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ASSERT(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
 
-			circle_mesh->set_resource_path(name::defaultRes::mesh::CircleMesh);
-			ResourceManager::insert(circle_mesh);
+			ResourceManager::insert_default_resource(circle_mesh, name::defaultRes::mesh::CircleMesh);
 		}
 #pragma endregion
 #pragma region Cube Mesh
@@ -367,8 +360,8 @@ namespace core {
 
 			// Crate Mesh
 			s_ptr<Mesh> cube_mesh = new_entity<Mesh>();
-			cube_mesh->set_resource_path(name::defaultRes::mesh::CubeMesh);
-			ResourceManager::get_inst().insert(cube_mesh);
+
+			ResourceManager::get_inst().insert(cube_mesh, name::defaultRes::mesh::CubeMesh);
 			ASSERT(cube_mesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
 		}
 #pragma endregion
@@ -413,10 +406,8 @@ namespace core {
 			// Crate Mesh
 			s_ptr<Mesh> debug_cube_mesh = new_entity<Mesh>();
 			ASSERT(debug_cube_mesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debug_cube_mesh 생성 실패");
-			debug_cube_mesh->set_engine_default_res(true);
 
-			debug_cube_mesh->set_resource_path(name::defaultRes::mesh::DebugCubeMesh);
-			ResourceManager::get_inst().insert(debug_cube_mesh);
+			ResourceManager::get_inst().insert(debug_cube_mesh, name::defaultRes::mesh::DebugCubeMesh);
 		}
 #pragma endregion //Debug Cube Mesh
 
@@ -532,8 +523,7 @@ namespace core {
 			s_ptr<Mesh> sphereMesh = new_entity<Mesh>();
 			ASSERT(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
 
-			ResourceManager::get_inst().insert(sphereMesh);
-			sphereMesh->set_resource_path(name::defaultRes::mesh::SphereMesh);
+			ResourceManager::get_inst().insert_default_resource(sphereMesh, name::defaultRes::mesh::SphereMesh);
 		}
 
 

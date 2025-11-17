@@ -31,7 +31,6 @@ namespace core {
         , m_default_3D_mtrl_instancing_buffer()
     {
         set_rendering_mode(eRenderingMode::deffered_opaque);
-        set_engine_default_res(true);
 
         m_default_3D_mtrl_instancing_buffer = ResourceManager::get_inst().find<StructBuffer>("default_3D_material_instancing_buffer");
     }

@@ -32,7 +32,6 @@ namespace core
 	{
 		AtExit::add_func(ResourceManager::destroy_inst);
 
-
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_resource_directory = std::filesystem::current_path().parent_path().parent_path().parent_path();
 		m_resource_directory /= name::path::directory::resource::Resource;
@@ -61,7 +60,7 @@ namespace core
 			for (auto iter = umap.begin(); iter != umap.end();)
 			{
 				//기본 리소스가 아니면서 카운트가 1만 남은 경우 제거
-				if (false == iter->second->is_engine_default_res() && iter->second.use_count() == 1)
+				if (iter->second.use_count() == 1)
 				{
 					iter = umap.erase(iter);
 				}
@@ -101,7 +100,7 @@ namespace core
 		if (found) { return found; }
 
 		//로드 후 성공 시 반환
-		res->set_resource_path(_resource_name);
+		res->set_res_pathkey(_resource_name);
 		eResult result = load_internal(res);
 		if (eResult_fail(result)) { return nullptr; }
 
@@ -157,13 +156,13 @@ namespace core
 			ERROR_MESSAGE("리소스 주소가 nullptr 입니다.");
 			return eResult::Fail; 
 		}
-		if (_res->get_resource_path().empty())
+		if (_res->get_res_pathkey().empty())
 		{
 			ERROR_MESSAGE("리소스 주소가 지정되지 않았습니다.");
 			return eResult::Fail;
 		}
 
-		eResult result = _res->save(m_resource_directory);
+		eResult result = _res->save(m_resource_directory / _res->get_res_pathkey());
 		return result;
 	}
 
@@ -180,10 +179,10 @@ namespace core
 			return eResult::Fail_Path;
 		}
 
-		std::string before = _res->get_resource_path();
-		_res->set_resource_path(_res_path);
-		eResult result = _res->save(m_resource_directory);
-		_res->set_resource_path(before); //결과와 상관없이 원래 주소로 돌려놓기
+		std::string before = _res->get_res_pathkey();
+		_res->set_res_pathkey(_res_path);
+		eResult result = _res->save(m_resource_directory / _res->get_res_pathkey());
+		_res->set_res_pathkey(before); //결과와 상관없이 원래 주소로 돌려놓기
 		if (eResult_fail(result)) { 
 			ERROR_MESSAGE("저장 실패");
 			return result; 
@@ -192,25 +191,26 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult ResourceManager::insert(const s_ptr<Resource>& _res)
+	eResult ResourceManager::insert(const s_ptr<Resource>& _res, const std::string_view _res_name)
 	{
 		if(nullptr == _res) 
 		{ 
 			ERROR_MESSAGE("리소스가 nullptr 입니다.");
 			return eResult::Fail_Nullptr;
 		}
-		if (_res->get_resource_path().empty())
+		if (_res_name.empty())
 		{
-			ERROR_MESSAGE("리소스의 경로 키가 등록되지 않았습니다.");
+			ERROR_MESSAGE("Resource Key가 비어있습니다.");
 			return eResult::Fail_Path;
 		}
-		if (find(_res->get_resource_type(), _res->get_resource_path()))
+
+		if (find(_res->get_resource_type(), _res_name))
 		{
 			ERROR_MESSAGE("이미 같은 이름의 리소스가 있습니다.");
 			return eResult::Fail_InValid;
 		}
-
-		m_resources[(int32)_res->get_resource_type()][_res->get_resource_path()] = _res;
+		_res->set_res_pathkey(_res_name);
+		m_resources[(int32)_res->get_resource_type()][_res->get_res_pathkey()] = _res;
 
 		return eResult::Success;
 	}
@@ -222,20 +222,20 @@ namespace core
 			ERROR_MESSAGE("리소스의 포인터 주소가 nullptr 입니다.");
 			return eResult::Fail;
 		}
-		if (_res->get_resource_path().empty())
+		if (_res->get_res_pathkey().empty())
 		{
-			ERROR_MESSAGE("리소스 주소가 지정되지 않았습니다.");
+			ERROR_MESSAGE("Resource Key가 지정되지 않았습니다.");
 			return eResult::Fail;
 		}
 
-		eResult result = _res->load(m_resource_directory);
+		eResult result = _res->load(m_resource_directory / _res->get_res_pathkey());
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("리소스 로드 실패");
 			return result;
 		}
 
-		m_resources[(uint32)_res->get_resource_type()][_res->get_resource_path()] = _res;
+		m_resources[(uint32)_res->get_resource_type()][_res->get_res_pathkey()] = _res;
 
 		return result;
 	}

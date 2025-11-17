@@ -3,6 +3,9 @@
 
 #include <Engine/Resource/define_Resource.h>
 
+//ResourceManager에 의해 관리받는 클래스
+//반드시 ResourceManager을 통해서 생성해야 함.
+
 namespace core
 {
 #define BASE_RESOURCE(_class, _eResourceType) \
@@ -18,6 +21,8 @@ protected:\
 	{
 		CLASS_INFO(Resource, Entity);
 
+		friend class ResourceManager;
+
 	public:
 		Resource();
 		virtual void init() override;
@@ -26,23 +31,22 @@ protected:\
 
 		virtual ~Resource();
 
-		void set_resource_path(const std::string_view _resource_name) { m_resource_path = _resource_name; }
-		const std::string& get_resource_path() const { return m_resource_path; }
+		template <typename T>
+		constexpr static bool is_base_resource() { return std::is_same_v<Resource, T>; }
 
-		//baseDir = 해당 리소스 모음 폴더까지의 경로. ex: ....Res/Texture
-		//strKeyPath = 이후 경로. ex: Player/Player.png -> 리소스를 찾는 키값으로 사용됨
-		virtual eResult save(const std::fs::path& _base_directory) const;
-		virtual eResult load(const std::fs::path& _base_directory);
+		virtual eResult save(const std::fs::path& _fullpath) const = 0;
+		virtual eResult load(const std::fs::path& _fullpath) = 0;
 
-		void set_engine_default_res(bool _bIsDefault) { m_b_engine_default_resource = _bIsDefault; }
-		bool is_engine_default_res() const { return m_b_engine_default_resource; }
+		//경로 겸 리소스 찾기용 Key 역할
+		void set_res_pathkey(const std::string_view _resource_name) { m_res_pathkey = _resource_name; }
+		const std::string& get_res_pathkey() const { return m_res_pathkey; }
+
 		eResourceType get_resource_type() const { return m_res_type; }
 
 	private:
 		virtual eResourceType get_resource_type_internal() const { return eResourceType::UNKNOWN; }
 
 		eResourceType m_res_type;
-		bool m_b_engine_default_resource;
-		std::string m_resource_path;
+		std::string m_res_pathkey;
 	};
 }

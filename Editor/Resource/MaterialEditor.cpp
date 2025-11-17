@@ -135,7 +135,7 @@ namespace core::editor
 			s_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
-				strCurShader += curShader->get_resource_path();
+				strCurShader += curShader->get_res_pathkey();
 			}
 			else
 			{
@@ -165,7 +165,7 @@ namespace core::editor
 		s_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
-			shaderKey += shader->get_resource_path();
+			shaderKey += shader->get_res_pathkey();
 		}
 		else
 		{
@@ -188,7 +188,7 @@ namespace core::editor
 			auto Tex = mTargetMaterial->get_texture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_resource_path().data());
+				ImGui::Text(Tex->get_res_pathkey().data());
 			}
 			else
 			{
@@ -308,7 +308,7 @@ namespace core::editor
 			for (auto& mtrl : materials)
 			{
 				tComboItem item{};
-				item.m_name = mtrl.second->get_resource_path();
+				item.m_name = mtrl.second->get_res_pathkey();
 				mCurrentLoadedMtrl.add_item(item);
 			}
 		}
@@ -318,7 +318,7 @@ namespace core::editor
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_resource_path().empty())
+		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_res_pathkey().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
@@ -352,7 +352,7 @@ namespace core::editor
 		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->clone());
 
 		std::string name = outputPath.filename().string();
-		mTargetMaterial->set_resource_path(name);
+		mTargetMaterial->set_res_pathkey(name);
 
 		ResourceManager::get_inst().save(mTargetMaterial);
 	}
@@ -380,11 +380,11 @@ namespace core::editor
 						s_ptr<Material> mtrl = ResourceManager::get_inst().find<Material>(mtrlKey);
 
 						//엔진 기본 Material일 경우에는 Clone
-						if (mtrl->is_engine_default_res())
-						{
-							mtrl = std::dynamic_pointer_cast<Material>(mtrl->clone());
-							mtrl->set_engine_default_res(false);
-						}
+						//if (mtrl->is_engine_default_res())
+						//{
+						//	mtrl = std::dynamic_pointer_cast<Material>(mtrl->clone());
+						//	mtrl->set_engine_default_res(false);
+						//}
 
 						mTargetMaterial = mtrl;
 						if (nullptr == mTargetMaterial)

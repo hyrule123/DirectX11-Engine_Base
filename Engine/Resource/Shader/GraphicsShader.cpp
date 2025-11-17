@@ -40,15 +40,15 @@ namespace core
 	{
 	}
 
-	eResult GraphicsShader::save(const std::fs::path& _base_directory) const
+	eResult GraphicsShader::save(const std::fs::path& _relative_path) const
 	{
-		std::fs::path full_path = _base_directory / get_resource_path();
+		std::fs::path full_path = _relative_path / get_res_pathkey();
 		return save_file_json(full_path);
 	}
 
-	eResult GraphicsShader::load(const std::fs::path& _base_directory)
+	eResult GraphicsShader::load(const std::fs::path& _relative_path)
 	{
-		std::fs::path full_path = _base_directory / get_resource_path();
+		std::fs::path full_path = _relative_path / get_res_pathkey();
 		return load_file_json(full_path);
 	}
 
@@ -88,9 +88,6 @@ namespace core
 	eResult GraphicsShader::compile_from_byte_code(eGSStage _stage, const unsigned char* _pByteCode, size_t _ByteCodeSize)
 	{
 		m_shader_codes[(int)_stage] = {};
-
-		//헤더 형태로 만드는 쉐이더는 무조건 엔진 내부 기본 리소스라고 가정한다.
-		set_engine_default_res(true);
 
 		tShaderCode& code = m_shader_codes[(int)_stage];
 		code.pData = _pByteCode;

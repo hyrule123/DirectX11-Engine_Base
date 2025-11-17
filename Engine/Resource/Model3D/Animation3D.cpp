@@ -61,13 +61,13 @@ namespace core
         m_keyframe_sbuffer->unbind_buffer();
     }
 
-    eResult Animation3D::save(const std::fs::path& _base_directory) const
+    eResult Animation3D::save(const std::fs::path& _relative_path) const
     {
         ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
     }
 
-    eResult Animation3D::load(const std::fs::path& _base_directory)
+    eResult Animation3D::load(const std::fs::path& _relative_path)
     {
         ERROR_MESSAGE("Skeleton에서 save_file 함수를 통해 저장되는 방식입니다.");
         return eResult::Fail_NotImplemented;
@@ -88,7 +88,7 @@ namespace core
             return eResult::Fail_Nullptr;
         }
 
-        _ser << m_owner_skeleton.lock()->get_resource_path();
+        _ser << m_owner_skeleton.lock()->get_res_pathkey();
         _ser << m_start_frame_idx;
         _ser << m_end_frame_idx;
         _ser << m_frame_length;
@@ -123,7 +123,7 @@ namespace core
 
         std::string test;
         _ser >> test;
-        if (test != m_owner_skeleton.lock()->get_resource_path())
+        if (test != m_owner_skeleton.lock()->get_res_pathkey())
         {
             ERROR_MESSAGE("스켈레톤 정보가 일치하지 않습니다.");
             return eResult::Fail_InValid;
@@ -164,7 +164,7 @@ namespace core
 
         m_owner_skeleton = _skeleton;
 
-        set_resource_path(_clip->name);
+        set_res_pathkey(_clip->name);
 
         switch (_clip->time_mode)
         {

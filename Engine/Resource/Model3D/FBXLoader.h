@@ -79,7 +79,7 @@ namespace core
 		int							depth_level{};			// 계층구조 깊이
 		int							parent_bone_idx{};	// 부모 Bone 의 인덱스
 		fbxsdk::FbxAMatrix			offset_matrix{};		// Offset 행렬( -> 뿌리 -> Local)
-		fbxsdk::FbxAMatrix			bone_matrix{};
+		fbxsdk::FbxAMatrix			bone_matrix{};	//Bone의 로컬 행렬
 	};
 
 	struct tFBXKeyFrame

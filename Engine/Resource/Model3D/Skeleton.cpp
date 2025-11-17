@@ -48,7 +48,7 @@ namespace core
 
 	eResult Skeleton::save(const std::fs::path& _base_dir) const
 	{
-		std::fs::path file_path = get_resource_path();
+		std::fs::path file_path = get_res_pathkey();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -94,7 +94,7 @@ namespace core
 	}
 	eResult Skeleton::load(const std::fs::path& _base_dir)
 	{
-		std::fs::path file_path = get_resource_path();
+		std::fs::path file_path = get_res_pathkey();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -263,7 +263,7 @@ namespace core
 				return result;
 			}
 			
-			std::string animName(anim->get_resource_path());
+			std::string animName(anim->get_res_pathkey());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정

@@ -27,6 +27,9 @@ namespace core
 
 		void set_target_stage(eShaderStageFlag_ _flag) { m_target_stage = _flag; }
 	private:
+		virtual eResult save(const std::fs::path& _fullpath) const override;
+		virtual eResult load(const std::fs::path& _fullpath) override;
+		
 		const uint m_const_buffer_type;
 
 		uint				m_data_size;

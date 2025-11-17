@@ -50,8 +50,8 @@ namespace core
         void bind_buffer_to_GPU_register();
         void unbind_buffer_from_GPU_register();
 
-        virtual eResult save(const std::fs::path& _base_directory) const override;
-        virtual eResult load(const std::fs::path& _base_directory) override;
+        virtual eResult save(const std::fs::path& _relative_path) const override;
+        virtual eResult load(const std::fs::path& _relative_path) override;
 
         eResult serialize_binary(BinarySerializer& _ser) const override;
         eResult deserialize_binary(const BinarySerializer& _ser) override;

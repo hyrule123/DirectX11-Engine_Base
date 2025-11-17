@@ -106,4 +106,12 @@ namespace core
 		pContext->PSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
 		pContext->CSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
 	}
+	eResult ConstBuffer::save(const std::fs::path& _fullpath) const
+	{
+		return eResult::Fail;
+	}
+	eResult ConstBuffer::load(const std::fs::path& _fullpath)
+	{
+		return eResult::Fail;
+	}
 }
