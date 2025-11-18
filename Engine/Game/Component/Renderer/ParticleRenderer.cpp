@@ -70,17 +70,17 @@ namespace core
 
 	void ParticleRenderer::init()
 	{
-		using namespace name::defaultRes;
-		m_particle_CS = ResourceManager::get_inst().load<ParticleShader>("ParticleShader");
+		using namespace default_res;
+		m_particle_CS = ResourceManager::get_inst().load<ParticleShader>("particle_shader");
 
-		s_ptr<Mesh> point = ResourceManager::get_inst().find<Mesh>(mesh::PointMesh);
+		s_ptr<Mesh> point = ResourceManager::get_inst().find<Mesh>(mesh::point_mesh);
 		set_mesh(point);
 
 		// Material 세팅
-		s_ptr<Material> material = ResourceManager::get_inst().find<Material>(material::ParticleMaterial);
+		s_ptr<Material> material = ResourceManager::get_inst().find<Material>(material::particle_material);
 		set_material(material);
 
-		s_ptr<Texture> tex = ResourceManager::get_inst().find<Texture>(texture::CartoonSmoke);
+		s_ptr<Texture> tex = ResourceManager::get_inst().find<Texture>(texture::cartoon_smoke);
 		material->set_texture(eTextureSlot::diffuse_texture, tex);
 
 		tParticle particles[100] = {};

@@ -44,7 +44,7 @@ namespace core {
 			sprite_shader->set_input_layout_desc(vecLayoutDesc2D);
 			sprite_shader->create_input_layout();
 
-			ResourceManager::get_inst().insert_default_resource(sprite_shader, "SpriteShader");
+			ResourceManager::get_inst().insert_default_resource(sprite_shader, "sprite_shader");
 		}
 
 #pragma endregion
@@ -56,7 +56,7 @@ namespace core {
 			ui_shader->set_input_layout_desc(vecLayoutDesc2D);
 			ui_shader->create_input_layout();
 
-			ui_shader->set_res_pathkey(name::defaultRes::shader::graphics::UIShader);
+			ui_shader->set_res_pathkey(default_res::shader::graphics::UI_shader);
 			ResourceManager::get_inst().insert_default_resource(ui_shader, "UI_Shader");
 		}
 
@@ -73,7 +73,7 @@ namespace core {
 			grid_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
 			grid_shader->set_blend_state(eBlendState::AlphaBlend);
 
-			ResourceManager::get_inst().insert_default_resource(grid_shader, "GridShader");
+			ResourceManager::get_inst().insert_default_resource(grid_shader, "grid_shader");
 		}
 
 #pragma endregion
@@ -104,7 +104,7 @@ namespace core {
 			debug_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
 			debug_shader->set_blend_state(eBlendState::Default);
 
-			ResourceManager::get_inst().insert_default_resource(debug_shader, "DebugShader");
+			ResourceManager::get_inst().insert_default_resource(debug_shader, "debug_shader");
 		}
 
 #pragma endregion
@@ -121,7 +121,7 @@ namespace core {
 
 			post_process_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
 
-			ResourceManager::get_inst().insert_default_resource(post_process_shader, "PostProcessShader");
+			ResourceManager::get_inst().insert_default_resource(post_process_shader, "post_process_shader");
 		}
 #pragma endregion
 
@@ -203,7 +203,7 @@ namespace core {
 			basic_3D_shader->set_input_layout_desc(vecLayoutDesc3D);
 			basic_3D_shader->create_input_layout();
 
-			ResourceManager::get_inst().insert_default_resource(basic_3D_shader, "Forward3DShader");
+			ResourceManager::get_inst().insert_default_resource(basic_3D_shader, "forward_3D_shader");
 		}
 #pragma endregion
 
@@ -217,7 +217,7 @@ namespace core {
 			deffered_shader->set_input_layout_desc(vecLayoutDesc3D);
 			deffered_shader->create_input_layout();
 
-			ResourceManager::get_inst().insert_default_resource(deffered_shader, "Deffered3DShader");
+			ResourceManager::get_inst().insert_default_resource(deffered_shader, "deffered_3D_shader");
 		}
 #pragma endregion
 
@@ -235,7 +235,7 @@ namespace core {
 			light_shader->set_depth_stencil_state(eDepthStencilState::None);
 			light_shader->set_blend_state(eBlendState::OneOne);
 
-			ResourceManager::get_inst().insert_default_resource(light_shader, "LightDirShader");
+			ResourceManager::get_inst().insert_default_resource(light_shader, "directional_light_shader");
 		}
 
 		{
@@ -250,7 +250,7 @@ namespace core {
 			light_shader->set_depth_stencil_state(eDepthStencilState::None);
 			light_shader->set_blend_state(eBlendState::OneOne);
 
-			ResourceManager::get_inst().insert_default_resource(light_shader, "LightPointShader");
+			ResourceManager::get_inst().insert_default_resource(light_shader, "point_light_shader");
 		}
 #pragma endregion
 
@@ -275,7 +275,7 @@ namespace core {
 			merge_shader->set_depth_stencil_state(eDepthStencilState::None);
 			merge_shader->set_blend_state(eBlendState::Default);
 
-			ResourceManager::get_inst().insert_default_resource(merge_shader, "MergeShader");
+			ResourceManager::get_inst().insert_default_resource(merge_shader, "merge_shader");
 		}
 #pragma endregion
 
@@ -284,7 +284,7 @@ namespace core {
 		s_ptr<Animation3D_ComputeShader> anim_3D_shader = std::make_shared<Animation3D_ComputeShader>();
 		anim_3D_shader->compile_from_byte_code(Animation3D_CS, sizeof(Animation3D_CS));
 
-		ResourceManager::get_inst().insert_default_resource(anim_3D_shader, "Animation3D");
+		ResourceManager::get_inst().insert_default_resource(anim_3D_shader, "animation_3D");
 #pragma endregion
 
 #pragma region PARTICLE SHADER
@@ -304,10 +304,10 @@ namespace core {
 
 			//TODO: 파티클을 위한 토폴로지 설정 해줘야함
 			//particle_shader->set_topology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-			ResourceManager::get_inst().insert_default_resource(particle_shader, "ParticleShader");
+			ResourceManager::get_inst().insert_default_resource(particle_shader, "particle_shader");
 
 			s_ptr<ParticleShader> particle_CS = std::make_shared<ParticleShader>();
-			ResourceManager::get_inst().insert_default_resource(particle_CS, "ParticleCS");
+			ResourceManager::get_inst().insert_default_resource(particle_CS, "particle_CS");
 			particle_CS->compile_from_byte_code(Particle_CS, sizeof(Particle_CS));
 		}
 #pragma endregion

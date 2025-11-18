@@ -472,7 +472,7 @@ namespace core
 
 		std::fs::path name = _texDestDir.filename();
 		name /= _fbxMtrl->name;
-		name.replace_extension(name::path::extension::Material);
+		name.replace_extension(path::extension::Material);
 		mtrl->set_res_pathkey(name.string());
 
 		mtrl->set_diffuse_color(_fbxMtrl->diffuse_color);
@@ -528,7 +528,7 @@ namespace core
 		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->specular_tex_name));
 		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->emissive_tex_name));
 
-		s_ptr<GraphicsShader> defferedShader = ResourceManager::get_inst().find<GraphicsShader>(name::defaultRes::shader::graphics::Deffered3DShader);
+		s_ptr<GraphicsShader> defferedShader = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::deffered_3D_shader);
 		mtrl->set_shader(defferedShader);
 
 		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);

@@ -32,11 +32,11 @@ namespace core
 		//	재질 2. 텍스처
 
 		//기본 Rect Mesh로 메쉬를 설정
-		s_ptr<Mesh> mesh = ResourceManager::get_inst().find<Mesh>(name::defaultRes::mesh::RectMesh);
+		s_ptr<Mesh> mesh = ResourceManager::get_inst().find<Mesh>(default_res::mesh::rect_mesh);
 		set_mesh(mesh);
 
 		//Sprite Material을 받아온다
-		s_ptr<Material> material = ResourceManager::get_inst().find<Material>(name::defaultRes::material::SpriteMaterial);
+		s_ptr<Material> material = ResourceManager::get_inst().find<Material>(default_res::material::sprite_material);
 		set_material(material);
 	}
 

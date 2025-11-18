@@ -426,7 +426,7 @@ namespace core::editor
 				size_t pos = fileName.find(::core::name::ArrGSPrefix[i]);
 				if (std::string::npos != pos)
 				{
-					std::string baseFileName = entry.path().filename().replace_extension(::core::name::path::extension::ShaderSetting).string();
+					std::string baseFileName = entry.path().filename().replace_extension(::core::path::extension::ShaderSetting).string();
 					baseFileName.erase(pos, std::strlen(::core::name::ArrGSPrefix[i].data()));
 
 					umapGSGroup[baseFileName].FileName[i] = fileName;
@@ -440,7 +440,7 @@ namespace core::editor
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<tComboItem> new_shader_groups;
 		std::fs::path ShaderSettingDir = {}; 
-		//PathManager::get_inst().get_absolute_resource_directory() / core::name::path::directory::resource::GraphicsShader;
+		//PathManager::get_inst().get_absolute_resource_directory() / core::path::directory::resource::GraphicsShader;
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -449,7 +449,7 @@ namespace core::editor
 		//map을 순회 돌아주면서
 		for (const auto& iter : umapGSGroup)
 		{
-			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::core::name::path::extension::ShaderSetting);
+			std::fs::path ShaderFilePath = ShaderSettingDir / iter.first.filename().replace_extension(::core::path::extension::ShaderSetting);
 
 			//파일이 존재하지 않으면 json 파일 초기화 및 생성을 해준다.
 			if (false == std::fs::exists(ShaderFilePath))

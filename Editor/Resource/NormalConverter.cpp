@@ -74,9 +74,9 @@ namespace core::editor
 if (ImGui::Button("Load##Source Texture" , ImVec2(0.f, 25.f)))
 {
 	std::vector<std::fs::path> vecExt{};
-	for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
+	for (size_t i = 0; i < ::core::path::extension::Texture_ArrSize; ++i)
 	{
-		vecExt.push_back(::core::name::path::extension::Texture[i]);
+		vecExt.push_back(::core::path::extension::Texture[i]);
 	}
 
 	const std::fs::path& absTexPath = ResourceManager::get_inst().get_resource_directory();
@@ -121,9 +121,9 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 		if (ImGui::Button("Set Directory##Dest Texture", ImVec2(0.f, 25.f)))
 		{
 			std::vector<std::fs::path> vecExt{};
-			for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
+			for (size_t i = 0; i < ::core::path::extension::Texture_ArrSize; ++i)
 			{
-				vecExt.push_back(::core::name::path::extension::Texture[i]);
+				vecExt.push_back(::core::path::extension::Texture[i]);
 			}
 
 			std::fs::path texFile = ResourceManager::get_inst().get_resource_directory();
@@ -161,7 +161,7 @@ if (ImGui::Button("Clear##Source Texture", ImVec2(0.f, 25.f)))
 				return;
 			}
 
-			s_ptr<NormalConvertShader> converter = ResourceManager::get_inst().load<NormalConvertShader>(::core::name::defaultRes::shader::compute::NormalConvert);
+			s_ptr<NormalConvertShader> converter = ResourceManager::get_inst().load<NormalConvertShader>(NormalConvertShader::s_concrete_class_name);
 
 			s_ptr<Texture> convertedTex = converter->convert(m_src_texture);
 

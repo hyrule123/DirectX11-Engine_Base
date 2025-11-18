@@ -68,7 +68,6 @@
 #define DEBUG_MESSAGE(_literalString) DEBUG_MESSAGE_W(L##_literalString)
 
 #define STR_KEY constexpr const std::string_view
-#define STR_KEY_DECLARE(_key) STR_KEY _key = #_key
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
 

@@ -69,8 +69,8 @@ namespace core::editor
 		// 충돌체의 종류 갯수만큼만 있으면 된다.
 //mDebugObjects.resize((UINT)eColliderType::END);
 
-//s_ptr<Mesh> rectMesh = Resources<Mesh>::get_inst().Find(::core::name::defaultRes::mesh::DebugRectMesh);
-//s_ptr<Material> material = Resources<Material>::get_inst().Find(::core::name::defaultRes::material::DebugMaterial);
+//s_ptr<Mesh> rectMesh = Resources<Mesh>::get_inst().Find(::core::default_res::mesh::debug_rect_mesh);
+//s_ptr<Material> material = Resources<Material>::get_inst().Find(::core::default_res::material::debug_material);
 
 //mDebugObjects[(UINT)eColliderType::Rect] = new_entity<DebugObject>();
 //auto renderer
@@ -79,7 +79,7 @@ namespace core::editor
 //renderer->set_material(material, 0);
 //renderer->set_mesh(rectMesh);
 
-//s_ptr<Mesh> circleMesh = Resources<Mesh>::get_inst().Find("CircleMesh");
+//s_ptr<Mesh> circleMesh = Resources<Mesh>::get_inst().Find("circle_mesh");
 
 //mDebugObjects[(UINT)eColliderType::Circle] = new_entity<DebugObject>();
 //renderer
@@ -93,8 +93,8 @@ namespace core::editor
 // Grid Object
 //EditorObject* gridObject = new EditorObject();
 //StaticMeshRenderer* gridMr = gridObject->add_component<StaticMeshRenderer>();
-//gridMr->set_mesh(Resources::Find<Mesh>(L"RectMesh"));
-//gridMr->set_material(Resources<Material>::get_inst().Find(L"GridMaterial"));
+//gridMr->set_mesh(Resources::Find<Mesh>(L"rect_mesh"));
+//gridMr->set_material(Resources<Material>::get_inst().Find(L"grid_material"));
 //GridScript* gridScript = gridObject->add_component<GridScript>();
 //gridScript->SetCamera(gMainCamera);
 

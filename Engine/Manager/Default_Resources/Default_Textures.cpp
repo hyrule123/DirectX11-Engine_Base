@@ -6,26 +6,28 @@ namespace core {
 	void ResourceManager::load_default_textures()
 	{
 #pragma region STATIC TEXTURE
-		using namespace name::defaultRes;
 
 		s_ptr<Texture> pTex = nullptr;
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/noise/noise_01.png");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_01);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/noise/noise_02.png");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_02);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/noise/noise_03.jpg");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_03);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/Cube/TILE_01_N.tga");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::tile);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/Cube/TILE_01_N.tga");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::tile_normal);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
-		pTex = ResourceManager::get_inst().load_default_resource<Texture>("Texture/Cube/Brick.jpg");
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::brick);
+		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+
+		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::brick_normal);
 		ASSERT(nullptr != pTex, "텍스처 로드 실패");
 
 #pragma endregion

@@ -76,7 +76,7 @@ namespace core
 			for (const auto& iter : m_animations)
 			{
 				full_path.replace_filename(iter.first);
-				full_path.replace_extension(name::path::extension::Anim3D);
+				full_path.replace_extension(path::extension::Anim3D);
 				result = iter.second->save_file_binary(full_path);
 				if (eResult_fail(result))
 				{
@@ -139,7 +139,7 @@ namespace core
 				{
 					continue;
 				}
-				else if (name::path::extension::Anim3D != filePath.extension())
+				else if (path::extension::Anim3D != filePath.extension())
 				{
 					continue;
 				}
@@ -354,7 +354,7 @@ namespace core
 			std::fs::path full_path = "";
 			full_path /= _saveDir.filename();
 			full_path /= name;
-			full_path.replace_extension(name::path::extension::Anim3D);
+			full_path.replace_extension(path::extension::Anim3D);
 			
 			if (eResult_fail(ourAnim->save_file_binary(full_path)))
 			{

@@ -47,14 +47,14 @@ namespace core::editor
 	{
 		if (ImGui::Button("Load Texture", ImVec2(0.f, 30.f)))
 		{
-			std::vector<std::fs::path> extensions(::core::name::path::extension::Texture_ArrSize);
-			for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
+			std::vector<std::fs::path> extensions(::core::path::extension::Texture_ArrSize);
+			for (size_t i = 0; i < ::core::path::extension::Texture_ArrSize; ++i)
 			{
-				extensions[i] = ::core::name::path::extension::Texture[i];
+				extensions[i] = ::core::path::extension::Texture[i];
 			}
 
 			std::fs::path tex_path = ResourceManager::get_inst().get_resource_directory();
-			tex_path /= ::core::name::path::directory::resource::Texture;
+			tex_path /= ::core::path::directory::resource::Texture;
 
 			std::fs::path src_path = WinAPI::file_open_dialog(tex_path, extensions);
 

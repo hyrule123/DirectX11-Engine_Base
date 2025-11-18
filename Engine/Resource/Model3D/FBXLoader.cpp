@@ -681,7 +681,7 @@ namespace core
 	//			//}
 	//			//
 	//			////.json 확장자 붙여 줌
-	//			//strMtrlKey.replace_extension(name::path::extension::Material);
+	//			//strMtrlKey.replace_extension(path::extension::Material);
 
 	//			////strPath = "material\\";
 	//			////strPath += strMtrlKey + ".mtrl";
@@ -705,7 +705,7 @@ namespace core
 	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager::get_inst().find(name::defaultRes::shader::graphics::Deffered3DShader);
+	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager::get_inst().find(default_res::shader::graphics::deffered_3D_shader);
 
 	//			ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 

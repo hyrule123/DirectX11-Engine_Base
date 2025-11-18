@@ -17,7 +17,7 @@ namespace core {
 
 	void ResourceManager::create_default_buffers()
 	{
-		s_ptr<GPUInitSetting> initSetting = ResourceManager::get_inst().load<GPUInitSetting>(name::defaultRes::shader::compute::GPUInitSetting);
+		s_ptr<GPUInitSetting> initSetting = ResourceManager::get_inst().load<GPUInitSetting>(GPUInitSetting::s_concrete_class_name);
 		initSetting->on_execute();
 
 		debug_render_buffer();

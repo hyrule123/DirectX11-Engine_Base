@@ -204,9 +204,9 @@ namespace core::editor
 				const std::fs::path& texPath = ResourceManager::get_inst().get_resource_directory();
 				
 				std::vector<std::fs::path> vecExt{};
-				for (size_t i = 0; i < ::core::name::path::extension::Texture_ArrSize; ++i)
+				for (size_t i = 0; i < ::core::path::extension::Texture_ArrSize; ++i)
 				{
-					vecExt.push_back(::core::name::path::extension::Texture[i]);
+					vecExt.push_back(::core::path::extension::Texture[i]);
 				}
 				std::fs::path receivedPath = WinAPI::file_open_dialog(texPath, vecExt);
 				if (false == receivedPath.empty())
@@ -340,7 +340,7 @@ namespace core::editor
 		outputPath /= "Material";
 			
 		outputPath /= mSaveLoadFileName;
-		outputPath = WinAPI::file_open_dialog(outputPath, ::core::name::path::extension::Material);
+		outputPath = WinAPI::file_open_dialog(outputPath, ::core::path::extension::Material);
 
 		if (outputPath.empty())
 		{

@@ -30,15 +30,15 @@ namespace core {
 
 	void SceneRenderAgent::init()
 	{
-		m_deffered_merge_rectmesh = ResourceManager::get_inst().find<Mesh>(name::defaultRes::mesh::RectMesh);
-		m_deffered_merge_material = ResourceManager::get_inst().find<Material>(name::defaultRes::material::MergeMaterial);
+		m_deffered_merge_rectmesh = ResourceManager::get_inst().find<Mesh>(default_res::mesh::rect_mesh);
+		m_deffered_merge_material = ResourceManager::get_inst().find<Material>(default_res::material::merge_material);
 
 		ASSERT(m_deffered_merge_material && m_deffered_merge_rectmesh, "merge mesh와 material을 찾지 못했습니다.");
 
 		m_debug_meshes_3D[(int)eCollider3D_Shape::Cube] =
-			ResourceManager::get_inst().find<Mesh>(name::defaultRes::mesh::DebugCubeMesh);
+			ResourceManager::get_inst().find<Mesh>(default_res::mesh::debug_cube_mesh);
 
-		m_debug_material = ResourceManager::get_inst().find<DebugMaterial>(name::defaultRes::material::DebugMaterial);
+		m_debug_material = ResourceManager::get_inst().find<DebugMaterial>(default_res::material::debug_material);
 	}
 
 	SceneRenderAgent::~SceneRenderAgent()
@@ -194,7 +194,7 @@ namespace core {
 	{
 		if (_is_enable) {
 			m_debug_material =
-				ResourceManager::get_inst().find<DebugMaterial>(name::defaultRes::material::DebugMaterial);
+				ResourceManager::get_inst().find<DebugMaterial>(default_res::material::debug_material);
 		}
 		else {
 			m_debug_material = nullptr;

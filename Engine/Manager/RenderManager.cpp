@@ -383,7 +383,7 @@ namespace core
 	}
 	void RenderManager::copy_rendertarget()
 	{
-		s_ptr<Texture> renderTarget = ResourceManager::get_inst().find<Texture>(name::defaultRes::texture::RenderTarget);
+		s_ptr<Texture> renderTarget = ResourceManager::get_inst().find<Texture>(default_res::texture::render_target);
 
 		//render_target->unbind_buffer();
 
@@ -502,9 +502,9 @@ namespace core
 		//Light_Diffuse와 Light_Specular을 렌더타겟으로 설정 후(SV_Target0, SV_Target1)
 		//Diffuse, Normal, Specular, Emissive, Roughness/Metalic, View Position 렌더타겟을 "텍스처"로 바인딩
 		{
-			s_ptr<Material> lightDirMtrl = ResourceManager::get_inst().find<Material>(name::defaultRes::material::LightDirMaterial);
+			s_ptr<Material> lightDirMtrl = ResourceManager::get_inst().find<Material>(default_res::material::directional_light_material);
 
-			s_ptr<Material> lightPointMtrl = ResourceManager::get_inst().find<Material>(name::defaultRes::material::LightPointMaterial);
+			s_ptr<Material> lightPointMtrl = ResourceManager::get_inst().find<Material>(default_res::material::point_light_material);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 
@@ -554,7 +554,7 @@ namespace core
 
 		//Merge: Deffered, Light 렌더타겟 전부 바인딩
 		{
-			s_ptr<Material> mergeMaterial = ResourceManager::get_inst().find<Material>(name::defaultRes::material::MergeMaterial);
+			s_ptr<Material> mergeMaterial = ResourceManager::get_inst().find<Material>(default_res::material::merge_material);
 
 			MultiRenderTarget* DefferedMRT = m_multi_render_targets[(uint)eMRTType::Deffered].get();
 			{

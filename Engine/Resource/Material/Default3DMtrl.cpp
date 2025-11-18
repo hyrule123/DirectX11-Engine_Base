@@ -84,13 +84,13 @@ namespace core {
 
     void Default3DMtrl::set_forward3D_shader()
     {
-        auto forward = ResourceManager::get_inst().find<GraphicsShader>(name::defaultRes::shader::graphics::Forward3DShader);
+        auto forward = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::forward_3D_shader);
         set_shader(forward);
     }
 
     void Default3DMtrl::set_deffered3D_shader()
     {
-        auto deffered = ResourceManager::get_inst().find<GraphicsShader>(name::defaultRes::shader::graphics::Deffered3DShader);
+        auto deffered = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::deffered_3D_shader);
         set_shader(deffered);
     }
 }

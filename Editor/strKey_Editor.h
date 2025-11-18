@@ -4,7 +4,7 @@
 
 namespace core::editor::name
 {
-	STR_KEY_DECLARE(MainMenu);
+	STR_KEY MainMenu = "Main Menu";
 	STR_KEY EditorGraphicsShader = "Graphics Shader Editor";
 	STR_KEY GameViewer = "Game Viewer";
 	STR_KEY Inspector = "GameObject Inspector";

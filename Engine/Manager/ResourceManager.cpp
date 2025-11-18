@@ -34,14 +34,14 @@ namespace core
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_resource_directory = std::filesystem::current_path().parent_path().parent_path().parent_path();
-		m_resource_directory /= name::path::directory::resource::Resource;
+		m_resource_directory /= path::directory::resource::Resource;
 		if (false == std::fs::exists(m_resource_directory))
 		{
 			std::fs::create_directories(m_resource_directory);
 		}
 
 		m_shader_directory = std::filesystem::current_path();
-		m_shader_directory /= core::name::path::directory::CompiledShader;
+		m_shader_directory /= core::path::directory::CompiledShader;
 		if (false == std::fs::exists(m_shader_directory))
 		{
 			std::fs::create_directories(m_shader_directory);

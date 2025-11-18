@@ -13,7 +13,7 @@ namespace core::editor
 	{
 		Super::init();
 
-		set_unique_name(::core::name::path::directory::resource::Texture);
+		set_unique_name(::core::path::directory::resource::Texture);
 	}
 
 	TextureEditor::~TextureEditor()

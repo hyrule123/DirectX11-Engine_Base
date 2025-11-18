@@ -49,7 +49,7 @@
 
 
 #define STRKEY constexpr const char*
-#define STR_KEY_DECLARE(_AStr) STRKEY _AStr = #_AStr
+#define STR_KEY(_AStr) STRKEY _AStr = #_AStr
 
 
 #define BIT_MASK(_MaskPos) 1 << _MaskPos
