@@ -105,14 +105,19 @@
       <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>
+      </HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput>
-      </ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
-      <VariableName>%(Filename)</VariableName>
+      <VariableName>
+      </VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>
+      </AssemblerOutput>
+      <AssemblerOutputFile>
+      </AssemblerOutputFile>
+      <ObjectFileOutput>$(SolutionDir)bin\$(Platform)\$(Configuration)\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <PreBuildEvent>
       <Command>
@@ -140,13 +145,19 @@
       <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>
+      </HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
-      <VariableName>%(Filename)</VariableName>
+      <VariableName>
+      </VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>
+      </AssemblerOutput>
+      <AssemblerOutputFile>
+      </AssemblerOutputFile>
+      <ObjectFileOutput>$(SolutionDir)bin\$(Platform)\$(Configuration)\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <PreBuildEvent>
       <Command>
@@ -174,14 +185,19 @@
       <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>
+      </HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput>
-      </ObjectFileOutput>
       <ShaderModel>5.0</ShaderModel>
-      <VariableName>%(Filename)</VariableName>
+      <VariableName>
+      </VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>
+      </AssemblerOutput>
+      <AssemblerOutputFile>
+      </AssemblerOutputFile>
+      <ObjectFileOutput>$(SolutionDir)bin\$(Platform)\$(Configuration)\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -209,13 +225,19 @@
       <Command>call $(SolutionDir)BuildEvent.bat $(Platform) $(Configuration)</Command>
     </PostBuildEvent>
     <FxCompile>
-      <HeaderFileOutput>$(ProjectDir)CompiledShaderHeader\%(Filename)_$(Platform)_$(Configuration).h</HeaderFileOutput>
+      <HeaderFileOutput>
+      </HeaderFileOutput>
     </FxCompile>
     <FxCompile>
-      <ObjectFileOutput />
       <ShaderModel>5.0</ShaderModel>
-      <VariableName>%(Filename)</VariableName>
+      <VariableName>
+      </VariableName>
       <AdditionalIncludeDirectories>$(ProjectDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerOutput>
+      </AssemblerOutput>
+      <AssemblerOutputFile>
+      </AssemblerOutputFile>
+      <ObjectFileOutput>$(SolutionDir)bin\$(Platform)\$(Configuration)\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
