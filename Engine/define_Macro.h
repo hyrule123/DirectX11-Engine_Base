@@ -2,10 +2,13 @@
 #include <string>
 #include <cassert>
 
+#define ASSERT(_expression) assert(_expression)
+
 #ifdef _DEBUG
 
-//release 모드에서도 작동
-#define ASSERT(_expression, _c_str) \
+#define ASSERT_RELEASE(_expression) assert(_expression)
+
+#define ASSERT_MESSAGE(_expression, _c_str) \
 	do \
 	{ \
 		if (!(_expression)) \
@@ -13,8 +16,7 @@
 	} \
 	while (false)
 
-
-#define ASSERT_DEBUG(_expression, _c_str) ASSERT(_expression, _c_str)
+#define ASSERT_MESSAGE_RELEASE(_expression, _c_str) ASSERT_MESSAGE(_expression, _c_str)
 
 #define ERROR_MESSAGE_W(_c_str) \
 	do { MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak(); } while(false)
@@ -33,7 +35,23 @@
 #define DEBUG_BREAK ::__debugbreak()
 
 #else //RELEASE
-#define ASSERT(_expression, _c_str) \
+
+#define ASSERT (void)0
+
+#define ASSERT_MESSAGE (void)0
+
+#define ASSERT_RELEASE (_expression) \
+	do \
+	{ \
+		if(!(_expression)) \
+		{ \
+		MessageBoxW(nullptr, L## #_expression, L"Assertion Failed!", MB_OK | MB_ICONERROR);\
+		std::abort();\
+		} \
+	}\
+	while(false)
+
+#define ASSERT_MESSAGE_RELEASE(_expression, _c_str) \
 	do \
 	{ \
 		if(!(_expression)) \
@@ -44,19 +62,18 @@
 	}\
 	while(false)
 
-#define ASSERT_DEBUG(_expression, _messageW) (void)0
-
 #define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
 #define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
 
-#define DEBUG_MESSAGE_W(_c_str) 0
-#define DEBUG_MESSAGE_A(_c_str) 0
 
-#define DEBUG_LOG(_c_str) 0
-#define DEBUG_LOG_A(_str) 0
-#define DEBUG_LOG_W(_wStr) 0
+#define DEBUG_MESSAGE_W(_c_str) (void)0
+#define DEBUG_MESSAGE_A(_c_str) (void)0
 
-#define DEBUG_BREAK 0
+#define DEBUG_LOG(_c_str) (void)0
+#define DEBUG_LOG_A(_str) (void)0
+#define DEBUG_LOG_W(_wStr) (void)0
+
+#define DEBUG_BREAK (void)0
 
 #endif _DEBUG
 

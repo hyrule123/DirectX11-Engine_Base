@@ -4,7 +4,7 @@
 
 #include <Engine/Util/type_traits_Ex.h>
 
-#include <Engine/DefaultShader/Debug/Debug.hlsli>
+#include <Engine/Shader/Debug/Debug.hlsli>
 
 //업데이트 순서
 //1. SceneManager::update: 각 Collider들이 자신의 정보를 등록한다.

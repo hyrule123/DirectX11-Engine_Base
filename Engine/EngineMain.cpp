@@ -16,15 +16,15 @@ namespace core
 
         add_common_msg_handle_func(&wm_destroy);
 
-        ASSERT(register_client_class(_setting), "창 생성 실패");
-        ASSERT(init_instance(_setting), "창 생성 실패");
+        ASSERT_MESSAGE(register_client_class(_setting), "창 생성 실패");
+        ASSERT_MESSAGE(init_instance(_setting), "창 생성 실패");
 
         //if문 체크 말고 다른방식으로 하면 자꾸 경고뜸
         if (m_hwnd) {
             ShowWindow(m_hwnd, SW_HIDE);
         }
         else {
-            ASSERT(false, "HWND가 생성되지 않음.");
+            ASSERT_MESSAGE(false, "HWND가 생성되지 않음.");
         }
 
         UpdateWindow(m_hwnd);

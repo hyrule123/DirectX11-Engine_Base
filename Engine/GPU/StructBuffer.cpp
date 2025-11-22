@@ -390,7 +390,7 @@ namespace core
 	void StructBuffer::bind_buffer_as_UAV(int32 _UAVSlot)
 	{
 		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
-		ASSERT(eStructBufferType::READ_WRITE == m_struct_buffer_desc.m_buffer_RW_type, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
+		ASSERT_MESSAGE(eStructBufferType::READ_WRITE == m_struct_buffer_desc.m_buffer_RW_type, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
 
 		unbind_buffer();
 

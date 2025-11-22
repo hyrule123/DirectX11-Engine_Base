@@ -44,7 +44,7 @@ namespace core
 
 		shape->setLocalPose(m_offset_position);
 
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 
 		//AttachShape(shape);
 	}

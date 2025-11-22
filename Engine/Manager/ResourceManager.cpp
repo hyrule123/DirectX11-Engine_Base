@@ -9,7 +9,7 @@
 #include <Engine/Resource/Model3D/Skeleton.h>
 #include <Engine/Resource/AudioClip.h>
 #include <Engine/Resource/Animation2D.h>
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 #include <Engine/Resource/Shader/ComputeShader.h>
 #include <Engine/Resource/Mesh/VertexBuffer.h>
 #include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
@@ -25,26 +25,29 @@
 
 namespace core
 {
-	ResourceManager::ResourceManager() 
-		: m_resources{}
-	{}
-	void ResourceManager::init()
+	ResourceManager::ResourceManager()
 	{
 		AtExit::add_func(ResourceManager::destroy_inst);
+	}
+	void ResourceManager::init()
+	{
+		static bool b_initialized = false;
+		if (b_initialized)
+		{
+			DEBUG_MESSAGE("ResourceManager은 한 번만 초기화할 수 있습니다.");
+			return;
+		}
+		b_initialized = true;
 
 		//에러가 발생하지 않게 디렉토리가 없을 경우 생성해주는 작업까지 진행
 		m_resource_directory = std::filesystem::current_path().parent_path().parent_path().parent_path();
 		m_resource_directory /= path::directory::resource::Resource;
 		if (false == std::fs::exists(m_resource_directory))
 		{
-			std::fs::create_directories(m_resource_directory);
-		}
-
-		m_shader_directory = std::filesystem::current_path();
-		m_shader_directory /= core::path::directory::CompiledShader;
-		if (false == std::fs::exists(m_shader_directory))
-		{
-			std::fs::create_directories(m_shader_directory);
+			std::wstring msg = L"리소스 디렉토리 확인 필요.\n";
+			msg += m_resource_directory.wstring();
+			ERROR_MESSAGE_W(msg.c_str());
+			ASSERT_MESSAGE(false, "리소스 디렉토리가 존재하지 않습니다. 경로를 확인해주세요.");
 		}
 	}
 

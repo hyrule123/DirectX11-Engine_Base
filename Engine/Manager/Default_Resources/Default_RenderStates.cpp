@@ -59,7 +59,7 @@ namespace core {
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
 		rsDesc.DepthClipEnable = TRUE;
-
+		
 		get_device()->CreateRasterizerState(&rsDesc
 			, m_rasterizer_states[(uint)eRasterizerState::SolidFront].GetAddressOf());
 

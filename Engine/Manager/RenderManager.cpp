@@ -18,34 +18,26 @@
 #include <Engine/GPU/StructBuffer.h>
 #include <Engine/GPU/MultiRenderTarget.h>
 
-#include <Engine/DefaultShader/3D/3D.hlsli>
-#include <Engine/DefaultShader/Light/Light.hlsli>
+#include <Engine/Shader/3D/3D.hlsli>
+#include <Engine/Shader/Light/Light.hlsli>
 
 
 namespace core
 {
-	RenderManager::RenderManager() 
-		: m_resolution_x{}
-		, m_resolution_y{}
-		, m_refreshRate{}
-		, m_device{}
-		, m_context{}
-		, m_swap_chain{}
-		, m_render_target{}
-		, m_depth_stencil_buffer{}
-		, m_viewport{}
-		, m_multi_render_targets{}
-		, m_const_buffers{}
-		, m_sampler_states{}
-		, m_rasterizer_states{}
-		, m_depth_stencil_states{}
-		, m_blend_states{}
-		, m_post_process_texture{}
-		, m_scene_render_agent{}
-	{}
-
-	void RenderManager::init()
+	RenderManager::RenderManager()
 	{
+		AtExit::add_func(RenderManager::destroy_inst);
+	}
+
+	void RenderManager::create_device_context()
+	{
+		static bool b_device_context_created = false;
+		if(b_device_context_created)
+		{
+			ASSERT_MESSAGE(false, "Device Context는 한번만 생성할 수 있습니다.");
+			return;
+		}
+
 		// Device, Device Context
 		uint DeviceFlag{};
 #ifdef _DEBUG
@@ -76,10 +68,37 @@ namespace core
 		{
 			m_device.Reset();
 			m_context.Reset();
-			ASSERT(false, "Graphics Device 생성에 실패했습니다.");
+			ASSERT_MESSAGE(false, "Graphics Device 생성에 실패했습니다.");
 		}
 
-		AtExit::add_func(RenderManager::destroy_inst);
+		b_device_context_created = true;
+	}
+
+	void RenderManager::init(const tGPUManagerDesc& _Desc)
+	{
+		if (nullptr == m_device || nullptr == m_context) {
+			ASSERT_MESSAGE(false, "Device Context가 생성되지 않았습니다. create_device_context()를 먼저 호출하세요.");
+		}
+
+		static bool b_initialized = false;
+		if (b_initialized)
+		{
+			ASSERT_MESSAGE(false, "RenderManager는 한번만 초기화할 수 있습니다.");
+			return;
+		}
+
+		m_refreshRate = _Desc.refresh_rate;
+
+		if (false == set_resolution(_Desc.resolution_X, _Desc.resolution_Y))
+		{
+			ASSERT_MESSAGE(false, "GPU 초기화 작업 실패");
+		}
+
+		create_main_viewport();
+
+		m_scene_render_agent.init();
+
+		b_initialized = true;
 	}
 
 	RenderManager::~RenderManager()
@@ -166,24 +185,6 @@ namespace core
 
 #pragma endregion
 	}
-
-	void RenderManager::init(const tGPUManagerDesc& _Desc)
-	{
-		if (nullptr == m_device || nullptr == m_context) {
-			ASSERT(false, "Device Context가 생성되지 않았습니다. init()를 먼저 호출하세요.");
-		}
-		m_refreshRate = _Desc.refresh_rate;
-
-		if (false == set_resolution(_Desc.resolution_X, _Desc.resolution_Y))
-		{
-			ASSERT(false, "GPU 초기화 작업 실패");
-		}
-
-		create_main_viewport();
-
-		m_scene_render_agent.init();
-	}
-
 
 	bool RenderManager::set_resolution(UINT _resX, UINT _resY)
 	{

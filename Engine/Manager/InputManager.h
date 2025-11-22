@@ -55,9 +55,9 @@ namespace core
 	public:
 		struct tKey
 		{
-			eKeyCode  m_key_type;
-			eKeyState m_status;
-			bool	  m_b_pressed;
+			eKeyCode  m_key_type = {};
+			eKeyState m_status = {};
+			bool	  m_b_pressed = {};
 		};
 
 	public:
@@ -88,9 +88,9 @@ namespace core
 		void update();
 
 	private:
-		std::vector<tKey> m_keys;
-		float2 m_prev_mouse_position;
-		float2 m_mouse_position;
-		float2 m_mouse_direction;
+		std::vector<tKey> m_keys = {};
+		float2 m_prev_mouse_position = {};
+		float2 m_mouse_position = {};
+		float2 m_mouse_direction = {};
 	};
 }

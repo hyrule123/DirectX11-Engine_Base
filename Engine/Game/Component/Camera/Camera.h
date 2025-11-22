@@ -3,7 +3,7 @@
 
 #include <Engine/define_Enum.h>
 
-#include <Engine/DefaultShader/Light/Light.hlsli>
+#include <Engine/Shader/Light/Light.hlsli>
 
 #include <bitset>
 //그냥 하나여도 drawindexedinstanced로 호출하는걸로 통일
@@ -103,7 +103,7 @@ namespace  core
 			CullingAgent_Orthographic();
 			virtual ~CullingAgent_Orthographic();
 
-			virtual void final_update() { ASSERT(false, "미구현"); }
+			virtual void final_update() { ASSERT_MESSAGE(false, "미구현"); }
 		};
 
 		class CullingAgent_Perspective : public CullingAgent
@@ -113,7 +113,7 @@ namespace  core
 			CullingAgent_Perspective();
 			virtual ~CullingAgent_Perspective();
 
-			virtual void final_update() { ASSERT(false, "미구현"); }
+			virtual void final_update() { ASSERT_MESSAGE(false, "미구현"); }
 		};
 	};
 

@@ -35,9 +35,9 @@ namespace core
 	void Rigidbody::on_enable()
 	{
 		s_ptr<GameObject> owner = get_owner();
-		ASSERT(owner, "owner 게임오브젝트가 없습니다.");
+		ASSERT_MESSAGE(owner, "owner 게임오브젝트가 없습니다.");
 		s_ptr<Scene> scene = owner->get_scene();
-		ASSERT(scene, "scene이 없습니다.");
+		ASSERT_MESSAGE(scene, "scene이 없습니다.");
 
 		CollisionSystem* colsys = scene->get_collision_system();
 		if (colsys)

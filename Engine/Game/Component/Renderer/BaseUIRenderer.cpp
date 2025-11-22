@@ -27,7 +27,7 @@ namespace core
 
 	//void BaseUIRenderer::render()
 	//{
-	//	ASSERT(false, "미구현");
+	//	ASSERT_MESSAGE(false, "미구현");
 	//	ConstBuffer* cb = nullptr;
 	//		//RenderManager::get_inst().GetConstBuffer(eCBType::CustomData);
 	//	cb->set_data(&m_UI_data);

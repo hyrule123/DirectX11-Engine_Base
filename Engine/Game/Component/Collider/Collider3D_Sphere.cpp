@@ -39,7 +39,7 @@ namespace core
 		ASSERT_DEBUG(shape, "PxShape 인스턴스 생성 실패.");
 
 		shape->setLocalPose(m_offset_position);
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 		//AttachShape(shape);
 	}
 

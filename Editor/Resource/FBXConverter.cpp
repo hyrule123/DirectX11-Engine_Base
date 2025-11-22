@@ -194,7 +194,7 @@ namespace core::editor
 	{
 		m_skeletal_mesh_combobox.set_unique_name("Model3D List");
 		m_skeletal_mesh_combobox.reset();
-		ASSERT(false, "여기 구현");
+		ASSERT_MESSAGE(false, "여기 구현");
 		const std::fs::path& meshPath = "";
 
 		try

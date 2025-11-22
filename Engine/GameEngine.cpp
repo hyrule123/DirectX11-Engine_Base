@@ -26,31 +26,20 @@
 
 namespace core
 {
-	GameEngine::GameEngine() {}
-
-	void GameEngine::init()
+	GameEngine::GameEngine() 
 	{
-		m_hwnd = {};
-		m_hdc = {};
-		m_editor_run_function = {};
-		m_bRunning = {};
-
 		AtExit::add_func(GameEngine::destroy_inst);
-	}
-
-	GameEngine::~GameEngine()
-	{
-		::ReleaseDC(m_hwnd, m_hdc);
 	}
 
 	void GameEngine::init(const tGameEngineDesc& _desc)
 	{
 		if (m_bRunning)
 		{
-			DEBUG_MESSAGE("이미 set_desc 함수가 호출되어 사용 준비가 완료된 상태입니다.");
+			DEBUG_MESSAGE("Game Engine은 한 번만 초기화할 수 있습니다.");
+			return;
 		}
 
-		ASSERT(_desc.hwnd, "Game Engine 초기화 실패.");
+		ASSERT_MESSAGE(_desc.hwnd, "Game Engine 초기화 실패.");
 		m_hwnd = _desc.hwnd;
 		m_hdc = GetDC(_desc.hwnd);
 
@@ -59,12 +48,12 @@ namespace core
 
 		//(size_t)std::thread::hardware_concurrency()를 사용하면 CPU 스레드 수를 받아올 수 있다.
 		ThreadPoolManager::get_inst().init((size_t)4);
-		
-		//ResourceManager들 인스턴스 생성
-		ResourceManager::get_inst();
 
-		//RenderManager 인스턴스 생성(Device, Context 생성)
-		RenderManager::get_inst();
+		//GPU Device, Context 생성
+		RenderManager::get_inst().create_device_context();
+
+		//ResourceManager들 인스턴스 생성
+		ResourceManager::get_inst().init();
 
 		//래스터라이저, 블렌드, 깊이버퍼 등 각종 render state 로드
 		RenderManager::get_inst().load_render_states();
@@ -74,20 +63,25 @@ namespace core
 
 		//RenderManager 스왑체인 및 뷰포트 생성
 		RenderManager::get_inst().init(_desc.GPU_desc);
-		
+
 		AudioManager::get_inst();
 		FontWrapper::get_inst();
-		
+
 		TimeManager::get_inst();
 
 		InputManager::get_inst();
-		
+
 		PhysXInstance::get_inst();
 		SceneManager::get_inst();
 
 		m_editor_run_function = _desc.editor_run_func;
 
-		m_bRunning = TRUE;
+		m_bRunning = true;
+	}
+
+	GameEngine::~GameEngine()
+	{
+		::ReleaseDC(m_hwnd, m_hdc);
 	}
 
 	// 게임 로직 캐릭터 이동 등등 

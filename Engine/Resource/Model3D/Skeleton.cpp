@@ -6,7 +6,7 @@
 #include <Engine/Util/StringConverter.h>
 #include <Engine/Util/Serialize/BinarySerializer.h>
 
-#include <Engine/DefaultShader/Common_register.hlsli>
+#include <Engine/Shader/Common_register.hlsli>
 
 #include <Engine/GPU/StructBuffer.h>
 #include <Engine/GPU/ConstBuffer.h>
@@ -31,7 +31,7 @@ namespace core
 		, m_final_matrix_buffer{}
 	{
 		m_compute_shader = ResourceManager::get_inst().load<Animation3D_ComputeShader>("Animation3D_ComputeShader");
-		ASSERT(nullptr != m_compute_shader, "컴퓨트쉐이더가 없음");
+		ASSERT_MESSAGE(nullptr != m_compute_shader, "컴퓨트쉐이더가 없음");
 
 		StructBuffer::tDesc desc{};
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_FinalBoneMatrixArray;
@@ -350,7 +350,7 @@ namespace core
 				iter = m_animations.find(name);
 			}
 
-			ASSERT(false, "여기 구현");
+			ASSERT_MESSAGE(false, "여기 구현");
 			std::fs::path full_path = "";
 			full_path /= _saveDir.filename();
 			full_path /= name;

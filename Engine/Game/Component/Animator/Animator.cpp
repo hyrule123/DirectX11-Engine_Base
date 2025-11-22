@@ -11,7 +11,7 @@ namespace core
 
 	void Animator::add_event(Animation* _anim, uint _frameIdx, const std::function<void()>& _func)
 	{
-		ASSERT(nullptr != _anim || 0 < _frameIdx || _func, "애니메이션이 없거나 ");
+		ASSERT_MESSAGE(nullptr != _anim || 0 < _frameIdx || _func, "애니메이션이 없거나 ");
 
 		using keyType = decltype(m_map_event)::key_type;
 		

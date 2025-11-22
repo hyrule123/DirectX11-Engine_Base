@@ -27,7 +27,7 @@ namespace core
 		DECLARE_SINGLETON(RenderManager);
 	private:
 		RenderManager();
-		void init();
+		void create_device_context();
 
 		~RenderManager();
 
@@ -100,32 +100,32 @@ namespace core
 		void create_const_buffers();
 
 	private:
-		UINT m_resolution_x;
-		UINT m_resolution_y;
-		UINT m_refreshRate;
+		UINT m_resolution_x = {};
+		UINT m_resolution_y = {};
+		UINT m_refreshRate = {};
 
-		ComPtr<ID3D11Device> m_device;
-		ComPtr<ID3D11DeviceContext> m_context;
+		ComPtr<ID3D11Device> m_device = {};
+		ComPtr<ID3D11DeviceContext> m_context = {};
 	
-		ComPtr<IDXGISwapChain> m_swap_chain;
+		ComPtr<IDXGISwapChain> m_swap_chain = {};
 		
-		s_ptr<core::Texture> m_render_target;
-		s_ptr<core::Texture> m_depth_stencil_buffer;
+		s_ptr<core::Texture> m_render_target = {};
+		s_ptr<core::Texture> m_depth_stencil_buffer = {};
 		
-		D3D11_VIEWPORT m_viewport;
+		D3D11_VIEWPORT m_viewport = {};
 
-		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multi_render_targets;
+		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multi_render_targets = {};
 
-		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_const_buffers;
-		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_sampler_states;
-		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizer_states;
-		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depth_stencil_states;
-		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blend_states;
+		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_const_buffers = {};
+		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_sampler_states = {};
+		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizer_states = {};
+		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depth_stencil_states = {};
+		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blend_states = {};
 
-		s_ptr<Texture>				m_post_process_texture;
-		s_ptr<Texture>				m_noise_texture;
+		s_ptr<Texture>				m_post_process_texture = {};
+		s_ptr<Texture>				m_noise_texture = {};
 
-		SceneRenderAgent m_scene_render_agent;
+		SceneRenderAgent m_scene_render_agent = {};
 	};
 }
 

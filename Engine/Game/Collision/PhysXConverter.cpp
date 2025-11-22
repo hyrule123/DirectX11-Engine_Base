@@ -24,7 +24,7 @@
 //		case eRotationOrder::ZYX:
 //			return zAxis * yAxis * xAxis;
 //		default:
-//			ASSERT(false, "WRONG INPUT");
+//			ASSERT_MESSAGE(false, "WRONG INPUT");
 //		}
 //		return yAxis * xAxis * zAxis;
 //	}

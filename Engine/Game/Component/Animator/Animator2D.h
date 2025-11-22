@@ -31,7 +31,7 @@ namespace core
 		virtual void update() override; 
 		virtual void final_update() override;
 
-		bool is_playing() const { ASSERT(false, "미구현"); return false; }
+		bool is_playing() const { ASSERT_MESSAGE(false, "미구현"); return false; }
 
 		s_ptr<Animation2D> create(const std::string_view _name
 			, s_ptr<Texture> _atlas

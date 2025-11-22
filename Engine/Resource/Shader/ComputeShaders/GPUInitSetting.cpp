@@ -3,8 +3,8 @@
 
 #include <Engine/GPU/StructBuffer.h>
 
-#include <Engine/DefaultShader/Common_struct.hlsli>
-#include <Engine/DefaultShader/Initialize/GPU_Init_Setting.hlsli>
+#include <Engine/Shader/Common_struct.hlsli>
+#include <Engine/Shader/Initialize/GPU_Init_Setting.hlsli>
 
 #if defined (_WIN64) && !(NDEBUG)
 #include <Engine/CompiledShaderHeader/GPU_Init_Setting_CS_x64_Debug.h>
@@ -33,7 +33,7 @@ namespace core
 	{
 		eResult result = compile_from_byte_code(GPU_Init_Setting_CS, sizeof(GPU_Init_Setting_CS));
 
-		ASSERT(eResult_success(result), "GPU 초기화 작업 실패");
+		ASSERT_MESSAGE(eResult_success(result), "GPU 초기화 작업 실패");
 
 		return result;
 	}
@@ -82,7 +82,7 @@ namespace core
 		desc.m_UAV_target_register_idx = GPU::Register::u::g_initSettings_RW;
 		m_init_sbuffer = std::make_unique<StructBuffer>();
 		eResult result = m_init_sbuffer->create<tGPUInitSetting>(desc, 1ui64, &g_GPU_init_setting, 1ui64);
-		ASSERT(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
+		ASSERT_MESSAGE(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
 		m_init_sbuffer->bind_buffer_as_UAV();
 

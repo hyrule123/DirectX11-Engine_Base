@@ -74,7 +74,7 @@ namespace core::editor
 			std::string shaderName = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderName.empty())
 			{
-				s_ptr<GraphicsShader> gs = ResourceManager::get_inst().load<GraphicsShader>(shaderName);
+				s_ptr<GraphicsPipeline> gs = ResourceManager::get_inst().load<GraphicsPipeline>(shaderName);
 			}
 		}
 	}
@@ -132,7 +132,7 @@ namespace core::editor
 	{
 		std::string strCurShader = "Current Shader: ";
 		{
-			s_ptr<GraphicsShader> curShader = mTargetMaterial->get_shader();
+			s_ptr<GraphicsPipeline> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
 				strCurShader += curShader->get_res_pathkey();
@@ -156,13 +156,13 @@ namespace core::editor
 			const std::string& shaderKey = mShaderCombo.get_current_selected().m_name;
 			if (false == shaderKey.empty())
 			{
-				s_ptr<GraphicsShader> GS = ResourceManager::get_inst().load<GraphicsShader>(shaderKey);
+				s_ptr<GraphicsPipeline> GS = ResourceManager::get_inst().load<GraphicsPipeline>(shaderKey);
 				mTargetMaterial->set_shader(GS);
 			}
 		}
 
 		std::string shaderKey = "Shader: ";
-		s_ptr<GraphicsShader> shader = mTargetMaterial->get_shader();
+		s_ptr<GraphicsPipeline> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
 			shaderKey += shader->get_res_pathkey();
@@ -423,7 +423,7 @@ namespace core::editor
 					}
 					else
 					{
-						ASSERT(false, "미구현");
+						ASSERT_MESSAGE(false, "미구현");
 						mTargetMaterial = {};// ResourceManager::get_inst().loadResources<Material>::get_inst().load(filePath.filename().string());
 						if (nullptr == mTargetMaterial)
 						{

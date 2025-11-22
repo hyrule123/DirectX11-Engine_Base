@@ -10,25 +10,25 @@ namespace core {
 		s_ptr<Texture> pTex = nullptr;
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_01);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_02);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::noise_03);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::tile);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::tile_normal);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::brick);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 		pTex = ResourceManager::get_inst().load_default_resource<Texture>(default_res::texture::brick_normal);
-		ASSERT(nullptr != pTex, "텍스처 로드 실패");
+		ASSERT_MESSAGE(nullptr != pTex, "텍스처 로드 실패");
 
 #pragma endregion
 

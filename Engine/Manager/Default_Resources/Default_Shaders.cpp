@@ -1,8 +1,6 @@
 #include <Engine/Manager/ResourceManager.h>
 
-#include <Engine/CompiledShaderHeader/DefaultShaders.h>
-
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 #include <Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h>
 #include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 #include <Engine/Resource/Shader/ComputeShaders/NormalConvertShader.h>
@@ -37,7 +35,8 @@ namespace core {
 
 #pragma region SPRITE SHADER
 		{
-			s_ptr<GraphicsShader> sprite_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> sprite_shader = std::make_shared<GraphicsPipeline>();
+			sprite_shader->compile_from_CSO(eGSStage::Vertex, "")
 			sprite_shader->compile_from_byte_code(eGSStage::Vertex, Sprite_VS, sizeof(Sprite_VS));
 			sprite_shader->compile_from_byte_code(eGSStage::Pixel, Sprite_PS, sizeof(Sprite_PS));
 			sprite_shader->set_rasterizer_state(eRasterizerState::SolidNone);
@@ -50,7 +49,7 @@ namespace core {
 #pragma endregion
 #pragma region UI SHADER
 		{
-			s_ptr<GraphicsShader> ui_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> ui_shader = std::make_shared<GraphicsPipeline>();
 			ui_shader->compile_from_byte_code(eGSStage::Vertex, UI_VS, sizeof(UI_VS));
 			ui_shader->compile_from_byte_code(eGSStage::Pixel, UI_PS, sizeof(UI_PS));
 			ui_shader->set_input_layout_desc(vecLayoutDesc2D);
@@ -63,7 +62,7 @@ namespace core {
 #pragma endregion
 #pragma region GRID SHADER
 		{
-			s_ptr<GraphicsShader> grid_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> grid_shader = std::make_shared<GraphicsPipeline>();
 			grid_shader->compile_from_byte_code(eGSStage::Vertex, Grid_VS, sizeof(Grid_VS));
 			grid_shader->compile_from_byte_code(eGSStage::Pixel, Grid_PS, sizeof(Grid_PS));
 			grid_shader->set_input_layout_desc(vecLayoutDesc2D);
@@ -91,7 +90,7 @@ namespace core {
 			debugLayoutDesc.push_back(layout_desc);
 			layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 
-			s_ptr<GraphicsShader> debug_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> debug_shader = std::make_shared<GraphicsPipeline>();
 			debug_shader->compile_from_byte_code(eGSStage::Vertex, Debug_VS, sizeof(Debug_VS));
 			debug_shader->compile_from_byte_code(eGSStage::Pixel, Debug_PS, sizeof(Debug_PS));
 
@@ -113,7 +112,7 @@ namespace core {
 
 #pragma region POST PROCESS SHADER
 		{
-			s_ptr<GraphicsShader> post_process_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> post_process_shader = std::make_shared<GraphicsPipeline>();
 			post_process_shader->compile_from_byte_code(eGSStage::Vertex, PostProcess_VS, sizeof(PostProcess_VS));
 			post_process_shader->compile_from_byte_code(eGSStage::Pixel, PostProcess_PS, sizeof(PostProcess_PS));
 			post_process_shader->set_input_layout_desc(vecLayoutDesc2D);
@@ -196,7 +195,7 @@ namespace core {
 
 #pragma region Forward3D
 		{
-			s_ptr<GraphicsShader> basic_3D_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> basic_3D_shader = std::make_shared<GraphicsPipeline>();
 
 			basic_3D_shader->compile_from_byte_code(eGSStage::Vertex, Forward3D_VS, sizeof(Forward3D_VS));
 			basic_3D_shader->compile_from_byte_code(eGSStage::Pixel, Forward3D_PS, sizeof(Forward3D_PS));
@@ -209,7 +208,7 @@ namespace core {
 
 #pragma region Deffered3D
 		{
-			s_ptr<GraphicsShader> deffered_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> deffered_shader = std::make_shared<GraphicsPipeline>();
 
 			deffered_shader->compile_from_byte_code(eGSStage::Vertex, Deffered3D_VS, sizeof(Deffered3D_VS));
 			deffered_shader->compile_from_byte_code(eGSStage::Pixel, Deffered3D_PS, sizeof(Deffered3D_PS));
@@ -224,7 +223,7 @@ namespace core {
 
 #pragma region LIGHT
 		{
-			s_ptr<GraphicsShader> light_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> light_shader = std::make_shared<GraphicsPipeline>();
 			light_shader->compile_from_byte_code(eGSStage::Vertex, LightDirection_VS, sizeof(LightDirection_VS));
 			light_shader->compile_from_byte_code(eGSStage::Pixel, LightDirection_PS, sizeof(LightDirection_PS));
 
@@ -239,7 +238,7 @@ namespace core {
 		}
 
 		{
-			s_ptr<GraphicsShader> light_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> light_shader = std::make_shared<GraphicsPipeline>();
 			light_shader->compile_from_byte_code(eGSStage::Vertex, LightPoint_VS, sizeof(LightPoint_VS));
 			light_shader->compile_from_byte_code(eGSStage::Pixel, LightPoint_PS, sizeof(LightPoint_PS));
 
@@ -264,7 +263,7 @@ namespace core {
 			layout_desc.SemanticName = "POSITION";
 			layout_desc.SemanticIndex = 0;
 
-			s_ptr<GraphicsShader> merge_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> merge_shader = std::make_shared<GraphicsPipeline>();
 			merge_shader->compile_from_byte_code(eGSStage::Vertex, Deffered_Merger_VS, sizeof(Deffered_Merger_VS));
 			merge_shader->compile_from_byte_code(eGSStage::Pixel, Deffered_Merger_PS, sizeof(Deffered_Merger_PS));
 
@@ -289,7 +288,7 @@ namespace core {
 
 #pragma region PARTICLE SHADER
 		{
-			s_ptr<GraphicsShader> particle_shader = std::make_shared<GraphicsShader>();
+			s_ptr<GraphicsPipeline> particle_shader = std::make_shared<GraphicsPipeline>();
 
 			particle_shader->compile_from_byte_code(eGSStage::Vertex, Particle_VS, sizeof(Particle_VS));
 			particle_shader->compile_from_byte_code(eGSStage::Geometry, Particle_GS, sizeof(Particle_GS));

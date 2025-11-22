@@ -9,7 +9,7 @@
 #include <Engine/Util/Serialize/JsonSerializer.h>
 
 #include <Engine/Resource/Texture.h>
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 
 #include <Engine/Game/GameObject.h>
 
@@ -129,7 +129,7 @@ namespace core
             {
                 std::string name{};
                 _ser[JSON_KEY(m_shader)] >> name;
-                m_shader = ResourceManager::get_inst().load<GraphicsShader>(name);
+                m_shader = ResourceManager::get_inst().load<GraphicsPipeline>(name);
             }
 
 
@@ -197,7 +197,7 @@ namespace core
             m_shared_material_data.is_texture_7 = bTex;
             break;
         default:
-            ASSERT(false, "에러");
+            ASSERT_MESSAGE(false, "에러");
             break;
         }
     }

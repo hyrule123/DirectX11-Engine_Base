@@ -5,8 +5,8 @@
 #include <Engine/GPU/StructBuffer.h>
 #include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 
-#include <Engine/DefaultShader/Debug/Debug.hlsli>
-#include <Engine/DefaultShader/Light/Light.hlsli>
+#include <Engine/Shader/Debug/Debug.hlsli>
+#include <Engine/Shader/Light/Light.hlsli>
 
 namespace core {
 	//함수명 = resourcemanager key

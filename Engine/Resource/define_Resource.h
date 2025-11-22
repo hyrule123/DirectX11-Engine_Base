@@ -10,10 +10,10 @@ namespace core
 	{
 		UNKNOWN,
 		VertexBuffer,
+		Shader,
 		Texture,
 		AudioClip,
-		GraphicsShader,
-		ComputeShader,
+		GraphicsPipeline,
 		ConstBuffer,
 		StructBuffer,
 		Mesh,
@@ -47,12 +47,8 @@ namespace core
 
 				STR_KEY AudioClip = "AudioClip";
 
-				STR_KEY GraphicsShader = "Shader/Graphics";
-				STR_KEY ComputeShader = "Shader/Compute";
+				STR_KEY Shader = "Shader";
 			}
-
-
-			STR_KEY CompiledShader = "Shader";
 		}
 
 		namespace extension

@@ -16,10 +16,10 @@ namespace core {
 			s_ptr<VertexBuffer> vb = new_entity<VertexBuffer>();
 
 			if (false == vb->create_vertex_buffer(vertices_2D)) {
-				ASSERT(false, "point vertex 생성 실패");
+				ASSERT_MESSAGE(false, "point vertex 생성 실패");
 			}
 			if (false == point_mesh->create_index_buffer(pointIndex, D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)) {
-				ASSERT(false, "point vertex 생성 실패");
+				ASSERT_MESSAGE(false, "point vertex 생성 실패");
 			}
 
 			ResourceManager::get_inst().insert_default_resource(point_mesh, default_res::mesh::point_mesh);
@@ -57,7 +57,7 @@ namespace core {
 
 			std::vector<uint> indices = { 0u, 1u, 2u, 0u, 2u, 3u, 0u };
 
-			ASSERT(rect_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
+			ASSERT_MESSAGE(rect_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "rect_mesh 생성 실패");
 
 			ResourceManager::get_inst().insert_default_resource(rect_mesh, default_res::mesh::rect_mesh);
 
@@ -89,7 +89,7 @@ namespace core {
 			// CreateBuffer Mesh
 			s_ptr<Mesh> debug_mesh = new_entity<Mesh>();
 
-			ASSERT(debug_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
+			ASSERT_MESSAGE(debug_mesh->create(_2d_vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debugMesh 생성 실패");
 
 			ResourceManager::get_inst().insert(debug_mesh, default_res::mesh::debug_rect_mesh);
 		}
@@ -140,7 +140,7 @@ namespace core {
 			s_ptr<Mesh> circle_mesh = new_entity<Mesh>();
 
 			circle_mesh->set_topology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			ASSERT(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
+			ASSERT_MESSAGE(circle_mesh->create(VecVtx2D, VecIdx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "circle mesh 생성 실패");
 
 			ResourceManager::insert_default_resource(circle_mesh, default_res::mesh::circle_mesh);
 		}
@@ -362,7 +362,7 @@ namespace core {
 			s_ptr<Mesh> cube_mesh = new_entity<Mesh>();
 
 			ResourceManager::get_inst().insert(cube_mesh, default_res::mesh::cube_mesh);
-			ASSERT(cube_mesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
+			ASSERT_MESSAGE(cube_mesh->create(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "cube mesh 생성 실패");
 		}
 #pragma endregion
 
@@ -405,7 +405,7 @@ namespace core {
 
 			// Crate Mesh
 			s_ptr<Mesh> debug_cube_mesh = new_entity<Mesh>();
-			ASSERT(debug_cube_mesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debug_cube_mesh 생성 실패");
+			ASSERT_MESSAGE(debug_cube_mesh->create(vertices, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "debug_cube_mesh 생성 실패");
 
 			ResourceManager::get_inst().insert(debug_cube_mesh, default_res::mesh::debug_cube_mesh);
 		}
@@ -521,7 +521,7 @@ namespace core {
 			}
 
 			s_ptr<Mesh> sphereMesh = new_entity<Mesh>();
-			ASSERT(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
+			ASSERT_MESSAGE(sphereMesh->create<Vertex3D>(VecVtx3D, indices, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST), "sphere mesh 생성 실패");
 
 			ResourceManager::get_inst().insert_default_resource(sphereMesh, default_res::mesh::sphere_mesh);
 		}

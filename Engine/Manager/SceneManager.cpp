@@ -16,13 +16,7 @@
 namespace core
 {
 	SceneManager::SceneManager()
-		: m_active_scene{nullptr}
-		, m_b_fixed_update{false}
-	{}
-	void SceneManager::init()
 	{
-		m_active_scene = nullptr;
-
 		AtExit::add_func(SceneManager::destroy_inst);
 	}
 
@@ -82,10 +76,10 @@ namespace core
 
 	s_ptr<Scene> SceneManager::load_scene(const s_ptr<Scene>& _scene)
 	{
-		ASSERT(nullptr != _scene, "scene이 nullptr 입니다.");
+		ASSERT_MESSAGE(nullptr != _scene, "scene이 nullptr 입니다.");
 
 			// 바뀔때 dontDestory 오브젝트는 다음씬으로 같이 넘겨줘야한다.
-			//ASSERT(false, "미구현");
+			//ASSERT_MESSAGE(false, "미구현");
 			//std::vector<s_ptr<GameObject>> dontDestroyObjs;
 
 			//if (m_active_scene)
@@ -99,7 +93,7 @@ namespace core
 		//씬 갈아끼우기
 		m_active_scene = _scene;
 
-		//ASSERT(false, "미구현");
+		//ASSERT_MESSAGE(false, "미구현");
 		//for (size_t i = 0; i < dontDestroyObjs.size(); ++i)
 		//{
 		//	

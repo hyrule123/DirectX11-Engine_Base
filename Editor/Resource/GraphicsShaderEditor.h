@@ -7,7 +7,7 @@
 
 namespace core
 {
-	class GraphicsShader;
+	class GraphicsPipeline;
 }
 
 namespace core::editor
@@ -59,7 +59,7 @@ namespace core::editor
 		ComboBoxWidget m_depth_stencil_type_combo;
 		ComboBoxWidget m_blend_state_type_combo;
 
-		//std::unique_ptr<GraphicsShader> mEditTarget;
+		//std::unique_ptr<GraphicsPipeline> mEditTarget;
 
 		bool m_b_save_modal;
 		ComboBoxWidget m_stage_type_combo;

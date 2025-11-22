@@ -16,7 +16,7 @@
 #include <Engine/GPU/ConstBuffer.h>
 #include <Engine/GPU/StructBuffer.h>
 
-#include <Engine/DefaultShader/Light/Light.hlsli>
+#include <Engine/Shader/Light/Light.hlsli>
 
 namespace core
 {
@@ -125,7 +125,7 @@ namespace core
 		case LIGHT_TYPE_SPOT:
 			break;
 		default:
-			ASSERT(false, "Light Type이 지정되지 않았습니다.");
+			ASSERT_MESSAGE(false, "Light Type이 지정되지 않았습니다.");
 			break;
 		}
 	}
@@ -157,7 +157,7 @@ namespace core
 		case LIGHT_TYPE_SPOT:
 			break;
 		default:
-			ASSERT(false, "Light Type 미지정");
+			ASSERT_MESSAGE(false, "Light Type 미지정");
 			break;
 		}
 

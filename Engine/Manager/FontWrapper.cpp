@@ -1,7 +1,4 @@
-
 #include "FontWrapper.h"
-
-
 
 #include <Engine/Util/AtExit.h>
 
@@ -12,21 +9,28 @@
 namespace core
 {
 	FontWrapper::FontWrapper()
-		: m_FW1_factory(nullptr)
-		, m_font_wrapper(nullptr)
-	{}
+	{
+		AtExit::add_func(FontWrapper::destroy_inst);
+	}
 	void FontWrapper::init()
 	{
+		static bool b_initialized = false;
+		if (b_initialized)
+		{
+			DEBUG_MESSAGE("FontWrapper은 한 번만 초기화할 수 있습니다.");
+			return;
+		}
+
 		HRESULT result = FW1CreateFactory(FW1_VERSION, &m_FW1_factory);
-		ASSERT(SUCCEEDED(result) ,"FW1CreateFactory 실패");
+		ASSERT_MESSAGE(SUCCEEDED(result) ,"FW1CreateFactory 실패");
 
 		auto device = RenderManager::get_inst().get_device();
 
 		result = m_FW1_factory->CreateFontWrapper(device.Get(), L"Arial", &m_font_wrapper);
 
-		ASSERT(SUCCEEDED(result), "CreateFontWrapper 실패");
+		ASSERT_MESSAGE(SUCCEEDED(result), "CreateFontWrapper 실패");
 
-		AtExit::add_func(FontWrapper::destroy_inst);
+		b_initialized = true;
 	}
 
 	FontWrapper::~FontWrapper()

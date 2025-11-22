@@ -6,7 +6,7 @@
 
 #include <Engine/Resource/Texture.h>
 #include <Engine/Resource/Material/Material.h>
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 #include <Engine/Resource/Model3D/Model3D.h>
 
 #include <Engine/Util/define_Util.h>
@@ -76,7 +76,7 @@ namespace core
 		m_fbx_manager = fbxsdk::FbxManager::Create();
 		if (nullptr == m_fbx_manager)
 		{
-			ASSERT(m_fbx_manager, "fbx Manager가 nullptr 입니다.");
+			ASSERT_MESSAGE(m_fbx_manager, "fbx Manager가 nullptr 입니다.");
 			Reset();
 			return eResult::Fail_Nullptr;
 		}
@@ -86,7 +86,7 @@ namespace core
 		m_fbx_scene = fbxsdk::FbxScene::Create(m_fbx_manager, "");
 		if (nullptr == m_fbx_scene)
 		{
-			ASSERT(m_fbx_manager, "fbx Scene이 nullptr 입니다.");
+			ASSERT_MESSAGE(m_fbx_manager, "fbx Scene이 nullptr 입니다.");
 			Reset();
 			return eResult::Fail_Nullptr;
 		}
@@ -278,7 +278,7 @@ namespace core
 			//이 폴리곤을 구성하는 정점의 수를 얻어온다.
 			//삼각화를 진행한 상태이므로 무조건 3개가 들어와야 한다.
 			int polygonSize = _pFBXMesh->GetPolygonSize(i);
-			ASSERT(3 == polygonSize, "삼각화를 진행했는데 1개 폴리곤의 정점이 3개가 아닙니다.");
+			ASSERT_MESSAGE(3 == polygonSize, "삼각화를 진행했는데 1개 폴리곤의 정점이 3개가 아닙니다.");
 
 			//폴리곤 1개가 실제 몇번째 정점을 가르키는지를 저장
 			int vertexIndexOfPolygon[3] = {};
@@ -286,7 +286,7 @@ namespace core
 			{
 				//현재 삼각형을 구성하고 있는 버텍스정보 내에서의 인덱스를 구한다.(->해당 정점이 실제 몇번째 인덱스인지)
 				int vertexIdx = _pFBXMesh->GetPolygonVertex(i, j);
-				ASSERT(0 <= vertexIdx, "해당 버텍스의 인덱스 번호가 음수입니다.");
+				ASSERT_MESSAGE(0 <= vertexIdx, "해당 버텍스의 인덱스 번호가 음수입니다.");
 				vertexIndexOfPolygon[j] = vertexIdx;
 
 				cont.tangents[vertexIdx] 
@@ -528,7 +528,7 @@ namespace core
 				break;
 			}
 			default:
-				ASSERT(false, "예상치 못한 FbxGeometryElement 타입입니다.");
+				ASSERT_MESSAGE(false, "예상치 못한 FbxGeometryElement 타입입니다.");
 				break;
 			}
 		}
@@ -596,7 +596,7 @@ namespace core
 	void FBXLoader::load_textures()
 	{
 		//일단 텍스처를 Texture 컨텐츠 폴더로 옮겨준다.
-		ASSERT(false, "여기 구현");
+		ASSERT_MESSAGE(false, "여기 구현");
 		const std::fs::path& fbxPath = "";
 		const std::fs::path& texPath = "";
 
@@ -705,9 +705,9 @@ namespace core
 	//			//일단 기본 설정은 Deffered Shader 적용하는 걸로. 나중에 바꿀 것
 	//			pMaterial->set_rendering_mode(eRenderingMode::deffered_opaque);
 
-	//			const s_ptr<GraphicsShader>& defferedShader = ResourceManager::get_inst().find(default_res::shader::graphics::deffered_3D_shader);
+	//			const s_ptr<GraphicsPipeline>& defferedShader = ResourceManager::get_inst().find(default_res::shader::graphics::deffered_3D_shader);
 
-	//			ASSERT(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
+	//			ASSERT_MESSAGE(nullptr == defferedShader, "Deffered Shader를 찾지 못했습니다.");
 
 	//			pMaterial->set_shader(defferedShader);
 	//			

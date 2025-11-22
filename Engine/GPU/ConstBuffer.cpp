@@ -48,8 +48,8 @@ namespace core
 
 	void ConstBuffer::set_data(const void* _data, uint _dataCount)
 	{
-		ASSERT(nullptr != _data, "data가 nullptr 입니다.");
-		ASSERT(_dataCount <= m_data_count, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
+		ASSERT_MESSAGE(nullptr != _data, "data가 nullptr 입니다.");
+		ASSERT_MESSAGE(_dataCount <= m_data_count, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
 		
 
 		auto pContext = RenderManager::get_inst().get_context();

@@ -10,7 +10,6 @@ namespace core
 		DECLARE_SINGLETON(SceneManager);
 	private:
 		SceneManager();
-		void init();
 
 		~SceneManager();
 
@@ -27,8 +26,8 @@ namespace core
 		s_ptr<Scene> get_active_scene() { return m_active_scene; }
 
 	private:
-		s_ptr<Scene>				m_active_scene;
+		s_ptr<Scene>				m_active_scene = {};
 
-		bool m_b_fixed_update;
+		bool m_b_fixed_update = {};
 	};
 }

@@ -8,7 +8,7 @@
 #define DECLARE_SINGLETON(T) \
 public:\
 static T& get_inst() { \
-if (nullptr == m_instance) { m_instance = new T; m_instance->init(); } \
+if (nullptr == m_instance) { m_instance = new T; } \
 return *(m_instance); \
 } \
 static void destroy_inst() { SAFE_DELETE(m_instance); } \

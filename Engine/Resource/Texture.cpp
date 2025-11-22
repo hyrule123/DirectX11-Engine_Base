@@ -314,7 +314,7 @@ namespace core
 
 		case core::eBufferViewType::SRV:
 		{
-			ASSERT(0 <= m_cur_bound_register, "Bound된 레지스터 번호가 음수입니다.");
+			ASSERT_MESSAGE(0 <= m_cur_bound_register, "Bound된 레지스터 번호가 음수입니다.");
 			ID3D11ShaderResourceView* srv = nullptr;
 
 			auto pContext = RenderManager::get_inst().get_context();

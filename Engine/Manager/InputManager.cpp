@@ -32,13 +32,18 @@ namespace core
 	};
 
 	InputManager::InputManager()
-		: m_keys{}
-		, m_prev_mouse_position{}
-		, m_mouse_position{}
-		, m_mouse_direction{}
-	{}
+	{
+		AtExit::add_func(InputManager::destroy_inst);
+	}
 	void InputManager::init()
 	{
+		static bool b_initialized = false;
+		if(b_initialized)
+		{
+			DEBUG_MESSAGE("InputManager은 한 번만 초기화할 수 있습니다.");
+			return;
+		}
+
 		for (uint i = 0; i < (uint)eKeyCode::END; i++)
 		{
 			tKey key;
@@ -49,11 +54,7 @@ namespace core
 			m_keys.push_back(key);
 		}
 
-		m_mouse_position = {};
-		m_prev_mouse_position = {};
-		m_mouse_direction = {};
-
-		AtExit::add_func(InputManager::destroy_inst);
+		b_initialized = true;
 	}
 
 	InputManager::~InputManager()

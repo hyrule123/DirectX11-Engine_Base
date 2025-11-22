@@ -33,7 +33,7 @@ namespace core {
 		m_deffered_merge_rectmesh = ResourceManager::get_inst().find<Mesh>(default_res::mesh::rect_mesh);
 		m_deffered_merge_material = ResourceManager::get_inst().find<Material>(default_res::material::merge_material);
 
-		ASSERT(m_deffered_merge_material && m_deffered_merge_rectmesh, "merge mesh와 material을 찾지 못했습니다.");
+		ASSERT_MESSAGE(m_deffered_merge_material && m_deffered_merge_rectmesh, "merge mesh와 material을 찾지 못했습니다.");
 
 		m_debug_meshes_3D[(int)eCollider3D_Shape::Cube] =
 			ResourceManager::get_inst().find<Mesh>(default_res::mesh::debug_cube_mesh);
@@ -146,7 +146,7 @@ namespace core {
 
 	void SceneRenderAgent::register_camera(const s_ptr<Camera>& _pCam)
 	{
-		ASSERT(_pCam, "nullptr"); m_cameras.push_back(_pCam);
+		ASSERT_MESSAGE(_pCam, "nullptr"); m_cameras.push_back(_pCam);
 	}
 
 	void SceneRenderAgent::unregister_camera(const s_ptr<Camera>& _pCam)

@@ -24,23 +24,45 @@ namespace core
 		return eResult::Success;
 	}
 
-	eResult BinarySerializer::load_file(std::istream& _file)
+	eResult BinarySerializer::load_file(std::istream& _infile)
 	{
+		clear();
+
 		//원래 위치 받아둔다
-		std::streampos origPos = _file.tellg();
+		std::streampos origPos = _infile.tellg();
 
 		//파일 사이즈 확인 후 resize
-		_file.seekg(0, std::ios::end);
-		std::streampos fileSize = _file.tellg() - origPos;
+		_infile.seekg(0, std::ios::end);
+		std::streampos fileSize = _infile.tellg() - origPos;
 		 
+		m_data.resize(fileSize);
+
+		//원래 위치로 복귀
+		_infile.seekg(origPos);
+		
+		char* readPos = reinterpret_cast<char*>(m_data.data());
+		_infile.read(readPos, fileSize);
+
+		return eResult::Success;
+	}
+
+	eResult BinarySerializer::load_file_append(std::istream& _infile)
+	{
+		//원래 위치 받아둔다
+		std::streampos origPos = _infile.tellg();
+
+		//파일 사이즈 확인 후 resize
+		_infile.seekg(0, std::ios::end);
+		std::streampos fileSize = _infile.tellg() - origPos;
+
 		size_t origDataSize = m_data.size();
 		m_data.resize(origDataSize + fileSize);
 
 		//원래 위치로 복귀
-		_file.seekg(origPos);
+		_infile.seekg(origPos);
 
 		char* readPos = reinterpret_cast<char*>(m_data.data() + origDataSize);
-		_file.read(readPos, fileSize);
+		_infile.read(readPos, fileSize);
 
 		return eResult::Success;
 	}

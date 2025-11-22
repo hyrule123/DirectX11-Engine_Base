@@ -72,7 +72,7 @@ namespace core::editor
 		//AddResources<Mesh>(pRootNode, "Mesh");
 		//AddResources<Texture>(pRootNode, "Texture");
 		//AddResources<Material>(pRootNode, "Materials");
-		//AddResources<GraphicsShader>(pRootNode, "Shaders");
+		//AddResources<GraphicsPipeline>(pRootNode, "Shaders");
 	}
 
 	void EditorResources::to_texture_inspector(w_ptr<void> _ptr)

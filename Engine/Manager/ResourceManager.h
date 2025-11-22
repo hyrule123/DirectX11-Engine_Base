@@ -91,7 +91,6 @@ namespace core
 		void clean_unused();
 
 		const std::fs::path& get_resource_directory() const { return m_resource_directory; }
-		const std::fs::path& get_shader_directory() const { return m_shader_directory; }
 
 		std::fs::path create_resource_name_from_full_path(const std::fs::path& _fullPath);
 
@@ -111,10 +110,9 @@ namespace core
 		void load_default_meshes();
 		void load_default_materials();
 
-		std::unordered_set<s_ptr<Resource>> m_default_resources;
-		std::array<umap_string<s_ptr<Resource>>, (int)eResourceType::END> m_resources;
+		std::unordered_set<s_ptr<Resource>> m_default_resources = {};
+		std::array<umap_string<s_ptr<Resource>>, (int)eResourceType::END> m_resources = {};
 
-		std::fs::path m_resource_directory;
-		std::fs::path m_shader_directory;
+		std::fs::path m_resource_directory = {};
 	};
 }

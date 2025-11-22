@@ -33,8 +33,9 @@ namespace core
 		BinarySerializer();
 		~BinarySerializer();
 
-		eResult save_file(std::ostream& _os) const;
-		eResult load_file(std::istream& _is);
+		eResult save_file(std::ostream& _outfile) const;
+		eResult load_file(std::istream& _infile);
+		eResult load_file_append(std::istream& _infile);
 
 		void write(const unsigned char* _pSrc, size_t _size);
 		size_t read(unsigned char* _pDest, size_t _size) const;
@@ -60,6 +61,8 @@ namespace core
 
 		template <typename CharType>
 		inline void operator >>(std::basic_string<CharType>& _data) const;
+
+		const std::vector<unsigned char> get_data() const { return m_data; }
 
 		size_t get_data_size() const { return m_data.size(); }
 		void reserve_data_size(size_t _size) { m_data.reserve(_size); }

@@ -16,7 +16,7 @@
 #include <Engine/GPU/ConstBuffer.h>
 #include <Engine/GPU/StructBuffer.h>
 
-#include <Engine/DefaultShader/Animation/Animation2D.hlsli>
+#include <Engine/Shader/Animation/Animation2D.hlsli>
 
 namespace core
 {

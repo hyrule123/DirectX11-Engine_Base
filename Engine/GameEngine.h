@@ -9,8 +9,6 @@ namespace core
 		DECLARE_SINGLETON(GameEngine);
 	private:
 		GameEngine();
-		void init();
-
 		~GameEngine();
 
 	public:
@@ -42,11 +40,11 @@ namespace core
 		void frame_end();
 
 	private:
-		HWND m_hwnd;
-		HDC  m_hdc;
+		HWND m_hwnd = {};
+		HDC  m_hdc = {};
 
-		std::function<void()> m_editor_run_function;
+		std::function<void()> m_editor_run_function = {};
 
-		BOOL m_bRunning : 1;
+		BOOL m_bRunning : 1 = {};
 	};
 }

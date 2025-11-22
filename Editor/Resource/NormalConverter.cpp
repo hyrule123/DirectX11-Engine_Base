@@ -10,7 +10,7 @@
 #include <Engine/Util/define_Util.h>
 
 #include <Engine/Resource/Shader/ComputeShaders/NormalConvertShader.h>
-#include <Engine/DefaultShader/NormalConverter/NormalConverter.hlsli>
+#include <Engine/Shader/NormalConverter/NormalConverter.hlsli>
 
 namespace core::editor
 {

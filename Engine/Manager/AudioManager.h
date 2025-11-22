@@ -33,7 +33,7 @@ namespace core
 			const float3* _forward, const float3* _up);
 
 	private:
-		FMOD::System* m_FMOD_core_system;
-		FMOD::Studio::System* m_FMOD_system;
+		FMOD::System* m_FMOD_core_system = {};
+		FMOD::Studio::System* m_FMOD_system = {};
 	};
 }

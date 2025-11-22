@@ -53,7 +53,7 @@ namespace core
 
     void Animation3D::bind_buffer_to_GPU_register()
     {
-        ASSERT(m_keyframe_sbuffer, "키프레임 버퍼가 존재하지 않습니다.");
+        ASSERT_MESSAGE(m_keyframe_sbuffer, "키프레임 버퍼가 존재하지 않습니다.");
         m_keyframe_sbuffer->bind_buffer_as_SRV();
     }
     void Animation3D::unbind_buffer_from_GPU_register()
@@ -229,7 +229,7 @@ namespace core
         m_start_frame_idx = (uint)_clip->start_frame_idx;
         m_end_frame_idx = (uint)_clip->end_frame_idx;
 
-        ASSERT(m_start_frame_idx <= m_end_frame_idx, "3D 애니메이션의 프레임이 음수입니다.");
+        ASSERT_MESSAGE(m_start_frame_idx <= m_end_frame_idx, "3D 애니메이션의 프레임이 음수입니다.");
         m_frame_length = (uint)_clip->frame_length;
 
         //본의 사이즈 * 프레임 수 만큼 사이즈를 설정
@@ -301,7 +301,7 @@ namespace core
 
     bool Animation3D::create_keyframe_sbuffer()
     {
-        ASSERT(false == m_key_frames_per_bone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
+        ASSERT_MESSAGE(false == m_key_frames_per_bone.empty(), "애니메이션 프레임 정보가 비어 있습니다.");
 
         std::vector<tAnimKeyframeTranslation>	vecFrameTrans;//GPU
 

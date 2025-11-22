@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/Game/Component/Component.h>
 
-#include <Engine/DefaultShader/Common_struct.hlsli>
+#include <Engine/Shader/Common_struct.hlsli>
 
 #include <Engine/Game/Collision/PxActorWrapper.h>
 

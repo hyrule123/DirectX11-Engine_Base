@@ -38,25 +38,25 @@ namespace core
 		void set_max_fixed_updates_per_frame(uint _max);
 
 	private:
-		float			m_cur_delta_time;
+		float			m_cur_delta_time = {};
 
 		//DeltaTime 측정 관련
-		float			m_delta_time;
-		float			m_delta_time_cap_per_frame;
+		float			m_delta_time = {};
+		float			m_delta_time_cap_per_frame = {};
 
-		std::chrono::steady_clock::time_point m_prev_time_point;
-		std::chrono::steady_clock::time_point m_current_time_stamp;
+		std::chrono::steady_clock::time_point m_prev_time_point = {};
+		std::chrono::steady_clock::time_point m_current_time_stamp = {};
 		//
 
 
 		// fixed_update 관련
-		float			m_fixed_delta_time;
-		uint				m_max_fixed_updates_per_frame;
+		float			m_fixed_delta_time = {};
+		uint				m_max_fixed_updates_per_frame = {};
 
-		float			m_accumulated_delta_time;
+		float			m_accumulated_delta_time = {};
 		//
 
-		float			m_one_second;
+		float			m_one_second = {};
 	};
 
 	inline void TimeManager::set_fixed_update_mode(bool _enable)

@@ -15,7 +15,7 @@
 #include <Engine/Game/Component/Animator/Animator3D.h>
 #include <Engine/Game/Component/Animator/Animation3D_PlayData.h>
 
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 
 #include <Engine/Resource/Texture.h>
 #include <Engine/Resource/Model3D/Skeleton.h>
@@ -227,7 +227,7 @@ namespace core
 			if (false == set_data_to_renderer(renderer, 0))
 			{
 				newObjects.clear();
-				ASSERT(false, "Renderer 세팅 실패.");
+				ASSERT_MESSAGE(false, "Renderer 세팅 실패.");
 				return newObjects;
 			}
 		}
@@ -262,7 +262,7 @@ namespace core
 				if (false == set_data_to_renderer(renderer, (UINT)i))
 				{
 					newObjects.clear();
-					ASSERT(false, "Renderer 세팅 실패.");
+					ASSERT_MESSAGE(false, "Renderer 세팅 실패.");
 					return newObjects;
 				}
 			}
@@ -480,7 +480,7 @@ namespace core
 		mtrl->set_ambient_color(_fbxMtrl->ambient_color);
 		mtrl->set_emmisive_color(_fbxMtrl->emissive_color);
 
-		ASSERT(false, "여기 구현");
+		ASSERT_MESSAGE(false, "여기 구현");
 		std::fs::path texDir = "";
 		//texDir /= _texDestDir;
 
@@ -528,7 +528,7 @@ namespace core
 		mtrl->set_texture(eTextureSlot::specular_texture, CopyAndLoadTex(_fbxMtrl->specular_tex_name));
 		mtrl->set_texture(eTextureSlot::emissive_texture, CopyAndLoadTex(_fbxMtrl->emissive_tex_name));
 
-		s_ptr<GraphicsShader> defferedShader = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::deffered_3D_shader);
+		s_ptr<GraphicsPipeline> defferedShader = ResourceManager::get_inst().find<GraphicsPipeline>(default_res::shader::graphics::deffered_3D_shader);
 		mtrl->set_shader(defferedShader);
 
 		mtrl->set_rendering_mode(eRenderingMode::deffered_opaque);
@@ -631,7 +631,7 @@ namespace core
 
 									newTex = ResourceManager::get_inst().load<Texture>(texKey.string());
 
-									ASSERT(nullptr != newTex, "Texture 로드에 실패했습니다.");
+									ASSERT_MESSAGE(nullptr != newTex, "Texture 로드에 실패했습니다.");
 
 									_mtrl->set_texture((eTextureSlot)j, newTex);
 								}

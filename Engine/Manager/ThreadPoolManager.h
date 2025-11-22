@@ -39,17 +39,17 @@ namespace core
 
     private:
         // 총 Worker 쓰레드의 개수.
-        size_t m_threads_count;
+        size_t m_threads_count = {};
         // Worker 쓰레드를 보관하는 벡터.
-        std::vector<std::thread> m_threads;
+        std::vector<std::thread> m_threads = {};
         // 할일들을 보관하는 job 큐.
-        std::queue<std::function<void()>> m_jobs;
+        std::queue<std::function<void()>> m_jobs = {};
         // 위의 job 큐를 위한 cv 와 m.
-        std::condition_variable m_condition_var_job_queue;
-        std::mutex m_mtx_job_queue;
+        std::condition_variable m_condition_var_job_queue = {};
+        std::mutex m_mtx_job_queue = {};
 
         // 모든 쓰레드 종료
-        bool m_b_stop_all;
+        bool m_b_stop_all = {};
     };
 
 

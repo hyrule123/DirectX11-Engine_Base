@@ -5,17 +5,9 @@
 
 namespace core
 {
-    ThreadPoolManager::ThreadPoolManager()
-        : m_threads_count{}
-        , m_threads{}
-        , m_jobs{}
-        , m_condition_var_job_queue{}
-        , m_mtx_job_queue{}
-        , m_b_stop_all{}
-    {}
-    void ThreadPoolManager::init()
+    ThreadPoolManager::ThreadPoolManager() 
     {
-        AtExit::add_func(ThreadPoolManager::destroy_inst);
+		AtExit::add_func(ThreadPoolManager::destroy_inst);
     }
 
     ThreadPoolManager::~ThreadPoolManager()
@@ -37,6 +29,14 @@ namespace core
     }
     void ThreadPoolManager::init(size_t _numThread)
     {
+        static bool b_initialized = false;
+        if (b_initialized)
+        {
+            DEBUG_MESSAGE("ThreadPoolManager은 한 번만 초기화할 수 있습니다.");
+            return;
+		}
+        b_initialized = true;
+
         m_threads_count = _numThread;
         m_threads.reserve(m_threads_count);
 

@@ -15,7 +15,7 @@ namespace core
 {
 	class StructBuffer;
 	class Texture;
-	class GraphicsShader;
+	class GraphicsPipeline;
 
 	class Material 
 		: public Resource
@@ -48,8 +48,8 @@ namespace core
 		virtual eResult serialize_json(JsonSerializer& _ser) const override;
 		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
 
-		void set_shader(const s_ptr<GraphicsShader>& _shader) { m_shader = _shader; }
-		const s_ptr<GraphicsShader>& get_shader() const { return m_shader; }
+		void set_shader(const s_ptr<GraphicsPipeline>& _shader) { m_shader = _shader; }
+		const s_ptr<GraphicsPipeline>& get_shader() const { return m_shader; }
 
 		void set_texture(eTextureSlot _slot, const s_ptr<Texture>& _texture);
 		const s_ptr<Texture>& get_texture(eTextureSlot _slot) const { return m_textures[(uint)_slot]; }
@@ -73,7 +73,7 @@ namespace core
 		void set_emmisive_color(const float4& _emsv)	{ m_shared_material_data.emissive = _emsv; }
 			
 	private:
-		s_ptr<GraphicsShader> m_shader;
+		s_ptr<GraphicsPipeline> m_shader;
 		std::array<s_ptr<Texture>, (int)eTextureSlot::END> m_textures;
 
 		eRenderingMode m_renderingMode;

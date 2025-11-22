@@ -21,16 +21,16 @@ namespace core
 		inline physx::PxDefaultCpuDispatcher* GetCPUDispatcher() { return m_dispatcher; }
 
 	private:
-		physx::PxDefaultAllocator		m_allocator;
-		physx::PxDefaultErrorCallback	m_errorCallback;
+		physx::PxDefaultAllocator		m_allocator = {};
+		physx::PxDefaultErrorCallback	m_errorCallback = {};
 
-		physx::PxFoundation*				m_foundation;
-		physx::PxPhysics*				m_physics;
+		physx::PxFoundation* m_foundation = {};
+		physx::PxPhysics* m_physics = {};
 
-		physx::PxDefaultCpuDispatcher*	m_dispatcher;
+		physx::PxDefaultCpuDispatcher* m_dispatcher = {};
 
 		//Physx Visualization Debugger
-		physx::PxPvd* m_PVD;
+		physx::PxPvd* m_PVD = {};
 	};
 }
 

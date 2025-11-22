@@ -5,7 +5,7 @@
 
 #include <Engine/GPU/StructBuffer.h>
 
-#include <Engine/DefaultShader/Debug/Debug.hlsli>
+#include <Engine/Shader/Debug/Debug.hlsli>
 
 #include <Engine/Manager/ResourceManager.h>
 

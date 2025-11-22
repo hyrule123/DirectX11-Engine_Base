@@ -1,8 +1,8 @@
 
 #include "NormalConvertShader.h"
 
-#include <Engine/DefaultShader/Common_register.hlsli>
-#include <Engine/DefaultShader/NormalConverter/NormalConverter.hlsli>
+#include <Engine/Shader/Common_register.hlsli>
+#include <Engine/Shader/NormalConverter/NormalConverter.hlsli>
 
 #if defined (_WIN64) && !(NDEBUG)
 #include <Engine/CompiledShaderHeader/NormalConverter_CS_x64_Debug.h>

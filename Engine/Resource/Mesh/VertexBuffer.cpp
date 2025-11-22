@@ -135,7 +135,7 @@ namespace core {
 		{
 			//메모리의 끝 위치보다는 작아야 함
 			//ex)stride가 16이고 데이터 갯수가 1개일 경우 n + 16 - 1: 15를 넘어가면 안됨 
-			ASSERT(m_data.size() > (i + sizeof(VertexBase) - 1u), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
+			ASSERT_MESSAGE(m_data.size() > (i + sizeof(VertexBase) - 1u), "참조하는 정점 인덱스가 정점 최대 사이즈를 넘어섰습니다.");
 
 			const VertexBase* vtx = reinterpret_cast<const VertexBase*>(&(m_data[i]));
 

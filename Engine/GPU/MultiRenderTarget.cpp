@@ -19,7 +19,7 @@ namespace core
 	}
 	bool MultiRenderTarget::create(s_ptr<Texture> _texture[MRT_MAX], s_ptr<Texture> _dsTexture)
 	{
-		ASSERT(nullptr != _texture[0], "렌더타겟이 하나도 없습니다.");
+		ASSERT_MESSAGE(nullptr != _texture[0], "렌더타겟이 하나도 없습니다.");
 
 		//렌더타겟의 갯수를 카운트
 		for (int i = 0; i < MRT_MAX; ++i)

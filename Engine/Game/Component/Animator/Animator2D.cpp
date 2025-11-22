@@ -35,7 +35,7 @@ namespace core
 			s_ptr<Animation2D> AnimClone = std::static_pointer_cast<Animation2D>(iter.second->clone());
 
 			//애니메이션 이름이 비어있으면 에러 발생시킴
-			ASSERT(false == AnimClone->get_animation_name().empty(), "애니메이션 이름이 존재하지 않습니다.");
+			ASSERT_MESSAGE(false == AnimClone->get_animation_name().empty(), "애니메이션 이름이 존재하지 않습니다.");
 
 			//복사한 애니메이션을 내 애니메이션 목록에 집어넣음
 			m_animations.insert(std::make_pair(AnimClone->get_animation_name(), AnimClone));

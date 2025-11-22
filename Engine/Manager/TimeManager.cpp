@@ -11,19 +11,18 @@
 namespace core
 {
     TimeManager::TimeManager() 
-        : m_cur_delta_time{}
-        , m_delta_time{}
-        , m_delta_time_cap_per_frame{}
-        , m_prev_time_point{}
-        , m_current_time_stamp{}
-        , m_fixed_delta_time{}
-        , m_max_fixed_updates_per_frame{}
-        , m_accumulated_delta_time{}
-        , m_one_second{}
     {
+        AtExit::add_func(TimeManager::destroy_inst);
     }
     void TimeManager::init()
     {
+		static bool b_initialized = false;
+        if(b_initialized)
+        {
+            DEBUG_MESSAGE("TimeManager은 한 번만 초기화할 수 있습니다.");
+            return;
+		}
+
         m_delta_time_cap_per_frame = g_default_deltatime_max_cap;
         m_prev_time_point = std::chrono::high_resolution_clock::now();
         m_fixed_delta_time = g_defaultFixedUpdateDeltaTime;
@@ -32,7 +31,7 @@ namespace core
         set_max_fixed_updates_per_frame(g_maxFixedUpdatesPerFrame);
         set_fixed_delta_time(g_defaultFixedUpdateDeltaTime);
 
-        AtExit::add_func(TimeManager::destroy_inst);
+        b_initialized = true;
     }
 
 
@@ -141,13 +140,13 @@ namespace core
     }
     void TimeManager::set_fixed_delta_time(float _fixedDeltaTime)
     {
-        ASSERT(0.f < _fixedDeltaTime, "Fixed Delta Time은 음수가 될 수 없음.");
+        ASSERT_MESSAGE(0.f < _fixedDeltaTime, "Fixed Delta Time은 음수가 될 수 없음.");
 
         m_fixed_delta_time = _fixedDeltaTime;
     }
     void TimeManager::set_max_fixed_updates_per_frame(uint _max)
     {
-        ASSERT(0u < _max, "0으로는 설정할 수 없습니다.");
+        ASSERT_MESSAGE(0u < _max, "0으로는 설정할 수 없습니다.");
 
         m_max_fixed_updates_per_frame = _max;
     }

@@ -1,6 +1,6 @@
 #include <Engine/Manager/ResourceManager.h>
 
-#include <Engine/Resource/Shader/GraphicsShader.h>
+#include <Engine/Resource/Shader/GraphicsPipeline.h>
 #include <Engine/Resource/Texture.h>
 #include <Engine/Resource/Material/Material.h>
 
@@ -13,7 +13,7 @@ namespace core {
 	{
 		using namespace default_res;
 #pragma region DEFAULT
-		s_ptr<GraphicsShader> shader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::rect_shader);
+		s_ptr<GraphicsPipeline> shader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::rect_shader);
 		s_ptr<Material> rect_material = new_entity<Material>();
 		rect_material->set_shader(shader);
 
@@ -22,7 +22,7 @@ namespace core {
 
 #pragma region SPRITE
 		s_ptr <Texture> spriteTexture = ResourceManager::get_inst().find<Texture>(texture::default_sprite);
-		s_ptr<GraphicsShader> spriteShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::sprite_shader);
+		s_ptr<GraphicsPipeline> spriteShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::sprite_shader);
 		s_ptr<Material> sprite_material = new_entity<Material>();
 		sprite_material->set_rendering_mode(eRenderingMode::forward_opaque);
 		sprite_material->set_shader(spriteShader);
@@ -32,7 +32,7 @@ namespace core {
 #pragma endregion
 
 #pragma region UI
-		s_ptr<GraphicsShader> uiShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::UI_shader);
+		s_ptr<GraphicsPipeline> uiShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::UI_shader);
 		s_ptr<Material> ui_material = new_entity<Material>();
 		ui_material->set_rendering_mode(eRenderingMode::forward_opaque);
 		ui_material->set_shader(uiShader);
@@ -41,7 +41,7 @@ namespace core {
 #pragma endregion
 
 #pragma region GRID
-		s_ptr<GraphicsShader> gridShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::grid_shader);
+		s_ptr<GraphicsPipeline> gridShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::grid_shader);
 		s_ptr<Material> grid_material = new_entity<Material>();
 		grid_material->set_shader(gridShader);
 
@@ -50,7 +50,7 @@ namespace core {
 
 
 #pragma region PARTICLE
-		s_ptr<GraphicsShader> particleShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::particle_shader);
+		s_ptr<GraphicsPipeline> particleShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::particle_shader);
 		s_ptr<Material> particle_material = new_entity<Material>();
 		particle_material->set_rendering_mode(eRenderingMode::forward_transparent);
 		particle_material->set_shader(particleShader);
@@ -59,7 +59,7 @@ namespace core {
 #pragma endregion
 
 #pragma region POSTPROCESS
-		s_ptr<GraphicsShader> postProcessShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::post_process_shader);
+		s_ptr<GraphicsPipeline> postProcessShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::post_process_shader);
 		s_ptr<Material> post_process_material = new_entity<Material>();
 		post_process_material->set_rendering_mode(eRenderingMode::post_process);
 		post_process_material->set_shader(postProcessShader);
@@ -68,7 +68,7 @@ namespace core {
 #pragma endregion
 
 #pragma region FORWARD_3D
-		s_ptr<GraphicsShader> forward_3D_shader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::forward_3D_shader);
+		s_ptr<GraphicsPipeline> forward_3D_shader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::forward_3D_shader);
 		s_ptr<Material> basic_3D_material = new_entity<Default3DMtrl>();
 		basic_3D_material->set_rendering_mode(eRenderingMode::forward_transparent);
 		basic_3D_material->set_shader(forward_3D_shader);
@@ -78,7 +78,7 @@ namespace core {
 
 #pragma region LIGHT
 		{
-			s_ptr<GraphicsShader> lightShader = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::directional_light_shader);
+			s_ptr<GraphicsPipeline> lightShader = ResourceManager::get_inst().find<GraphicsPipeline>(default_res::shader::graphics::directional_light_shader);
 			s_ptr<Material> light_material = new_entity<Material>();
 			light_material->set_rendering_mode(eRenderingMode::NONE);
 			light_material->set_shader(lightShader);
@@ -87,7 +87,7 @@ namespace core {
 		}
 
 		{
-			s_ptr<GraphicsShader> point_light_shader = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::point_light_shader);
+			s_ptr<GraphicsPipeline> point_light_shader = ResourceManager::get_inst().find<GraphicsPipeline>(default_res::shader::graphics::point_light_shader);
 			s_ptr<Material> light_material = new_entity<Material>();
 			light_material->set_rendering_mode(eRenderingMode::NONE);
 			light_material->set_shader(point_light_shader);
@@ -98,7 +98,7 @@ namespace core {
 #pragma endregion
 
 #pragma region MERGE
-		s_ptr<GraphicsShader> mergeShader = ResourceManager::get_inst().find<GraphicsShader>(default_res::shader::graphics::merge_shader);
+		s_ptr<GraphicsPipeline> mergeShader = ResourceManager::get_inst().find<GraphicsPipeline>(default_res::shader::graphics::merge_shader);
 		s_ptr<Material> merge_material = new_entity<Material>();
 		merge_material->set_rendering_mode(eRenderingMode::NONE);
 		merge_material->set_shader(mergeShader);
@@ -107,7 +107,7 @@ namespace core {
 #pragma endregion
 
 #pragma region DEBUG
-		s_ptr<GraphicsShader> debugShader = ResourceManager::get_inst().find<GraphicsShader>(shader::graphics::debug_shader);
+		s_ptr<GraphicsPipeline> debugShader = ResourceManager::get_inst().find<GraphicsPipeline>(shader::graphics::debug_shader);
 		s_ptr<DebugMaterial> debug_material = new_entity<DebugMaterial>();
 		debug_material->set_rendering_mode(eRenderingMode::forward_transparent);
 		debug_material->set_shader(debugShader);

@@ -56,7 +56,7 @@ namespace core
 
 	void Camera::final_update()
 	{
-		ASSERT(eProjectionType::None != m_projection_type, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
+		ASSERT_MESSAGE(eProjectionType::None != m_projection_type, "카메라의 투영행렬 타입을 설정하지 않았습니다.");
 
 		CreateViewMatrix();
 	}
@@ -258,7 +258,7 @@ namespace core
 				m_culling_agent = std::make_unique<CullingAgent_Orthographic>();
 				break;
 			default:
-				ASSERT(nullptr, "Projection 타입이 설정되지 않았습니다.");
+				ASSERT_MESSAGE(nullptr, "Projection 타입이 설정되지 않았습니다.");
 				break;
 			}
 		}
@@ -298,7 +298,7 @@ namespace core
 			break;
 
 		default:
-			ASSERT(false, "Projection Type이 설정되지 않았습니다.");
+			ASSERT_MESSAGE(false, "Projection Type이 설정되지 않았습니다.");
 			break;
 		}
 

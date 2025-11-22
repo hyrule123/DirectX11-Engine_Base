@@ -20,7 +20,7 @@ namespace core
 		void draw_font(const wchar_t* _string, float _x, float _y, float _size, uint32 _rgb);
 
 	private:
-		IFW1Factory* m_FW1_factory;
-		IFW1FontWrapper* m_font_wrapper;
+		IFW1Factory* m_FW1_factory = {};
+		IFW1FontWrapper* m_font_wrapper = {};
 	};
 }

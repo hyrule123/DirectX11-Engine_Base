@@ -35,7 +35,7 @@ namespace core
 		CreatePxScene();
 
 		m_defaultPxMaterial = PhysXInstance::get_inst().GetPhysX().createMaterial(0.5f, 0.5f, 0.6f);
-		ASSERT(m_defaultPxMaterial, "pxMaterial 생성 실패");
+		ASSERT_MESSAGE(m_defaultPxMaterial, "pxMaterial 생성 실패");
 	}
 
 	Collision3D::~Collision3D()
@@ -74,7 +74,7 @@ namespace core
 		sceneDescription.simulationEventCallback = this;
 
 		m_pxScene = PhysXInstance::get_inst().GetPhysX().createScene(sceneDescription);
-		ASSERT(m_pxScene, "pxScene 생성 실패.");
+		ASSERT_MESSAGE(m_pxScene, "pxScene 생성 실패.");
 
 		m_pxScene->setName(gameScene->get_concrete_class_name().data());
 

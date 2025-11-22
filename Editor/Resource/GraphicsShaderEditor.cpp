@@ -401,7 +401,7 @@ namespace core::editor
 		};
 		std::unordered_map<std::fs::path, tShaderGroup> umapGSGroup;
 
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 		std::fs::path shaderPath = {}; 
 		//PathManager::get_inst().get_relative_shader_directory();
 
@@ -435,12 +435,12 @@ namespace core::editor
 			}
 		}
 
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 
 		//쉐이더 세팅 파일 경로 확인
 		std::vector<tComboItem> new_shader_groups;
 		std::fs::path ShaderSettingDir = {}; 
-		//PathManager::get_inst().get_absolute_resource_directory() / core::path::directory::resource::GraphicsShader;
+		//PathManager::get_inst().get_absolute_resource_directory() / core::path::directory::resource::GraphicsPipeline;
 		if (false == std::fs::exists(ShaderSettingDir))
 		{
 			std::fs::create_directories(ShaderSettingDir);
@@ -463,7 +463,7 @@ namespace core::editor
 
 				Json::Value jVal;
 				{
-					GraphicsShader DummyGS;
+					GraphicsPipeline DummyGS;
 					DummyGS.set_res_pathkey(iter.first.string());
 
 					const auto& fileNames = iter.second.FileName;
@@ -519,7 +519,7 @@ namespace core::editor
 
 	void EditorGraphicsShader::load_shader_setting_combobox()
 	{
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 		std::fs::path GSSettingsPath = {}; 
 		//::get_inst().get_base_directory();
 
@@ -793,7 +793,7 @@ namespace core::editor
 	void EditorGraphicsShader::save_to_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
-		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
+		std::shared_ptr<GraphicsPipeline> shader = new_entity<GraphicsPipeline>();
 
 		//이름 등록
 		for (size_t i = 0; i < m_input_layout_descs.size(); ++i)
@@ -881,11 +881,11 @@ namespace core::editor
 		
 		//shader->set_resource_key(_filePath.string());
 
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 
 		//임시로 저장하므로 직접 save() 함수를 호출한다.
 		const std::fs::path& base_dir = {};
-			//Resources<GraphicsShader>::get_inst().get_base_directory();
+			//Resources<GraphicsPipeline>::get_inst().get_base_directory();
 
 		if (eResult_success(shader->save(base_dir)))
 		{
@@ -900,13 +900,13 @@ namespace core::editor
 	void EditorGraphicsShader::load_from_json(const std::filesystem::path& _filePath)
 	{
 		using namespace core;
-		std::shared_ptr<GraphicsShader> shader = new_entity<GraphicsShader>();
+		std::shared_ptr<GraphicsPipeline> shader = new_entity<GraphicsPipeline>();
 		shader->set_edit_mode(true);
 		shader->set_res_pathkey(_filePath.string());
 
-		ASSERT(false, "미구현");
+		ASSERT_MESSAGE(false, "미구현");
 
-		//const std::fs::path& baseDir = Resources<GraphicsShader>::get_inst().get_base_directory();
+		//const std::fs::path& baseDir = Resources<GraphicsPipeline>::get_inst().get_base_directory();
 		//if (eResult_fail(shader->load(baseDir)))
 		//{
 		//	NOTIFICATION("로드 실패.");
