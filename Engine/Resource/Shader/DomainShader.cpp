@@ -11,9 +11,9 @@ namespace core
 	DomainShader::~DomainShader()
 	{
 	}
-	void DomainShader::bind_shader(const ComPtr<ID3D11DeviceContext>& _context)
+	void DomainShader::bind(const ComPtr<ID3D11DeviceContext>& _context)
 	{
-		_context.DSSetShader(m_shader.Get(), nullptr, 0);
+		_context->DSSetShader(m_shader.Get(), nullptr, 0);
 	}
 	bool DomainShader::load_shader(const std::vector<unsigned char>& _byte_code)
 	{

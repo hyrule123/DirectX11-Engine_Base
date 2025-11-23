@@ -24,28 +24,50 @@ namespace core
 
 	public:
 		GraphicsPipeline();
-
-
 		virtual ~GraphicsPipeline();
 
 		virtual eResult save(const std::fs::path& _full_path) const override;
 		virtual eResult load(const std::fs::path& _full_path) override;
 
-		virtual eResult serialize_json(JsonSerializer& _ser) const override;
-		virtual eResult deserialize_json(const JsonSerializer& _ser) override;
+		void set_vertex_shader(const s_ptr<class VertexShader>& _shader) { 
+			if (_shader) { m_vertex_shader = _shader; }
+		}
+		void set_hull_shader(const s_ptr<class HullShader>& _shader) 
+		{ 
+			if (_shader) { m_hull_shader = _shader; }
+		}
+		void set_domain_shader(const s_ptr<class DomainShader>& _shader) 
+		{ 
+			if (_shader) { m_domain_shader = _shader; }
+		}
+		void set_geometry_shader(const s_ptr<class GeometryShader>& _shader) 
+		{ 
+			if (_shader) { m_geometry_shader = _shader; }
+		}
+		void set_pixel_shader(const s_ptr<class PixelShader>& _shader) 
+		{ 
+			if (_shader) { m_pixel_shader = _shader; }
+		}
+		void set_sampler_state(const s_ptr<class SamplerState>& _state) 
+		{ 
+			if (_state) { m_sampler_state = _state; }
+		}
+		void set_rasterizer_state(const s_ptr<class RasterizerState>& _state) 
+		{ 
+			if (_state) { m_rasterizer_state = _state; }
+		}
+		void set_blend_state(const s_ptr<class BlendState>& _state) 
+		{ 
+			if (_state) { m_blend_state = _state; }
+		}
+		void set_depth_stencil_state(const s_ptr<class DepthStencilState>& _state) 
+		{ 
+			if (_state) { m_depth_stencil_state = _state; }
+		}
 
-		void set_rasterizer_state(eRasterizerState _state) { m_rasterizer_type = _state; };
-		void set_depth_stencil_state(eDepthStencilState _state) { m_depth_stencil_type = _state; };
-		void set_blend_state(eBlendState _state) { m_blend_type = _state; };
-		eRasterizerState get_rasterizer_state() const { return m_rasterizer_type; }
-		eDepthStencilState get_depth_stencil_state() const { return m_depth_stencil_type; }
-		eBlendState get_blend_state() const { return m_blend_type; }
 
-		void bind_shader();
-		static void unbind_all_shader();
-
-	private:
-		eResult create_shader(eGSStage _stage, const void* _pByteCode, size_t _ByteCodeSize);
+		void bind();
+		static void unbind_all();
 
 	private:
 		std::shared_ptr<class VertexShader>		m_vertex_shader = {};
@@ -54,16 +76,9 @@ namespace core
 		std::shared_ptr<class GeometryShader>	m_geometry_shader = {};
 		std::shared_ptr<class PixelShader>		m_pixel_shader = {};
 
-		eRasterizerState m_rasterizer_type = {};
-		eBlendState m_blend_type = {};
-		eDepthStencilState m_depth_stencil_type = {};
-
-		FLOAT m_blend_factor[4] = {};
-		UINT m_sample_mask = {};
-		UINT m_stencil_ref = {};
-
-		ComPtr<ID3DBlob> m_error_blob = {};
-
-		bool m_b_edit_mode = {};
+		std::shared_ptr<class SamplerState>		m_sampler_state = {};
+		std::shared_ptr<class RasterizerState>	m_rasterizer_state = {};
+		std::shared_ptr<class BlendState>		m_blend_state = {};
+		std::shared_ptr<class DepthStencilState> m_depth_stencil_state = {};
 	};
 }

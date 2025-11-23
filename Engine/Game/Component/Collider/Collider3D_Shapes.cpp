@@ -33,14 +33,14 @@ namespace core
 		Collider3D::awake();
 
 		s_ptr<GameObject> owner = get_owner();
-		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
+		ASSERT_MESSAGE(owner, "owner GameObject가 없습니다.");
 
 		s_ptr<Rigidbody> rigidbody = owner->get_component<Rigidbody>();
 
 		if (nullptr == rigidbody)
 		{
 			rigidbody = owner->add_component<Com_Rigidbody_Static>();
-			ASSERT_DEBUG(rigidbody, "rigidbody 생성되지 않음.");
+			ASSERT_MESSAGE(rigidbody, "rigidbody 생성되지 않음.");
 		}
 
 		Collision3D* col3d = get_collision_manager_3D();
@@ -61,7 +61,7 @@ namespace core
 		for (size_t i = 0; i < m_px_shapes.size(); ++i)
 		{
 			bool result = rigidbody->attach_collider_shape(m_px_shapes[i]);
-			ASSERT_DEBUG(result, "Shape Attach 실패");
+			ASSERT_MESSAGE(result, "Shape Attach 실패");
 		}
 	}
 

@@ -32,7 +32,7 @@ namespace core
 	physx::PxRigidActor* DynamicRigidbody::create_rigidbody()
 	{
 		s_ptr<GameObject> owner = get_owner();
-		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
+		ASSERT_MESSAGE(owner, "owner gameobject가 없습니다.");
 
 		s_ptr<Transform> tr = owner->get_component<Transform>();
 
@@ -106,7 +106,7 @@ namespace core
 	void DynamicRigidbody::set_limit_velocity(float _maxVelocity)
 	{
 		physx::PxRigidDynamic* dynamicRigid = static_cast<physx::PxRigidDynamic*>(get_px_actor());
-		ASSERT_DEBUG(dynamicRigid, "PxRigidDynamic 인스턴스가 없음.");
+		ASSERT_MESSAGE(dynamicRigid, "PxRigidDynamic 인스턴스가 없음.");
 		if (dynamicRigid)
 		{
 			dynamicRigid->setMaxLinearVelocity(_maxVelocity);

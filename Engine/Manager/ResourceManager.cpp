@@ -103,7 +103,7 @@ namespace core
 		if (found) { return found; }
 
 		//로드 후 성공 시 반환
-		res->set_res_pathkey(_resource_name);
+		res->set_resource_key(_resource_name);
 		eResult result = load_internal(res);
 		if (eResult_fail(result)) { return nullptr; }
 
@@ -159,13 +159,13 @@ namespace core
 			ERROR_MESSAGE("리소스 주소가 nullptr 입니다.");
 			return eResult::Fail; 
 		}
-		if (_res->get_res_pathkey().empty())
+		if (_res->get_resource_key().empty())
 		{
 			ERROR_MESSAGE("리소스 주소가 지정되지 않았습니다.");
 			return eResult::Fail;
 		}
 
-		eResult result = _res->save(m_resource_directory / _res->get_res_pathkey());
+		eResult result = _res->save(m_resource_directory / _res->get_resource_key());
 		return result;
 	}
 
@@ -182,10 +182,10 @@ namespace core
 			return eResult::Fail_Path;
 		}
 
-		std::string before = _res->get_res_pathkey();
-		_res->set_res_pathkey(_res_path);
-		eResult result = _res->save(m_resource_directory / _res->get_res_pathkey());
-		_res->set_res_pathkey(before); //결과와 상관없이 원래 주소로 돌려놓기
+		std::string before = _res->get_resource_key();
+		_res->set_resource_key(_res_path);
+		eResult result = _res->save(m_resource_directory / _res->get_resource_key());
+		_res->set_resource_key(before); //결과와 상관없이 원래 주소로 돌려놓기
 		if (eResult_fail(result)) { 
 			ERROR_MESSAGE("저장 실패");
 			return result; 
@@ -212,8 +212,8 @@ namespace core
 			ERROR_MESSAGE("이미 같은 이름의 리소스가 있습니다.");
 			return eResult::Fail_InValid;
 		}
-		_res->set_res_pathkey(_res_name);
-		m_resources[(int32)_res->get_resource_type()][_res->get_res_pathkey()] = _res;
+		_res->set_resource_key(_res_name);
+		m_resources[(int32)_res->get_resource_type()][_res->get_resource_key()] = _res;
 
 		return eResult::Success;
 	}
@@ -225,20 +225,20 @@ namespace core
 			ERROR_MESSAGE("리소스의 포인터 주소가 nullptr 입니다.");
 			return eResult::Fail;
 		}
-		if (_res->get_res_pathkey().empty())
+		if (_res->get_resource_key().empty())
 		{
 			ERROR_MESSAGE("Resource Key가 지정되지 않았습니다.");
 			return eResult::Fail;
 		}
 
-		eResult result = _res->load(m_resource_directory / _res->get_res_pathkey());
+		eResult result = _res->load(m_resource_directory / _res->get_resource_key());
 		if (eResult_fail(result))
 		{
 			ERROR_MESSAGE("리소스 로드 실패");
 			return result;
 		}
 
-		m_resources[(uint32)_res->get_resource_type()][_res->get_res_pathkey()] = _res;
+		m_resources[(uint32)_res->get_resource_type()][_res->get_resource_key()] = _res;
 
 		return result;
 	}

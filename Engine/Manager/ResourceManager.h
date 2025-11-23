@@ -57,7 +57,7 @@ namespace core
 			if (ret) { return ret; }
 
 			ret = new_entity<T>();
-			ret->set_res_pathkey(_resource_name);
+			ret->set_resource_key(_resource_name);
 			eResult result = load_internal(std::static_pointer_cast<Resource>(ret));
 			if (eResult_fail(result)) { return nullptr; }
 

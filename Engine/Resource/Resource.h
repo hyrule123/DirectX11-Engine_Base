@@ -37,16 +37,16 @@ protected:\
 		virtual eResult save(const std::fs::path& _fullpath) const = 0;
 		virtual eResult load(const std::fs::path& _fullpath) = 0;
 
-		//경로 겸 리소스 찾기용 Key 역할
-		void set_res_pathkey(const std::string_view _resource_name) { m_res_pathkey = _resource_name; }
-		const std::string& get_res_pathkey() const { return m_res_pathkey; }
+		//리소스 찾기용 Key 역할 (파일로부터 로딩될 경우 경로를 사용.)
+		const std::string& get_resource_key() const { return m_resource_key; }
 
 		eResourceType get_resource_type() const { return m_res_type; }
 
 	private:
+		void set_resource_key(const std::string_view _resource_name) { m_resource_key = _resource_name; }
 		virtual eResourceType get_resource_type_internal() const { return eResourceType::UNKNOWN; }
 
 		eResourceType m_res_type;
-		std::string m_res_pathkey;
+		std::string m_resource_key;
 	};
 }

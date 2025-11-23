@@ -37,7 +37,7 @@ namespace core
     {
     }
 
-    void Material::bind_shader()
+    void Material::bind()
     {
         for (size_t slotIndex = 0; slotIndex < (uint)eTextureSlot::END; slotIndex++)
         {
@@ -53,7 +53,7 @@ namespace core
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
         CB->bind_buffer_to_GPU_register(flag);
 
-        m_shader->bind_shader();
+        m_shader->bind();
     }
 
     eResult Material::save(const std::fs::path& _relative_path) const
@@ -76,7 +76,7 @@ namespace core
             //shader
             if (m_shader)
             {
-                _ser[JSON_KEY(m_shader)] << m_shader->get_res_pathkey();
+                _ser[JSON_KEY(m_shader)] << m_shader->get_resource_key();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace core
             {
                 if (m_textures[i])
                 {
-                    textures[i] << m_textures[i]->get_res_pathkey();
+                    textures[i] << m_textures[i]->get_resource_key();
                 }
                 else
                 {

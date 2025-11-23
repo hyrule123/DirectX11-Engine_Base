@@ -88,7 +88,7 @@ namespace core
             return eResult::Fail_Nullptr;
         }
 
-        _ser << m_owner_skeleton.lock()->get_res_pathkey();
+        _ser << m_owner_skeleton.lock()->get_resource_key();
         _ser << m_start_frame_idx;
         _ser << m_end_frame_idx;
         _ser << m_frame_length;
@@ -123,7 +123,7 @@ namespace core
 
         std::string test;
         _ser >> test;
-        if (test != m_owner_skeleton.lock()->get_res_pathkey())
+        if (test != m_owner_skeleton.lock()->get_resource_key())
         {
             ERROR_MESSAGE("스켈레톤 정보가 일치하지 않습니다.");
             return eResult::Fail_InValid;
@@ -164,7 +164,7 @@ namespace core
 
         m_owner_skeleton = _skeleton;
 
-        set_res_pathkey(_clip->name);
+        set_resource_key(_clip->name);
 
         switch (_clip->time_mode)
         {

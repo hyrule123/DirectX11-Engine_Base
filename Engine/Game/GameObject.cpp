@@ -358,7 +358,7 @@ namespace core
 
 		//씬이 작동 중일 경우 람다함수를 통해 지연 실행
 		s_ptr<Scene> scene = m_scene.lock();
-		ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
+		ASSERT_MESSAGE(scene, "속해있는 scene이 없습니다.");
 		if (scene->is_awaken())
 		{
 			scene->add_frame_end_job(&GameObject::set_active_internal, this, _bActive);
@@ -438,7 +438,7 @@ namespace core
 				m_state = eState::Active;
 
 				s_ptr<Scene> scene = m_scene.lock();
-				ASSERT_DEBUG(scene, "속해있는 scene이 없습니다.");
+				ASSERT_MESSAGE(scene, "속해있는 scene이 없습니다.");
 				//Scene이 작동중인 상태인데 아직 awake 함수가 호출되지 않았을 경우 Awake 함수 호출
 				if (scene->is_awaken() && false == m_b_awake)
 				{

@@ -97,7 +97,7 @@ namespace core
 		Transform::bind_buffer_to_GPU_register();
 
 		//material에서 처리해야 하는 데이터도 등록시킨 후 GPU 연동
-		_render_queue.material->bind_shader();
+		_render_queue.material->bind();
 		_render_queue.material->set_data_to_instancing_buffer(m_layer_filtered_objects);
 		_render_queue.material->bind_instancing_buffer_to_GPU_register();
 
@@ -149,7 +149,7 @@ namespace core
 		m_light_3D_instancing_buffer->bind_buffer_as_SRV();
 
 		//material 바인딩 후 mesh 렌더
-		m_light_3D_materials[(int)_light_type]->bind_shader();
+		m_light_3D_materials[(int)_light_type]->bind();
 		m_light_3D_volume_meshes[(int)_light_type]->render_instanced(light_count.count);
 	}
 

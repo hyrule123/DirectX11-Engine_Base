@@ -7,7 +7,7 @@ namespace core
 {
 	Resource::Resource()
 		: Entity()
-		, m_res_pathkey()
+		, m_resource_key()
 		, m_res_type()
 	{
 	}

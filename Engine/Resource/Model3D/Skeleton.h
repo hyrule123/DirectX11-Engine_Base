@@ -50,7 +50,7 @@ namespace core
 		
 		//return value: 인덱스 번호
 		uint add_compute_queue(Animation3D_PlayData* _play_data) {
-			ASSERT_DEBUG(_play_data, "play data가 없음.");
+			ASSERT_MESSAGE(_play_data, "play data가 없음.");
 			m_compute_queue.push_back(_play_data);
 			return (uint)m_compute_queue.size() - 1;
 		}

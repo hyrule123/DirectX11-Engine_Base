@@ -17,7 +17,7 @@ namespace core
 	{
 	}
 
-	void VertexShader::bind_shader(const ComPtr<ID3D11DeviceContext>& _context)
+	void VertexShader::bind(const ComPtr<ID3D11DeviceContext>& _context)
 	{
 		_context->IASetInputLayout(m_input_layout.Get());
 		_context->VSSetShader(m_shader.Get(), nullptr, 0);

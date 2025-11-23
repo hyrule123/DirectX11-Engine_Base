@@ -12,7 +12,7 @@
 	{ _wassert(L ## #_expression##"\n\n"##_c_str , _CRT_WIDE(__FILE__), (unsigned)(__LINE__)); }
 
 
-#define ASSERT_DEBUG(_expression, _c_str) ASSERT(_expression, _c_str)
+#define ASSERT_MESSAGE(_expression, _c_str) ASSERT(_expression, _c_str)
 
 #define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
 #define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR); __debugbreak()
@@ -28,7 +28,7 @@
 		std::abort();\
 	}
 
-#define ASSERT_DEBUG(_expression, _messageW) 0
+#define ASSERT_MESSAGE(_expression, _messageW) 0
 
 #define ERROR_MESSAGE_W(_c_str) MessageBoxW(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)
 #define ERROR_MESSAGE_A(_c_str) MessageBoxA(nullptr, _c_str, nullptr, MB_OK | MB_ICONERROR)

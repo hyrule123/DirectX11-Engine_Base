@@ -14,7 +14,7 @@ namespace core
 	{
 	}
 
-	void HullShader::bind_shader(const ComPtr<ID3D11DeviceContext>& _context)
+	void HullShader::bind(const ComPtr<ID3D11DeviceContext>& _context)
 	{
 		_context.HSSetShader(m_shader.Get(), nullptr, 0);
 	}

@@ -66,7 +66,7 @@ namespace core
 			return false;
 		}
 		
-		m_dest_texture->set_res_pathkey(m_src_texture->get_concrete_class_name());
+		m_dest_texture->set_resource_key(m_src_texture->get_concrete_class_name());
 
 		//원본
 		m_src_texture->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);

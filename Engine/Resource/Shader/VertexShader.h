@@ -11,7 +11,7 @@ namespace core
         VertexShader();
         virtual ~VertexShader();
 
-		virtual void bind_shader(const ComPtr<ID3D11DeviceContext>& _context) override;
+		virtual void bind(const ComPtr<ID3D11DeviceContext>& _context) override;
 
     protected:
         virtual bool load_shader(const std::vector<unsigned char>& _byte_code);

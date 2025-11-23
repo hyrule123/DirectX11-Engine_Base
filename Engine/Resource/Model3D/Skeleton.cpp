@@ -48,7 +48,7 @@ namespace core
 
 	eResult Skeleton::save(const std::fs::path& _base_dir) const
 	{
-		std::fs::path file_path = get_res_pathkey();
+		std::fs::path file_path = get_resource_key();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -94,7 +94,7 @@ namespace core
 	}
 	eResult Skeleton::load(const std::fs::path& _base_dir)
 	{
-		std::fs::path file_path = get_res_pathkey();
+		std::fs::path file_path = get_resource_key();
 
 		//A/B.sklt 형식인지 확인한다.
 		if (false == file_path.has_extension())
@@ -263,7 +263,7 @@ namespace core
 				return result;
 			}
 			
-			std::string animName(anim->get_res_pathkey());
+			std::string animName(anim->get_resource_key());
 			if (animName.empty())
 			{
 				//애니메이션이 1000개를 넘을거같진 않으니 3자리까지만 고정
@@ -324,7 +324,7 @@ namespace core
 		{
 			//일단 다른쪽의 애니메이션을 복사해온다.
 			auto cloned = otherAnim.second->clone();
-			ASSERT_DEBUG(cloned, "nullptr 에러");
+			ASSERT_MESSAGE(cloned, "nullptr 에러");
 			s_ptr<Animation3D> ourAnim = std::static_pointer_cast<Animation3D>(cloned);
 
 			//스켈레톤 주소를 자신의것으로 변경
@@ -406,7 +406,7 @@ namespace core
 
 		eResult result = m_bone_offset_sbuffer->create<MATRIX>(desc, (UINT)vecOffset.size(), vecOffset.data(), (UINT)vecOffset.size());
 		
-		ASSERT_DEBUG(eResult_success(result), "본 오프셋 버퍼 생성 실패");
+		ASSERT_MESSAGE(eResult_success(result), "본 오프셋 버퍼 생성 실패");
 	}
 
 	s_ptr<Animation3D> Skeleton::find_animation(const std::string_view _strAnimName)

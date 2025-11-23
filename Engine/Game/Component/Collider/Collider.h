@@ -64,7 +64,7 @@ namespace core
 		if (m_collisionCount < 0)
 		{
 			m_collisionCount = 0;
-			ASSERT_DEBUG(false, "Collision Count가 음수로 내려갔습니다.");
+			ASSERT_MESSAGE(false, "Collision Count가 음수로 내려갔습니다.");
 		}
 	}
 }

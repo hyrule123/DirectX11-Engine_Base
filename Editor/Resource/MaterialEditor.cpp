@@ -135,7 +135,7 @@ namespace core::editor
 			s_ptr<GraphicsPipeline> curShader = mTargetMaterial->get_shader();
 			if (curShader)
 			{
-				strCurShader += curShader->get_res_pathkey();
+				strCurShader += curShader->get_resource_key();
 			}
 			else
 			{
@@ -165,7 +165,7 @@ namespace core::editor
 		s_ptr<GraphicsPipeline> shader = mTargetMaterial->get_shader();
 		if (shader)
 		{
-			shaderKey += shader->get_res_pathkey();
+			shaderKey += shader->get_resource_key();
 		}
 		else
 		{
@@ -188,7 +188,7 @@ namespace core::editor
 			auto Tex = mTargetMaterial->get_texture((eTextureSlot)i);
 			if (Tex)
 			{
-				ImGui::Text(Tex->get_res_pathkey().data());
+				ImGui::Text(Tex->get_resource_key().data());
 			}
 			else
 			{
@@ -308,7 +308,7 @@ namespace core::editor
 			for (auto& mtrl : materials)
 			{
 				tComboItem item{};
-				item.m_name = mtrl.second->get_res_pathkey();
+				item.m_name = mtrl.second->get_resource_key();
 				mCurrentLoadedMtrl.add_item(item);
 			}
 		}
@@ -318,7 +318,7 @@ namespace core::editor
 	{
 		bool bPossible = true;
 		//저장 조건 확인
-		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_res_pathkey().empty())
+		if (nullptr == mTargetMaterial->get_shader() || mTargetMaterial->get_shader()->get_resource_key().empty())
 		{
 			MessageBoxW(nullptr, L"쉐이더를 설정하지 않았습니다.\n쉐이더는 반드시 설정해야 합니다.", nullptr, MB_OK);
 			bPossible = false;
@@ -352,7 +352,7 @@ namespace core::editor
 		mTargetMaterial = std::dynamic_pointer_cast<Material>(mTargetMaterial->clone());
 
 		std::string name = outputPath.filename().string();
-		mTargetMaterial->set_res_pathkey(name);
+		mTargetMaterial->set_resource_key(name);
 
 		ResourceManager::get_inst().save(mTargetMaterial);
 	}

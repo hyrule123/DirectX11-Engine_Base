@@ -90,7 +90,7 @@ namespace core {
 			RenderManager::get_inst().get_render_target(eMRTType::Swapchain)->bind();
 
 			// defferd + swapchain merge
-			m_deffered_merge_material->bind_shader();
+			m_deffered_merge_material->bind();
 			m_deffered_merge_rectmesh->render();
 
 			//Forward Rendering
@@ -204,7 +204,7 @@ namespace core {
 	void SceneRenderAgent::render_debug()
 	{
 		RenderManager::get_inst().get_render_target(eMRTType::Swapchain)->bind();
-		m_debug_material->bind_shader();
+		m_debug_material->bind();
 
 		s_ptr<Camera> mainCam = get_main_camera();
 

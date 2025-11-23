@@ -151,7 +151,7 @@ virtual eResult deserialize_json(const JsonSerializer& _ser) final\
 
 		template <typename T, typename... ARGS>
 		uint32 add_ctor(const std::string_view _name, ARGS&&... _arg) {
-			ASSERT_DEBUG(false == _name.empty(), "이름이 비어있습니다.");
+			ASSERT_MESSAGE(false == _name.empty(), "이름이 비어있습니다.");
 
 			m_ctors[_name] =
 				[_arg...]()->s_ptr<Entity> {

@@ -63,7 +63,7 @@ namespace core
 						ERROR_MESSAGE("스켈레톤 정보 저장 실패!");
 						return result;
 					}
-					_ser[JSON_KEY(m_skeleton)] << m_skeleton->get_res_pathkey();
+					_ser[JSON_KEY(m_skeleton)] << m_skeleton->get_resource_key();
 				}
 				else {
 					_ser[JSON_KEY(m_skeleton)] << "";
@@ -90,7 +90,7 @@ namespace core
 					return result;
 				}
 				meshContainer["mesh"]["s_concrete_class_name"] = m_mesh_mtrl_pairs[i].mesh->get_concrete_class_name();
-				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_res_pathkey();
+				meshContainer["mesh"]["resource_name"] << m_mesh_mtrl_pairs[i].mesh->get_resource_key();
 
 				//material
 				result = ResourceManager::get_inst().save(m_mesh_mtrl_pairs[i].material);
@@ -102,7 +102,7 @@ namespace core
 				meshContainer["material"]["s_concrete_class_name"]
 					<< m_mesh_mtrl_pairs[i].material->get_concrete_class_name();
 				meshContainer["material"]["resource_name"]
-					<< m_mesh_mtrl_pairs[i].material->get_res_pathkey();
+					<< m_mesh_mtrl_pairs[i].material->get_resource_key();
 			}
 		}
 		catch (const std::exception& _err)
@@ -241,7 +241,7 @@ namespace core
 				GameObject* child = newObjects.back().get();
 				rootTransform->add_child(child->get_component<Transform>());
 
-				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_res_pathkey());
+				child->set_name(m_mesh_mtrl_pairs[i].mesh->get_resource_key());
 
 				//ComponentManager로부터 Mesh 렌더러를 받아와서 MultiMesh에 넣어준다.
 				s_ptr<StaticMeshRenderer> renderer = nullptr;
@@ -285,7 +285,7 @@ namespace core
 
 		std::fs::path res_path = _dirAndFileName / _dirAndFileName;
 		res_path.replace_extension(".json");
-		set_res_pathkey(res_path.string());
+		set_resource_key(res_path.string());
 
 		//다른게 다 진행됐으면 저장 진행
 		//키값 만들고 세팅하고
@@ -330,7 +330,7 @@ namespace core
 
 		//Bone 정보 로드
 		m_skeleton = std::make_shared<Skeleton>();
-		m_skeleton->set_res_pathkey(dir_and_filename.string());
+		m_skeleton->set_resource_key(dir_and_filename.string());
 		result = m_skeleton->create_from_FBX(&loader);
 		//애니메이션 정보가 없을 경우에는 도로 제거
 		if (eResult::Fail_Empty == result)
@@ -370,7 +370,7 @@ namespace core
 			}
 			//vertex buffer은 container당 하나
 			s_ptr<VertexBuffer> vb = std::make_shared<VertexBuffer>();
-			vb->set_res_pathkey((_dir_name / cont.name).string());
+			vb->set_resource_key((_dir_name / cont.name).string());
 			vb->create_vertex_buffer(vertices_3d);
 			//Resources<VertexBuffer>::get_inst().save(vb);
 
@@ -397,7 +397,7 @@ namespace core
 
 				//.msh로 확장자를 변경
 				//Key로 Mesh를 저장
-				mm_pair.mesh->set_res_pathkey(
+				mm_pair.mesh->set_resource_key(
 					name.string());
 				//Resources<Mesh>::get_inst().save(mm_pair.mesh);
 
@@ -409,7 +409,7 @@ namespace core
 					ERROR_MESSAGE("머티리얼 로드에 실패했습니다.");
 					return eResult::Fail_InValid;
 				}
-				mm_pair.material->set_res_pathkey(name.string());
+				mm_pair.material->set_resource_key(name.string());
 				//Resources<Material>::get_inst().save(mm_pair.material);
 
 				m_mesh_mtrl_pairs.push_back(mm_pair);
@@ -473,7 +473,7 @@ namespace core
 		std::fs::path name = _texDestDir.filename();
 		name /= _fbxMtrl->name;
 		name.replace_extension(path::extension::Material);
-		mtrl->set_res_pathkey(name.string());
+		mtrl->set_resource_key(name.string());
 
 		mtrl->set_diffuse_color(_fbxMtrl->diffuse_color);
 		mtrl->set_specular_color(_fbxMtrl->specular_color);
@@ -575,7 +575,7 @@ namespace core
 			const s_ptr<Texture>& tex = _mtrl->get_texture((eTextureSlot)i);
 			if (tex)
 			{
-				std::string texKey{ tex->get_res_pathkey() };
+				std::string texKey{ tex->get_resource_key() };
 				size_t pos = texKey.find(texSuffix[i]);
 				if (std::string::npos != pos)
 				{
@@ -607,7 +607,7 @@ namespace core
 						if (nullptr == newTex)
 						{
 							//i번째 텍스처의 이름을 가져와서
-							std::string texKey(tex->get_res_pathkey());
+							std::string texKey(tex->get_resource_key());
 
 							//regex 돌려서 prefix suffix 제거하고
 							texKey = std::regex_replace(texKey, regexPrefix, "");

@@ -79,7 +79,7 @@ namespace core
 				return result;
 			}
 		}
-		_ser << m_vertex_buffer->get_res_pathkey();
+		_ser << m_vertex_buffer->get_resource_key();
 
 		_ser << m_index_topology;
 		_ser << m_index_buffer_desc;
@@ -88,7 +88,7 @@ namespace core
 
 		//skeleton은 필수 X
 		if (m_skeleton) {
-			_ser << m_skeleton->get_res_pathkey();
+			_ser << m_skeleton->get_resource_key();
 		}
 		else {
 			_ser << "";
@@ -139,7 +139,7 @@ namespace core
 	{
 		if (nullptr == _data || 0 == _dataCount)
 		{
-			ASSERT_DEBUG(false, "인덱스가 저장된 포인터가 nullptr입니다.");
+			ASSERT_MESSAGE(false, "인덱스가 저장된 포인터가 nullptr입니다.");
 			return false;
 		}
 

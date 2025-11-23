@@ -22,7 +22,7 @@ namespace core
         virtual eResult serialize_binary(BinarySerializer& _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
 
-		virtual void bind_shader(const ComPtr<ID3D11DeviceContext>& _context) = 0;
+		virtual void bind(const ComPtr<ID3D11DeviceContext>& _context) = 0;
 
     protected:
         virtual bool load_shader(const std::vector<unsigned char>& _byte_code) = 0;

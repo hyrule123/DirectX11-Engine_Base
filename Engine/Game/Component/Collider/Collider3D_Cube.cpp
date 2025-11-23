@@ -33,7 +33,7 @@ namespace core
 		Collision3D* col3dmgr = get_collision_manager_3D();
 		if (nullptr == col3dmgr)
 		{
-			ASSERT_DEBUG(nullptr, "Collision3D Manager이 존재하지 않음.");
+			ASSERT_MESSAGE(nullptr, "Collision3D Manager이 존재하지 않음.");
 			return ret;
 		}
 
@@ -41,7 +41,7 @@ namespace core
 
 		physx::PxShape* shape = PhysXInstance::get_inst().GetPhysX().createShape(m_offset_half_scale, *material, true);
 
-		ASSERT_DEBUG(shape, "Shape 생성 실패.");
+		ASSERT_MESSAGE(shape, "Shape 생성 실패.");
 
 		shape->setLocalPose(m_offset_position);
 

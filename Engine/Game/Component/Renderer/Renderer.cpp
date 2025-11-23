@@ -78,7 +78,7 @@ namespace core
 				if (nullptr == m_dynamic_material) {
 					m_dynamic_material = std::dynamic_pointer_cast<Material>(m_shared_material->clone());
 
-					ASSERT_DEBUG(m_dynamic_material, "복제 실패");
+					ASSERT_MESSAGE(m_dynamic_material, "복제 실패");
 				}
 				m_current_material = m_dynamic_material;
 			}

@@ -25,7 +25,7 @@ namespace core
 		Super::init();
 
 		m_rigid_actor.Set(create_rigidbody());
-		ASSERT_DEBUG(m_rigid_actor, "PxActor 생성되지 않음.");
+		ASSERT_MESSAGE(m_rigid_actor, "PxActor 생성되지 않음.");
 		
 		if (m_rigid_actor)
 		{
@@ -46,7 +46,7 @@ namespace core
 			if (col3d)
 			{
 				bool ret = col3d->AddPxActor(m_rigid_actor.Get());
-				ASSERT_DEBUG(ret, "AddPxActor 실패.");
+				ASSERT_MESSAGE(ret, "AddPxActor 실패.");
 			}
 		}
 	}

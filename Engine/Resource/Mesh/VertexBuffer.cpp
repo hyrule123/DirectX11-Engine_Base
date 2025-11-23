@@ -101,7 +101,7 @@ namespace core {
 		_ser >> m_bounding_box;
 
 		if (false == create_vertex_buffer_internal()) {
-			ASSERT_DEBUG(false, "정점버퍼 생성 실패!!");
+			ASSERT_MESSAGE(false, "정점버퍼 생성 실패!!");
 			return eResult::Fail;
 		}
 

@@ -55,7 +55,7 @@ namespace core {
 			ui_shader->set_input_layout_desc(vecLayoutDesc2D);
 			ui_shader->create_input_layout();
 
-			ui_shader->set_res_pathkey(default_res::shader::graphics::UI_shader);
+			ui_shader->set_resource_key(default_res::shader::graphics::UI_shader);
 			ResourceManager::get_inst().insert_default_resource(ui_shader, "UI_Shader");
 		}
 

@@ -12,7 +12,7 @@ namespace core
 	{
 	}
 
-	void PixelShader::bind_shader(const ComPtr<ID3D11DeviceContext>& _context)
+	void PixelShader::bind(const ComPtr<ID3D11DeviceContext>& _context)
 	{
 
 		_context->PSSetShader(m_shader.Get(), nullptr, 0);

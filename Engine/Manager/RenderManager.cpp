@@ -460,7 +460,7 @@ namespace core
 				arrRTTex[i] = std::make_shared<Texture>();
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_res_pathkey(name::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_resource_key(name::eMRT_Deffered_String[i]);
 			}
 
 
@@ -485,7 +485,7 @@ namespace core
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_res_pathkey(name::eMRT_Light_String[i]);
+				arrRTTex[i]->set_resource_key(name::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();

@@ -104,7 +104,7 @@ namespace core
 	void Light3D::update()
 	{
 		s_ptr<GameObject> owner = get_owner();
-		ASSERT_DEBUG(owner, "owner gameobject가 없습니다.");
+		ASSERT_MESSAGE(owner, "owner gameobject가 없습니다.");
 
 		auto tr = owner->get_component<Transform>();
 		if (nullptr == tr) {
@@ -134,7 +134,7 @@ namespace core
 	void Light3D::final_update()
 	{
 		s_ptr<GameObject> owner = get_owner();
-		ASSERT_DEBUG(owner, "owner GameObject가 없습니다.");
+		ASSERT_MESSAGE(owner, "owner GameObject가 없습니다.");
 
 		auto tr = owner->get_component<Transform>();
 		if (nullptr == tr)

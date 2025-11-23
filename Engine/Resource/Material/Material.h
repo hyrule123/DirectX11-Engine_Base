@@ -36,7 +36,7 @@ namespace core
 
 
 		// 필수 재정의 함수들 //
-		void bind_shader();
+		void bind();
 		virtual void clear_instancing_buffer() {}; //버퍼 클리어
 		virtual void set_data_to_instancing_buffer(const std::vector<s_ptr<GameObject>>& _objs) {};
 		virtual void bind_instancing_buffer_to_GPU_register() {};
