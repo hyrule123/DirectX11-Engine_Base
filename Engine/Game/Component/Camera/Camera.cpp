@@ -94,7 +94,7 @@ namespace core
 		}
 
 		Transform::set_data_to_buffer(m_transform_data);
-		Transform::bind_buffer_to_GPU_register();
+		Transform::bind();
 
 		//material에서 처리해야 하는 데이터도 등록시킨 후 GPU 연동
 		_render_queue.material->bind();
@@ -138,15 +138,15 @@ namespace core
 
 		//Transform 데이터 설정 및 바인딩
 		Transform::set_data_to_buffer(m_transform_data);
-		Transform::bind_buffer_to_GPU_register();
+		Transform::bind();
 
 		//Light count를 저장하는 상수버퍼 바인딩
 		m_light_3D_const_buffer->set_data(&light_count);
-		m_light_3D_const_buffer->bind_buffer_to_GPU_register();
+		m_light_3D_const_buffer->bind();
 
 		//light 인스턴싱 데이터 바인딩
 		m_light_3D_instancing_buffer->set_data(datacont.data(), light_count.count);
-		m_light_3D_instancing_buffer->bind_buffer_as_SRV();
+		m_light_3D_instancing_buffer->bind_SRV();
 
 		//material 바인딩 후 mesh 렌더
 		m_light_3D_materials[(int)_light_type]->bind();
@@ -324,7 +324,7 @@ namespace core
 	{
 		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::Camera);
 		cb->set_data(&m_camera_matrices);
-		cb->bind_buffer_to_GPU_register();
+		cb->bind();
 	}
 
 	Camera::CullingAgent::CullingAgent()

@@ -54,7 +54,7 @@ namespace core
 			//D3D_FEATURE_LEVEL_9_1
 		};
 
-		if (FAILED(D3D11CreateDevice(
+		HRESULT result = D3D11CreateDevice(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
 			nullptr,
@@ -64,11 +64,13 @@ namespace core
 			D3D11_SDK_VERSION,
 			m_device.ReleaseAndGetAddressOf(),
 			&MaxSupportedFeatureLevel,
-			m_context.ReleaseAndGetAddressOf())))
+			m_context.ReleaseAndGetAddressOf());
+
+		if (FAILED(result))
 		{
 			m_device.Reset();
 			m_context.Reset();
-			ASSERT_MESSAGE(false, "Graphics Device 생성에 실패했습니다.");
+			ASSERT_MESSAGE_RELEASE(false, "Graphics Device 생성에 실패했습니다.");
 		}
 
 		b_device_context_created = true;
@@ -105,27 +107,6 @@ namespace core
 	{
 		m_scene_render_agent.release();
 
-		for (int i = 0; i < (int)eCBType::END; ++i)
-		{
-			m_const_buffers[i].reset();
-		}
-		for (int i = 0; i < (int)eSamplerType::END; ++i)
-		{
-			m_sampler_states[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eRasterizerState::END; ++i)
-		{
-			m_rasterizer_states[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eDepthStencilState::END; ++i)
-		{
-			m_depth_stencil_states[i] = nullptr;
-		}
-		for (int i = 0; i < (int)eBlendState::END; ++i)
-		{
-			m_blend_states[i] = nullptr;
-		}
-
 		m_post_process_texture = nullptr;
 
 		for (int i = 0; i < (int)eMRTType::END; ++i)
@@ -155,6 +136,9 @@ namespace core
 	void RenderManager::create_const_buffers()
 	{
 #pragma region CONSTANT BUFFER
+		s_ptr<ConstBuffer> global_buffer = new_entity<ConstBuffer>();
+
+
 		m_const_buffers[(uint)eCBType::Global] = std::make_unique<ConstBuffer>((uint)eCBType::Global);
 		m_const_buffers[(uint)eCBType::Global]->create(sizeof(tCB_Global));
 		m_const_buffers[(uint)eCBType::Global]->set_target_stage(eShaderStageFlag::ALL);
@@ -368,7 +352,7 @@ namespace core
 	void RenderManager::bind_noise_texture()
 	{
 		s_ptr<Texture> noise = ResourceManager::get_inst().find<Texture>("Texture/noise/noise_03.jpg");
-		noise->bind_buffer_as_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
+		noise->bind_SRV(GPU::Register::t::NoiseTexture, eShaderStageFlag::ALL);
 
 		tCB_Noise info = {};
 		info.NoiseSize.x = (float)noise->get_texture_width();
@@ -380,13 +364,13 @@ namespace core
 
 		ConstBuffer* cb = m_const_buffers[(uint)eCBType::Noise].get();
 		cb->set_data(&info);
-		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
+		cb->bind(eShaderStageFlag::ALL);
 	}
 	void RenderManager::copy_rendertarget()
 	{
 		s_ptr<Texture> renderTarget = ResourceManager::get_inst().find<Texture>(default_res::texture::render_target);
 
-		//render_target->unbind_buffer();
+		//render_target->unbind();
 
 		//ID3D11ShaderResourceView* srv = nullptr;
 		//RenderManager::get_inst().Context()->PSSetShaderResources()(eShaderStage::Pixel, 60, &srv);
@@ -396,7 +380,7 @@ namespace core
 
 		RenderManager::get_inst().get_context()->CopyResource(dest, source);
 
-		m_post_process_texture->bind_buffer_as_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
+		m_post_process_texture->bind_SRV(GPU::Register::t::postProcessTexture, eShaderStageFlag::Pixel);
 	}
 
 	void RenderManager::clear_multi_rendertargets()
@@ -427,7 +411,7 @@ namespace core
 
 		ConstBuffer* global = get_const_buffer(eCBType::Global);
 		global->set_data(&g_global_cbuffer);
-		global->bind_buffer_to_GPU_register();
+		global->bind();
 	}
 
 
@@ -460,7 +444,7 @@ namespace core
 				arrRTTex[i] = std::make_shared<Texture>();
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_key(name::eMRT_Deffered_String[i]);
+				arrRTTex[i]->set_entity_name(name::eMRT_Deffered_String[i]);
 			}
 
 
@@ -485,7 +469,7 @@ namespace core
 				arrRTTex[i] = defferedTex;
 				arrRTTex[i]->create(_resX, _resY, DXGI_FORMAT_R32G32B32A32_FLOAT
 					, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE);
-				arrRTTex[i]->set_resource_key(name::eMRT_Light_String[i]);
+				arrRTTex[i]->set_entity_name(name::eMRT_Light_String[i]);
 			}
 
 			m_multi_render_targets[(int)eMRTType::Light] = std::make_unique<MultiRenderTarget>();

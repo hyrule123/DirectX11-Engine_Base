@@ -12,28 +12,27 @@ namespace core
 		BASE_RESOURCE(ConstBuffer, eResourceType::ConstBuffer);
 
 	public:
-		ConstBuffer(uint _register);
+		ConstBuffer();
 		virtual ~ConstBuffer();
 
 		template <typename T>
-		bool create(uint _dataCount = 1u) {
+		bool create(UINT _target_register, UINT _dataCount = 1u) {
 			return create(sizeof(T), _dataCount);
 		}
-		bool create(size_t _dataSize, uint _dataCount = 1u);
+		bool create(UINT _target_register, UINT _dataSize, UINT _dataCount = 1u);
 		void set_data(const void* _data, uint _dataCount = 1u);
-		void bind_buffer_to_GPU_register(eShaderStageFlag_ _override_flag = eShaderStageFlag::NONE);
+		void bind(eShaderStageFlag_ _stage_flag = eShaderStageFlag::ALL);
 
-		void unbind_buffer();
-
-		void set_target_stage(eShaderStageFlag_ _flag) { m_target_stage = _flag; }
+		void unbind();
 	private:
 		virtual eResult save(const std::fs::path& _fullpath) const override;
 		virtual eResult load(const std::fs::path& _fullpath) override;
-		
-		const uint m_const_buffer_type;
 
-		uint				m_data_size;
-		uint				m_data_count;
-		eShaderStageFlag_	m_target_stage;
+		UINT m_target_slot = {};
+
+		UINT				m_data_size = {};
+		UINT				m_data_count = {};
+
+		static inline ComPtr<ID3D11Buffer> s_bound_table[(int)eShaderStage::END][D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT] = {};
 	};
 }

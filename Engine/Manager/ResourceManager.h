@@ -37,7 +37,7 @@ namespace core
 		{
 			s_ptr<Resource> result = find(T::s_resource_type, _resource_name);
 
-			if constexpr (T::template is_base_resource<T>())
+			if constexpr (T::s_resource_type != eResourceType::UNKNOWN && T::template is_base_resource<T>())
 			{
 				return std::static_pointer_cast<T>(result);
 			}

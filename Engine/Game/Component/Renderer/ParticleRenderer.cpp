@@ -146,7 +146,7 @@ namespace core
 
 		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::ParticleSystem);
 		cb->set_data(&mCBData);
-		cb->bind_buffer_to_GPU_register(eShaderStageFlag::ALL);
+		cb->bind(eShaderStageFlag::ALL);
 
 		m_particle_CS->set_shared_struct_buffer(m_shared_buffer);
 		m_particle_CS->set_struct_buffer(m_buffer);
@@ -158,12 +158,12 @@ namespace core
 	//	if (false == is_render_ready())
 	//		return;
 	//	
-	//	get_owner()->get_component<Transform>()->bind_buffer_to_GPU_register();
-	//	m_buffer->bind_buffer_as_SRV(GPU::Register::t::g_diffuse_texture, eShaderStageFlag::Geometry);
+	//	get_owner()->get_component<Transform>()->bind();
+	//	m_buffer->bind_SRV(GPU::Register::t::g_diffuse_texture, eShaderStageFlag::Geometry);
 
 	//	get_current_material(0)->bind_buffer_to_gpu_register();
 	//	get_mesh()->render_instanced(m_max_particles);
 
-	//	m_buffer->unbind_buffer();
+	//	m_buffer->unbind();
 	//}
 }

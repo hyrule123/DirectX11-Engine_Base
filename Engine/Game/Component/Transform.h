@@ -69,7 +69,7 @@ namespace core
 
 		//Render 시점에 호출
 		static void set_data_to_buffer(const std::vector<tTransform>& _data);
-		static void bind_buffer_to_GPU_register();
+		static void bind();
 
 #pragma region //Hierarchy
 		bool is_root() const { return m_parent.expired(); }

@@ -46,9 +46,9 @@ namespace core
 	//	auto tr = get_owner()->get_component<Transform>();
 	//	tr->clear_buffer_data();
 	//	tr->add_to_buffer();
-	//	tr->bind_buffer_to_GPU_register();
+	//	tr->bind();
 
-	//	animator->bind_buffer_to_GPU_register();
+	//	animator->bind();
 	//	//Render
 	//	UINT iSubsetCount = get_mesh()->get_subset_count();
 	//	for (UINT i = 0; i < iSubsetCount; ++i)
@@ -67,7 +67,7 @@ namespace core
 	//			// 사용할 메쉬 업데이트 및 렌더링
 	//			get_mesh()->render(i);
 
-	//			//mtrl->unbind_buffer();
+	//			//mtrl->unbind();
 	//			mtrl->SetBoneCount(0);
 	//			mtrl->SetAnim3D(false);
 	//		}

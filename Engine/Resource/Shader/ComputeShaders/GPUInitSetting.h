@@ -18,7 +18,7 @@ namespace core
 		virtual eResult load(const std::fs::path& _full_path) override;
 
 	protected:
-		virtual bool bind_buffer_to_GPU_register() override;
+		virtual bool bind() override;
 		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:

@@ -23,10 +23,10 @@ namespace core
 	{
 	}
 
-	bool ParticleShader::bind_buffer_to_GPU_register()
+	bool ParticleShader::bind()
 	{
-		m_buffer->bind_buffer_as_UAV(0);
-		m_shared_buffer->bind_buffer_as_UAV(1);
+		m_buffer->bind_UAV(0);
+		m_shared_buffer->bind_UAV(1);
 
 		uint3 dataCounts = { m_buffer->get_stride(), 1u, 1u };
 		calculate_group_count(dataCounts);
@@ -36,7 +36,7 @@ namespace core
 
 	void ParticleShader::unbind_buffer_from_GPU_register()
 	{
-		m_buffer->unbind_buffer();
-		m_shared_buffer->unbind_buffer();
+		m_buffer->unbind();
+		m_shared_buffer->unbind();
 	}
 }

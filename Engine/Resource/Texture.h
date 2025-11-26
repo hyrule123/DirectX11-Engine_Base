@@ -28,8 +28,8 @@ namespace core
 		virtual eResult load(const std::fs::path& _full_path) override;
 		void initialize_resource();
 
-		void bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
-		void bind_buffer_as_UAV(uint _UAVSlot = 0u);
+		void bind_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag);
+		void bind_UAV(uint _UAVSlot = 0u);
 		void unbind_buffer_from_GPU_register();
 
 		void set_texture(Microsoft::WRL::ComPtr<ID3D11Texture2D> _texture) { m_texture = _texture; }

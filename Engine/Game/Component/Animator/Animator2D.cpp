@@ -143,12 +143,12 @@ namespace core
 		m_b_loop = _loop;
 	}
 
-	//void Animator2D::bind_buffer_to_GPU_register()
+	//void Animator2D::bind()
 	//{
 	//	if (m_active_animation == nullptr)
 	//		return;
 
-	//	m_active_animation->bind_buffer_to_GPU_register();
+	//	m_active_animation->bind();
 	//}
 
 	//void Animator2D::unbind_buffer_from_GPU_register()

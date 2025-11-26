@@ -241,8 +241,8 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Resource\Shader\InputLayout.h" />
     <ClInclude Include="Resource\Shader\BlendState.h" />
-    <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="Resource\Shader\DepthStencilState.h" />
     <ClInclude Include="Resource\Shader\RasterizerState.h" />
     <ClInclude Include="Resource\Shader\DomainShader.h" />
@@ -360,8 +360,8 @@
     <ClInclude Include="Util\type_traits_Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Resource\Shader\InputLayout.cpp" />
     <ClCompile Include="Resource\Shader\BlendState.cpp" />
-    <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="Resource\Shader\DepthStencilState.cpp" />
     <ClCompile Include="Resource\Shader\RasterizerState.cpp" />
     <ClCompile Include="Resource\Shader\DomainShader.cpp" />

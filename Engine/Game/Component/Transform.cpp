@@ -72,9 +72,9 @@ namespace core
 		s_buffer->set_data(_data.data(), (UINT)_data.size());
 	}
 
-	void Transform::bind_buffer_to_GPU_register()
+	void Transform::bind()
 	{
-		s_buffer->bind_buffer_as_SRV();
+		s_buffer->bind_SRV();
 	}
 
 	void Transform::update_local_matrix()

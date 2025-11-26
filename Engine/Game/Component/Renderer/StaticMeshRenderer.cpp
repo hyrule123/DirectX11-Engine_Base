@@ -27,7 +27,7 @@ namespace core
 	//		return;
 
 	//	auto tr = get_owner()->get_component<Transform>();
-	//	tr->bind_buffer_to_GPU_register();
+	//	tr->bind();
 
 	//	//Render
 	//	auto mtrl = get_current_material();

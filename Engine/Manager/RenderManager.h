@@ -61,16 +61,6 @@ namespace core
 
 		ConstBuffer* get_const_buffer(eCBType _Type) { return m_const_buffers[(int)_Type].get(); }
 
-		ComPtr<ID3D11RasterizerState> get_rasterizer_state(eRasterizerState _Type) { 
-			return m_rasterizer_states[(int)_Type]; 
-		}
-		ComPtr<ID3D11BlendState> get_blend_state(eBlendState _Type) { 
-			return m_blend_states[(int)_Type]; 
-		}
-		ComPtr<ID3D11DepthStencilState> get_depth_stencil_state(eDepthStencilState _Type) { 
-			return m_depth_stencil_states[(int)_Type]; 
-		}
-
 		MultiRenderTarget* get_render_target(eMRTType _Type) {
 			return m_multi_render_targets[(int)_Type].get();
 		}
@@ -109,18 +99,12 @@ namespace core
 	
 		ComPtr<IDXGISwapChain> m_swap_chain = {};
 		
-		s_ptr<core::Texture> m_render_target = {};
-		s_ptr<core::Texture> m_depth_stencil_buffer = {};
+		s_ptr<Texture> m_render_target = {};
+		s_ptr<Texture> m_depth_stencil_buffer = {};
 		
 		D3D11_VIEWPORT m_viewport = {};
 
 		std::array<std::unique_ptr<MultiRenderTarget>, (int)eMRTType::END> m_multi_render_targets = {};
-
-		std::array<std::unique_ptr<ConstBuffer>, (int)eCBType::END>		m_const_buffers = {};
-		std::array<ComPtr<ID3D11SamplerState>, (int)eSamplerType::END>	m_sampler_states = {};
-		std::array<ComPtr<ID3D11RasterizerState>, (int)eRasterizerState::END>	m_rasterizer_states = {};
-		std::array<ComPtr<ID3D11DepthStencilState>, (int)eDepthStencilState::END>	m_depth_stencil_states = {};
-		std::array<ComPtr<ID3D11BlendState>, (int)eBlendState::END>			m_blend_states = {};
 
 		s_ptr<Texture>				m_post_process_texture = {};
 		s_ptr<Texture>				m_noise_texture = {};

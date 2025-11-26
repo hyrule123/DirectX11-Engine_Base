@@ -18,6 +18,8 @@ namespace core
         virtual eResult load(const std::fs::path& _full_path) override;
         void bind(const ComPtr<ID3D11DeviceContext>& _context);
 
+		bool create_depth_stencil_state(const D3D11_DEPTH_STENCIL_DESC& _ds_desc);
+
         void set_depth_stencil_state(ComPtr<ID3D11DepthStencilState> _depth_stencil_state)
         {
             m_depth_stencil_state = std::move(_depth_stencil_state);

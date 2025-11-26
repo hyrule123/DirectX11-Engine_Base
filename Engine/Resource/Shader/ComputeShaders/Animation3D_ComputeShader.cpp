@@ -31,7 +31,7 @@ namespace core
 	}
 
 
-	bool Animation3D_ComputeShader::bind_buffer_to_GPU_register()
+	bool Animation3D_ComputeShader::bind()
 	{
 		//참고 - NextAnimKeyFrameBuffer은 없을수도 있음
 		if (false ==
@@ -47,24 +47,24 @@ namespace core
 			
 
 		// 구조화버퍼 전달
-		m_desc.current_animation_key_frame_buffer->bind_buffer_as_SRV(GPU::Register::t::g_FrameTransArray, eShaderStageFlag::Compute);// t16;
+		m_desc.current_animation_key_frame_buffer->bind_SRV(GPU::Register::t::g_FrameTransArray, eShaderStageFlag::Compute);// t16;
 
 		//다음 애니메이션 정보가 있는 경우 바인드
 		if (m_desc.next_animation_keyframe_buffer)
 		{
-			m_desc.next_animation_keyframe_buffer->bind_buffer_as_SRV(GPU::Register::t::g_ChangeFrameTransArray, eShaderStageFlag::Compute);//t17
+			m_desc.next_animation_keyframe_buffer->bind_SRV(GPU::Register::t::g_ChangeFrameTransArray, eShaderStageFlag::Compute);//t17
 		}
 
 		//본의 오프셋 행렬 버퍼 바인드
-		m_desc.bone_offset_matrix_buffer->bind_buffer_as_SRV(GPU::Register::t::g_BoneOffsetArray, eShaderStageFlag::Compute);// t18
+		m_desc.bone_offset_matrix_buffer->bind_SRV(GPU::Register::t::g_BoneOffsetArray, eShaderStageFlag::Compute);// t18
 
 		//본의 최종 행렬정보를 저장할 UAV 바인드
-		m_desc.final_bone_translation_matrix_buffer->bind_buffer_as_UAV(GPU::Register::u::g_FinalBoneMatrixArrayRW); // u0
+		m_desc.final_bone_translation_matrix_buffer->bind_UAV(GPU::Register::u::g_FinalBoneMatrixArrayRW); // u0
 		
 		//애니메이션 3D 상수버퍼 바인드
 		ConstBuffer* pAnimCB = RenderManager::get_inst().get_const_buffer(eCBType::Animation3D);
 		pAnimCB->set_data(m_desc.shared_animation_data);
-		pAnimCB->bind_buffer_to_GPU_register();
+		pAnimCB->bind();
 
 		//데이터 갯수 계산
 		uint3 DataCounts{};
@@ -82,13 +82,13 @@ namespace core
 	void Animation3D_ComputeShader::unbind_buffer_from_GPU_register()
 	{
 		// 전달한 구조화버퍼 전부 UnBind 하고 비워줌
-		m_desc.current_animation_key_frame_buffer->unbind_buffer();
+		m_desc.current_animation_key_frame_buffer->unbind();
 		if (m_desc.next_animation_keyframe_buffer)
 		{
-			m_desc.next_animation_keyframe_buffer->unbind_buffer();
+			m_desc.next_animation_keyframe_buffer->unbind();
 		}
-		m_desc.bone_offset_matrix_buffer->unbind_buffer();
-		m_desc.final_bone_translation_matrix_buffer->unbind_buffer();
+		m_desc.bone_offset_matrix_buffer->unbind();
+		m_desc.final_bone_translation_matrix_buffer->unbind();
 		
 		m_desc = {};
 	}

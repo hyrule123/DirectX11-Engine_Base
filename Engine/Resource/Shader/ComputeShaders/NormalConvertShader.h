@@ -19,7 +19,7 @@ namespace core
 		s_ptr<Texture> convert(s_ptr<Texture> _srcTex);
 
 	protected:
-		virtual bool bind_buffer_to_GPU_register() override;
+		virtual bool bind() override;
 		virtual void unbind_buffer_from_GPU_register() override;
 
 	private:

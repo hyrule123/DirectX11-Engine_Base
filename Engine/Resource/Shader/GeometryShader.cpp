@@ -16,7 +16,7 @@ namespace core
 
 	void GeometryShader::bind(const ComPtr<ID3D11DeviceContext>& _context)
 	{
-		_context.GSSetShader(m_shader.Get(), nullptr, 0);
+		_context->GSSetShader(m_shader.Get(), nullptr, 0);
 	}
 
 	bool GeometryShader::load_shader(const std::vector<unsigned char>& _byte_code)

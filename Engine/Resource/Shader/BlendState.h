@@ -20,6 +20,8 @@ namespace core
 
         void bind(const ComPtr<ID3D11DeviceContext>& _context);
 
+		bool create_blend_state(const D3D11_BLEND_DESC& _bs_desc);
+
         void set_blend_state(ComPtr<ID3D11BlendState> _blend_state)
         {
             m_blend_state = std::move(_blend_state);

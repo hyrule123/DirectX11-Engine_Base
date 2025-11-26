@@ -432,7 +432,7 @@ namespace core
 		m_final_matrix_buffer->resize(size);
 
 		//UAV에 바인딩한 뒤
-		m_final_matrix_buffer->bind_buffer_as_UAV();
+		m_final_matrix_buffer->bind_UAV();
 
 		//각자 애니메이션에 대해 업데이트를 수행
 		for (uint i = 0; i < (uint)m_compute_queue.size(); ++i) {
@@ -458,12 +458,12 @@ namespace core
 		m_compute_queue.clear();
 
 		//UAV 연결 해제
-		m_final_matrix_buffer->unbind_buffer();
+		m_final_matrix_buffer->unbind();
 	}
 
 	void Skeleton::bind_bone_final_matrix_SRV()
 	{
-		m_final_matrix_buffer->bind_buffer_as_SRV();
+		m_final_matrix_buffer->bind_SRV();
 	}
 
 }

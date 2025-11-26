@@ -51,14 +51,14 @@ namespace core
 	{
 	}
 
-    void Animation3D::bind_buffer_to_GPU_register()
+    void Animation3D::bind()
     {
         ASSERT_MESSAGE(m_keyframe_sbuffer, "키프레임 버퍼가 존재하지 않습니다.");
-        m_keyframe_sbuffer->bind_buffer_as_SRV();
+        m_keyframe_sbuffer->bind_SRV();
     }
     void Animation3D::unbind_buffer_from_GPU_register()
     {
-        m_keyframe_sbuffer->unbind_buffer();
+        m_keyframe_sbuffer->unbind();
     }
 
     eResult Animation3D::save(const std::fs::path& _relative_path) const

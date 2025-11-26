@@ -64,7 +64,7 @@ namespace core
 		//data.resolution = resolution;
 		//
 		//CB->set_data(&data);
-		//CB->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+		//CB->bind(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
  	}
 
 

@@ -399,11 +399,11 @@
     <ClCompile Include="Resource\Shader\HullShader.cpp" />
     <ClCompile Include="Resource\Shader\DomainShader.cpp" />
     <ClCompile Include="Resource\Shader\GeometryShader.cpp" />
-    <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="Resource\Shader\RasterizerState.cpp" />
     <ClCompile Include="Resource\Shader\BlendState.cpp" />
     <ClCompile Include="Resource\Shader\DepthStencilState.cpp" />
     <ClCompile Include="Resource\Shader\SamplerState.cpp" />
+    <ClCompile Include="Resource\Shader\InputLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -652,11 +652,11 @@
     <ClInclude Include="Resource\Shader\HullShader.h" />
     <ClInclude Include="Resource\Shader\DomainShader.h" />
     <ClInclude Include="Resource\Shader\GeometryShader.h" />
-    <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="Resource\Shader\RasterizerState.h" />
     <ClInclude Include="Resource\Shader\BlendState.h" />
     <ClInclude Include="Resource\Shader\DepthStencilState.h" />
     <ClInclude Include="Resource\Shader\SamplerState.h" />
+    <ClInclude Include="Resource\Shader\InputLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

@@ -65,12 +65,12 @@ namespace core
 		enum Flag
 		{
 			NONE = 0,
-			Vertex = BIT_MASK(0),
-			Hull = BIT_MASK(1),
-			Domain = BIT_MASK(2),
-			Geometry = BIT_MASK(3),
-			Pixel = BIT_MASK(4),
-			Compute = BIT_MASK(5),
+			Vertex = BIT_MASK((int)eShaderStage::Vertex),
+			Hull = BIT_MASK((int)eShaderStage::Hull),
+			Domain = BIT_MASK((int)eShaderStage::Domain),
+			Geometry = BIT_MASK((int)eShaderStage::Geometry),
+			Pixel = BIT_MASK((int)eShaderStage::Pixel),
+			Compute = BIT_MASK((int)eShaderStage::Compute),
 			ALL = Vertex | Hull | Domain | Geometry | Pixel | Compute,
 		};
 	}

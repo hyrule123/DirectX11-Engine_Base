@@ -1,6 +1,4 @@
-
 #include "ComputeShader.h"
-
 
 #include <Engine/Manager/ResourceManager.h>
 
@@ -52,24 +50,24 @@ namespace core
 
 	bool ComputeShader::on_execute()
 	{
-		if (false == bind_buffer_to_GPU_register()) {
-			return false; 
-		}
-
 		//데이터 카운트가 하나라도 0일경우 계산 불가
 		 if (false == (
 			 m_compute_shader_cbuffer.TotalDataCount.x && 
 			 m_compute_shader_cbuffer.TotalDataCount.y && 
 			 m_compute_shader_cbuffer.TotalDataCount.z))
 		 {
-			 unbind_buffer_from_GPU_register();
+			 return false;
+		 }
+
+		 //GPU에 각자 데이터를 바인딩
+		 if (false == bind()) {
 			 return false;
 		 }
 		
 		//상수버퍼를 통해 데이터 수를 업로드
 		static ConstBuffer* const pCB = RenderManager::get_inst().get_const_buffer(eCBType::ComputeShader);
 		pCB->set_data(&m_compute_shader_cbuffer);
-		pCB->bind_buffer_to_GPU_register();
+		pCB->bind();
 
 		auto context = RenderManager::get_inst().get_context();
 		//쉐이더 바인딩

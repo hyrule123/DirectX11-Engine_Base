@@ -258,7 +258,7 @@ namespace core
 		m_texture->GetDesc(&m_texture2D_desc);
 	}
 
-	void Texture::bind_buffer_as_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void Texture::bind_SRV(uint _SRVSlot, eShaderStageFlag_ _stageFlag)
 	{
 		unbind_buffer_from_GPU_register();
 	
@@ -293,7 +293,7 @@ namespace core
 		}
 	}
 
-	void Texture::bind_buffer_as_UAV(uint _startSlot)
+	void Texture::bind_UAV(uint _startSlot)
 	{
 		unbind_buffer_from_GPU_register();
 

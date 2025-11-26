@@ -26,6 +26,8 @@ namespace core
         }
 		void set_slot(UINT _slot) { m_slot = _slot; }
 
+		bool create_sampler_state(const D3D11_SAMPLER_DESC& _sampler_desc);
+
     private:
 		ComPtr<ID3D11SamplerState> m_sampler_state = {};
         UINT m_slot = {};

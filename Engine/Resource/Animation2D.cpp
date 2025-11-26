@@ -143,9 +143,9 @@ namespace core
 
 	}
 
-	void Animation2D::bind_buffer_to_GPU_register()
+	void Animation2D::bind()
 	{
-		m_atlas->bind_buffer_as_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
+		m_atlas->bind_SRV(GPU::Register::t::AtlasTexture, eShaderStageFlag::Pixel);
 
 		ConstBuffer* cb = RenderManager::get_inst().get_const_buffer(eCBType::Animation2D);
 
@@ -157,7 +157,7 @@ namespace core
 		info.atlasSize = m_sprite_sheet[m_idx].atlas_size;
 
 		cb->set_data(&info);
-		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
+		cb->bind(eShaderStageFlag::Pixel);
 	}
 
 	void Animation2D::reset()
@@ -178,7 +178,7 @@ namespace core
 		info.animationType = (uint)eDimensionType::NOT_SET;
 
 		cb->set_data(&info);
-		cb->bind_buffer_to_GPU_register(eShaderStageFlag::Pixel);
+		cb->bind(eShaderStageFlag::Pixel);
 	}
 
 

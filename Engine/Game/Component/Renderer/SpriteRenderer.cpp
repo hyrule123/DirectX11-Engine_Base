@@ -51,7 +51,7 @@ namespace core
 	//		return;
 
 	//	//재질 바인딩
-	//	m_animator->bind_buffer_to_GPU_register();
+	//	m_animator->bind();
 
 	//	//메쉬 바인딩 - Render 내부에서 실행되도록 변경
 	//	//get_mesh()->BindBuffer();
@@ -63,7 +63,7 @@ namespace core
 	//	get_mesh()->render();
 
 	//	//재질 언바인딩
-	//	//get_current_material(0)->unbind_buffer();
+	//	//get_current_material(0)->unbind();
 
 	//	//애니메이터 언바인드
 	//	//m_animator->unbind_buffer_from_GPU_register();

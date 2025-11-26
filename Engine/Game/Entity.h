@@ -87,6 +87,9 @@ virtual eResult deserialize_json(const JsonSerializer& _ser) final\
 		uint32 get_concrete_class_ID() const { return m_concrete_class_ID; }
 		std::string_view get_concrete_class_name() const { return m_concrete_class_name; }
 
+		void set_entity_name(const std::string_view _name) { m_entity_name = _name; }
+		const std::string& get_entity_name() const { return m_entity_name; }
+
 		virtual eResult serialize_binary(BinarySerializer& _ser) const override;
 		virtual eResult deserialize_binary(const BinarySerializer& _ser) override;
 
@@ -109,6 +112,7 @@ virtual eResult deserialize_json(const JsonSerializer& _ser) final\
 		
 		uint32 m_concrete_class_ID;
 		std::string_view m_concrete_class_name;
+		std::string m_entity_name;
 
 		static uint32 s_next_instance_ID;
 		static uint32 s_next_class_ID;

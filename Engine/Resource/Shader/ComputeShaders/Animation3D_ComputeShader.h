@@ -21,7 +21,7 @@ namespace core
 
 		virtual eResult load(const std::fs::path& _relative_path) override;
 
-		virtual bool bind_buffer_to_GPU_register();
+		virtual bool bind();
 		virtual void unbind_buffer_from_GPU_register();
 
 		struct tDesc

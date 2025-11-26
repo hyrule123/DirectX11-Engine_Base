@@ -12,7 +12,7 @@ namespace core
 		ParticleShader();
 		virtual ~ParticleShader();
 
-		virtual bool bind_buffer_to_GPU_register() override;
+		virtual bool bind() override;
 		virtual void unbind_buffer_from_GPU_register() override;
 
 		void set_struct_buffer(const s_ptr<StructBuffer>& _buffer) { m_buffer = _buffer; }

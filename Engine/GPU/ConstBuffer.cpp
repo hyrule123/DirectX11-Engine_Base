@@ -4,22 +4,22 @@
 
 namespace core
 {
-	ConstBuffer::ConstBuffer(uint _type)
+	ConstBuffer::ConstBuffer()
 		: GPUBuffer(eBufferType::Const)
-		, m_const_buffer_type(_type)
-		, m_data_size()
-		, m_data_count()
-		, m_target_stage(eShaderStageFlag::ALL)
 	{
+		m_target_slot = std::numeric_limits<UINT>::max();
 	}
 
 	ConstBuffer::~ConstBuffer()
 	{
+		unbind();
 	}
 
-	bool ConstBuffer::create(size_t _dataSize, uint _dataCount)
+	bool ConstBuffer::create(UINT _target_register, UINT _dataSize, UINT _dataCount)
 	{
-		m_data_size = (uint)_dataSize;
+		m_target_slot = _target_register;
+
+		m_data_size = _dataSize;
 		m_data_count = _dataCount;
 
 		// 상수 버퍼
@@ -40,8 +40,8 @@ namespace core
 			return false;
 		}
 
-		set_buffer(buf);
-		set_buffer_desc(buffer_desc);
+		m_buffer = buf;
+		m_buffer_desc = buffer_desc;
 
 		return true;
 	}
@@ -50,68 +50,99 @@ namespace core
 	{
 		ASSERT_MESSAGE(nullptr != _data, "data가 nullptr 입니다.");
 		ASSERT_MESSAGE(_dataCount <= m_data_count, "입력된 data가 상수버퍼의 최대 data size보다 큽니다.");
-		
 
 		auto pContext = RenderManager::get_inst().get_context();
 		D3D11_MAPPED_SUBRESOURCE tSubRes{};
 
-		if (SUCCEEDED(pContext->Map(get_buffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes)))
+		HRESULT result = pContext->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &tSubRes);
+		if (SUCCEEDED(result))
 		{
 			memcpy(tSubRes.pData, _data, m_data_size * _dataCount);
-			pContext->Unmap(get_buffer().Get(), 0);
+			pContext->Unmap(m_buffer.Get(), 0);
 		}
 	}
 
-	void ConstBuffer::bind_buffer_to_GPU_register(eShaderStageFlag_ _stageFlag)
+	void ConstBuffer::bind(eShaderStageFlag_ _stage_flag)
 	{
-		if (eShaderStageFlag::NONE == _stageFlag)
-		{
-			_stageFlag = m_target_stage;
-		}
-
 		auto pContext = RenderManager::get_inst().get_context();
-		if (eShaderStageFlag::Vertex & _stageFlag)
+
+		if (eShaderStageFlag::Vertex & _stage_flag)
 		{
-			pContext->VSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->VSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Vertex][m_target_slot] = m_buffer;
 		}
-		if (eShaderStageFlag::Hull & _stageFlag)
+		if (eShaderStageFlag::Hull & _stage_flag)
 		{
-			pContext->HSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->HSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Hull][m_target_slot] = m_buffer;
 		}
-		if (eShaderStageFlag::Domain & _stageFlag)
+		if (eShaderStageFlag::Domain & _stage_flag)
 		{
-			pContext->DSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->DSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Domain][m_target_slot] = m_buffer;
 		}
-		if (eShaderStageFlag::Geometry & _stageFlag)
+		if (eShaderStageFlag::Geometry & _stage_flag)
 		{
-			pContext->GSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->GSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Geometry][m_target_slot] = m_buffer;
 		}
-		if (eShaderStageFlag::Pixel & _stageFlag)
+		if (eShaderStageFlag::Pixel & _stage_flag)
 		{
-			pContext->PSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->PSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Pixel][m_target_slot] = m_buffer;
 		}
-		if (eShaderStageFlag::Compute & _stageFlag)
+		if (eShaderStageFlag::Compute & _stage_flag)
 		{
-			pContext->CSSetConstantBuffers(m_const_buffer_type, 1u, get_buffer().GetAddressOf());
+			pContext->CSSetConstantBuffers(m_target_slot, 1, m_buffer.GetAddressOf());
+			s_bound_table[(int)eShaderStage::Compute][m_target_slot] = m_buffer;
 		}
 	}
-	void ConstBuffer::unbind_buffer()
+	void ConstBuffer::unbind()
 	{
 		auto pContext = RenderManager::get_inst().get_context();
 
-		pContext->VSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
-		pContext->HSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
-		pContext->DSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
-		pContext->GSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
-		pContext->PSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
-		pContext->CSSetConstantBuffers(m_const_buffer_type, 0u, nullptr);
+		for (int i = 0; i < (int)eShaderStage::END; ++i)
+		{
+			if (s_bound_table[i][m_target_slot].Get() == m_buffer.Get())
+			{
+				s_bound_table[i][m_target_slot] = nullptr;
+				
+				switch ((eShaderStage)i)
+				{
+				case core::eShaderStage::Vertex:
+					pContext->VSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::Hull:
+					pContext->HSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::Domain:
+					pContext->DSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::Geometry:
+					pContext->GSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::Pixel:
+					pContext->PSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::Compute:
+					pContext->CSSetConstantBuffers(m_target_slot, 1, nullptr);
+					break;
+				case core::eShaderStage::END:
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 	eResult ConstBuffer::save(const std::fs::path& _fullpath) const
 	{
+		ASSERT_MESSAGE_RELEASE(false, "미구현");
 		return eResult::Fail;
 	}
 	eResult ConstBuffer::load(const std::fs::path& _fullpath)
 	{
+		ASSERT_MESSAGE_RELEASE(false, "미구현");
 		return eResult::Fail;
 	}
 }

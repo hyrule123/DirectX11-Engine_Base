@@ -54,7 +54,7 @@ namespace core
 		//아틀라스를 균일하게 조각조각 내줌
 		void create_XY(const std::string_view _name, s_ptr<Texture> _atlas, UINT _uColTotal, UINT _uRowTotal, float _duration);
 
-		void bind_buffer_to_GPU_register();
+		void bind();
 		void reset();
 		void unbind_buffer_from_GPU_register();
 

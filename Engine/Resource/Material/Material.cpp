@@ -43,7 +43,7 @@ namespace core
         {
             if (m_textures[slotIndex])
             {
-                m_textures[slotIndex]->bind_buffer_as_SRV((uint)slotIndex, eShaderStageFlag::Pixel);
+                m_textures[slotIndex]->bind_SRV((uint)slotIndex, eShaderStageFlag::Pixel);
             }
         }
 
@@ -51,7 +51,7 @@ namespace core
         CB->set_data(&m_shared_material_data);
 
         eShaderStageFlag_ flag = eShaderStageFlag::Vertex | eShaderStageFlag::Geometry | eShaderStageFlag::Pixel;
-        CB->bind_buffer_to_GPU_register(flag);
+        CB->bind(flag);
 
         m_shader->bind();
     }

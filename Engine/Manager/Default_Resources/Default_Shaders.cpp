@@ -1,6 +1,11 @@
 #include <Engine/Manager/ResourceManager.h>
 
-#include <Engine/Resource/Shader/GraphicsPipeline.h>
+#include "Engine/Resource/Shader/GraphicsPipeline.h"
+
+#include "Engine/Resource/Shader/InputLayout.h"
+#include "Engine/Resource/Shader/VertexShader.h"
+#include "Engine/Resource/Shader/PixelShader.h"
+
 #include <Engine/Resource/Shader/ComputeShaders/Animation3D_ComputeShader.h>
 #include <Engine/Resource/Shader/ComputeShaders/GPUInitSetting.h>
 #include <Engine/Resource/Shader/ComputeShaders/NormalConvertShader.h>
@@ -32,50 +37,30 @@ namespace core {
 		layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 #pragma endregion
 
+		s_ptr<InputLayout> std_2d_layout = {};
 
 #pragma region SPRITE SHADER
 		{
-			s_ptr<GraphicsPipeline> sprite_shader = std::make_shared<GraphicsPipeline>();
-			sprite_shader->compile_from_CSO(eGSStage::Vertex, "")
-			sprite_shader->compile_from_byte_code(eGSStage::Vertex, Sprite_VS, sizeof(Sprite_VS));
-			sprite_shader->compile_from_byte_code(eGSStage::Pixel, Sprite_PS, sizeof(Sprite_PS));
-			sprite_shader->set_rasterizer_state(eRasterizerState::SolidNone);
-			sprite_shader->set_input_layout_desc(vecLayoutDesc2D);
-			sprite_shader->create_input_layout();
+			s_ptr<GraphicsPipeline> sprite_pipeline = new_entity<GraphicsPipeline>();
+			
+			s_ptr<VertexShader> vs = load_default_resource<VertexShader>("Shader/Engine/Sprite_VS.cso");
+			ASSERT(vs);
 
-			ResourceManager::get_inst().insert_default_resource(sprite_shader, "sprite_shader");
+			std_2d_layout = new_entity<InputLayout>();
+			bool result = std_2d_layout->create_input_layout(vecLayoutDesc2D, vs);
+			ASSERT(result);
+			insert_default_resource(std_2d_layout, "std_2d_input_layout");
+
+			s_ptr<PixelShader> ps = load_default_resource<PixelShader>("Shader/Engine/Sprite_PS.cso");
+			ASSERT(ps);
+
+			sprite_pipeline->set_input_layout(std_2d_layout);
+			sprite_pipeline->set_vertex_shader(vs);
+			sprite_pipeline->set_pixel_shader(ps);
+
+			insert_default_resource(sprite_pipeline, "sprite_pipeline");
 		}
 
-#pragma endregion
-#pragma region UI SHADER
-		{
-			s_ptr<GraphicsPipeline> ui_shader = std::make_shared<GraphicsPipeline>();
-			ui_shader->compile_from_byte_code(eGSStage::Vertex, UI_VS, sizeof(UI_VS));
-			ui_shader->compile_from_byte_code(eGSStage::Pixel, UI_PS, sizeof(UI_PS));
-			ui_shader->set_input_layout_desc(vecLayoutDesc2D);
-			ui_shader->create_input_layout();
-
-			ui_shader->set_resource_key(default_res::shader::graphics::UI_shader);
-			ResourceManager::get_inst().insert_default_resource(ui_shader, "UI_Shader");
-		}
-
-#pragma endregion
-#pragma region GRID SHADER
-		{
-			s_ptr<GraphicsPipeline> grid_shader = std::make_shared<GraphicsPipeline>();
-			grid_shader->compile_from_byte_code(eGSStage::Vertex, Grid_VS, sizeof(Grid_VS));
-			grid_shader->compile_from_byte_code(eGSStage::Pixel, Grid_PS, sizeof(Grid_PS));
-			grid_shader->set_input_layout_desc(vecLayoutDesc2D);
-			grid_shader->create_input_layout();
-
-			grid_shader->set_rasterizer_state(eRasterizerState::SolidNone);
-			grid_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
-			grid_shader->set_blend_state(eBlendState::AlphaBlend);
-
-			ResourceManager::get_inst().insert_default_resource(grid_shader, "grid_shader");
-		}
-
-#pragma endregion
 #pragma region DEBUG SHADER
 		{
 			std::vector<D3D11_INPUT_ELEMENT_DESC> debugLayoutDesc;
@@ -90,12 +75,17 @@ namespace core {
 			debugLayoutDesc.push_back(layout_desc);
 			layout_desc = D3D11_INPUT_ELEMENT_DESC{};
 
-			s_ptr<GraphicsPipeline> debug_shader = std::make_shared<GraphicsPipeline>();
-			debug_shader->compile_from_byte_code(eGSStage::Vertex, Debug_VS, sizeof(Debug_VS));
-			debug_shader->compile_from_byte_code(eGSStage::Pixel, Debug_PS, sizeof(Debug_PS));
+			s_ptr<VertexShader> vs = load_default_resource<VertexShader>("Shader/Engine/Debug_VS.cso");
+			ASSERT(vs);
 
-			debug_shader->set_input_layout_desc(debugLayoutDesc);
-			debug_shader->create_input_layout();
+			s_ptr<PixelShader> ps = load_default_resource<PixelShader>("Shader/Engine/Debug_CS.cso");
+			ASSERT(ps);
+
+			s_ptr<InputLayout> input_layout = new_entity<InputLayout>();
+			bool result = input_layout->create_input_layout(debugLayoutDesc, vs);
+			ASSERT(result);
+
+			
 
 			//debug_shader->CreateBuffer(eShaderStage::Vertex, "DebugVS.hlsl", "main");
 			//debug_shader->CreateBuffer(eShaderStage::Pixel, "DebugPS.hlsl", "main");
@@ -103,6 +93,7 @@ namespace core {
 			debug_shader->set_depth_stencil_state(eDepthStencilState::NoWrite);
 			debug_shader->set_blend_state(eBlendState::Default);
 
+			s_ptr<GraphicsPipeline> debug_pass = new_entity<GraphicsPipeline>();
 			ResourceManager::get_inst().insert_default_resource(debug_shader, "debug_shader");
 		}
 

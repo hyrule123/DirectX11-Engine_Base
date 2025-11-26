@@ -21,6 +21,7 @@ namespace core
         { 
             m_rasterizer_state = std::move(_rasterizer_state); 
         }
+        bool create_rasterizer_state(const D3D11_RASTERIZER_DESC& _rs_desc);
 
         void bind(const ComPtr<ID3D11DeviceContext>& _context);
         

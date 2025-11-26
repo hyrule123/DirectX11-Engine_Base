@@ -31,7 +31,7 @@ namespace core
 	//	ConstBuffer* cb = nullptr;
 	//		//RenderManager::get_inst().GetConstBuffer(eCBType::CustomData);
 	//	cb->set_data(&m_UI_data);
-	//	cb->bind_buffer_to_GPU_register(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
+	//	cb->bind(eShaderStageFlag::Vertex | eShaderStageFlag::Pixel);
 
 	//	StaticMeshRenderer::render();
 	//}

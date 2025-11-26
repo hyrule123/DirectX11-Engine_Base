@@ -7,6 +7,7 @@
 
 #include "Engine/Util/Serialize/JsonSerializer.h"
 
+#include "Engine/Resource/Shader/InputLayout.h"
 #include "Engine/Resource/Shader/VertexShader.h"
 #include "Engine/Resource/Shader/HullShader.h"
 #include "Engine/Resource/Shader/DomainShader.h"
@@ -21,6 +22,7 @@ namespace core
 	GraphicsPipeline::GraphicsPipeline()
 		: Resource()
 	{
+		m_input_layout = new_entity<InputLayout>();
 		m_vertex_shader = new_entity<VertexShader>();
 		m_hull_shader = new_entity<HullShader>();
 		m_domain_shader = new_entity<DomainShader>();
@@ -52,7 +54,8 @@ namespace core
 	void GraphicsPipeline::bind()
 	{
 		auto context = RenderManager::get_inst().get_context();
-
+		
+		m_input_layout->bind(context);
 		m_vertex_shader->bind(context);
 		m_hull_shader->bind(context);
 		m_domain_shader->bind(context);

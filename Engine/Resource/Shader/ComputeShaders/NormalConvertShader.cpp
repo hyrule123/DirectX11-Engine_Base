@@ -51,7 +51,7 @@ namespace core
 		return retTex;
 	}
 
-	bool NormalConvertShader::bind_buffer_to_GPU_register()
+	bool NormalConvertShader::bind()
 	{
 		m_dest_texture = nullptr;
 		m_dest_texture = std::make_shared<Texture>();
@@ -69,10 +69,10 @@ namespace core
 		m_dest_texture->set_resource_key(m_src_texture->get_concrete_class_name());
 
 		//원본
-		m_src_texture->bind_buffer_as_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
+		m_src_texture->bind_SRV(GPU::Register::t::SrcNormalTex, eShaderStageFlag::Compute);
 
 		//복사 대상
-		m_dest_texture->bind_buffer_as_UAV(GPU::Register::u::DestNormalTex);
+		m_dest_texture->bind_UAV(GPU::Register::u::DestNormalTex);
 
 		//데이터 수 계산
 		ComputeShader::calculate_group_count(uint3{ m_dest_texture->get_texture_width(), m_dest_texture->get_texture_height(), 1u });

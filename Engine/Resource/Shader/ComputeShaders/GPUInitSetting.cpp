@@ -38,7 +38,7 @@ namespace core
 		return result;
 	}
 
-	bool GPUInitSetting::bind_buffer_to_GPU_register()
+	bool GPUInitSetting::bind()
 	{
 		union CheckEndianness
 		{
@@ -84,7 +84,7 @@ namespace core
 		eResult result = m_init_sbuffer->create<tGPUInitSetting>(desc, 1ui64, &g_GPU_init_setting, 1ui64);
 		ASSERT_MESSAGE(eResult_success(result), "GPU 초기화용 구조화 버퍼 생성 실패.");
 
-		m_init_sbuffer->bind_buffer_as_UAV();
+		m_init_sbuffer->bind_UAV();
 
 		ComputeShader::calculate_group_count(uint3(1u, 1u, 1u));
 
@@ -93,8 +93,8 @@ namespace core
 
 	void GPUInitSetting::unbind_buffer_from_GPU_register()
 	{
-		m_init_sbuffer->unbind_buffer();
+		m_init_sbuffer->unbind();
 		m_init_sbuffer->get_data(&g_GPU_init_setting);
-		m_init_sbuffer->bind_buffer_as_SRV();
+		m_init_sbuffer->bind_SRV();
 	}
 }

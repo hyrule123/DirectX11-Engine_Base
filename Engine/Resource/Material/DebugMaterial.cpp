@@ -22,6 +22,6 @@ namespace core {
 
 	void DebugMaterial::set_data_and_bind_GPU(const std::vector<tDebugDrawData>& _data) {
 		m_debug_render_buffer->set_data(_data.data(), (UINT)_data.size());
-		m_debug_render_buffer->bind_buffer_as_SRV();
+		m_debug_render_buffer->bind_SRV();
 	}
 }

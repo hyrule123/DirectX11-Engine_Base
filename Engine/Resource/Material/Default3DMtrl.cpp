@@ -71,7 +71,7 @@ namespace core {
 
     void Default3DMtrl::bind_instancing_buffer_to_GPU_register()
     {
-        m_default_3D_mtrl_instancing_buffer->bind_buffer_as_SRV();
+        m_default_3D_mtrl_instancing_buffer->bind_SRV();
     }
 
     void Default3DMtrl::set_forward3D_shader()

@@ -47,7 +47,7 @@ namespace core
         virtual ~Animation3D();
 
     public:
-        void bind_buffer_to_GPU_register();
+        void bind();
         void unbind_buffer_from_GPU_register();
 
         virtual eResult save(const std::fs::path& _relative_path) const override;
