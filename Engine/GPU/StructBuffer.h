@@ -3,10 +3,13 @@
 
 namespace core
 {
-    enum class eStructBufferType
+    enum class eStructBufferAccessType
     {
-        READ_ONLY,  //SRV ONLY
-        READ_WRITE  //SRV + UAV(Compute Shader)
+        NOT_SET,
+        READ_ONLY,      //SRV
+        READ_WRITE,     //SRV + UAV(Compute Shader)
+        COMPUTE_ONLY,   //UAV
+		IMMUTABLE,      //SRV, 생성 후 변경 불가
     };
 
 	class StructBuffer final
@@ -14,43 +17,45 @@ namespace core
 	{
         CLASS_INFO(StructBuffer, GPUBuffer);
         BASE_RESOURCE(StructBuffer, eResourceType::StructBuffer);
-        CLONE_ABLE(StructBuffer);
-
-    public:
-        struct tDesc
-        {
-            eStructBufferType m_buffer_RW_type = eStructBufferType::READ_ONLY;
-
-            eShaderStageFlag_ m_SRV_target_stage = eShaderStageFlag::ALL;
-
-            int32 m_SRV_target_register_idx = -1;
-            int32 m_UAV_target_register_idx = -1;
-        };
+        CLONE_DISABLE(StructBuffer);
 
     public:
         StructBuffer();
-
-        StructBuffer(const StructBuffer& _other);
-        
-
         virtual ~StructBuffer();
 
-        //desc를 바꾸고자 할 경우 그냥 구조화 버퍼를 지웠다가 다시 생성할것.
-        template <typename T>
-        eResult create(const tDesc& _tDesc, uint _capacity = 0, const void* _pInitialData = nullptr, UINT _ElemCount = 0);
+        struct tDesc
+        {
+            tDesc() = delete;
+            
+            template <typename T>
+            tDesc(eStructBufferAccessType _access_type)
+                : tDesc((UINT)sizeof(T), _access_type)
+            {}
 
-        eResult resize(size_t _ElementCapacity, const void* _pInitialData = nullptr, UINT _dataCount = 0);
+            tDesc(UINT _byte_stride, eStructBufferAccessType _access_type);
 
-        //Setter Getter Adder
-        void set_pipeline_target(eShaderStageFlag_ _StageFlag) { m_struct_buffer_desc.m_SRV_target_stage = _StageFlag; }
-        void add_pipeline_target(eShaderStageFlag_ _StageFlag) { m_struct_buffer_desc.m_SRV_target_stage |= _StageFlag; }
+            UINT byte_stride = {};
+            eStructBufferAccessType access_type = {};
+            UINT SRV_slot = UINT_MAX;
+            UINT UAV_slot = UINT_MAX;
+            UINT capacity = {};
 
-        uint get_capacity() const { return m_capacity; }
+            //생성과 동시에 업로드할 데이터 주소
+            const void* p_initial_data = {};
+            UINT element_count = {};
 
+            D3D11_BUFFER_DESC buffer_desc = {};
+        };
+
+		bool create(const tDesc& _desc);
+
+        bool resize(UINT _new_capacity, const void* _initial_data = nullptr, UINT _elem_count = 0);
+
+        UINT get_capacity() const { return m_capacity; }
         
-        uint get_size() const { return m_size; }
+        UINT get_size() const { return m_size; }
 
-        uint get_stride() const { return m_data_stride; }
+        UINT get_stride() const { return m_byte_stride; }
 
         //데이터를 버퍼로 전송
         void set_data(const void* _pData, UINT _uCount);
@@ -61,48 +66,47 @@ namespace core
         void get_data(T* _pDest) { get_data(static_cast<void*>(_pDest), sizeof(T)); }
 
         //데이터를 특정 레지스터에 바인딩. SRV에 바인딩할것인지 UAV에 바인딩할것인지를 지정
-        void bind_buffer_as_SRV(int32 _override_SRV_slot = -1, eShaderStageFlag_ _override_stage = eShaderStageFlag::NONE);
+        void bind_SRV(eShaderStageFlag_ _pipeline_target = eShaderStageFlag::ALL);
 
         //Bind buffer with UAV Mode to Compute shader 
-        void bind_buffer_as_UAV(int32 _override_UAV_slot = -1);
+        void bind_UAV();
 
-        void unbind_buffer();
+        void unbind();
 
     private:
-        void set_desc(const tDesc& _tDesc);
-        bool create_staging_buffer();
-        bool create_SRV();
-        bool create_UAV();
+        //D3D11_CPU_ACCESS_FLAG
+        ComPtr<ID3D11Buffer> create_staging_buffer(UINT _byte_width, bool _enable_read, bool _enable_write);
+        ComPtr<ID3D11ShaderResourceView> create_SRV(const ComPtr<ID3D11Buffer>& _buf, UINT _capacity);
+        ComPtr<ID3D11UnorderedAccessView> create_UAV(const ComPtr<ID3D11Buffer>& _buf, UINT _capacity);
 
         virtual eResult save(const std::fs::path& _fullpath) const override;
         virtual eResult load(const std::fs::path& _fullpath) override;
 
     private:
-        tDesc                        m_struct_buffer_desc;
+        eStructBufferAccessType m_access_type = {}; //읽기 전용인지, 읽기/쓰기 모두 가능한지
 
-        UINT                        m_data_stride;   //구조체 하나 당 바이트 갯수
-        UINT                        m_size;    //현재 등록한 구조체의 갯수
-        UINT                        m_capacity; //현재 확보되어있는 구조체의 갯수
+		UINT                        m_target_SRV_slot = {};
+		UINT                        m_target_UAV_slot = {};
 
-        ComPtr<ID3D11ShaderResourceView> m_SRV;
+        UINT                        m_byte_stride = {};   //구조체 하나 당 바이트 갯수
+        UINT                        m_size = {};    //현재 등록한 구조체의 갯수
+        UINT                        m_capacity = {}; //현재 확보되어있는 구조체의 갯수
+
+        ComPtr<ID3D11ShaderResourceView> m_SRV = {};
 
         //RW 형태로 바인딩하고자 할때
-        ComPtr<ID3D11UnorderedAccessView> m_UAV;
+        ComPtr<ID3D11UnorderedAccessView> m_UAV = {};
 
-        ComPtr<ID3D11Buffer>    m_staging_buffer;
+		ComPtr<ID3D11Buffer>    m_readback_buffer = {};
+        UINT m_readback_buffer_byte_width = {};
 
-        int                     m_current_bound_register;
-        eBufferViewType         m_current_bound_view;
+		ComPtr<ID3D11Buffer>    m_upload_buffer = {};
+        UINT m_upload_buffer_byte_width = {};
+
+        eBufferViewType             m_current_bound_view = {};
+
+        static inline ComPtr<StructBuffer> s_bound_table_SRV[(int)eShaderStage::END][D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = {};
 	};
 
-    template<typename T>
-    inline eResult StructBuffer::create(const tDesc& _tDesc, UINT _capacity, const void* _pInitialData, UINT _elemCount)
-    {
-        set_desc(_tDesc);
 
-        static_assert(sizeof(T) % 16 == 0, "The byte size of the structured buffer must be a multiple of 16.");
-        m_data_stride = (UINT)  sizeof(T);
-
-        return resize(_capacity, _pInitialData, _elemCount);
-    }
 }

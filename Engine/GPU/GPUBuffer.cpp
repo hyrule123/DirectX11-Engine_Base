@@ -8,22 +8,7 @@ namespace core
 	GPUBuffer::GPUBuffer(eBufferType _Type)
 		: Resource()
 		, m_buffer_type(_Type)
-		, m_buffer_desc{}
-		, m_buffer{}
 	{
-	}
-	GPUBuffer::GPUBuffer(const GPUBuffer& _other)
-		: Resource(_other)
-		, m_buffer_type(_other.m_buffer_type)
-		, m_buffer_desc{_other.m_buffer_desc}
-		, m_buffer{}
-	{
-	}
-
-	void GPUBuffer::clear()
-	{
-		m_buffer_desc = D3D11_BUFFER_DESC{};
-		m_buffer = nullptr;
 	}
 }
 

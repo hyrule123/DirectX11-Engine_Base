@@ -77,7 +77,7 @@ namespace core
 		//데이터 전송
 		//SBuffer
 		StructBuffer::tDesc desc{};
-		desc.m_buffer_RW_type = eStructBufferType::READ_WRITE;
+		desc.m_access_type = eStructBufferAccessType::READ_WRITE;
 		desc.m_SRV_target_register_idx = GPU::Register::t::gInitSetting;
 		desc.m_UAV_target_register_idx = GPU::Register::u::g_initSettings_RW;
 		m_init_sbuffer = std::make_unique<StructBuffer>();

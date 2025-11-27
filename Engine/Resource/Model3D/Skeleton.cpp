@@ -37,7 +37,7 @@ namespace core
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_FinalBoneMatrixArray;
 		desc.m_SRV_target_stage = eShaderStageFlag::Vertex;
 		desc.m_UAV_target_register_idx = GPU::Register::u::g_FinalBoneMatrixArrayRW;
-		desc.m_buffer_RW_type = eStructBufferType::READ_WRITE;
+		desc.m_access_type = eStructBufferAccessType::READ_WRITE;
 		m_final_matrix_buffer = std::make_unique<StructBuffer>();
 		m_final_matrix_buffer->create<MATRIX>(desc);
 	}
@@ -400,7 +400,7 @@ namespace core
 
 		//CreateBuffer
 		StructBuffer::tDesc desc{};
-		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_access_type = eStructBufferAccessType::READ_ONLY;
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_BoneOffsetArray;
 		m_bone_offset_sbuffer = std::make_shared<StructBuffer>();
 

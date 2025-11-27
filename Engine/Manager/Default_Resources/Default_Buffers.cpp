@@ -30,7 +30,7 @@ namespace core {
 		s_ptr<StructBuffer> debug_render_buffer = new_entity<StructBuffer>();
 
 		StructBuffer::tDesc desc{};
-		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_access_type = eStructBufferAccessType::READ_ONLY;
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_debugDrawData;
 		desc.m_SRV_target_stage = eShaderStageFlag::Vertex | eShaderStageFlag::Pixel;
 
@@ -42,7 +42,7 @@ namespace core {
 	{
 		s_ptr<StructBuffer> light_3d_instancing_buffer = new_entity<StructBuffer>();
 		StructBuffer::tDesc desc{};
-		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_access_type = eStructBufferAccessType::READ_ONLY;
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_light_attributes;
 		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
 		light_3d_instancing_buffer->create<tLightAttribute>(desc, 16);
@@ -62,7 +62,7 @@ namespace core {
 	{
 		s_ptr<StructBuffer> buf = new_entity<StructBuffer>();
 		StructBuffer::tDesc desc{};
-		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_access_type = eStructBufferAccessType::READ_ONLY;
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_default_3D_mtrl_instancing_buffer;
 		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
 		buf->create<tDefault3DMtrl_InstancingData>(desc);

@@ -44,7 +44,7 @@ namespace core
 		StructBuffer::tDesc desc{};
 		desc.m_SRV_target_register_idx = GPU::Register::t::g_transforms;
 		desc.m_UAV_target_register_idx = GPU::Register::u::NONE;
-		desc.m_buffer_RW_type = eStructBufferType::READ_ONLY;
+		desc.m_access_type = eStructBufferAccessType::READ_ONLY;
 		desc.m_SRV_target_stage = eShaderStageFlag::ALL;
 		s_buffer->create<tTransform>(desc);
 	}

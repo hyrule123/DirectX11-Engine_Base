@@ -1,209 +1,213 @@
 #include "StructBuffer.h"
 
-#include <Engine/Manager/RenderManager.h>
-#include <Engine/Manager/RenderManager.h>
-
-#include <Engine/GPU/ConstBuffer.h>
+#include "Engine/Manager/RenderManager.h"
 
 namespace core
 {
 	StructBuffer::StructBuffer()
 		: GPUBuffer(eBufferType::Struct)
-		, m_struct_buffer_desc()
-		, m_data_stride()
-		, m_size()
-		, m_capacity()
-		, m_SRV()
-		, m_UAV()
-		, m_staging_buffer()
-		, m_current_bound_view()
-		, m_current_bound_register(-1)
 	{
-	}
-
-	StructBuffer::StructBuffer(const StructBuffer& _other)
-		: GPUBuffer(_other)
-		, m_struct_buffer_desc()
-		, m_data_stride(_other.m_data_stride)
-		, m_size()
-		, m_capacity()
-		, m_SRV()
-		, m_UAV()
-		, m_staging_buffer()
-		, m_current_bound_view()
-		, m_current_bound_register(-1)
-	{
-		//set_desc 함수를 통해 설정
-		set_desc(_other.m_struct_buffer_desc);
-
-		//버퍼 빈 상태 및 동일 조건으로 생성
-		resize(_other.m_capacity, nullptr, 0u);
-
-		//리소스 내용 복사
-		ComPtr<ID3D11Buffer> buf = get_buffer();
-		RenderManager::get_inst().get_context()->CopyResource(buf.Get(), _other.get_buffer().Get());
 	}
 
 	StructBuffer::~StructBuffer()
 	{
-		unbind_buffer();
+		unbind();
 	}
 
-	void StructBuffer::set_desc(const tDesc& _desc)
+	bool StructBuffer::create(const tDesc& _desc)
 	{
-		m_struct_buffer_desc = _desc;
-
-		D3D11_BUFFER_DESC buf_desc = get_buffer_desc();
-
-		switch (m_struct_buffer_desc.m_buffer_RW_type)
+		if (m_buffer != nullptr)
 		{
-		case eStructBufferType::READ_ONLY:
-
-			//CPU에서 구조화버퍼로 작성할 수 있어야 하므로 AccessFlag를 write로 설정
-			buf_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-			//CPU에서 버퍼를 작성하고 GPU에서 버퍼를 읽어들일 경우 사용
-			buf_desc.Usage = D3D11_USAGE_DYNAMIC;
-
-			//SRV만 바인딩되도록 설정
-			buf_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-
-			break;
-		case eStructBufferType::READ_WRITE:
-
-			//CPU는 직접 접근 불가, 
-			buf_desc.CPUAccessFlags = 0;
-
-			//GPU의 읽기/쓰기는 가능
-			buf_desc.Usage = D3D11_USAGE_DEFAULT;
-
-			//SRV, UAV 둘 다 바인딩되도록 설정
-			buf_desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
-
-			//READ_WRITE로 사용하겠다는 건 컴퓨트쉐이더를 사용하겠다는 의미 -> 실수 방지를 위해 플래그에 컴퓨트쉐이더 추가
-			m_struct_buffer_desc.m_SRV_target_stage |= eShaderStageFlag::Compute;
-
-			break;
-		default:
-			break;
+			ERROR_MESSAGE("이미 생성된 buffer입니다. 새로운 클래스에 생성하세요.");
+			return false;
+		}
+		if (0 != (m_byte_stride % 16))
+		{
+			ERROR_MESSAGE("byte stride는 16의 배수여야 합니다.");
+			return false;
 		}
 
-		//기타 플래그에 구조화 버퍼로 설정값이 있음.
-		buf_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		m_buffer_desc = _desc.buffer_desc;
+		m_access_type = _desc.access_type;
+		m_target_SRV_slot = _desc.SRV_slot;
+		m_target_UAV_slot = _desc.UAV_slot;
+		m_byte_stride = _desc.byte_stride;
 
-		set_buffer_desc(buf_desc);
+		return resize(_desc.capacity, _desc.p_initial_data, _desc.element_count);
 	}
 
-	eResult StructBuffer::resize(size_t _capacity, const void* _pInitialData, UINT _uElemCount)
+	bool StructBuffer::resize(UINT _new_capacity, const void* _initial_data, UINT _elem_count)
 	{
-		if (_capacity == 0) {
-			return eResult::Success;
+		if (0 == m_byte_stride)
+		{
+			ERROR_MESSAGE("byte stride가 0입니다.");
+			return false;
+		}
+
+		//capacity 0일시 만들 필요가 없음
+		if (_new_capacity == 0) {
+			return true;
 		}
 		//이미 더 큰 capacity일 경우 그냥 그 버퍼를 사용한다
-		if (_capacity <= m_capacity) {
-			set_data(_pInitialData, _uElemCount);
-			return eResult::Success;
+		if (_new_capacity <= m_capacity) {
+			set_data(_initial_data, _elem_count);
+			return true;
 		}
-		else if (_capacity < _uElemCount)
+		if (_new_capacity < _elem_count)
 		{
-			ERROR_MESSAGE_A("Element capacity of structured buffer must be more than element of input data!");
-			return eResult::Fail_Create;
+			ERROR_MESSAGE("데이터 사이즈보다 capacity를 작게 설정했습니다.");
 		}
 
 		//재할당 하기 전 바인딩된 리소스가 있다면 unbind
-		unbind_buffer();
+		unbind();
 
 		//상수버퍼와는 다르게 버퍼 재할당이 가능함. 먼저 기존 버퍼의 할당을 해제한다.(ComPtr을 통해 관리가 이루어지므로 nullptr로 바꿔주면 됨.)
-		m_size = (UINT)_uElemCount;
-		m_capacity = (UINT)_capacity;
+		ComPtr<ID3D11Buffer> buf = nullptr;
+		D3D11_BUFFER_DESC desc = m_buffer_desc;
 
-		D3D11_BUFFER_DESC buf_desc = get_buffer_desc();
-		buf_desc.StructureByteStride = m_data_stride;
-		buf_desc.ByteWidth = m_data_stride * m_capacity;
+		ComPtr<ID3D11ShaderResourceView> SRV = nullptr;
+		ComPtr<ID3D11UnorderedAccessView> UAV = nullptr;
 
-		switch (m_struct_buffer_desc.m_buffer_RW_type)
+		desc.StructureByteStride = m_byte_stride;
+		desc.ByteWidth = m_byte_stride * _new_capacity;
+
+		//초깃값 업로드 및 바인딩
+		D3D11_SUBRESOURCE_DATA* pData = nullptr;
+		D3D11_SUBRESOURCE_DATA Data = {};
+		if (nullptr != _initial_data)
+		{
+			Data.pSysMem = _initial_data;
+
+			//이 값은 무시됨. BufferDesc.ByteWidth 값만 영향을 미치는 것을 확인함.
+			Data.SysMemPitch = m_byte_stride * _elem_count;
+			Data.SysMemSlicePitch = m_byte_stride;
+			pData = &Data;
+		}
+
+		switch (m_access_type)
 		{
 			//일반적인 GPU에서 읽기만 가능한 구조화 버퍼
-		case eStructBufferType::READ_ONLY:
+		case eStructBufferAccessType::READ_ONLY:
 		{
-			//초깃값 업로드 및 바인딩
-			D3D11_SUBRESOURCE_DATA* pData = nullptr;
-			D3D11_SUBRESOURCE_DATA Data = {};
-			if (nullptr != _pInitialData)
-			{
-				Data.pSysMem = _pInitialData;
-
-				//이 값은 무시됨. BufferDesc.ByteWidth 값만 영향을 미치는 것을 확인함.
-				Data.SysMemPitch = m_data_stride * (UINT)_uElemCount;
-				Data.SysMemSlicePitch = m_data_stride;
-				//Data.SysMemSlicePitch = m_buffer_desc.StructureByteStride;
-				pData = &Data;
-			}
-
-			ComPtr<ID3D11Buffer> buf = nullptr;
 			//구조화버퍼 생성. ReleaseAndGetAddressOf() 함수를 통해서 기존 구조화 버퍼가 있다면 날려버리고 생성
-			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&buf_desc, pData, buf.ReleaseAndGetAddressOf());
+			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, pData, buf.ReleaseAndGetAddressOf());
 
 			if (FAILED(result))
 			{
-				ERROR_MESSAGE_A("Failed to create Structured Buffer!");
-				return eResult::Fail_Create;
+				ERROR_MESSAGE("Failed to create Structured Buffer!");
+				return false;
 			}
 
-			set_buffer(buf);
-			set_buffer_desc(buf_desc);
-
-			//Read Only의 경우 바로 SRV 생성
-			create_SRV();
+			SRV = create_SRV(buf, _new_capacity);
+			if (nullptr == SRV)
+			{
+				ERROR_MESSAGE("SRV 생성 실패.");
+				return false;
+			}
 
 			break;
 		}
 
 		//Compute Shader과 결합해서 사용하는, GPU에서 조작 가능한 SBuffer
 		//이 경우에는 CPU와 데이터 전송이 불가능하므로 데이터 전송용 Staging Buffer를 중간 단계로 사용해야 한다.
-		case eStructBufferType::READ_WRITE:
+		case eStructBufferAccessType::READ_WRITE:
 		{
 			//초깃값 지정
 			D3D11_SUBRESOURCE_DATA* pData = nullptr;
 			D3D11_SUBRESOURCE_DATA Data = {};
-			if (nullptr != _pInitialData)
+			if (nullptr != _initial_data)
 			{
-				Data.pSysMem = _pInitialData;
-				Data.SysMemPitch = m_data_stride * (UINT)_uElemCount;
+				Data.pSysMem = _initial_data;
+				Data.SysMemPitch = m_byte_stride * _elem_count;
 
 				//이건 사용되지 않음.(3D Texture에서만 사용된다고 함)
 				//Data.SysMemSlicePitch = m_buffer_desc.StructureByteStride;
 				pData = &Data;
 			}
 
-			ComPtr<ID3D11Buffer> buf = nullptr;
-
-			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&buf_desc, pData, buf.ReleaseAndGetAddressOf());
+			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, pData, buf.ReleaseAndGetAddressOf());
 			//구조화버퍼 생성
 			if (FAILED(result))
 			{
-				ERROR_MESSAGE_A("Failed to create Structured Buffer!");
-				return eResult::Fail_Create;
+				ERROR_MESSAGE("Failed to create Structured Buffer!");
+				return false;
 			}
 
-			set_buffer(buf);
-			set_buffer_desc(buf_desc);
+			SRV = create_SRV(buf, _new_capacity);
+			if (nullptr == SRV)
+			{
+				ERROR_MESSAGE("SRV 생성 실패.");
+				return false;
+			}
 
-			//SRV 생성
-			create_SRV();
-			create_UAV();
+			UAV = create_UAV(buf, _new_capacity);
+			if (nullptr == UAV)
+			{
+				ERROR_MESSAGE("UAV 생성 실패.");
+				return false;
+			}
 
 			break;
 		}
 
+		case eStructBufferAccessType::COMPUTE_ONLY:
+		{
+			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, pData, buf.ReleaseAndGetAddressOf());
+			//구조화버퍼 생성
+			if (FAILED(result))
+			{
+				ERROR_MESSAGE("Failed to create Structured Buffer!");
+				return false;
+			}
+
+			UAV = create_UAV(buf, _new_capacity);
+			if (nullptr == UAV)
+			{
+				ERROR_MESSAGE("UAV 생성 실패.");
+				return false;
+			}
+			break;
 		}
 
-		return eResult::Success;
+		case eStructBufferAccessType::IMMUTABLE:
+		{
+			HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, pData, buf.ReleaseAndGetAddressOf());
+			//구조화버퍼 생성
+			if (FAILED(result))
+			{
+				ERROR_MESSAGE("Failed to create Structured Buffer!");
+				return false;
+			}
+
+			SRV = create_SRV(buf, _new_capacity);
+			if (nullptr == SRV)
+			{
+				ERROR_MESSAGE("SRV 생성 실패.");
+				return false;
+			}
+			break;
+		}
+		default:
+		{
+			ASSERT_RELEASE(false);
+		}
+		}
+
+		m_buffer = buf;
+		m_buffer_desc = desc;
+		m_SRV = SRV;
+		m_UAV = UAV;
+
+		return true;
 	}
 
 	void StructBuffer::set_data(const void* _pData, UINT _uCount)
 	{
-		if (nullptr == _pData || 0 == _uCount) { return; }
+		if (nullptr == _pData || 0 == _uCount) 
+		{ 
+			DEBUG_MESSAGE("업로드할 데이터가 없거나 갯수가 0입니다.");
+			return; 
+		}
 		m_size = _uCount;
 
 		//생성 시 할당된 갯수보다 들어온 갯수가 더 클 경우 재할당하고, 거기에 데이터를 추가.
@@ -216,59 +220,50 @@ namespace core
 		}
 
 		auto pContext = RenderManager::get_inst().get_context();
-		switch (m_struct_buffer_desc.m_buffer_RW_type)
+
+		if (m_access_type == eStructBufferAccessType::READ_ONLY)
 		{
-		case eStructBufferType::READ_ONLY:
-		{
+			//Read Only일 경우 SBuffer에 바로 Map/UnMap을 해주면 된다.
+			D3D11_MAPPED_SUBRESOURCE Data = {};
+			HRESULT result = pContext->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Data);
 			{
-				//Read Only일 경우 SBuffer에 바로 Map/UnMap을 해주면 된다.
-				D3D11_MAPPED_SUBRESOURCE Data = {};
-				if (SUCCEEDED(pContext->Map(get_buffer().Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Data)))
-				{
-					memcpy(Data.pData, _pData, (size_t)(m_data_stride * _uCount));
-
-					pContext->Unmap(get_buffer().Get(), 0);
-				}
-
-				break;
+				memcpy(Data.pData, _pData, (size_t)m_byte_stride * (size_t)_uCount);
+				pContext->Unmap(m_buffer.Get(), 0);
 			}
 		}
 
-		case eStructBufferType::READ_WRITE:
+		else if (m_access_type == eStructBufferAccessType::READ_WRITE
+			|| m_access_type == eStructBufferAccessType::READ_WRITE)
 		{
+			if (m_upload_buffer_byte_width < m_buffer_desc.ByteWidth)
 			{
-				if (m_staging_buffer.Get()) 
-				{
-					D3D11_BUFFER_DESC pDesc = {};
-					m_staging_buffer->GetDesc(&pDesc);
+				m_upload_buffer = create_staging_buffer(m_buffer_desc.ByteWidth, false, true);
+				m_upload_buffer_byte_width = m_buffer_desc.ByteWidth;
 
-					//생성되어 있는 Staging Buffer의 크기보다 클 경우 새로 생성
-					if (pDesc.ByteWidth < get_buffer_desc().ByteWidth)
-					{
-						create_staging_buffer();
-					}
-				}
-				else
+				if (nullptr == m_upload_buffer.Get())
 				{
-					bool result = create_staging_buffer();
-					if (false == result)
-					{
-						return;
-					}
+					ERROR_MESSAGE("업로드용 Staging Buffer 생성 실패.");
+					return;
 				}
-
-				D3D11_MAPPED_SUBRESOURCE Data = {};
-				if (SUCCEEDED(pContext->Map(m_staging_buffer.Get(), 0, D3D11_MAP_WRITE, 0, &Data)))
-				{
-					memcpy(Data.pData, _pData, (size_t)(m_data_stride * _uCount));
-					pContext->Unmap(m_staging_buffer.Get(), 0);
-					pContext->CopyResource(get_buffer().Get(), m_staging_buffer.Get());
-				}
-				break;
 			}
 
+			D3D11_MAPPED_SUBRESOURCE Data = {};
+			HRESULT result = pContext->Map(m_upload_buffer.Get(), 0, D3D11_MAP_WRITE, 0, &Data);
+			if (SUCCEEDED(result))
+			{
+				memcpy(Data.pData, _pData, (size_t)m_byte_stride * (size_t)_uCount);
+				pContext->Unmap(m_upload_buffer.Get(), 0);
+				pContext->CopyResource(m_buffer.Get(), m_upload_buffer.Get());
+			}
 		}
-
+		else if (m_access_type == eStructBufferAccessType::IMMUTABLE)
+		{
+			ERROR_MESSAGE("IMMUTABLE로 생성된 Struct Buffer는 데이터를 변경할 수 없습니다.");
+			return;
+		}
+		else
+		{
+			ASSERT(false);
 		}
 	}
 
@@ -278,186 +273,157 @@ namespace core
 			return;
 		}
 
+		//데이터를 가져오는 건 '무조건' Staging Buffer를 통해서만 가능하다.
+		if (m_readback_buffer_byte_width < m_buffer_desc.ByteWidth)
+		{
+			m_readback_buffer = create_staging_buffer(m_buffer_desc.ByteWidth, true, false);
+			m_readback_buffer_byte_width = m_buffer_desc.ByteWidth;
+			if (nullptr == m_readback_buffer.Get())
+			{
+				ERROR_MESSAGE("데이터 읽기용 Staging Buffer 생성 실패.");
+				return;
+			}
+		}
+
 		auto pContext = RenderManager::get_inst().get_context();
 
-		switch (m_struct_buffer_desc.m_buffer_RW_type)
-		{
-			memset(_pDest, 0, _byteSize);
-			return;
-			//READ_ONLY일 경우에는 데이터 가져오기 불가능.
-		case eStructBufferType::READ_ONLY:
-		{
-			ERROR_MESSAGE("CPU ACCESS FLAG가 Read Only일 경우 데이터를 읽어올 수 없습니다!");
-			//#ifdef _DEBUG
-			//		D3D11_MAPPED_SUBRESOURCE Data = {};
-			//
-			//		pContext->Map(get_buffer().Get(), 0, D3D11_MAP_READ, 0, &Data);
-			//
-			//		size_t bytesize = m_data_stride * m_size;
-			//
-			//		memcpy_s(_pDest, _byteSize, Data.pData, bytesize);
-			//
-			//		pContext->Unmap(get_buffer().Get(), 0);
-			//#endif
-			break;
-		}
+		pContext->CopyResource(m_readback_buffer.Get(), m_buffer.Get());
 
-		//읽기/쓰기 모두 가능한 Struct 버퍼일 경우에는 Staging 버퍼를 통해서 가져온다.
-		case eStructBufferType::READ_WRITE:
-		{
-			if (nullptr == m_staging_buffer.Get())
-			{
-				create_staging_buffer();
-			}
-			else
-			{
-				D3D11_BUFFER_DESC pDesc = {};
-				m_staging_buffer->GetDesc(&pDesc);
+		D3D11_MAPPED_SUBRESOURCE Data = {};
+		pContext->Map(m_readback_buffer.Get(), 0, D3D11_MAP_READ, 0, &Data);
 
-				//생성되어 있는 Staging Buffer의 크기보다 클 경우 새로 생성
-				if (pDesc.ByteWidth < get_buffer_desc().ByteWidth)
-				{
-					create_staging_buffer();
-				}
-			}
+		size_t bytesize = m_byte_stride * m_capacity;
+		memcpy_s(_pDest, _byteSize, Data.pData, bytesize);
 
-			pContext->CopyResource(m_staging_buffer.Get(), get_buffer().Get());
-
-			D3D11_MAPPED_SUBRESOURCE Data = {};
-			pContext->Map(m_staging_buffer.Get(), 0, D3D11_MAP_READ, 0, &Data);
-
-			size_t bytesize = m_data_stride * m_capacity;
-			memcpy_s(_pDest, _byteSize, Data.pData, bytesize);
-
-			pContext->Unmap(m_staging_buffer.Get(), 0);
-			break;
-		}
-
-		default: break;
-		}
+		pContext->Unmap(m_readback_buffer.Get(), 0);
 	}
 
-	void StructBuffer::bind_buffer_as_SRV(int32 _SRVSlot, eShaderStageFlag_ _stageFlag)
+	void StructBuffer::bind_SRV(eShaderStageFlag_ _stageFlag)
 	{
-		unbind_buffer();
-
+		if (m_current_bound_view == eBufferViewType::UAV)
+		{
+			unbind();
+		}
 		m_current_bound_view = eBufferViewType::SRV;
-
-		if (0 > _SRVSlot)
-		{
-			_SRVSlot = (int32)m_struct_buffer_desc.m_SRV_target_register_idx;
-		}
-
-		m_current_bound_register = _SRVSlot;
-
-		if (eShaderStageFlag::NONE == _stageFlag)
-		{
-			_stageFlag = m_struct_buffer_desc.m_SRV_target_stage;
-		}
 
 		auto pContext = RenderManager::get_inst().get_context();
 		if (eShaderStageFlag::Vertex & _stageFlag)
 		{
-			pContext->VSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->VSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Vertex][m_target_SRV_slot] = m_buffer;
 		}
 
 		if (eShaderStageFlag::Hull & _stageFlag)
 		{
-			pContext->HSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->HSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Hull][m_target_SRV_slot] = m_buffer;
 		}
 
 		if (eShaderStageFlag::Domain & _stageFlag)
 		{
-			pContext->DSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->DSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Domain][m_target_SRV_slot] = m_buffer;
 		}
 
 		if (eShaderStageFlag::Geometry & _stageFlag)
 		{
-			pContext->GSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->GSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Geometry][m_target_SRV_slot] = m_buffer;
 		}
 
 		if (eShaderStageFlag::Pixel & _stageFlag)
 		{
-			pContext->PSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->PSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Pixel][m_target_SRV_slot] = m_buffer;
 		}
 
 		if (eShaderStageFlag::Compute & _stageFlag)
 		{
-			pContext->CSSetShaderResources(_SRVSlot, 1, m_SRV.GetAddressOf());
+			pContext->CSSetShaderResources(m_target_SRV_slot, 1, m_SRV.GetAddressOf());
+			s_bound_table_SRV[(int)eShaderStageFlag::Compute][m_target_SRV_slot] = m_buffer;
 		}
 	}
 
-	void StructBuffer::bind_buffer_as_UAV(int32 _UAVSlot)
+	void StructBuffer::bind_UAV()
 	{
-		//읽기 쓰기 다 가능한 상태가 아닐경우 assert
-		ASSERT_MESSAGE(eStructBufferType::READ_WRITE == m_struct_buffer_desc.m_buffer_RW_type, "Unordered Access View는 읽기/쓰기가 모두 가능해야 합니다.");
-
-		unbind_buffer();
-
+		if (m_current_bound_view == eBufferViewType::SRV)
+		{
+			unbind();
+		}
 		m_current_bound_view = eBufferViewType::UAV;
 
-		if (0 > _UAVSlot)
-		{
-			_UAVSlot = m_struct_buffer_desc.m_UAV_target_register_idx;
-		}
-		m_current_bound_register = _UAVSlot;
-
 		UINT Offset = -1;
-		RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(_UAVSlot, 1, m_UAV.GetAddressOf(), &Offset);
+		RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(m_target_UAV_slot, 1, m_UAV.GetAddressOf(), &Offset);
 	}
 
-	bool StructBuffer::create_staging_buffer()
+	ComPtr<ID3D11Buffer> StructBuffer::create_staging_buffer(UINT _byte_width, bool _enable_read, bool _enable_write)
 	{
+		ComPtr<ID3D11Buffer> ret = nullptr;
+
 		//SysMem <-> GPUMem 데이터 전송용 스테이징 버퍼 생성
 		D3D11_BUFFER_DESC desc = {};
-		desc.ByteWidth = get_buffer_desc().ByteWidth;
-		desc.StructureByteStride = get_buffer_desc().StructureByteStride;
-		desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		desc.ByteWidth = _byte_width;
+		desc.StructureByteStride = 0;
+		desc.MiscFlags = 0;
 		desc.Usage = D3D11_USAGE_STAGING;
 		desc.BindFlags = 0;
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 
-		HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, nullptr, m_staging_buffer.ReleaseAndGetAddressOf());
+		if (_enable_write)
+		{
+			desc.CPUAccessFlags |= D3D11_CPU_ACCESS_WRITE;
+		}
+		if (_enable_read)
+		{
+			desc.CPUAccessFlags |= D3D11_CPU_ACCESS_READ;
+		}
+
+		HRESULT result = RenderManager::get_inst().get_device()->CreateBuffer(&desc, nullptr, ret.ReleaseAndGetAddressOf());
 
 		if(FAILED(result))
 		{
 			ERROR_MESSAGE("구조화 버퍼의 데이터를 주고받을 스테이징 버퍼 생성에 실패했습니다.");
-			return false;
+			return ret;
 		}
 			
-		return true;
+		return ret;
 	}
 
-	bool StructBuffer::create_SRV()
+	ComPtr<ID3D11ShaderResourceView> StructBuffer::create_SRV(const ComPtr<ID3D11Buffer>& _buf, UINT _capacity)
 	{
+		ComPtr<ID3D11ShaderResourceView> ret = nullptr;
+
 		//SRV 생성
 		D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc = {};
 		SRVDesc.ViewDimension = D3D_SRV_DIMENSION_BUFFEREX;
-		SRVDesc.BufferEx.NumElements = m_capacity;
+		SRVDesc.BufferEx.NumElements = _capacity;
 		
-		HRESULT result = RenderManager::get_inst().get_device()->CreateShaderResourceView(get_buffer().Get(), &SRVDesc, m_SRV.ReleaseAndGetAddressOf());
+		HRESULT result = RenderManager::get_inst().get_device()->CreateShaderResourceView(_buf.Get(), &SRVDesc, ret.GetAddressOf());
 		
 		if (FAILED(result))
 		{
 			ERROR_MESSAGE("구조화 버퍼의 Shader Resource View 생성에 실패했습니다.");
-			return false;
+			return nullptr;
 		}
-		return true;
+
+		return ret;
 	}
 
-	bool StructBuffer::create_UAV()
+	ComPtr<ID3D11UnorderedAccessView> StructBuffer::create_UAV(const ComPtr<ID3D11Buffer>& _buf, UINT _capacity)
 	{
+		ComPtr<ID3D11UnorderedAccessView> ret = nullptr;
 		//GPU에서 읽기 및 쓰기 작업이 가능해야 하므로 UAV 형태로 생성
 		D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
 		UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		UAVDesc.Buffer.NumElements = m_capacity;
 
-		bool bResult = SUCCEEDED(RenderManager::get_inst().get_device()->CreateUnorderedAccessView(get_buffer().Get(), &UAVDesc, m_UAV.ReleaseAndGetAddressOf()));
-		if (false == bResult)
+		HRESULT result = RenderManager::get_inst().get_device()->CreateUnorderedAccessView(_buf.Get(), &UAVDesc, ret.GetAddressOf());
+		if (FAILED(result))
 		{
 			ERROR_MESSAGE("구조화 버퍼의 Unordered Access View 생성에 실패했습니다.");
+			return nullptr;
 		}
-		return bResult;
+
+		return ret;
 	}
 
 	eResult StructBuffer::save(const std::fs::path& _fullpath) const
@@ -470,47 +436,45 @@ namespace core
 		return eResult::Fail;
 	}
 
-	void StructBuffer::unbind_buffer()
+	void StructBuffer::unbind()
 	{
 		switch (m_current_bound_view)
 		{
-		case core::eBufferViewType::NONE:
-			break;
+		case core::eBufferViewType::NONE: return;
 		case core::eBufferViewType::SRV:
 		{
 			auto pContext = RenderManager::get_inst().get_context();
 
-			ID3D11ShaderResourceView* pView = nullptr;
-			if (eShaderStageFlag::Vertex & m_struct_buffer_desc.m_SRV_target_stage)
+			for (int i = 0; i < (int)eShaderStage::END; ++i)
 			{
-				pContext->VSSetShaderResources(m_current_bound_register, 1, &pView);
+				if(s_bound_table_SRV[i][m_target_SRV_slot] == m_buffer)
+				{
+					s_bound_table_SRV[i][m_target_SRV_slot] = nullptr;
+					switch (static_cast<eShaderStage>(i))
+					{
+					case eShaderStage::Vertex:
+						pContext->VSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					case eShaderStage::Hull:
+						pContext->HSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					case eShaderStage::Domain:
+						pContext->DSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					case eShaderStage::Geometry:
+						pContext->GSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					case eShaderStage::Pixel:
+						pContext->PSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					case eShaderStage::Compute:
+						pContext->CSSetShaderResources(m_target_SRV_slot, 1, nullptr);
+						break;
+					default:
+						break;
+					}
+				}
 			}
-
-			if (eShaderStageFlag::Hull & m_struct_buffer_desc.m_SRV_target_stage)
-			{
-				pContext->HSSetShaderResources(m_current_bound_register, 1, &pView);
-			}
-
-			if (eShaderStageFlag::Domain & m_struct_buffer_desc.m_SRV_target_stage)
-			{
-				pContext->DSSetShaderResources(m_current_bound_register, 1, &pView);
-			}
-
-			if (eShaderStageFlag::Geometry & m_struct_buffer_desc.m_SRV_target_stage)
-			{
-				pContext->GSSetShaderResources(m_current_bound_register, 1, &pView);
-			}
-
-			if (eShaderStageFlag::Pixel & m_struct_buffer_desc.m_SRV_target_stage)
-			{
-				pContext->PSSetShaderResources(m_current_bound_register, 1, &pView);
-			}
-
-			if (eShaderStageFlag::Compute & m_struct_buffer_desc.m_SRV_target_stage)
-			{
-				pContext->CSSetShaderResources(m_current_bound_register, 1, &pView);
-			}
-
 			break;
 		}
 
@@ -518,7 +482,7 @@ namespace core
 		{
 			static const UINT v2_Offset = -1;
 			ID3D11UnorderedAccessView* pUAV = nullptr;
-			RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(m_current_bound_register, 1, &pUAV, &v2_Offset);
+			RenderManager::get_inst().get_context()->CSSetUnorderedAccessViews(m_target_SRV_slot, 1, &pUAV, &v2_Offset);
 			break;
 		}
 
@@ -527,9 +491,51 @@ namespace core
 			break;
 		}
 
-
-		m_current_bound_register = -1;
 		m_current_bound_view = eBufferViewType::NONE;
+	}
+
+	StructBuffer::tDesc::tDesc(UINT _byte_stride, eStructBufferAccessType _access_type)
+	{
+		buffer_desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+		switch (_access_type)
+		{
+		case core::eStructBufferAccessType::NOT_SET:
+			ERROR_MESSAGE("구조화 버퍼의 접근 타입이 설정되지 않았습니다.");
+			break;
+		case core::eStructBufferAccessType::READ_ONLY:
+			//CPU에서 구조화버퍼로 작성할 수 있어야 하므로 AccessFlag를 write로 설정
+			buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			//CPU에서 버퍼를 작성하고 GPU에서 버퍼를 읽어들일 경우 사용
+			buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+			//SRV만 바인딩되도록 설정
+			buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+			break;
+		case core::eStructBufferAccessType::READ_WRITE:
+			//CPU는 직접 접근 불가, 
+			buffer_desc.CPUAccessFlags = 0;
+			//GPU의 읽기/쓰기는 가능
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			//SRV, UAV 둘 다 바인딩되도록 설정
+			buffer_desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
+			break;
+		case core::eStructBufferAccessType::COMPUTE_ONLY:
+			//CPU는 직접 접근 불가, 
+			buffer_desc.CPUAccessFlags = 0;
+			//GPU의 읽기/쓰기는 가능
+			buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+			buffer_desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS;
+			break;
+
+		case core::eStructBufferAccessType::IMMUTABLE:
+			buffer_desc.CPUAccessFlags = 0;
+			buffer_desc.Usage = D3D11_USAGE_IMMUTABLE;
+			buffer_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+			break;
+		default:
+			break;
+		}
 	}
 
 }

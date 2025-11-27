@@ -56,7 +56,6 @@ namespace core
 		Geometry,
 		Pixel,
 		Compute,
-		ALL,
 		END
 	};
 

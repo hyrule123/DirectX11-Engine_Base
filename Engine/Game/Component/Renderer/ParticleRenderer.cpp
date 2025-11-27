@@ -97,7 +97,7 @@ namespace core
 		}
 
 		StructBuffer::tDesc sDesc{};
-		sDesc.m_buffer_RW_type = eStructBufferType::READ_WRITE;
+		sDesc.m_access_type = eStructBufferAccessType::READ_WRITE;
 
 		m_buffer = new_entity<StructBuffer>();
 		m_buffer->create<tParticle>(sDesc, m_max_particles, particles, 100u);
